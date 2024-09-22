@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.resource;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
@@ -59,8 +60,8 @@ public class OSSUnityCatalogResourceProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

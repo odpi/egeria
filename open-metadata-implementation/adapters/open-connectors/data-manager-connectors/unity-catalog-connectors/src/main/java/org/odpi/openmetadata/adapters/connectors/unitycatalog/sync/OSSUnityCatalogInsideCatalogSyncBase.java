@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
@@ -35,20 +36,20 @@ import java.util.*;
  */
 public abstract class OSSUnityCatalogInsideCatalogSyncBase
 {
-    protected final String                           connectorName;
-    protected final CatalogIntegratorContext         context;
-    protected final String                           catalogName;
-    protected final String                           catalogTargetName;
-    protected final PermittedSynchronization         targetPermittedSynchronization;
-    protected final OSSUnityCatalogResourceConnector ucConnector;
-    protected final String                           ucServerEndpoint;
-    protected final DeployedImplementationType       deployedImplementationType;
-    protected final Map<String, String>              templates;
-    protected final Map<String, Object>              configurationProperties;
-    protected final AuditLog                         auditLog;
-    protected final OpenMetadataAccess               openMetadataAccess;
-    protected final List<String>                     excludeNames;
-    protected final List<String>                     includeNames;
+    protected final String                                 connectorName;
+    protected final CatalogIntegratorContext               context;
+    protected final String                                 catalogName;
+    protected final String                                 catalogTargetName;
+    protected final PermittedSynchronization               targetPermittedSynchronization;
+    protected final OSSUnityCatalogResourceConnector       ucConnector;
+    protected final String                                 ucServerEndpoint;
+    protected final UnityCatalogDeployedImplementationType deployedImplementationType;
+    protected final Map<String, String>                    templates;
+    protected final Map<String, Object>                    configurationProperties;
+    protected final AuditLog                               auditLog;
+    protected final OpenMetadataAccess                     openMetadataAccess;
+    protected final List<String>                           excludeNames;
+    protected final List<String>                           includeNames;
 
     /*
      * This map lists the elements that are synchronized.
@@ -75,20 +76,20 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
-    public OSSUnityCatalogInsideCatalogSyncBase(String                           connectorName,
-                                                CatalogIntegratorContext         context,
-                                                String                           catalogTargetName,
-                                                String                           catalogName,
-                                                Map<String, String>              ucFullNameToEgeriaGUID,
-                                                PermittedSynchronization         targetPermittedSynchronization,
-                                                OSSUnityCatalogResourceConnector ucConnector,
-                                                String                           ucServerEndpoint,
-                                                DeployedImplementationType       deployedImplementationType,
-                                                Map<String, String>              templates,
-                                                Map<String, Object>              configurationProperties,
-                                                List<String>                     excludeNames,
-                                                List<String>                     includeNames,
-                                                AuditLog                         auditLog)
+    public OSSUnityCatalogInsideCatalogSyncBase(String                                 connectorName,
+                                                CatalogIntegratorContext               context,
+                                                String                                 catalogTargetName,
+                                                String                                 catalogName,
+                                                Map<String, String>                    ucFullNameToEgeriaGUID,
+                                                PermittedSynchronization               targetPermittedSynchronization,
+                                                OSSUnityCatalogResourceConnector       ucConnector,
+                                                String                                 ucServerEndpoint,
+                                                UnityCatalogDeployedImplementationType deployedImplementationType,
+                                                Map<String, String>                    templates,
+                                                Map<String, Object>                    configurationProperties,
+                                                List<String>                           excludeNames,
+                                                List<String>                           includeNames,
+                                                AuditLog                               auditLog)
     {
         this.connectorName                  = connectorName;
         this.context                        = context;
@@ -227,7 +228,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
 
         externalIdentifierProperties.setExternalIdentifier(id);
-        externalIdentifierProperties.setExternalIdentifierSource(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
+        externalIdentifierProperties.setExternalIdentifierSource(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
         externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucElement.getCreated_at()));
         externalIdentifierProperties.setExternalInstanceLastUpdateTime(new Date(ucElement.getUpdated_at()));
 

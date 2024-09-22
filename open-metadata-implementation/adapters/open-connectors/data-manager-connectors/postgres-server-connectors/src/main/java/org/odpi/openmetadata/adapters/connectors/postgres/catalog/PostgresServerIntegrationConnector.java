@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -130,7 +130,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
         {
             String databaseServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement().getUniqueName());
@@ -163,7 +163,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         {
             super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
-                                        DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+                                        PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
         }
@@ -429,9 +429,9 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                         DeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
+                                                                         PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
 
-                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(DeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
                                                                                           ElementStatus.ACTIVE,
                                                                                           null,
                                                                                           databaseServerGUID,

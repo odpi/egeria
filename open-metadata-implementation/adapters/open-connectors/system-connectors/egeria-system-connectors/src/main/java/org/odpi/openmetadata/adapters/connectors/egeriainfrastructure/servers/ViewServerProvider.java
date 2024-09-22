@@ -3,15 +3,12 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Connector Provider
@@ -65,8 +62,8 @@ public class ViewServerProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.VIEW_SERVER.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.VIEW_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(EgeriaDeployedImplementationType.VIEW_SERVER.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(EgeriaDeployedImplementationType.VIEW_SERVER.getDeployedImplementationType());
         connectorType.setRecognizedConfigurationProperties(OMAGServerPlatformConfigurationProperty.getRecognizedConfigurationProperties());
         super.connectorTypeBean = connectorType;
 

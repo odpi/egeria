@@ -455,7 +455,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        return connectedAssetClientBase.getAssetProperties(serviceURLMarker, userId, assetGUID);
+        return connectedAssetClientBase.getAssetProperties(userId, assetGUID);
     }
 
 

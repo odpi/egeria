@@ -3,15 +3,12 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Connector Provider
@@ -65,8 +62,8 @@ public class IntegrationDaemonProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.INTEGRATION_DAEMON.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType());
         connectorType.setRecognizedConfigurationProperties(OMAGServerPlatformConfigurationProperty.getRecognizedConfigurationProperties());
         super.connectorTypeBean = connectorType;
 

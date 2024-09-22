@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
@@ -12,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 import java.util.ArrayList;
@@ -149,7 +149,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
         {
             String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             try
@@ -191,7 +191,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         {
             super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
-                                        DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                        UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
         }

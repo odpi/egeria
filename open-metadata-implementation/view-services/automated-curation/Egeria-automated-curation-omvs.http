@@ -98,7 +98,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "FileFolder"
+  "filter" : "File System Directory"
 }
 
 
@@ -217,7 +217,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "FileFolder"
+  "filter" : "File System Directory"
 }
 
 
@@ -295,8 +295,11 @@ Content-Type: application/json
   "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
-    "pathName" : "Add full path name here, eg a/b/c/myFolder",
-    "folderName" : "Add directory name without enclosing directory names, eg myFolder"
+    "fileSystemName" : "Add file system name",
+    "directoryPathName" : "Add full path name here, eg a/b/c/myFolder",
+    "directoryName" : "Add directory name without enclosing directory names, eg myFolder",
+    "description" : "Add description",
+    "versionIdentifier" : "Add version identifier eg V1.0",
   }
 }
 

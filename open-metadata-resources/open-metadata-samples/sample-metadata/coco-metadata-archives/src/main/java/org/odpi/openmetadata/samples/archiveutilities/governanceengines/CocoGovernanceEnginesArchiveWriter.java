@@ -208,7 +208,8 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                 "The request parameters define the source file and destination, along with lineage options";
         final String ftpGovernanceServiceProviderClassName = MoveCopyFileGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
                                                   ftpGovernanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -230,7 +231,8 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String governanceServiceDescription = "Initiates a governance action process when a new weekly measurements file arrives.";
         final String governanceServiceProviderClassName = GenericFolderWatchdogGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -253,7 +255,8 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String governanceServiceDescription = "Set up the zone membership for one or more assets supplied as action targets.";
         final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -275,7 +278,8 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String governanceServiceDescription = "Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.";
         final String governanceServiceProviderClassName = OriginSeekerGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                                                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType(),
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
@@ -474,7 +478,8 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     {
         archiveHelper.setGUID(governanceServiceDefinition.getName(), governanceServiceDefinition.getGUID());
 
-        archiveHelper.addGovernanceService(governanceServiceDefinition.getDeployedImplementationType(),
+        archiveHelper.addGovernanceService(governanceServiceDefinition.getDeployedImplementationType().getAssociatedTypeName(),
+                                           governanceServiceDefinition.getDeployedImplementationType().getDeployedImplementationType(),
                                            governanceServiceDefinition.getConnectorProviderClassName(),
                                            null,
                                            governanceServiceDefinition.getName(),

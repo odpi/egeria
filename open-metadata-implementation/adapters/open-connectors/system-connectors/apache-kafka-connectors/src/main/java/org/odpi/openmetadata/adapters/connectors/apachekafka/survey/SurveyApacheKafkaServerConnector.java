@@ -3,14 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.survey;
 
 
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminConnector;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls.KafkaAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSurveyErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -18,16 +15,15 @@ import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This connector builds a profile of the types and instances in an Apache Kafka server.
  */
 public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnector
 {
-    final static PropertyHelper propertyHelper = new PropertyHelper();
-
-
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
      * This is where the function of the discovery service is implemented.
@@ -51,7 +47,7 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
             surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
             connector = super.performCheckAssetAnalysisStep(ApacheKafkaAdminConnector.class,
-                                                            DeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
+                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
 
             ApacheKafkaAdminConnector kafkaConnector = (ApacheKafkaAdminConnector) connector;
 

@@ -18,9 +18,9 @@ import java.util.Map;
 public enum OMAGServerPlatformTarget
 {
     PLATFORM_TARGET("omagServerPlatformInstance",
-                   DeployedImplementationType.OMAG_SERVER_PLATFORM.getDescription(),
-                   DeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName(),
-                   DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType(),
+                    EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDescription(),
+                    EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName(),
+                    EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType(),
                    null);
 
 

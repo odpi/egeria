@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
@@ -34,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindA
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
@@ -58,8 +60,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                 AssetReviewInterface,
                                                                 AssetDecommissioningInterface
 {
-    private static final String  serviceURLName = "asset-owner";
-    private static final String  defaultAssetType = "Asset";
+    private static final String  serviceURLName = AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceURLMarker();
+    private static final String  defaultAssetType = OpenMetadataType.ASSET.typeName;
 
 
     /**
@@ -155,28 +157,6 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                       AuditLog             auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
-    }
-
-
-    /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 

@@ -8,9 +8,11 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformMana
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonConnector;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
@@ -297,10 +299,16 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, platformGUID);
+            AssetUniverse asset = handler.getAssetProperties(userId, platformGUID);
+
+            Connector     connector = handler.getConnectorForAsset(userId, platformGUID);
 
             if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
             {
+                if (asset != null)
+                {
+                    omagServerPlatformConnector.setPlatformName(asset.getResourceName());
+                }
                 omagServerPlatformConnector.setClientUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());

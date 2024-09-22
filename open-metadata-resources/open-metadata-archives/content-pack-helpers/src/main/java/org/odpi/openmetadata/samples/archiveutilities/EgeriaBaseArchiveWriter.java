@@ -166,10 +166,28 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
      */
     public void writeOpenMetadataArchive()
     {
+        writeOpenMetadataArchive(null);
+    }
+
+
+    /**
+     * Generates and writes out the open metadata archive created in the builder.
+     *
+     * @param folderName name of the folder to add the archive into
+     */
+    public void writeOpenMetadataArchive(String folderName)
+    {
         try
         {
-            System.out.println("Writing to file: " + archiveFileName);
-            super.writeOpenMetadataArchive(archiveFileName, this.getOpenMetadataArchive());
+            String pathName = archiveFileName;
+
+            if (folderName != null)
+            {
+                pathName = folderName + "/" + archiveFileName;
+            }
+
+            System.out.println("Writing to file: " + pathName);
+            super.writeOpenMetadataArchive(pathName, this.getOpenMetadataArchive());
         }
         catch (Exception error)
         {

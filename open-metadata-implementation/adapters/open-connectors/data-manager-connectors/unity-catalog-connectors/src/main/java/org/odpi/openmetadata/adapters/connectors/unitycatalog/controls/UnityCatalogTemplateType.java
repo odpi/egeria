@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,44 +14,44 @@ import java.util.Map;
  */
 public enum UnityCatalogTemplateType
 {
-    UC_SERVER_TEMPLATE(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+    UC_SERVER_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                        "A SoftwareServer asset with connection and REST API Manager software capability.",
-                       DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                       UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                        false,
                        "dcca9788-b30f-4007-b1ac-ec634aff6879",
                        null),
 
-    UC_CATALOG_TEMPLATE(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
-                        "Create a " + DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName() + " SoftwareCapability.",
-                        DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+    UC_CATALOG_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+                        "Create a " + UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName() + " SoftwareCapability.",
+                        UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
                         false,
                         "5ee006aa-a6d6-411b-9b8d-5f720c079cae",
                         null),
 
-    UC_SCHEMA_TEMPLATE(DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
+    UC_SCHEMA_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
                        "Create a DeployedDatabaseSchema to represent a schema from the Unity Catalog (UC).",
-                       DeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+                       UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                        false,
                        "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e",
                        null),
 
-    UC_VOLUME_TEMPLATE(DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
+    UC_VOLUME_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
                        "Create a DataFolder asset to represent a volume from the Unity Catalog (UC).",
-                       DeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
+                       UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
                        false,
                        "92d2d2dc-0798-41f0-9512-b10548d312b7",
                        null),
 
-    UC_TABLE_TEMPLATE(DeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
+    UC_TABLE_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
                       "Create a VirtualTableAsset asset to represent a table from the Unity Catalog (UC).",
-                      DeployedImplementationType.OSS_UC_TABLE.getAssociatedTypeName(),
+                      UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getAssociatedTypeName(),
                       false,
                       "6cc1e5f5-4c1e-4290-a80e-e06643ffb13d",
                       null),
 
-    UC_FUNCTION_TEMPLATE(DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
+    UC_FUNCTION_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
                          "Create a DeployedSoftwareComponent asset to represent a function from the Unity Catalog (UC).",
-                         DeployedImplementationType.OSS_UC_FUNCTION.getAssociatedTypeName(),
+                         UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getAssociatedTypeName(),
                          false,
                          "a490ba65-6104-4213-9be9-524e16fed8aa",
                          null),

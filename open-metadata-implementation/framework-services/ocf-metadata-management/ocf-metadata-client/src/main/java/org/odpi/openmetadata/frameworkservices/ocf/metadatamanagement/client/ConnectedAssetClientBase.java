@@ -209,7 +209,6 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param serviceURLMarker name of the calling service
      * @param userId         userId of user making request.
      * @param assetGUID      unique identifier for asset.
      *
@@ -219,8 +218,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetUniverse getAssetProperties(String serviceURLMarker,
-                                            String userId,
+    public AssetUniverse getAssetProperties(String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException

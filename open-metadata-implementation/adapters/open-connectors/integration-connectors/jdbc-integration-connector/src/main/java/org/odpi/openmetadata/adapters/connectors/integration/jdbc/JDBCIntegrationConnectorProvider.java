@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyT
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvider
 {
@@ -98,6 +99,6 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
         super.supportedConfigurationProperties = JDBCConfigurationProperty.getConfigurationPropertyTypes();
         super.catalogTargets = JDBCDatabaseCatalogTarget.getCatalogTargetTypes();
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_TABLE});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_TABLE});
     }
 }

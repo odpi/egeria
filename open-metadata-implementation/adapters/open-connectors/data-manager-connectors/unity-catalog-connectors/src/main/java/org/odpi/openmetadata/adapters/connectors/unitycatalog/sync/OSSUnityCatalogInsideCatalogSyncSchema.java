@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -76,7 +76,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
               targetPermittedSynchronization,
               ucConnector,
               ucServerEndpoint,
-              DeployedImplementationType.OSS_UC_SCHEMA,
+              UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA,
               templates,
               configurationProperties,
               excludeNames,
@@ -85,7 +85,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         if (templates != null)
         {
-            this.templateGUID = templates.get(DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
+            this.templateGUID = templates.get(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
         }
     }
 
@@ -129,7 +129,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
 
-                if (DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
+                if (UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
                 {
                     SchemaInfo schemaInfo = null;
 
@@ -432,7 +432,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                             DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
+                                                             UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
 
        // elementProperties = propertyHelper.addStringMapProperty(elementProperties,
        //                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,

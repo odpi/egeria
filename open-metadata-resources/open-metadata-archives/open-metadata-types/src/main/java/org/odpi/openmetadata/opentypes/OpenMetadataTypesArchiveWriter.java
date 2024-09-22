@@ -23,14 +23,29 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the open metadata types.
+     * Generates and writes out the open metadata archive created in the builder.
+     *
+     * @param folderName name of the folder to add the archive into
      */
-    public void writeOpenMetadataTypesArchive()
+    public void writeOpenMetadataTypesArchive(String folderName)
     {
-        OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
+        try
+        {
+            String pathName = defaultOpenMetadataArchiveFileName;
 
-        super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
-                                       openMetadataTypesArchive.getOpenMetadataArchive());
+            if (folderName != null)
+            {
+                pathName = folderName + "/" + defaultOpenMetadataArchiveFileName;
+            }
+
+            OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
+
+            System.out.println("Writing to file: " + pathName);
+            super.writeOpenMetadataArchive(pathName, openMetadataTypesArchive.getOpenMetadataArchive());
+        }
+        catch (Exception error)
+        {
+            System.out.println("error is " + error);
+        }
     }
-
 }

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.Arrays;
 
@@ -53,6 +54,6 @@ public class CatalogServerGovernanceActionProvider extends GovernanceActionServi
 
         super.connectorTypeBean = connectorType;
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.SOFTWARE_SERVER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.SOFTWARE_SERVER});
     }
 }
