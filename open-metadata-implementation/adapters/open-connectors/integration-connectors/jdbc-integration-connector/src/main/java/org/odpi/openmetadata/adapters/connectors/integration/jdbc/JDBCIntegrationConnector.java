@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
@@ -120,7 +119,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
         {
             super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
-                                        DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+                                        OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                         connectorName,
                                         methodName);
         }

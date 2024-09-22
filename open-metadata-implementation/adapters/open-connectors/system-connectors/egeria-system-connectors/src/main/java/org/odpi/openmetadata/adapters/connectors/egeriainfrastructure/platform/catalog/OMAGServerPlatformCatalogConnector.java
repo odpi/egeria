@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITInfrastructureEventListener;
 import org.odpi.openmetadata.accessservices.itinfrastructure.events.ITInfrastructureOutTopicEvent;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorErrorCode;
@@ -22,7 +23,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.infrastructure.connector.InfrastructureIntegratorConnector;
@@ -227,7 +227,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
     {
         final String methodName = "assessElementForMonitoring";
 
-        if ((DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType().equals(deployedImplementationType)) &&
+        if ((EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType().equals(deployedImplementationType)) &&
             (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName)) &&
                 (!propertyHelper.isClassified(elementHeader, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName)))
         {
@@ -454,25 +454,25 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
     {
         if (ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName().equals(serverType))
         {
-            return DeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType();
+            return EgeriaDeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType();
         }
         else if (ServerTypeClassification.ENGINE_HOST.getServerTypeName().equals(serverType))
         {
-            return DeployedImplementationType.ENGINE_HOST.getDeployedImplementationType();
+            return EgeriaDeployedImplementationType.ENGINE_HOST.getDeployedImplementationType();
         }
         else if (ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName().equals(serverType) ||
                  ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName().equals(serverType) ||
                  ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName().equals(serverType))
         {
-            return DeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType();
+            return EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType();
         }
         else if (ServerTypeClassification.VIEW_SERVER.getServerTypeName().equals(serverType))
         {
-            return DeployedImplementationType.VIEW_SERVER.getDeployedImplementationType();
+            return EgeriaDeployedImplementationType.VIEW_SERVER.getDeployedImplementationType();
         }
         else
         {
-            return DeployedImplementationType.OMAG_SERVER.getDeployedImplementationType();
+            return EgeriaDeployedImplementationType.OMAG_SERVER.getDeployedImplementationType();
         }
     }
 

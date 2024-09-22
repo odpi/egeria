@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -12,7 +13,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceAction
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
@@ -320,7 +320,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
 
-        String schemaGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(DeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+        String schemaGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                                                                                                         catalogGUID,
                                                                                                         false,
                                                                                                         null,
@@ -387,7 +387,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
 
-        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(DeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
+        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
                                                                                                         schemaGUID,
                                                                                                         false,
                                                                                                         null,

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
@@ -77,7 +78,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
               targetPermittedSynchronization,
               ucConnector,
               ucServerEndpoint,
-              DeployedImplementationType.OSS_UC_FUNCTION,
+              UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION,
               templates,
               configurationProperties,
               excludeNames,
@@ -130,7 +131,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
 
-                if (DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(deployedImplementationType))
+                if (UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(deployedImplementationType))
                 {
                     FunctionInfo functionInfo = null;
 
@@ -490,7 +491,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                             DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType());
+                                                             UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType());
         return elementProperties;
     }
 

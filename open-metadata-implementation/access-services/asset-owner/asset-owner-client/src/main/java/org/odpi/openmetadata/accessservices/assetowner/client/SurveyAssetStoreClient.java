@@ -77,9 +77,7 @@ public class SurveyAssetStoreClient extends SurveyAssetStore
     @Override
     public AssetUniverse getAssetProperties() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        return connectedAssetClient.getAssetProperties(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
-                                                       userId,
-                                                       assetGUID);
+        return connectedAssetClient.getAssetProperties(userId, assetGUID);
     }
 
 

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerGloss
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerLoggingInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerTaggingInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MeaningElement;
@@ -53,7 +54,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 {
     private final AssetConsumerRESTClient restClient;               /* Initialized in constructor */
 
-    private static final String  serviceURLName = "asset-consumer";
+    private static final String  serviceURLName = AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -526,28 +527,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         {
             return this.getAssetsByName(userId, assetToken, startFrom, pageSize, methodName);
         }
-    }
-
-
-    /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 

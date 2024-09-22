@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * OpenMetadataType provides property name mapping for the open metadata types.
  * It includes identifiers for all the types.
@@ -2809,7 +2812,7 @@ public enum OpenMetadataType
 
 
     /**
-     * "Identifies an element that represents a digital product."
+     * Identifies an element that represents a digital product.
      */
     DIGITAL_PRODUCT_CLASSIFICATION("4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0",
                                    "DigitalProduct",
@@ -2818,6 +2821,28 @@ public enum OpenMetadataType
                                    "Identifies an element that represents a digital product."),
     ;
 
+
+    private final static Map<String, String> openMetadataTypeGUIDs = new HashMap<>();
+
+    static
+    {
+        for (OpenMetadataType openMetadataType : OpenMetadataType.values())
+        {
+            openMetadataTypeGUIDs.put(openMetadataType.typeName, openMetadataType.descriptionGUID);
+        }
+    }
+
+
+    /**
+     * Return the description GUID for the named type.
+     *
+     * @param typeName name of type
+     * @return description GUID
+     */
+    public static String getDescriptionGUIDForType(String typeName)
+    {
+        return openMetadataTypeGUIDs.get(typeName);
+    }
 
 
     public final String typeGUID;

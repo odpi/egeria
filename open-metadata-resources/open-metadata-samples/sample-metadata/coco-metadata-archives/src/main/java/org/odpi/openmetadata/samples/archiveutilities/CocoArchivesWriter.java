@@ -27,24 +27,31 @@ public class CocoArchivesWriter
     {
         try
         {
+            final String folderName = "content-packs";
+
             CocoComboArchiveWriter             cocoComboArchiveWriter  = new CocoComboArchiveWriter();
-            cocoComboArchiveWriter.writeOpenMetadataArchive();
+            cocoComboArchiveWriter.writeOpenMetadataArchive(folderName);
 
             CocoTypesArchiveWriter             typesArchiveWriter = new CocoTypesArchiveWriter();
-            CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
-            CocoGovernanceProgramArchiveWriter cocoGovernanceProgramArchiveWriter = new CocoGovernanceProgramArchiveWriter();
-            CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
-            CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter = new CocoBusinessSystemsArchiveWriter();
-            CocoOrganizationArchiveWriter      organizationArchiveWriter = new CocoOrganizationArchiveWriter();
-            CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter  = new CocoSustainabilityArchiveWriter();
+            typesArchiveWriter.writeOpenMetadataArchive(folderName);
 
-            typesArchiveWriter.writeOpenMetadataArchive();
-            governanceEnginesArchiveWriter.writeOpenMetadataArchive();
-            organizationArchiveWriter.writeOpenMetadataArchive();
-            cocoGovernanceProgramArchiveWriter.writeOpenMetadataArchive();
-            clinicalTrialsArchiveWriter.writeOpenMetadataArchive();
-            sustainabilityArchiveWriter.writeOpenMetadataArchive();
-            businessSystemsArchiveWriter.writeOpenMetadataArchive();
+            CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
+            governanceEnginesArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoOrganizationArchiveWriter      organizationArchiveWriter = new CocoOrganizationArchiveWriter();
+            organizationArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoGovernanceProgramArchiveWriter cocoGovernanceProgramArchiveWriter = new CocoGovernanceProgramArchiveWriter();
+            cocoGovernanceProgramArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
+            clinicalTrialsArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter  = new CocoSustainabilityArchiveWriter();
+            sustainabilityArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter = new CocoBusinessSystemsArchiveWriter();
+            businessSystemsArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.List;
 
@@ -117,7 +118,7 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
      * @return enum
      */
     @Override
-    public DeployedImplementationType getDeployedImplementationType()
+    public DeployedImplementationTypeDefinition getDeployedImplementationType()
     {
         return deployedImplementationType;
     }

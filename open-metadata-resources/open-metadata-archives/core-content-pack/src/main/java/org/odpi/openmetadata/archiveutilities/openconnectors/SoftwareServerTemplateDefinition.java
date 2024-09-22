@@ -7,6 +7,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostProvider;
@@ -18,11 +19,16 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
@@ -37,8 +43,8 @@ import java.util.Map;
 public enum SoftwareServerTemplateDefinition implements TemplateDefinition
 {
     POSTGRES_SERVER_TEMPLATE("542134e6-b9ce-4dce-8aef-22e8daf34fdb",
-                             DeployedImplementationType.POSTGRESQL_SERVER,
-                             DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
+                             PostgresDeployedImplementationType.POSTGRESQL_SERVER,
+                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
                              "Database Management System (DBMS)",
                              PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -50,10 +56,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                              null,
                              null,
-                             PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes()),
+                             PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
+                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     APACHE_ATLAS_TEMPLATE("fe6dce45-a978-4417-ab55-17f05b8bcea7",
-                          DeployedImplementationType.APACHE_ATLAS_SERVER,
+                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER,
                           DeployedImplementationType.ASSET_CATALOG,
                           "Metadata Catalog",
                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -65,10 +72,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                           null,
                           null,
-                          PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes()),
+                          PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes(),
+                          ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
-                                  DeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
+                                  UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                                   DeployedImplementationType.REST_API_MANAGER,
                                   "Unity Catalog REST API",
                                   PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -80,10 +88,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                           PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                   null,
                                   null,
-                                  UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes()),
+                                  UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes(),
+                                  ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     OMAG_SERVER_PLATFORM_TEMPLATE("9b06c4dc-ddc8-47ae-b56b-28775d3a96f0",
-                                  DeployedImplementationType.OMAG_SERVER_PLATFORM,
+                                  EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM,
                                   DeployedImplementationType.USER_AUTHENTICATION_MANAGER,
                                   "User Token Manager",
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
@@ -95,10 +104,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                           OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                   null,
                                   null,
-                                  OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes()),
+                                  OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes(),
+                                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     ENGINE_HOST_TEMPLATE("1764a891-4234-45f1-8cc3-536af40c790d",
-                         DeployedImplementationType.ENGINE_HOST,
+                         EgeriaDeployedImplementationType.ENGINE_HOST,
                          DeployedImplementationType.REST_API_MANAGER,
                          "Governance Engine Status APIs",
                          PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -110,10 +120,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                          getOMAGServerConfigProperties(),
                          null,
-                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes()),
+                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
+                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     INTEGRATION_DAEMON_TEMPLATE("6b3516f0-dd13-4786-9601-07215f995197",
-                                DeployedImplementationType.INTEGRATION_DAEMON,
+                                EgeriaDeployedImplementationType.INTEGRATION_DAEMON,
                                 DeployedImplementationType.REST_API_MANAGER,
                                 "Governance Engine Status APIs",
                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -125,10 +136,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                 getOMAGServerConfigProperties(),
                                 null,
-                                PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes()),
+                                PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
     METADATA_ACCESS_SERVER_TEMPLATE("bd8de890-fa79-4c24-aab8-20b41b5893dd",
-                                    DeployedImplementationType.METADATA_ACCESS_SERVER,
+                                    EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER,
                                     DeployedImplementationType.REST_API_MANAGER,
                                     "Open Metadata Repository Access APIs",
                                     PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -140,10 +152,11 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                             PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                     getOMAGServerConfigProperties(),
                                     null,
-                                    PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes()),
+                                    PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     VIEW_SERVER_TEMPLATE("fd61ca01-390d-4aa2-a55d-426826aa4e1b",
-                         DeployedImplementationType.VIEW_SERVER,
+                         EgeriaDeployedImplementationType.VIEW_SERVER,
                          DeployedImplementationType.REST_API_MANAGER,
                          "Open Metadata and Governance End User APIs",
                          PlaceholderProperty.SERVER_NAME.getPlaceholder(),
@@ -155,11 +168,12 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                          getOMAGServerConfigProperties(),
                          null,
-                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes()),
+                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
+                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     KAFKA_SERVER_TEMPLATE("5e1ff810-5418-43f7-b7c4-e6e062f9aff7",
-                          DeployedImplementationType.APACHE_KAFKA_SERVER,
-                          DeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
+                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER,
+                          KafkaDeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
                           OpenMetadataType.EVENT_BROKER.typeName,
                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
@@ -170,7 +184,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                           null,
                           null,
-                          KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes()),
+                          KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes(),
+                          ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     ;
 
@@ -185,19 +200,20 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     }
 
 
-    private final String                         guid;
-    private final DeployedImplementationType     deployedImplementationType;
-    private final DeployedImplementationType     softwareCapabilityType;
-    private final String                         softwareCapabilityName;
-    private final String                         serverName;
-    private final String                         description;
-    private final String                         userId;
-    private final String                         password;
-    private final String                         connectorTypeGUID;
-    private final String                         networkAddress;
-    private final Map<String, Object>            configurationProperties;
-    private final List<ReplacementAttributeType> replacementAttributeTypes;
-    private final List<PlaceholderPropertyType>  placeholderPropertyTypes;
+    private final String                               guid;
+    private final DeployedImplementationTypeDefinition deployedImplementationType;
+    private final DeployedImplementationTypeDefinition softwareCapabilityType;
+    private final String                               softwareCapabilityName;
+    private final String                               serverName;
+    private final String                               description;
+    private final String                               userId;
+    private final String                               password;
+    private final String                               connectorTypeGUID;
+    private final String                               networkAddress;
+    private final Map<String, Object>                  configurationProperties;
+    private final List<ReplacementAttributeType>       replacementAttributeTypes;
+    private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
+    private final ContentPackDefinition                contentPackDefinition;
 
 
     /**
@@ -216,8 +232,22 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      * @param configurationProperties          additional properties for the connection
      * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
+     * @param contentPackDefinition            which content pack does this server belong?
      */
-    SoftwareServerTemplateDefinition(String guid, DeployedImplementationType deployedImplementationType, DeployedImplementationType softwareCapabilityType, String softwareCapabilityName, String serverName, String description, String userId, String password, String connectorTypeGUID, String networkAddress, Map<String, Object> configurationProperties, List<ReplacementAttributeType> replacementAttributeTypes, List<PlaceholderPropertyType> placeholderPropertyTypes)
+    SoftwareServerTemplateDefinition(String                               guid,
+                                     DeployedImplementationTypeDefinition deployedImplementationType,
+                                     DeployedImplementationTypeDefinition softwareCapabilityType,
+                                     String                               softwareCapabilityName,
+                                     String                               serverName,
+                                     String                               description,
+                                     String                               userId,
+                                     String                               password,
+                                     String                               connectorTypeGUID,
+                                     String                               networkAddress,
+                                     Map<String, Object>                  configurationProperties,
+                                     List<ReplacementAttributeType>       replacementAttributeTypes,
+                                     List<PlaceholderPropertyType>        placeholderPropertyTypes,
+                                     ContentPackDefinition                contentPackDefinition)
     {
         this.guid                       = guid;
         this.deployedImplementationType = deployedImplementationType;
@@ -232,6 +262,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
         this.configurationProperties    = configurationProperties;
         this.replacementAttributeTypes  = replacementAttributeTypes;
         this.placeholderPropertyTypes   = placeholderPropertyTypes;
+        this.contentPackDefinition      = contentPackDefinition;
     }
 
 
@@ -288,7 +319,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      * @return enum
      */
     @Override
-    public DeployedImplementationType getDeployedImplementationType()
+    public DeployedImplementationTypeDefinition getDeployedImplementationType()
     {
         return deployedImplementationType;
     }
@@ -299,7 +330,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      *
      * @return enum
      */
-    public DeployedImplementationType getSoftwareCapabilityType()
+    public DeployedImplementationTypeDefinition getSoftwareCapabilityType()
     {
         return softwareCapabilityType;
     }
@@ -413,6 +444,17 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     public List<ReplacementAttributeType> getReplacementAttributes()
     {
         return replacementAttributeTypes;
+    }
+
+
+    /**
+     * Get identifier of content pack where this template should be located.
+     *
+     * @return content pack definition
+     */
+    public ContentPackDefinition getContentPackDefinition()
+    {
+        return contentPackDefinition;
     }
 
 

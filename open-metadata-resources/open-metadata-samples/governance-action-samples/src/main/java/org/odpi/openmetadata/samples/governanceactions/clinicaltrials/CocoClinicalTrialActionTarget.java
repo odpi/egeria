@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -79,8 +80,8 @@ public enum CocoClinicalTrialActionTarget
      */
     CATALOG("dataLakeCatalog",
             "Schema where the weekly measurements volume is to reside.",
-            DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
-            DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+            UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+            UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
             true),
 
     /**

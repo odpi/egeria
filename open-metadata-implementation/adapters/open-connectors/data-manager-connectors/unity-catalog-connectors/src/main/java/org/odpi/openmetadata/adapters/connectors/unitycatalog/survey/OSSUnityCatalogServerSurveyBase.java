@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -218,11 +219,11 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
         List<String>              propertyNames = Arrays.asList(new String[]{fullNameProperty, descriptionProperty, creationDateProperty, lastUpdateProperty, deployedImplementationTypeProperty});
         List<Map<String, String>> propertyList = new ArrayList<>();
 
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(), catalogList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(), schemaList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(), tableList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(), functionList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(), volumeList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(), catalogList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(), schemaList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(), tableList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(), functionList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(), volumeList, propertyList);
 
         ResourceProfileLogAnnotation annotation = super.writePropertyListInventory(UnityCatalogAnnotationType.RESOURCE_INVENTORY,
                                                                                    inventoryName,

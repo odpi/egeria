@@ -42,12 +42,21 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all the content for the simple catalogs.
+     * Generates and writes out the open metadata archive created in the builder.
+     *
+     * @param folderName name of the folder to add the archive into
      */
-    private void writeOpenMetadataArchives()
+    public void writeOpenMetadataArchives(String folderName)
     {
         try
         {
+            String pathName = "";
+
+            if (folderName != null)
+            {
+                pathName = folderName + "/";
+            }
+
             List<OpenMetadataArchive> dependentArchives = new ArrayList<>();
             OpenMetadataArchive       newArchive;
 
@@ -61,29 +70,29 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
             newArchive = eventArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
-            super.writeOpenMetadataArchive(eventOpenMetadataArchiveFileName, newArchive);
+            super.writeOpenMetadataArchive(pathName + eventOpenMetadataArchiveFileName, newArchive);
 
             SimpleAPICatalogArchiveBuilder apiArchiveBuilder = new SimpleAPICatalogArchiveBuilder(apiOpenMetadataArchiveName, openMetadataArchiveRootName);
 
             newArchive = apiArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
-            super.writeOpenMetadataArchive(apiOpenMetadataArchiveFileName, newArchive);
+            super.writeOpenMetadataArchive(pathName + apiOpenMetadataArchiveFileName, newArchive);
 
             SimpleDataCatalogArchiveBuilder dataArchiveBuilder = new SimpleDataCatalogArchiveBuilder(dataOpenMetadataArchiveName, openMetadataArchiveRootName);
 
             newArchive = dataArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
-            super.writeOpenMetadataArchive(dataOpenMetadataArchiveFileName, newArchive);
+            super.writeOpenMetadataArchive(pathName + dataOpenMetadataArchiveFileName, newArchive);
 
             SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(governanceOpenMetadataArchiveName, openMetadataArchiveRootName, dependentArchives);
 
-            super.writeOpenMetadataArchive(governanceOpenMetadataArchiveFileName, governanceArchiveBuilder.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(pathName + governanceOpenMetadataArchiveFileName, governanceArchiveBuilder.getOpenMetadataArchive());
 
             SimpleComboCatalogArchiveBuilder comboCatalogArchiveBuilder = new SimpleComboCatalogArchiveBuilder(comboOpenMetadataArchiveName, openMetadataArchiveRootName);
 
-            super.writeOpenMetadataArchive(comboOpenMetadataArchiveFileName, comboCatalogArchiveBuilder.getOpenMetadataArchive());
+            super.writeOpenMetadataArchive(pathName + comboOpenMetadataArchiveFileName, comboCatalogArchiveBuilder.getOpenMetadataArchive());
         }
         catch (Exception  error)
         {
@@ -103,7 +112,7 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
         {
             SimpleCatalogsArchiveWriter archiveWriter = new SimpleCatalogsArchiveWriter();
 
-            archiveWriter.writeOpenMetadataArchives();
+            archiveWriter.writeOpenMetadataArchives("content-packs");
         }
         catch (Exception error)
         {

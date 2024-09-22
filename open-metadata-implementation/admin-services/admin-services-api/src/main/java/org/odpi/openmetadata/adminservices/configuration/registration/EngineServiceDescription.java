@@ -26,10 +26,10 @@ public enum EngineServiceDescription
                                 "in a discovery analysis report that is attached to the asset in the open metadata repositories.",
                         "https://egeria-project.org/services/omes/asset-analysis/overview/",
                         AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceFullName(),
-                        DeployedImplementationType.OPEN_DISCOVERY_ENGINE.getAssociatedTypeName(),
-                        DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                        DeployedImplementationType.OPEN_DISCOVERY_ENGINE.getDeployedImplementationType(),
-                        DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR.getDeployedImplementationType()),
+                        null,
+                        null,
+                        null,
+                        null),
 
     /**
      * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.

@@ -50,7 +50,6 @@ public class ComponentIdReport
     private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
     private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider";
     private static final String jdbcIntegrationConnectorProviderClassName               = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
-    private static final String kafkaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider";
     private static final String openAPIIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
     private static final String apiBasedOpenLineageLogStoreIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider";
     private static final String fileBasedOpenLineageLogStoreIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.FileBasedOpenLineageLogStoreProvider";
@@ -249,7 +248,6 @@ public class ComponentIdReport
         this.addConnectorDescription(foldersIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(csvLineageImporterIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcIntegrationConnectorProviderClassName, report);
-        this.addConnectorDescription(kafkaIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openAPIIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(apiBasedOpenLineageLogStoreIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(fileBasedOpenLineageLogStoreIntegrationConnectorProviderClassName, report);

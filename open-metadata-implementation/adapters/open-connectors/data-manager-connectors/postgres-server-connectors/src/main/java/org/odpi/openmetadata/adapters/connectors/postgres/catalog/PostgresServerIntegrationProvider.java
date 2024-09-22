@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyT
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 /**
  * PostgresServerIntegrationProvider is the OCF connector provider for the PostgreSQL database server integration connector.
@@ -85,7 +87,7 @@ public class PostgresServerIntegrationProvider extends IntegrationConnectorProvi
 
         super.setConnectorComponentDescription(componentDescription);
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.POSTGRESQL_SERVER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER});
         super.catalogTargets = PostgresTarget.getPostgresServerCatalogTargetTypes();
         super.supportedConfigurationProperties = PostgresConfigurationProperty.getPostgresServerConfigurationPropertyTypes();
     }
