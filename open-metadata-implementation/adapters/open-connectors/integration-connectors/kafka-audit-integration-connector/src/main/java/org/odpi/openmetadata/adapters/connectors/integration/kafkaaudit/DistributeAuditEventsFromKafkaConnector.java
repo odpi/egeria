@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.controls.DistributeAuditEventCatalogTarget;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.DistributeKafkaAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -98,21 +99,26 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
     public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
                                                                        Connector     connectorToTarget)
     {
-        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
+        if (DistributeAuditEventCatalogTarget.INCOMING_TOPIC.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
-            return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
-                                                              connectorToTarget,
-                                                              connectorName,
-                                                              auditLog,
-                                                              this);
+            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
+            {
+                return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                  connectorToTarget,
+                                                                  connectorName,
+                                                                  auditLog,
+                                                                  this);
+            }
         }
-        else if ((propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName)) ||
-                 (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DATABASE.typeName)))
+        else if (DistributeAuditEventCatalogTarget.DESTINATION.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
-            return new AuditLogDestinationCatalogTargetProcessor(retrievedCatalogTarget,
-                                                                 connectorToTarget,
-                                                                 connectorName,
-                                                                 auditLog);
+            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_ASSET.typeName))
+            {
+                return new AuditLogDestinationCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                     connectorToTarget,
+                                                                     connectorName,
+                                                                     auditLog);
+            }
         }
 
         return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);

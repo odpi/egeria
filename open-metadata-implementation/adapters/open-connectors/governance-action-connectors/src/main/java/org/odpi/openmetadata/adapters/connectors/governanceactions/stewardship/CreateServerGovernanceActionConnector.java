@@ -68,18 +68,18 @@ public class CreateServerGovernanceActionConnector extends GeneralGovernanceActi
             }
             else
             {
-                String serverGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(null,
-                                                                                                               null,
-                                                                                                               true,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               templateGUID,
-                                                                                                               null,
-                                                                                                               governanceContext.getRequestParameters(),
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               true);
+                String serverGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(null,
+                                                                                                            null,
+                                                                                                            true,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            templateGUID,
+                                                                                                            null,
+                                                                                                            governanceContext.getRequestParameters(),
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            true);
 
                 OpenMetadataElement serverElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(serverGUID);
 

@@ -65,6 +65,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
     }
 
 
+
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
      * properties that should override the properties from the template.  This is the top-level method to call from the specific handlers.
@@ -109,6 +110,71 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
+        return this.createBeanFromTemplate(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           templateGUID,
+                                           templateGUIDParameterName,
+                                           entityTypeGUID,
+                                           entityTypeName,
+                                           uniqueParameterValue,
+                                           uniqueParameterName,
+                                           propertyBuilder,
+                                           serviceSupportedZones,
+                                           deepCopy,
+                                           templateSubstitute,
+                                           false,
+                                           placeholderProperties,
+                                           methodName);
+    }
+
+
+    /**
+     * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
+     * properties that should override the properties from the template.  This is the top-level method to call from the specific handlers.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param templateGUID unique identifier of existing entity to use
+     * @param templateGUIDParameterName name of parameter passing the templateGUID
+     * @param entityTypeGUID unique identifier of the type for the entity
+     * @param entityTypeName unique name of the type for the entity
+     * @param uniqueParameterValue the value of a unique property (typically qualifiedName) in the new entity - this is used to create unique names in the
+     *                             attachments.
+     * @param uniqueParameterName name of the property where the unique value is stored.
+     * @param propertyBuilder this property builder has the new properties supplied by the caller.  They will be augmented by the template
+     *                        properties and classification.
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
+     * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
+     * @param allowRetrieve can an existing element be returned if it exists
+     * @param placeholderProperties values to override placeholder variables in the template
+     * @param methodName calling method
+     * @return unique identifier of the new bean
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException there is a problem in the repository services
+     * @throws UserNotAuthorizedException the user is not authorized to access one of the elements.
+     */
+    public String createBeanFromTemplate(String                        userId,
+                                         String                        externalSourceGUID,
+                                         String                        externalSourceName,
+                                         String                        templateGUID,
+                                         String                        templateGUIDParameterName,
+                                         String                        entityTypeGUID,
+                                         String                        entityTypeName,
+                                         String                        uniqueParameterValue,
+                                         String                        uniqueParameterName,
+                                         OpenMetadataAPIGenericBuilder propertyBuilder,
+                                         List<String>                  serviceSupportedZones,
+                                         boolean                       deepCopy,
+                                         boolean                       templateSubstitute,
+                                         boolean                       allowRetrieve,
+                                         Map<String, String>           placeholderProperties,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
         TemplateProgress templateProgress = new TemplateProgress();
 
         if (log.isDebugEnabled())
@@ -131,6 +197,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                   serviceSupportedZones,
                                                   deepCopy,
                                                   templateSubstitute,
+                                                  allowRetrieve,
                                                   placeholderProperties,
                                                   methodName);
 
@@ -238,6 +305,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
      * @param deepCopy should the template creation extend to the anchored element or just the direct entity?
      * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
      * @param placeholderProperties values to override placeholder variables in the template
+     * @param allowRetrieve can an existing element be returned if it exists
      * @param methodName calling method
      *
      * @return current progress of the template replication
@@ -261,6 +329,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                     List<String>                  serviceSupportedZones,
                                                     boolean                       deepCopy,
                                                     boolean                       templateSubstitute,
+                                                    boolean                       allowRetrieve,
                                                     Map<String, String>           placeholderProperties,
                                                     String                        methodName) throws InvalidParameterException,
                                                                                                      PropertyServerException,
@@ -397,71 +466,99 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                        placeholderProperties,
                                                        methodName);
 
-            /*
-             * Verify that the user is permitted to create a new bean.
-             */
-            validateNewEntityRequest(userId,
-                                     templateEntity.getType().getTypeDefGUID(),
-                                     templateEntity.getType().getTypeDefName(),
-                                     propertyBuilder.getInstanceProperties(methodName),
-                                     propertyBuilder.getEntityClassifications(),
-                                     propertyBuilder.getInstanceStatus(),
-                                     effectiveTime,
-                                     methodName);
+            InstanceProperties newEntityProperties = propertyBuilder.getInstanceProperties(methodName);
+            String             newQualifiedName    = repositoryHelper.getStringProperty(serviceName,
+                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                        newEntityProperties,
+                                                                                        methodName);
+            String newEntityGUID = null;
 
             /*
-             * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
-             * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
+             * If retrievals of matching entities is permitted then check that the qualified name is unique.
              */
-            Map<String, Classification> newClassificationMap = new HashMap<>();
-
-            if (templateEntity.getClassifications() != null)
+            if ((allowRetrieve) && (newQualifiedName != null))
             {
-                for (Classification templateClassification : templateEntity.getClassifications())
+                newEntityGUID = getBeanGUIDByUniqueName(userId,
+                                                        newQualifiedName,
+                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                        entityTypeGUID,
+                                                        entityTypeName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        serviceSupportedZones,
+                                                        effectiveTime,
+                                                        methodName);
+            }
+
+            if (newEntityGUID == null)
+            {
+                /*
+                 * Verify that the user is permitted to create a new bean.
+                 */
+                validateNewEntityRequest(userId,
+                                         templateEntity.getType().getTypeDefGUID(),
+                                         templateEntity.getType().getTypeDefName(),
+                                         newEntityProperties,
+                                         propertyBuilder.getEntityClassifications(),
+                                         propertyBuilder.getInstanceStatus(),
+                                         effectiveTime,
+                                         methodName);
+
+                /*
+                 * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
+                 * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
+                 */
+                Map<String, Classification> newClassificationMap = new HashMap<>();
+
+                if (templateEntity.getClassifications() != null)
                 {
-                    if (templateClassification != null)
+                    for (Classification templateClassification : templateEntity.getClassifications())
                     {
-                        if ((! OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
-                                (! OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
-                                (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
+                        if (templateClassification != null)
                         {
-                            newClassificationMap.put(templateClassification.getName(), templateClassification);
+                            if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                                    (!OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                                    (!OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
+                            {
+                                newClassificationMap.put(templateClassification.getName(), templateClassification);
+                            }
                         }
                     }
                 }
-            }
 
-            List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
-            if (builderClassifications != null)
-            {
-                for (Classification builderClassification : builderClassifications)
+                List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
+                if (builderClassifications != null)
                 {
-                    if (builderClassification != null)
+                    for (Classification builderClassification : builderClassifications)
                     {
-                        newClassificationMap.put(builderClassification.getName(), builderClassification);
+                        if (builderClassification != null)
+                        {
+                            newClassificationMap.put(builderClassification.getName(), builderClassification);
+                        }
                     }
                 }
+
+                List<Classification> newClassifications = null;
+
+                if (!newClassificationMap.isEmpty())
+                {
+                    newClassifications = new ArrayList<>(newClassificationMap.values());
+                }
+
+                /*
+                 * Ready to create the new bean
+                 */
+                newEntityGUID = repositoryHandler.createEntity(userId,
+                                                               templateEntity.getType().getTypeDefGUID(),
+                                                               templateEntity.getType().getTypeDefName(),
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               propertyBuilder.getInstanceProperties(methodName),
+                                                               newClassifications,
+                                                               propertyBuilder.getInstanceStatus(),
+                                                               methodName);
             }
-
-            List<Classification> newClassifications = null;
-
-            if (! newClassificationMap.isEmpty())
-            {
-                newClassifications = new ArrayList<>(newClassificationMap.values());
-            }
-
-            /*
-             * Ready to create the new bean
-             */
-            String newEntityGUID = repositoryHandler.createEntity(userId,
-                                                                  templateEntity.getType().getTypeDefGUID(),
-                                                                  templateEntity.getType().getTypeDefName(),
-                                                                  externalSourceGUID,
-                                                                  externalSourceName,
-                                                                  propertyBuilder.getInstanceProperties(methodName),
-                                                                  newClassifications,
-                                                                  propertyBuilder.getInstanceStatus(),
-                                                                  methodName);
 
             /*
              * This is the first time through the iteration, so we need to capture the top level bean's guid to act as the anchor for all other
@@ -782,6 +879,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                            builder,
                                                                            serviceSupportedZones,
                                                                            true,
+                                                                           false,
                                                                            false,
                                                                            placeholderProperties,
                                                                            methodName);

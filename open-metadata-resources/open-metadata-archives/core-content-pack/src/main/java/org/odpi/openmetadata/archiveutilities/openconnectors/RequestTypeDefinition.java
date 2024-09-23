@@ -138,6 +138,19 @@ public enum RequestTypeDefinition
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * evaluate-annotations
+     */
+    PRINT_SURVEY_REPORT("print-survey-report",
+                         null,
+                         null,
+                         null,
+                         GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
+                         GovernanceServiceDefinition.PRINT_SURVEY_REPORT,
+                         "8b81d9c1-3320-43b1-90a7-57772855460b",
+                         null,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * write-to-audit-log
      */
     WRITE_AUDIT_LOG("write-to-audit-log",

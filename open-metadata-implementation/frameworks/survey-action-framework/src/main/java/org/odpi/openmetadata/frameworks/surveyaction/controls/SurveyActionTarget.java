@@ -115,6 +115,20 @@ public enum SurveyActionTarget
      *
      * @return list
      */
+    public static List<ActionTargetType> getReportActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(SURVEY_REPORT.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
     public static List<ActionTargetType> getActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();

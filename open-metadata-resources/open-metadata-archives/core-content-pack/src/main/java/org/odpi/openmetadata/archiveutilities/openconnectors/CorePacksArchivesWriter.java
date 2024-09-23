@@ -5,6 +5,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 import org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas.ApacheAtlasPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka.ApacheKafkaPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.archiveutilities.openconnectors.nanny.NannyPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog.UnityCatalogPackArchiveWriter;
 
@@ -40,6 +41,9 @@ public class CorePacksArchivesWriter
 
             PostgresPackArchiveWriter postgresPackArchiveWriter = new PostgresPackArchiveWriter();
             postgresPackArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            NannyPackArchiveWriter nannyPackArchiveWriter = new NannyPackArchiveWriter();
+            nannyPackArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

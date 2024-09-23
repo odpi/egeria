@@ -48,6 +48,7 @@ public class ComponentIdReport
     private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider";
     private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
     private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
+    private static final String omarchivesIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMArchiveFilesMonitorIntegrationProvider";
     private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider";
     private static final String jdbcIntegrationConnectorProviderClassName               = "org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider";
     private static final String openAPIIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
@@ -83,6 +84,7 @@ public class ComponentIdReport
     private static final String unityCatalogServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider";
     private static final String unityCatalogCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider";
     private static final String unityCatalogSchemaSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider";
+    private static final String unityCatalogVolumeSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideVolumeSurveyProvider";
     private static final String harvestOpenMetadataProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider";
     private static final String harvestSurveysProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider";
 
@@ -246,6 +248,7 @@ public class ComponentIdReport
         this.addConnectorDescription(atlasIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(filesIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(foldersIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(omarchivesIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(csvLineageImporterIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openAPIIntegrationConnectorProviderClassName, report);
@@ -281,6 +284,7 @@ public class ComponentIdReport
         this.addConnectorDescription(unityCatalogServerSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogCatalogSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogSchemaSurveyProviderClassName, report);
+        this.addConnectorDescription(unityCatalogVolumeSurveyProviderClassName, report);
         this.addConnectorDescription(harvestOpenMetadataProviderClassName, report);
         this.addConnectorDescription(harvestSurveysProviderClassName, report);
 

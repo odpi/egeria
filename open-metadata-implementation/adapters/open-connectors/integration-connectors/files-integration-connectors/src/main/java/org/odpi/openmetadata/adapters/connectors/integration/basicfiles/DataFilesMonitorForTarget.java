@@ -3,6 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -24,6 +28,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.*;
 
+/**
+ * Manages the cataloguing of data files for a specific catalog target.
+ */
 public class DataFilesMonitorForTarget extends DirectoryToMonitor
 {
     private static final Logger log = LoggerFactory.getLogger(DataFilesMonitorIntegrationConnector.class);
@@ -253,14 +260,14 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             properties.setAdditionalProperties(additionalProperties);
 
-                            List<String> guids = integrationConnector.getContext().addDataFileToCatalog(properties, null);
+                            String guid = this.addDataFileToCatalog(properties);
 
-                            if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
+                            if (guid != null)
                             {
                                 auditLog.logMessage(methodName,
                                                     BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
                                                                                                                                     properties.getPathName(),
-                                                                                                                                    guids.get(guids.size() - 1)));
+                                                                                                                                    guid));
                             }
                         }
                     }
@@ -278,12 +285,8 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                             }
                             else
                             {
-                                if (auditLog != null)
-                                {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                       fileTemplateQualifiedName));
-                                }
+                                auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName, fileTemplateQualifiedName));
                             }
                         }
 
@@ -322,20 +325,12 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                                 placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
                             }
 
-                            String newFileGUID = openMetadataAccess.createMetadataElementFromTemplate(fileClassification.getAssetTypeName(),
-                                                                                                               null,
-                                                                                                               true,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               fileTemplateGUID,
-                                                                                                               null,
-                                                                                                               placeholderProperties,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               false);
+                            String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
+                                                                             fileTemplateGUID,
+                                                                             null,
+                                                                             placeholderProperties);
 
-                            if ((newFileGUID != null) && (auditLog != null))
+                            if (newFileGUID != null)
                             {
                                 auditLog.logMessage(methodName,
                                                     BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
@@ -405,8 +400,6 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
     }
 
 
-
-
     /**
      * Update the last modified time in the catalogued asset for the file.
      *
@@ -437,39 +430,94 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             integrationConnector.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                    dataFileInCatalog.getProperties().getPathName(),
-                                                                                                                                    dataFileInCatalog.getElementHeader().getGUID()));
-                            }
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                dataFileInCatalog.getProperties().getPathName(),
+                                                                                                                                dataFileInCatalog.getElementHeader().getGUID()));
                         }
                     }
                     else
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
+                        auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
                                                                                                                                dataFileInCatalog.toString()));
-                        }
                     }
                 }
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  sourceName,
-                                                  file.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-                }
+                auditLog.logException(methodName,
+                                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                              error.getClass().getName(),
+                                              sourceName,
+                                              file.getAbsolutePath(),
+                                              error.getMessage()),
+                                      error);
             }
         }
+    }
+
+
+    /**
+     * Return the unique identifier of a new metadata element describing the file.
+     *
+     * @param properties basic properties to use
+     * @return unique identifier (guid)
+     * @throws ConnectorCheckedException connector has been shutdown
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException unable to communicate with the repository
+     * @throws UserNotAuthorizedException access problem for userId
+     */
+    protected String addDataFileToCatalog(DataFileProperties properties) throws ConnectorCheckedException,
+                                                                                InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        List<String> guids = integrationConnector.getContext().addDataFileToCatalog(properties, null);
+
+        if ((guids != null) && (!guids.isEmpty()))
+        {
+            return guids.get(guids.size() - 1);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the unique identifier of a new metadata element describing the file created using the supplied template.
+     *
+     * @param assetTypeName type of asset to create
+     * @param fileTemplateGUID template to use
+     * @param replacementProperties properties from the template to replace
+     * @param placeholderProperties values to use to replace placeholders in the template
+     * @return unique identifier (guid)
+     * @throws ConnectorCheckedException connector has been shutdown
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException unable to communicate with the repository
+     * @throws UserNotAuthorizedException access problem for userId
+     */
+    protected String addDataFileViaTemplate(String              assetTypeName,
+                                            String              fileTemplateGUID,
+                                            ElementProperties   replacementProperties,
+                                            Map<String, String> placeholderProperties) throws ConnectorCheckedException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+
+        return openMetadataAccess.createMetadataElementFromTemplate(assetTypeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    fileTemplateGUID,
+                                                                    replacementProperties,
+                                                                    placeholderProperties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 }
