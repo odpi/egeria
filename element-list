@@ -316,6 +316,7 @@ org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customizatio
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit
+org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.controls
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis
 org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
@@ -410,6 +411,7 @@ org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas
 org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka
 org.odpi.openmetadata.archiveutilities.openconnectors.base
 org.odpi.openmetadata.archiveutilities.openconnectors.core
+org.odpi.openmetadata.archiveutilities.openconnectors.nanny
 org.odpi.openmetadata.archiveutilities.openconnectors.postgres
 org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog
 org.odpi.openmetadata.archiveutilities.simplecatalogs

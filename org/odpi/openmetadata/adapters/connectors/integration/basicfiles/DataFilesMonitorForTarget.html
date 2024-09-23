@@ -81,9 +81,14 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a></code>, <code><a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="OMArchiveFilesMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">OMArchiveFilesMonitorForTarget</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataFilesMonitorForTarget</span>
 <span class="extends-implements">extends <a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></span></div>
+<div class="block">Manages the cataloguing of data files for a specific catalog target.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -93,7 +98,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DirectoryToMonitor">Fields inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.integration.basicfiles.<a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></h3>
-<code><a href="DirectoryToMonitor.html#allowCatalogDelete">allowCatalogDelete</a>, <a href="DirectoryToMonitor.html#auditLog">auditLog</a>, <a href="DirectoryToMonitor.html#catalogClassifiedFiles">catalogClassifiedFiles</a>, <a href="DirectoryToMonitor.html#catalogTargetGUID">catalogTargetGUID</a>, <a href="DirectoryToMonitor.html#configurationProperties">configurationProperties</a>, <a href="DirectoryToMonitor.html#connectorName">connectorName</a>, <a href="DirectoryToMonitor.html#dataFolderElement">dataFolderElement</a>, <a href="DirectoryToMonitor.html#directoryFile">directoryFile</a>, <a href="DirectoryToMonitor.html#directoryName">directoryName</a>, <a href="DirectoryToMonitor.html#directoryTemplateGUID">directoryTemplateGUID</a>, <a href="DirectoryToMonitor.html#directoryTemplateQualifiedName">directoryTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#fileTemplateGUID">fileTemplateGUID</a>, <a href="DirectoryToMonitor.html#fileTemplateQualifiedName">fileTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#incidentReportTemplateGUID">incidentReportTemplateGUID</a>, <a href="DirectoryToMonitor.html#incidentReportTemplateQualifiedName">incidentReportTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#integrationConnector">integrationConnector</a>, <a href="DirectoryToMonitor.html#isListening">isListening</a>, <a href="DirectoryToMonitor.html#metadataSourceGUID">metadataSourceGUID</a>, <a href="DirectoryToMonitor.html#metadataSourceName">metadataSourceName</a>, <a href="DirectoryToMonitor.html#newFileProcessName">newFileProcessName</a>, <a href="DirectoryToMonitor.html#sourceName">sourceName</a>, <a href="DirectoryToMonitor.html#toDoTemplateGUID">toDoTemplateGUID</a>, <a href="DirectoryToMonitor.html#toDoTemplateQualifiedName">toDoTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#waitForDirectory">waitForDirectory</a></code></div>
+<code><a href="DirectoryToMonitor.html#allowCatalogDelete">allowCatalogDelete</a>, <a href="DirectoryToMonitor.html#auditLog">auditLog</a>, <a href="DirectoryToMonitor.html#catalogClassifiedFiles">catalogClassifiedFiles</a>, <a href="DirectoryToMonitor.html#catalogTargetGUID">catalogTargetGUID</a>, <a href="DirectoryToMonitor.html#configurationProperties">configurationProperties</a>, <a href="DirectoryToMonitor.html#connectorName">connectorName</a>, <a href="DirectoryToMonitor.html#dataFolderElement">dataFolderElement</a>, <a href="DirectoryToMonitor.html#directoryFile">directoryFile</a>, <a href="DirectoryToMonitor.html#directoryName">directoryName</a>, <a href="DirectoryToMonitor.html#directoryTemplateGUID">directoryTemplateGUID</a>, <a href="DirectoryToMonitor.html#directoryTemplateQualifiedName">directoryTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#fileTemplateGUID">fileTemplateGUID</a>, <a href="DirectoryToMonitor.html#fileTemplateQualifiedName">fileTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#incidentReportTemplateGUID">incidentReportTemplateGUID</a>, <a href="DirectoryToMonitor.html#incidentReportTemplateQualifiedName">incidentReportTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#integrationConnector">integrationConnector</a>, <a href="DirectoryToMonitor.html#isListening">isListening</a>, <a href="DirectoryToMonitor.html#metadataSourceGUID">metadataSourceGUID</a>, <a href="DirectoryToMonitor.html#metadataSourceName">metadataSourceName</a>, <a href="DirectoryToMonitor.html#newFileProcessName">newFileProcessName</a>, <a href="DirectoryToMonitor.html#propertyHelper">propertyHelper</a>, <a href="DirectoryToMonitor.html#sourceName">sourceName</a>, <a href="DirectoryToMonitor.html#toDoTemplateGUID">toDoTemplateGUID</a>, <a href="DirectoryToMonitor.html#toDoTemplateQualifiedName">toDoTemplateQualifiedName</a>, <a href="DirectoryToMonitor.html#waitForDirectory">waitForDirectory</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -131,6 +136,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDataFileToCatalog(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties)" class="member-name-link">addDataFileToCatalog</a><wbr>(<a href="../../../../frameworks/openmetadata/properties/assets/filesandfolders/DataFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileProperties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of a new metadata element describing the file.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDataFileViaTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)" class="member-name-link">addDataFileViaTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileTemplateGUID,
+ <a href="../../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of a new metadata element describing the file created using the supplied template.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onDirectoryChange(java.io.File)" class="member-name-link">onDirectoryChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -304,6 +322,56 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>directory</code> - The directory that was deleted</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addDataFileToCatalog(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties)">
+<h3>addDataFileToCatalog</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addDataFileToCatalog</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/properties/assets/filesandfolders/DataFileProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders">DataFileProperties</a>&nbsp;properties)</span>
+                               throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Return the unique identifier of a new metadata element describing the file.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>properties</code> - basic properties to use</dd>
+<dt>Returns:</dt>
+<dd>unique identifier (guid)</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - connector has been shutdown</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - unable to communicate with the repository</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - access problem for userId</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addDataFileViaTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map)">
+<h3>addDataFileViaTemplate</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addDataFileViaTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileTemplateGUID,
+ <a href="../../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties)</span>
+                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Return the unique identifier of a new metadata element describing the file created using the supplied template.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetTypeName</code> - type of asset to create</dd>
+<dd><code>fileTemplateGUID</code> - template to use</dd>
+<dd><code>replacementProperties</code> - properties from the template to replace</dd>
+<dd><code>placeholderProperties</code> - values to use to replace placeholders in the template</dd>
+<dt>Returns:</dt>
+<dd>unique identifier (guid)</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - connector has been shutdown</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - unable to communicate with the repository</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - access problem for userId</dd>
 </dl>
 </section>
 </li>
