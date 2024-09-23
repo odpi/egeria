@@ -2,34 +2,28 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.DistributeKafkaAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.DistributeKafkaErrorCode;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.JDBCAuditLogDestinationProvider;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetChangeListener;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
-import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Distributes audit log events from one or more embedded topic connectors to one or more embedded audit log destinations.
  */
 public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProcessorBase
 {
-    private final OMRSAuditLogStoreConnectorBase auditLogDestination;
+    private OMRSAuditLogStoreConnectorBase auditLogDestination = null;
 
 
     /**
@@ -47,14 +41,54 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
     {
         super(template, connectorToTarget, connectorName, auditLog);
 
-        if (super.getCatalogTargetConnector() instanceof OMRSAuditLogStoreConnectorBase auditLogStoreConnectorBase)
+        final String methodName = "AuditLogDestinationCatalogTargetProcessor constructor";
+
+        ConnectionProperties auditLogConnection;
+
+        if (connectorToTarget instanceof JDBCResourceConnector)
         {
-            this.auditLogDestination = auditLogStoreConnectorBase;
+            auditLogConnection = getAuditLogConnection(connectorToTarget,
+                                                       new JDBCAuditLogDestinationProvider().getConnectorType());
+        }
+        else if (connectorToTarget instanceof BasicFolderConnector)
+        {
+            auditLogConnection = getAuditLogConnection(connectorToTarget,
+                                                       new FileBasedAuditLogStoreProvider().getConnectorType());
         }
         else
         {
-            this.auditLogDestination = null;
+            auditLogConnection = getAuditLogConnection(connectorToTarget,
+                                                       new ConsoleAuditLogStoreProvider().getConnectorType());
         }
+
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+
+            this.auditLogDestination = (OMRSAuditLogStoreConnectorBase) connectorBroker.getConnector(auditLogConnection);
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName,
+                                DistributeKafkaAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()));
+        }
+    }
+
+
+    /**
+     * Create a connection for the audit log connector.
+     *
+     * @param assetConnector destination
+     * @param auditLogConnectorType appropriate audit log connector
+     * @return connection
+     */
+    private ConnectionProperties getAuditLogConnection(Connector     assetConnector,
+                                                       ConnectorType auditLogConnectorType)
+    {
+        return new ConnectionProperties(assetConnector.getConnection(), auditLogConnectorType);
     }
 
 

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 
+import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.controls.DistributeAuditEventCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
@@ -44,10 +45,6 @@ public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnector
      */
     private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaConnector";
 
-    /**
-     * The name of the catalog target that contains the topic to monitor.
-     */
-    static public final String CATALOG_TARGET_NAME    = "kafkaTopicToMonitor";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
@@ -88,15 +85,7 @@ public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnector
 
         super.setConnectorComponentDescription(componentDescription);
 
-        CatalogTargetType catalogTargetType = new CatalogTargetType();
-
-        catalogTargetType.setName(CATALOG_TARGET_NAME);
-        catalogTargetType.setTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
-
-        super.catalogTargets = new ArrayList<>();
-        super.catalogTargets.add(catalogTargetType);
-
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.APACHE_KAFKA_TOPIC});
+        super.catalogTargets = DistributeAuditEventCatalogTarget.getCatalogTargetTypes();
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.APACHE_KAFKA_TOPIC, DeployedImplementationType.DATA_ASSET});
     }
 }

@@ -260,6 +260,26 @@ Content-Type: application/json
    }
 }
 
+
+
+###
+# @name getElementFromTemplate
+# Retrieve existing element/create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/get-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "add guid here",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "placeholderPropertyName1" : "placeholderPropertyValue1",
+    "placeholderPropertyName2" : "placeholderPropertyValue2"
+  }
+}
+
+
 ###
 # Full body
 # {

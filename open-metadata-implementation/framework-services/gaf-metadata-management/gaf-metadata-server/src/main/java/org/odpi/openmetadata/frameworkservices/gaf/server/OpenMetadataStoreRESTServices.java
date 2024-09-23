@@ -1341,6 +1341,7 @@ public class OpenMetadataStoreRESTServices
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
+     * @param allowRetrieve can an existing element be returned if it exists
      * @param requestBody properties for the new element
      *
      * @return unique identifier of the new metadata element
@@ -1351,6 +1352,7 @@ public class OpenMetadataStoreRESTServices
     public GUIDResponse createMetadataElementFromTemplate(String              serverName,
                                                           String              serviceURLMarker,
                                                           String              userId,
+                                                          boolean             allowRetrieve,
                                                           TemplateRequestBody requestBody)
     {
         final String methodName = "createMetadataElementFromTemplate";
@@ -1374,6 +1376,7 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getTypeName(),
                                                                            requestBody.getAnchorGUID(),
                                                                            requestBody.getIsOwnAnchor(),
+                                                                           allowRetrieve,
                                                                            requestBody.getEffectiveFrom(),
                                                                            requestBody.getEffectiveTo(),
                                                                            requestBody.getTemplateGUID(),

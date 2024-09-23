@@ -10,9 +10,13 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.Eg
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMArchiveFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider;
+import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
@@ -49,14 +53,14 @@ public enum IntegrationConnectorDefinition
 
     CONTENT_PACK_CATALOGUER("6bb2181e-7724-4515-ba3c-877cded55980",
                             "ContentPacksMonitorIntegrationConnector",
-                            "Catalogs files found under the content-packs directory (folder).",
-                            DataFilesMonitorIntegrationProvider.class.getName(),
+                            "Catalogs Open Metadata Archive files found under the content-packs directory (folder) and any other folder added as a catalog target.",
+                            OMArchiveFilesMonitorIntegrationProvider.class.getName(),
                             "ContentPacksCataloguer",
                             "contentpackcatnpa",
                             null,
                             "content-packs",
                             getFileCataloguerConfigProperties(),
-                            14400,
+                            60,
                             new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
                             ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -269,7 +273,45 @@ public enum IntegrationConnectorDefinition
                                 new String[]{DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName()},
                                 ContentPackDefinition.CORE_CONTENT_PACK),
 
+    HARVEST_OPEN_METADATA("f8bf326b-d613-4ece-a12e-a1423bc272d7",
+                          "HarvestOpenMetadataIntegrationConnector",
+                          "Monitors metadata changes in the open metadata ecosystem and populates a PostgreSQL database schema.",
+                          HarvestOpenMetadataProvider.class.getName(),
+                          "HarvestOpenMetadata",
+                          "nannyomnpa",
+                          null,
+                          null,
+                          null,
+                          60,
+                          new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName()},
+                          ContentPackDefinition.NANNY_CONTENT_PACK),
 
+    HARVEST_SURVEYS("fae162c3-2bfd-467f-9c47-2e3b63a655de",
+                    "HarvestSurveysIntegrationConnector",
+                    "Scans for new survey reports in the open metadata ecosystem and populates a PostgreSQL database schema.",
+                    HarvestSurveysProvider.class.getName(),
+                    "HarvestSurveys",
+                    "nannysrnpa",
+                    null,
+                    null,
+                    null,
+                    60,
+                    new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName()},
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
+
+    HARVEST_ACTIVITY("856501d9-ec29-4e67-9cd7-120f53710ffa",
+                    "HarvestActivityIntegrationConnector",
+                    "Listens for audit log records published through specific Apache Kafka Topics and populates a PostgreSQL database schema or folder.",
+                    DistributeAuditEventsFromKafkaProvider.class.getName(),
+                    "HarvestActivity",
+                    "nannyalnpa",
+                    null,
+                    null,
+                    null,
+                    60,
+                    new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
+                            DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
     ;
 
 

@@ -724,6 +724,71 @@ public class AutomatedCurationRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Create a new element from a template.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody information about the template
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse getElementFromTemplate(String              serverName,
+                                               TemplateRequestBody requestBody)
+    {
+        final String methodName = "getElementFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                response.setGUID(openHandler.getMetadataElementFromTemplate(userId,
+                                                                            requestBody.getExternalSourceGUID(),
+                                                                            requestBody.getExternalSourceName(),
+                                                                            requestBody.getTypeName(),
+                                                                            requestBody.getAnchorGUID(),
+                                                                            requestBody.getIsOwnAnchor(),
+                                                                            requestBody.getEffectiveFrom(),
+                                                                            requestBody.getEffectiveTo(),
+                                                                            requestBody.getTemplateGUID(),
+                                                                            requestBody.getReplacementProperties(),
+                                                                            requestBody.getPlaceholderPropertyValues(),
+                                                                            requestBody.getParentGUID(),
+                                                                            requestBody.getParentRelationshipTypeName(),
+                                                                            requestBody.getParentRelationshipProperties(),
+                                                                            requestBody.getParentAtEnd1()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /* =====================================================================================================================
      * A catalog target links an element (typically an asset, to an integration connector for processing.
      */

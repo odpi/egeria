@@ -1814,6 +1814,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
+     * @param allowRetrieve can an existing element be returned if it exists
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
@@ -1840,6 +1841,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                     String                         suppliedMetadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
+                                                    boolean                        allowRetrieve,
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
@@ -1964,6 +1966,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  serviceSupportedZones,
                                                                  true,
                                                                  false,
+                                                                 allowRetrieve,
                                                                  placeholderPropertyValues,
                                                                  methodName);
 

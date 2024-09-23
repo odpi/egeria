@@ -30,6 +30,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     private Map<String, ElementProperties> initialClassifications       = null;
     private String                         anchorGUID                   = null;
     private boolean                        isOwnAnchor                  = false;
+    private boolean                        allowRetrieve                = false;
     private Date                           effectiveFrom                = null;
     private Date                           effectiveTo                  = null;
     private String                         templateGUID                 = null;
@@ -67,6 +68,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
             initialClassifications       = template.getInitialClassifications();
             anchorGUID                   = template.getAnchorGUID();
             isOwnAnchor                  = template.getIsOwnAnchor();
+            allowRetrieve                = template.getAllowRetrieve();
             effectiveFrom                = template.getEffectiveFrom();
             effectiveTo                  = template.getEffectiveTo();
             replacementProperties        = template.getReplacementProperties();
@@ -179,6 +181,30 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     public void setIsOwnAnchor(boolean ownAnchor)
     {
         isOwnAnchor = ownAnchor;
+    }
+
+
+    /**
+     * Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
+     * qualified name (default is false).
+     *
+     * @return boolean
+     */
+    public boolean getAllowRetrieve()
+    {
+        return allowRetrieve;
+    }
+
+
+    /**
+     * Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
+     * qualified name (default is false).
+     *
+     * @param allowRetrieve boolean
+     */
+    public void setAllowRetrieve(boolean allowRetrieve)
+    {
+        this.allowRetrieve = allowRetrieve;
     }
 
 

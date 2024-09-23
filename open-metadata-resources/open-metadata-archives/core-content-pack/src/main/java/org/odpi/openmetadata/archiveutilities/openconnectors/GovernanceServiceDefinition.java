@@ -16,13 +16,14 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.reports.surveyreport.SurveyReportProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogVolumeSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideVolumeSurveyProvider;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -110,6 +111,17 @@ public enum GovernanceServiceDefinition
                          "Verify annotations in a Survey Report",
                          new EvaluateAnnotationsGovernanceActionProvider(),
                          ResourceUse.IMPROVE_METADATA,
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Print a Survey Report as a markdown document.
+     */
+    PRINT_SURVEY_REPORT("fac65c1a-ef30-4995-b962-28fc070f40f8",
+                         "print-survey-report-governance-action-service",
+                         "Print a Survey Report as a markdown document",
+                         new SurveyReportProvider(),
+                         ResourceUse.INFORM_STEWARD,
                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -230,7 +242,7 @@ public enum GovernanceServiceDefinition
     UC_VOLUME_SURVEY("a73554b3-c661-4065-a15e-a31f54d0f1a9",
                      "oss-unity-catalog-volume-survey-service",
                      "Unity Catalog Volume Folder (directory) Survey Service",
-                     new OSSUnityCatalogVolumeSurveyServiceProvider(),
+                     new OSSUnityCatalogInsideVolumeSurveyProvider(),
                      ResourceUse.SURVEY_RESOURCE,
                      DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),

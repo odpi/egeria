@@ -33,10 +33,8 @@ public class SurveyReportProvider extends GovernanceActionServiceProviderBase
         super.setConnectorClassName(connectorClassName);
 
         supportedRequestParameters = ReportRequestParameter.getRequestParameterTypes();
-        supportedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
+        supportedActionTargetTypes = SurveyActionTarget.getReportActionTargetTypes();
         producedGuards             = ReportGuard.getGuardTypes();
-
-        super.setConnectorClassName(connectorClassName);
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());

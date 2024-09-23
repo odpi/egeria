@@ -53,7 +53,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
         try
         {
-            String reportDirectory = "survey-reports";
+            String reportDirectory = "surveys/survey-reports";
 
             if ((governanceContext.getRequestParameters() != null) &&
                     (governanceContext.getRequestParameters().get(ReportRequestParameter.REPORT_DIRECTORY.getName()) != null))
