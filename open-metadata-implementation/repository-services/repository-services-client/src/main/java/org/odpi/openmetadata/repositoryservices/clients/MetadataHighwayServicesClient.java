@@ -487,7 +487,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             clientFactory = new RESTClientFactory(serverName,
                                                   serverPlatformURLRoot,
                                                   userId,
-                                                  password);
+                                                  password,
+                                                  null);
         }
         else
         {

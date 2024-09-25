@@ -78,6 +78,67 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
                              "The OSS Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
                              "https://github.com/unitycatalog/unitycatalog"),
 
+    /**
+     * A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    DB_UC_VOLUME("Unity Catalog Volume",
+                  DeployedImplementationType.DATA_FOLDER,
+                  OpenMetadataType.DATA_FOLDER.typeName,
+                  null,
+                  "A collection of related data files within the Databricks Unity Catalog (UC) 'catalog of catalogs'.",
+                  "https://github.com/unitycatalog/unitycatalog"),
+
+
+    /**
+     * A function found in Unity Catalog (UC) that is working with data..
+     */
+    DB_UC_FUNCTION("Databricks Unity Catalog Function",
+                    OSS_UC_FUNCTION,
+                    OpenMetadataType.DEPLOYED_API.typeName,
+                    null,
+                    "A function found in Databricks Unity Catalog (UC) that is working with data.",
+                    "https://github.com/unitycatalog/unitycatalog"),
+
+    /**
+     * A relational table within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    DB_UC_TABLE("Databricks Unity Catalog Table",
+                 OSS_UC_TABLE,
+                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
+                 null,
+                 "A relational table within the Databricks Unity Catalog (UC) 'catalog of catalogs'.",
+                 "https://github.com/unitycatalog/unitycatalog"),
+
+
+    /**
+     * A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    DB_UC_SCHEMA("Databricks Unity Catalog Schema",
+                  OSS_UC_SCHEMA,
+                  OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                  null,
+                  "A schema that organizes data assets for an operational data platform catalog within the Databricks Unity Catalog (UC) 'catalog of catalogs'.",
+                  "https://github.com/unitycatalog/unitycatalog"),
+
+    /**
+     * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    DB_UC_CATALOG("Databricks Unity Catalog Catalog",
+                   OSS_UC_CATALOG,
+                   OpenMetadataType.CATALOG.typeName,
+                   OpenMetadataType.ASSET_MANAGER.typeName,
+                   "An operational data platform catalog within the Databricks Unity Catalog (UC) 'catalog of catalogs'.",
+                   "https://github.com/unitycatalog/unitycatalog"),
+
+    /**
+     * An operational metadata catalog that supports controlled access to data managed through a data platform.
+     */
+    DB_UNITY_CATALOG_SERVER("Databricks Unity Catalog Server",
+                             OSS_UNITY_CATALOG_SERVER,
+                             OpenMetadataType.SOFTWARE_SERVER.typeName,
+                             OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                             "The Databricks Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
+                             "https://github.com/unitycatalog/unitycatalog"),
 
     ;
 

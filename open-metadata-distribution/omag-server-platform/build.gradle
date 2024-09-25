@@ -56,6 +56,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
@@ -163,6 +164,11 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
+            into('assembly/platform/loading-bay/secrets') {
+                // Identify how the platform is started
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets" }
+                fileMode = 0755
+            }
             into('assembly/platform/data') {
                 // Describe the data files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
@@ -220,6 +226,7 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:governance-action-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors').jar }

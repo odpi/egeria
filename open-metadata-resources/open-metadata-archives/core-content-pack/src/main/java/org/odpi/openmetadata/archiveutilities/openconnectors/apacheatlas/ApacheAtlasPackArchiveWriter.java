@@ -16,8 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import java.util.Date;
 
 /**
- * CorePackArchiveWriter creates an open metadata archive that includes the connector type
- * information for all open connectors supplied by the egeria project.
+ * ApacheAtlasPackArchiveWriter creates an open metadata archive that includes the connector type
+ * information for all Apache Atlas connectors supplied by the egeria project.
  */
 public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
 {
@@ -97,7 +97,7 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                           RequestTypeDefinition.SURVEY_ATLAS_SERVER,
-                                                          GovernanceEngineDefinition.ASSET_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE);
         
         this.createAndCatalogServerGovernanceActionProcess("ApacheAtlasServer",
                                                            AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),

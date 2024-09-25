@@ -57,7 +57,8 @@ public class ComponentIdReport
     private static final String gaOpenLineageIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider";
     private static final String openLineageCataloguerIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider";
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
-    private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
+    private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.YAMLSecretsStoreProvider";
+    private static final String yamlSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider";
     private static final String apacheAtlasSurveyServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
     private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.frameworks.surveyaction.SequentialSurveyPipelineProvider";
@@ -258,6 +259,7 @@ public class ComponentIdReport
         this.addConnectorDescription(openLineageCataloguerIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(openLineageEventReceiverIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
+        this.addConnectorDescription(yamlSecretsStoreProviderClassName, report);
         this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
         this.addConnectorDescription(apacheAtlasSurveyServiceProviderClassName, report);
         this.addConnectorDescription(folderSurveyActionProviderClassName, report);

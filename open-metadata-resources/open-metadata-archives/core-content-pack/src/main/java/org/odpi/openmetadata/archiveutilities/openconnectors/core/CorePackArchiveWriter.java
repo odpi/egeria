@@ -21,6 +21,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.Distribu
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
@@ -42,7 +43,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 
 /**
  * CorePackArchiveWriter creates an open metadata archive that includes the connector type
- * information for all open connectors supplied by the egeria project.
+ * information for the default open connectors supplied by the egeria project.
  */
 public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 {
@@ -725,6 +726,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(kafkaConnectorCategoryGUID, new KafkaOpenMetadataTopicProvider());
 
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
+        archiveHelper.addConnectorType(null, new YAMLSecretsStoreProvider());
 
         archiveHelper.addConnectorType(null, new CSVLineageImporterProvider());
         archiveHelper.addConnectorType(null, new DataFilesMonitorIntegrationProvider());

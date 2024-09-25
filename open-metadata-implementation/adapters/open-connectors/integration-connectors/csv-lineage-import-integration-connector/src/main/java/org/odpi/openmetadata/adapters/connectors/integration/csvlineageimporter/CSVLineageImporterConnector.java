@@ -295,7 +295,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
         try
         {
-            ConnectorBroker broker = new ConnectorBroker();
+            ConnectorBroker broker = new ConnectorBroker(auditLog);
 
             connector = (CSVFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }

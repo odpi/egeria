@@ -307,6 +307,33 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Retrieve a configuration property that is an integer.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return integer value or zero if not supplied
+     */
+    protected long getLongConfigurationProperty(String              propertyName,
+                                                Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(propertyName) != null)
+            {
+                Object integerOption = configurationProperties.get(propertyName);
+
+                if (integerOption != null)
+                {
+                    return Long.parseLong(integerOption.toString());
+                }
+            }
+        }
+
+        return 0L;
+    }
+
+
+    /**
      * Retrieve a configuration property that is a string or null if not set.
      *
      * @param propertyName name of property

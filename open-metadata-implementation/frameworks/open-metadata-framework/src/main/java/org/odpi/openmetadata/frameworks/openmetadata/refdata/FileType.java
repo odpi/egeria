@@ -778,6 +778,15 @@ public enum FileType
               "A file containing a set of properties in the YAML format."),
 
     /**
+     * A YAML encoded file file containing a secrets store read by the YAMLSecretsStoreConnector.
+     */
+    OM_SECRETS_FILE("Open Metadata Secrets Store File",
+                    "YAML",
+                    OpenMetadataType.YAML_FILE.typeName,
+                    DeployedImplementationType.YAML_FILE,
+                    "A YAML encoded file file containing a secrets store read by the YAMLSecretsStoreConnector."),
+
+    /**
      * A file containing binary data.
      */
     BIN_FILE("Binary Format File",

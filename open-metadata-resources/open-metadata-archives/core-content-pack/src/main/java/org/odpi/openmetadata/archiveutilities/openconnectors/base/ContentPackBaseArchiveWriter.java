@@ -5,6 +5,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.base;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -403,6 +404,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                     templateDefinition.getConnectorTypeGUID(),
                                                     templateDefinition.getNetworkAddress(),
                                                     templateDefinition.getConfigurationProperties(),
+                                                    templateDefinition.getSecretsStorePurpose(),
+                                                    templateDefinition.getSecretsStoreProvider(),
                                                     templateDefinition.getReplacementAttributes(),
                                                     templateDefinition.getPlaceholders());
             }
@@ -429,6 +432,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
+     * @param secretsStorePurpose              purpose for the secrets store
+     * @param secretsStoreProvider             optional name for the secrets store provider to include in the template
      * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      */
@@ -446,6 +451,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                      String                               connectorTypeGUID,
                                                      String                               networkAddress,
                                                      Map<String, Object>                  configurationProperties,
+                                                     String                               secretsStorePurpose,
+                                                     ConnectorProvider                    secretsStoreProvider,
                                                      List<ReplacementAttributeType>       replacementAttributeTypes,
                                                      List<PlaceholderPropertyType>        placeholderPropertyTypes)
     {

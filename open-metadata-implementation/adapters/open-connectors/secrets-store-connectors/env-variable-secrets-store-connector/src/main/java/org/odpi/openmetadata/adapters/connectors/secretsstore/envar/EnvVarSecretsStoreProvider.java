@@ -6,11 +6,12 @@ package org.odpi.openmetadata.adapters.connectors.secretsstore.envar;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 
 /**
- * EnvVarSecretsStoreProvider is the connector provider for the Apache Atlas integration connector that publishes glossary terms to Apache Atlas.
+ * EnvVarSecretsStoreProvider is the connector provider for the Secrets Store that uses environment variables.
  */
 public class EnvVarSecretsStoreProvider extends ConnectorProviderBase
 {
@@ -60,8 +61,11 @@ public class EnvVarSecretsStoreProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+        connectorType.setRecognizedConfigurationProperties(SecretsStoreConfigurationProperty.getStaticSecretStoreRecognizedConfProperties());
 
         super.connectorTypeBean = connectorType;
+
+        super.supportedConfigurationProperties = SecretsStoreConfigurationProperty.getStaticSecretStoreConfigurationPropertyTypes();
 
         /*
          * Set up the component description used in the connector's audit log messages.

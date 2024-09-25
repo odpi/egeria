@@ -77,7 +77,8 @@ public class AdminServicesRESTClient
         RESTClientFactory  factory = new RESTClientFactory(serverName,
                                                            serverPlatformURLRoot,
                                                            userId,
-                                                           password);
+                                                           password,
+                                                           null);
 
         try
         {
