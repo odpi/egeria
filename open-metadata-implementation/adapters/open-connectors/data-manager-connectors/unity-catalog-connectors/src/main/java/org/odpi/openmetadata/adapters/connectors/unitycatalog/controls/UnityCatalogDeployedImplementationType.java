@@ -81,7 +81,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
     /**
      * A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.
      */
-    DB_UC_VOLUME("Unity Catalog Volume",
+    DB_UC_VOLUME("Databricks Unity Catalog Volume",
                   DeployedImplementationType.DATA_FOLDER,
                   OpenMetadataType.DATA_FOLDER.typeName,
                   null,
