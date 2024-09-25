@@ -180,6 +180,16 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of attributes that should be supplied by the caller using this template.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStoreProvider()" class="member-name-link">getSecretsStoreProvider</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the optional secrets store connector provider for the server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecretsStorePurpose()" class="member-name-link">getSecretsStorePurpose</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the purpose of the secrets store.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerDescription()" class="member-name-link">getServerDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -515,6 +525,28 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>map</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStorePurpose()">
+<h3>getSecretsStorePurpose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSecretsStorePurpose</span>()</div>
+<div class="block">Return the purpose of the secrets store.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSecretsStoreProvider()">
+<h3>getSecretsStoreProvider</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProvider</a></span>&nbsp;<span class="element-name">getSecretsStoreProvider</span>()</div>
+<div class="block">Return the optional secrets store connector provider for the server.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>connector provider</dd>
 </dl>
 </section>
 </li>

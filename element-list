@@ -344,6 +344,8 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.envar
+org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
+org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
@@ -409,6 +411,7 @@ org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.pr
 org.odpi.openmetadata.archiveutilities.openconnectors
 org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas
 org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka
+org.odpi.openmetadata.archiveutilities.openconnectors.apis
 org.odpi.openmetadata.archiveutilities.openconnectors.base
 org.odpi.openmetadata.archiveutilities.openconnectors.core
 org.odpi.openmetadata.archiveutilities.openconnectors.nanny
