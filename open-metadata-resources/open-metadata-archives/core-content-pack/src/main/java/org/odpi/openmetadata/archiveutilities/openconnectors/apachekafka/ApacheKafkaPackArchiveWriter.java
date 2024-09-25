@@ -17,8 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import java.util.Date;
 
 /**
- * CorePackArchiveWriter creates an open metadata archive that includes the connector type
- * information for all open connectors supplied by the egeria project.
+ * ApacheKafkaPackArchiveWriter creates an open metadata archive that includes the connector type
+ * information for all Apache Kafka connectors supplied by the egeria project.
  */
 public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
 {
@@ -63,7 +63,6 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(null, new ApacheKafkaAdminProvider());
         archiveHelper.addConnectorType(null, new KafkaTopicIntegrationProvider());
         archiveHelper.addConnectorType(null, new SurveyApacheKafkaServerProvider());
-
 
         /*
          * Add catalog templates

@@ -31,7 +31,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
 {
     private static final Logger log = LoggerFactory.getLogger(OMArchiveFilesMonitorForTarget.class);
 
-    private static final ConnectorBroker connectorBroker = new ConnectorBroker();
+    private final ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
 
     /**
@@ -101,7 +101,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
 
             if (propertyValue != null)
             {
-                properties.setResourceName(propertyValue);
+                properties.setName(propertyValue);
             }
 
             propertyValue = propertyHelper.getStringProperty(connectorName,

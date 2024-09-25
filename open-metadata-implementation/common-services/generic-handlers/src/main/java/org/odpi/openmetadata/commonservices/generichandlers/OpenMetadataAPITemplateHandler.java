@@ -900,7 +900,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                                       serviceName,
                                                                                                       serverName);
 
-                            relationshipProperties = builder.replaceStringPropertiesWithPlaceholders(relationshipProperties, placeholderProperties);
+                            relationshipProperties = builder.replacePropertiesWithPlaceholders(relationshipProperties, placeholderProperties);
                         }
                         if (relationshipOneToTwo)
                         {

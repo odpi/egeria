@@ -2,19 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog;
 
-import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
-import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
-import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
@@ -22,9 +16,7 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefiniti
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -34,8 +26,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.*;
 
 /**
- * CorePackArchiveWriter creates an open metadata archive that includes the connector type
- * information for all open connectors supplied by the egeria project.
+ * UnityCatalogPackArchiveWriter creates an open metadata archive that includes the connector type
+ * information for all Unity Catalog connectors supplied by the egeria project.
  */
 public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 {
@@ -81,17 +73,11 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(null, new OSSUnityCatalogServerSyncProvider());
         archiveHelper.addConnectorType(null, new OSSUnityCatalogInsideCatalogSyncProvider());
 
-        archiveHelper.addConnectorType(null, new OpenAPIMonitorIntegrationProvider());
-
-        archiveHelper.addConnectorType(null, new ApacheKafkaAdminProvider());
-        archiveHelper.addConnectorType(null, new KafkaTopicIntegrationProvider());
-        archiveHelper.addConnectorType(null, new SurveyApacheKafkaServerProvider());
-
         /*
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
-        this.addUCCatalogCatalogTemplate();
+        this.addOSSUCCatalogCatalogTemplate();
         this.addUCSchemaCatalogTemplate();
         this.addUCVolumeCatalogTemplate();
         this.addUCTableCatalogTemplate();
@@ -142,10 +128,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     }
 
 
-    private void addUCCatalogCatalogTemplate()
+    private void addOSSUCCatalogCatalogTemplate()
     {
-        final String methodName = "addUCCatalogCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.UC_CATALOG_TEMPLATE.getDefaultTemplateGUID();
+        final String methodName = "addOSSUCCatalogCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getDefaultTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG;
 
@@ -153,7 +139,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         List<Classification> classifications    = new ArrayList<>();
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    UnityCatalogTemplateType.UC_CATALOG_TEMPLATE.getTemplateDescription(),
+                                                                    UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getTemplateDescription(),
                                                                     "V1.0",
                                                                     null, methodName));
 
@@ -187,8 +173,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
     private void addUCSchemaCatalogTemplate()
     {
-        final String methodName = "addUCSchemaCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.UC_SCHEMA_TEMPLATE.getDefaultTemplateGUID();
+        final String methodName = "addOSSUCSchemaCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getDefaultTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA;
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -204,7 +190,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    UnityCatalogTemplateType.UC_SCHEMA_TEMPLATE.getTemplateDescription(),
+                                                                    UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getTemplateDescription(),
                                                                     "V1.0",
                                                                     null,
                                                                     methodName));
@@ -234,7 +220,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCVolumeCatalogTemplate()
     {
         final String methodName = "addUCVolumeCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.UC_VOLUME_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getDefaultTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_VOLUME;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -257,7 +243,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    UnityCatalogTemplateType.UC_VOLUME_TEMPLATE.getTemplateDescription(),
+                                                                    UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getTemplateDescription(),
                                                                     "V1.0",
                                                                     null,
                                                                     methodName));
@@ -323,7 +309,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCTableCatalogTemplate()
     {
         final String methodName = "addUCTableCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.UC_TABLE_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getDefaultTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_TABLE;
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -347,7 +333,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), UnityCatalogPlaceholderProperty.TABLE_TYPE.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    UnityCatalogTemplateType.UC_TABLE_TEMPLATE.getTemplateDescription(),
+                                                                    UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getTemplateDescription(),
                                                                     "V1.0",
                                                                     null,
                                                                     methodName));
@@ -407,7 +393,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCFunctionCatalogTemplate()
     {
         final String methodName = "addUCFunctionCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.UC_FUNCTION_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getDefaultTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -424,7 +410,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    UnityCatalogTemplateType.UC_FUNCTION_TEMPLATE.getTemplateDescription(),
+                                                                    UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getTemplateDescription(),
                                                                     "V1.0",
                                                                     null,
                                                                     methodName));

@@ -89,6 +89,7 @@ public class RelatedAssetConverter<B> extends OMFConverter<B>
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     assetProperties.setName(this.removeName(instanceProperties));
+                    assetProperties.setResourceName(this.removeResourceName(instanceProperties));
                     assetProperties.setDeployedImplementationType(assetProperties.getDeployedImplementationType());
                     assetProperties.setResourceDescription(this.removeDescription(instanceProperties));
 

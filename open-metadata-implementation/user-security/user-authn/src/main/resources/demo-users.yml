@@ -133,21 +133,31 @@ egeria:
       roles: COCO_PHARMA_USER
     juliestitched:
       username: juliestitched
-      name: Julies Titched
+      name: Julie Stitched
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER
     angelacummings:
       username: angelacummings
-      name: Angel Accumings
+      name: Angela Cummings
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER
-    jukeskeeper:
-      username: jukeskeeper
-      name: Jukes Keeper
+    juleskeeper:
+      username: juleskeeper
+      name: Jules Keeper
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER
     stewfaster:
       username: stewfaster
-      name: Steward Faster
+      name: Stew Faster
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    nelliedunn:
+      username: nelliedunn
+      name: NellieDunn
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER
+    generalnpa:
+      username: generalnpa
+      name: Egeria Connector
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER

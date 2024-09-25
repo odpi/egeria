@@ -47,6 +47,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')

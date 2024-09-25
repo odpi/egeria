@@ -417,6 +417,12 @@ public enum FileExtension
      */
     YAML_FILE("yaml",      new FileType[]{FileType.YAML_FILE}),
 
+
+    /**
+     * A file containing a secrets store in the YAML format.
+     */
+    OM_SECRETS("omsecrets",      new FileType[]{FileType.OM_SECRETS_FILE}),
+
     /**
      * A file containing binary data.
      */

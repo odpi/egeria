@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * CorePackArchiveWriter creates an open metadata archive that includes the connector type
- * information for all open connectors supplied by the egeria project.
+ * PostgresPackArchiveWriter creates an open metadata archive that includes the connector type
+ * information for all PostgreSQL connectors supplied by the egeria project.
  */
 public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
 {

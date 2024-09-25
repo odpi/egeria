@@ -19,6 +19,6 @@ public class EnvVarSecretsStoreConnector extends SecretsStoreConnector
     @Override
     public String getSecret(String secretName)
     {
-        return System.getenv(secretName);
+        return System.getenv(secretsCollectionName + "_" + secretName);
     }
 }

@@ -11,17 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 public enum GovernanceEngineDefinition
 {
     /**
-     * Copies, moves or deletes a file on request.
-     */
-    FILE_PROVISIONING_ENGINE("2e1bd9b5-d2dd-44e9-927a-0a19bb1890bb",
-                             "FileProvisioning",
-                             "File Provisioning Engine",
-                             "Copies, moves or deletes a file on request.",
-                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
-                             ContentPackDefinition.CORE_CONTENT_PACK),
-
-
-    /**
      * Monitors, validates and enriches metadata relating to assets as they are catalogued.
      */
     ASSET_ONBOARDING_ENGINE("aa15e19f-18a9-4623-9fad-c0895da7c034",
@@ -41,16 +30,6 @@ public enum GovernanceEngineDefinition
                        "Liaises with stewards to make corrections to open metadata.",
                        OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                        ContentPackDefinition.CORE_CONTENT_PACK),
-
-    /**
-     * Extracts information about a digital resource and attaches it to its asset description.
-     */
-    ASSET_SURVEY_ENGINE("606c46da-6619-4a07-83ae-0351ccb73f1a",
-                        "AssetSurveys",
-                        "Miscellaneous Asset Survey Engine",
-                        "Extracts information about a digital resource and attaches it to its asset description.",
-                        OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
-                        ContentPackDefinition.CORE_CONTENT_PACK),
 
 
     /**

@@ -23,6 +23,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeplo
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
@@ -56,6 +57,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                              null,
                              null,
+                             null,
+                             null,
                              PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
@@ -72,10 +75,12 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                           null,
                           null,
+                          null,
+                          null,
                           PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes(),
                           ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
-    UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
+    UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.OSS_UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
                                   UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                                   DeployedImplementationType.REST_API_MANAGER,
                                   "Unity Catalog REST API",
@@ -86,6 +91,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   new OSSUnityCatalogResourceProvider().getConnectorType().getGUID(),
                                   PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                           PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                  null,
+                                  null,
                                   null,
                                   null,
                                   UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes(),
@@ -104,6 +111,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                           OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                   null,
                                   null,
+                                  null,
+                                  null,
                                   OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes(),
                                   ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -119,6 +128,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                          PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                          getOMAGServerConfigProperties(),
+                         null,
+                         null,
                          null,
                          PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
@@ -136,6 +147,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                 getOMAGServerConfigProperties(),
                                 null,
+                                null,
+                                null,
                                 PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
                                 ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -151,6 +164,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                     PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                             PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                     getOMAGServerConfigProperties(),
+                                    null,
+                                    null,
                                     null,
                                     PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
                                     ContentPackDefinition.CORE_CONTENT_PACK),
@@ -168,6 +183,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                  PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                          getOMAGServerConfigProperties(),
                          null,
+                         null,
+                         null,
                          PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -182,6 +199,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           new ApacheKafkaAdminProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                          null,
+                          null,
                           null,
                           null,
                           KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes(),
@@ -211,6 +230,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
+    private final String                               secretsStorePurpose;
+    private final ConnectorProvider                    secretsStoreProvider;
     private final List<ReplacementAttributeType>       replacementAttributeTypes;
     private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
     private final ContentPackDefinition                contentPackDefinition;
@@ -230,6 +251,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
+     * @p
+     * @param secretsStoreProvider             optional connector provider for secrets store
      * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      * @param contentPackDefinition            which content pack does this server belong?
@@ -245,6 +268,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      String                               connectorTypeGUID,
                                      String                               networkAddress,
                                      Map<String, Object>                  configurationProperties,
+                                     String                               secretsStorePurpose,
+                                     ConnectorProvider                    secretsStoreProvider,
                                      List<ReplacementAttributeType>       replacementAttributeTypes,
                                      List<PlaceholderPropertyType>        placeholderPropertyTypes,
                                      ContentPackDefinition                contentPackDefinition)
@@ -260,6 +285,8 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
         this.connectorTypeGUID          = connectorTypeGUID;
         this.networkAddress             = networkAddress;
         this.configurationProperties    = configurationProperties;
+        this.secretsStorePurpose        = secretsStorePurpose;
+        this.secretsStoreProvider       = secretsStoreProvider;
         this.replacementAttributeTypes  = replacementAttributeTypes;
         this.placeholderPropertyTypes   = placeholderPropertyTypes;
         this.contentPackDefinition      = contentPackDefinition;
@@ -422,6 +449,26 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
         return configurationProperties;
     }
 
+
+    /**
+     * Return the purpose of the secrets store.
+     *
+     * @return name
+     */
+    public String getSecretsStorePurpose()
+    {
+        return secretsStorePurpose;
+    }
+
+    /**
+     * Return the optional secrets store connector provider for the server.
+     *
+     * @return connector provider
+     */
+    public ConnectorProvider getSecretsStoreProvider()
+    {
+        return secretsStoreProvider;
+    }
 
     /**
      * Return the list of placeholders supported by this template.

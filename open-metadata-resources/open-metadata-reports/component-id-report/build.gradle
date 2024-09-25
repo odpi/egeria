@@ -36,6 +36,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')

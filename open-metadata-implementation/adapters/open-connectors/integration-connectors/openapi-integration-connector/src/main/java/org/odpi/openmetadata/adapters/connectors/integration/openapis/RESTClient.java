@@ -90,7 +90,8 @@ public class RESTClient
         RESTClientFactory  factory = new RESTClientFactory(serverName,
                                                            url,
                                                            userId,
-                                                           password);
+                                                           password,
+                                                           null);
 
         try
         {

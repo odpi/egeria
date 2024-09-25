@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -30,10 +31,6 @@ import java.util.Map;
 public class ConnectorBroker
 {
     private static final Logger log      = LoggerFactory.getLogger(ConnectorBroker.class);
-
-    private static final String userIdPropertyName = "userId";
-    private static final String clearPasswordPropertyName = "clearPassword";
-    private static final String encryptedPasswordPropertyName = "encryptedPassword";
 
     private AuditLog auditLog = null;
 
@@ -457,37 +454,37 @@ public class ConnectorBroker
 
                         if (connectionBean.getUserId() == null)
                         {
-                            connectionBean.setUserId(secretsStoreConnector.getSecret(userIdPropertyName));
+                            connectionBean.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
 
                             if (connectionBean.getUserId() == null)
                             {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(userIdPropertyName) != null))
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName()) != null))
                                 {
-                                    connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(userIdPropertyName)));
+                                    connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
                                 }
                             }
                         }
                         if (connection.getClearPassword() == null)
                         {
-                            connectionBean.setClearPassword(secretsStoreConnector.getSecret(clearPasswordPropertyName));
+                            connectionBean.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
 
                             if (connectionBean.getClearPassword() == null)
                             {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(clearPasswordPropertyName) != null))
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
                                 {
-                                    connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(clearPasswordPropertyName)));
+                                    connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
                                 }
                             }
                         }
                         if (connection.getEncryptedPassword() == null)
                         {
-                            connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(encryptedPasswordPropertyName));
+                            connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
 
                             if (connectionBean.getEncryptedPassword() == null)
                             {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(encryptedPasswordPropertyName) != null))
+                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()) != null))
                                 {
-                                    connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(encryptedPasswordPropertyName)));
+                                    connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
                                 }
                             }
                         }

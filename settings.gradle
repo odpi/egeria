@@ -74,6 +74,7 @@ include(':open-metadata-implementation:adapters:open-connectors:rest-client-conn
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
 include(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+include(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
 include(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')

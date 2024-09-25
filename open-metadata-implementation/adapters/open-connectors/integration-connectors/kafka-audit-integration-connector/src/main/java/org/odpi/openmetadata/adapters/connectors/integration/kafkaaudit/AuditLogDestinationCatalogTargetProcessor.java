@@ -63,7 +63,7 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
             this.auditLogDestination = (OMRSAuditLogStoreConnectorBase) connectorBroker.getConnector(auditLogConnection);
         }

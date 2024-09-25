@@ -2,13 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.nanny;
 
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.postgres.PostgresPackArchiveWriter;
