@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.api;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -87,6 +88,30 @@ public interface ConnectorFactoryInterface
                                                             ConnectorCheckedException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException;
+
+    /**
+     * Returns the connector corresponding to the supplied asset GUID.
+     *
+     * @param userId       userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     * @param auditLog    logging destination
+     *
+     * @return    connector instance.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    Connector getConnectorForAsset(String   userId,
+                                   String   assetGUID,
+                                   AuditLog auditLog) throws InvalidParameterException,
+                                                             ConnectionCheckedException,
+                                                             ConnectorCheckedException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException;
 
 
     /**

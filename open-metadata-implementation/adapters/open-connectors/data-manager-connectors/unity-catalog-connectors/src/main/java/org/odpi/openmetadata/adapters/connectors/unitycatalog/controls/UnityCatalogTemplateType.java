@@ -35,25 +35,11 @@ public enum UnityCatalogTemplateType
                             "5ee006aa-a6d6-411b-9b8d-5f720c079cae",
                             null),
 
-    DB_UC_CATALOG_TEMPLATE(UnityCatalogDeployedImplementationType.DB_UC_CATALOG.getDeployedImplementationType(),
-                            "Create a " + UnityCatalogDeployedImplementationType.DB_UC_CATALOG.getAssociatedTypeName() + " SoftwareCapability.",
-                            UnityCatalogDeployedImplementationType.DB_UC_CATALOG.getAssociatedTypeName(),
-                            false,
-                            "32a82fe1-b1f5-4d86-b54a-b19d0be87e6b",
-                            null),
-
     OSS_UC_SCHEMA_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
                            "Create a DeployedDatabaseSchema to represent a schema from the Unity Catalog (UC).",
                            UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
                            false,
                            "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e",
-                           null),
-
-    DB_UC_SCHEMA_TEMPLATE(UnityCatalogDeployedImplementationType.DB_UC_SCHEMA.getDeployedImplementationType(),
-                           "Create a DeployedDatabaseSchema to represent a schema from the Unity Catalog (UC) running on a Databricks managed platform.",
-                           UnityCatalogDeployedImplementationType.DB_UC_SCHEMA.getAssociatedTypeName(),
-                           false,
-                           "844631dc-dc8a-4e8e-b285-56165917de09",
                            null),
 
     OSS_UC_VOLUME_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
@@ -63,13 +49,6 @@ public enum UnityCatalogTemplateType
                            "92d2d2dc-0798-41f0-9512-b10548d312b7",
                            null),
 
-    DB_UC_VOLUME_TEMPLATE(UnityCatalogDeployedImplementationType.DB_UC_VOLUME.getDeployedImplementationType(),
-                           "Create a DataFolder asset to represent a volume from the Unity Catalog (UC) running on a Databricks managed platform.",
-                           UnityCatalogDeployedImplementationType.DB_UC_VOLUME.getAssociatedTypeName(),
-                           false,
-                           "a639212a-5c2d-464c-933f-aa612b9a4706",
-                           null),
-
     OSS_UC_TABLE_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
                           "Create a VirtualTableAsset asset to represent a table from the Unity Catalog (UC).",
                           UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getAssociatedTypeName(),
@@ -77,25 +56,11 @@ public enum UnityCatalogTemplateType
                           "6cc1e5f5-4c1e-4290-a80e-e06643ffb13d",
                           null),
 
-    DB_UC_TABLE_TEMPLATE(UnityCatalogDeployedImplementationType.DB_UC_TABLE.getDeployedImplementationType(),
-                          "Create a VirtualTableAsset asset to represent a table from the Unity Catalog (UC) running on a Databricks managed platform.",
-                          UnityCatalogDeployedImplementationType.DB_UC_TABLE.getAssociatedTypeName(),
-                          false,
-                          "a1f8a374-3f78-4d06-8d8c-cc3322fc8b53",
-                          null),
-
     OSS_UC_FUNCTION_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
                              "Create a DeployedSoftwareComponent asset to represent a function from the Unity Catalog (UC).",
                              UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getAssociatedTypeName(),
                              false,
                              "a490ba65-6104-4213-9be9-524e16fed8aa",
-                             null),
-
-    DB_UC_FUNCTION_TEMPLATE(UnityCatalogDeployedImplementationType.DB_UC_FUNCTION.getDeployedImplementationType(),
-                             "Create a DeployedSoftwareComponent asset to represent a function from the Unity Catalog (UC) running on a Databricks managed platform.",
-                             UnityCatalogDeployedImplementationType.DB_UC_FUNCTION.getAssociatedTypeName(),
-                             false,
-                             "d01bb98a-a6a1-490a-b935-31bae5974f6e",
                              null),
 
     ;

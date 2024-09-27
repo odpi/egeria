@@ -2282,8 +2282,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                     {
                         supplementaryRelationships.add(relationship);
 
+                        /*
+                         * Navigate DOWN to the embedded connections
+                         */
                         EntityProxy embeddedConnectionEnd = relationship.getEntityTwoProxy();
-                        if ((embeddedConnectionEnd != null) && (embeddedConnectionEnd.getGUID() != null))
+                        if ((embeddedConnectionEnd != null) && (embeddedConnectionEnd.getGUID() != null) &&
+                                (! embeddedConnectionEnd.getGUID().equals(connectionEntity.getGUID())))
                         {
                             List<Relationship> embeddedConnectionRelationships = this.getEmbeddedRelationships(userId,
                                                                                                                embeddedConnectionEnd,

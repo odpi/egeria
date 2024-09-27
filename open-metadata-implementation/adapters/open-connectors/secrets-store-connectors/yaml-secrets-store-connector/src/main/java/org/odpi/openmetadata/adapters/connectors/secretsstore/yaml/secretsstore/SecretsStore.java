@@ -64,7 +64,7 @@ public class SecretsStore
     public String toString()
     {
         return "SecretsStore{" +
-                "secretsCollectionMap=" + secretsCollections +
+                "secretsCollections=" + secretsCollections +
                 '}';
     }
 

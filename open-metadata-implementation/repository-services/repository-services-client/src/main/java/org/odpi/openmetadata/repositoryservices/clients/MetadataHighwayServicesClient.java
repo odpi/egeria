@@ -488,7 +488,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                   serverPlatformURLRoot,
                                                   userId,
                                                   password,
-                                                  null);
+                                                  null,
+                                                  auditLog);
         }
         else
         {

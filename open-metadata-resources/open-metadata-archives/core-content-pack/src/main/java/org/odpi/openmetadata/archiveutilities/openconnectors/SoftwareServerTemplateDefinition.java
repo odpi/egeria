@@ -4,26 +4,20 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.ViewServerProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
@@ -32,7 +26,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,15 +42,15 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                              "Database Management System (DBMS)",
                              PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                              PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                             PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
-                             PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                             null,
                              new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
                              "jdbc:postgresql://" +
                                      PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                              null,
-                             null,
-                             null,
+                             SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                             new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                             PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                              null,
                              PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
@@ -68,16 +61,16 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           "Metadata Catalog",
                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                          PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                          PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
+                          null,
                           new ApacheAtlasRESTProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                           null,
+                          SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                          new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                          PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                           null,
-                          null,
-                          null,
-                          PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes(),
+                          PlaceholderProperty.getSecretServerPlaceholderPropertyTypes(),
                           ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.OSS_UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
@@ -87,7 +80,6 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                   null,
-                                  null,
                                   new OSSUnityCatalogResourceProvider().getConnectorType().getGUID(),
                                   PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                           PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
@@ -95,98 +87,27 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   null,
                                   null,
                                   null,
+                                  null,
                                   UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes(),
                                   ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
-    OMAG_SERVER_PLATFORM_TEMPLATE("9b06c4dc-ddc8-47ae-b56b-28775d3a96f0",
-                                  EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM,
-                                  DeployedImplementationType.USER_AUTHENTICATION_MANAGER,
-                                  "User Token Manager",
-                                  OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
-                                  OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholder(),
-                                  OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+    DATABRICKS_UC_SERVER_TEMPLATE(UnityCatalogTemplateType.DB_UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
+                                  UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER,
+                                  DeployedImplementationType.REST_API_MANAGER,
+                                  "Databricks Unity Catalog REST API",
+                                  PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                   null,
-                                  new OMAGServerPlatformProvider().getConnectorType().getGUID(),
-                                  OMAGServerPlatformPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                          OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                  new OSSUnityCatalogResourceProvider().getConnectorType().getGUID(),
+                                  PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                          PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                   null,
+                                  SecretsStorePurpose.REST_BEARER_TOKEN.getName(),
+                                  new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                                  PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
                                   null,
-                                  null,
-                                  null,
-                                  OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes(),
-                                  ContentPackDefinition.CORE_CONTENT_PACK),
-
-    ENGINE_HOST_TEMPLATE("1764a891-4234-45f1-8cc3-536af40c790d",
-                         EgeriaDeployedImplementationType.ENGINE_HOST,
-                         DeployedImplementationType.REST_API_MANAGER,
-                         "Governance Engine Status APIs",
-                         PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                         PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                         null,
-                         new EngineHostProvider().getConnectorType().getGUID(),
-                         PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                 PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
-                         getOMAGServerConfigProperties(),
-                         null,
-                         null,
-                         null,
-                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
-                         ContentPackDefinition.CORE_CONTENT_PACK),
-
-    INTEGRATION_DAEMON_TEMPLATE("6b3516f0-dd13-4786-9601-07215f995197",
-                                EgeriaDeployedImplementationType.INTEGRATION_DAEMON,
-                                DeployedImplementationType.REST_API_MANAGER,
-                                "Governance Engine Status APIs",
-                                PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                                null,
-                                new IntegrationDaemonProvider().getConnectorType().getGUID(),
-                                PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                        PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
-                                getOMAGServerConfigProperties(),
-                                null,
-                                null,
-                                null,
-                                PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
-                                ContentPackDefinition.CORE_CONTENT_PACK),
-
-    METADATA_ACCESS_SERVER_TEMPLATE("bd8de890-fa79-4c24-aab8-20b41b5893dd",
-                                    EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER,
-                                    DeployedImplementationType.REST_API_MANAGER,
-                                    "Open Metadata Repository Access APIs",
-                                    PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                    PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                    PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                                    null,
-                                    new MetadataAccessServerProvider().getConnectorType().getGUID(),
-                                    PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                            PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
-                                    getOMAGServerConfigProperties(),
-                                    null,
-                                    null,
-                                    null,
-                                    PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
-                                    ContentPackDefinition.CORE_CONTENT_PACK),
-
-    VIEW_SERVER_TEMPLATE("fd61ca01-390d-4aa2-a55d-426826aa4e1b",
-                         EgeriaDeployedImplementationType.VIEW_SERVER,
-                         DeployedImplementationType.REST_API_MANAGER,
-                         "Open Metadata and Governance End User APIs",
-                         PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                         PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                         null,
-                         new ViewServerProvider().getConnectorType().getGUID(),
-                         PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                 PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
-                         getOMAGServerConfigProperties(),
-                         null,
-                         null,
-                         null,
-                         PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes(),
-                         ContentPackDefinition.CORE_CONTENT_PACK),
+                                  UnityCatalogPlaceholderProperty.getSecureServerPlaceholderPropertyTypes(),
+                                  ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     KAFKA_SERVER_TEMPLATE("5e1ff810-5418-43f7-b7c4-e6e062f9aff7",
                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER,
@@ -195,10 +116,10 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                           PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                           null,
-                          null,
                           new ApacheKafkaAdminProvider().getConnectorType().getGUID(),
                           PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                   PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                          null,
                           null,
                           null,
                           null,
@@ -209,16 +130,6 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     ;
 
 
-    private static Map<String, Object> getOMAGServerConfigProperties()
-    {
-        Map<String, Object> configurationProperties = new HashMap<>();
-
-        configurationProperties.put(PlaceholderProperty.SERVER_NAME.getName(), PlaceholderProperty.SERVER_NAME.getPlaceholder());
-
-        return configurationProperties;
-    }
-
-
     private final String                               guid;
     private final DeployedImplementationTypeDefinition deployedImplementationType;
     private final DeployedImplementationTypeDefinition softwareCapabilityType;
@@ -226,12 +137,12 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     private final String                               serverName;
     private final String                               description;
     private final String                               userId;
-    private final String                               password;
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
     private final String                               secretsStorePurpose;
-    private final ConnectorProvider                    secretsStoreProvider;
+    private final String                               secretsStoreConnectorTypeGUID;
+    private final String                               secretsStoreFileName;
     private final List<ReplacementAttributeType>       replacementAttributeTypes;
     private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
     private final ContentPackDefinition                contentPackDefinition;
@@ -247,12 +158,12 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      * @param serverName                       name for the server
      * @param description                      description for the server
      * @param userId                           userId for the connection
-     * @param password                         password for the connection
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
-     * @p
-     * @param secretsStoreProvider             optional connector provider for secrets store
+     * @param secretsStorePurpose              type of authentication information provided by the secrets store
+     * @param secretsStoreConnectorTypeGUID    optional connector type for secrets store
+     * @param secretsStoreFileName             location of the secrets store
      * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      * @param contentPackDefinition            which content pack does this server belong?
@@ -264,33 +175,35 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                      String                               serverName,
                                      String                               description,
                                      String                               userId,
-                                     String                               password,
                                      String                               connectorTypeGUID,
                                      String                               networkAddress,
                                      Map<String, Object>                  configurationProperties,
                                      String                               secretsStorePurpose,
-                                     ConnectorProvider                    secretsStoreProvider,
+                                     String                               secretsStoreConnectorTypeGUID,
+                                     String                               secretsStoreFileName,
                                      List<ReplacementAttributeType>       replacementAttributeTypes,
                                      List<PlaceholderPropertyType>        placeholderPropertyTypes,
                                      ContentPackDefinition                contentPackDefinition)
     {
-        this.guid                       = guid;
-        this.deployedImplementationType = deployedImplementationType;
-        this.softwareCapabilityType     = softwareCapabilityType;
-        this.softwareCapabilityName     = softwareCapabilityName;
-        this.serverName                 = serverName;
-        this.description                = description;
-        this.userId                     = userId;
-        this.password                   = password;
-        this.connectorTypeGUID          = connectorTypeGUID;
-        this.networkAddress             = networkAddress;
-        this.configurationProperties    = configurationProperties;
-        this.secretsStorePurpose        = secretsStorePurpose;
-        this.secretsStoreProvider       = secretsStoreProvider;
-        this.replacementAttributeTypes  = replacementAttributeTypes;
-        this.placeholderPropertyTypes   = placeholderPropertyTypes;
-        this.contentPackDefinition      = contentPackDefinition;
+        this.guid                          = guid;
+        this.deployedImplementationType    = deployedImplementationType;
+        this.softwareCapabilityType        = softwareCapabilityType;
+        this.softwareCapabilityName        = softwareCapabilityName;
+        this.serverName                    = serverName;
+        this.description                   = description;
+        this.userId                        = userId;
+        this.connectorTypeGUID             = connectorTypeGUID;
+        this.networkAddress                = networkAddress;
+        this.configurationProperties       = configurationProperties;
+        this.secretsStorePurpose           = secretsStorePurpose;
+        this.secretsStoreConnectorTypeGUID = secretsStoreConnectorTypeGUID;
+        this.secretsStoreFileName          = secretsStoreFileName;
+        this.replacementAttributeTypes     = replacementAttributeTypes;
+        this.placeholderPropertyTypes      = placeholderPropertyTypes;
+        this.contentPackDefinition         = contentPackDefinition;
     }
+
+
 
 
     /**
@@ -302,6 +215,17 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     public String getTemplateGUID()
     {
         return guid;
+    }
+
+
+    /**
+     * Return the unique name to use in the template.
+     *
+     * @return string
+     */
+    public String getQualifiedName()
+    {
+        return deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
     }
 
 
@@ -407,17 +331,6 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
 
 
     /**
-     * Return the password for the connection.
-     *
-     * @return string
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-
-
-    /**
      * Return the connector type GUID for the connection.
      *
      * @return string
@@ -465,10 +378,22 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
      *
      * @return connector provider
      */
-    public ConnectorProvider getSecretsStoreProvider()
+    public String getSecretsStoreConnectorTypeGUID()
     {
-        return secretsStoreProvider;
+        return secretsStoreConnectorTypeGUID;
     }
+
+
+    /**
+     * Return the location of the secrets store.
+     *
+     * @return path name of file
+     */
+    public String getSecretsStoreFileName()
+    {
+        return secretsStoreFileName;
+    }
+
 
     /**
      * Return the list of placeholders supported by this template.

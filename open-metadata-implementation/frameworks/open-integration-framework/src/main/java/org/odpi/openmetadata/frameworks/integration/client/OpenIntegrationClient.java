@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.integration.client;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -172,6 +173,7 @@ public abstract class OpenIntegrationClient
     /**
      * Returns the unique identifier corresponding to the supplied connection.
      *
+     * @param userId calling user
      * @param connection the connection object that contains the properties needed to create the connection.
      * @return guid
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -191,6 +193,7 @@ public abstract class OpenIntegrationClient
     /**
      * Returns the unique identifier corresponding to the supplied connection.
      *
+     * @param userId calling user
      * @param assetGUID  the unique identifier of an asset to attach the connection to
      * @param connection the connection object that contains the properties needed to create the connection.
      * @return guid
@@ -212,6 +215,7 @@ public abstract class OpenIntegrationClient
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
+     * @param userId calling user
      * @param assetGUID the unique identifier of an asset to attach the connection to
      * @return a comprehensive collection of properties about the asset.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -227,7 +231,9 @@ public abstract class OpenIntegrationClient
     /**
      * Return the connector to the requested asset.
      *
+     * @param userId calling user
      * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @param auditLog    optional logging destination
      * @return Open Connector Framework (OCF) connector
      * @throws InvalidParameterException  the asset guid is not recognized or the userId is null
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -237,10 +243,11 @@ public abstract class OpenIntegrationClient
      *                                    create the connector.
      * @throws PropertyServerException    there was a problem in the store whether the asset/connection properties are kept.
      */
-    public abstract Connector getConnectorToAsset(String userId,
-                                                  String assetGUID) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException,
-                                                                           ConnectionCheckedException,
-                                                                           ConnectorCheckedException;
+    public abstract Connector getConnectorToAsset(String   userId,
+                                                  String   assetGUID,
+                                                  AuditLog auditLog) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException,
+                                                                            ConnectionCheckedException,
+                                                                            ConnectorCheckedException;
 }

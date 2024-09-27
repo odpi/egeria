@@ -32,6 +32,10 @@ public enum PlaceholderProperty
      * The network address of the server
      */
     SERVER_NETWORK_ADDRESS("serverNetworkAddress", "The network address of the server.", "string", "http://localhost:8080"),
+
+    /**
+     * The name of the operation to append onto the server host name/port number, or set it to an empty string if not needed.
+     */
     API_OPERATION("apiOperation", "The name of the operation to append onto the server host name/port number, or set it to an empty string if not needed.", "string", "/api/v1/lineage"),
 
     /**
@@ -43,17 +47,14 @@ public enum PlaceholderProperty
                         "user1"),
 
     /**
-     * The password to store in the clearPassword attribute of the connection.
+     * The name of the server being catalogued.
      */
-    CONNECTION_PASSWORD ("connectionPassword",
-                         "The password to store in the clearPassword attribute of the connection.",
-                         "string",
-                         "secret"),
+    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
 
     /**
      * The name of the server being catalogued.
      */
-    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
+    SERVER_ID ("serverId", "The local identifier of the server being catalogued.", "string", "myServer"),
 
     /**
      * The name of the schema being catalogued.
@@ -85,6 +86,14 @@ public enum PlaceholderProperty
                  "V1.0"),
 
     /**
+     * The description of the element to help a consumer understand its content and purpose.
+     */
+    SECRETS_STORE ("secretsStorePathName",
+                        "The full path name to the secrets store file where the secrets collection for this server is located.",
+                        "string",
+                        "loading-bay/secrets/default.omsecrets"),
+
+    /**
      * The formula used to populate the data set.
      */
     FORMULA("formula", "The formula used to populate the data set.", "string", null),
@@ -94,18 +103,15 @@ public enum PlaceholderProperty
      */
     FORMULA_TYPE("formulaType", "The language/format used in the data set's formula.", "string", null),
 
-
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
     FILE_SYSTEM_NAME ("fileSystemName", "The unique name for the file system that this file/directory belongs.  It may be a machine name or a URL to a remote file store.", "string", "/a/b/c/myFile.txt"),
 
-
     /**
      * The format standard used in the file system.
      */
     FORMAT ("format", "The format standard used in the file system.", "string", "APFS"),
-
 
     /**
      * Is encryption enabled on this file system? If known, what type of encryption?
@@ -179,7 +185,6 @@ public enum PlaceholderProperty
                   "The date that the file was created.",
                   "string",
                   null),
-
 
     /**
      * The date that the file was created.
@@ -321,29 +326,6 @@ public enum PlaceholderProperty
     }
 
 
-
-    /**
-     * Retrieve all the defined placeholder properties
-     *
-     * @return list of placeholder property types
-     */
-    public static List<PlaceholderPropertyType> getServerWithUserIdAndPasswordPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
-
-
-
     /**
      * Retrieve all the defined placeholder properties
      *
@@ -364,14 +346,12 @@ public enum PlaceholderProperty
     }
 
 
-
-
     /**
      * Retrieve all the defined placeholder properties
      *
      * @return list of placeholder property types
      */
-    public static List<PlaceholderPropertyType> getUnsecuredServerPlaceholderPropertyTypes()
+    public static List<PlaceholderPropertyType> getSecretServerPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
@@ -380,6 +360,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -420,8 +401,6 @@ public enum PlaceholderProperty
 
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DISPLAY_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());

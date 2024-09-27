@@ -11,15 +11,13 @@ import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * IntegrationConnectorBase is the base class for an integration connector.  It manages the storing of the audit log for the connector
@@ -33,7 +31,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     protected AuditLog                 auditLog                    = null;
     protected String                   connectorName               = null;
     protected IntegrationContext       integrationContext          = null;
-    protected List<Connector>          embeddedConnectors          = null;
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -67,21 +64,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -264,8 +246,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     @Override
     public void disconnect() throws ConnectorCheckedException
     {
-        super.disconnectConnectors(this.embeddedConnectors);
-
         if (catalogTargetsManager != null)
         {
             catalogTargetsManager.disconnect();

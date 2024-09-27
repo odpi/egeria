@@ -30,7 +30,7 @@ public class DataFolderProvider extends ConnectorProviderBase
     private static final String  connectorQualifiedName = "Egeria:ResourceConnector:DataFolder";
     private static final String  connectorTypeName = "Data Folder Connector";
     private static final String  connectorTypeDescription = "Connector supports reading of data files grouped under a single folder.";
-    private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/data-folder-resource-connector/";
+    private static final String  connectorWikiPage = "https://egeria-project.org/connectors/resource/data-folder-resource-connector/";
 
 
     private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderConnector";

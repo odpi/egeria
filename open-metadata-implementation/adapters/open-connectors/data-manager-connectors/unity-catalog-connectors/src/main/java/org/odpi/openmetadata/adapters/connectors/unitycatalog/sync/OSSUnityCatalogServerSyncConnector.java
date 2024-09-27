@@ -154,7 +154,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
             String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(ucServerGUID);
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(ucServerGUID, auditLog);
 
                 OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 

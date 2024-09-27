@@ -5,7 +5,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.base;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -391,6 +391,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
             {
                 createSoftwareServerCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                                    templateDefinition.getQualifiedName(),
                                                     templateDefinition.getTemplateName(),
                                                     templateDefinition.getTemplateDescription(),
                                                     templateDefinition.getTemplateVersionIdentifier(),
@@ -400,12 +401,12 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                     templateDefinition.getServerName(),
                                                     templateDefinition.getServerDescription(),
                                                     templateDefinition.getUserId(),
-                                                    templateDefinition.getPassword(),
                                                     templateDefinition.getConnectorTypeGUID(),
                                                     templateDefinition.getNetworkAddress(),
                                                     templateDefinition.getConfigurationProperties(),
                                                     templateDefinition.getSecretsStorePurpose(),
-                                                    templateDefinition.getSecretsStoreProvider(),
+                                                    templateDefinition.getSecretsStoreConnectorTypeGUID(),
+                                                    templateDefinition.getSecretsStoreFileName(),
                                                     templateDefinition.getReplacementAttributes(),
                                                     templateDefinition.getPlaceholders());
             }
@@ -419,6 +420,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * to the supplied connector type and an endpoint,
      *
      * @param guid                             fixed unique identifier
+     * @param qualifiedName                    unique name for the template
      * @param templateName                     name of template in Template classification
      * @param templateDescription              description of the template in the Template classification
      * @param templateVersion                  version of the template in the Template classification
@@ -428,37 +430,37 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param serverName                       name for the server
      * @param description                      description for the server
      * @param userId                           userId for the connection
-     * @param password                         password for the connection
      * @param connectorTypeGUID                connector type to link to the connection
      * @param networkAddress                   network address for the endpoint
      * @param configurationProperties          additional properties for the connection
      * @param secretsStorePurpose              purpose for the secrets store
-     * @param secretsStoreProvider             optional name for the secrets store provider to include in the template
+     * @param secretsStoreConnectorTypeGUID    optional name for the secrets store connector provider to include in the template
+     * @param secretsStoreFileName             location of the secrets store
      * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      */
-    private void createSoftwareServerCatalogTemplate(String                               guid,
-                                                     String                               templateName,
-                                                     String                               templateDescription,
-                                                     String                               templateVersion,
-                                                     DeployedImplementationTypeDefinition deployedImplementationType,
-                                                     DeployedImplementationTypeDefinition softwareCapabilityType,
-                                                     String                               softwareCapabilityName,
-                                                     String                               serverName,
-                                                     String                               description,
-                                                     String                               userId,
-                                                     String                               password,
-                                                     String                               connectorTypeGUID,
-                                                     String                               networkAddress,
-                                                     Map<String, Object>                  configurationProperties,
-                                                     String                               secretsStorePurpose,
-                                                     ConnectorProvider                    secretsStoreProvider,
-                                                     List<ReplacementAttributeType>       replacementAttributeTypes,
-                                                     List<PlaceholderPropertyType>        placeholderPropertyTypes)
+    protected void createSoftwareServerCatalogTemplate(String guid,
+                                                       String qualifiedName,
+                                                       String templateName,
+                                                       String templateDescription,
+                                                       String templateVersion,
+                                                       DeployedImplementationTypeDefinition deployedImplementationType,
+                                                       DeployedImplementationTypeDefinition softwareCapabilityType,
+                                                       String softwareCapabilityName,
+                                                       String serverName,
+                                                       String description,
+                                                       String userId,
+                                                       String connectorTypeGUID,
+                                                       String networkAddress,
+                                                       Map<String, Object> configurationProperties,
+                                                       String secretsStorePurpose,
+                                                       String secretsStoreConnectorTypeGUID,
+                                                       String secretsStoreFileName,
+                                                       List<ReplacementAttributeType> replacementAttributeTypes,
+                                                       List<PlaceholderPropertyType> placeholderPropertyTypes)
     {
         final String methodName = "createSoftwareServerCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -527,20 +529,79 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
 
-        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                            serverName + " connection",
-                                                            null,
-                                                            userId,
-                                                            password,
-                                                            null,
-                                                            null,
-                                                            configurationProperties,
-                                                            null,
-                                                            connectorTypeGUID,
-                                                            endpointGUID,
-                                                            assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                            OpenMetadataType.ASSET.typeName);
+        String connectionGUID;
+
+        if (secretsStoreConnectorTypeGUID == null)
+        {
+            connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                         serverName + " connection",
+                                                         null,
+                                                         userId,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         configurationProperties,
+                                                         null,
+                                                         connectorTypeGUID,
+                                                         endpointGUID,
+                                                         assetGUID,
+                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                         OpenMetadataType.ASSET.typeName);
+        }
+        else
+        {
+            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME,
+                                                         qualifiedName + ":Connection",
+                                                         serverName + " connection",
+                                                         null,
+                                                         userId,
+                                                         null,
+                                                         null,
+                                                         null,
+                                                         configurationProperties,
+                                                         null,
+                                                         connectorTypeGUID,
+                                                         endpointGUID,
+                                                         assetGUID,
+                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                         OpenMetadataType.ASSET.typeName);
+
+            Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
+
+            secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), qualifiedName);
+
+            String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                                       deployedImplementationType.getAssociatedTypeName(),
+                                                                       OpenMetadataType.ASSET.typeName,
+                                                                       qualifiedName + ":SecretStoreEndpoint",
+                                                                       serverName + " secret store endpoint",
+                                                                       null,
+                                                                       secretsStoreFileName,
+                                                                       null,
+                                                                       null);
+
+            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                            qualifiedName + ":SecretsStoreConnection",
+                                                                            serverName + " secrets store connection",
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            secretsStoreConfigurationProperties,
+                                                                            null,
+                                                                            secretsStoreConnectorTypeGUID,
+                                                                            secretStoreEndpointGUID,
+                                                                            assetGUID,
+                                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                                            OpenMetadataType.ASSET.typeName);
+
+            archiveHelper.addEmbeddedConnection(connectionGUID,
+                                                0,
+                                                secretsStorePurpose,
+                                                null,
+                                                secretsStoreConnectionGUID);
+        }
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 

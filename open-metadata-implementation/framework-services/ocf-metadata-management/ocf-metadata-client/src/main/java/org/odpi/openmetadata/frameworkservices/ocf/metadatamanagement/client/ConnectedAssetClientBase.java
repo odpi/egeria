@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.api.ConnectorFactoryInterface;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetResponse;
@@ -259,7 +260,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @param restClient client that calls REST APIs
      * @param serviceName calling service
      * @param userId calling user
-     * @param requestedConnection  connection describing the required connector.
+     * @param requestedConnection  connection describing the required connector
      * @param methodName  name of the calling method.
      *
      * @return a new connector.
@@ -698,12 +699,41 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public Connector getConnectorForAsset(String userId,
-                                          String assetGUID) throws InvalidParameterException,
-                                                                   ConnectionCheckedException,
-                                                                   ConnectorCheckedException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public Connector getConnectorForAsset(String   userId,
+                                          String   assetGUID) throws InvalidParameterException,
+                                                                     ConnectionCheckedException,
+                                                                     ConnectorCheckedException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        return this.getConnectorForAsset(userId, assetGUID, null);
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied asset GUID.
+     *
+     * @param userId       userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     * @param auditLog    optional logging destination
+     *
+     * @return    connector instance - or null if there is no connection
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public Connector getConnectorForAsset(String   userId,
+                                          String   assetGUID,
+                                          AuditLog auditLog) throws InvalidParameterException,
+                                                                    ConnectionCheckedException,
+                                                                    ConnectorCheckedException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         final  String  methodName = "getConnectorForAsset";
         final  String  guidParameter = "assetGUID";
@@ -715,11 +745,21 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
         if (connection != null)
         {
-            return this.getConnectorForConnection(ocfRESTClient,
-                                                  serviceURLMarker,
-                                                  userId,
-                                                  connection,
-                                                  methodName);
+            Connector connector = this.getConnectorForConnection(ocfRESTClient,
+                                                                 serviceURLMarker,
+                                                                 userId,
+                                                                 connection,
+                                                                 methodName);
+
+            if ((auditLog != null) && (connector instanceof AuditLoggingComponent auditLoggingComponent))
+            {
+                /*
+                 * This set up the connector to log messages in the integration connector's audit log.
+                 */
+                auditLoggingComponent.setAuditLog(auditLog);
+            }
+
+            return connector;
         }
 
         return null;

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.restclients.factory;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnectorProvider;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -28,6 +29,7 @@ public class RESTClientFactory
     private static final Logger log = LoggerFactory.getLogger(RESTClientFactory.class);
 
     private final Connection   clientConnection;
+    private final AuditLog     auditLog;
 
     /**
      * Constructor for unsecured client connector
@@ -38,7 +40,8 @@ public class RESTClientFactory
     public RESTClientFactory(String serverName,
                              String serverPlatformURLRoot)
     {
-        clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, null, null, null);
+        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, null, null, null);
+        this.auditLog = null;
     }
 
 
@@ -55,9 +58,11 @@ public class RESTClientFactory
                              String                             serverPlatformURLRoot,
                              String                             userId,
                              String                             password,
-                             Map<String, SecretsStoreConnector> secretsStoreConnectorMap)
+                             Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                             AuditLog                           auditLog)
     {
-        clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, userId, password, secretsStoreConnectorMap);
+        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, userId, password, secretsStoreConnectorMap);
+        this.auditLog = auditLog;
     }
 
 
@@ -80,7 +85,7 @@ public class RESTClientFactory
     {
         Connection  connection;
 
-        if ((secretsStoreConnectorMap == null) || (!secretsStoreConnectorMap.isEmpty()))
+        if ((secretsStoreConnectorMap == null) || (secretsStoreConnectorMap.isEmpty()))
         {
             connection = new Connection();
         }
@@ -99,6 +104,8 @@ public class RESTClientFactory
                 AccessibleConnection  secretStoreConnection = new AccessibleConnection(secretsStoreConnector.getConnection());
 
                 embeddedConnection.setEmbeddedConnection(secretStoreConnection.getConnectionBean());
+
+                embeddedConnections.add(embeddedConnection);
             }
 
             virtualConnection.setEmbeddedConnections(embeddedConnections);
@@ -180,9 +187,10 @@ public class RESTClientFactory
      */
     public RESTClientConnector getClientConnector() throws Exception
     {
-        ConnectorBroker     connectorBroker = new ConnectorBroker();
+        ConnectorBroker     connectorBroker = new ConnectorBroker(auditLog);
         Connector           connector       = connectorBroker.getConnector(clientConnection);
 
+        connector.start();
         return (RESTClientConnector)connector;
     }
 

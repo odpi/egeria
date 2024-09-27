@@ -96,7 +96,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
             {
                 DatabaseElement databaseElement = getContext().getDatabaseByGUID(databaseGUID);
 
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseGUID);
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 

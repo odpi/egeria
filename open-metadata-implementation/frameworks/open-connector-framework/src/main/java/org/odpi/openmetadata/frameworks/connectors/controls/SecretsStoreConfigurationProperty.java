@@ -22,15 +22,6 @@ public enum SecretsStoreConfigurationProperty
                             "DatabricksServerOne",
                             true),
 
-    /**
-     * The time interval in minutes that tokens should be kept.
-     */
-    REFRESH_TIME_INTERVAL("refreshTimeInterval",
-                          "The time interval in minutes that tokens should be kept.",
-                          DataType.LONG.getName(),
-                          "360",
-                          true),
-
     ;
 
     public final String           name;

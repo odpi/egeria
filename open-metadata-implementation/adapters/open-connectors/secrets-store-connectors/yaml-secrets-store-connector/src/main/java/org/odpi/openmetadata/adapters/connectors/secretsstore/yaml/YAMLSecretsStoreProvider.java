@@ -31,7 +31,7 @@ public class YAMLSecretsStoreProvider extends ConnectorProviderBase
     private static final String connectorQualifiedName = "Egeria:SecretsStoreConnector:YAMLFile";
     private static final String connectorDisplayName   = "YAML File Secrets Store Connector";
     private static final String connectorDescription   = "Connector retrieves secrets from environment variables.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/secrets/yaml-secrets-store-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/secrets/yaml-file-secrets-store-connector/";
 
     /*
      * Class of the connector.

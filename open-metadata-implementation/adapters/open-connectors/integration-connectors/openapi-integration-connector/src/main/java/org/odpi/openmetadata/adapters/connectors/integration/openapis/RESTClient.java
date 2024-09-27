@@ -91,7 +91,8 @@ public class RESTClient
                                                            url,
                                                            userId,
                                                            password,
-                                                           null);
+                                                           null,
+                                                           auditLog);
 
         try
         {

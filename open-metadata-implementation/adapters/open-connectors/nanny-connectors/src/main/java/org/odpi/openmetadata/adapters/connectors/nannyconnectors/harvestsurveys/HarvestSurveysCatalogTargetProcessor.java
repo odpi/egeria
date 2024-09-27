@@ -597,7 +597,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                 if (relatedLogFile != null)
                 {
-                    Connector connector = connectorFactoryService.getConnectorForAsset(relatedLogFile.getElement().getElementGUID());
+                    Connector connector = connectorFactoryService.getConnectorForAsset(relatedLogFile.getElement().getElementGUID(), auditLog);
 
                     if (connector instanceof CSVFileStoreConnector csvFileStoreConnector)
                     {
@@ -944,7 +944,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                  ConnectionCheckedException,
                                                                                                  ConnectorCheckedException
     {
-        Connector connector = connectorFactoryService.getConnectorForAsset(actionTargetElement.getElement().getElementGUID());
+        Connector connector = connectorFactoryService.getConnectorForAsset(actionTargetElement.getElement().getElementGUID(), auditLog);
 
         if (connector instanceof CSVFileStoreConnector csvFileStoreConnector)
         {

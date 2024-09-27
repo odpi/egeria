@@ -92,7 +92,7 @@ public class XTDBOMRSRepositoryConnectorProvider extends OMRSRepositoryConnector
     private static final String connectorQualifiedName = "Egeria:OMRSRepositoryConnector:XTDB";
     private static final String connectorDisplayName = "XTDB-based OMRS Repository Connector";
     private static final String connectorDescription = "Plugin open metadata repository connector that maps open metadata calls to an XTDB-based metadata repository.";
-    private static final String connectorWikiPage = "https://egeria-project.org/egeria-docs/connectors/repository/xtdb/";
+    private static final String connectorWikiPage = "https://egeria-project.org/connectors/repository/xtdb/";
 
     /*
      * Class of the connector.

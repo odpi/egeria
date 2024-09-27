@@ -57,6 +57,16 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
+
+    /**
+     * The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}
+     */
+    NEW_SERVER("OMAG-CONNECTORS-0005",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}",
+                       "The connector is has catalogued a new server.",
+                       "No action is required unless there are errors that follow indicating that there were problems with the new definition."),
+
     ;
 
     private final String                      logMessageId;

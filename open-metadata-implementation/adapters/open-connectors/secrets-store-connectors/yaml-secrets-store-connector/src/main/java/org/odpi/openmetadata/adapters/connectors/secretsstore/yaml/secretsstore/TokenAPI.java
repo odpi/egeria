@@ -22,14 +22,60 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TokenAPI
 {
-    private String              url         = null;
-    private Map<String, Object> requestBody = null;
+    private String              httpRequestType = "GET";
+    private String              url             = null;
+    private String              contentType     = "application/json";
+    private Map<String, Object> requestBody     = null;
 
     /**
      * Default constructor
      */
     public TokenAPI()
     {
+    }
+
+
+    /**
+     * Return the HTTP request type for the Token API: GET, POST etc
+     *
+     * @return string
+     */
+    public String getHttpRequestType()
+    {
+        return httpRequestType;
+    }
+
+
+    /**
+     * Set up the HTTP request type for the Token API: GET, POST etc
+     *
+     * @param httpRequestType string
+     */
+    public void setHttpRequestType(String httpRequestType)
+    {
+        this.httpRequestType = httpRequestType;
+    }
+
+
+    /**
+     * Return the content type for the API.
+     *
+     * @return content type
+     */
+    public String getContentType()
+    {
+        return contentType;
+    }
+
+
+    /**
+     * Set up the content type for the API - default is "application/json"
+     *
+     * @param contentType MIME content type
+     */
+    public void setContentType(String contentType)
+    {
+        this.contentType = contentType;
     }
 
 
@@ -86,11 +132,12 @@ public class TokenAPI
     public String toString()
     {
         return "TokenAPI{" +
-                "url='" + url + '\'' +
+                "httpRequestType='" + httpRequestType + '\'' +
+                ", url='" + url + '\'' +
+                ", contentType='" + contentType + '\'' +
                 ", requestBody=" + requestBody +
                 '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -104,7 +151,10 @@ public class TokenAPI
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TokenAPI tokenAPI = (TokenAPI) objectToCompare;
-        return Objects.equals(url, tokenAPI.url) && Objects.equals(requestBody, tokenAPI.requestBody);
+        return Objects.equals(httpRequestType, tokenAPI.httpRequestType) &&
+                Objects.equals(url, tokenAPI.url) &&
+                Objects.equals(contentType, tokenAPI.contentType) &&
+                Objects.equals(requestBody, tokenAPI.requestBody);
     }
 
 
@@ -116,6 +166,6 @@ public class TokenAPI
     @Override
     public int hashCode()
     {
-        return Objects.hash(url, requestBody);
+        return Objects.hash(httpRequestType, url, contentType, requestBody);
     }
 }

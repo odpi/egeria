@@ -7,7 +7,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
+
+import java.util.Date;
 
 /**
  * SecretsStoreConnector is the interface for a connector that is able to retrieve secrets (passwords, certificates, ...) from a secure location.
@@ -30,13 +31,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 public abstract class SecretsStoreConnector extends ConnectorBase implements AuditLoggingComponent
 {
     protected String   secretsCollectionName = null;
-    protected AuditLog auditLog = null;
+    private   Date     secretsTimeout        = null;
+    private   long     refreshTimeInterval   = 0L;
+
+    protected AuditLog auditLog              = null;
+
 
     /**
      * Return the component description that is used by this connector in the audit log.
      *
      * @return id, name, description, wiki page URL.
      */
+    @Override
     public ComponentDescription getConnectorComponentDescription()
     {
         if ((this.auditLog != null) && (this.auditLog.getReport() != null))
@@ -83,6 +89,42 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
                                               SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(),
                                               methodName);
         }
+
+        refreshTimeInterval = getRefreshTimeInterval();
+
+        resetRefreshTime();
+    }
+
+
+    /**
+     * Called by subclass to determine if the secrets should be refreshed
+     */
+    public void checkSecretsStillValid()
+    {
+        if ((secretsTimeout != null) && (! secretsTimeout.before(new Date())))
+        {
+            refreshSecrets();
+            resetRefreshTime();
+        }
+    }
+
+
+    /**
+     * Request that the subclass refreshes its secrets.
+     */
+    protected abstract void refreshSecrets();
+
+
+    /**
+     * Reset the next refresh time
+     */
+    protected void resetRefreshTime()
+    {
+        if (refreshTimeInterval != 0L)
+        {
+            long newRefreshTime = new Date().getTime() + (refreshTimeInterval * 60 * 1000);
+            secretsTimeout = new Date(newRefreshTime);
+        }
     }
 
 
@@ -92,5 +134,14 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * @param secretName name of the secret.
      * @return secret
      */
-    abstract public String getSecret(String secretName);
+    abstract public String getSecret(String secretName) throws ConnectorCheckedException;
+
+
+    /**
+     * Retrieve the refresh time from the secrets store.
+     *
+     * @return how long the secrets can be cached - 0 means indefinitely
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    abstract public long   getRefreshTimeInterval() throws ConnectorCheckedException;
 }

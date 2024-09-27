@@ -68,7 +68,31 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=281c6358-ee6f-4009-9de9-4ef92a46f393
+
+###
+# @name createElementFromTemplate (with token)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "3f7f62f6-4abc-424e-9f92-523306e7d5d5",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName" : "Databricks UC",
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "description" : "Local Unity Catalog",
+    "versionIdentifier" : "V1.0"
+  }
+}
+
+###
+
+@server1GUID=5d133ab0-efaf-4c39-aece-0a3f63bb8e63
 
 
 ###
@@ -80,6 +104,19 @@ Content-Type: application/json
 
 {
   "filter" : "Unity Catalog Server"
+}
+
+
+
+###
+# @name getTechnologyTypeElements (UC Server)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Databricks Unity Catalog Server"
 }
 
 

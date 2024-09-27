@@ -38,13 +38,15 @@ import java.util.*;
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
  */
-public abstract class ConnectorBase extends Connector implements SecureConnectorExtension
+public abstract class ConnectorBase extends Connector implements SecureConnectorExtension,
+                                                                 VirtualConnectorExtension
 {
     protected String                   connectorInstanceId      = null;
     protected ConnectionProperties     connectionProperties     = null;
     protected Connection               connectionBean           = null;
     protected ConnectedAssetProperties           connectedAssetProperties = null;
     protected Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
+    protected List<Connector>     embeddedConnectors = null;
 
     private volatile boolean           isActive                 = false;
 
@@ -88,6 +90,21 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         this.connectionBean = protectedConnection.getConnectionBean();
 
         log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
+    }
+
+
+    /**
+     * Set up the list of connectors that this virtual connector will use to support its interface.
+     * The connectors are initialized waiting to start.  When start() is called on the
+     * virtual connector, it needs to pass start() to each of the embedded connectors.
+     * Similar processing is needed for the disconnect() method.
+     *
+     * @param embeddedConnectors list of connectors
+     */
+    @Override
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -586,6 +603,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     public void disconnect() throws ConnectorCheckedException
     {
         setIsActive(false);
+        disconnectConnectors(embeddedConnectors);
     }
 
 

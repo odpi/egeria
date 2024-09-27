@@ -9,21 +9,13 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDa
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +28,11 @@ import java.util.Map;
  * <br><br>
  * The DataSource can be used directly.  There are also selected methods to issue common SQL statements to the database.
  */
-public class JDBCResourceConnector extends ConnectorBase implements AuditLoggingComponent,
-                                                                    VirtualConnectorExtension
+public class JDBCResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
     private AuditLog                        auditLog           = null;
     private String                          jdbcDatabaseName   = null;
     private String                          jdbcDatabaseURL    = null;
-    private List<Connector>                 embeddedConnectors = null;
 
     private final List<JDBCConnectorAsDataSource> knownDataSources   = new ArrayList<>();
 
@@ -74,21 +64,6 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 

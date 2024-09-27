@@ -244,7 +244,8 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                                   serverPlatformURLRoot,
                                                   userId,
                                                   password,
-                                                  null);
+                                                  null,
+                                                  auditLog);
         }
         else
         {

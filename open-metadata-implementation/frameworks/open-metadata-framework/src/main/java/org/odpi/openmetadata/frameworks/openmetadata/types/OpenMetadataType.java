@@ -3905,8 +3905,8 @@ public enum OpenMetadataType
     /* Area 4 - Governance                                                                                                         */
     /* ============================================================================================================================*/
 
-    public static final String GOVERNANCE_DOMAIN_TYPE_GUID = "578a3500-9ad3-45fe-8ada-e4e9572c37c8";
-    public static final String GOVERNANCE_DOMAIN_TYPE_NAME = "GovernanceDomainDescription";
+    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID = "084cd115-5d0d-4f12-8093-697526a120ea";
+    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME = "GovernanceDomainDescription";
     /* Referenceable */
 
     public static final String GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME = "GovernanceDomainSet";

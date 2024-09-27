@@ -84,7 +84,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
      */
     GET_CATALOG_TARGET_EXCEPTION("OIF-CONNECTOR-0006",
                                 AuditLogRecordSeverityLevel.ERROR,
-                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}",
+                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the catalog targets.  The error message was {2}",
                                 "The exception is logged and the integration connector waits for the next refresh.",
                                 "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
                                         "resolved, follow the instructions to prepare the integration connector for the next refresh."),
@@ -94,7 +94,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
      */
     NO_CATALOG_TARGETS("OIF-CONNECTOR-0007",
                                  AuditLogRecordSeverityLevel.INFO,
-                                 "No action targets are defined for the {0} integration connector",
+                                 "No catalog targets are defined for the {0} integration connector",
                                  "The integration connector waits for the next refresh.",
                                  "Add one or more action targets to the integration connector to provide it with work to do."),
 

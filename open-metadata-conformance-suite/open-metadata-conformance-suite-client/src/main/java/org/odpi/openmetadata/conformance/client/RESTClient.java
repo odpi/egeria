@@ -80,6 +80,7 @@ class RESTClient
                                                            serverPlatformURLRoot,
                                                            userId,
                                                            password,
+                                                           null,
                                                            null);
 
         try

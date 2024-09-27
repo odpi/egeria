@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -462,7 +463,9 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
     /**
      * Return the connector to the requested asset.
      *
+     * @param userId calling user
      * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @param auditLog    optional logging destination
      * @return Open Connector Framework (OCF) connector
      * @throws InvalidParameterException  the asset guid is not recognized or the userId is null
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -473,13 +476,14 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      * @throws PropertyServerException    there was a problem in the store whether the asset/connection properties are kept.
      */
     @Override
-    public Connector getConnectorToAsset(String userId,
-                                         String assetGUID) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException,
-                                                                  ConnectionCheckedException,
-                                                                  ConnectorCheckedException
+    public Connector getConnectorToAsset(String   userId,
+                                         String   assetGUID,
+                                         AuditLog auditLog) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException,
+                                                                   ConnectionCheckedException,
+                                                                   ConnectorCheckedException
     {
-        return connectedAssetClientBase.getConnectorForAsset(userId, assetGUID);
+        return connectedAssetClientBase.getConnectorForAsset(userId, assetGUID, auditLog);
     }
 }

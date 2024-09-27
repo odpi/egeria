@@ -38,12 +38,10 @@ import java.util.Map;
  * five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.
  */
 public abstract class GovernanceActionServiceConnector extends ConnectorBase implements GovernanceActionService,
-                                                                                        AuditLoggingComponent,
-                                                                                        VirtualConnectorExtension
+                                                                                        AuditLoggingComponent
 {
     protected String          governanceServiceName = "<Unknown>";
     protected AuditLog        auditLog = null;
-    protected List<Connector> embeddedConnectors = null;
     protected PropertyHelper  propertyHelper = new PropertyHelper();
 
     /**
@@ -73,20 +71,6 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
