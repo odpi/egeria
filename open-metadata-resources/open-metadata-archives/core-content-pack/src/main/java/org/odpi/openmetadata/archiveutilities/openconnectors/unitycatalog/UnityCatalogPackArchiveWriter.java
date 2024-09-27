@@ -105,7 +105,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
 
         /*
-         * Create a sample process
+         * Create Processes for working with Unity Catalog
          */
         this.createAndSurveyServerGovernanceActionProcess("UnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
@@ -116,6 +116,19 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("UnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_UC_SERVER,
+                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                           RequestTypeDefinition.CATALOG_UC_SERVER,
+                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+
+        this.createAndSurveyServerGovernanceActionProcess("DatabricksUnityCatalogServer",
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_DB_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                          RequestTypeDefinition.SURVEY_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE);
+        this.createAndCatalogServerGovernanceActionProcess("DatabricksUnityCatalogServer",
+                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                           RequestTypeDefinition.CREATE_DB_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
