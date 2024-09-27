@@ -1551,7 +1551,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         if (step2GUID != null)
         {
-            addStepExecutor(step1GUID, surveyRequestType, surveyEngineDefinition);
+            addStepExecutor(step2GUID, surveyRequestType, surveyEngineDefinition);
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, CreateServerGuard.SET_UP_COMPLETE.getName(), false, step2GUID);
         }

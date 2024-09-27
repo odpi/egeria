@@ -415,6 +415,19 @@ public enum RequestTypeDefinition
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
+     * create-databricks-unity-catalog-server
+     */
+    CREATE_DB_UC_SERVER("create-databricks-unity-catalog-server",
+                     null,
+                     getCreateServerRequestParameters(SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.CREATE_SERVER,
+                     "323d8a5c-4f79-4bc0-a35a-0c39d1990a9e",
+                     null,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
      * catalog-unity-catalog-server
      */
     CATALOG_UC_SERVER("catalog-unity-catalog-server",
