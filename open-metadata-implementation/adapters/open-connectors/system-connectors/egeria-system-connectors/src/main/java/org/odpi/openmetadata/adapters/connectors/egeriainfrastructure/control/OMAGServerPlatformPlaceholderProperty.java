@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
@@ -33,6 +34,14 @@ public enum OMAGServerPlatformPlaceholderProperty
                       "string",
                       "garygeeke"),
 
+
+    /**
+     * Location of the secrets store.
+     */
+    SECRETS_STORE (PlaceholderProperty.SECRETS_STORE.getName(),
+                   PlaceholderProperty.SECRETS_STORE.getDescription(),
+                   PlaceholderProperty.SECRETS_STORE.getDataType(),
+                   PlaceholderProperty.SECRETS_STORE.getExample()),
 
     /**
      * The name of the server being catalogued.

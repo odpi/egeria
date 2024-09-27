@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,22 @@ import java.util.List;
 public enum OMAGServerPlatformConfigurationProperty
 {
     /**
-     * Unique identifier of the template to use when creating a software server element to represent an integration daemon.
+     * Unique identifier of a server running on the platform.
      */
     SERVER_NAME ("serverName",
                  "Unique name of the OMAG Server.",
                  "string",
                  "cocoMDS1",
                  false),
+
+    /**
+     * Location of the secrets store.
+     */
+    SECRETS_STORE (OMAGServerPlatformPlaceholderProperty.SECRETS_STORE.getName(),
+                   OMAGServerPlatformPlaceholderProperty.SECRETS_STORE.getDescription(),
+                   OMAGServerPlatformPlaceholderProperty.SECRETS_STORE.getDataType(),
+                   OMAGServerPlatformPlaceholderProperty.SECRETS_STORE.getExample(),
+                   true),
 
     ;
 

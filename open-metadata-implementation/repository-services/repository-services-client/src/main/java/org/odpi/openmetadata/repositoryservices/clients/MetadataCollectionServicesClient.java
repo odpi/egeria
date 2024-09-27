@@ -5270,7 +5270,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                   serverPlatformURLRoot,
                                                   userId,
                                                   password,
-                                                  null);
+                                                  null,
+                                                  auditLog);
         }
         else
         {

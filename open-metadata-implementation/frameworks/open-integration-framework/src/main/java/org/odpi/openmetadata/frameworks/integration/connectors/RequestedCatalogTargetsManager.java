@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
@@ -183,7 +184,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
         {
-            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorToAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID());
+            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorToAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
         }
 
         RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget, connectorToTarget);

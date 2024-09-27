@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -70,6 +71,7 @@ public class ConnectorFactoryService
      * Returns the connector corresponding to the supplied asset GUID.
      *
      * @param assetGUID   the unique id for the asset within the metadata repository.
+     * @param auditLog    optional logging destination
      *
      * @return    connector instance - or null if there is no connection
      *
@@ -80,13 +82,14 @@ public class ConnectorFactoryService
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public Connector getConnectorForAsset(String assetGUID) throws InvalidParameterException,
-                                                                   ConnectionCheckedException,
-                                                                   ConnectorCheckedException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public Connector getConnectorForAsset(String   assetGUID,
+                                          AuditLog auditLog) throws InvalidParameterException,
+                                                                    ConnectionCheckedException,
+                                                                    ConnectorCheckedException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
-        return connectedAssetClient.getConnectorForAsset(userId, assetGUID);
+        return connectedAssetClient.getConnectorForAsset(userId, assetGUID, auditLog);
     }
 
 

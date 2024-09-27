@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
@@ -37,8 +36,7 @@ import java.util.*;
  * discovery pipelines.
  */
 public abstract class SurveyActionServiceConnector extends ConnectorBase implements SurveyActionService,
-                                                                                    AuditLoggingComponent,
-                                                                                    VirtualConnectorExtension
+                                                                                    AuditLoggingComponent
 {
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -79,21 +77,6 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of survey action services connectors that will be invoked as part of this survey action pipeline.
-     * The connectors are initialized waiting to start.  After start() is called on the
-     * survey action pipeline, it will choreograph the invocation of its embedded survey action services by calling
-     * start() to each of them when they are to run. Similar processing is needed for the disconnect() method.
-     *
-     * @param embeddedConnectors list of embedded connectors that are hopefully survey action services
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -1001,7 +984,6 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
             surveyContext.disconnect();
         }
 
-        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
     }
 }

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
@@ -485,7 +486,7 @@ public enum RequestTypeDefinition
      */
     CREATE_OMAG_SERVER_PLATFORM("create-omag-server-platform",
                         null,
-                        getCreateServerRequestParameters(SoftwareServerTemplateDefinition.OMAG_SERVER_PLATFORM_TEMPLATE.getTemplateGUID()),
+                        getCreateServerRequestParameters(EgeriaSoftwareServerTemplateDefinition.OMAG_SERVER_PLATFORM_TEMPLATE.getTemplateGUID()),
                         null,
                         GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_SERVER,

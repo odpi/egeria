@@ -880,6 +880,7 @@ public class EgeriaExtractor
 
         if (configuration != null)
         {
+            currentDetails.setMaxPageSize(configuration.getMaxPageSize());
             currentDetails.setDescription(configuration.getLocalServerDescription());
             currentDetails.setOrganizationName(configuration.getOrganizationName());
             currentDetails.setSecurityConnection(configuration.getServerSecurityConnection());

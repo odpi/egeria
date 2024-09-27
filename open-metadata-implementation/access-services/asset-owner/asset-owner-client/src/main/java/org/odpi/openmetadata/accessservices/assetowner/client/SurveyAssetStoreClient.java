@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -22,6 +23,7 @@ public class SurveyAssetStoreClient extends SurveyAssetStore
     private final ConnectedAssetClient connectedAssetClient;
     private final FileSystemAssetOwner fileSystemAssetOwner;
     private final CSVFileAssetOwner    csvFileAssetOwner;
+    private final AuditLog             auditLog;
 
     /**
      * Constructor.
@@ -37,13 +39,15 @@ public class SurveyAssetStoreClient extends SurveyAssetStore
                                   String               userId,
                                   ConnectedAssetClient connectedAssetClient,
                                   FileSystemAssetOwner fileSystemAssetOwner,
-                                  CSVFileAssetOwner    csvFileAssetOwner)
+                                  CSVFileAssetOwner    csvFileAssetOwner,
+                                  AuditLog             auditLog)
     {
         super(assetGUID, userId);
 
         this.connectedAssetClient = connectedAssetClient;
         this.fileSystemAssetOwner = fileSystemAssetOwner;
         this.csvFileAssetOwner    = csvFileAssetOwner;
+        this.auditLog             = auditLog;
     }
 
 
@@ -112,7 +116,7 @@ public class SurveyAssetStoreClient extends SurveyAssetStore
     @Override
     public Connector getConnectorToAsset() throws InvalidParameterException, ConnectionCheckedException, ConnectorCheckedException, UserNotAuthorizedException, PropertyServerException
     {
-        return connectedAssetClient.getConnectorForAsset(userId, assetGUID);
+        return connectedAssetClient.getConnectorForAsset(userId, assetGUID, auditLog);
     }
 
 

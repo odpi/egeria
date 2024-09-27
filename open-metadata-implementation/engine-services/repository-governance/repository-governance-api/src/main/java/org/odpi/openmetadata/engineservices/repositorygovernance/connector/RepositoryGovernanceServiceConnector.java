@@ -19,8 +19,7 @@ import java.util.List;
  * The returned archive context also contains the status of this service.
  */
 public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase implements RepositoryGovernanceService,
-                                                                                            AuditLoggingComponent,
-                                                                                            VirtualConnectorExtension
+                                                                                            AuditLoggingComponent
 {
     /*
      * Controls for the connector
@@ -28,8 +27,6 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
     protected String                      repositoryGovernanceServiceName = "<Unknown>";
     protected RepositoryGovernanceContext repositoryGovernanceContext     = null;
     protected AuditLog                    auditLog                        = null;
-    protected List<Connector>             embeddedConnectors              = null;
-
 
 
     /**
@@ -59,21 +56,6 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -170,18 +152,5 @@ public abstract class RepositoryGovernanceServiceConnector extends ConnectorBase
                                                 this.getClass().getName(),
                                                 methodName);
         }
-    }
-
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
-    {
-        super.disconnectConnectors(this.embeddedConnectors);
-        super.disconnect();
     }
 }

@@ -136,7 +136,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
             String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement().getUniqueName());
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseServerGUID);
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseServerGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 

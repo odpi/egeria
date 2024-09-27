@@ -46,13 +46,8 @@ public class OpenMetadataTopicConsumerBase extends ConnectorBase implements Virt
             {
                 if (embeddedConnector != null)
                 {
-                    if (embeddedConnector instanceof OpenMetadataTopicConnector)
+                    if (embeddedConnector instanceof OpenMetadataTopicConnector eventBusConnector)
                     {
-                        /*
-                         * Successfully found an event bus connector of the right type.
-                         */
-                        OpenMetadataTopicConnector eventBusConnector = (OpenMetadataTopicConnector)embeddedConnector;
-
                         /*
                          * Save the event bus connector, so it can be started and disconnected when appropriate.
                          */

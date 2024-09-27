@@ -5,22 +5,27 @@ package org.odpi.openmetadata.frameworks.connectors.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * SecretsStoreConfigurationProperty provides definitions for typical properties used with the secrets store collections.
  */
 public enum SecretsStoreCollectionProperty
 {
     /**
+     * The time interval in minutes that tokens should be kept.
+     */
+    REFRESH_TIME_INTERVAL("refreshTimeInterval",
+                          "The time interval in minutes that tokens should be kept.",
+                          DataType.LONG.getName(),
+                          "360"),
+
+
+    /**
      * The name used to identify the collection of properties that a particular connector is using.
      */
     USER_ID("userId",
             "The name used to identify the connector to the remote system.",
             DataType.STRING.getName(),
-            "connectornpa",
-            true),
+            "connectornpa"),
 
     /**
      * A password used to prove a user's identity - in clear text.
@@ -28,8 +33,7 @@ public enum SecretsStoreCollectionProperty
     CLEAR_PASSWORD("clearPassword",
                    "A password used to prove a user's identity - in clear text.",
                    DataType.STRING.getName(),
-                   "secret",
-                   true),
+                   "secret"),
 
 
     /**
@@ -38,8 +42,7 @@ public enum SecretsStoreCollectionProperty
     ENCRYPTED_PASSWORD("encryptedPassword",
                        "A password used to prove a user's identity - encrypted.",
                        DataType.STRING.getName(),
-                       null,
-                       true),
+                       null),
 
     /**
      * An encrypted token to provide access to a remote digital resource.
@@ -47,8 +50,7 @@ public enum SecretsStoreCollectionProperty
     TOKEN("accessToken",
           "An encrypted token to provide access to a remote digital resource.",
           DataType.STRING.getName(),
-          null,
-          true),
+          null),
 
 
     /**
@@ -57,8 +59,7 @@ public enum SecretsStoreCollectionProperty
     TOKEN_URL("accessTokenURL",
           "A URL to retrieve an access token.",
           DataType.STRING.getName(),
-          null,
-          true),
+          null),
 
     ;
 
@@ -66,8 +67,6 @@ public enum SecretsStoreCollectionProperty
     public final String           description;
     public final String           dataType;
     public final String           example;
-    public final boolean          isPlaceholder;
-
 
     /**
      * Create a specific Enum constant.
@@ -76,19 +75,16 @@ public enum SecretsStoreCollectionProperty
      * @param description description of the request parameter
      * @param dataType type of value of the request parameter
      * @param example example of the request parameter
-     * @param isPlaceholder is this also used as a placeholder property?
      */
     SecretsStoreCollectionProperty(String  name,
                                    String  description,
                                    String  dataType,
-                                   String  example,
-                                   boolean isPlaceholder)
+                                   String  example)
     {
         this.name          = name;
         this.description   = description;
         this.dataType      = dataType;
         this.example       = example;
-        this.isPlaceholder = isPlaceholder;
     }
 
 
@@ -133,17 +129,6 @@ public enum SecretsStoreCollectionProperty
     public String getExample()
     {
         return example;
-    }
-
-
-    /**
-     * Return whether this value is also used as a placeholder property.
-     *
-     * @return boolean
-     */
-    public boolean isPlaceholder()
-    {
-        return isPlaceholder;
     }
 
 

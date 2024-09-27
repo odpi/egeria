@@ -12,42 +12,23 @@ import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTCl
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataClassificationDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEntityDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataEnumElementDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipEndCardinality;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefAttribute;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefLink;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
 import org.springframework.core.ParameterizedTypeReference;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
  * ApacheAtlasRESTConnector is responsible for issuing calls to the Apache Atlas REST APIs.  It covers basic calls such as retrieving and adding
  * types, entities, relationships, labels, classifications and business metadata.
  */
-public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLoggingComponent,
-                                                                       VirtualConnectorExtension
+public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLoggingComponent
 {
     public static final String OPEN_METADATA_TYPE_PREFIX = "OpenMetadata";
     public static final String SERVICE_TYPE              = "open_metadata_ecosystem";
@@ -56,7 +37,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     private AuditLog                  auditLog            = null;
     private String                    atlasServerName    = "Apache Atlas";
     private String                    targetRootURL      = null;
-    private List<Connector>           embeddedConnectors = null; // todo in preparation for using the secrets connector
     private String                    connectorName      = "Apache Atlas REST Connector";
     private RESTClientConnector       clientConnector    = null;
 
@@ -106,21 +86,6 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
         }
 
         return null;
-    }
-
-
-    /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -185,7 +150,8 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
                                                                targetRootURL,
                                                                connectionProperties.getUserId(),
                                                                connectionProperties.getClearPassword(),
-                                                               secretsStoreConnectorMap);
+                                                               secretsStoreConnectorMap,
+                                                               auditLog);
 
             this.clientConnector = factory.getClientConnector();
 

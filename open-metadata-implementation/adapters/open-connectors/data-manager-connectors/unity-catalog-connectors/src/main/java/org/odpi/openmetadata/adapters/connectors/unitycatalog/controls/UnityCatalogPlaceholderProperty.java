@@ -162,6 +162,26 @@ public enum UnityCatalogPlaceholderProperty
         return placeholderPropertyTypes;
     }
 
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getSecureServerPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
     /**
      * Retrieve all the defined placeholder properties
      *

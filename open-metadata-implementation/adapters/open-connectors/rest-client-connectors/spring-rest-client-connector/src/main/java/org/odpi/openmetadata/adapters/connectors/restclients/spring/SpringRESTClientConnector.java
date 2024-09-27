@@ -10,9 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
-import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
@@ -49,7 +48,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     private String      serverPlatformURLRoot      = null;
     private HttpHeaders authorizationHeader        = null;
     private Date        authorizationHeaderTimeout = null;
-    private long       refreshTimeInterval         = 0L;
+    private long        refreshTimeInterval         = 0L;
     private final MessageFormatter messageFormatter = new MessageFormatter();
 
     private static final Logger log = LoggerFactory.getLogger(SpringRESTClientConnector.class);
@@ -87,18 +86,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
+
     /**
-     * Initialize the connector.
+     * Indicates that the connector is completely configured and can begin processing.
      *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
-        EndpointProperties   endpoint             = connectionProperties.getEndpoint();
+        EndpointProperties  endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
         {
@@ -113,16 +112,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
             this.serverName = null;
         }
 
-        refreshTimeInterval = super.getLongConfigurationProperty(SecretsStoreConfigurationProperty.REFRESH_TIME_INTERVAL.getName(), connectionProperties.getConfigurationProperties());
-
         refreshAuthorizationToken();
     }
 
 
     /**
      * Retrieve new values for the authorization header.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    private void refreshAuthorizationToken()
+    private void refreshAuthorizationToken() throws ConnectorCheckedException
     {
         String userId = connectionProperties.getUserId();
         String password = connectionProperties.getClearPassword();
@@ -137,6 +136,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
                 if (secretsStoreConnector != null)
                 {
+                    refreshTimeInterval = secretsStoreConnector.getRefreshTimeInterval();
+
                     if (SecretsStorePurpose.REST_BEARER_TOKEN.getName().equals(secretsStorePurpose))
                     {
                         String token = secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.TOKEN.getName());
@@ -170,13 +171,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
         else
         {
             log.debug("Using no authentication to call server {} on platform {} .", this.serverName, this.serverPlatformURLRoot );
-
         }
 
         if (refreshTimeInterval != 0L)
         {
             long newRefreshTime = new Date().getTime() + (refreshTimeInterval * 60 * 1000);
             authorizationHeaderTimeout = new Date(newRefreshTime);
+        }
+        else
+        {
+            authorizationHeaderTimeout = null;
         }
     }
 
@@ -225,8 +229,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * any authorisation headers and adds them to the list.
      *
      * @return http headers
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    private HttpHeaders getHttpHeaders()
+    private HttpHeaders getHttpHeaders() throws ConnectorCheckedException
     {
         HttpHeaders headers = new HttpHeaders();
 

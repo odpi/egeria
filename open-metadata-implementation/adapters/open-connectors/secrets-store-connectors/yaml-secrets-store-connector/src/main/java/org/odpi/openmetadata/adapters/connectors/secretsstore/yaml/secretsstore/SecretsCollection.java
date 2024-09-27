@@ -22,8 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecretsCollection
 {
-    private Map<String, String> secrets = null;
-    private TokenAPI            tokenAPI = null;
+    private long                refreshTimeInterval = 60L;
+    private Map<String, String> secrets             = null;
+    private TokenAPI            tokenAPI            = null;
+
 
     /**
      * Default constructor
@@ -33,27 +35,55 @@ public class SecretsCollection
     }
 
 
+    public long getRefreshTimeInterval()
+    {
+        return refreshTimeInterval;
+    }
+
+    public void setRefreshTimeInterval(long getRefreshTimeInterval)
+    {
+        this.refreshTimeInterval = getRefreshTimeInterval;
+    }
+
+
     /**
      * Return the list of secrets.
      *
-     * @return
+     * @return map of secret values
      */
     public Map<String, String> getSecrets()
     {
         return secrets;
     }
 
+
+    /**
+     * Set up the in memory version of the secrets collection.
+     *
+     * @param secrets a map of secrets values
+     */
     public void setSecrets(Map<String, String> secrets)
     {
         this.secrets = secrets;
     }
 
 
+    /**
+     * Return details of a token API associated with the secrets collection.
+     *
+     * @return token API definition
+     */
     public TokenAPI getTokenAPI()
     {
         return tokenAPI;
     }
 
+
+    /**
+     * Set up the token API for this secrets collection.
+     *
+     * @param tokenAPI token API definition
+     */
     public void setTokenAPI(TokenAPI tokenAPI)
     {
         this.tokenAPI = tokenAPI;
@@ -69,10 +99,12 @@ public class SecretsCollection
     public String toString()
     {
         return "SecretsCollection{" +
-                "secrets=" + secrets +
+                "refreshTimeInterval=" + refreshTimeInterval +
+                ", secrets=" + secrets +
                 ", tokenAPI=" + tokenAPI +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -86,9 +118,10 @@ public class SecretsCollection
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SecretsCollection that = (SecretsCollection) objectToCompare;
-        return Objects.equals(secrets, that.secrets) && Objects.equals(tokenAPI, that.tokenAPI);
+        return refreshTimeInterval == that.refreshTimeInterval &&
+                Objects.equals(secrets, that.secrets) &&
+                Objects.equals(tokenAPI, that.tokenAPI);
     }
-
 
     /**
      * Hash of properties
@@ -98,6 +131,6 @@ public class SecretsCollection
     @Override
     public int hashCode()
     {
-        return Objects.hash(secrets, tokenAPI);
+        return Objects.hash(refreshTimeInterval, secrets, tokenAPI);
     }
 }

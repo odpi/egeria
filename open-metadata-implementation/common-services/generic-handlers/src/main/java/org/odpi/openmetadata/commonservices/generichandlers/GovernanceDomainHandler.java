@@ -111,7 +111,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -119,7 +119,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -186,7 +186,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(governanceDomainGUID, governanceDomainGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -194,7 +194,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -253,8 +253,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     governanceDomainGUID,
                                     governanceDomainGUIDParameterName,
-                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                     null,
                                     null,
                                     false,
@@ -293,8 +293,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                              OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+                              OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -338,8 +338,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+                                    OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -395,7 +395,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.COLLECTION.typeName,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -433,7 +433,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                          OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                           false,
                                           false,
                                           new Date(),
@@ -466,8 +466,8 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         "GovernanceDomain:" + domainIdentifier,
                                         OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                         OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
-                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                        OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+                                        OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                         false,
                                         false,
                                         supportedZones,

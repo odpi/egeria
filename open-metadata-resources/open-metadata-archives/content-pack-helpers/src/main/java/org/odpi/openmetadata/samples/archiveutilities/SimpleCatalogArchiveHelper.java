@@ -2127,7 +2127,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
-        EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+        EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
@@ -4208,6 +4208,60 @@ public class SimpleCatalogArchiveHelper
                                 String              anchorTypeName,
                                 String              anchorDomainName)
     {
+        return this.addConnection(OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  qualifiedName,
+                                  displayName,
+                                  description,
+                                  userId,
+                                  clearPassword,
+                                  encryptedPassword,
+                                  securedProperties,
+                                  configurationProperties,
+                                  additionalProperties,
+                                  connectorTypeGUID,
+                                  endpointGUID,
+                                  anchorGUID,
+                                  anchorTypeName,
+                                  anchorDomainName);
+    }
+
+
+    /**
+     * Create a connection entity.
+     *
+     * @param qualifiedName unique name for the connection
+     * @param displayName display name for the connection
+     * @param description description about the connection
+     * @param userId userId that the connector should use to connect to the platform that hosts the asset.
+     * @param clearPassword possible password for the connector
+     * @param encryptedPassword possible password for the connector
+     * @param securedProperties properties hidden from the client
+     * @param configurationProperties properties used to configure the connector
+     * @param additionalProperties any other properties.
+     * @param connectorTypeGUID unique identifier for the connector type
+     * @param endpointGUID unique identifier for the endpoint of the asset
+     * @param anchorGUID unique identifier for the anchor - can be null
+     * @param anchorTypeName unique type name of the anchor - set if anchorGUID set.
+     * @param anchorDomainName unique type name of the anchor's domain - set if anchorGUID set.
+     *
+     * @return id for the connection
+     */
+    public String addConnection(String              typeName,
+                                String              qualifiedName,
+                                String              displayName,
+                                String              description,
+                                String              userId,
+                                String              clearPassword,
+                                String              encryptedPassword,
+                                Map<String, String> securedProperties,
+                                Map<String, Object> configurationProperties,
+                                Map<String, String> additionalProperties,
+                                String              connectorTypeGUID,
+                                String              endpointGUID,
+                                String              anchorGUID,
+                                String              anchorTypeName,
+                                String              anchorDomainName)
+    {
         final String methodName = "addConnection";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -4229,7 +4283,7 @@ public class SimpleCatalogArchiveHelper
             entityClassifications.add(getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
         }
 
-        EntityDetail connectionEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTION_TYPE_NAME,
+        EntityDetail connectionEntity = archiveHelper.getEntityDetail(typeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
@@ -4268,6 +4322,55 @@ public class SimpleCatalogArchiveHelper
         }
 
         return connectionEntity.getGUID();
+    }
+
+
+    /**
+     * Add an EmbeddedConnection relationship.
+     *
+     * @param parentConnectionGUID virtual connection
+     * @param position position of child connector
+     * @param displayName name of embedded/child connector
+     * @param arguments additional properties
+     * @param childConnectionGUID embedded connection
+     */
+    public void addEmbeddedConnection(String             parentConnectionGUID,
+                                      int                position,
+                                      String             displayName,
+                                      Map<String,String> arguments,
+                                      String             childConnectionGUID)
+    {
+        final String methodName = "addEmbeddedConnection";
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName,
+                                                                               null,
+                                                                               OpenMetadataProperty.POSITION.name,
+                                                                               position,
+                                                                               methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataProperty.DISPLAY_NAME.name,
+                                                               displayName,
+                                                               methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                  properties,
+                                                                  OpenMetadataType.ARGUMENTS_PROPERTY_NAME,
+                                                                  arguments,
+                                                                  methodName);
+
+        EntityDetail parentEntity = archiveBuilder.getEntity(parentConnectionGUID);
+        EntityDetail childEntity = archiveBuilder.getEntity(childConnectionGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(parentEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(childEntity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(parentConnectionGUID + "_to_" + childConnectionGUID + "_embedded_connection_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+
     }
 
 

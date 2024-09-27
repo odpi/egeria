@@ -43,27 +43,11 @@ public class FFDCRESTClientBase
                                  String    serverPlatformURLRoot,
                                  AuditLog  auditLog) throws InvalidParameterException
     {
-        this(serverName, serverPlatformURLRoot);
-
-        this.auditLog = auditLog;
-    }
-
-
-    /**
-     * Constructor for no authentication.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     * REST API calls.
-     */
-    protected FFDCRESTClientBase(String serverName,
-                                 String serverPlatformURLRoot) throws InvalidParameterException
-    {
         final String  methodName = "RESTClient(no authentication)";
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
 
         RESTClientFactory factory = new RESTClientFactory(serverName, serverPlatformURLRoot);
 
@@ -79,6 +63,21 @@ public class FFDCRESTClientBase
                                                 error,
                                                 "serverPlatformURLRoot or serverName");
         }
+    }
+
+
+    /**
+     * Constructor for no authentication.
+     *
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    protected FFDCRESTClientBase(String serverName,
+                                 String serverPlatformURLRoot) throws InvalidParameterException
+    {
+        this(serverName, serverPlatformURLRoot, null);
     }
 
 
@@ -99,9 +98,32 @@ public class FFDCRESTClientBase
                                  String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        this(serverName, serverPlatformURLRoot, userId, password);
+        final String  methodName = "RESTClient(userId and password)";
 
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
         this.auditLog = auditLog;
+
+
+        RESTClientFactory  factory = new RESTClientFactory(serverName,
+                                                           serverPlatformURLRoot,
+                                                           userId,
+                                                           password,
+                                                           null,
+                                                           auditLog);
+
+        try
+        {
+            this.clientConnector = factory.getClientConnector();
+        }
+        catch (Exception     error)
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "serverPlatformURLRoot or serverName");
+        }
     }
 
 
@@ -120,29 +142,7 @@ public class FFDCRESTClientBase
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(userId and password)";
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           serverPlatformURLRoot,
-                                                           userId,
-                                                           password,
-                                                           null);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Exception     error)
-        {
-            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(serverName, error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
+        this(serverName, serverPlatformURLRoot, userId, password, null);
     }
 
 

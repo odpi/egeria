@@ -4,12 +4,22 @@
 package org.odpi.openmetadata.adapters.connectors.secretsstore.envar;
 
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
 /**
  * EnvVarSecretsStoreConnector retrieves secrets from environment variables.  Each secret is named for its environment variable.
  */
 public class EnvVarSecretsStoreConnector extends SecretsStoreConnector
 {
+    /**
+     * Request that the subclass refreshes its secrets.
+     */
+    protected void refreshSecrets()
+    {
+        // nothing to do
+    }
+
+
     /**
      * Retrieve a secret from the secrets store.
      *
@@ -20,5 +30,17 @@ public class EnvVarSecretsStoreConnector extends SecretsStoreConnector
     public String getSecret(String secretName)
     {
         return System.getenv(secretsCollectionName + "_" + secretName);
+    }
+
+
+    /**
+     * Retrieve the refresh time from the secrets store.
+     *
+     * @return how long the secrets can be cached - 0 means indefinitely
+     */
+    @Override
+    public long   getRefreshTimeInterval()
+    {
+        return 0L;
     }
 }

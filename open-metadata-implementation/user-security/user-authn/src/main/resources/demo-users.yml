@@ -161,3 +161,8 @@ egeria:
       name: Egeria Connector
       password: ${demoUserPassword}
       roles: COCO_PHARMA_USER
+    viewnpa:
+      username: viewnpa
+      name: Egeria Connector
+      password: ${demoUserPassword}
+      roles: COCO_PHARMA_USER

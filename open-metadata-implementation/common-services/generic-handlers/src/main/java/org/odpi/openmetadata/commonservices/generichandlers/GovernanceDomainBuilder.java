@@ -74,8 +74,8 @@ public class GovernanceDomainBuilder extends ReferenceableBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+        super(OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+              OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);

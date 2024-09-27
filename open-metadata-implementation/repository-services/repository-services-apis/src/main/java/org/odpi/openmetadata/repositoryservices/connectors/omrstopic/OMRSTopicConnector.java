@@ -72,8 +72,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
     private static final String unknownTopicName = "<Unknown>";
 
-    private List<Connector> embeddedConnectors = null;
-
     private final List<OMRSTopicListener>          internalTopicListeners = new ArrayList<>();
     private final List<OpenMetadataTopicConnector> eventBusConnectors     = new ArrayList<>();
 
@@ -90,19 +88,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     public OMRSTopicConnector()
     {
         super();
-    }
-
-
-    /**
-     * Registers itself as a listener of any OpenMetadataTopicConnectors that are passed as
-     * embedded connectors.
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -626,7 +611,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
-        super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
 
         final String actionDescription = "Disconnect OMRS Topic Connector";

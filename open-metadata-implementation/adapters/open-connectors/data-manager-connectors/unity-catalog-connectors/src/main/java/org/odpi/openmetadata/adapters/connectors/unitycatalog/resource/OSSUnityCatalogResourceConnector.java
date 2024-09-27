@@ -118,7 +118,8 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                                               targetRootURL,
                                                               connectionProperties.getUserId(),
                                                               connectionProperties.getClearPassword(),
-                                                              secretsStoreConnectorMap);
+                                                              secretsStoreConnectorMap,
+                                                              auditLog);
 
             this.clientConnector = factory.getClientConnector();
 

@@ -78,6 +78,7 @@ public class AdminServicesRESTClient
                                                            serverPlatformURLRoot,
                                                            userId,
                                                            password,
+                                                           null,
                                                            null);
 
         try
