@@ -151,8 +151,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorToAsset(java.lang.String,java.lang.String)" class="member-name-link">getConnectorToAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorToAsset(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">getConnectorToAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the connector to the requested asset.</div>
 </div>
@@ -440,6 +441,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
 <dt>Returns:</dt>
 <dd>guid</dd>
@@ -467,6 +469,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
 <dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
 <dt>Returns:</dt>
@@ -492,6 +495,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
 <dt>Returns:</dt>
 <dd>a comprehensive collection of properties about the asset.</dd>
@@ -503,10 +507,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectorToAsset(java.lang.String,java.lang.String)">
+<section class="detail" id="getConnectorToAsset(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>getConnectorToAsset</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                                        throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -515,7 +520,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the connector to the requested asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
+<dd><code>auditLog</code> - optional logging destination</dd>
 <dt>Returns:</dt>
 <dd>Open Connector Framework (OCF) connector</dd>
 <dt>Throws:</dt>

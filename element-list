@@ -345,6 +345,7 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.envar
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml
+org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.ffdc
 org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
