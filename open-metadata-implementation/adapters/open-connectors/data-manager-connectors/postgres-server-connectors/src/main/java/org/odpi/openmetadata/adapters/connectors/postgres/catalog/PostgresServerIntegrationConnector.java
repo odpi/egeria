@@ -456,10 +456,10 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                          databaseUserId);
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.CLEAR_PASSWORD.name,
                                                                          databasePassword);
 
-                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION_TYPE_NAME,
+                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION.typeName,
                                                                                             ElementStatus.ACTIVE,
                                                                                             null,
                                                                                             databaseGUID,
@@ -468,7 +468,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                             null,
                                                                                             elementProperties,
                                                                                             databaseGUID,
-                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                             null,
                                                                                             false);
 
@@ -499,7 +499,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                     null,
                                                                     elementProperties,
                                                                     connectionGUID,
-                                                                    OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                     null,
                                                                     false);
                 }

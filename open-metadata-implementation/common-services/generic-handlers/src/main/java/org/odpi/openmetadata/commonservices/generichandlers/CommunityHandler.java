@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -119,7 +120,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.COMMUNITY_TYPE_NAME;
+        String typeName = OpenMetadataType.COMMUNITY.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -127,7 +128,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                                                   OpenMetadataType.COMMUNITY.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -206,8 +207,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
 
         builder.setAnchors(userId,
                            null,
-                           OpenMetadataType.COMMUNITY_TYPE_NAME,
-                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                           OpenMetadataType.COMMUNITY.typeName,
+                           OpenMetadataType.COMMUNITY.typeName,
                            methodName);
 
 
@@ -216,8 +217,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.COMMUNITY_TYPE_GUID,
-                                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                           OpenMetadataType.COMMUNITY.typeGUID,
+                                           OpenMetadataType.COMMUNITY.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
@@ -286,7 +287,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.COMMUNITY_TYPE_NAME;
+        String typeName = OpenMetadataType.COMMUNITY.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -294,7 +295,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                                                   OpenMetadataType.COMMUNITY.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -375,15 +376,15 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataType.MEMBERSHIP_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.MEMBERSHIP_TYPE.name,
+                                                                    CommunityMembershipType.getOpenTypeGUID(),
+                                                                    CommunityMembershipType.getOpenTypeName(),
                                                                     membershipType,
                                                                     methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.MEMBERSHIP_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataProperty.MEMBERSHIP_TYPE.name);
         }
 
         this.linkElementToElement(userId,
@@ -391,15 +392,15 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   communityGUID,
                                   communityGUIDParameterName,
-                                  OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                  OpenMetadataType.COMMUNITY.typeName,
                                   memberGUID,
                                   memberGUIDParameterName,
-                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                  OpenMetadataType.PERSON_ROLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_GUID,
-                                  OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                  OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -447,15 +448,15 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       communityGUID,
                                       communityGUIDParameterName,
-                                      OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                      OpenMetadataType.COMMUNITY.typeName,
                                       memberGUID,
                                       memberGUIDParameterName,
-                                      OpenMetadataType.PERSON_ROLE_TYPE_GUID,
-                                      OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                      OpenMetadataType.PERSON_ROLE.typeGUID,
+                                      OpenMetadataType.PERSON_ROLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_GUID,
-                                      OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                      OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -496,8 +497,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     communityGUID,
                                     communityGUIDParameterName,
-                                    OpenMetadataType.COMMUNITY_TYPE_GUID,
-                                    OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                    OpenMetadataType.COMMUNITY.typeGUID,
+                                    OpenMetadataType.COMMUNITY.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -542,8 +543,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.COMMUNITY_TYPE_GUID,
-                              OpenMetadataType.COMMUNITY_TYPE_NAME,
+                              OpenMetadataType.COMMUNITY.typeGUID,
+                              OpenMetadataType.COMMUNITY.typeName,
                               null,
                               startFrom,
                               pageSize,
@@ -594,8 +595,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.COMMUNITY_TYPE_GUID,
-                                    OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                    OpenMetadataType.COMMUNITY.typeGUID,
+                                    OpenMetadataType.COMMUNITY.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -640,8 +641,8 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                                                PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataType.COMMUNITY_TYPE_GUID,
-                                   OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                   OpenMetadataType.COMMUNITY.typeGUID,
+                                   OpenMetadataType.COMMUNITY.typeName,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,
@@ -683,7 +684,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.COMMUNITY_TYPE_NAME,
+                                          OpenMetadataType.COMMUNITY.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

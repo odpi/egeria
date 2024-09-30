@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
 
 import java.util.ArrayList;

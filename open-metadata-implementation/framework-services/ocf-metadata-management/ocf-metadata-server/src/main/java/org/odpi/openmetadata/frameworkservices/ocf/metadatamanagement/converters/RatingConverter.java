@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -64,7 +65,7 @@ public class RatingConverter<B> extends OMFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.RATING_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.RATING.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.
@@ -110,7 +111,7 @@ public class RatingConverter<B> extends OMFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataType.STARS_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataProperty.STARS.name);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -136,7 +137,7 @@ public class RatingConverter<B> extends OMFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.STARS_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataProperty.STARS.name);
 
                 if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {

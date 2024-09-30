@@ -135,8 +135,8 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
-              OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+              OpenMetadataType.CONNECTOR_TYPE.typeGUID,
+              OpenMetadataType.CONNECTOR_TYPE.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -191,7 +191,7 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CONNECTOR_PROVIDER_CLASS_NAME.name,
                                                                   connectorProviderClassName,
                                                                   methodName);
 
@@ -239,19 +239,19 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES.name,
                                                                        recognizedAdditionalProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES.name,
                                                                        recognizedSecuredProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES.name,
                                                                        recognizedConfigurationProperties,
                                                                        methodName);
 

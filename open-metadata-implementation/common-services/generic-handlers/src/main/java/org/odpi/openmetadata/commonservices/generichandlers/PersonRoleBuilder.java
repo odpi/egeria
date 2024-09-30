@@ -131,8 +131,8 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                       String               serviceName,
                       String               serverName)
     {
-        super(OpenMetadataType.PERSON_ROLE_TYPE_GUID,
-              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+        super(OpenMetadataType.PERSON_ROLE.typeGUID,
+              OpenMetadataType.PERSON_ROLE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -179,7 +179,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.HEAD_COUNT_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.HEAD_COUNT.name,
                                                                    headCount,
                                                                    methodName);
         }
@@ -215,7 +215,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.ROLE_POSITION.name,
                                                                                      position,
                                                                                      methodName);
 
@@ -237,7 +237,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties =  repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.ROLE_POSITION.name,
                                                                                       position,
                                                                                       methodName);
 

@@ -81,8 +81,8 @@ public class CommunityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.COMMUNITY_TYPE_GUID,
-              OpenMetadataType.COMMUNITY_TYPE_NAME,
+              OpenMetadataType.COMMUNITY.typeGUID,
+              OpenMetadataType.COMMUNITY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -104,8 +104,8 @@ public class CommunityBuilder extends ReferenceableBuilder
                      String               serviceName,
                      String               serverName)
     {
-        super(OpenMetadataType.COMMUNITY_TYPE_GUID,
-              OpenMetadataType.COMMUNITY_TYPE_NAME,
+        super(OpenMetadataType.COMMUNITY.typeGUID,
+              OpenMetadataType.COMMUNITY.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -138,7 +138,7 @@ public class CommunityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.MISSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.MISSION.name,
                                                                   mission,
                                                                   methodName);
         return properties;

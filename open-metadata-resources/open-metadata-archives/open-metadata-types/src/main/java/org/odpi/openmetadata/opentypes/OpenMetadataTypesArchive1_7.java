@@ -1352,13 +1352,9 @@ public class OpenMetadataTypesArchive1_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "delegationEscalationAuthority";
-        final String attribute1Description     = "Can delegations and escalations flow on this relationship.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.DELEGATION_ESCALATION.name,
+                                                            OpenMetadataProperty.DELEGATION_ESCALATION.description,
+                                                            OpenMetadataProperty.DELEGATION_ESCALATION.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

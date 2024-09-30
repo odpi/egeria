@@ -110,7 +110,7 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                                                                                              serverName);
 
                 catalogTargetProperties = propertyHelper.addMapProperty(catalogTargetProperties,
-                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                         this.combineProperties());
 
                 governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,

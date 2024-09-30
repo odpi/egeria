@@ -27,8 +27,8 @@ public class LikeBuilder extends OpenMetadataAPIGenericBuilder
                          String               serviceName,
                          String               serverName)
     {
-        super(OpenMetadataType.LIKE_TYPE_GUID,
-              OpenMetadataType.LIKE_TYPE_NAME,
+        super(OpenMetadataType.LIKE.typeGUID,
+              OpenMetadataType.LIKE.typeName,
               repositoryHelper,
               serviceName,
               serverName);

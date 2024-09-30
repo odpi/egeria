@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.connectors.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DataType;
-
 /**
  * SecretsStorePurpose defines the purpose of a secrets connector.  These values are set into the "displayName"
  * property of the EmbeddedConnection entity (model 0205).

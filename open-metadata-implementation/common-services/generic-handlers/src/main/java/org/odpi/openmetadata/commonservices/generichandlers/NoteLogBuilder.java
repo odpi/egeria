@@ -38,8 +38,8 @@ public class NoteLogBuilder extends ReferenceableBuilder
                           String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataType.NOTE_LOG_TYPE_GUID,
-              OpenMetadataType.NOTE_LOG_TYPE_NAME,
+              OpenMetadataType.NOTE_LOG.typeName,
+              OpenMetadataType.NOTE_LOG.typeName,
               repositoryHelper,
               serviceName,
               serverName);

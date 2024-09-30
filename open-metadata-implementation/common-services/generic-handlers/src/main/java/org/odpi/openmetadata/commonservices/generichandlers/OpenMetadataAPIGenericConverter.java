@@ -1682,7 +1682,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.MISSION_PROPERTY_NAME,
+                                                         OpenMetadataProperty.MISSION.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2082,7 +2082,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME,
+                                                         OpenMetadataProperty.CONNECTOR_PROVIDER_CLASS_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2310,7 +2310,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -2332,7 +2332,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -2355,7 +2355,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -2377,7 +2377,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringMapFromProperty(serviceName,
-                                                                OpenMetadataType.SECURED_PROPERTIES_PROPERTY_NAME,
+                                                                OpenMetadataProperty.SECURED_PROPERTIES.name,
                                                                 instanceProperties,
                                                                 methodName);
         }
@@ -2399,7 +2399,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeMapFromProperty(serviceName,
-                                                          OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                          OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                           instanceProperties,
                                                           methodName);
         }
@@ -2421,7 +2421,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.USER_ID_PROPERTY_NAME,
+                                                         OpenMetadataProperty.USER_ID.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2443,7 +2443,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                         OpenMetadataProperty.CLEAR_PASSWORD.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2465,7 +2465,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.ENCRYPTED_PASSWORD_PROPERTY_NAME,
+                                                         OpenMetadataProperty.ENCRYPTED_PASSWORD.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2487,7 +2487,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
+                                                      OpenMetadataProperty.ASSET_SUMMARY.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -2509,7 +2509,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getMapFromProperty(serviceName,
-                                                       OpenMetadataType.ARGUMENTS_PROPERTY_NAME,
+                                                       OpenMetadataProperty.ARGUMENTS.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -2619,7 +2619,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataType.KARMA_POINTS_PROPERTY_NAME,
+                                                      OpenMetadataProperty.KARMA_POINTS.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3507,7 +3507,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                      OpenMetadataProperty.POSITION.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -3529,7 +3529,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getIntProperty(serviceName,
-                                                   OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                   OpenMetadataProperty.POSITION.name,
                                                    instanceProperties,
                                                    methodName);
         }
@@ -4219,7 +4219,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TITLE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TITLE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4241,7 +4241,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TEXT_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TEXT.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4263,7 +4263,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.IMPORTANCE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.IMPORTANCE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4285,7 +4285,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                      OpenMetadataProperty.PRIORITY.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -4307,7 +4307,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataType.HEAD_COUNT_PROPERTY_NAME,
+                                                      OpenMetadataProperty.HEAD_COUNT.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -4329,7 +4329,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.SCOPE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5744,7 +5744,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.COMMENT_TEXT_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TEXT.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5810,7 +5810,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.REVIEW_PROPERTY_NAME,
+                                                         OpenMetadataProperty.REVIEW.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5832,7 +5832,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TAG_NAME_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TAG_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5854,7 +5854,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TAG_DESCRIPTION_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TAG_DESCRIPTION.name,
                                                          instanceProperties,
                                                          methodName);
         }

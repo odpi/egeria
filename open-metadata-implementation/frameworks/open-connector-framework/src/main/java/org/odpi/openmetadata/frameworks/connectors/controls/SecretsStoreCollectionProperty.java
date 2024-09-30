@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.connectors.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 /**
  * SecretsStoreConfigurationProperty provides definitions for typical properties used with the secrets store collections.

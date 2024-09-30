@@ -494,20 +494,8 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef getDataFileCollectionDataSetEntity()
     {
-        final String guid            = OpenMetadataType.DATA_FILE_COLLECTION.typeGUID;
-        final String name            = OpenMetadataType.DATA_FILE_COLLECTION.typeName;
-        final String description     = OpenMetadataType.DATA_FILE_COLLECTION.description;
-        final String descriptionGUID = OpenMetadataType.DATA_FILE_COLLECTION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_FILE_COLLECTION.wikiURL;
-
-        final String superTypeName = OpenMetadataType.DATA_SET.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FILE_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
     }
 
     /*

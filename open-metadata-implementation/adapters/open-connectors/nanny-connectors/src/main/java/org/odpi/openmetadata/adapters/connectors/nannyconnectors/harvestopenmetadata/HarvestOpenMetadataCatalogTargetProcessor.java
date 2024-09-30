@@ -599,7 +599,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
             startFrom = 0;
-            List<OpenMetadataElement> teamElements = openMetadataAccess.findMetadataElements(OpenMetadataType.TEAM_TYPE_NAME,
+            List<OpenMetadataElement> teamElements = openMetadataAccess.findMetadataElements(OpenMetadataType.TEAM.typeName,
                                                                                              null,
                                                                                              null,
                                                                                              null,
@@ -667,7 +667,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
             startFrom = 0;
-            List<OpenMetadataElement> roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+            List<OpenMetadataElement> roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE.typeName,
                                                                                              null,
                                                                                              null,
                                                                                              null,
@@ -687,7 +687,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
 
-                roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE.typeName,
                                                                        null,
                                                                        null,
                                                                        null,
@@ -735,7 +735,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             startFrom = 0;
 
-            List<OpenMetadataRelationship> personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            List<OpenMetadataRelationship> personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                                                null,
                                                                                                                                null,
                                                                                                                                null,
@@ -757,7 +757,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 }
 
                 startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
-                personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                      null,
                                                                                                      null,
                                                                                                      null,
@@ -1490,7 +1490,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(teamGUID,
                                                                                                                  2,
-                                                                                                                 OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                                                                                                 OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
                                                                                                                  0,
                                                                                                                  openMetadataAccess.getMaxPagingSize());
 
@@ -1502,7 +1502,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         List<RelatedMetadataElement> appointees = openMetadataAccess.getRelatedMetadataElements(teamGUID,
                                                                                                                   2,
-                                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                                   0,
                                                                                                                   openMetadataAccess.getMaxPagingSize());
                         if (appointees != null)
@@ -1673,7 +1673,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                                                  2,
-                                                                                                                 OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME,
+                                                                                                                 OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
                                                                                                                  0,
                                                                                                                  openMetadataAccess.getMaxPagingSize());
 
@@ -1691,7 +1691,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                     2,
-                                                                                    OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                    OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                     0,
                                                                                     openMetadataAccess.getMaxPagingSize());
 
@@ -1734,7 +1734,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             List<RelatedMetadataElement> roleElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                       1,
-                                                                                                      OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                      OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                       0,
                                                                                                       openMetadataAccess.getMaxPagingSize());
 
@@ -1746,7 +1746,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         List<RelatedMetadataElement> teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                   0,
                                                                                                                   openMetadataAccess.getMaxPagingSize());
 
@@ -1754,7 +1754,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                         {
                             teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                          1,
-                                                                                         OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                                                                         OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
                                                                                          0,
                                                                                          openMetadataAccess.getMaxPagingSize());
                         }
@@ -1802,7 +1802,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(departmentGUID,
                                                                                                                  2,
-                                                                                                                 OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
+                                                                                                                 OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
                                                                                                                  0,
                                                                                                                  openMetadataAccess.getMaxPagingSize());
 
@@ -4140,25 +4140,25 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                         Types.VARCHAR));
 
         openMetadataRecord.put(columnNameCreationTime, new JDBCDataValue(propertyHelper.getDateProperty(connectorName,
-                                                                                                        OpenMetadataType.CREATION_TIME_PROPERTY_NAME,
+                                                                                                        OpenMetadataProperty.CREATION_TIME.name,
                                                                                                         toDoElement.getElementProperties(),
                                                                                                         methodName),
                                                                          Types.TIMESTAMP));
 
         openMetadataRecord.put(columnNameToDoType, new JDBCDataValue(propertyHelper.getStringProperty(connectorName,
-                                                                                                      OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
+                                                                                                      OpenMetadataProperty.TO_DO_TYPE.name,
                                                                                                       toDoElement.getElementProperties(),
                                                                                                       methodName),
                                                                      Types.VARCHAR));
 
         openMetadataRecord.put(columnNamePriority, new JDBCDataValue(propertyHelper.getIntProperty(connectorName,
-                                                                                                   OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                                                                   OpenMetadataProperty.PRIORITY.name,
                                                                                                    toDoElement.getElementProperties(),
                                                                                                    methodName),
                                                                      Types.INTEGER));
 
         openMetadataRecord.put(columnNameDueTime, new JDBCDataValue(propertyHelper.getDateProperty(connectorName,
-                                                                                                   OpenMetadataType.DUE_TIME_PROPERTY_NAME,
+                                                                                                   OpenMetadataProperty.DUE_TIME.name,
                                                                                                    toDoElement.getElementProperties(),
                                                                                                    methodName),
                                                                     Types.TIMESTAMP));
@@ -4170,7 +4170,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                              Types.TIMESTAMP));
 
         openMetadataRecord.put(columnNameCompletionTime, new JDBCDataValue(propertyHelper.getDateProperty(connectorName,
-                                                                                                          OpenMetadataType.COMPLETION_TIME_PROPERTY_NAME,
+                                                                                                          OpenMetadataProperty.COMPLETION_TIME.name,
                                                                                                           toDoElement.getElementProperties(),
                                                                                                           methodName),
                                                                            Types.TIMESTAMP));

@@ -79,7 +79,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
 
         return repositoryHelper.addLongPropertyToInstance(serviceName,
                                                           properties,
-                                                          OpenMetadataType.KARMA_POINTS_PROPERTY_NAME,
+                                                          OpenMetadataProperty.KARMA_POINTS.name,
                                                           karmaPoints,
                                                           methodName);
     }

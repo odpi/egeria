@@ -284,12 +284,8 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getActorEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTOR.typeGUID,
-                                                 OpenMetadataType.ACTOR.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                 OpenMetadataType.ACTOR.description,
-                                                 OpenMetadataType.ACTOR.descriptionGUID,
-                                                 OpenMetadataType.ACTOR.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTOR,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
 
@@ -328,7 +324,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -383,16 +379,8 @@ public class OpenMetadataTypesArchive3_13
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "toDoType";
-        final String attribute1Description     = "Type of to do - typically managed in a valid value set and used in stewardship automation.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TO_DO_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -405,9 +393,7 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Create the Patch
          */
-        final String typeName = "ActionAssignment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -490,12 +476,8 @@ public class OpenMetadataTypesArchive3_13
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.FILE_NAME.name,
-                                                           OpenMetadataProperty.FILE_NAME.description,
-                                                           OpenMetadataProperty.FILE_NAME.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_NAME));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -506,12 +488,8 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getParquetFileEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PARQUET_FILE.typeGUID,
-                                                 OpenMetadataType.PARQUET_FILE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
-                                                 OpenMetadataType.PARQUET_FILE.description,
-                                                 OpenMetadataType.PARQUET_FILE.descriptionGUID,
-                                                 OpenMetadataType.PARQUET_FILE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PARQUET_FILE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName));
     }
 
 
@@ -528,12 +506,8 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getDataFeedEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FEED.typeGUID,
-                                                 OpenMetadataType.DATA_FEED.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
-                                                 OpenMetadataType.DATA_FEED.description,
-                                                 OpenMetadataType.DATA_FEED.descriptionGUID,
-                                                 OpenMetadataType.DATA_FEED.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FEED,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName));
     }
 
 
@@ -851,7 +825,6 @@ public class OpenMetadataTypesArchive3_13
         final String                     end2AttributeName            = "agreementActors";
         final String                     end2AttributeDescription     = "The actors that are named in the agreement.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
                                                                  end2AttributeName,

@@ -83,7 +83,7 @@ public class CatalogTargetConverter<B> extends OMFConverter<B>
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                     bean.setConfigurationProperties(repositoryHelper.getMapFromProperty(serviceName,
-                                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                                        OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                                         relationship.getProperties(),
                                                                                         methodName));
                     bean.setPermittedSynchronization(getPermittedSynchronization(relationship.getProperties()));

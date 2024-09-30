@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.enums;
+package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataEnum;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -14,7 +13,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
- * DataType identifies the primitive type for a data item.
+ * DataType identifies the type for a data item.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -76,21 +75,64 @@ public enum DataType implements OpenMetadataEnum
      */
     BIGDECIMAL(8, "1ea84469-27c0-4b70-81ba-18f4099f4a6f", "bigdecimal", "Big Decimal", false),
 
+    /**
+     * An ordered list of strings.
+     */
+    ARRAY_STRING(9, "8e3dad3b-9590-4903-b2d0-3e549b8e1cb9", "array<string>", "An ordered list of strings.", false),
 
     /**
-     * An unknown data type.
+     * An ordered list of strings.
      */
-    OBJECT(99, "0441e0c1-96f0-4887-a038-72c7437628a1", "Other", "An unknown data type.", false);
+    ARRAY_INT(10, "fed660e8-f43b-459a-8d6e-76be1117a573", "array<int>", "An ordered list of integers.", false),
 
-    private static final String ENUM_TYPE_GUID  = "ae846797-d88a-4421-ad9a-318bf7c1fe6f";
-    private static final String ENUM_TYPE_NAME  = "ConfidenceLevel";
+    /**
+     * A map from string value to string value.
+     */
+    MAP_STRING_STRING(11, "26eb11f0-2bd1-4d25-8d07-a600b8396de7", "map<string,string>", "A map from string value to string value.", false),
 
-    private static final String ENUM_DESCRIPTION = "Defines the level of confidence to place in the accuracy of a data item.";
-    private static final String ENUM_DESCRIPTION_GUID = "1f7a3730-8471-496b-a6e5-21eac7bb3b98";
-    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0421_GOVERNANCE_CLASSIFICATION;
+    /**
+     * A map from string value to boolean value.
+     */
+    MAP_STRING_BOOLEAN(12, "63a7dea2-e2ca-4882-809c-47108c97b725", "map<string,boolean>", "A map from string value to boolean value.", false),
 
-    private final String descriptionGUID;
+    /**
+     * A map from string value to integer value.
+     */
+    MAP_STRING_INT(13, "9d6da07a-173e-443f-828e-01b4079e4122", "map<string,int>", "A map from string value to integer value.", false),
 
+    /**
+     * A map from string value to long value.
+     */
+    MAP_STRING_LONG(14, "34e8937b-b4e5-4042-ba0d-4f9f8e6d553c", "map<string,long>", "A map from string value to long value.", false),
+
+    /**
+     * A map from string value to double value.
+     */
+    MAP_STRING_DOUBLE(15, "f1950f13-ad2e-4a38-b933-7e723c80facc", "map<string,double>", "A map from string value to double value.", false),
+
+    /**
+     * A map from string value to date value.
+     */
+    MAP_STRING_DATE(16, "9d09ac67-d3b5-4c5b-b8bf-e9140ae06877", "map<string,date>", "A map from string value to date value.", false),
+
+    /**
+     * A map from string value to date value.
+     */
+    MAP_STRING_OBJECT(17, "9a99ee58-f18f-432c-b2ac-f5fb99a78690", "map<string,object>", "A map from string value to object value.", false),
+
+    /**
+     * Short
+     */
+    SHORT(18, "142d1d09-9caf-415c-95e5-115f27679d26", "short", "Short", false),
+
+    /**
+     * A generic data type.
+     */
+    OBJECT(99, "0441e0c1-96f0-4887-a038-72c7437628a1", "Other", "An unknown data type.", false),
+
+    ;
+
+    private final String         descriptionGUID;
     private final int            ordinal;
     private final String         name;
     private final String         description;
@@ -170,54 +212,6 @@ public enum DataType implements OpenMetadataEnum
         return isDefault;
     }
 
-    /**
-     * Return the unique identifier for the open metadata enum type that this enum class represents.
-     *
-     * @return string guid
-     */
-    public static String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
-
-
-    /**
-     * Return the unique name for the open metadata enum type that this enum class represents.
-     *
-     * @return string name
-     */
-    public static String getOpenTypeName() { return ENUM_TYPE_NAME; }
-
-
-    /**
-     * Return the description for the open metadata enum type that this enum class represents.
-     *
-     * @return string description
-     */
-    public static String getOpenTypeDescription()
-    {
-        return ENUM_DESCRIPTION;
-    }
-
-
-    /**
-     * Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.
-     *
-     * @return string guid
-     */
-    public static String getOpenTypeDescriptionGUID()
-    {
-        return ENUM_DESCRIPTION_GUID;
-    }
-
-
-    /**
-     * Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.
-     *
-     * @return string guid
-     */
-    public static String getOpenTypeDescriptionWiki()
-    {
-        return ENUM_DESCRIPTION_WIKI;
-    }
-
 
     /**
      * Return the qualified name for this value.
@@ -226,8 +220,8 @@ public enum DataType implements OpenMetadataEnum
      */
     public String getQualifiedName()
     {
-        return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER.name,
+        return constructValidValueQualifiedName("DataType",
+                                                OpenMetadataProperty.DATA_TYPE.name,
                                                 null,
                                                 name);
     }
@@ -240,8 +234,8 @@ public enum DataType implements OpenMetadataEnum
      */
     public String getCategory()
     {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER.name,
+        return constructValidValueCategory("DataType",
+                                           OpenMetadataProperty.DATA_TYPE.name,
                                            null);
     }
 
@@ -253,6 +247,6 @@ public enum DataType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "ConfidenceLevel{name='" + name + '}';
+        return "DataType{name='" + name + '}';
     }
 }

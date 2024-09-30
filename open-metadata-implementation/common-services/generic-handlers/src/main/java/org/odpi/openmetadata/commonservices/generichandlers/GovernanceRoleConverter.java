@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -78,7 +79,7 @@ public class GovernanceRoleConverter<B> extends OMFConverter<B>
                     governanceRoleProperties.setScope(this.removeScope(instanceProperties));
                     governanceRoleProperties.setTitle(this.removeName(instanceProperties));
                     governanceRoleProperties.setDescription(this.removeDescription(instanceProperties));
-                    governanceRoleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataType.HEAD_COUNT_PROPERTY_NAME) != null);
+                    governanceRoleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataProperty.HEAD_COUNT.name) != null);
                     governanceRoleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
                     governanceRoleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 

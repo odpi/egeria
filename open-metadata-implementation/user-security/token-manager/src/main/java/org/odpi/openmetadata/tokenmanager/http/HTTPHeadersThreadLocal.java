@@ -13,7 +13,7 @@ public class HTTPHeadersThreadLocal
     /**
      * HEADERS_THREAD_LOCAL is a ThreadLocal that holds a map of headers and their value
      */
-    private static ThreadLocal<Map<String, String>> HEADERS_THREAD_LOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, String>> HEADERS_THREAD_LOCAL = new ThreadLocal<>();
 
 
     /**

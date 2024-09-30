@@ -100,7 +100,7 @@ public class CapabilityDeploymentProperties extends RelationshipProperties
 
         if (softwareCapabilityStatus != null)
         {
-            propertyMap.put(deploymentStatusProperty, softwareCapabilityStatus.getOpenTypeOrdinal());
+            propertyMap.put(deploymentStatusProperty, softwareCapabilityStatus.getOrdinal());
         }
 
         if (! propertyMap.isEmpty())

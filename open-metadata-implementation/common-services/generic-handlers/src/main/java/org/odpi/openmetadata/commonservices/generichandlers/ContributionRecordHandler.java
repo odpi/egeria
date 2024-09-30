@@ -109,9 +109,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        profileGUID,
                                        profileGUIDParameterName,
                                        OpenMetadataType.PERSON.typeName,
-                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
-                                       OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
+                                       OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                        0,
                                        forLineage,
                                        forDuplicateProcessing,
@@ -150,9 +150,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                       profileGUID,
                                       profileGUIDParameterName,
                                       OpenMetadataType.PERSON.typeName,
-                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
-                                      OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
+                                      OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -210,7 +210,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                                  effectiveTime,
                                                                                  methodName);
 
-        String typeName = OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME;
+        String typeName = OpenMetadataType.CONTRIBUTION_RECORD.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -218,7 +218,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                                   OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -250,8 +250,8 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
             String contributionRecordGUID = this.createBeanInRepository(userId,
                                                                         null,
                                                                         null,
-                                                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_GUID,
-                                                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                                        OpenMetadataType.CONTRIBUTION_RECORD.typeGUID,
+                                                                        OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                                                         builder,
                                                                         effectiveTime,
                                                                         methodName);
@@ -266,12 +266,12 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                    OpenMetadataType.PERSON.typeName,
                                                    contributionRecordGUID,
                                                    contributionRecordGUIDParameterName,
-                                                   OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                   OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    supportedZones,
-                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
+                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
                                                    null,
                                                    effectiveTime,
                                                    methodName);
@@ -294,8 +294,8 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         null,
                                         contributionRecordEntity.getGUID(),
                                         contributionRecordGUIDParameterName,
-                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_GUID,
-                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                        OpenMetadataType.CONTRIBUTION_RECORD.typeGUID,
+                                        OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -348,8 +348,8 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         null,
                                         contributionRecordEntity.getGUID(),
                                         contributionRecordGUIDParameterName,
-                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_GUID,
-                                        OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                        OpenMetadataType.CONTRIBUTION_RECORD.typeGUID,
+                                        OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                         null,
                                         null,
                                         forLineage,

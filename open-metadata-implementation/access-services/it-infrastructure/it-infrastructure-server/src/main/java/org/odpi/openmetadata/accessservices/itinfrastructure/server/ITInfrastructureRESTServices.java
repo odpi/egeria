@@ -3267,7 +3267,7 @@ public class ITInfrastructureRESTServices
                                                                                     OpenMetadataProperty.USE_TYPE.name,
                                                                                     ServerAssetUseType.getOpenTypeGUID(),
                                                                                     ServerAssetUseType.getOpenTypeName(),
-                                                                                    properties.getUseType().getOpenTypeOrdinal(),
+                                                                                    properties.getUseType().getOrdinal(),
                                                                                     methodName);
                 }
                 catch (TypeErrorException error)
@@ -3806,7 +3806,7 @@ public class ITInfrastructureRESTServices
         }
         else
         {
-            if (requestedUseType.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
+            if (requestedUseType.getOrdinal() == propertyUseTypeOrdinal)
             {
                 matchingUseType = true;
             }
@@ -3873,7 +3873,7 @@ public class ITInfrastructureRESTServices
 
                             for (ServerAssetUseType useTypeValue : ServerAssetUseType.values())
                             {
-                                if (useTypeValue.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
+                                if (useTypeValue.getOrdinal() == propertyUseTypeOrdinal)
                                 {
                                     properties.setUseType(useTypeValue);
                                 }

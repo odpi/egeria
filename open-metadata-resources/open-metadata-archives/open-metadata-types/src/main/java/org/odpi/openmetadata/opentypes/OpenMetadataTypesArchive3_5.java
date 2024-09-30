@@ -1000,9 +1000,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "Person";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1013,64 +1011,39 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "title";
-        final String attribute1Description     = "The courtesy title for the person.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "givenNames";
-        final String attribute2Description     = "The name strings that are the part of a person's name that is not their surname.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "surname";
-        final String attribute3Description     = "The family name of the person.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "employeeNumber";
-        final String attribute4Description     = "The unique identifier of the person used by their employer.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "employeeType";
-        final String attribute5Description     = "Code used by employer typically to describe the type of employment contract.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "preferredLanguage";
-        final String attribute6Description     = "Spoken or written language preferred by the person.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "initials";
-        final String attribute7Description     = "First letter of each of the person's given names.";
-        final String attribute7DescriptionGUID = null;
-
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COURTESY_TITLE.name,
+                                                           OpenMetadataProperty.COURTESY_TITLE.description,
+                                                           OpenMetadataProperty.COURTESY_TITLE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.GIVEN_NAMES.name,
+                                                           OpenMetadataProperty.GIVEN_NAMES.description,
+                                                           OpenMetadataProperty.GIVEN_NAMES.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SURNAME.name,
+                                                           OpenMetadataProperty.SURNAME.description,
+                                                           OpenMetadataProperty.SURNAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_NUMBER.name,
+                                                           OpenMetadataProperty.EMPLOYEE_NUMBER.description,
+                                                           OpenMetadataProperty.EMPLOYEE_NUMBER.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_TYPE.name,
+                                                           OpenMetadataProperty.EMPLOYEE_TYPE.description,
+                                                           OpenMetadataProperty.EMPLOYEE_TYPE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PREFERRED_LANGUAGE.name,
+                                                           OpenMetadataProperty.PREFERRED_LANGUAGE.description,
+                                                           OpenMetadataProperty.PREFERRED_LANGUAGE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.INITIALS.name,
+                                                           OpenMetadataProperty.INITIALS.description,
+                                                           OpenMetadataProperty.INITIALS.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }
-
 
 
     /**

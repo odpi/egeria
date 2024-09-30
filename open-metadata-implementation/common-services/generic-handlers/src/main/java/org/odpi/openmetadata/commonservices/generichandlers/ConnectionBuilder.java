@@ -98,8 +98,8 @@ public class ConnectionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.CONNECTION_TYPE_GUID,
-              OpenMetadataType.CONNECTION_TYPE_NAME,
+              OpenMetadataType.CONNECTION.typeGUID,
+              OpenMetadataType.CONNECTION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -136,31 +136,31 @@ public class ConnectionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataType.SECURED_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.SECURED_PROPERTIES.name,
                                                                      securedProperties,
                                                                      methodName);
 
         properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                               OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                configurationProperties,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.USER_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USER_ID.name,
                                                                   connectorUserId,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CLEAR_PASSWORD.name,
                                                                   clearPassword,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ENCRYPTED_PASSWORD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ENCRYPTED_PASSWORD.name,
                                                                   encryptedPassword,
                                                                   methodName);
 

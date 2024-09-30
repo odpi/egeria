@@ -416,7 +416,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
+                                                          OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                           questionCommentGUID,
                                                           OpenMetadataType.COMMENT.typeName,
                                                           answerCommentGUID,
@@ -471,7 +471,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
                                                          assetManagerName,
-                                                         OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                                         OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                          questionCommentGUID,
                                                          OpenMetadataType.COMMENT.typeName,
                                                          answerCommentGUID,

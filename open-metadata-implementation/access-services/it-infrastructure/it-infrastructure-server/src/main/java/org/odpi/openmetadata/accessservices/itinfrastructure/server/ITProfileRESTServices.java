@@ -96,7 +96,7 @@ public class ITProfileRESTServices
                                                                                                new Date(),
                                                                                                methodName);
                 
-                String typeName = OpenMetadataType.IT_PROFILE_TYPE_NAME;
+                String typeName = OpenMetadataType.IT_PROFILE.typeName;
                 
                 if (requestBody.getProperties().getTypeName() != null)
                 {
@@ -170,8 +170,8 @@ public class ITProfileRESTServices
                                                         typeName,
                                                         false,
                                                         false,
-                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID,
-                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME,
+                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeGUID,
+                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
                                                         (InstanceProperties) null,
                                                         null,
                                                         null,
@@ -558,7 +558,7 @@ public class ITProfileRESTServices
             response.setElement(handler.getActorProfileForUser(userId,
                                                                actorProfileUserId,
                                                                nameParameterName,
-                                                               OpenMetadataType.IT_PROFILE_TYPE_NAME,
+                                                               OpenMetadataType.IT_PROFILE.typeName,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -611,8 +611,8 @@ public class ITProfileRESTServices
             response.setElements(handler.getActorProfilesByName(userId,
                                                                 requestBody.getName(),
                                                                 nameParameterName,
-                                                                OpenMetadataType.IT_PROFILE_TYPE_GUID,
-                                                                OpenMetadataType.IT_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.IT_PROFILE.typeGUID,
+                                                                OpenMetadataType.IT_PROFILE.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -667,8 +667,8 @@ public class ITProfileRESTServices
             response.setElements(handler.findActorProfiles(userId,
                                                            requestBody.getSearchString(),
                                                            searchStringParameterName,
-                                                           OpenMetadataType.IT_PROFILE_TYPE_GUID,
-                                                           OpenMetadataType.IT_PROFILE_TYPE_NAME,
+                                                           OpenMetadataType.IT_PROFILE.typeGUID,
+                                                           OpenMetadataType.IT_PROFILE.typeName,
                                                            startFrom,
                                                            pageSize,
                                                            false,
