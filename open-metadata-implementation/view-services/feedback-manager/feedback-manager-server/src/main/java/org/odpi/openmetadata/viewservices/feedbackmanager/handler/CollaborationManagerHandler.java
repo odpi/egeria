@@ -1967,7 +1967,7 @@ public class CollaborationManagerHandler
                                                              properties.getText());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.TITLE.name,
+                                                             OpenMetadataProperty.COURTESY_TITLE.name,
                                                              properties.getTitle());
 
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,

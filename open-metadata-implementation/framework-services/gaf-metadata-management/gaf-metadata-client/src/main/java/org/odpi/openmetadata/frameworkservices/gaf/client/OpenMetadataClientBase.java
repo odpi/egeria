@@ -4073,9 +4073,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, title);
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, instructions);
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME, category);
-        properties = propertyHelper.addDateProperty(properties, OpenMetadataType.DUE_TIME_PROPERTY_NAME, dueDate);
-        properties = propertyHelper.addIntProperty(properties, OpenMetadataType.PRIORITY_PROPERTY_NAME, priority);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.TO_DO_TYPE.name, category);
+        properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.DUE_TIME.name, dueDate);
+        properties = propertyHelper.addIntProperty(properties, OpenMetadataProperty.PRIORITY.name, priority);
         properties = propertyHelper.addEnumProperty(properties,
                                                     OpenMetadataProperty.TO_DO_STATUS.name,
                                                     ToDoStatus.getOpenTypeName(),
@@ -4091,7 +4091,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                             null,
                                                             properties,
                                                             assignToGUID,
-                                                            OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                            OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                             null,
                                                             true);
 
@@ -4126,7 +4126,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                  * Link the "to do" and the sponsor
                  */
                 this.createRelatedElementsInStore(userId,
-                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
+                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
                                                   sponsorGUID,
                                                   toDoGUID,
                                                   false,
@@ -4143,7 +4143,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                  * Link the "to do" and the originator
                  */
                 this.createRelatedElementsInStore(userId,
-                                                  OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME,
+                                                  OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
                                                   originatorGUID,
                                                   toDoGUID,
                                                   false,

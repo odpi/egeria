@@ -111,7 +111,7 @@ public class ConnectionConverter<B> extends OMFConverter<B>
                     {
                         if ((relationship != null) && (relationship.getType() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName))
                             {
                                 EmbeddedConnection embeddedConnection = new EmbeddedConnection();
 
@@ -125,11 +125,11 @@ public class ConnectionConverter<B> extends OMFConverter<B>
 
                                 embeddedConnections.add(embeddedConnection);
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                             {
                                 bean.setConnectorType(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                             {
                                 bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
                             }

@@ -354,7 +354,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.TEAM_ROLE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.TEAM_ROLE.name,
                                                                                      teamRole,
                                                                                      methodName);
 
@@ -587,7 +587,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.DEPENDENCY_SUMMARY_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.DEPENDENCY_SUMMARY.name,
                                                                                      dependencySummary,
                                                                                      methodName);
 
@@ -711,7 +711,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                   OpenMetadataType.PROJECT.typeName,
                                   personRoleGUID,
                                   personRoleGUIDParameterName,
-                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                  OpenMetadataType.PERSON_ROLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -767,8 +767,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.PROJECT.typeName,
                                       personRoleGUID,
                                       personRoleGUIDParameterName,
-                                      OpenMetadataType.PERSON_ROLE_TYPE_GUID,
-                                      OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                      OpenMetadataType.PERSON_ROLE.typeGUID,
+                                      OpenMetadataType.PERSON_ROLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID,
@@ -1057,7 +1057,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         personRoleGUID,
                                         personRoleGUIDParameterName,
-                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE.typeName,
                                         OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
                                         OpenMetadataType.PROJECT.typeName,

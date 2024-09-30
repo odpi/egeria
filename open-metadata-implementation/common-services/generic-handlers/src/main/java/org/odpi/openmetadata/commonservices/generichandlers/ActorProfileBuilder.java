@@ -146,7 +146,7 @@ public class ActorProfileBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataType.DELEGATION_ESCALATION_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DELEGATION_ESCALATION.name,
                                                                                       delegationEscalationAuthority,
                                                                                       methodName);
 

@@ -98,7 +98,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             Map<String, Object> extendedProperties = new HashMap<>();
 
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
-            extendedProperties.put(OpenMetadataType.USER_ID_PROPERTY_NAME, systemDefinition.getUserId());
+            extendedProperties.put(OpenMetadataProperty.USER_ID.name, systemDefinition.getUserId());
 
 
             String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,

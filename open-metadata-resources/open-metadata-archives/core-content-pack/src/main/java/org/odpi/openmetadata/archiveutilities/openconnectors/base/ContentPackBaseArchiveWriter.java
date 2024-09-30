@@ -550,7 +550,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         }
         else
         {
-            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME,
+            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
                                                          qualifiedName + ":Connection",
                                                          serverName + " connection",
                                                          null,
@@ -580,7 +580,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                        null,
                                                                        null);
 
-            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION_TYPE_NAME,
+            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION.typeName,
                                                                             qualifiedName + ":SecretsStoreConnection",
                                                                             serverName + " secrets store connection",
                                                                             null,

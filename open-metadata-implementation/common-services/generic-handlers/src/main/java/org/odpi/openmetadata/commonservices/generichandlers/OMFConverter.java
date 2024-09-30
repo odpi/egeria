@@ -352,11 +352,11 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             String actualTypeName = primaryEntity.getType().getTypeDefName();
 
-            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.VIRTUAL_CONNECTION.typeName))
             {
                 return getNewVirtualConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTION.typeName))
             {
                 return getNewConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
@@ -365,7 +365,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                 /*
                  * This will throw an exception
                  */
-                super.validateInstanceType(OpenMetadataType.CONNECTION_TYPE_NAME,
+                super.validateInstanceType(OpenMetadataType.CONNECTION.typeName,
                                            beanClass.getName(),
                                            primaryEntity,
                                            methodName);
@@ -448,7 +448,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                 {
                     if ((relationship != null) && (relationship.getType() != null))
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName))
                         {
                             EntityProxy parentConnectionProxy = relationship.getEntityOneProxy();
 
@@ -553,7 +553,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                                             List<EntityDetail> supplementaryEntities,
                                             String methodName) throws PropertyServerException
     {
-        this.setUpElementHeader(connection, primaryEntity, OpenMetadataType.CONNECTION_TYPE_NAME, methodName);
+        this.setUpElementHeader(connection, primaryEntity, OpenMetadataType.CONNECTION.typeName, methodName);
 
         /*
          * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -583,7 +583,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             {
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName))
                     {
                         connection.setAssetSummary(this.getAssetSummary(instanceProperties));
                     }
@@ -616,7 +616,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                          */
                         connection.setEndpoint(endpoint);
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE.typeName))
                     {
                         ConnectorType connectorType = getConnectorType(entity, methodName);
 
@@ -714,7 +714,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     {
         ConnectorType connectorType = new ConnectorType();
 
-        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE.typeName, methodName);
 
         /*
          * The initial set of values come from the entity.

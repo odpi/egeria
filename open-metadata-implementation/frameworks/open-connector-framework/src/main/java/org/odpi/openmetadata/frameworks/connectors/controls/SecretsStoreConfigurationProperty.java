@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.connectors.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;
 import java.util.List;

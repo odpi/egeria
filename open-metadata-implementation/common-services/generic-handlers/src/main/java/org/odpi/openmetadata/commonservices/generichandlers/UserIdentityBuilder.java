@@ -103,7 +103,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.USER_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USER_ID.name,
                                                                   userId,
                                                                   methodName);
 

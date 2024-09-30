@@ -556,7 +556,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.USER_ID_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.USER_ID.name);
 
         return this.getBeansByValue(userId,
                                     name,

@@ -66,9 +66,8 @@ public class IntegrationConnectorConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof IntegrationConnectorElement)
+            if (returnBean instanceof IntegrationConnectorElement bean)
             {
-                IntegrationConnectorElement    bean       = (IntegrationConnectorElement)returnBean;
                 IntegrationConnectorProperties properties = new IntegrationConnectorProperties();
 
                 if (primaryEntity != null)
@@ -97,7 +96,7 @@ public class IntegrationConnectorConverter<B> extends OMFConverter<B>
                         {
                             if ((entity != null) && (entity.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION.typeName))
                                 {
                                     properties.setConnection(super.getEmbeddedConnection(beanClass,
                                                                                          entity,

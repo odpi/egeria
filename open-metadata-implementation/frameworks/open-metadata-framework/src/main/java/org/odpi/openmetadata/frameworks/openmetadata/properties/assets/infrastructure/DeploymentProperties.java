@@ -133,7 +133,7 @@ public class DeploymentProperties extends RelationshipProperties
 
         if (deploymentStatus != null)
         {
-            propertyMap.put(deploymentStatusProperty, deploymentStatus.getOpenTypeOrdinal());
+            propertyMap.put(deploymentStatusProperty, deploymentStatus.getOrdinal());
         }
 
         if (! propertyMap.isEmpty())

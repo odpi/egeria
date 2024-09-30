@@ -48,8 +48,7 @@ public enum DataItemSortOrder implements OpenMetadataEnum
     private static final String ENUM_DESCRIPTION_GUID = "3ad77990-beda-4877-b5ae-5368c372cab6";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES;
 
-    private final String descriptionGUID;
-
+    private final String         descriptionGUID;
     private final int            ordinal;
     private final String         name;
     private final String         description;
@@ -124,6 +123,7 @@ public enum DataItemSortOrder implements OpenMetadataEnum
     {
         return isDefault;
     }
+
 
     /**
      * Return the unique identifier for the open metadata enum type that this enum class represents.

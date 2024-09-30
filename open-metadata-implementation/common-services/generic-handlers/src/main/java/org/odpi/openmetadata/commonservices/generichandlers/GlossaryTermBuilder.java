@@ -321,7 +321,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.STARS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.STARS.name);
         }
 
         setEffectivityDates(properties);

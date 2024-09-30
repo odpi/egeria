@@ -918,7 +918,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.TITLE_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.TITLE.name);
 
         String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
 
@@ -1222,7 +1222,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         personRoleGUID,
                                         personRoleGUIDParameterName,
-                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataType.PERSON_ROLE.typeName,
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,

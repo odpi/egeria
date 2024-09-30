@@ -1129,7 +1129,7 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
-                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
 
@@ -1247,7 +1247,7 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
-                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
 

@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttribu
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -254,7 +255,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         String projectStatusParentSetGUID = this.getParentSet(null,
                                                               OpenMetadataType.PROJECT.typeName,
-                                                              OpenMetadataType.PROJECT_STATUS_PROPERTY_NAME,
+                                                              OpenMetadataProperty.PROJECT_STATUS.name,
                                                               null);
 
         for (ProjectStatus projectStatus : ProjectStatus.values())
@@ -325,6 +326,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       OpenMetadataProperty.BYTE_ORDERING.name,
                                       ByteOrdering.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ByteOrdering.values())));
+
+        addOpenMetadataEnumValidNames(null,
+                                      OpenMetadataProperty.OPERATIONAL_STATUS.name,
+                                      OperationalStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(OperationalStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                       OpenMetadataProperty.DELETE_METHOD.name,
@@ -422,6 +428,10 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(GovernanceClassificationStatus.values())));
 
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                            OpenMetadataProperty.USE_TYPE.name,
+                                            new ArrayList<>(Arrays.asList(ServerAssetUseType.values())));
+
         addOpenMetadataEnumValidIdentifiers(null,
                                             OpenMetadataProperty.SEVERITY_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(ImpactSeverity.values())));
@@ -435,8 +445,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(RetentionBasis.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.RATING_TYPE_NAME,
-                                      OpenMetadataType.STARS_PROPERTY_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.RATING.typeName,
+                                      OpenMetadataProperty.STARS.name,
                                       StarRating.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(StarRating.values())));
 
@@ -967,7 +977,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
         else
         {
-            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME,
+            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
                                                          qualifiedName + ":Connection",
                                                          serverName + " connection",
                                                          null,
@@ -997,7 +1007,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                        null,
                                                                        null);
 
-            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION_TYPE_NAME,
+            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION.typeName,
                                                                             qualifiedName + ":SecretsStoreConnection",
                                                                             serverName + " secrets store connection",
                                                                             null,

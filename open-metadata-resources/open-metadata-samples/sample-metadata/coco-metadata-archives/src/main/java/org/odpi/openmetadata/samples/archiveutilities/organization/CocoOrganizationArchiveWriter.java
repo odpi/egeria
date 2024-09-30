@@ -479,7 +479,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
             String leadershipRoleQName = "TeamLeader:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER.typeName,
                                         leadershipRoleQName,
                                         leadershipRoleQName,
                                         null,
@@ -503,7 +503,7 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             }
 
             String membershipRoleQName = "TeamMembers:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER.typeName,
                                         membershipRoleQName,
                                         membershipRoleQName,
                                         null,

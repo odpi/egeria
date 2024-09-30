@@ -1508,7 +1508,7 @@ public class CollaborationExchangeRESTServices
             response.setGUIDs(handler.getAttachedElementGUIDs(userId,
                                                               tagGUID,
                                                               tagGUIDParameterName,
-                                                              OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
+                                                              OpenMetadataType.INFORMAL_TAG.typeName,
                                                               null,
                                                               null,
                                                               OpenMetadataType.REFERENCEABLE.typeName,

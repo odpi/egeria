@@ -1221,9 +1221,9 @@ public class OrganizationRESTServices
                 List<Relationship> appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                              personRoleGUID,
                                                                                              personRoleGUIDParameterName,
-                                                                                             OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                             OpenMetadataType.PERSON_ROLE.typeName,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeGUID,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                              null,
                                                                                              OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                              1,
@@ -1284,7 +1284,7 @@ public class OrganizationRESTServices
                         }
                         else
                         {
-                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                             relationship,
                                                             methodName);
                         }
@@ -1372,7 +1372,7 @@ public class OrganizationRESTServices
         }
         else
         {
-            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                             relationship,
                                             methodName);
         }

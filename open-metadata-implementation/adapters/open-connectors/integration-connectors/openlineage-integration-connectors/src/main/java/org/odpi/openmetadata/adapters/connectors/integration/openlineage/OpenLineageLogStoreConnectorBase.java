@@ -201,11 +201,11 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                         {
                             endpointGUID = catalogTarget.getCatalogTargetElement().getGUID();
                         }
-                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION_TYPE_NAME))
+                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION.typeName))
                         {
                             RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
                                                                                                                                                                           2,
-                                                                                                                                                                          OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                                                                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                                                                                           new Date());
 
                             if (endpointElement != null)
@@ -217,14 +217,14 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                         {
                             RelatedMetadataElement connectionElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
                                                                                                                                                                      2,
-                                                                                                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                                                                                      new Date());
 
                             if (connectionElement != null)
                             {
                                 RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionElement.getElement().getElementGUID(),
                                                                                                                                                                        2,
-                                                                                                                                                                       OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                                                                                       OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                                                                                        new Date());
 
                                 if (endpointElement != null)

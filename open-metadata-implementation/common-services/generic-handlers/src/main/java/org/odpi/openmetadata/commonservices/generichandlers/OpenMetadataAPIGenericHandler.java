@@ -1436,10 +1436,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          * These are the feedback relationships.  They have a property called "isPrivate".  If it is set to true, only the user
          * that created it can see it (or update or delete it).
          */
-        if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_NAME)) ||
-            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME)))
+        if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName)) ||
+            (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName)))
         {
             if (userId.equals(relationship.getCreatedBy()))
             {
@@ -2125,10 +2125,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   connectionGUID,
-                                                                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                                  OpenMetadataType.CONNECTION.typeName,
                                                                                   true,
-                                                                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                                  OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2225,8 +2225,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                  endpointGUID,
                                                                  OpenMetadataType.ENDPOINT.typeName,
-                                                                 OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                                 OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                 OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                                 OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                  2,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
@@ -2294,10 +2294,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   likeGUID,
-                                                                                  OpenMetadataType.LIKE_TYPE_NAME,
+                                                                                  OpenMetadataType.LIKE.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                                                                  OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                                                                  OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2351,10 +2351,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   ratingGUID,
-                                                                                  OpenMetadataType.RATING_TYPE_NAME,
+                                                                                  OpenMetadataType.RATING.typeName,
                                                                                   false,
-                                                                                  OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                                                  OpenMetadataType.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                                  OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2694,8 +2694,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     commentGUID,
                                                                                     OpenMetadataType.COMMENT.typeName,
-                                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2913,7 +2913,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          * This group of calls walks the chain of entities to detect the anchorIdentifiers for specific types of entities.  There is scope for more
          * method calls added here, for example, for comments, note logs, connections etc.
          */
-        if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_TYPE.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -2921,7 +2921,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.CONNECTION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.CONNECTION.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -2933,11 +2933,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForComment(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.RATING_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.RATING.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForRating(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.LIKE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.LIKE.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForLike(localServerUserId, targetGUID, forLineage,forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -2961,7 +2961,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_TERM_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_TERM.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -3248,7 +3248,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         /*
          * This first processing looks at the retrieved entity itself to ensure it is visible.
          */
-        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName))
         {
             /*
              * InformalTags have a property that says whether they are public or private
@@ -3272,7 +3272,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 }
             }
         }
-        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.CONNECTION_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.CONNECTION.typeName))
         {
             securityVerifier.validateUserForConnection(userId, connectToEntity, repositoryHelper, serviceName, methodName);
         }
@@ -3375,10 +3375,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (anchorEntityType != null)
             {
-                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG_TYPE_NAME)) ||
+                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
                                            (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING_TYPE_NAME)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE_TYPE_NAME));
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
 
                 /*
                  * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine

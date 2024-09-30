@@ -604,7 +604,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME;
+        final String typeName = OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -892,9 +892,7 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTOR_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -903,16 +901,8 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -979,10 +969,10 @@ public class OpenMetadataTypesArchive5_0
         final String attribute6Name            = OpenMetadataType.MAX_HEIGHT_PROPERTY_NAME;
         final String attribute6Description     = "If the height above ground is relevant, this is the highest height that the data covers.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = OpenMetadataType.START_TIME_PROPERTY_NAME;
+        final String attribute7Name            = OpenMetadataProperty.START_TIME.name;
         final String attribute7Description     = "If the data is bound by time, this is the start time.";
         final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = OpenMetadataType.END_TIME_PROPERTY_NAME;
+        final String attribute8Name            = OpenMetadataProperty.END_TIME.name;
         final String attribute8Description     = "If the data is bound by time, this is the end time.";
         final String attribute8DescriptionGUID = null;
 

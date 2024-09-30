@@ -3,11 +3,15 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
 import java.util.*;
 
@@ -366,6 +370,213 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         entityDef.setStatus(TypeDefStatus.ACTIVE_TYPEDEF);
 
         return entityDef;
+    }
+
+
+    /**
+     * Return an attribute with the name and description that is of type identified by the supplied definition.
+     * It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param propertyDefinition details of the attribute
+     * @return  TypeDefAttribute
+     */
+    public TypeDefAttribute  getTypeDefAttribute(OpenMetadataProperty propertyDefinition)
+    {
+        final String methodName = "getTypeDefAttribute";
+
+        if (DataType.STRING.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        }
+        else if (DataType.INT.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        }
+        else if (DataType.LONG.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+        }
+        else if (DataType.SHORT.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
+        }
+        else if (DataType.DATE.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        }
+        else if (DataType.BOOLEAN.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+        }
+        else if (DataType.CHAR.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
+        }
+        else if (DataType.BYTE.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
+        }
+        else if (DataType.FLOAT.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+        }
+        else if (DataType.DOUBLE.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+        }
+        else if (DataType.BIGINTEGER.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+        }
+        else if (DataType.BIGDECIMAL.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+        }
+        else if (DataType.OBJECT.getName().equals(propertyDefinition.type))
+        {
+            return getTypeDefAttribute(propertyDefinition.name,
+                                       propertyDefinition.description,
+                                       propertyDefinition.descriptionGUID,
+                                       PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+        }
+        else if (DataType.ARRAY_STRING.getName().equals(propertyDefinition.type))
+        {
+            return getArrayStringTypeDefAttribute(propertyDefinition.name,
+                                                  propertyDefinition.description,
+                                                  propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.ARRAY_INT.getName().equals(propertyDefinition.type))
+        {
+            return getArrayIntTypeDefAttribute(propertyDefinition.name,
+                                               propertyDefinition.description,
+                                               propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_BOOLEAN.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringBooleanTypeDefAttribute(propertyDefinition.name,
+                                                       propertyDefinition.description,
+                                                       propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_INT.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringIntTypeDefAttribute(propertyDefinition.name,
+                                                   propertyDefinition.description,
+                                                   propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_DOUBLE.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringDoubleTypeDefAttribute(propertyDefinition.name,
+                                                      propertyDefinition.description,
+                                                      propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_DATE.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringDateTypeDefAttribute(propertyDefinition.name,
+                                                    propertyDefinition.description,
+                                                    propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_STRING.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringStringTypeDefAttribute(propertyDefinition.name,
+                                                      propertyDefinition.description,
+                                                      propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_LONG.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringLongTypeDefAttribute(propertyDefinition.name,
+                                                    propertyDefinition.description,
+                                                    propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_OBJECT.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringStringTypeDefAttribute(propertyDefinition.name,
+                                                      propertyDefinition.description,
+                                                      propertyDefinition.descriptionGUID);
+        }
+        else
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.BAD_DATA_TYPE.getMessageDefinition(propertyDefinition.type,
+                                                                                               methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+    }
+
+
+    /**
+     * Return an attribute with the supplied name and description that is of type String.  It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getTypeDefAttribute(String               attributeName,
+                                                 String               attributeDescription,
+                                                 String               attributeDescriptionGUID,
+                                                 PrimitiveDefCategory primitiveDefCategory)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getPrimitiveDef(primitiveDefCategory.getName()));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
+        return attribute;
     }
 
 
@@ -924,11 +1135,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
+     * @param propertyDescription details of the attribute
+     * @return  TypeDefAttribute of type enum
+     */
+    public TypeDefAttribute  getEnumTypeDefAttribute(OpenMetadataProperty propertyDescription)
+    {
+        return this.getEnumTypeDefAttribute(propertyDescription.type,
+                                            propertyDescription.name,
+                                            propertyDescription.description,
+                                            propertyDescription.descriptionGUID);
+    }
+
+
+    /**
+     * Return an attribute with the supplied name, type and description.  It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
      * @param enumTypeName name of the enum type for this attribute
      * @param attributeName name of the attribute
      * @param attributeDescription short description for the attribute
      * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
-     * @return  TypeDefAttribute of type string
+     * @return  TypeDefAttribute of type enum
      */
     public TypeDefAttribute  getEnumTypeDefAttribute(String     enumTypeName,
                                                      String     attributeName,

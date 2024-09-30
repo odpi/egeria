@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -286,7 +287,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             leaderRoleQName,
                                             "Community Leader",
                                             null,
@@ -297,7 +298,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_LEADER);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, CommunityMembershipType.LEADER.getOrdinal());
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
@@ -309,7 +310,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             memberRoleQName,
                                             "CommunityMember",
                                             null,
@@ -320,7 +321,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, CommunityMembershipType.CONTRIBUTOR.getOrdinal());
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {

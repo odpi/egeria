@@ -364,8 +364,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PEER_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PEER_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PEER_RELATIONSHIP.typeName,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -422,8 +422,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.PEER_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PEER_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PEER_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -477,15 +477,15 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   superTeamGUID,
                                   superTeamGUIDParameterName,
-                                  OpenMetadataType.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM.typeName,
                                   subTeamGUID,
                                   subTeamGUIDParameterName,
-                                  OpenMetadataType.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
                                   setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -533,16 +533,16 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       superTeamGUID,
                                       superTeamGUIDParameterName,
-                                      OpenMetadataType.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM.typeName,
                                       subTeamGUID,
                                       subTeamGUIDParameterName,
-                                      OpenMetadataType.TEAM_TYPE_GUID,
-                                      OpenMetadataType.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM.typeGUID,
+                                      OpenMetadataType.TEAM.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -982,7 +982,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         final String userGUIDParameterName = "userIdentity.getGUID";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.USER_ID_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.USER_ID.name);
 
         EntityDetail userIdentity = this.getEntityByValue(userId,
                                                           profileUserId,
@@ -1282,14 +1282,14 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
                         EntityDetail entity = getEntityFromRepository(userId,
                                                                       entityProxy.getGUID(),
                                                                       contributionRecordGUIDParameterName,
-                                                                      OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                                      OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                                                       null,
                                                                       null,
                                                                       forLineage,

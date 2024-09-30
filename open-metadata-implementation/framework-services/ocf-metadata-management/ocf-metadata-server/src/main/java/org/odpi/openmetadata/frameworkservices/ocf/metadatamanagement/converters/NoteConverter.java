@@ -61,7 +61,7 @@ public class NoteConverter<B> extends OMFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.NOTE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.NOTE_ENTRY.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
