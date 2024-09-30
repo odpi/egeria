@@ -98,7 +98,7 @@ ext {
     testngVersion = '7.10.2'
     swaggerVersion = '2.2.22'
     springwebVersion = '6.0.6'
-    tinkVersion = '1.13.0'
+    tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.11.0'
