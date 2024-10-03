@@ -761,7 +761,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(null, new MetadataAccessServerProvider());
         archiveHelper.addConnectorType(null, new ViewServerProvider());
 
-
         /*
          * Add catalog templates
          */

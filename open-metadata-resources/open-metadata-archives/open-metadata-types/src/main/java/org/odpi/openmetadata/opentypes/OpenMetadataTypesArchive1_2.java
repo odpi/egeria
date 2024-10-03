@@ -5945,16 +5945,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTopicSubscribersRelationship()
     {
-        final String guid            = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";
-        final String name            = "TopicSubscribers";
-        final String description     = "Links the list of subscribers to a topic.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TOPIC_SUBSCRIBERS_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -6027,12 +6019,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDeployedDatabaseSchemaEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.description,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.descriptionGUID,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
     }
 
 
@@ -6070,14 +6058,8 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.INSTANCE.name,
-                                                           OpenMetadataProperty.INSTANCE.description,
-                                                           OpenMetadataProperty.INSTANCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.IMPORTED_FROM.name,
-                                                           OpenMetadataProperty.IMPORTED_FROM.description,
-                                                           OpenMetadataProperty.IMPORTED_FROM.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INSTANCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IMPORTED_FROM));
 
         entityDef.setPropertiesDefinition(properties);
 
