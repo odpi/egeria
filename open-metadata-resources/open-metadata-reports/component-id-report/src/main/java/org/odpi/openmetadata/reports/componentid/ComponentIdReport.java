@@ -38,6 +38,7 @@ public class ComponentIdReport
     private static final String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
     private static final String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
     private static final String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private static final String secretsStoreSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaSecretsSecurityProvider";
     private static final String jdbcResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
     private static final String dataFolderResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider";
     private static final String fileFolderResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider";
@@ -239,6 +240,7 @@ public class ComponentIdReport
         this.addConnectorDescription(restRepositoryConnector, report);
         this.addConnectorDescription(platformSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(serverSecurityConnectorProviderClassName, report);
+        this.addConnectorDescription(secretsStoreSecurityConnectorProviderClassName, report);
         this.addConnectorDescription(jdbcResourceConnectorProviderClassName, report);
         this.addConnectorDescription(csvFileResourceConnectorProviderClassName, report);
         this.addConnectorDescription(fileResourceConnectorProviderClassName, report);

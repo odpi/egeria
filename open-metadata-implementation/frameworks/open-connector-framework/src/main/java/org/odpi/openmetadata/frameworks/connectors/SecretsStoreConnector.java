@@ -7,8 +7,10 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * SecretsStoreConnector is the interface for a connector that is able to retrieve secrets (passwords, certificates, ...) from a secure location.
@@ -31,10 +33,7 @@ import java.util.Date;
 public abstract class SecretsStoreConnector extends ConnectorBase implements AuditLoggingComponent
 {
     protected String   secretsCollectionName = null;
-    private   Date     secretsTimeout        = null;
-    private   long     refreshTimeInterval   = 0L;
-
-    protected AuditLog auditLog              = null;
+    private   Date     secretsTimeout        = new Date();
 
 
     /**
@@ -90,18 +89,16 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
                                               methodName);
         }
 
-        refreshTimeInterval = getRefreshTimeInterval();
-
-        resetRefreshTime();
+        checkSecretsStillValid();
     }
 
 
     /**
      * Called by subclass to determine if the secrets should be refreshed
      */
-    public void checkSecretsStillValid()
+    public void checkSecretsStillValid() throws ConnectorCheckedException
     {
-        if ((secretsTimeout != null) && (! secretsTimeout.before(new Date())))
+        if ((secretsTimeout != null) && (secretsTimeout.before(new Date())))
         {
             refreshSecrets();
             resetRefreshTime();
@@ -117,9 +114,13 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
 
     /**
      * Reset the next refresh time
+     *
+     * @throws ConnectorCheckedException problem with the store
      */
-    protected void resetRefreshTime()
+    protected void resetRefreshTime() throws ConnectorCheckedException
     {
+        long refreshTimeInterval = getRefreshTimeInterval();
+
         if (refreshTimeInterval != 0L)
         {
             long newRefreshTime = new Date().getTime() + (refreshTimeInterval * 60 * 1000);
@@ -133,8 +134,21 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      *
      * @param secretName name of the secret.
      * @return secret
+     * @throws ConnectorCheckedException there is a problem with the connector
      */
     abstract public String getSecret(String secretName) throws ConnectorCheckedException;
+
+
+    /**
+     * Retrieve a secret from the secrets store.
+     *
+     * @param secretsCollectionName name of collection
+     * @param secretName name of the secret.
+     * @return secret
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    abstract public String getSecret(String secretsCollectionName,
+                                     String secretName) throws ConnectorCheckedException;
 
 
     /**
@@ -144,4 +158,23 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * @throws ConnectorCheckedException there is a problem with the connector
      */
     abstract public long   getRefreshTimeInterval() throws ConnectorCheckedException;
+
+
+    /**
+     * Retrieve the requested user definitions stored in the secrets collection.
+     *
+     * @param userId userId for the lookup
+     * @return associated user details or null
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    abstract public UserAccount getUser(String userId) throws ConnectorCheckedException;
+
+
+    /**
+     * Retrieve any user definitions stored in the secrets collection.
+     *
+     * @return map of userIds to user details
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    abstract public Map<String, UserAccount> getUsers() throws ConnectorCheckedException;
 }
