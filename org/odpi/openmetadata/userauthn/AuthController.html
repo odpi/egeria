@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.userauthn.auth.service.TokenService,org.springframework.security.authentication.AuthenticationManager)" class="member-name-link">AuthController</a><wbr>(<a href="auth/service/TokenService.html" title="class in org.odpi.openmetadata.userauthn.auth.service">TokenService</a>&nbsp;tokenService,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.userauthn.TokenService,org.springframework.security.authentication.AuthenticationManager)" class="member-name-link">AuthController</a><wbr>(<a href="TokenService.html" title="class in org.odpi.openmetadata.userauthn">TokenService</a>&nbsp;tokenService,
  org.springframework.security.authentication.AuthenticationManager&nbsp;authenticationManager)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor for the token service.</div>
@@ -112,13 +112,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(java.lang.String,java.lang.String)" class="member-name-link">token</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serverToken(java.lang.String,org.odpi.openmetadata.userauthn.auth.LoginRequest)" class="member-name-link">serverToken</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="auth/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth">LoginRequest</a>&nbsp;userLogin)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">External service that provides an encrypted token that act as a bearer token for a REST API request.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(org.odpi.openmetadata.userauthn.auth.model.LoginRequest)" class="member-name-link">token</a><wbr>(<a href="auth/model/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth.model">LoginRequest</a>&nbsp;userLogin)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#token(org.odpi.openmetadata.userauthn.auth.LoginRequest)" class="member-name-link">token</a><wbr>(<a href="auth/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth">LoginRequest</a>&nbsp;userLogin)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">External service that provides an encrypted token that act as a bearer token for a REST API request.</div>
 </div>
@@ -140,9 +140,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.userauthn.auth.service.TokenService,org.springframework.security.authentication.AuthenticationManager)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.userauthn.TokenService,org.springframework.security.authentication.AuthenticationManager)">
 <h3>AuthController</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AuthController</span><wbr><span class="parameters">(<a href="auth/service/TokenService.html" title="class in org.odpi.openmetadata.userauthn.auth.service">TokenService</a>&nbsp;tokenService,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AuthController</span><wbr><span class="parameters">(<a href="TokenService.html" title="class in org.odpi.openmetadata.userauthn">TokenService</a>&nbsp;tokenService,
  org.springframework.security.authentication.AuthenticationManager&nbsp;authenticationManager)</span></div>
 <div class="block">Constructor for the token service.</div>
 <dl class="notes">
@@ -161,11 +161,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="token(org.odpi.openmetadata.userauthn.auth.model.LoginRequest)">
+<section class="detail" id="token(org.odpi.openmetadata.userauthn.auth.LoginRequest)">
 <h3>token</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/api/token")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">token</span><wbr><span class="parameters">(@RequestBody
- <a href="auth/model/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth.model">LoginRequest</a>&nbsp;userLogin)</span>
+ <a href="auth/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth">LoginRequest</a>&nbsp;userLogin)</span>
              throws <span class="exceptions">org.springframework.security.core.AuthenticationException</span></div>
 <div class="block">External service that provides an encrypted token that act as a bearer token for a REST API request.
  THe userId and password are sent in the request body</div>
@@ -180,21 +180,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="token(java.lang.String,java.lang.String)">
-<h3>token</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(value="/api/token",
-             params={"username","password"})
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">token</span><wbr><span class="parameters">(@RequestParam
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
- @RequestParam
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
-             throws <span class="exceptions">org.springframework.security.core.AuthenticationException</span></div>
+<section class="detail" id="serverToken(java.lang.String,org.odpi.openmetadata.userauthn.auth.LoginRequest)">
+<h3>serverToken</h3>
+<div class="member-signature"><span class="annotations">@PostMapping("/api/servers/{serverName}/token")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverToken</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestBody
+ <a href="auth/LoginRequest.html" title="class in org.odpi.openmetadata.userauthn.auth">LoginRequest</a>&nbsp;userLogin)</span>
+                   throws <span class="exceptions">org.springframework.security.core.AuthenticationException</span></div>
 <div class="block">External service that provides an encrypted token that act as a bearer token for a REST API request.
- The userId and password are supplied as request parameters.</div>
+ THe userId and password are sent in the request body</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - request parameter for the userId</dd>
-<dd><code>password</code> - request parameter for the password</dd>
+<dd><code>userLogin</code> - request body that contains the userId and password</dd>
 <dt>Returns:</dt>
 <dd>token</dd>
 <dt>Throws:</dt>

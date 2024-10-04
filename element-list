@@ -504,6 +504,7 @@ org.odpi.openmetadata.frameworks.connectors.ffdc
 org.odpi.openmetadata.frameworks.connectors.mapper
 org.odpi.openmetadata.frameworks.connectors.properties
 org.odpi.openmetadata.frameworks.connectors.properties.beans
+org.odpi.openmetadata.frameworks.connectors.properties.users
 org.odpi.openmetadata.frameworks.governanceaction
 org.odpi.openmetadata.frameworks.governanceaction.client
 org.odpi.openmetadata.frameworks.governanceaction.controls
@@ -794,11 +795,6 @@ org.odpi.openmetadata.tokencontroller.ffdc
 org.odpi.openmetadata.tokenmanager.http
 org.odpi.openmetadata.userauthn
 org.odpi.openmetadata.userauthn.auth
-org.odpi.openmetadata.userauthn.auth.demo
-org.odpi.openmetadata.userauthn.auth.ldap
-org.odpi.openmetadata.userauthn.auth.model
-org.odpi.openmetadata.userauthn.auth.redis
-org.odpi.openmetadata.userauthn.auth.service
 org.odpi.openmetadata.utilities.guidgenerator
 org.odpi.openmetadata.utilities.serverconfig
 org.odpi.openmetadata.utilities.serverops

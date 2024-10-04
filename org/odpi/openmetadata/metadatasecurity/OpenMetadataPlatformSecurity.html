@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="samples/CocoPharmaPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaPlatformSecurityConnector</a></code>, <code><a href="samples/CocoPharmaPlatformSecurityConnectorTokenBased.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaPlatformSecurityConnectorTokenBased</a></code>, <code><a href="connectors/OpenMetadataPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataPlatformSecurityConnector</a></code></dd>
+<dd><code><a href="samples/CocoPharmaPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaPlatformSecurityConnector</a></code>, <code><a href="samples/CocoPharmaPlatformSecurityConnectorTokenBased.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaPlatformSecurityConnectorTokenBased</a></code>, <code><a href="samples/CocoPharmaSecretsSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaSecretsSecurityConnector</a></code>, <code><a href="connectors/OpenMetadataPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataPlatformSecurityConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">OpenMetadataPlatformSecurity</span></div>
@@ -99,18 +99,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setServerPlatformURL(java.lang.String)" class="member-name-link">setServerPlatformURL</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverURLRoot)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.</div>
+<div class="block">Set up the URL Root for the platform where this is running.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserAsOperatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsOperatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserAsInvestigatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsInvestigatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.</div>
+<div class="block">Check that the calling user is authorized to issue diagnostic requests to the OMAG Server Platform.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserForNewServer(java.lang.String)" class="member-name-link">validateUserForNewServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserAsOperatorForPlatform(java.lang.String)" class="member-name-link">validateUserAsOperatorForPlatform</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server Platform.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#validateUserForNewServer(java.lang.String)" class="member-name-link">validateUserForNewServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Check that the calling user is authorized to create new servers.</div>
 </div>
 </div>
@@ -127,6 +132,17 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setServerPlatformURL(java.lang.String)">
+<h3>setServerPlatformURL</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">setServerPlatformURL</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverURLRoot)</span></div>
+<div class="block">Set up the URL Root for the platform where this is running.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverURLRoot</code> - url root</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="validateUserForNewServer(java.lang.String)">
 <h3>validateUserForNewServer</h3>
