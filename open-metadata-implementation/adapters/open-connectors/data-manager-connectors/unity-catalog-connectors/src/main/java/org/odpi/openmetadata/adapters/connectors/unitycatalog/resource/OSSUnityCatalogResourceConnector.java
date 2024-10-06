@@ -226,8 +226,8 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         CatalogProperties catalogProperties = new CatalogProperties();
 
-        catalogProperties.setName(name);
-        catalogProperties.setComment(comment);
+        catalogProperties.setMetastore_id(name);
+        catalogProperties.setSecurable_type(comment);
         //catalogProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
@@ -380,9 +380,9 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         SchemaProperties schemaProperties = new SchemaProperties();
 
-        schemaProperties.setName(name);
+        schemaProperties.setMetastore_id(name);
         schemaProperties.setCatalog_name(catalogName);
-        schemaProperties.setComment(comment);
+        schemaProperties.setSecurable_type(comment);
         //schemaProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
@@ -532,19 +532,19 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
      * @return resulting volume info
      * @throws PropertyServerException problem with the call
      */
-    public VolumeInfo createVolume(String              name,
-                                   String              catalogName,
-                                   String              schemaName,
-                                   String              comment,
-                                   VolumeType          volumeType,
-                                   String              storageLocation) throws PropertyServerException
+    public VolumeInfo createVolume(String name,
+                                   String catalogName,
+                                   String schemaName,
+                                   String comment,
+                                   String volumeType,
+                                   String storageLocation) throws PropertyServerException
     {
         VolumeProperties volumeProperties = new VolumeProperties();
 
-        volumeProperties.setName(name);
+        volumeProperties.setMetastore_id(name);
         volumeProperties.setCatalog_name(catalogName);
         volumeProperties.setSchema_name(schemaName);
-        volumeProperties.setComment(comment);
+        volumeProperties.setSecurable_type(comment);
         volumeProperties.setVolume_type(volumeType);
         volumeProperties.setStorage_location(storageLocation);
 
@@ -715,18 +715,18 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                  String              catalogName,
                                  String              schemaName,
                                  String              comment,
-                                 TableType           tableType,
-                                 DataSourceFormat    dataSourceFormat,
+                                 String              tableType,
+                                 String              dataSourceFormat,
                                  List<ColumnInfo>    columns,
                                  String              storageLocation,
                                  Map<String, String> properties) throws PropertyServerException
     {
         TableProperties tableProperties = new TableProperties();
 
-        tableProperties.setName(name);
+        tableProperties.setMetastore_id(name);
         tableProperties.setCatalog_name(catalogName);
         tableProperties.setSchema_name(schemaName);
-        tableProperties.setComment(comment);
+        tableProperties.setSecurable_type(comment);
         tableProperties.setTable_type(tableType);
         tableProperties.setData_source_format(dataSourceFormat);
         tableProperties.setColumns(columns);

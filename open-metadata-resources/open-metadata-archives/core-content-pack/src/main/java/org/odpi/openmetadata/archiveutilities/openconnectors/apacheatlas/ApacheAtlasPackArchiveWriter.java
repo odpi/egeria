@@ -72,7 +72,7 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         super.addIntegrationGroups(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK);
         super.addIntegrationConnectors(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK,
-                                       IntegrationGroupDefinition.DEFAULT);
+                                       IntegrationGroupDefinition.APACHE_ATLAS);
 
         /*
          * Create the default governance engines

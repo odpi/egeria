@@ -874,6 +874,70 @@ public class OpenMetadataStore
 
 
     /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementInStore(String                         externalSourceGUID,
+                                               String                         externalSourceName,
+                                               String                         metadataElementTypeName,
+                                               ElementStatus                  initialStatus,
+                                               Map<String, ElementProperties> initialClassifications,
+                                               String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               ElementProperties              properties,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               metadataElementTypeName,
+                                                               initialStatus,
+                                                               initialClassifications,
+                                                               anchorGUID,
+                                                               isOwnAnchor,
+                                                               effectiveFrom,
+                                                               effectiveTo,
+                                                               properties,
+                                                               parentGUID,
+                                                               parentRelationshipTypeName,
+                                                               parentRelationshipProperties,
+                                                               parentAtEnd1);
+    }
+
+
+    /**
      * Create a new metadata element in the metadata store using the template identified by the templateGUID.
      * The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
@@ -904,6 +968,73 @@ public class OpenMetadataStore
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String createMetadataElementFromTemplate(String                         metadataElementTypeName,
+                                                    String                         anchorGUID,
+                                                    boolean                        isOwnAnchor,
+                                                    Date                           effectiveFrom,
+                                                    Date                           effectiveTo,
+                                                    String                         templateGUID,
+                                                    ElementProperties              replacementProperties,
+                                                    Map<String, String>            placeholderProperties,
+                                                    String                         parentGUID,
+                                                    String                         parentRelationshipTypeName,
+                                                    ElementProperties              parentRelationshipProperties,
+                                                    boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    metadataElementTypeName,
+                                                                    anchorGUID,
+                                                                    isOwnAnchor,
+                                                                    effectiveFrom,
+                                                                    effectiveTo,
+                                                                    templateGUID,
+                                                                    replacementProperties,
+                                                                    placeholderProperties,
+                                                                    parentGUID,
+                                                                    parentRelationshipTypeName,
+                                                                    parentRelationshipProperties,
+                                                                    parentAtEnd1);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the placeholder values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementFromTemplate(String                         externalSourceGUID,
+                                                    String                         externalSourceName,
+                                                    String                         metadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
                                                     Date                           effectiveFrom,

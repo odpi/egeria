@@ -1166,10 +1166,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         {
             if (contentPackDefinition.equals(integrationConnectorDefinition.getContentPackDefinition()))
             {
-                archiveHelper.setGUID(integrationConnectorDefinition.getQualifiedName(), integrationConnectorDefinition.getGUID());
+                archiveHelper.setGUID(integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()), integrationConnectorDefinition.getGUID());
                 String guid = archiveHelper.addIntegrationConnector(integrationConnectorDefinition.getConnectorProviderClassName(),
                                                                     integrationConnectorDefinition.getConfigurationProperties(),
-                                                                    integrationConnectorDefinition.getQualifiedName(),
+                                                                    integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()),
                                                                     integrationConnectorDefinition.getDisplayName(),
                                                                     integrationConnectorDefinition.getDescription(),
                                                                     integrationConnectorDefinition.getEndpointAddress(),

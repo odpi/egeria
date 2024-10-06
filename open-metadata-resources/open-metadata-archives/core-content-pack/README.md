@@ -3,11 +3,17 @@
 
 # Core Content Pack
 
-This module implements a utility to build the `CoreContentPack.omarchive` [open metadata archive](https://egeria-project.org/concepts/open-metadata-archive/).
+This module implements a utility to build the technology-specific [open metadata archive](https://egeria-project.org/concepts/open-metadata-archive/):
 
-This archive contains the metadata descriptions for each of the connectors supplied by Egeria.
-These connectors follow the [Open Connector Framework (OCF)](https://egeria-project.org/frameworks/ocf/overview/).
+* `CoreContentPack.omarchive`
+* `ApacheAtlasContentPack.omarchive`
+* `ApacheKafkaContentPack.omarchive`
+* `APIsContentPack.omarchive`
+* `ObservabilityContentPack.omarchive`
+* `PostgresContentPack.omarchive`
+* `UnityCatalogContentPack.omarchive`
 
+These archives contain the metadata descriptions for each of the connectors supplied by Egeria, along with associated templates and reference data.
 
 
 ----

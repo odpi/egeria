@@ -71,11 +71,17 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
     {
         Map<String, String> templateProperties = new HashMap<>();
 
+        /*
+         * Add the default templates first
+         */
         for (UnityCatalogTemplateType templateType : UnityCatalogTemplateType.values())
         {
             templateProperties.put(templateType.getTemplateName(), templateType.getDefaultTemplateGUID());
         }
 
+        /*
+         * Override templates supplied for the catalog target
+         */
         if (catalogTargetTemplates != null)
         {
             templateProperties.putAll(catalogTargetTemplates);

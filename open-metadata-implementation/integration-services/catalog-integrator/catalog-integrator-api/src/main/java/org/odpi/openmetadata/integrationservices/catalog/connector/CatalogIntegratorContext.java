@@ -514,6 +514,36 @@ public class CatalogIntegratorContext extends IntegrationContext
 
 
     /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param externalScopeGUID      unique identifier of the software capability that owns this collection
+     * @param externalScopeName      unique name of the software capability that owns this collection
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addExternalIdentifier(String                       externalScopeGUID,
+                                      String                       externalScopeName,
+                                      String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        openMetadataStoreClient.addExternalIdentifier(userId,
+                                                      externalScopeGUID,
+                                                      externalScopeName,
+                                                      openMetadataElementGUID,
+                                                      openMetadataElementTypeName,
+                                                      externalIdentifierProperties);
+    }
+
+
+    /**
      * Update the description of a specific external identifier.
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem

@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TableProperties extends StoredDataProperties
 {
-    private TableType        table_type         = null;
-    private DataSourceFormat data_source_format = null;
+    private String           table_type         = null;
+    private String           data_source_format = null;
     private List<ColumnInfo> columns            = null;
 
     /**
@@ -32,22 +32,22 @@ public class TableProperties extends StoredDataProperties
     {
     }
 
-    public TableType getTable_type()
+    public String getTable_type()
     {
         return table_type;
     }
 
-    public void setTable_type(TableType table_type)
+    public void setTable_type(String table_type)
     {
         this.table_type = table_type;
     }
 
-    public DataSourceFormat getData_source_format()
+    public String getData_source_format()
     {
         return data_source_format;
     }
 
-    public void setData_source_format(DataSourceFormat data_source_format)
+    public void setData_source_format(String data_source_format)
     {
         this.data_source_format = data_source_format;
     }
@@ -92,9 +92,10 @@ public class TableProperties extends StoredDataProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         TableProperties that = (TableProperties) objectToCompare;
-        return table_type == that.table_type && data_source_format == that.data_source_format && Objects.equals(columns, that.columns);
+        return Objects.equals(table_type, that.table_type) &&
+                Objects.equals(data_source_format, that.data_source_format) &&
+                Objects.equals(columns, that.columns);
     }
-
 
     /**
      * Return hash code based on properties.
