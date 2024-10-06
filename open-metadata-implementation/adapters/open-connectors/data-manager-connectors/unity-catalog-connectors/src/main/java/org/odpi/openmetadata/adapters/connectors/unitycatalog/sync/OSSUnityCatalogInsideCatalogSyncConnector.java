@@ -313,6 +313,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                     ucFullNameToEgeriaGUID.put(catalogName, requestedCatalogTarget.getCatalogTargetElement().getGUID());
 
                     this.refreshCatalog(requestedCatalogTarget.getCatalogTargetName(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         catalogName,
                                         ucFullNameToEgeriaGUID,
                                         permittedSynchronization,
@@ -356,6 +357,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
      * Synchronize a catalog.
      *
      * @param catalogTargetName the catalog target name
+     * @param catalogGUID guid of the catalog
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -365,6 +367,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
      * @param configurationProperties configuration properties supplied through the catalog target
      */
     private void refreshCatalog(String                           catalogTargetName,
+                                String                           catalogGUID,
                                 String                           catalogName,
                                 Map<String, String>              ucFullNameToEgeriaGUID,
                                 PermittedSynchronization         targetPermittedSynchronization,
@@ -405,6 +408,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             OSSUnityCatalogInsideCatalogSyncSchema syncSchema = new OSSUnityCatalogInsideCatalogSyncSchema(connectorName,
                                                                                                            this.getContext(),
                                                                                                            catalogTargetName,
+                                                                                                           catalogGUID,
                                                                                                            catalogName,
                                                                                                            ucFullNameToEgeriaGUID,
                                                                                                            targetPermittedSynchronization,
@@ -421,6 +425,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             OSSUnityCatalogInsideCatalogSyncVolumes syncVolumes = new OSSUnityCatalogInsideCatalogSyncVolumes(connectorName,
                                                                                                               this.getContext(),
                                                                                                               catalogTargetName,
+                                                                                                              catalogGUID,
                                                                                                               catalogName,
                                                                                                               ucFullNameToEgeriaGUID,
                                                                                                               targetPermittedSynchronization,
@@ -437,6 +442,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             OSSUnityCatalogInsideCatalogSyncTables syncTables = new OSSUnityCatalogInsideCatalogSyncTables(connectorName,
                                                                                                            this.getContext(),
                                                                                                            catalogTargetName,
+                                                                                                           catalogGUID,
                                                                                                            catalogName,
                                                                                                            ucFullNameToEgeriaGUID,
                                                                                                            targetPermittedSynchronization,
@@ -453,6 +459,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
             OSSUnityCatalogInsideCatalogSyncFunctions syncFunctions = new OSSUnityCatalogInsideCatalogSyncFunctions(connectorName,
                                                                                                                     this.getContext(),
                                                                                                                     catalogTargetName,
+                                                                                                                    catalogGUID,
                                                                                                                     catalogName,
                                                                                                                     ucFullNameToEgeriaGUID,
                                                                                                                     targetPermittedSynchronization,

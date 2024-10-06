@@ -7,6 +7,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicElementProperties;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -38,6 +38,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 {
     protected final String                                 connectorName;
     protected final CatalogIntegratorContext               context;
+    protected final String                                 catalogGUID;
     protected final String                                 catalogName;
     protected final String                                 catalogTargetName;
     protected final PermittedSynchronization               targetPermittedSynchronization;
@@ -64,6 +65,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param catalogGUID guid of the catalog
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -79,6 +81,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     public OSSUnityCatalogInsideCatalogSyncBase(String                                 connectorName,
                                                 CatalogIntegratorContext               context,
                                                 String                                 catalogTargetName,
+                                                String                                 catalogGUID,
                                                 String                                 catalogName,
                                                 Map<String, String>                    ucFullNameToEgeriaGUID,
                                                 PermittedSynchronization               targetPermittedSynchronization,
@@ -94,6 +97,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.connectorName                  = connectorName;
         this.context                        = context;
         this.catalogTargetName              = catalogTargetName;
+        this.catalogGUID                    = catalogGUID;
         this.catalogName                    = catalogName;
         this.ucFullNameToEgeriaGUID         = ucFullNameToEgeriaGUID;
         this.targetPermittedSynchronization = targetPermittedSynchronization;
@@ -230,12 +234,15 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         externalIdentifierProperties.setExternalIdentifier(id);
         externalIdentifierProperties.setExternalIdentifierSource(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
         externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucElement.getCreated_at()));
+        externalIdentifierProperties.setExternalInstanceCreatedBy(ucElement.getCreated_by());
         externalIdentifierProperties.setExternalInstanceLastUpdateTime(new Date(ucElement.getUpdated_at()));
+        externalIdentifierProperties.setExternalInstanceLastUpdatedBy(ucElement.getUpdated_by());
 
         Map<String, String> mappingProperties = new HashMap<>();
 
         mappingProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
         mappingProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), schemaName);
+        mappingProperties.put(UnityCatalogPlaceholderProperty.OWNER.getName(), ucElement.getOwner());
         mappingProperties.put(elementName, ucElement.getName());
 
         mappingProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.name, ucServerEndpoint);
@@ -253,11 +260,15 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      *
      * @param parentGUID the parent (and anchor) unique name
      * @param parentQualifiedName qualifiedName of the parent element
+     * @param basicElementProperties common properties of an element
      * @param facetProperties these are the specialist property for the linked element.
      */
-    protected void addPropertyFacet(String              parentGUID,
-                                    String              parentQualifiedName,
-                                    Map<String, String> facetProperties) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    protected void addPropertyFacet(String                 parentGUID,
+                                    String                 parentQualifiedName,
+                                    BasicElementProperties basicElementProperties,
+                                    Map<String, String>    facetProperties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -271,11 +282,25 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE);
 
+        Map<String, String> fullFacetProperties = facetProperties;
+
+        if (fullFacetProperties == null)
+        {
+            fullFacetProperties = new HashMap<>();
+        }
+
+        fullFacetProperties.put(UnityCatalogPlaceholderProperty.METASTORE_ID.getName(), basicElementProperties.getMetastore_id());
+        fullFacetProperties.put(UnityCatalogPlaceholderProperty.SECURABLE_KIND.getName(), basicElementProperties.getSecurable_kind());
+        fullFacetProperties.put(UnityCatalogPlaceholderProperty.SECURABLE_TYPE.getName(), basicElementProperties.getSecurable_type());
+        fullFacetProperties.put(UnityCatalogPlaceholderProperty.BROWSE_ONLY.getName(), Boolean.toString(basicElementProperties.isBrowse_only()));
+
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                 OpenMetadataProperty.PROPERTIES.name,
-                                                                facetProperties);
+                                                                fullFacetProperties);
 
-        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.PROPERTY_FACET.typeName,
+        openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                        catalogName,
+                                                        OpenMetadataType.PROPERTY_FACET.typeName,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         parentGUID,
@@ -344,9 +369,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param memberElement element from Egeria
      * @return comment for UC
      */
-    protected String getUCCatalogFomMember(MemberElement memberElement)
+    protected String getUCCatalogFromMember(MemberElement memberElement)
     {
-        final String methodName = "getUCCatalogFomMember";
+        final String methodName = "getUCCatalogFromMember";
 
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 
@@ -365,9 +390,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param memberElement element from Egeria
      * @return comment for UC
      */
-    protected String getUCSchemaFomMember(MemberElement memberElement)
+    protected String getUCSchemaFromMember(MemberElement memberElement)
     {
-        final String methodName = "getUCSchemaFomMember";
+        final String methodName = "getUCSchemaFromMember";
 
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 

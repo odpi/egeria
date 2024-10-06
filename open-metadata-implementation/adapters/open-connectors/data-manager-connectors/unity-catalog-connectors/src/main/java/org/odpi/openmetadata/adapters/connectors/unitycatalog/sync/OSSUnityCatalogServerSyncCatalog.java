@@ -76,6 +76,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
               context,
               catalogTargetName,
               null,
+              null,
               new HashMap<>(),
               targetPermittedSynchronization,
               ucConnector,
@@ -112,8 +113,8 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         final String methodName = "refreshEgeria";
 
         int parentAtEnd = 1;
-        RelatedElementsIterator iterator = new RelatedElementsIterator(this.context.getMetadataSourceGUID(),
-                                                                       this.context.getMetadataSourceQualifiedName(),
+        RelatedElementsIterator iterator = new RelatedElementsIterator(catalogGUID,
+                                                                       catalogName,
                                                                        catalogTargetName,
                                                                        connectorName,
                                                                        ucServerGUID,
@@ -293,7 +294,9 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         boolean parentAtEnd1 = true;
         if (templateGUID != null)
         {
-            ucCatalogGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+            ucCatalogGUID = openMetadataAccess.createMetadataElementFromTemplate(null,
+                                                                                 null,
+                                                                                 deployedImplementationType.getAssociatedTypeName(),
                                                                                  ucServerGUID,
                                                                                  false,
                                                                                  null,
@@ -311,7 +314,9 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         }
         else
         {
-            ucCatalogGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+            ucCatalogGUID = openMetadataAccess.createMetadataElementInStore(null,
+                                                                            null,
+                                                                            deployedImplementationType.getAssociatedTypeName(),
                                                                             ElementStatus.ACTIVE,
                                                                             null,
                                                                             ucServerGUID,
@@ -330,14 +335,18 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         ucFullNameToEgeriaGUID.put(catalogInfo.getName(), ucCatalogGUID);
 
-        context.setMetadataSourceQualifiedName(ucCatalogGUID, qualifiedName);
+        super.addPropertyFacet(ucCatalogGUID, qualifiedName, catalogInfo, null);
+
         context.addExternalIdentifier(ucCatalogGUID,
+                                      catalogInfo.getName(),
+                                      ucCatalogGUID,
                                       OpenMetadataType.CATALOG.typeName,
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
                                                                            catalogInfo.getId(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
+
         addCatalogTarget(ucServerGUID, qualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
@@ -385,7 +394,9 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                             this.getUCCommentFomMember(memberElement),
                                                             this.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+        context.addExternalIdentifier(catalogGUID,
+                                      catalogName,
+                                      memberElement.getElement().getElementGUID(),
                                       OpenMetadataType.CATALOG.typeName,
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,

@@ -471,94 +471,98 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                         newEntityProperties,
                                                                                         methodName);
-            String newEntityGUID = null;
 
             /*
              * If retrievals of matching entities is permitted then check that the qualified name is unique.
              */
             if ((allowRetrieve) && (newQualifiedName != null))
             {
-                newEntityGUID = getBeanGUIDByUniqueName(userId,
-                                                        newQualifiedName,
-                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                        entityTypeGUID,
-                                                        entityTypeName,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        serviceSupportedZones,
-                                                        effectiveTime,
-                                                        methodName);
-            }
-
-            if (newEntityGUID == null)
-            {
-                /*
-                 * Verify that the user is permitted to create a new bean.
-                 */
-                validateNewEntityRequest(userId,
-                                         templateEntity.getType().getTypeDefGUID(),
-                                         templateEntity.getType().getTypeDefName(),
-                                         newEntityProperties,
-                                         propertyBuilder.getEntityClassifications(),
-                                         propertyBuilder.getInstanceStatus(),
-                                         effectiveTime,
-                                         methodName);
-
-                /*
-                 * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
-                 * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
-                 */
-                Map<String, Classification> newClassificationMap = new HashMap<>();
-
-                if (templateEntity.getClassifications() != null)
-                {
-                    for (Classification templateClassification : templateEntity.getClassifications())
-                    {
-                        if (templateClassification != null)
-                        {
-                            if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
-                                    (!OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
-                                    (!OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
-                            {
-                                newClassificationMap.put(templateClassification.getName(), templateClassification);
-                            }
-                        }
-                    }
-                }
-
-                List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
-                if (builderClassifications != null)
-                {
-                    for (Classification builderClassification : builderClassifications)
-                    {
-                        if (builderClassification != null)
-                        {
-                            newClassificationMap.put(builderClassification.getName(), builderClassification);
-                        }
-                    }
-                }
-
-                List<Classification> newClassifications = null;
-
-                if (!newClassificationMap.isEmpty())
-                {
-                    newClassifications = new ArrayList<>(newClassificationMap.values());
-                }
-
-                /*
-                 * Ready to create the new bean
-                 */
-                newEntityGUID = repositoryHandler.createEntity(userId,
-                                                               templateEntity.getType().getTypeDefGUID(),
-                                                               templateEntity.getType().getTypeDefName(),
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               propertyBuilder.getInstanceProperties(methodName),
-                                                               newClassifications,
-                                                               propertyBuilder.getInstanceStatus(),
+                String newEntityGUID = getBeanGUIDByUniqueName(userId,
+                                                               newQualifiedName,
+                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                               entityTypeGUID,
+                                                               entityTypeName,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               serviceSupportedZones,
+                                                               effectiveTime,
                                                                methodName);
+
+                if (newEntityGUID != null)
+                {
+                    templateProgress.newBeanGUID = newEntityGUID;
+
+                    return templateProgress;
+                }
             }
+
+            /*
+             * Verify that the user is permitted to create a new bean.
+             */
+            validateNewEntityRequest(userId,
+                                     templateEntity.getType().getTypeDefGUID(),
+                                     templateEntity.getType().getTypeDefName(),
+                                     newEntityProperties,
+                                     propertyBuilder.getEntityClassifications(),
+                                     propertyBuilder.getInstanceStatus(),
+                                     effectiveTime,
+                                     methodName);
+
+            /*
+             * All OK to create the new bean, now work out the classifications.  Start with the classifications from the template (ignoring Anchors
+             * and LatestChange) and then overlay the classifications set up in the builder and the appropriate anchor.
+             */
+            Map<String, Classification> newClassificationMap = new HashMap<>();
+
+            if (templateEntity.getClassifications() != null)
+            {
+                for (Classification templateClassification : templateEntity.getClassifications())
+                {
+                    if (templateClassification != null)
+                    {
+                        if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                                (!OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                                (!OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
+                        {
+                            newClassificationMap.put(templateClassification.getName(), templateClassification);
+                        }
+                    }
+                }
+            }
+
+            List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
+            if (builderClassifications != null)
+            {
+                for (Classification builderClassification : builderClassifications)
+                {
+                    if (builderClassification != null)
+                    {
+                        newClassificationMap.put(builderClassification.getName(), builderClassification);
+                    }
+                }
+            }
+
+            List<Classification> newClassifications = null;
+
+            if (!newClassificationMap.isEmpty())
+            {
+                newClassifications = new ArrayList<>(newClassificationMap.values());
+            }
+
+            /*
+             * Ready to create the new bean
+             */
+            String newEntityGUID = repositoryHandler.createEntity(userId,
+                                                                  templateEntity.getType().getTypeDefGUID(),
+                                                                  templateEntity.getType().getTypeDefName(),
+                                                                  externalSourceGUID,
+                                                                  externalSourceName,
+                                                                  propertyBuilder.getInstanceProperties(methodName),
+                                                                  newClassifications,
+                                                                  propertyBuilder.getInstanceStatus(),
+                                                                  methodName);
+
 
             /*
              * This is the first time through the iteration, so we need to capture the top level bean's guid to act as the anchor for all other

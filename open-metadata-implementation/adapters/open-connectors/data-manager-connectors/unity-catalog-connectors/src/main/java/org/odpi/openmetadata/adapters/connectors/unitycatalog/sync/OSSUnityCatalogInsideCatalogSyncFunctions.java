@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -45,6 +44,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param catalogGUID guid of the catalog
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -59,6 +59,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     public OSSUnityCatalogInsideCatalogSyncFunctions(String                           connectorName,
                                                      CatalogIntegratorContext         context,
                                                      String                           catalogTargetName,
+                                                     String                           catalogGUID,
                                                      String                           catalogName,
                                                      Map<String, String>              ucFullNameToEgeriaGUID,
                                                      PermittedSynchronization         targetPermittedSynchronization,
@@ -73,6 +74,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         super(connectorName,
               context,
               catalogTargetName,
+              catalogGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -107,15 +109,15 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "refreshEgeriaFunctions";
 
-        MetadataCollectionIterator functionIterator = new MetadataCollectionIterator(this.context.getMetadataSourceGUID(),
-                                                                                   this.context.getMetadataSourceQualifiedName(),
-                                                                                   catalogTargetName,
-                                                                                   connectorName,
-                                                                                   entityTypeName,
-                                                                                   openMetadataAccess,
-                                                                                   targetPermittedSynchronization,
-                                                                                   context.getMaxPageSize(),
-                                                                                   auditLog);
+        MetadataCollectionIterator functionIterator = new MetadataCollectionIterator(catalogGUID,
+                                                                                     catalogName,
+                                                                                     catalogTargetName,
+                                                                                     connectorName,
+                                                                                     entityTypeName,
+                                                                                     openMetadataAccess,
+                                                                                     targetPermittedSynchronization,
+                                                                                     context.getMaxPageSize(),
+                                                                                     auditLog);
 
         while (functionIterator.moreToReceive())
         {
@@ -163,7 +165,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                         }
 
                         this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                        super.getUCSchemaFomMember(nextElement),
+                                        super.getUCSchemaFromMember(nextElement),
                                         memberAction,
                                         nextElement,
                                         functionInfo);
@@ -269,7 +271,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    private void createElementInEgeria(String     schemaGUID,
+    private void createElementInEgeria(String       schemaGUID,
                                        FunctionInfo functionInfo) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -281,52 +283,50 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         if (templateGUID != null)
         {
-            ucFunctionGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
-                                                                                schemaGUID,
-                                                                                false,
-                                                                                null,
-                                                                                null,
-                                                                                templateGUID,
-                                                                                null,
-                                                                                this.getPlaceholderProperties(functionInfo),
-                                                                                schemaGUID,
-                                                                                parentLinkTypeName,
-                                                                                null,
-                                                                                parentAtEnd1);
+            ucFunctionGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
+                                                                                  catalogName,
+                                                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                                                  schemaGUID,
+                                                                                  false,
+                                                                                  null,
+                                                                                  null,
+                                                                                  templateGUID,
+                                                                                  null,
+                                                                                  this.getPlaceholderProperties(functionInfo),
+                                                                                  schemaGUID,
+                                                                                  parentLinkTypeName,
+                                                                                  null,
+                                                                                  parentAtEnd1);
         }
         else
         {
             String qualifiedName = super.getQualifiedName(functionInfo.getFull_name());
 
-            ucFunctionGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
-                                                                           ElementStatus.ACTIVE,
-                                                                           null,
-                                                                           schemaGUID,
-                                                                           false,
-                                                                           null,
-                                                                           null,
-                                                                           this.getElementProperties(qualifiedName, functionInfo),
-                                                                           schemaGUID,
-                                                                           parentLinkTypeName,
-                                                                           null,
-                                                                           parentAtEnd1);
+            ucFunctionGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                                             catalogName,
+                                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                                             ElementStatus.ACTIVE,
+                                                                             null,
+                                                                             schemaGUID,
+                                                                             false,
+                                                                             null,
+                                                                             null,
+                                                                             this.getElementProperties(qualifiedName, functionInfo),
+                                                                             schemaGUID,
+                                                                             parentLinkTypeName,
+                                                                             null,
+                                                                             parentAtEnd1);
 
             Map<String, String> facetProperties = new HashMap<>();
 
-            if (functionInfo.getParameter_style() != null)
-            {
-                facetProperties.put("parameterStyle", functionInfo.getParameter_style().getValue());
-            }
-            else
-            {
-                facetProperties.put("parameterStyle", null);
-            }
+            facetProperties.put("parameterStyle", functionInfo.getParameter_style());
 
-
-            super.addPropertyFacet(ucFunctionGUID, qualifiedName, facetProperties);
+            super.addPropertyFacet(ucFunctionGUID, qualifiedName, functionInfo, facetProperties);
         }
 
-        context.addExternalIdentifier(ucFunctionGUID,
+        context.addExternalIdentifier(catalogGUID,
+                                      catalogName,
+                                      ucFunctionGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(functionInfo,
                                                                            functionInfo.getSchema_name(),
@@ -383,12 +383,14 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         functionProperties.setCatalog_name(catalogName);
         functionProperties.setSchema_name(schemaName);
-        functionProperties.setName(super.getUCNameFromMember(memberElement));
+        functionProperties.setMetastore_id(super.getUCNameFromMember(memberElement));
 
         // todo - complete parameter mapping
         FunctionInfo functionInfo = ucConnector.createFunction(functionProperties);
 
-        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+        context.addExternalIdentifier(catalogGUID,
+                                      catalogName,
+                                      memberElement.getElement().getElementGUID(),
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(functionInfo,
                                                                            functionInfo.getSchema_name(),
@@ -540,7 +542,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         /*
          * Create the root schema type.
          */
-        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
+        openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                        catalogName,
+                                                        OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         functionGUID,

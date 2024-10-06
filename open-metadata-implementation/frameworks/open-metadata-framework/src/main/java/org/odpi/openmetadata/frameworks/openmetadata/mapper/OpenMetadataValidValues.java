@@ -8,16 +8,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.mapper;
 public class OpenMetadataValidValues
 {
     /**
-     * Egeria:IntegrationGroup:DefaultIntegrationGroup is the qualified name of Egeria's default integration group.
-     */
-    public static final String DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME = "Egeria:IntegrationGroup:DefaultIntegrationGroup";
-
-    /**
-     * DefaultIntegrationGroup is the display name of the default integration group.
-     */
-    public static final String DEFAULT_INTEGRATION_GROUP_NAME = "DefaultIntegrationGroup";
-
-    /**
      * This scope value means that the associated value is valid across the open metadata ecosystem - that is all tools, runtimes, repositories
      * using open metadata standards.
      */
