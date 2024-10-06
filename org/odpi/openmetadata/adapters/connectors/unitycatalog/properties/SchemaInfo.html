@@ -72,10 +72,12 @@ loadScripts(document, 'script');</script>
 <h1 title="Class SchemaInfo" class="title">Class SchemaInfo</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="BasicProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicProperties</a>
 <div class="inheritance"><a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicElementProperties</a>
 <div class="inheritance"><a href="CatalogNamespaceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.CatalogNamespaceProperties</a>
 <div class="inheritance"><a href="SchemaProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaProperties</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo</div>
+</div>
 </div>
 </div>
 </div>
@@ -130,19 +132,29 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 <div class="block">Return the time that the element was created.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFull_name()" class="member-name-link">getFull_name</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreated_by()" class="member-name-link">getCreated_by</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the fully-qualified name of the schema.</div>
+<div class="block">Return the userId that created the element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchema_id()" class="member-name-link">getSchema_id</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFull_name()" class="member-name-link">getFull_name</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the fully-qualified name of the schema.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchema_id()" class="member-name-link">getSchema_id</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the internal identifier of the schema.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUpdated_at()" class="member-name-link">getUpdated_at</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUpdated_at()" class="member-name-link">getUpdated_at</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the time that the element was last updated.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUpdated_by()" class="member-name-link">getUpdated_by</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the element that last updated the element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -155,19 +167,29 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 <div class="block">Set up the time that the element was created.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFull_name(java.lang.String)" class="member-name-link">setFull_name</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;full_name)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCreated_by(java.lang.String)" class="member-name-link">setCreated_by</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;created_by)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set upi the fully-qualified name of the schema.</div>
+<div class="block">Set up the userId that created the element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchema_id(java.lang.String)" class="member-name-link">setSchema_id</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schema_id)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFull_name(java.lang.String)" class="member-name-link">setFull_name</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;full_name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the internal identifier of the schema.</div>
+<div class="block">Set upi the fully-qualified name of the schema.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpdated_at(long)" class="member-name-link">setUpdated_at</a><wbr>(long&nbsp;updated_at)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSchema_id(java.lang.String)" class="member-name-link">setSchema_id</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schema_id)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the internal identifier of the schema.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpdated_at(long)" class="member-name-link">setUpdated_at</a><wbr>(long&nbsp;updated_at)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the time that the element was last updated.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpdated_by(java.lang.String)" class="member-name-link">setUpdated_by</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updated_by)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the element that last updated the element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -178,17 +200,23 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="SchemaProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaProperties</a></h3>
+<code><a href="SchemaProperties.html#getProperties()">getProperties</a>, <a href="SchemaProperties.html#setProperties(java.util.Map)">setProperties</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.CatalogNamespaceProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="CatalogNamespaceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogNamespaceProperties</a></h3>
 <code><a href="CatalogNamespaceProperties.html#getCatalog_name()">getCatalog_name</a>, <a href="CatalogNamespaceProperties.html#setCatalog_name(java.lang.String)">setCatalog_name</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicElementProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicElementProperties</a></h3>
-<code><a href="BasicElementProperties.html#getComment()">getComment</a>, <a href="BasicElementProperties.html#getName()">getName</a>, <a href="BasicElementProperties.html#setComment(java.lang.String)">setComment</a>, <a href="BasicElementProperties.html#setName(java.lang.String)">setName</a></code></div>
+<code><a href="BasicElementProperties.html#getMetastore_id()">getMetastore_id</a>, <a href="BasicElementProperties.html#getOwner()">getOwner</a>, <a href="BasicElementProperties.html#getSecurable_kind()">getSecurable_kind</a>, <a href="BasicElementProperties.html#getSecurable_type()">getSecurable_type</a>, <a href="BasicElementProperties.html#isBrowse_only()">isBrowse_only</a>, <a href="BasicElementProperties.html#setBrowse_only(boolean)">setBrowse_only</a>, <a href="BasicElementProperties.html#setMetastore_id(java.lang.String)">setMetastore_id</a>, <a href="BasicElementProperties.html#setOwner(java.lang.String)">setOwner</a>, <a href="BasicElementProperties.html#setSecurable_kind(java.lang.String)">setSecurable_kind</a>, <a href="BasicElementProperties.html#setSecurable_type(java.lang.String)">setSecurable_type</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="BasicProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicProperties</a></h3>
+<code><a href="BasicProperties.html#getComment()">getComment</a>, <a href="BasicProperties.html#getName()">getName</a>, <a href="BasicProperties.html#setComment(java.lang.String)">setComment</a>, <a href="BasicProperties.html#setName(java.lang.String)">setName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase">Methods inherited from interface&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a></h3>
-<code><a href="ElementBase.html#getComment()">getComment</a>, <a href="ElementBase.html#getName()">getName</a>, <a href="ElementBase.html#setComment(java.lang.String)">setComment</a>, <a href="ElementBase.html#setName(java.lang.String)">setName</a></code></div>
+<code><a href="ElementBase.html#getComment()">getComment</a>, <a href="ElementBase.html#getName()">getName</a>, <a href="ElementBase.html#getOwner()">getOwner</a>, <a href="ElementBase.html#setComment(java.lang.String)">setComment</a>, <a href="ElementBase.html#setName(java.lang.String)">setName</a>, <a href="ElementBase.html#setOwner(java.lang.String)">setOwner</a></code></div>
 </section>
 </li>
 </ul>
@@ -268,6 +296,58 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 </section>
 </li>
 <li>
+<section class="detail" id="getCreated_by()">
+<h3>getCreated_by</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getCreated_by</span>()</div>
+<div class="block">Return the userId that created the element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ElementBase.html#getCreated_by()">getCreated_by</a></code>&nbsp;in interface&nbsp;<code><a href="ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCreated_by(java.lang.String)">
+<h3>setCreated_by</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCreated_by</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;created_by)</span></div>
+<div class="block">Set up the userId that created the element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ElementBase.html#setCreated_by(java.lang.String)">setCreated_by</a></code>&nbsp;in interface&nbsp;<code><a href="ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>created_by</code> - string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUpdated_by()">
+<h3>getUpdated_by</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUpdated_by</span>()</div>
+<div class="block">Return the element that last updated the element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ElementBase.html#getUpdated_by()">getUpdated_by</a></code>&nbsp;in interface&nbsp;<code><a href="ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpdated_by(java.lang.String)">
+<h3>setUpdated_by</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpdated_by</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;updated_by)</span></div>
+<div class="block">Set up the element that last updated the element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ElementBase.html#setUpdated_by(java.lang.String)">setUpdated_by</a></code>&nbsp;in interface&nbsp;<code><a href="ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>updated_by</code> - string name</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getSchema_id()">
 <h3>getSchema_id</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSchema_id</span>()</div>
@@ -331,7 +411,7 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="CatalogNamespaceProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="CatalogNamespaceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogNamespaceProperties</a></code></dd>
+<dd><code><a href="SchemaProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="SchemaProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -346,7 +426,7 @@ implements <a href="ElementBase.html" title="interface in org.odpi.openmetadata.
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="CatalogNamespaceProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="CatalogNamespaceProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogNamespaceProperties</a></code></dd>
+<dd><code><a href="SchemaProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="SchemaProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

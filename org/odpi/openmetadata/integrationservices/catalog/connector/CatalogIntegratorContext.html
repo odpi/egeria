@@ -211,111 +211,120 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)" class="member-name-link">addExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)" class="member-name-link">addExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalScopeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalScopeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
  <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new external identifier to an existing open metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#confirmSynchronization(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">confirmSynchronization</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdentifier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Confirm that the values of a particular metadata element have been synchronized.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetManagerGUID()" class="member-name-link">getAssetManagerGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier for the asset manager element with a qualifiedName matching the assetManagerName.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetManagerName()" class="member-name-link">getAssetManagerName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name of the asset manager that is supplied in the configuration as metadataSourceQualifiedName.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollaborationExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CollaborationExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollaborationExchangeService()" class="member-name-link">getCollaborationExchangeService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging collaboration information (comments, likes, reviews, tags).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectionExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectionExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionExchangeService()" class="member-name-link">getConnectionExchangeService</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging connection information (connections, connector types, endpoints).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectorFactoryService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectorFactoryService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorFactoryService()" class="member-name-link">getConnectorFactoryService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for working with connectors to digital resources.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataAssetExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">DataAssetExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataAssetExchangeService()" class="member-name-link">getDataAssetExchangeService</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalReferenceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ExternalReferenceExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceService()" class="member-name-link">getExternalReferenceService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GlossaryExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryExchangeService()" class="member-name-link">getGlossaryExchangeService</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging glossary information (glossaries, with categories, terms and relationships)</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GovernanceExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceExchangeService()" class="member-name-link">getGovernanceExchangeService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging governance information (policies, rules, ...)</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InfrastructureExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">InfrastructureExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInfrastructureExchangeService()" class="member-name-link">getInfrastructureExchangeService</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging infrastructure information (servers, applications, hosts etc).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LineageExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">LineageExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageExchangeService()" class="member-name-link">getLineageExchangeService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging lineage information (processes, ports, schemas, lineage linkage etc).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCorrelationHeader(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement)" class="member-name-link">getMetadataCorrelationHeader</a><wbr>(<a href="../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;retrievedElement)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the correlation header from the retrieved element that matches this asset manager.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StewardshipExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">StewardshipExchangeService</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipExchangeService()" class="member-name-link">getStewardshipExchangeService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging stewardship information.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValuesExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ValidValuesExchangeService</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValuesExchangeService()" class="member-name-link">getValidValuesExchangeService</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the interface for exchanging valid values and reference data information.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isListenerRegistered()" class="member-name-link">isListenerRegistered</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a flag indicating whether a listener has been registered or not.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a>&nbsp;listener)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be passed each of the events published by the Asset Manager OMAS.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">removeExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdentifier)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove a new external identifier from an existing open metadata element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)" class="member-name-link">updateExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)" class="member-name-link">addExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
  <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new external identifier to an existing open metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#confirmSynchronization(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">confirmSynchronization</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdentifier)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Confirm that the values of a particular metadata element have been synchronized.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetManagerGUID()" class="member-name-link">getAssetManagerGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier for the asset manager element with a qualifiedName matching the assetManagerName.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetManagerName()" class="member-name-link">getAssetManagerName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the qualified name of the asset manager that is supplied in the configuration as metadataSourceQualifiedName.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="CollaborationExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CollaborationExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollaborationExchangeService()" class="member-name-link">getCollaborationExchangeService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging collaboration information (comments, likes, reviews, tags).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectionExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectionExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionExchangeService()" class="member-name-link">getConnectionExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging connection information (connections, connector types, endpoints).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectorFactoryService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectorFactoryService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorFactoryService()" class="member-name-link">getConnectorFactoryService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for working with connectors to digital resources.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DataAssetExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">DataAssetExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataAssetExchangeService()" class="member-name-link">getDataAssetExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalReferenceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ExternalReferenceExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalReferenceService()" class="member-name-link">getExternalReferenceService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GlossaryExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GlossaryExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGlossaryExchangeService()" class="member-name-link">getGlossaryExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging glossary information (glossaries, with categories, terms and relationships)</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GovernanceExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceExchangeService()" class="member-name-link">getGovernanceExchangeService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging governance information (policies, rules, ...)</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="InfrastructureExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">InfrastructureExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInfrastructureExchangeService()" class="member-name-link">getInfrastructureExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging infrastructure information (servers, applications, hosts etc).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="LineageExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">LineageExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageExchangeService()" class="member-name-link">getLineageExchangeService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging lineage information (processes, ports, schemas, lineage linkage etc).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataCorrelationHeader(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement)" class="member-name-link">getMetadataCorrelationHeader</a><wbr>(<a href="../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;retrievedElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the correlation header from the retrieved element that matches this asset manager.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StewardshipExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">StewardshipExchangeService</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStewardshipExchangeService()" class="member-name-link">getStewardshipExchangeService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging stewardship information.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ValidValuesExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ValidValuesExchangeService</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidValuesExchangeService()" class="member-name-link">getValidValuesExchangeService</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the interface for exchanging valid values and reference data information.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isListenerRegistered()" class="member-name-link">isListenerRegistered</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a flag indicating whether a listener has been registered or not.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)" class="member-name-link">registerListener</a><wbr>(<a href="../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a>&nbsp;listener)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Register a listener object that will be passed each of the events published by the Asset Manager OMAS.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">removeExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalIdentifier)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove a new external identifier from an existing open metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)" class="member-name-link">updateExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
+ <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the description of a specific external identifier.</div>
 </div>
 </div>
@@ -673,6 +682,32 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new external identifier to an existing open metadata element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
+<dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)">
+<h3>addExternalIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addExternalIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalScopeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalScopeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataElementTypeName,
+ <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</span>
+                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add a new external identifier to an existing open metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>externalScopeGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalScopeName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
 <dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>

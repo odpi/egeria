@@ -334,6 +334,7 @@ org.odpi.openmetadata.adapters.connectors.postgres.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.survey
 org.odpi.openmetadata.adapters.connectors.postgres.utilities
 org.odpi.openmetadata.adapters.connectors.reports
+org.odpi.openmetadata.adapters.connectors.reports.ffdc
 org.odpi.openmetadata.adapters.connectors.reports.surveyreport
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc

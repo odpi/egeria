@@ -72,8 +72,10 @@ loadScripts(document, 'script');</script>
 <h1 title="Class CatalogProperties" class="title">Class CatalogProperties</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="BasicProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicProperties</a>
 <div class="inheritance"><a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicElementProperties</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.CatalogProperties</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -112,6 +114,36 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIsolation_mode()" class="member-name-link">getIsolation_mode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of isolation - eg OPEN.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return hash code based on properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isAccessible_in_current_workspace()" class="member-name-link">isAccessible_in_current_workspace</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether accessible to this user.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAccessible_in_current_workspace(boolean)" class="member-name-link">setAccessible_in_current_workspace</a><wbr>(boolean&nbsp;accessible_in_current_workspace)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up whether accessible to this user.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIsolation_mode(java.lang.String)" class="member-name-link">setIsolation_mode</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;isolation_mode)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the type of isolation - eg OPEN.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -122,7 +154,10 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicElementProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicElementProperties</a></h3>
-<code><a href="BasicElementProperties.html#equals(java.lang.Object)">equals</a>, <a href="BasicElementProperties.html#getComment()">getComment</a>, <a href="BasicElementProperties.html#getName()">getName</a>, <a href="BasicElementProperties.html#hashCode()">hashCode</a>, <a href="BasicElementProperties.html#setComment(java.lang.String)">setComment</a>, <a href="BasicElementProperties.html#setName(java.lang.String)">setName</a></code></div>
+<code><a href="BasicElementProperties.html#getMetastore_id()">getMetastore_id</a>, <a href="BasicElementProperties.html#getOwner()">getOwner</a>, <a href="BasicElementProperties.html#getSecurable_kind()">getSecurable_kind</a>, <a href="BasicElementProperties.html#getSecurable_type()">getSecurable_type</a>, <a href="BasicElementProperties.html#isBrowse_only()">isBrowse_only</a>, <a href="BasicElementProperties.html#setBrowse_only(boolean)">setBrowse_only</a>, <a href="BasicElementProperties.html#setMetastore_id(java.lang.String)">setMetastore_id</a>, <a href="BasicElementProperties.html#setOwner(java.lang.String)">setOwner</a>, <a href="BasicElementProperties.html#setSecurable_kind(java.lang.String)">setSecurable_kind</a>, <a href="BasicElementProperties.html#setSecurable_type(java.lang.String)">setSecurable_type</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.BasicProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.<a href="BasicProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicProperties</a></h3>
+<code><a href="BasicProperties.html#getComment()">getComment</a>, <a href="BasicProperties.html#getName()">getName</a>, <a href="BasicProperties.html#setComment(java.lang.String)">setComment</a>, <a href="BasicProperties.html#setName(java.lang.String)">setName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -152,6 +187,50 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getIsolation_mode()">
+<h3>getIsolation_mode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIsolation_mode</span>()</div>
+<div class="block">Return the type of isolation - eg OPEN.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setIsolation_mode(java.lang.String)">
+<h3>setIsolation_mode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setIsolation_mode</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;isolation_mode)</span></div>
+<div class="block">Set up the type of isolation - eg OPEN.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>isolation_mode</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isAccessible_in_current_workspace()">
+<h3>isAccessible_in_current_workspace</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isAccessible_in_current_workspace</span>()</div>
+<div class="block">Return whether accessible to this user.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAccessible_in_current_workspace(boolean)">
+<h3>setAccessible_in_current_workspace</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAccessible_in_current_workspace</span><wbr><span class="parameters">(boolean&nbsp;accessible_in_current_workspace)</span></div>
+<div class="block">Set up whether accessible to this user.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>accessible_in_current_workspace</code> - boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
@@ -161,6 +240,34 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="BasicElementProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicElementProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="BasicElementProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicElementProperties</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return hash code based on properties.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="BasicElementProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="BasicElementProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">BasicElementProperties</a></code></dd>
+<dt>Returns:</dt>
+<dd>int</dd>
 </dl>
 </section>
 </li>
