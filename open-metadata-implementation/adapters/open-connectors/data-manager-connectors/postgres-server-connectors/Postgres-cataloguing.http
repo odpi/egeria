@@ -1,0 +1,113 @@
+# Unity catalog enablement demo
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/garygeeke/servers/active-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/PostgresContentPack.omarchive
+
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "PostgreSQLServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "hostIdentifier" : "localhost",
+    "portNumber" : "5442",
+    "serverName" : "LocalPostgreSQL1",
+    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "versionIdentifier" : "1.0",
+    "description" : "PostgreSQL database in egeria-workspaces."
+  }
+}
+
+
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "PostgreSQLServer:CreateAndCatalogGovernanceActionProcess",
+  "requestParameters" : {
+    "hostIdentifier" : "localhost",
+    "portNumber" : "5442",
+    "serverName" : "LocalPostgreSQL1",
+    "secretsStorePathName" : "loading-bay/secrets/default.omsecrets",
+    "versionIdentifier" : "1.0",
+    "description" : "PostgreSQL database in egeria-workspaces."
+  }
+}
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL Server"
+}
+
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Database)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL Relational Database"
+}
+
+
+
+###
+# @name getTechnologyTypeElements (PostgreSQL Database)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL Relational Database"
+}
+
+###
+
