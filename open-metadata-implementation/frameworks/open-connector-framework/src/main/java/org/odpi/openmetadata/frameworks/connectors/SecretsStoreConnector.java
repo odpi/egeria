@@ -98,7 +98,7 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      */
     public void checkSecretsStillValid() throws ConnectorCheckedException
     {
-        if ((secretsTimeout != null) && (secretsTimeout.before(new Date())))
+        if ((secretsTimeout != null) && (! secretsTimeout.after(new Date())))
         {
             refreshSecrets();
             resetRefreshTime();
