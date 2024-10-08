@@ -112,8 +112,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         final String methodName = "refreshEgeriaVolumes";
 
         MetadataCollectionIterator volumeIterator = new MetadataCollectionIterator(catalogGUID,
+                                                                                   catalogQualifiedName,
                                                                                    catalogName,
-                                                                                   catalogTargetName,
                                                                                    connectorName,
                                                                                    entityTypeName,
                                                                                    openMetadataAccess,
@@ -130,7 +130,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                 /*
                  * Check that this is a Volume and not part of a table.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
@@ -139,7 +139,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                 {
                     VolumeInfo volumeInfo = null;
 
-                    String volumeName = propertyHelper.getStringProperty(catalogTargetName,
+                    String volumeName = propertyHelper.getStringProperty(catalogName,
                                                                          OpenMetadataProperty.RESOURCE_NAME.name,
                                                                          nextElement.getElement().getElementProperties(),
                                                                          methodName);
@@ -288,7 +288,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                                        OpenMetadataProperty.PATH_NAME.name,
                                                                                        super.getPathNameFromStorageLocation(volumeInfo.getStorage_location()));
             ucVolumeGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                                catalogName,
+                                                                                catalogQualifiedName,
                                                                                 deployedImplementationType.getAssociatedTypeName(),
                                                                                 schemaGUID,
                                                                                 false,
@@ -307,7 +307,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             String qualifiedName = super.getQualifiedName(volumeInfo.getFull_name());
 
             ucVolumeGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                           catalogName,
+                                                                           catalogQualifiedName,
                                                                            deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
                                                                            null,
@@ -330,7 +330,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         }
 
         context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
+                                      catalogQualifiedName,
                                       ucVolumeGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(volumeInfo,
@@ -359,7 +359,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     {
         String egeriaVolumeGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaVolumeGUID,
+        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        egeriaVolumeGUID,
                                                         false,
                                                         this.getElementProperties(volumeInfo));
 
@@ -388,7 +390,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                          super.getUCStorageLocationFromMember(memberElement));
 
         context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
+                                      catalogQualifiedName,
                                       memberElement.getElement().getElementGUID(),
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(volumeInfo,

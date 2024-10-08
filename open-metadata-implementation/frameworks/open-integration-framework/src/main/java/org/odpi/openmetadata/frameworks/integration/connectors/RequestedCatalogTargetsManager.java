@@ -72,7 +72,12 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      */
     private Map<String,Object> getCombinedConfigurationProperties(Map<String,Object> targetConfigProperties)
     {
-        Map<String,Object> combinedConfigurationProperties = this.connectorConfigProperties;
+        Map<String,Object> combinedConfigurationProperties = new HashMap<>();
+
+        if (this.connectorConfigProperties != null)
+        {
+            combinedConfigurationProperties.putAll(this.connectorConfigProperties);
+        }
 
         if (targetConfigProperties != null)
         {

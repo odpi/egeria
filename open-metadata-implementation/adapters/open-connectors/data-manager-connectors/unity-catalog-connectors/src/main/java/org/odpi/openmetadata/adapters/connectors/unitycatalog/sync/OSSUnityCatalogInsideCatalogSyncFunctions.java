@@ -110,8 +110,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         final String methodName = "refreshEgeriaFunctions";
 
         MetadataCollectionIterator functionIterator = new MetadataCollectionIterator(catalogGUID,
+                                                                                     catalogQualifiedName,
                                                                                      catalogName,
-                                                                                     catalogTargetName,
                                                                                      connectorName,
                                                                                      entityTypeName,
                                                                                      openMetadataAccess,
@@ -128,7 +128,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                 /*
                  * Check that this is a UC Function.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
@@ -137,7 +137,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                 {
                     FunctionInfo functionInfo = null;
 
-                    String functionName = propertyHelper.getStringProperty(catalogTargetName,
+                    String functionName = propertyHelper.getStringProperty(catalogName,
                                                                            OpenMetadataProperty.RESOURCE_NAME.name,
                                                                            nextElement.getElement().getElementProperties(),
                                                                            methodName);
@@ -284,7 +284,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         if (templateGUID != null)
         {
             ucFunctionGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                                  catalogName,
+                                                                                  catalogQualifiedName,
                                                                                   deployedImplementationType.getAssociatedTypeName(),
                                                                                   schemaGUID,
                                                                                   false,
@@ -303,7 +303,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
             String qualifiedName = super.getQualifiedName(functionInfo.getFull_name());
 
             ucFunctionGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                             catalogName,
+                                                                             catalogQualifiedName,
                                                                              deployedImplementationType.getAssociatedTypeName(),
                                                                              ElementStatus.ACTIVE,
                                                                              null,
@@ -325,7 +325,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         }
 
         context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
+                                      catalogQualifiedName,
                                       ucFunctionGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(functionInfo,
@@ -356,7 +356,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         String egeriaFunctionGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaFunctionGUID,
+        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        egeriaFunctionGUID,
                                                         false,
                                                         this.getElementProperties(functionInfo));
 
@@ -543,7 +545,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
          * Create the root schema type.
          */
         openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                        catalogName,
+                                                        catalogQualifiedName,
                                                         OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
                                                         ElementStatus.ACTIVE,
                                                         null,
