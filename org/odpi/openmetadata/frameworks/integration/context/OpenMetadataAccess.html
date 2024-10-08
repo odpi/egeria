@@ -127,22 +127,68 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#archiveMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)" class="member-name-link">archiveMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#archiveMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)" class="member-name-link">archiveMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../openmetadata/properties/ArchiveProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ArchiveProperties</a>&nbsp;archiveProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Archive a specific metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">classifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#archiveMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)" class="member-name-link">archiveMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../openmetadata/properties/ArchiveProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ArchiveProperties</a>&nbsp;archiveProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Archive a specific metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">classifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new classification to the metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">classifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new classification to the metadata element.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">classifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new classification to the metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
@@ -158,25 +204,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
- boolean&nbsp;isOwnAnchor,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
- <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
- boolean&nbsp;parentAtEnd1)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element in the metadata store using the template identified by the templateGUID.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
@@ -190,20 +218,20 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
  boolean&nbsp;parentAtEnd1)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Map,java.lang.String,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&gt;&nbsp;initialClassifications,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
@@ -215,11 +243,20 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
  boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element in the metadata store.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
@@ -228,14 +265,31 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two metadata elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#declassifyMetadataElementInStore(java.lang.String,java.lang.String)" class="member-name-link">declassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the named classification from a specific metadata element.</div>
+<div class="block">Create a relationship between two metadata elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteMetadataElementInStore(java.lang.String)" class="member-name-link">deleteMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#declassifyMetadataElementInStore(java.lang.String,java.lang.String)" class="member-name-link">declassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove the named classification from a specific metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteMetadataElementInStore(java.lang.String)" class="member-name-link">deleteMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a specific metadata element.</div>
 </div>
@@ -245,7 +299,58 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete a relationship between two metadata elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">deleteRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a relationship between two metadata elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">getMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create/get a new metadata element in the metadata store using the template identified by the templateGUID.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">getMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create/get a new metadata element in the metadata store using the template identified by the templateGUID.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  boolean&nbsp;replaceProperties,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
@@ -253,12 +358,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -275,20 +399,55 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of a specific metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a specific metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;newElementStatus)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the status of specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
  <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;newElementStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of specific metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.util.Date,java.util.Date)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties associated with a relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  boolean&nbsp;replaceProperties,
  <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -299,7 +458,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></h3>
-<code><a href="../../governanceaction/OpenMetadataStore.html#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)">addExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#classifyMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">classifyMetadataElementInStore</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#confirmSynchronization(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">confirmSynchronization</a>, <a href="../../governanceaction/OpenMetadataStore.html#createIncidentReport(java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a>, <a href="../../governanceaction/OpenMetadataStore.html#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createMetadataElementInStore</a>, <a href="../../governanceaction/OpenMetadataStore.html#findAttributeTypeDefsByCategory(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory)">findAttributeTypeDefsByCategory</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElements(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)">findMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElementsWithString(java.lang.String,int,int)">findMetadataElementsWithString</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElementsWithString(java.lang.String,java.lang.String,int,int)">findMetadataElementsWithString</a>, <a href="../../governanceaction/OpenMetadataStore.html#findRelationshipsBetweenMetadataElements(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)">findRelationshipsBetweenMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#findTypeDefsByCategory(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a>, <a href="../../governanceaction/OpenMetadataStore.html#findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAllTypes()">getAllTypes</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAttributeTypeDefByGUID(java.lang.String)">getAttributeTypeDefByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAttributeTypeDefByName(java.lang.String)">getAttributeTypeDefByName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getConsistentMetadataValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getConsistentMetadataValues</a>, <a href="../../governanceaction/OpenMetadataStore.html#getDeletedElementByUniqueName(java.lang.String,java.lang.String)">getDeletedElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getElementsForExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,int,int)">getElementsForExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#getLineageElementByUniqueName(java.lang.String,java.lang.String)">getLineageElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMaxPagingSize()">getMaxPagingSize</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataCorrelationHeaders(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getMetadataCorrelationHeaders</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementByGUID(java.lang.String)">getMetadataElementByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementByUniqueName(java.lang.String,java.lang.String)">getMetadataElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">getMetadataElementFromTemplate</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String)">getMetadataElementGUIDByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,int,int)">getMetadataElementRelationships</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelatedMetadataElement(java.lang.String,int,java.lang.String,java.util.Date)">getRelatedMetadataElement</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelatedMetadataElements(java.lang.String,int,java.lang.String,int,int)">getRelatedMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelationshipByGUID(java.lang.String)">getRelationshipByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getTypeDefByGUID(java.lang.String)">getTypeDefByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getTypeDefByName(java.lang.String)">getTypeDefByName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String)">getValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataValues(java.lang.String,java.lang.String,int,int)">getValidMetadataValues</a>, <a href="../../governanceaction/OpenMetadataStore.html#getVendorProperties(java.lang.String,java.lang.String)">getVendorProperties</a>, <a href="../../governanceaction/OpenMetadataStore.html#isForDuplicateProcessing()">isForDuplicateProcessing</a>, <a href="../../governanceaction/OpenMetadataStore.html#isForLineage()">isForLineage</a>, <a href="../../governanceaction/OpenMetadataStore.html#isUseCurrentEffectiveTime()">isUseCurrentEffectiveTime</a>, <a href="../../governanceaction/OpenMetadataStore.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.util.List)">openToDo</a>, <a href="../../governanceaction/OpenMetadataStore.html#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#setExternalSourceIds(java.lang.String,java.lang.String)">setExternalSourceIds</a>, <a href="../../governanceaction/OpenMetadataStore.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../governanceaction/OpenMetadataStore.html#setForLineage(boolean)">setForLineage</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataMapName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUseCurrentEffectiveTime(boolean)">setUseCurrentEffectiveTime</a>, <a href="../../governanceaction/OpenMetadataStore.html#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)">updateExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataValue(java.lang.String,java.lang.String,java.lang.String)">validateMetadataValue</a></code></div>
+<code><a href="../../governanceaction/OpenMetadataStore.html#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)">addExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#classifyMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">classifyMetadataElementInStore</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#confirmSynchronization(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">confirmSynchronization</a>, <a href="../../governanceaction/OpenMetadataStore.html#createIncidentReport(java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a>, <a href="../../governanceaction/OpenMetadataStore.html#declassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">declassifyMetadataElementInStore</a>, <a href="../../governanceaction/OpenMetadataStore.html#findAttributeTypeDefsByCategory(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory)">findAttributeTypeDefsByCategory</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElements(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)">findMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElementsWithString(java.lang.String,int,int)">findMetadataElementsWithString</a>, <a href="../../governanceaction/OpenMetadataStore.html#findMetadataElementsWithString(java.lang.String,java.lang.String,int,int)">findMetadataElementsWithString</a>, <a href="../../governanceaction/OpenMetadataStore.html#findRelationshipsBetweenMetadataElements(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)">findRelationshipsBetweenMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#findTypeDefsByCategory(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory)">findTypeDefsByCategory</a>, <a href="../../governanceaction/OpenMetadataStore.html#findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)">findTypesByExternalID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAllTypes()">getAllTypes</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAttributeTypeDefByGUID(java.lang.String)">getAttributeTypeDefByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getAttributeTypeDefByName(java.lang.String)">getAttributeTypeDefByName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getConsistentMetadataValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getConsistentMetadataValues</a>, <a href="../../governanceaction/OpenMetadataStore.html#getDeletedElementByUniqueName(java.lang.String,java.lang.String)">getDeletedElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getElementsForExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,int,int)">getElementsForExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#getLineageElementByUniqueName(java.lang.String,java.lang.String)">getLineageElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMaxPagingSize()">getMaxPagingSize</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataCorrelationHeaders(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getMetadataCorrelationHeaders</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementByGUID(java.lang.String)">getMetadataElementByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementByUniqueName(java.lang.String,java.lang.String)">getMetadataElementByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String)">getMetadataElementGUIDByUniqueName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,int,int)">getMetadataElementRelationships</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelatedMetadataElement(java.lang.String,int,java.lang.String,java.util.Date)">getRelatedMetadataElement</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelatedMetadataElements(java.lang.String,int,java.lang.String,int,int)">getRelatedMetadataElements</a>, <a href="../../governanceaction/OpenMetadataStore.html#getRelationshipByGUID(java.lang.String)">getRelationshipByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getTypeDefByGUID(java.lang.String)">getTypeDefByGUID</a>, <a href="../../governanceaction/OpenMetadataStore.html#getTypeDefByName(java.lang.String)">getTypeDefByName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String)">getValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#getValidMetadataValues(java.lang.String,java.lang.String,int,int)">getValidMetadataValues</a>, <a href="../../governanceaction/OpenMetadataStore.html#getVendorProperties(java.lang.String,java.lang.String)">getVendorProperties</a>, <a href="../../governanceaction/OpenMetadataStore.html#isForDuplicateProcessing()">isForDuplicateProcessing</a>, <a href="../../governanceaction/OpenMetadataStore.html#isForLineage()">isForLineage</a>, <a href="../../governanceaction/OpenMetadataStore.html#isUseCurrentEffectiveTime()">isUseCurrentEffectiveTime</a>, <a href="../../governanceaction/OpenMetadataStore.html#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.util.Map,java.lang.String,java.lang.String,java.util.List)">openToDo</a>, <a href="../../governanceaction/OpenMetadataStore.html#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#setExternalSourceIds(java.lang.String,java.lang.String)">setExternalSourceIds</a>, <a href="../../governanceaction/OpenMetadataStore.html#setForDuplicateProcessing(boolean)">setForDuplicateProcessing</a>, <a href="../../governanceaction/OpenMetadataStore.html#setForLineage(boolean)">setForLineage</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataMapName(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUpValidMetadataValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue)">setUpValidMetadataValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#setUseCurrentEffectiveTime(boolean)">setUseCurrentEffectiveTime</a>, <a href="../../governanceaction/OpenMetadataStore.html#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties)">updateExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateExternalIdentifier</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataMapName(java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapName</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataMapValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataMapValue</a>, <a href="../../governanceaction/OpenMetadataStore.html#validateMetadataValue(java.lang.String,java.lang.String,java.lang.String)">validateMetadataValue</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -343,6 +502,35 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>createMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;initialStatus,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                    throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+ The selected type also controls the names and types of the properties that are allowed.
+ This version of the method allows access to advanced features such as multiple states and
+ effectivity dates.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>metadataElementTypeName</code> - type name of the new metadata element</dd>
+<dd><code>initialStatus</code> - initial status of the metadata element</dd>
+<dd><code>properties</code> - properties of the new metadata element</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
 <h3>createMetadataElementInStore</h3>
@@ -587,6 +775,114 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<h3>getMetadataElementFromTemplate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
+                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create/get a new metadata element in the metadata store using the template identified by the templateGUID.
+ The type name comes from the open metadata types.
+ The selected type also controls the names and types of the properties that are allowed.
+ The template and any similar anchored objects are
+ copied in this process.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">getMetadataElementFromTemplate</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>metadataElementTypeName</code> - type name of the new metadata element</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+                     connection etc)</dd>
+<dd><code>replacementProperties</code> - properties of the new metadata element.  These override the placeholder values</dd>
+<dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
+                              template element - and their anchored elements, which are also copied as part of this operation.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<h3>getMetadataElementFromTemplate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
+                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create/get a new metadata element in the metadata store using the template identified by the templateGUID.
+ The type name comes from the open metadata types.
+ The selected type also controls the names and types of the properties that are allowed.
+ The template and any similar anchored objects are
+ copied in this process.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#getMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">getMetadataElementFromTemplate</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementTypeName</code> - type name of the new metadata element</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+                     connection etc)</dd>
+<dd><code>replacementProperties</code> - properties of the new metadata element.  These override the placeholder values</dd>
+<dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
+                              template element - and their anchored elements, which are also copied as part of this operation.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="updateMetadataElementInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
 <h3>updateMetadataElementInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -602,6 +898,37 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateMetadataElementInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">updateMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
+                          the individual properties specified on the request.</dd>
+<dd><code>properties</code> - new properties for the metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the properties are invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>updateMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+ metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
+ the value used in the replaceProperties flag.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">updateMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                           the individual properties specified on the request.</dd>
@@ -637,6 +964,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">
+<h3>updateMetadataElementStatusInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementStatusInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&nbsp;newElementStatus)</span>
+                                        throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+ assigned when it was created.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">updateMetadataElementStatusInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>newElementStatus</code> - new status value - or null to leave as is</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="updateMetadataElementEffectivityInStore(java.lang.String,java.util.Date,java.util.Date)">
 <h3>updateMetadataElementEffectivityInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementEffectivityInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -650,6 +1004,34 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateMetadataElementEffectivityInStore(java.lang.String,java.util.Date,java.util.Date)">updateMetadataElementEffectivityInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<h3>updateMetadataElementEffectivityInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateMetadataElementEffectivityInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</span>
+                                             throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateMetadataElementEffectivityInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
@@ -681,6 +1063,30 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String)">
+<h3>deleteMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Delete a specific metadata element.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#deleteMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String)">deleteMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="archiveMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)">
 <h3>archiveMetadataElementInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">archiveMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -703,6 +1109,32 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="archiveMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)">
+<h3>archiveMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">archiveMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../openmetadata/properties/ArchiveProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ArchiveProperties</a>&nbsp;archiveProperties)</span>
+                                   throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Archive a specific metadata element.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#archiveMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties)">archiveMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>archiveProperties</code> - description of the archiving process</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
 <h3>classifyMetadataElementInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">classifyMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -719,6 +1151,72 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">classifyMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
+<dd><code>effectiveFrom</code> - the date when this classification is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this classification becomes inactive - null for active until deleted</dd>
+<dd><code>properties</code> - properties to store in the new classification.  These must conform to the valid properties associated with the
+                   classification name</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
+                                   valid properties associated with the classification's type definition</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>classifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">classifyMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                    throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+ a metadata element.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">classifyMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
+<dd><code>properties</code> - properties to store in the new classification.  These must conform to the valid properties associated with the
+                   classification name</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
+                                   valid properties associated with the classification's type definition</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>classifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">classifyMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                    throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+ a metadata element.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">classifyMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
 <dd><code>effectiveFrom</code> - the date when this classification is active - null for active now</dd>
@@ -762,6 +1260,38 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>reclassifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reclassifyMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">reclassifyMetadataElementInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - unique name of the classification to update</dd>
+<dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
+                          the individual properties specified on the request.</dd>
+<dd><code>properties</code> - new properties for the classification</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
+                                   valid properties associated with the classification's type definition</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element/classification</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
 <h3>updateClassificationEffectivityInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateClassificationEffectivityInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
@@ -777,6 +1307,37 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateClassificationEffectivityInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - unique name of the classification to update</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<h3>updateClassificationEffectivityInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateClassificationEffectivityInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</span>
+                                            throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.
+ The effectivity dates control the visibility of the classification through specific APIs.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateClassificationEffectivityInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>classificationName</code> - unique name of the classification to update</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
@@ -846,6 +1407,45 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>createRelatedElementsInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement1GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElement2GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                    throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+ according to the type definition since this will affect how the relationship is interpreted.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">createRelatedElementsInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>relationshipTypeName</code> - name of the type of relationship to create.  This will determine the types of metadata elements that can be
+                             related and the properties that can be associated with this relationship.</dd>
+<dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
+<dd><code>metadataElement2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>properties</code> - the properties of the relationship</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new relationship</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+                                    not valid for this type of relationship</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="updateRelatedElementsInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
 <h3>updateRelatedElementsInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
@@ -859,6 +1459,36 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateRelatedElementsInStore(java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">updateRelatedElementsInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
+<dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
+                          the individual properties specified on the request.</dd>
+<dd><code>properties</code> - new properties for the relationship</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way; the properties are
+                                    not valid for this type of relationship</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this relationship</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>updateRelatedElementsInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ boolean&nbsp;replaceProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;properties)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the properties associated with a relationship.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">updateRelatedElementsInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                           the individual properties specified on the request.</dd>
@@ -897,6 +1527,35 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<h3>updateRelatedElementsEffectivityInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateRelatedElementsEffectivityInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo)</span>
+                                             throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Update the effectivity dates of a specific relationship between metadata elements.
+ The effectivity dates control the visibility of the classification through specific APIs.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateRelatedElementsEffectivityInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="deleteRelatedElementsInStore(java.lang.String)">
 <h3>deleteRelatedElementsInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</span>
@@ -908,6 +1567,30 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../../governanceaction/OpenMetadataStore.html#deleteRelatedElementsInStore(java.lang.String)">deleteRelatedElementsInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
 <dt>Parameters:</dt>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this relationship</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String)">
+<h3>deleteRelatedElementsInStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRelatedElementsInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Delete a relationship between two metadata elements.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../governanceaction/OpenMetadataStore.html#deleteRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String)">deleteRelatedElementsInStore</a></code>&nbsp;in class&nbsp;<code><a href="../../governanceaction/OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>externalSourceGUID</code> - unique identifier of the software capability that owns this collection</dd>
+<dd><code>externalSourceName</code> - unique name of the software capability that owns this collection</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>

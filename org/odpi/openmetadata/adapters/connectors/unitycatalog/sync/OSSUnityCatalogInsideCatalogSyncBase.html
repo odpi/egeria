@@ -105,7 +105,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#catalogName" class="member-name-link">catalogName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#catalogTargetName" class="member-name-link">catalogTargetName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#catalogQualifiedName" class="member-name-link">catalogQualifiedName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#configurationProperties" class="member-name-link">configurationProperties</a></code></div>
@@ -159,9 +159,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext,java.lang.String,java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector,java.lang.String,org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType,java.util.Map,java.util.Map,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">OSSUnityCatalogInsideCatalogSyncBase</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../integrationservices/catalog/connector/CatalogIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogIntegratorContext</a>&nbsp;context,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ucFullNameToEgeriaGUID,
  <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;targetPermittedSynchronization,
  <a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a>&nbsp;ucConnector,
@@ -308,15 +308,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="catalogName">
-<h3>catalogName</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">catalogName</span></div>
+<section class="detail" id="catalogQualifiedName">
+<h3>catalogQualifiedName</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">catalogQualifiedName</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="catalogTargetName">
-<h3>catalogTargetName</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">catalogTargetName</span></div>
+<section class="detail" id="catalogName">
+<h3>catalogName</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">catalogName</span></div>
 </section>
 </li>
 <li>
@@ -404,9 +404,9 @@ loadScripts(document, 'script');</script>
 <h3>OSSUnityCatalogInsideCatalogSyncBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OSSUnityCatalogInsideCatalogSyncBase</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../integrationservices/catalog/connector/CatalogIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogIntegratorContext</a>&nbsp;context,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ucFullNameToEgeriaGUID,
  <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;targetPermittedSynchronization,
  <a href="../resource/OSSUnityCatalogResourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.resource">OSSUnityCatalogResourceConnector</a>&nbsp;ucConnector,
@@ -422,9 +422,9 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>connectorName</code> - name of this connector</dd>
 <dd><code>context</code> - context for the connector</dd>
-<dd><code>catalogTargetName</code> - the catalog target name</dd>
+<dd><code>catalogName</code> - the catalog target name</dd>
 <dd><code>catalogGUID</code> - guid of the catalog</dd>
-<dd><code>catalogName</code> - name of the catalog</dd>
+<dd><code>catalogQualifiedName</code> - name of the catalog</dd>
 <dd><code>ucFullNameToEgeriaGUID</code> - map of full names from UC to the GUID of the entity in Egeria.</dd>
 <dd><code>targetPermittedSynchronization</code> - the policy that controls the direction of metadata exchange</dd>
 <dd><code>ucConnector</code> - connector for accessing UC</dd>
