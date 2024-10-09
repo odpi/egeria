@@ -189,15 +189,13 @@ public class OpenMetadataTypesArchive2_0
         final String descriptionGUID = OpenMetadataType.TEMPLATE_CLASSIFICATION.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.TEMPLATE_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
                                                                                  descriptionWiki,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -306,14 +304,12 @@ public class OpenMetadataTypesArchive2_0
         final String description     = "Identifies a software server capability as a manager of a collection of files and folders.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                   false);
     }
 
@@ -351,14 +347,12 @@ public class OpenMetadataTypesArchive2_0
         final String description     = "Identifies a software server capability as a manager of controlled documents and related media.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                   false);
     }
 
@@ -384,11 +378,9 @@ public class OpenMetadataTypesArchive2_0
         final String descriptionGUID = OpenMetadataType.DATABASE_MANAGER.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.DATABASE_MANAGER.wikiURL;
 
-        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                  description,
                                                  descriptionGUID,
                                                  descriptionWiki);

@@ -517,7 +517,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
 
-        specificMatchPropertyNames.add(OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME.name);
 
         List<EntityDetail> connectorTypes = this.getEntitiesByValue(userId,
                                                                     supportedAssetTypeName,
@@ -553,11 +553,11 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 if (connectorType != null)
                 {
                     String framework = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataType.CONNECTOR_FRAMEWORK_NAME,
+                                                                          OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME.name,
                                                                           connectorType.getProperties(),
                                                                           methodName);
                     String language  = repositoryHelper.getStringProperty(serviceName,
-                                                                          OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                          OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE.name,
                                                                           connectorType.getProperties(),
                                                                           methodName);
 
