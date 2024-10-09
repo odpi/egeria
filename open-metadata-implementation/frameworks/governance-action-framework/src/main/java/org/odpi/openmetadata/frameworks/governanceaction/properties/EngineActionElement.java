@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EngineActionElement extends ReferenceableProperties
+public class EngineActionElement extends ReferenceableProperties implements GovernanceElement
 {
     private ElementHeader                        elementHeader            = null;
     private int                                  domainIdentifier         = 0;
@@ -126,6 +126,7 @@ public class EngineActionElement extends ReferenceableProperties
      *
      * @return element header object
      */
+    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -137,6 +138,7 @@ public class EngineActionElement extends ReferenceableProperties
      *
      * @param elementHeader element header object
      */
+    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;

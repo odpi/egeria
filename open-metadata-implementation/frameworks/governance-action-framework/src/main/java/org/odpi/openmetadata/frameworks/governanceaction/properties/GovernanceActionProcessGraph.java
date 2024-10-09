@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernanceActionProcessGraph
 {
     private GovernanceActionProcessElement            governanceActionProcess = null;
-    private FirstGovernanceActionProcessStepElement   firstProcessStep        = null;
-    private List<GovernanceActionProcessStepElement>  nextProcessSteps        = null;
-    private List<NextGovernanceActionProcessStepLink> processStepLinks        = null;
+    private FirstGovernanceActionProcessStepElement   firstProcessStep = null;
+    private List<GovernanceElement>                   nextProcessSteps = null;
+    private List<NextGovernanceActionProcessStepLink> processStepLinks = null;
 
 
     /**
@@ -101,7 +102,7 @@ public class GovernanceActionProcessGraph
      *
      * @return list of step elements
      */
-    public List<GovernanceActionProcessStepElement> getNextProcessSteps()
+    public List<GovernanceElement> getNextProcessSteps()
     {
         return nextProcessSteps;
     }
@@ -112,7 +113,7 @@ public class GovernanceActionProcessGraph
      *
      * @param nextProcessSteps list of step elements
      */
-    public void setNextProcessSteps(List<GovernanceActionProcessStepElement> nextProcessSteps)
+    public void setNextProcessSteps(List<GovernanceElement> nextProcessSteps)
     {
         this.nextProcessSteps = nextProcessSteps;
     }

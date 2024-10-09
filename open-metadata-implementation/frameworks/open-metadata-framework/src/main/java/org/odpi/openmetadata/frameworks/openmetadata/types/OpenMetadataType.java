@@ -1456,6 +1456,33 @@ public enum OpenMetadataType
                    "A set of properties describing a type of connector."),
 
     /**
+     * A detailed description of the effect of some data processing.
+     */
+    CONNECTOR_CATEGORY("fb60761f-7afd-4d3d-9efa-24bc85a7b22e",
+                       "ConnectorCategory",
+                       OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                       "81791f28-6d73-439d-ac2f-30b8aeaebcf9",
+                       "A detailed description of the effect of some data processing."),
+
+    /**
+     * Identifies a collection of related connector types.
+     */
+    CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION("9678ef11-ed7e-404b-a041-736df7514339",
+                                            "ConnectorTypeDirectory",
+                                            OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                            "1387ff91-42bc-4eb3-8945-ab21826802ca",
+                                            "Identifies a collection of related connector types."),
+
+    /**
+     * Relates a connector category for a specific type of technology with the connector types that support it.
+     */
+    CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP("633648f3-c951-4ad7-b975-9fc04e0f3d2e",
+                                                 "ConnectorImplementationChoice",
+                                                 OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                                 "62313ce0-7a48-461e-910e-6ec8a17abcae",
+                                                 "Relates a connector category for a specific type of technology with the connector types that support it."),
+
+    /**
      * A link between a connection and the endpoint that the connector should use.
      */
     CONNECTION_ENDPOINT_RELATIONSHIP("887a7132-d6bc-4b92-a483-e80b60c86fb2",
@@ -3293,96 +3320,7 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
 
-    /**
-     * supportedAssetTypeName
-     */
-    public static final String SUPPORTED_ASSET_TYPE_PROPERTY_NAME = "supportedAssetTypeName";
 
-    /**
-     * expectedDataFormat
-     */
-    public static final String EXPECTED_DATA_FORMAT_PROPERTY_NAME = "expectedDataFormat";
-
-    /**
-     * connectorFrameworkName
-     */
-    public static final String CONNECTOR_FRAMEWORK_PROPERTY_NAME = "connectorFrameworkName";
-
-    /**
-     * connectorInterfaceLanguage
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE_PROPERTY_NAME = "connectorInterfaceLanguage";
-
-    /**
-     * connectorInterfaces
-     */
-    public static final String CONNECTOR_INTERFACES_PROPERTY_NAME = "connectorInterfaces";
-
-    /**
-     * targetTechnologySource
-     */
-    public static final String TARGET_TECHNOLOGY_SOURCE_PROPERTY_NAME = "targetTechnologySource";
-
-    /**
-     * targetTechnologyName
-     */
-    public static final String TARGET_TECHNOLOGY_NAME_PROPERTY_NAME = "targetTechnologyName";
-
-    /**
-     * targetTechnologyInterfaces
-     */
-    public static final String TARGET_TECHNOLOGY_INTERFACES_PROPERTY_NAME = "targetTechnologyInterfaces";
-
-    /**
-     * targetTechnologyVersions
-     */
-    public static final String TARGET_TECHNOLOGY_VERSIONS_PROPERTY_NAME = "targetTechnologyVersions";
-
-    /**
-     * fb60761f-7afd-4d3d-9efa-24bc85a7b22e
-     */
-    public static final String CONNECTOR_CATEGORY_TYPE_GUID = "fb60761f-7afd-4d3d-9efa-24bc85a7b22e";
-
-    /**
-     * ConnectorCategory - inherits from Referenceable
-     */
-    public static final String CONNECTOR_CATEGORY_TYPE_NAME = "ConnectorCategory";
-
-    /**
-     * 9678ef11-ed7e-404b-a041-736df7514339
-     */
-    public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_GUID = "9678ef11-ed7e-404b-a041-736df7514339";
-
-    /**
-     * ConnectorTypeDirectory - attached to Collection
-     */
-    public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME = "ConnectorTypeDirectory";
-
-    /**
-     * 633648f3-c951-4ad7-b975-9fc04e0f3d2e
-     */
-    public static final String CONNECTOR_IMPLEMENTATION_CHOICE_TYPE_GUID = "633648f3-c951-4ad7-b975-9fc04e0f3d2e";
-
-    /**
-     * ConnectorImplementationChoice - End1 = ConnectorCategory; End 2 = ConnectorType
-     */
-    public static final String CONNECTOR_IMPLEMENTATION_CHOICE_TYPE_NAME = "ConnectorImplementationChoice";
-
-    /**
-     * supportedAssetTypeName
-     */
-    public static final String SUPPORTED_ASSET_TYPE_NAME = "supportedAssetTypeName";               /* from ConnectorType entity */
-
-    /**
-     * expectedDataFormat
-     */
-    public static final String EXPECTED_DATA_FORMAT = "expectedDataFormat";                   /* from ConnectorType entity */
-
-
-    /**
-     * connectorFrameworkName
-     */
-    public static final String CONNECTOR_FRAMEWORK_NAME = "connectorFrameworkName";               /* from ConnectorType entity */
 
     /**
      * Open Connector Framework (OCF)
@@ -3390,44 +3328,9 @@ public enum OpenMetadataType
     public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
 
     /**
-     * connectorInterfaceLanguage
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE = "connectorInterfaceLanguage";           /* from ConnectorType entity */
-
-    /**
      * Java
      */
     public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
-
-    /**
-     * connectorInterfaces
-     */
-    public static final String CONNECTOR_INTERFACES = "connectorInterfaces";                  /* from ConnectorType entity */
-
-    /**
-     * targetTechnologySource
-     */
-    public static final String TARGET_TECHNOLOGY_SOURCE = "targetTechnologySource";               /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * targetTechnologyName
-     */
-    public static final String TARGET_TECHNOLOGY_NAME = "targetTechnologyName";                 /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * targetTechnologyInterfaces
-     */
-    public static final String TARGET_TECHNOLOGY_INTERFACES = "targetTechnologyInterfaces";           /* from ConnectorType entity */
-
-    /**
-     * targetTechnologyVersions
-     */
-    public static final String TARGET_TECHNOLOGY_VERSIONS = "targetTechnologyVersions";             /* from ConnectorType entity */
-
-
-
-
-
 
 
     /**

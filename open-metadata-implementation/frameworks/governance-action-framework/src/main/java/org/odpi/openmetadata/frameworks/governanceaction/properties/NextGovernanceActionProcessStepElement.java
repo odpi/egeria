@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 
 import java.util.Objects;
 
@@ -21,10 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NextGovernanceActionProcessStepElement
 {
-    private GovernanceActionProcessStepElement nextProcessStep         = null;
-    private String                             nextProcessStepLinkGUID = null;
-    private String                             guard                   = null;
-    private boolean                            mandatoryGuard          = false;
+    private GovernanceElement nextProcessStep         = null;
+    private String            nextProcessStepLinkGUID = null;
+    private String            guard                   = null;
+    private boolean           mandatoryGuard          = false;
 
 
 
@@ -59,7 +60,7 @@ public class NextGovernanceActionProcessStepElement
      *
      * @return governance action process step properties
      */
-    public GovernanceActionProcessStepElement getNextProcessStep()
+    public GovernanceElement getNextProcessStep()
     {
         return nextProcessStep;
     }
@@ -70,7 +71,7 @@ public class NextGovernanceActionProcessStepElement
      *
      * @param nextProcessStep governance action process step properties
      */
-    public void setNextProcessStep(GovernanceActionProcessStepElement nextProcessStep)
+    public void setNextProcessStep(GovernanceElement nextProcessStep)
     {
         this.nextProcessStep = nextProcessStep;
     }
