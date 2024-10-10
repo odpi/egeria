@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 
 import java.util.List;
 import java.util.Map;
@@ -22,17 +21,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionProcessStepElement
+public class GovernanceActionProcessStepExecutionElement
 {
     private ElementHeader                          elementHeader         = null;
-    private GovernanceActionProcessStepProperties  processStepProperties = null;
+    private GovernanceActionProcessStepExecution   processStepProperties = null;
     private Map<String, List<Map<String, String>>> specification        = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceActionProcessStepElement()
+    public GovernanceActionProcessStepExecutionElement()
     {
         super();
     }
@@ -43,13 +42,45 @@ public class GovernanceActionProcessStepElement
      *
      * @param template object to copy
      */
-    public GovernanceActionProcessStepElement(GovernanceActionProcessStepElement template)
+    public GovernanceActionProcessStepExecutionElement(GovernanceActionProcessStepExecutionElement template)
     {
         if (template != null)
         {
             elementHeader         = template.getElementHeader();
             processStepProperties = template.getProcessStepProperties();
             specification         = template.getSpecification();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public GovernanceActionProcessStepExecutionElement(GovernanceActionProcessStepElement template)
+    {
+        if (template != null)
+        {
+            elementHeader         = template.getElementHeader();
+            processStepProperties = new GovernanceActionProcessStepExecution(template.getProcessStepProperties());
+            specification         = template.getSpecification();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public GovernanceActionProcessStepExecutionElement(EngineActionElement template)
+    {
+        if (template != null)
+        {
+            elementHeader         = template.getElementHeader();
+            processStepProperties = new GovernanceActionProcessStepExecution(template);
+            specification         = null;
         }
     }
 
@@ -81,7 +112,7 @@ public class GovernanceActionProcessStepElement
      *
      * @return process properties
      */
-    public GovernanceActionProcessStepProperties getProcessStepProperties()
+    public GovernanceActionProcessStepExecution getProcessStepProperties()
     {
         return processStepProperties;
     }
@@ -92,7 +123,7 @@ public class GovernanceActionProcessStepElement
      *
      * @param processStepProperties process properties
      */
-    public void setProcessStepProperties(GovernanceActionProcessStepProperties processStepProperties)
+    public void setProcessStepProperties(GovernanceActionProcessStepExecution processStepProperties)
     {
         this.processStepProperties = processStepProperties;
     }
@@ -157,7 +188,7 @@ public class GovernanceActionProcessStepElement
         {
             return false;
         }
-        GovernanceActionProcessStepElement that = (GovernanceActionProcessStepElement) objectToCompare;
+        GovernanceActionProcessStepExecutionElement that = (GovernanceActionProcessStepExecutionElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(processStepProperties, that.processStepProperties) &&
                 Objects.equals(specification, that.specification);

@@ -6,14 +6,10 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -27,15 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EngineActionElement extends ReferenceableProperties
+public class GovernanceActionProcessStepExecution extends GovernanceActionProcessStepProperties
 {
-    private ElementHeader                        elementHeader            = null;
-    private int                                  domainIdentifier         = 0;
-    private String                               displayName              = null;
-    private String                               description              = null;
     private List<String>                         mandatoryGuards          = null;
     private List<String>                         receivedGuards           = null;
-    private String                               governanceEngineGUID     = null;
     private String                               governanceEngineName     = null;
     private String                               governanceActionTypeGUID = null;
     private String                               governanceActionTypeName = null;
@@ -62,7 +53,7 @@ public class EngineActionElement extends ReferenceableProperties
     /**
      * Default constructor
      */
-    public EngineActionElement()
+    public GovernanceActionProcessStepExecution()
     {
         super();
     }
@@ -73,22 +64,15 @@ public class EngineActionElement extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public EngineActionElement(EngineActionElement template)
+    public GovernanceActionProcessStepExecution(GovernanceActionProcessStepExecution template)
     {
         super(template);
         
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-
-            domainIdentifier = template.getDomainIdentifier();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-
             mandatoryGuards = template.getMandatoryGuards();
             receivedGuards = template.getReceivedGuards();
 
-            governanceEngineGUID = template.getGovernanceEngineGUID();
             governanceEngineName = template.getGovernanceEngineName();
 
             governanceActionTypeGUID = template.getGovernanceActionTypeGUID();
@@ -122,93 +106,93 @@ public class EngineActionElement extends ReferenceableProperties
 
 
     /**
-     * Return the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @return element header object
+     * @param template object to copy
      */
-    public ElementHeader getElementHeader()
+    public GovernanceActionProcessStepExecution(GovernanceActionProcessStepProperties template)
     {
-        return elementHeader;
+        super(template);
+
     }
 
 
     /**
-     * Set up the element header associated with the properties.
+     * Copy/clone constructor
      *
-     * @param elementHeader element header object
+     * @param template object to copy
      */
-    public void setElementHeader(ElementHeader elementHeader)
+    public GovernanceActionProcessStepExecution(EngineActionElement template)
     {
-        this.elementHeader = elementHeader;
+        if (template != null)
+        {
+            super.setEffectiveFrom(template.getEffectiveFrom());
+            super.setEffectiveTo(template.getEffectiveTo());
+            super.setTypeName(template.getTypeName());
+            super.setExtendedProperties(template.getExtendedProperties());
+            super.setQualifiedName(template.getQualifiedName());
+            super.setAdditionalProperties(template.getAdditionalProperties());
+            super.setDomainIdentifier(template.getDomainIdentifier());
+            super.setDisplayName(template.getDisplayName());
+            super.setDescription(template.getDescription());
+
+            /*
+             * Add the received guards to produced guards to simplify the logic of process graph display logic.
+             */
+            if (template.getReceivedGuards() != null)
+            {
+                List<GuardType> guardTypes = new ArrayList<>();
+
+                for (String receivedGuard : template.getReceivedGuards())
+                {
+                    if (receivedGuard != null)
+                    {
+                        GuardType guardType = new GuardType();
+
+                        guardType.setGuard(receivedGuard);
+
+                        guardTypes.add(guardType);
+                    }
+                }
+
+                super.setProducedGuards(guardTypes);
+            }
+
+            super.setGovernanceEngineGUID(template.getGovernanceEngineGUID());
+
+            mandatoryGuards = template.getMandatoryGuards();
+            receivedGuards = template.getReceivedGuards();
+
+            governanceEngineName = template.getGovernanceEngineName();
+
+            governanceActionTypeGUID = template.getGovernanceActionTypeGUID();
+            governanceActionTypeName = template.getGovernanceActionTypeName();
+
+            processName = template.getProcessName();
+            processStepGUID = template.getProcessStepGUID();
+            processStepName = template.getProcessStepName();
+
+            requesterUserId = template.getRequesterUserId();
+            requestType = template.getRequestType();
+            requestParameters = template.getRequestParameters();
+            requestSourceElements = template.getRequestSourceElements();
+            actionTargetElements = template.getActionTargetElements();
+
+            actionStatus = template.getActionStatus();
+
+            requestedTime = template.getRequestedTime();
+            requestedStartTime = template.getRequestedStartTime();
+            startTime = template.getStartTime();
+            processingEngineUserId = template.getProcessingEngineUserId();
+
+            completionTime = template.getCompletionTime();
+            completionGuards = template.getCompletionGuards();
+            completionMessage = template.getCompletionMessage();
+
+            previousActions = template.getPreviousActions();
+            followOnActions = template.getFollowOnActions();
+        }
     }
-
-
-
-    /**
-     * Return the identifier of the governance domain that this action belongs to (0=ALL/ANY).
-     *
-     * @return int
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).
-     *
-     * @param domainIdentifier int
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
-    }
-
-
-    /**
-     * Return the display name for the engine action.
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for the engine action.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the engine action.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the engine action.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
 
     /**
      * Return the list of guards that must be received before this engine action can proceed.
@@ -251,28 +235,6 @@ public class EngineActionElement extends ReferenceableProperties
     public void setReceivedGuards(List<String> receivedGuards)
     {
         this.receivedGuards = receivedGuards;
-    }
-
-
-    /**
-     * Return the unique identifier of governance engine that is processing the engine action.
-     *
-     * @return string guid
-     */
-    public String getGovernanceEngineGUID()
-    {
-        return governanceEngineGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of governance engine that is processing the engine action.
-     *
-     * @param governanceEngineGUID string guid
-     */
-    public void setGovernanceEngineGUID(String governanceEngineGUID)
-    {
-        this.governanceEngineGUID = governanceEngineGUID;
     }
 
 
@@ -737,48 +699,6 @@ public class EngineActionElement extends ReferenceableProperties
     }
 
 
-
-    /**
-     * JSON-style toString
-     *
-     * @return return string containing the property names and values
-     */
-    @Override
-    public String toString()
-    {
-        return "EngineActionElement{" +
-                "elementHeader=" + elementHeader +
-                ", domainIdentifier=" + domainIdentifier +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", mandatoryGuards=" + mandatoryGuards +
-                ", receivedGuards=" + receivedGuards +
-                ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
-                ", governanceEngineName='" + governanceEngineName + '\'' +
-                ", governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
-                ", governanceActionTypeName='" + governanceActionTypeName + '\'' +
-                ", processName='" + processName + '\'' +
-                ", processStepGUID='" + processStepGUID + '\'' +
-                ", processStepName='" + processStepName + '\'' +
-                ", requesterUserId='" + requesterUserId + '\'' +
-                ", requestType='" + requestType + '\'' +
-                ", requestParameters=" + requestParameters +
-                ", requestSourceElements=" + requestSourceElements +
-                ", actionTargetElements=" + actionTargetElements +
-                ", actionStatus=" + actionStatus +
-                ", requestedTime=" + requestedTime +
-                ", startTime=" + startTime +
-                ", processingEngineUserId='" + processingEngineUserId + '\'' +
-                ", completionTime=" + completionTime +
-                ", completionGuards=" + completionGuards +
-                ", completionMessage='" + completionMessage + '\'' +
-                ", previousActions=" + previousActions +
-                ", followOnActions=" + followOnActions +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                "}";
-    }
-
     /**
      * Return comparison result based on the content of the properties.
      *
@@ -791,18 +711,13 @@ public class EngineActionElement extends ReferenceableProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        EngineActionElement that = (EngineActionElement) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                Objects.equals(elementHeader, that.elementHeader)
-                && Objects.equals(displayName, that.displayName)
-                && Objects.equals(description, that.description)
-                && Objects.equals(mandatoryGuards, that.mandatoryGuards)
-                && Objects.equals(receivedGuards, that.receivedGuards)
-                && Objects.equals(governanceEngineGUID, that.governanceEngineGUID)
-                && Objects.equals(governanceEngineName, that.governanceEngineName)
-                && Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID)
-                && Objects.equals(governanceActionTypeName, that.governanceActionTypeName)
-                && Objects.equals(processName, that.processName) &&
+        GovernanceActionProcessStepExecution that = (GovernanceActionProcessStepExecution) objectToCompare;
+        return Objects.equals(mandatoryGuards, that.mandatoryGuards) &&
+                Objects.equals(receivedGuards, that.receivedGuards) &&
+                Objects.equals(governanceEngineName, that.governanceEngineName) &&
+                Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) &&
+                Objects.equals(governanceActionTypeName, that.governanceActionTypeName) &&
+                Objects.equals(processName, that.processName) &&
                 Objects.equals(processStepGUID, that.processStepGUID) &&
                 Objects.equals(processStepName, that.processStepName) &&
                 Objects.equals(requesterUserId, that.requesterUserId) &&
@@ -830,8 +745,7 @@ public class EngineActionElement extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, domainIdentifier, displayName, description,
-                            mandatoryGuards, receivedGuards, governanceEngineGUID, governanceEngineName,
+        return Objects.hash(super.hashCode(), mandatoryGuards, receivedGuards, governanceEngineName,
                             governanceActionTypeGUID, governanceActionTypeName, processName, processStepGUID,
                             processStepName, requesterUserId, requestType, requestParameters, requestSourceElements,
                             actionTargetElements, actionStatus, requestedTime, startTime, processingEngineUserId,
