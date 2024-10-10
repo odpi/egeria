@@ -21,9 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FirstGovernanceActionProcessStepElement
 {
-    private GovernanceElement element  = null;
-    private String            linkGUID = null;
-    private String            guard    = null;
+    private GovernanceActionProcessStepExecutionElement element  = null;
+    private String                                      linkGUID = null;
+    private String                                      guard    = null;
 
 
 
@@ -57,7 +57,7 @@ public class FirstGovernanceActionProcessStepElement
      *
      * @return governance action process step properties
      */
-    public GovernanceElement getElement()
+    public GovernanceActionProcessStepExecutionElement getElement()
     {
         return element;
     }
@@ -68,7 +68,7 @@ public class FirstGovernanceActionProcessStepElement
      *
      * @param element governance action process step properties
      */
-    public void setElement(GovernanceElement element)
+    public void setElement(GovernanceActionProcessStepExecutionElement element)
     {
         this.element = element;
     }
