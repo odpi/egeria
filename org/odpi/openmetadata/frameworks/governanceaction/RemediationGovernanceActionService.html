@@ -163,14 +163,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
  or the administrator requested this governance action service stop running or the hosting server is shutting down.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)" class="member-name-link">setGovernanceContext</a><wbr>(<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a>&nbsp;governanceContext)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperty(java.lang.String,java.lang.String)" class="member-name-link">getProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up details of the governance action request and access to the metadata store.</div>
+<div class="block">Retrieve the property value from the values passed to this governance action service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)" class="member-name-link">setGovernanceContext</a><wbr>(<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a>&nbsp;governanceContext)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up details of the governance action request and access to the metadata store.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the governance action service is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -238,6 +244,21 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="GovernanceActionServiceConnector.html#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)">setGovernanceContext</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>governanceContext</code> - specialist context for this type of governance action.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProperty(java.lang.String,java.lang.String)">
+<h3>getProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</span></div>
+<div class="block">Retrieve the property value from the values passed to this governance action service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of the property</dd>
+<dd><code>defaultValue</code> - default value</dd>
+<dt>Returns:</dt>
+<dd>property value</dd>
 </dl>
 </section>
 </li>

@@ -357,6 +357,7 @@ org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
 org.odpi.openmetadata.adapters.connectors.unitycatalog.controls
 org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc
 org.odpi.openmetadata.adapters.connectors.unitycatalog.properties
+org.odpi.openmetadata.adapters.connectors.unitycatalog.provision
 org.odpi.openmetadata.adapters.connectors.unitycatalog.resource
 org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.rest
 org.odpi.openmetadata.adapters.connectors.unitycatalog.survey
