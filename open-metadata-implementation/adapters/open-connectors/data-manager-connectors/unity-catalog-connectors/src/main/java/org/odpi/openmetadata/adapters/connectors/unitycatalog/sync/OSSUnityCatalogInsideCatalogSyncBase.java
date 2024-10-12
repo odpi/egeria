@@ -423,6 +423,14 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                            elementProperties,
                                                            methodName);
 
+        if (fullName == null)
+        {
+            fullName = propertyHelper.getStringProperty(catalogName,
+                                                        OpenMetadataProperty.NAME.name,
+                                                        elementProperties,
+                                                        methodName);
+        }
+
         return ucConnector.getNameFromFullName(fullName);
     }
 

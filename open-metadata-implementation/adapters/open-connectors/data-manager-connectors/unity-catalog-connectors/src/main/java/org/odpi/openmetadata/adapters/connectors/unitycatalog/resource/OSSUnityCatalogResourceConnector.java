@@ -226,8 +226,8 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         CatalogProperties catalogProperties = new CatalogProperties();
 
-        catalogProperties.setMetastore_id(name);
-        catalogProperties.setSecurable_type(comment);
+        catalogProperties.setName(name);
+        catalogProperties.setComment(comment);
         //catalogProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
@@ -380,9 +380,9 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         SchemaProperties schemaProperties = new SchemaProperties();
 
-        schemaProperties.setMetastore_id(name);
+        schemaProperties.setName(name);
         schemaProperties.setCatalog_name(catalogName);
-        schemaProperties.setSecurable_type(comment);
+        schemaProperties.setComment(comment);
         //schemaProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
@@ -541,10 +541,10 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     {
         VolumeProperties volumeProperties = new VolumeProperties();
 
-        volumeProperties.setMetastore_id(name);
+        volumeProperties.setName(name);
         volumeProperties.setCatalog_name(catalogName);
         volumeProperties.setSchema_name(schemaName);
-        volumeProperties.setSecurable_type(comment);
+        volumeProperties.setComment(comment);
         volumeProperties.setVolume_type(volumeType);
         volumeProperties.setStorage_location(storageLocation);
 
@@ -723,10 +723,10 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     {
         TableProperties tableProperties = new TableProperties();
 
-        tableProperties.setMetastore_id(name);
+        tableProperties.setName(name);
         tableProperties.setCatalog_name(catalogName);
         tableProperties.setSchema_name(schemaName);
-        tableProperties.setSecurable_type(comment);
+        tableProperties.setComment(comment);
         tableProperties.setTable_type(tableType);
         tableProperties.setData_source_format(dataSourceFormat);
         tableProperties.setColumns(columns);
@@ -1090,12 +1090,11 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     {
         if ((auditLog != null) && (logMessage))
         {
-            auditLog.logException(methodName,
-                                  UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                              ucInstanceName,
-                                                                                              targetRootURL,
-                                                                                              error.getMessage()),
-                                  error);
+            auditLog.logMessage(methodName,
+                                UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                            ucInstanceName,
+                                                                                            targetRootURL,
+                                                                                            error.getMessage()));
         }
 
         throw new PropertyServerException(UCErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,

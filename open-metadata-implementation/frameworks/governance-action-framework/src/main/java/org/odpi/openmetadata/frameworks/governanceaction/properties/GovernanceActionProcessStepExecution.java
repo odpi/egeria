@@ -546,28 +546,6 @@ public class GovernanceActionProcessStepExecution extends GovernanceActionProces
 
 
     /**
-     * Return the governance request type used to call the governance service via this governance engine.
-     *
-     * @return name of the request type
-     */
-    public String getRequestType()
-    {
-        return requestType;
-    }
-
-
-    /**
-     * Set up the governance request type used to call the governance service via this governance engine.
-     *
-     * @param requestType name of the request type passed to the governance service
-     */
-    public void setRequestType(String requestType)
-    {
-        this.requestType = requestType;
-    }
-
-
-    /**
      * Return the parameters to pass onto the governance service.
      *
      * @return map of properties

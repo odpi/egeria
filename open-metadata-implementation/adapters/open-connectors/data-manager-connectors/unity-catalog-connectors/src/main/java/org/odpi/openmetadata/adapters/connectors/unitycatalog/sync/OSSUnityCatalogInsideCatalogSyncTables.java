@@ -404,7 +404,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                            tableInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
                                                                            tableInfo.getTable_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+                                                                           PermittedSynchronization.TO_THIRD_PARTY));
     }
 
 

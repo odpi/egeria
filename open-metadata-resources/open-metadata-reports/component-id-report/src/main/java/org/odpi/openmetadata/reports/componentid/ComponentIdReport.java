@@ -84,6 +84,7 @@ public class ComponentIdReport
     private static final String unityCatalogServerSyncProviderClassName   = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider";
     private static final String unityCatalogCatalogSyncProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider";
     private static final String unityCatalogServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider";
+    private static final String unityCatalogProvisionerProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.ProvisionUnityCatalogGovernanceActionProvider";
     private static final String unityCatalogCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider";
     private static final String unityCatalogSchemaSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider";
     private static final String unityCatalogVolumeSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideVolumeSurveyProvider";
@@ -285,6 +286,7 @@ public class ComponentIdReport
         this.addConnectorDescription(unityCatalogResourceProviderClassName, report);
         this.addConnectorDescription(unityCatalogServerSyncProviderClassName, report);
         this.addConnectorDescription(unityCatalogCatalogSyncProviderClassName, report);
+        this.addConnectorDescription(unityCatalogProvisionerProviderClassName, report);
         this.addConnectorDescription(unityCatalogServerSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogCatalogSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogSchemaSurveyProviderClassName, report);

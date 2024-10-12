@@ -1680,9 +1680,9 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param requestTypeDefinition the request type being configured
      * @param governanceEngineDefinition the engine to connect it to
      */
-    private void addStepExecutor(String                     stepGUID,
-                                 RequestTypeDefinition      requestTypeDefinition,
-                                 GovernanceEngineDefinition governanceEngineDefinition)
+    protected void addStepExecutor(String stepGUID,
+                                   RequestTypeDefinition requestTypeDefinition,
+                                   GovernanceEngineDefinition governanceEngineDefinition)
     {
         archiveHelper.addGovernanceActionExecutor(stepGUID,
                                                   requestTypeDefinition.getGovernanceRequestType(),

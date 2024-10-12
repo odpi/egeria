@@ -134,6 +134,6 @@ public enum CreateServerRequestParameter
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "RequestParameter{ name=" + name + "}";
     }
 }
