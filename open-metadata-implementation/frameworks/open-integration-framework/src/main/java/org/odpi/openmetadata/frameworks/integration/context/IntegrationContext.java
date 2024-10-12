@@ -223,6 +223,11 @@ public class IntegrationContext
                                              List<String> excludedNames,
                                              List<String> includedNames)
     {
+        if (elementName == null)
+        {
+            return false;
+        }
+
         if (includedNames != null)
         {
             return includedNames.contains(elementName);

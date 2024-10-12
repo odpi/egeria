@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.Map;
+
 /**
  * The triage governance action service is responsible for determining which of the possible courses of action to take for a specific situation.
  * It may involve a human decision maker.
@@ -34,6 +36,36 @@ public abstract class TriageGovernanceActionService extends GovernanceActionServ
     public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
+    }
+
+
+    /**
+     * Retrieve the property value from the values passed to this governance action service.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue default value
+     * @return property value
+     */
+    protected String getProperty(String propertyName, String defaultValue)
+    {
+        Map<String, String> requestParameters       = governanceContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        String propertyValue = defaultValue;
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            propertyValue = requestParameters.get(propertyName);
+        }
+        else
+        {
+            if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+            {
+                propertyValue = configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return propertyValue;
     }
 
 

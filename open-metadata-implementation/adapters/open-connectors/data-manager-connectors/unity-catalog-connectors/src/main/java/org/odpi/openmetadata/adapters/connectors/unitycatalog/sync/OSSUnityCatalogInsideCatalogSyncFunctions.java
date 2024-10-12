@@ -385,7 +385,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         functionProperties.setCatalog_name(catalogName);
         functionProperties.setSchema_name(schemaName);
-        functionProperties.setMetastore_id(super.getUCNameFromMember(memberElement));
+        functionProperties.setName(super.getUCNameFromMember(memberElement));
 
         // todo - complete parameter mapping
         FunctionInfo functionInfo = ucConnector.createFunction(functionProperties);

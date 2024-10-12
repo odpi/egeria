@@ -187,6 +187,51 @@ public enum UCAuditCode implements AuditLogMessageSet
                                 "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Unity Catalog during a refresh scan.",
                                 "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running."),
 
+    /**
+     * UNITY-CATALOG-CONNECTOR-0019 - The {0} governance action service has created a new {1} element called {2} ({3})
+     */
+    NEW_ELEMENT_CREATED("UNITY-CATALOG-CONNECTOR-0019",
+                         AuditLogRecordSeverityLevel.INFO,
+                        "The {0} governance action service has created a new {1} element called {2} ({3})",
+                        "The governance action service returns an ACTIONED completion status.",
+                        "Ensure follow-on uses of the asset are successful."),
+
+
+    /**
+     * UNITY-CATALOG-CONNECTOR-0020 - The {0} governance action service has no technology type to work with
+     */
+    NO_TECHNOLOGY_TYPE("UNITY-CATALOG-CONNECTOR-0020",
+                       AuditLogRecordSeverityLevel.ERROR,
+                       "The {0} governance action service has no technology type to work with",
+                       "The governance action service returns an INVALID completion status.",
+                       "This is an error in the way that the governance action service has been called." +
+                               "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                               "or as part of a governance action process.  Then correct this approach so that a technology type is set up in the request parameters."),
+
+    /**
+     * UNITY-CATALOG-CONNECTOR-0021 - The {0} governance action service has been passed a technology type of {1} which is not supported
+     */
+    INVALID_TECHNOLOGY_TYPE("UNITY-CATALOG-CONNECTOR-0021",
+                       AuditLogRecordSeverityLevel.ERROR,
+                       "The {0} governance action service has been passed a technology type of {1} which is not supported",
+                       "The governance action service ends with an INVALID completion status.",
+                       "This is an error in the way that the governance action service has been called." +
+                               "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                               "or as part of a governance action process.  Then correct this approach so that a supported technology type is set up in the request parameters."),
+
+    /**
+     * UNITY-CATALOG-CONNECTOR-0022 - The {0} governance action service has not been passed all the placeholder variables needed to create an element for technology type {1}; the missing placeholder variables are: {2}
+     */
+    MISSING_PLACEHOLDER_VALUES("UNITY-CATALOG-CONNECTOR-0022",
+                               AuditLogRecordSeverityLevel.ERROR,
+                               "The {0} governance action service has not been passed all the placeholder variables needed to create an element for technology type {1}; the missing placeholder variables are: {2}",
+                               "The governance action service ends with an INVALID completion status and this message.",
+                               "This is an error in the way that the governance action service has been called." +
+                                    "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                                    "or as part of a governance action process.  Then correct this approach so that the required placeholder properties are set up in the request parameters."),
+
+
+
     ;
 
     private final String                     logMessageId;

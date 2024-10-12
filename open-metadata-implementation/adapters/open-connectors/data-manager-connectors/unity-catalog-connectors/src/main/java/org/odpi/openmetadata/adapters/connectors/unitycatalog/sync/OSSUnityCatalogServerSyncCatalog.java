@@ -392,11 +392,18 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                                InvalidParameterException,
                                                                                UserNotAuthorizedException
     {
+        final String methodName = "createElementInThirdParty";
+
+        String catalogQualifiedName = propertyHelper.getStringProperty(connectorName,
+                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                       memberElement.getElement().getElementProperties(),
+                                                                       methodName);
+
         CatalogInfo catalogInfo = ucConnector.createCatalog(this.getUCNameFromMember(memberElement),
                                                             this.getUCCommentFomMember(memberElement),
                                                             this.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(catalogGUID,
+        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
                                       catalogQualifiedName,
                                       memberElement.getElement().getElementGUID(),
                                       OpenMetadataType.CATALOG.typeName,
@@ -405,6 +412,8 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
                                                                            catalogInfo.getId(),
                                                                            PermittedSynchronization.TO_THIRD_PARTY));
+
+        addCatalogTarget(ucServerGUID, memberElement.getElement().getElementGUID(), catalogQualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
 

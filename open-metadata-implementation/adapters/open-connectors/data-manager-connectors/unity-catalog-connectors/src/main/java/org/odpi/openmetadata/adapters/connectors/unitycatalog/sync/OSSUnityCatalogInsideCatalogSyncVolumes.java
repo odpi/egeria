@@ -397,7 +397,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                            volumeInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
                                                                            volumeInfo.getVolume_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+                                                                           PermittedSynchronization.TO_THIRD_PARTY));
     }
 
 

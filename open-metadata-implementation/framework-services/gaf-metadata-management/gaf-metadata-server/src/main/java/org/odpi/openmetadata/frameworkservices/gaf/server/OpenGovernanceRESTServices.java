@@ -1534,14 +1534,14 @@ public class OpenGovernanceRESTServices
                                                                                                                  null,
                                                                                                                  methodName);
 
-            List<GovernanceElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+            List<GovernanceActionProcessStepExecutionElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
 
             if (processStepElements == null)
             {
                 processStepElements = new ArrayList<>();
             }
 
-            processStepElements.add(processStepElement);
+            processStepElements.add(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
             governanceActionProcessGraph.setNextProcessSteps(processStepElements);
 
@@ -1582,14 +1582,14 @@ public class OpenGovernanceRESTServices
                                                                               null,
                                                                               methodName);
 
-            List<GovernanceElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+            List<GovernanceActionProcessStepExecutionElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
 
             if (processStepElements == null)
             {
                 processStepElements = new ArrayList<>();
             }
 
-            processStepElements.add(engineActionElement);
+            processStepElements.add(new GovernanceActionProcessStepExecutionElement(engineActionElement));
 
             governanceActionProcessGraph.setNextProcessSteps(processStepElements);
 
@@ -2209,11 +2209,12 @@ public class OpenGovernanceRESTServices
                                                                                       firstActionProcessStepLink.getProperties(),
                                                                                       methodName));
 
-            firstProcessStep.setElement(handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                                     firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
-                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                     null,
-                                                                                     methodName));
+            GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                 firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
+                                                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                                 null,
+                                                                                                                 methodName);
+            firstProcessStep.setElement(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
             return firstProcessStep;
         }
@@ -2269,11 +2270,13 @@ public class OpenGovernanceRESTServices
 
             firstProcessStep.setLinkGUID(firstActionProcessStepLink.getGUID());
 
-            firstProcessStep.setElement(handler.getEngineAction(userId,
-                                                                firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
-                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                null,
-                                                                methodName));
+            EngineActionElement engineActionElement = handler.getEngineAction(userId,
+                                                                              firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
+                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                              null,
+                                                                              methodName);
+
+            firstProcessStep.setElement(new GovernanceActionProcessStepExecutionElement(engineActionElement));
 
             return firstProcessStep;
         }
@@ -2525,11 +2528,13 @@ public class OpenGovernanceRESTServices
                                                                                       relationship.getProperties(),
                                                                                       methodName));
 
-                        element.setNextProcessStep(handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                                                relationship.getEntityTwoProxy().getGUID(),
-                                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                                null,
-                                                                                                methodName));
+                        GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                             relationship.getEntityTwoProxy().getGUID(),
+                                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                                             null,
+                                                                                                                             methodName);
+
+                        element.setNextProcessStep(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
                         elements.add(element);
                     }

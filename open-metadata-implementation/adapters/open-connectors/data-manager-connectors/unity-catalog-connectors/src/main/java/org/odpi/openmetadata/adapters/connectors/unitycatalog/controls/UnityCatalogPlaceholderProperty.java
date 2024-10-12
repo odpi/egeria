@@ -18,6 +18,11 @@ import java.util.List;
 public enum UnityCatalogPlaceholderProperty
 {
     /**
+     * The unique name of a Unity Catalog (UC) server
+     */
+    SERVER_QUALIFIED_NAME ("ucServerQualifiedName", "The unique name of a Unity Catalog (UC) server.", DataType.STRING.getName(), "Unity Catalog Server:Unity Catalog 1"),
+
+    /**
      * The name of the catalog being described.
      */
     CATALOG_NAME ("ucCatalogName", "The name of a catalog within Unity Catalog (UC).", DataType.STRING.getName(), "my_catalog"),
@@ -96,6 +101,7 @@ public enum UnityCatalogPlaceholderProperty
      * The name of a function within a schema and catalog in Unity Catalog (UC).
      */
     FUNCTION_NAME ("ucFunctionName", "The name of a function within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_function"),
+
 
     ;
 
@@ -227,6 +233,7 @@ public enum UnityCatalogPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.SERVER_QUALIFIED_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
@@ -274,6 +281,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.TABLE_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -316,6 +324,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(FUNCTION_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
