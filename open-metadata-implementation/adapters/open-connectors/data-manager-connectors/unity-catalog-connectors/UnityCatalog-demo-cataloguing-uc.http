@@ -194,10 +194,10 @@ Content-Type: application/json
   "placeholderPropertyValues" : {
     "hostURL" : "http://localhost",
     "portNumber" : "8080",
-    "serverName" : "Unity Catalog 1",
+    "serverName" : "Unity Catalog 3",
     "versionIdentifier" : "V1.0",
-    "description" : "First instance of the Unity Catalog (UC) Server.",
-    "serverUserId" : "uc1"
+    "description" : "Third instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc3"
   }
 }
 

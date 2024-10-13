@@ -111,6 +111,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         MetadataCollectionIterator functionIterator = new MetadataCollectionIterator(catalogGUID,
                                                                                      catalogQualifiedName,
+                                                                                     catalogGUID,
+                                                                                     catalogQualifiedName,
                                                                                      catalogName,
                                                                                      connectorName,
                                                                                      entityTypeName,
@@ -364,7 +366,11 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         this.updateSchemaAttributesForUCFunction(memberElement, functionInfo);
 
-        context.confirmSynchronization(egeriaFunctionGUID, entityTypeName, functionInfo.getFunction_id());
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       egeriaFunctionGUID,
+                                       entityTypeName,
+                                       functionInfo.getFunction_id());
     }
 
 
@@ -390,15 +396,26 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         // todo - complete parameter mapping
         FunctionInfo functionInfo = ucConnector.createFunction(functionProperties);
 
-        context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
-                                      memberElement.getElement().getElementGUID(),
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(functionInfo,
-                                                                           functionInfo.getSchema_name(),
-                                                                           UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
-                                                                           functionInfo.getFunction_id(),
-                                                                           PermittedSynchronization.TO_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(catalogGUID,
+                                          catalogName,
+                                          memberElement.getElement().getElementGUID(),
+                                          deployedImplementationType.getAssociatedTypeName(),
+                                          this.getExternalIdentifierProperties(functionInfo,
+                                                                               functionInfo.getSchema_name(),
+                                                                               UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                                                               functionInfo.getFunction_id(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(catalogGUID,
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           functionInfo.getFunction_id());
+        }
     }
 
 
@@ -425,6 +442,12 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                           memberElement.getElement().getElementGUID(),
                                                                           functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
                                                                           ucServerEndpoint));
+
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       functionInfo.getFunction_id());
     }
 
 
