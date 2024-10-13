@@ -14,22 +14,24 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Common functions for the synchronizing between Egeria and Unity Catalog.
@@ -330,33 +332,18 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     {
         final String methodName = "noMismatchInExternalIdentifier";
 
-        if ((thirdPartyExternalIdentifier == null) || (memberElement == null) || (memberElement.getExternalIdentifiers() == null))
+        if ((thirdPartyExternalIdentifier == null) || (memberElement == null) || (memberElement.getExternalIdentifier() == null))
         {
             return true;
         }
 
-        List<String> externalIdentifiers = new ArrayList<>();
-
-        for (MetadataCorrelationHeader correlationHeader : memberElement.getExternalIdentifiers())
-        {
-            if ((correlationHeader != null) && (correlationHeader.getExternalIdentifier() != null))
-            {
-                externalIdentifiers.add(correlationHeader.getExternalIdentifier());
-
-                if (thirdPartyExternalIdentifier.equals(correlationHeader.getExternalIdentifier()))
-                {
-                    return true;
-                }
-            }
-        }
-
-        if (externalIdentifiers.isEmpty())
+        if (thirdPartyExternalIdentifier.equals(memberElement.getExternalIdentifier().getExternalIdentifier()))
         {
             return true;
         }
 
         auditLog.logMessage(methodName, UCAuditCode.IDENTITY_MISMATCH.getMessageDefinition(connectorName,
-                                                                                           externalIdentifiers.toString(),
+                                                                                           memberElement.getExternalIdentifier().getExternalIdentifier(),
                                                                                            thirdPartyExternalIdentifier,
                                                                                            ucServerEndpoint));
         return false;

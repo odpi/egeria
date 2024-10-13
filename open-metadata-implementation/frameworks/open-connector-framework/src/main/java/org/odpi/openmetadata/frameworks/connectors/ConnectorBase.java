@@ -105,6 +105,36 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Combine the connector's configuration properties with the supplied additional configuration
+     * properties into a new map.
+     *
+     * @param additionalConfigurationProperties additional properties (can be null)
+     * @return combination of the connectors properties and the additional properties.  Null is returned if both are null/empty.
+     */
+    protected Map<String,Object> combineConfigurationProperties(Map<String, Object> additionalConfigurationProperties)
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        if (connectionProperties.getConfigurationProperties() != null)
+        {
+            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+        }
+
+        if (additionalConfigurationProperties != null)
+        {
+            configurationProperties.putAll(additionalConfigurationProperties);
+        }
+
+        if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return configurationProperties;
+    }
+
+
+    /**
      * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
      *
      * @param messageDefinition description of the audit log record including specific resources involved

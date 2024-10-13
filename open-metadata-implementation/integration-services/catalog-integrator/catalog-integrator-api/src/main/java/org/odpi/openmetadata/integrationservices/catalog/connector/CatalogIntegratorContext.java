@@ -624,6 +624,37 @@ public class CatalogIntegratorContext extends IntegrationContext
 
 
     /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
+     * @param externalScopeName unique name for the owning scope (typically a catalog)
+     * @param openMetadataGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifier unique identifier of this element in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void confirmSynchronization(String externalScopeGUID,
+                                       String externalScopeName,
+                                       String openMetadataGUID,
+                                       String openMetadataElementTypeName,
+                                       String externalIdentifier) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        openMetadataStoreClient.confirmSynchronization(userId,
+                                                       externalScopeGUID,
+                                                       externalScopeName,
+                                                       openMetadataGUID,
+                                                       openMetadataElementTypeName,
+                                                       externalIdentifier);
+    }
+
+
+    /**
      * Return the interface for working with connectors to digital resources.
      *
      * @return collaboration exchange service

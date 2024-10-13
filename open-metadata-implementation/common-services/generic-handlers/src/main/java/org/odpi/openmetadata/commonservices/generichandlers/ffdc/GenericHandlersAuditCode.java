@@ -128,6 +128,15 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                                "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the classification and make adjustments to the caller's logic if appropriate."),
 
     /**
+     * OMAG-GENERIC-HANDLERS-0011 - Template {0} was used to create new {1} element {2} by mapping the following entities {3} and relationships {4}
+     */
+    TEMPLATE_MAPPING_SUMMARY("OMAG-GENERIC-HANDLERS-0011",
+                             AuditLogRecordSeverityLevel.INFO,
+                             "Template {0} was used to create new {1} element {2} by mapping the following entities {3} and relationships {4}",
+                             "A new element has been created from a template.  The ma[ping of the entities and relationships is shown.",
+                             "Check that a complete mapping from the template to the new element is correct."),
+
+    /**
      * OMAG-GENERIC-HANDLERS-0020 - Initializing a new engine action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6} at the request of {7}
      */
     INITIATE_ENGINE_ACTION("OMAG-GENERIC-HANDLERS-0020",

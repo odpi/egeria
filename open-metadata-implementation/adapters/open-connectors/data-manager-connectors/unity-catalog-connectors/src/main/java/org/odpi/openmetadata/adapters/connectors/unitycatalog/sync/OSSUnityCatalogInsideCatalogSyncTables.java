@@ -114,6 +114,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         MetadataCollectionIterator tableIterator = new MetadataCollectionIterator(catalogGUID,
                                                                                   catalogQualifiedName,
+                                                                                  catalogGUID,
+                                                                                  catalogQualifiedName,
                                                                                   catalogName,
                                                                                   connectorName,
                                                                                   entityTypeName,
@@ -369,7 +371,11 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
 
-        context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getTable_id());
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       egeriaTableGUID,
+                                       entityTypeName,
+                                       tableInfo.getTable_id());
     }
 
 
@@ -396,15 +402,26 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                       super.getUCStorageLocationFromMember(memberElement),
                                                       super.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(catalogGUID,
-                                      catalogQualifiedName,
-                                      memberElement.getElement().getElementGUID(),
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(tableInfo,
-                                                                           tableInfo.getSchema_name(),
-                                                                           UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
-                                                                           tableInfo.getTable_id(),
-                                                                           PermittedSynchronization.TO_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(catalogGUID,
+                                          catalogQualifiedName,
+                                          memberElement.getElement().getElementGUID(),
+                                          deployedImplementationType.getAssociatedTypeName(),
+                                          this.getExternalIdentifierProperties(tableInfo,
+                                                                               tableInfo.getSchema_name(),
+                                                                               UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                               tableInfo.getTable_id(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(catalogGUID,
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           tableInfo.getTable_id());
+        }
     }
 
 
@@ -466,6 +483,12 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                           memberElement.getElement().getElementGUID(),
                                                                           tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
                                                                           ucServerEndpoint));
+
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       tableInfo.getTable_id());
     }
 
 

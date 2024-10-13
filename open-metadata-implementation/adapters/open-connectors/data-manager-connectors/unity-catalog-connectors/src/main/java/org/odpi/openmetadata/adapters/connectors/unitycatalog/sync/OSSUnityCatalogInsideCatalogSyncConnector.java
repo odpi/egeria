@@ -225,19 +225,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
 
                                 RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget, null);
 
-                                Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-                                if (catalogTarget.getConfigurationProperties() != null)
-                                {
-                                    if (configurationProperties == null)
-                                    {
-                                        configurationProperties = new HashMap<>();
-                                    }
-
-                                    configurationProperties.putAll(catalogTarget.getConfigurationProperties());
-                                }
-
-                                requestedCatalogTarget.setConfigurationProperties(configurationProperties);
+                                requestedCatalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
 
                                 if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
                                 {
