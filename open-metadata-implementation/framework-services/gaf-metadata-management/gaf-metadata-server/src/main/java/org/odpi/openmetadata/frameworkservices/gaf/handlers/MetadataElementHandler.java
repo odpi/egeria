@@ -2050,7 +2050,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  placeholderPropertyValues,
                                                                  methodName);
 
-        if (metadataElementGUID != null)
+        /*
+         * This is where we add the parent relationship.  However, due to the "allowRetrieve" flag,
+         * it is possible that the entity GUID returned is for an entity that has been around for a while,
+         * and already has the parent attached.  So the code below checks that the parent is not already there.
+         */
+        if ((metadataElementGUID != null) && (parentGUID != null))
         {
             final String metadataElementGUIDParameterName = "metadataElementGUID";
 
@@ -2066,24 +2071,51 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                      null,
                                                                      methodName);
 
-            String pathName = repositoryHelper.getStringProperty(serviceName,
-                                                                 OpenMetadataProperty.PATH_NAME.name,
-                                                                 entityDetail.getProperties(),
-                                                                 methodName);
-            createParentRelationships(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      metadataElementGUID,
-                                      metadataElementTypeName,
-                                      pathName,
-                                      parentGUID,
-                                      parentRelationshipTypeGUID,
-                                      parentRelationshipTypeName,
-                                      parentRelationshipProperties,
-                                      parentAtEnd1,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            List<Relationship> existingRelationships = null;
+            if (allowRetrieve)
+            {
+                int attachmentEnd = 2;
+                if (parentAtEnd1)
+                {
+                    attachmentEnd = 1;
+                }
+
+                existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                          entityDetail,
+                                                                                          metadataElementTypeName,
+                                                                                          parentGUID,
+                                                                                          parentRelationshipTypeGUID,
+                                                                                          parentRelationshipTypeName,
+                                                                                          attachmentEnd,
+                                                                                          false,
+                                                                                          false,
+                                                                                          effectiveFrom,
+                                                                                          effectiveTo,
+                                                                                          true,
+                                                                                          methodName);
+            }
+
+            if ((existingRelationships == null) || (existingRelationships.isEmpty()))
+            {
+                String pathName = repositoryHelper.getStringProperty(serviceName,
+                                                                     OpenMetadataProperty.PATH_NAME.name,
+                                                                     entityDetail.getProperties(),
+                                                                     methodName);
+                createParentRelationships(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          metadataElementTypeName,
+                                          pathName,
+                                          parentGUID,
+                                          parentRelationshipTypeGUID,
+                                          parentRelationshipTypeName,
+                                          parentRelationshipProperties,
+                                          parentAtEnd1,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+            }
         }
 
         return metadataElementGUID;
