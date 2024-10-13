@@ -152,23 +152,25 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="block">OMAG-REPOSITORY-HANDLER-0003 - An unexpected error {4} was returned to {5} by the metadata server during {1} request for 
  open metadata access service {2} on server {3}; message was {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#RELATIONSHIP_DELETED" class="member-name-link">RELATIONSHIP_DELETED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code><a href="#RELATION_DEDUP_SUMMARY" class="member-name-link">RELATION_DEDUP_SUMMARY</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#RELATIONSHIP_DELETED" class="member-name-link">RELATIONSHIP_DELETED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-REPOSITORY-HANDLER-0012 - The Open Metadata Service has soft-deleted relationship {0} of type {1} ({2}) between entity {3} of type
  {4} ({5}) and entity {6} of type {7} ({8}) during method {9}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RELATIONSHIP_PURGED" class="member-name-link">RELATIONSHIP_PURGED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RELATIONSHIP_PURGED" class="member-name-link">RELATIONSHIP_PURGED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-REPOSITORY-HANDLER-0002 - The Open Metadata Service has purged relationship {0} of type {1} ({2}) during method {3} because its home 
  repository {4} does not support soft-delete</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_SET_ANCHORS" class="member-name-link">UNABLE_TO_SET_ANCHORS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMAG-REPOSITORY-HANDLER-0004 - The Open Metadata Service {0} is not able to set the Anchors classification on a new entity of type 
  {1} during method {2}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNAVAILABLE_ENTITY" class="member-name-link">UNAVAILABLE_ENTITY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNAVAILABLE_ENTITY" class="member-name-link">UNAVAILABLE_ENTITY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMAG-REPOSITORY-HANDLER-0009 - A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not 
  visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of 
  forLineage={9} and forDuplicateProcessing={10}</div>
@@ -329,6 +331,12 @@ the order they are declared.</div>
 <section class="detail" id="CLASSIFICATION_RETRY">
 <h3>CLASSIFICATION_RETRY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">CLASSIFICATION_RETRY</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="RELATION_DEDUP_SUMMARY">
+<h3>RELATION_DEDUP_SUMMARY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RepositoryHandlerAuditCode.html" title="enum class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandlerAuditCode</a></span>&nbsp;<span class="element-name">RELATION_DEDUP_SUMMARY</span></div>
 </section>
 </li>
 </ul>

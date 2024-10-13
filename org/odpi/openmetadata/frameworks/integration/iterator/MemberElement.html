@@ -101,10 +101,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifiers()" class="member-name-link">getExternalIdentifiers</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifier()" class="member-name-link">getExternalIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The list of identifiers from the third party system.</div>
+<div class="block">The specific identifier from the third party system.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MemberAction.html" title="enum class in org.odpi.openmetadata.frameworks.integration.iterator">MemberAction</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMemberAction(java.util.Date,java.util.Date)" class="member-name-link">getMemberAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;thirdPartyElementCreationTime,
@@ -169,15 +169,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExternalIdentifiers()">
-<h3>getExternalIdentifiers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a>&gt;</span>&nbsp;<span class="element-name">getExternalIdentifiers</span>()</div>
-<div class="block">The list of identifiers from the third party system.  Typically, there is only one.  More
- occur when a single open metadata element is used to represent multiple objects from the
- third party system.</div>
+<section class="detail" id="getExternalIdentifier()">
+<h3>getExternalIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../governanceaction/properties/MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a></span>&nbsp;<span class="element-name">getExternalIdentifier</span>()</div>
+<div class="block">The specific identifier from the third party system.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>list of external identifiers</dd>
+<dd>selected external identifier</dd>
 </dl>
 </section>
 </li>
