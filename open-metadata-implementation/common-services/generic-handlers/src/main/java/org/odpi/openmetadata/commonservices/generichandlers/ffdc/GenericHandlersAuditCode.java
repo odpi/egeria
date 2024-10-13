@@ -132,7 +132,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
      */
     TEMPLATE_MAPPING_SUMMARY("OMAG-GENERIC-HANDLERS-0011",
                              AuditLogRecordSeverityLevel.INFO,
-                             "Template {0} was used to create new {1} element {2} by mapping the following entities {3} and relationships {4}",
+                             "Template {0} was used to create new {1} element {2} with additional mapping to the following entities {3} and relationships {4}",
                              "A new element has been created from a template.  The ma[ping of the entities and relationships is shown.",
                              "Check that a complete mapping from the template to the new element is correct."),
 
