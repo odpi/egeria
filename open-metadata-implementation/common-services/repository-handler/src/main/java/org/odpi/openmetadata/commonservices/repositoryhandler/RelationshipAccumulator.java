@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -28,6 +29,7 @@ public class RelationshipAccumulator
     private final RepositoryErrorHandler errorHandler;
     private final boolean                forDuplicateProcessing;
     private final Date                   effectiveTime;
+    private final AuditLog               auditLog;
     private final String                 methodName;
 
     private Map<String, List<Relationship>> relationshipMap = null;
@@ -50,6 +52,7 @@ public class RelationshipAccumulator
                             RepositoryErrorHandler errorHandler,
                             boolean                forDuplicateProcessing,
                             Date                   effectiveTime,
+                            AuditLog               auditLog,
                             String                 methodName)
     {
         this.repositoryHelper = repositoryHelper;
@@ -57,6 +60,7 @@ public class RelationshipAccumulator
         this.errorHandler = errorHandler;
         this.effectiveTime = effectiveTime;
         this.forDuplicateProcessing = forDuplicateProcessing;
+        this.auditLog = auditLog;
         this.methodName = methodName;
     }
 
@@ -341,6 +345,12 @@ public class RelationshipAccumulator
                                 (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.ANY_NUMBER))
                     {
                         log.debug(validUniLinkRelationships.size() + " valid uni-link relationships received of type " + relationshipTypeName);
+
+                        if (validUniLinkRelationships.size() != retrievedRelationships.size())
+                        {
+                            logDeDuplicationResults(retrievedRelationships, validUniLinkRelationships);
+                        }
+
                         return validUniLinkRelationships;
                     }
 
@@ -403,16 +413,16 @@ public class RelationshipAccumulator
                         else
                         {
                             log.debug("Skipping attachment end 1 validation");
-                            validEnd1Relationships = deDuplicatedRelationships;
+                            validEnd1Relationships = validUniLinkRelationships;
                         }
                     }
                     else
                     {
                         log.debug("Skipping end 1 validation");
-                        validEnd1Relationships = deDuplicatedRelationships;
+                        validEnd1Relationships = validUniLinkRelationships;
                     }
 
-                    log.debug(validUniLinkRelationships.size() + " valid end1 relationships received of type " + relationshipTypeName);
+                    log.debug(validEnd1Relationships.size() + " valid end1 relationships received of type " + relationshipTypeName);
 
                     List<Relationship> validCardinalityRelationships = new ArrayList<>();
 
@@ -476,6 +486,11 @@ public class RelationshipAccumulator
 
                     log.debug(validCardinalityRelationships.size() + " valid cardinality relationships received of type " + relationshipTypeName);
 
+                    if (validCardinalityRelationships.size() != retrievedRelationships.size())
+                    {
+                        logDeDuplicationResults(retrievedRelationships, validCardinalityRelationships);
+                    }
+
                     /*
                      * One final removal of duplicates since we may have processed both ends.
                      */
@@ -500,6 +515,39 @@ public class RelationshipAccumulator
         }
 
         return null;
+    }
+
+
+    /**
+     * Log the effect of the relationship deduplication.
+     *
+     * @param retrievedRelationships relationships retrieved from the repository
+     * @param resultingRelationships relationships being returned.
+     */
+    private void logDeDuplicationResults(List<Relationship>  retrievedRelationships,
+                                         List<Relationship>  resultingRelationships)
+    {
+        List<String> originalRelationships = new ArrayList<>();
+        List<String> deDupedRelationships = new ArrayList<>();
+
+        for (Relationship relationship : resultingRelationships)
+        {
+            if (relationship != null)
+            {
+                deDupedRelationships.add(relationship.getGUID());
+            }
+        }
+
+        for (Relationship relationship : retrievedRelationships)
+        {
+            if (relationship != null)
+            {
+                originalRelationships.add(relationship.getGUID());
+            }
+        }
+        auditLog.logMessage(methodName,
+                            RepositoryHandlerAuditCode.RELATION_DEDUP_SUMMARY.getMessageDefinition(originalRelationships.toString(),
+                                                                                                   deDupedRelationships.toString()));
     }
 }
 

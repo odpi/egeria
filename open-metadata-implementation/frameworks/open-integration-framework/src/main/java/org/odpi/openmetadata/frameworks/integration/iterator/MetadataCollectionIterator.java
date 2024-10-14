@@ -22,6 +22,8 @@ public class MetadataCollectionIterator extends IntegrationIterator
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
      * @param metadataCollectionQualifiedName unique name of the metadata collection
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
+     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
@@ -32,6 +34,8 @@ public class MetadataCollectionIterator extends IntegrationIterator
      */
     public MetadataCollectionIterator(String                   metadataCollectionGUID,
                                       String                   metadataCollectionQualifiedName,
+                                      String                   externalScopeGUID,
+                                      String                   externalScopeName,
                                       String                   catalogTargetName,
                                       String                   connectorName,
                                       String                   metadataTypeName,
@@ -42,6 +46,8 @@ public class MetadataCollectionIterator extends IntegrationIterator
     {
         super(metadataCollectionGUID,
               metadataCollectionQualifiedName,
+              externalScopeGUID,
+              externalScopeName,
               catalogTargetName,
               connectorName,
               metadataTypeName,

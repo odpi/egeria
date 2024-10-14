@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userauthn.auth.demo;
+package org.odpi.openmetadata.userauthn.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,20 +20,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@ConditionalOnProperty(value = "authentication.source", havingValue = "demo")
-public class DemoSecurityConfig {
+@ConditionalOnProperty(value = "authentication.source", havingValue = "platform")
+public class PlatformSecurityConfig
+{
 
     @Autowired
-    @Qualifier("demoUserDetailsService")
+    @Qualifier("userService")
     private UserDetailsService userDetailsService;
 
     /**
-     * Provide information about the demo (inmemory) authentication service (user directory).
+     * Provide information about the platform authentication service (user directory).
      *
      * @return the authentication provider component
      */
     @Bean
-    public AuthenticationProvider getDemoAuthenticationProvider()
+    public AuthenticationProvider getPlatformAuthenticationProvider()
     {
         var authProvider = new DaoAuthenticationProvider();
 
@@ -42,8 +43,4 @@ public class DemoSecurityConfig {
 
         return authProvider;
     }
-
-//    protected AuthenticationExceptionHandler getAuthenticationExceptionHandler() {
-//        return BadCredentialsException.class::isInstance;
-//    }
 }

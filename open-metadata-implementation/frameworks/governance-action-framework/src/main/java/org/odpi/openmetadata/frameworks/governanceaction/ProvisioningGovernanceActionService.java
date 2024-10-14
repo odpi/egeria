@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.Map;
+
 /**
  * The provisioning governance action service is responsible for provisioning real-world resources in the digital
  * landscape and maintaining the Assets and lineage associated with them.
@@ -31,6 +33,36 @@ public abstract class ProvisioningGovernanceActionService extends GovernanceActi
     public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
+    }
+
+
+    /**
+     * Retrieve the property value from the values passed to this governance action service.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue default value
+     * @return property value
+     */
+    protected String getProperty(String propertyName, String defaultValue)
+    {
+        Map<String, String> requestParameters       = governanceContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        String propertyValue = defaultValue;
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            propertyValue = requestParameters.get(propertyName);
+        }
+        else
+        {
+            if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+            {
+                propertyValue = configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return propertyValue;
     }
 
 

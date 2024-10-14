@@ -84,10 +84,14 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
 
                             resourceProperties.description = schemaInfo.getComment();
                             resourceProperties.creationDate = new Date(schemaInfo.getCreated_at());
+                            resourceProperties.createdBy = schemaInfo.getCreated_by();
                             if (schemaInfo.getUpdated_at() != 0L)
                             {
                                 resourceProperties.lastUpdateDate = new Date(schemaInfo.getUpdated_at());
                             }
+                            resourceProperties.lastUpdatedBy = schemaInfo.getUpdated_by();
+                            resourceProperties.owner = schemaInfo.getOwner();
+
                             schemaList.put(schemaInfo.getFull_name(), resourceProperties);
                             schemaCount ++;
 
@@ -103,11 +107,13 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
 
                                         resourceProperties.description = volumeInfo.getComment();
                                         resourceProperties.creationDate = new Date(volumeInfo.getCreated_at());
+                                        resourceProperties.createdBy = volumeInfo.getCreated_by();
                                         if (volumeInfo.getUpdated_at() != 0L)
                                         {
                                             resourceProperties.lastUpdateDate = new Date(volumeInfo.getUpdated_at());
                                         }
-
+                                        resourceProperties.lastUpdatedBy = volumeInfo.getUpdated_by();
+                                        resourceProperties.owner = volumeInfo.getOwner();
                                         volumeList.put(volumeInfo.getFull_name(), resourceProperties);
                                         volumeCount ++;
                                     }
@@ -126,10 +132,14 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
 
                                         resourceProperties.description = tableInfo.getComment();
                                         resourceProperties.creationDate = new Date(tableInfo.getCreated_at());
+                                        resourceProperties.createdBy = tableInfo.getCreated_by();
                                         if (tableInfo.getUpdated_at() != 0L)
                                         {
                                             resourceProperties.lastUpdateDate = new Date(tableInfo.getUpdated_at());
                                         }
+                                        resourceProperties.lastUpdatedBy = tableInfo.getUpdated_by();
+                                        resourceProperties.owner = tableInfo.getOwner();
+
                                         tableList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), resourceProperties);
                                         tableCount ++;
                                     }
@@ -148,10 +158,13 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
 
                                         resourceProperties.description = functionInfo.getComment();
                                         resourceProperties.creationDate = new Date(functionInfo.getCreated_at());
+                                        resourceProperties.createdBy = functionInfo.getCreated_by();
                                         if (functionInfo.getUpdated_at() != 0L)
                                         {
                                             resourceProperties.lastUpdateDate = new Date(functionInfo.getUpdated_at());
                                         }
+                                        resourceProperties.lastUpdatedBy = functionInfo.getUpdated_by();
+                                        resourceProperties.owner = functionInfo.getOwner();
                                         functionList.put(functionInfo.getFull_name(), resourceProperties);
                                         functionCount ++;
                                     }

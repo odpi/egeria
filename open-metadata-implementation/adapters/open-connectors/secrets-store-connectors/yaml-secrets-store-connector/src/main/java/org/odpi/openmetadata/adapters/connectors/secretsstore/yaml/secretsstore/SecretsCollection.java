@@ -7,6 +7,7 @@ package org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
 import java.util.Map;
 import java.util.Objects;
@@ -22,9 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecretsCollection
 {
-    private long                refreshTimeInterval = 60L;
-    private Map<String, String> secrets             = null;
-    private TokenAPI            tokenAPI            = null;
+    private long                     refreshTimeInterval = 60L;
+    private Map<String, String>      secrets             = null;
+    private TokenAPI                 tokenAPI            = null;
+    private Map<String, UserAccount> users               = null;
 
 
     /**
@@ -35,14 +37,47 @@ public class SecretsCollection
     }
 
 
+    /**
+     * Return the length of time that secrets can be cached.
+     *
+     * @return long
+     */
     public long getRefreshTimeInterval()
     {
         return refreshTimeInterval;
     }
 
+
+    /**
+     * Set up the length of time that secrets can be cached.
+     *
+     * @param getRefreshTimeInterval long
+     */
     public void setRefreshTimeInterval(long getRefreshTimeInterval)
     {
         this.refreshTimeInterval = getRefreshTimeInterval;
+    }
+
+
+    /**
+     * Return the users stored in the secrets collection.
+     *
+     * @return map of userIds to user details
+     */
+    public Map<String, UserAccount> getUsers()
+    {
+        return users;
+    }
+
+
+    /**
+     * Set up the users stored in the secrets collection.
+     *
+     * @param users  map of userIds to user details
+     */
+    public void setUsers(Map<String, UserAccount> users)
+    {
+        this.users = users;
     }
 
 
@@ -100,6 +135,7 @@ public class SecretsCollection
     {
         return "SecretsCollection{" +
                 "refreshTimeInterval=" + refreshTimeInterval +
+                ", users=" + users +
                 ", secrets=" + secrets +
                 ", tokenAPI=" + tokenAPI +
                 '}';
@@ -119,6 +155,7 @@ public class SecretsCollection
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SecretsCollection that = (SecretsCollection) objectToCompare;
         return refreshTimeInterval == that.refreshTimeInterval &&
+                Objects.equals(users, that.users) &&
                 Objects.equals(secrets, that.secrets) &&
                 Objects.equals(tokenAPI, that.tokenAPI);
     }
@@ -131,6 +168,6 @@ public class SecretsCollection
     @Override
     public int hashCode()
     {
-        return Objects.hash(refreshTimeInterval, secrets, tokenAPI);
+        return Objects.hash(refreshTimeInterval, users, secrets, tokenAPI);
     }
 }

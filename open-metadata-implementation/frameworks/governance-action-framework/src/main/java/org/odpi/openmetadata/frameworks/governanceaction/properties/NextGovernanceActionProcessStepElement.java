@@ -21,10 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NextGovernanceActionProcessStepElement
 {
-    private GovernanceActionProcessStepElement nextProcessStep         = null;
-    private String                             nextProcessStepLinkGUID = null;
-    private String                             guard                   = null;
-    private boolean                            mandatoryGuard          = false;
+    private GovernanceActionProcessStepExecutionElement nextProcessStep         = null;
+    private String                                      nextProcessStepLinkGUID = null;
+    private String                                      guard                   = null;
+    private boolean                                     mandatoryGuard          = false;
 
 
 
@@ -59,7 +59,7 @@ public class NextGovernanceActionProcessStepElement
      *
      * @return governance action process step properties
      */
-    public GovernanceActionProcessStepElement getNextProcessStep()
+    public GovernanceActionProcessStepExecutionElement getNextProcessStep()
     {
         return nextProcessStep;
     }
@@ -70,7 +70,7 @@ public class NextGovernanceActionProcessStepElement
      *
      * @param nextProcessStep governance action process step properties
      */
-    public void setNextProcessStep(GovernanceActionProcessStepElement nextProcessStep)
+    public void setNextProcessStep(GovernanceActionProcessStepExecutionElement nextProcessStep)
     {
         this.nextProcessStep = nextProcessStep;
     }

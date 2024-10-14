@@ -340,17 +340,15 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "PersonRole";
         final String                     end1AttributeName            = "teamMembers";
         final String                     end1AttributeDescription     = "The members of the team.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef1(relationshipEndDef);
 
 
@@ -361,13 +359,12 @@ public class OpenMetadataTypesArchive3_4
         final String                     end2AttributeName            = "memberOfTeam";
         final String                     end2AttributeDescription     = "The team that this role is a member of.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
@@ -391,17 +388,15 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "PersonRole";
         final String                     end1AttributeName            = "teamLeaders";
         final String                     end1AttributeDescription     = "The leaders of the team.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef1(relationshipEndDef);
 
 
@@ -412,13 +407,12 @@ public class OpenMetadataTypesArchive3_4
         final String                     end2AttributeName            = "leadsTeam";
         final String                     end2AttributeDescription     = "The team lead by this person role.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;

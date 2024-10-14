@@ -381,6 +381,16 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                           "The governance action service returns an ACTIONED completion status.",
                           "Ensure follow-on uses of the asset are successful."),
 
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0035 - The {0} governance action service has determined that today is {1}
+     */
+    DAY_OF_THE_WEEK("GOVERNANCE-ACTION-CONNECTORS-0035",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has determined that today is {1}",
+                      "The governance action service has completed successfully.",
+                      "Ensure follow-on uses of the day of the week are successful."),
+
     ;
 
     private final String                      logMessageId;

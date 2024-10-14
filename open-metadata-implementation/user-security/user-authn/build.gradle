@@ -37,6 +37,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-web'
     runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+    implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'

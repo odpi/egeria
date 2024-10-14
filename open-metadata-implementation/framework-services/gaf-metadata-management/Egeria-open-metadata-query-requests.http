@@ -6,7 +6,7 @@
 
 ###
 # Working with entities
-@elementGUID=add guid here
+@elementGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
 
 
 ###
@@ -90,7 +90,7 @@ Content-Type: application/json
 ###
 # Navigating the relationships to related elements
 
-@relationshipTypeName=ConnectionToAsset
+@relationshipTypeName=DataContentForDataSet
 
 
 ###
@@ -115,7 +115,7 @@ GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{servic
 
 @metadataElementAtEnd1GUID=guid
 @metadataElementAtEnd2GUID=guid
-@relationshipGUID=guid
+@relationshipGUID=687bf1ab-fe42-403c-a2aa-abec3904e080
 
 
 ###

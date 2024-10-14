@@ -4,11 +4,11 @@ package org.odpi.openmetadata.reports;
 
 
 
+import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class EgeriaReport
 {
-    private final FileOutputStream fileOutStream;
-    private final boolean          printToConsole;
+    private final boolean printToConsole;
+    private final File    reportFile;
 
 
     /**
@@ -94,7 +94,7 @@ public class EgeriaReport
 
         String reportString = getHeadingLevel(indentLevel) + reportTitle + "\n\n";
 
-        fileOutStream.write(reportString.getBytes());
+        FileUtils.writeStringToFile(reportFile, reportString, (String) null, true);
     }
 
 
@@ -115,7 +115,7 @@ public class EgeriaReport
 
         String reportString = getHeadingLevel(indentLevel) + titleText + "\n";
 
-        fileOutStream.write(reportString.getBytes());
+        FileUtils.writeStringToFile(reportFile, reportString, (String) null, true);
     }
 
 
@@ -140,7 +140,7 @@ public class EgeriaReport
 
             String reportString = "* **" + elementLabel + "**: " + "*null*" + "\n";
 
-            fileOutStream.write(reportString.getBytes());
+            FileUtils.writeStringToFile(reportFile, reportString, (String) null, true);
         }
         else
         {
@@ -151,7 +151,7 @@ public class EgeriaReport
 
             String reportString = "* **" + elementLabel + "**: " + elementText + "\n";
 
-            fileOutStream.write(reportString.getBytes());
+            FileUtils.writeStringToFile(reportFile, reportString, (String) null, true);
         }
     }
 
@@ -171,8 +171,8 @@ public class EgeriaReport
             System.out.println(getSpaceIndent(indentLevel) + reportText);
         }
 
-        fileOutStream.write(reportText.getBytes());
-        fileOutStream.write("\n".getBytes());
+        FileUtils.writeStringToFile(reportFile, reportText, (String) null, true);
+        FileUtils.writeStringToFile(reportFile, "\n", (String) null, true);
     }
 
 
@@ -347,20 +347,25 @@ public class EgeriaReport
 
         this.printToConsole = printToConsole;
 
-        File reportFile = new File(reportFileName);
+        reportFile = new File(reportFileName);
 
-        if (reportFile.exists())
+        try
         {
+            FileUtils.sizeOf(reportFile);
+
             if (! reportFile.delete())
             {
                 System.out.println("Unable to delete report file: " + reportFileName);
             }
         }
+        catch (IllegalArgumentException notFound)
+        {
+            // new file
+        }
 
-        fileOutStream = new FileOutputStream(reportFile);
 
-        fileOutStream.write(licenseString.getBytes());
-        fileOutStream.write(copyrightString.getBytes());
+        FileUtils.writeStringToFile(reportFile, licenseString, (String)null, false);
+        FileUtils.writeStringToFile(reportFile, copyrightString, (String)null, true);
     }
 
 
@@ -373,6 +378,6 @@ public class EgeriaReport
     {
         final String snippetString   = "\n--8<-- \"snippets/abbr.md\"";
 
-        fileOutStream.write(snippetString.getBytes());
+        FileUtils.writeStringToFile(reportFile, snippetString, (String)null, true);
     }
 }
