@@ -154,7 +154,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -181,7 +181,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
      */
     @Override
-    public synchronized void refresh() throws ConnectorCheckedException
+    public void refresh() throws ConnectorCheckedException
     {
         final String methodName = "refresh";
 
@@ -201,11 +201,11 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                         {
                             endpointGUID = catalogTarget.getCatalogTargetElement().getGUID();
                         }
-                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION_TYPE_NAME))
+                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION.typeName))
                         {
                             RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
                                                                                                                                                                           2,
-                                                                                                                                                                          OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                                                                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                                                                                           new Date());
 
                             if (endpointElement != null)
@@ -217,14 +217,14 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                         {
                             RelatedMetadataElement connectionElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
                                                                                                                                                                      2,
-                                                                                                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                                                                                      new Date());
 
                             if (connectionElement != null)
                             {
-                                RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
+                                RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionElement.getElement().getElementGUID(),
                                                                                                                                                                        2,
-                                                                                                                                                                       OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                                                                                       OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                                                                                        new Date());
 
                                 if (endpointElement != null)
@@ -281,8 +281,8 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @param rawEvent json payload received for the event
      */
     @Override
-    public synchronized void processOpenLineageRunEvent(OpenLineageRunEvent event,
-                                                        String              rawEvent)
+    public void processOpenLineageRunEvent(OpenLineageRunEvent event,
+                                           String              rawEvent)
     {
         final String methodName = "processOpenLineageRunEvent";
 

@@ -17,19 +17,14 @@ open-metadata-distribution/ @mandy-chessell
 open-metadata-implementation/ @mandy-chessell
 
 open-metadata-implementation/access-services/ @mandy-chessell
-open-metadata-implementation/access-services/asset-catalog/ @alexandra-bucur @lcpopa
 open-metadata-implementation/access-services/asset-consumer/ @mandy-chessell
-open-metadata-implementation/access-services/asset-lineage/ @lcpopa @popa-raluca 
 open-metadata-implementation/access-services/asset-manager/ @mandy-chessell
 open-metadata-implementation/access-services/asset-owner/ @mandy-chessell
 open-metadata-implementation/access-services/community-profile/ @mandy-chessell
 open-metadata-implementation/access-services/data-manager/ @mandy-chessell
-open-metadata-implementation/access-services/data-engine/ @popa-raluca @lcpopa
 open-metadata-implementation/access-services/design-model/ @mandy-chessell
 open-metadata-implementation/access-services/digital-architecture/ @mandy-chessell
 open-metadata-implementation/access-services/digital-service/ @mandy-chessell
-open-metadata-implementation/access-services/discovery-engine/ @mandy-chessell
-open-metadata-implementation/access-services/glossary-view/ @lcpopa @marius-patrascu
 open-metadata-implementation/access-services/governance-engine/ @mandy-chessell
 open-metadata-implementation/access-services/governance-program/ @mandy-chessell
 open-metadata-implementation/access-services/it-infrastructure/ @mandy-chessell
@@ -37,20 +32,17 @@ open-metadata-implementation/access-services/project-management/ @mandy-chessell
 open-metadata-implementation/access-services/security-manager/ @mandy-chessell
 open-metadata-implementation/access-services/software-developer/ @mandy-chessell
 open-metadata-implementation/access-services/stewardship-action/ @mandy-chessell
-open-metadata-implementation/access-services/subject-area/ @davidradl
 open-metadata-implementation/adapters/ @mandy-chessell
-open-metadata-implementation/adatpers/authentication-plugins/ @mandy-chessell
-open-metadata-implementation/adatpers/open-connectors/ @mandy-chessell
+open-metadata-implementation/adapters/authentication-plugins/ @mandy-chessell
+open-metadata-implementation/adapters/open-connectors/ @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/ @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
-open-metadata-implementation/adapters/open-connectors/lineage-warehouse-connectors/ @marius-patrascu @lcpopa
 open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/ @mandy-chessell
 open-metadata-implementation/admin-services/ @mandy-chessell
 open-metadata-implementation/common-services/ @mandy-chessell
 open-metadata-implementation/frameworks/ @mandy-chessell
 open-metadata-implementation/governance-servers/ @mandy-chessell
 open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote @popa-raluca
-open-metadata-implementation/governance-servers/lineage-warehouse-services/ @marius-patrascu @popa-raluca
 open-metadata-implementation/platform-services/ @mandy-chessell
 open-metadata-implementation/platform-chassis/ @mandy-chessell
 open-metadata-implementation/platform-chassis/platform-chassis-spring/ @bogdan-sava @lpalashevski

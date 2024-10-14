@@ -79,7 +79,9 @@ class RESTClient
         RESTClientFactory  factory = new RESTClientFactory(serverName,
                                                            serverPlatformURLRoot,
                                                            userId,
-                                                           password);
+                                                           password,
+                                                           null,
+                                                           null);
 
         try
         {

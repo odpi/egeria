@@ -18,15 +18,15 @@ import java.util.Map;
 public enum UnityCatalogTarget
 {
     UNITY_CATALOG_SERVER_TARGET("unityCatalogServer",
-                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDescription(),
-                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
-                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDescription(),
+                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                 null),
 
     UNITY_CATALOG_CATALOG_TARGET("unityCatalogCatalog",
-                                 DeployedImplementationType.OSS_UC_CATALOG.getDescription(),
-                                 DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
-                                 DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDescription(),
+                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                  null),
 
     UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",

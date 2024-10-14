@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
 /**
- * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+ * WaitForStewardGovernanceActionProvider is the OCF connector provider for the "WaitForSteward"
  * Governance Action Service.
  */
 public class WaitForStewardGovernanceActionProvider extends GovernanceActionServiceProviderBase

@@ -1,6 +1,6 @@
 
-#@ucURL=http://localhost:8080
-@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8080
+#@ucURL=http://egeria.pdr-associates.com:8070
 
 ###
 # @name list catalogs
@@ -53,6 +53,6 @@ Content-Type: application/json
 
 ###
 # @name delete catalog
-DELETE {{ucURL}}/api/2.1/unity-catalog/catalogs/trials
+DELETE {{ucURL}}/api/2.1/unity-catalog/catalogs/new_catalog
 Content-Type: application/json
 

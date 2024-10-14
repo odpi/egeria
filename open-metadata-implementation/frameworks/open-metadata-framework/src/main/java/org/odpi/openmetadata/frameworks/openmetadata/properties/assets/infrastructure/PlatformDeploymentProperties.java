@@ -83,7 +83,7 @@ public class PlatformDeploymentProperties extends RelationshipProperties
 
         if (platformDeploymentStatus != null)
         {
-            propertyMap.put(platformDeploymentStatusPropertyName, platformDeploymentStatus.getOpenTypeOrdinal());
+            propertyMap.put(platformDeploymentStatusPropertyName, platformDeploymentStatus.getOrdinal());
         }
 
         if (! propertyMap.isEmpty())

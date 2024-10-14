@@ -175,6 +175,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0137_ACTIONS_FOR_PEOPLE           = "https://egeria-project.org/types/1/0137-Actions/";
 
     /**
+     * <a href="https://egeria-project.org/types/1/0140-Communities/">...</a>
+     */
+    public static final String MODEL_0140_COMMUNITIES                  = "https://egeria-project.org/types/1/0140-Communities/";
+
+    /**
      * <a href="https://egeria-project.org/types/1/0150-Feedback/">...</a>
      */
     public static final String MODEL_0150_FEEDBACK                     = "https://egeria-project.org/types/1/0150-Feedback/";

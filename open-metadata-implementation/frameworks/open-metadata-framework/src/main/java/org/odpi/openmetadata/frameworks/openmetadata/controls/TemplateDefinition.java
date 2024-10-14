@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public interface TemplateDefinition
      *
      * @return enum
      */
-    DeployedImplementationType getDeployedImplementationType();
+    DeployedImplementationTypeDefinition getDeployedImplementationType();
 
 
     /**

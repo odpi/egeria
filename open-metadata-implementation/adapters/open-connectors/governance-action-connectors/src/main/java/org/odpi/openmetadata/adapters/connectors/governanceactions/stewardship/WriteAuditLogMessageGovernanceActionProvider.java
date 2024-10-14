@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 
 /**
- * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+ * WriteAuditLogMessageGovernanceActionProvider is the OCF connector provider for the "Write to Audit Log"
  * Governance Action Service.
  */
 public class WriteAuditLogMessageGovernanceActionProvider extends GovernanceActionServiceProviderBase

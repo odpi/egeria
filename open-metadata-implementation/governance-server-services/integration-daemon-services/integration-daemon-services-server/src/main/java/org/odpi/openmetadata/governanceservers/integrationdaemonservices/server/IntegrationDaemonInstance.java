@@ -92,8 +92,8 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
-            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_SERVICE.getMessageDefinition(serverName,
-                                                                                                                                    serviceURLMarker),
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_SERVICE.getMessageDefinition(serviceURLMarker,
+                                                                                                                                    serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
                                                 nameParameterName);

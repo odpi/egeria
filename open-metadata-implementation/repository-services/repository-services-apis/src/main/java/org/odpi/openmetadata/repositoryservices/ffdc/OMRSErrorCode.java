@@ -776,6 +776,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Fux the call to the AttributeDefType object to use a valid type."),
 
     /**
+     * OMRS-PROPERTIES-400-007 - Data type {0} is not supported by method {1}
+     */
+    BAD_DATA_TYPE(400, "OMRS-PROPERTIES-400-007",
+                       "Data type {0} is not supported by method {1}",
+                       "This method needs to be extended to support other data types.",
+                       "Update this method to include the requested type."),
+
+    /**
      * OMRS-REST-CONNECTOR-400-001 - The connection passed in the cohort registration event does not contain the root URL for calling the server's REST API
      */
     REPOSITORY_URL_NULL(400, "OMRS-REST-CONNECTOR-400-001",

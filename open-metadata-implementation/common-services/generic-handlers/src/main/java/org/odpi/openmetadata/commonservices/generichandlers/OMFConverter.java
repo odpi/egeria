@@ -352,11 +352,11 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             String actualTypeName = primaryEntity.getType().getTypeDefName();
 
-            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.VIRTUAL_CONNECTION.typeName))
             {
                 return getNewVirtualConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
-            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTION_TYPE_NAME))
+            else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTION.typeName))
             {
                 return getNewConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
             }
@@ -365,7 +365,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                 /*
                  * This will throw an exception
                  */
-                super.validateInstanceType(OpenMetadataType.CONNECTION_TYPE_NAME,
+                super.validateInstanceType(OpenMetadataType.CONNECTION.typeName,
                                            beanClass.getName(),
                                            primaryEntity,
                                            methodName);
@@ -403,7 +403,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             VirtualConnection connection = new VirtualConnection();
 
-            fillInConnectionProperties(connection, primaryEntity, relationships, methodName);
+            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities, methodName);
 
             /*
              * To fill out the rest of the virtual connection it is necessary to follow the relationships
@@ -416,6 +416,11 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             }
 
             /*
+             * Get the list of entities that are directly connected to this connection.
+             */
+            List<String> connectedEntities = this.getConnectedEntities(primaryEntity, relationships);
+
+            /*
              * The next step is to build a map of the entities so that they can be selected as we walk through the relationships.
              */
             Map<String, EntityDetail> entityDetailMap = new HashMap<>();
@@ -424,66 +429,63 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             {
                 for (EntityDetail entity : supplementaryEntities)
                 {
-                    if ((entity != null) && (entity.getGUID() != null))
+                    if ((entity != null) && (entity.getGUID() != null) && (connectedEntities.contains(entity.getGUID())))
                     {
                         entityDetailMap.put(entity.getGUID(), entity);
                     }
                 }
             }
 
-            if (entityDetailMap.isEmpty())
+            if (! entityDetailMap.isEmpty())
             {
-                handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-                return null;
-            }
-
-            /*
-             * Step through the relationships looking for embedded connection relationships.  If the embedded relationship is for this
-             * connection then create it; otherwise ignore the relationship - other relationships will be picked up by the iterative
-             * processing.
-             */
-            List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
-            for (Relationship relationship : relationships)
-            {
-                if ((relationship != null) && (relationship.getType() != null))
+                /*
+                 * Step through the relationships looking for embedded connection relationships.  If the embedded relationship is for this
+                 * connection then create it; otherwise ignore the relationship - other relationships will be picked up by the iterative
+                 * processing.
+                 */
+                List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+                for (Relationship relationship : relationships)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                    if ((relationship != null) && (relationship.getType() != null))
                     {
-                        EntityProxy parentConnectionProxy = relationship.getEntityOneProxy();
-
-                        if ((parentConnectionProxy != null) && (primaryEntity.getGUID().equals(parentConnectionProxy.getGUID())))
+                        if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName))
                         {
-                            EntityProxy embeddedConnectionProxy = relationship.getEntityTwoProxy();
+                            EntityProxy parentConnectionProxy = relationship.getEntityOneProxy();
 
-                            if ((embeddedConnectionProxy != null) && (embeddedConnectionProxy.getGUID() != null))
+                            if ((parentConnectionProxy != null) && (primaryEntity.getGUID().equals(parentConnectionProxy.getGUID())))
                             {
-                                EntityDetail embeddedConnectionEntity = entityDetailMap.get((embeddedConnectionProxy.getGUID()));
+                                EntityProxy embeddedConnectionProxy = relationship.getEntityTwoProxy();
 
-                                if (embeddedConnectionEntity != null)
+                                if ((embeddedConnectionProxy != null) && (embeddedConnectionProxy.getGUID() != null))
                                 {
-                                    InstanceProperties properties         = relationship.getProperties();
-                                    EmbeddedConnection embeddedConnection = new EmbeddedConnection();
+                                    EntityDetail embeddedConnectionEntity = entityDetailMap.get((embeddedConnectionProxy.getGUID()));
 
-                                    embeddedConnection.setPosition(getPosition(properties));
-                                    embeddedConnection.setDisplayName(getDisplayName(properties));
-                                    embeddedConnection.setArguments(getArguments(properties));
-                                    embeddedConnection.setEmbeddedConnection(this.getEmbeddedConnection(beanClass,
-                                                                                                        primaryEntity,
-                                                                                                        supplementaryEntities,
-                                                                                                        relationships,
-                                                                                                        methodName));
+                                    if (embeddedConnectionEntity != null)
+                                    {
+                                        InstanceProperties properties         = relationship.getProperties();
+                                        EmbeddedConnection embeddedConnection = new EmbeddedConnection();
 
-                                    embeddedConnections.add(embeddedConnection);
+                                        embeddedConnection.setPosition(getPosition(properties));
+                                        embeddedConnection.setDisplayName(getDisplayName(properties));
+                                        embeddedConnection.setArguments(getArguments(properties));
+                                        embeddedConnection.setEmbeddedConnection(this.getEmbeddedConnection(beanClass,
+                                                                                                            embeddedConnectionEntity,
+                                                                                                            supplementaryEntities,
+                                                                                                            relationships,
+                                                                                                            methodName));
+
+                                        embeddedConnections.add(embeddedConnection);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            if (!embeddedConnections.isEmpty())
-            {
-                connection.setEmbeddedConnections(embeddedConnections);
+                if (!embeddedConnections.isEmpty())
+                {
+                    connection.setEmbeddedConnections(embeddedConnections);
+                }
             }
 
             return connection;
@@ -513,8 +515,8 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * @return bean populated with properties from the instances supplied in the constructor
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    private Connection getNewConnection(Class<B> beanClass,
-                                        EntityDetail primaryEntity,
+    private Connection getNewConnection(Class<B>           beanClass,
+                                        EntityDetail       primaryEntity,
                                         List<EntityDetail> supplementaryEntities,
                                         List<Relationship> relationships,
                                         String methodName) throws PropertyServerException
@@ -523,40 +525,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             Connection connection = new Connection();
 
-            fillInConnectionProperties(connection, primaryEntity, relationships, methodName);
-
-            /*
-             * The other entities should include the ConnectorType and Endpoint
-             */
-            if (supplementaryEntities != null)
-            {
-                for (EntityDetail entity : supplementaryEntities)
-                {
-                    if ((entity != null) && (entity.getType() != null))
-                    {
-                        String actualTypeName = entity.getType().getTypeDefName();
-
-                        if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT.typeName))
-                        {
-                            Endpoint endpoint = getEndpoint(entity, methodName);
-
-                            /*
-                             * Add the endpoint to the connection
-                             */
-                            connection.setEndpoint(endpoint);
-                        }
-                        else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME))
-                        {
-                            ConnectorType connectorType = getConnectorType(entity, methodName);
-
-                            /*
-                             * Add the connector type to the connection
-                             */
-                            connection.setConnectorType(connectorType);
-                        }
-                    }
-                }
-            }
+            fillInConnectionProperties(connection, primaryEntity, relationships, supplementaryEntities, methodName);
 
             return connection;
         }
@@ -573,23 +542,24 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
      * Retrieve the connection properties from an entity and save them in the supplied bean
      *
      * @param connection    bean to fill
-     * @param entity        entity to trawl for values
+     * @param primaryEntity        entity to trawl for values
      * @param relationships relationships linking the entities
      * @param methodName    calling method
      * @throws PropertyServerException there was a problem unpacking the entity
      */
     private void fillInConnectionProperties(Connection connection,
-                                            EntityDetail entity,
+                                            EntityDetail primaryEntity,
                                             List<Relationship> relationships,
+                                            List<EntityDetail> supplementaryEntities,
                                             String methodName) throws PropertyServerException
     {
-        this.setUpElementHeader(connection, entity, OpenMetadataType.CONNECTION_TYPE_NAME, methodName);
+        this.setUpElementHeader(connection, primaryEntity, OpenMetadataType.CONNECTION.typeName, methodName);
 
         /*
          * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
          * properties, leaving any subclass properties to be stored in extended properties.
          */
-        InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+        InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
         connection.setQualifiedName(this.removeQualifiedName(instanceProperties));
         connection.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
@@ -613,14 +583,84 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
             {
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName))
                     {
                         connection.setAssetSummary(this.getAssetSummary(instanceProperties));
                     }
                 }
             }
         }
+
+        /*
+         * Get the list of entities that are directly connected to this connection.
+         */
+        List<String> connectedEntities = this.getConnectedEntities(primaryEntity, relationships);
+
+        /*
+         * The other entities should include the ConnectorType and Endpoint
+         */
+        if (supplementaryEntities != null)
+        {
+            for (EntityDetail entity : supplementaryEntities)
+            {
+                if ((entity != null) && (entity.getType() != null) && (connectedEntities.contains(entity.getGUID())))
+                {
+                    String actualTypeName = entity.getType().getTypeDefName();
+
+                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT.typeName))
+                    {
+                        Endpoint endpoint = getEndpoint(entity, methodName);
+
+                        /*
+                         * Add the endpoint to the connection
+                         */
+                        connection.setEndpoint(endpoint);
+                    }
+                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.CONNECTOR_TYPE.typeName))
+                    {
+                        ConnectorType connectorType = getConnectorType(entity, methodName);
+
+                        /*
+                         * Add the connector type to the connection
+                         */
+                        connection.setConnectorType(connectorType);
+                    }
+                }
+            }
+        }
     }
+
+
+    /**
+     * Return the list of guids for entities that are connected at this level.
+     *
+     * @param primaryEntity connection entity
+     * @param relationships all relationships in connection
+     * @return list of guids or empty list
+     */
+    private List<String> getConnectedEntities(EntityDetail       primaryEntity,
+                                              List<Relationship> relationships)
+    {
+        List<String> connectedEntities = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship.getEntityOneProxy().getGUID().equals(primaryEntity.getGUID()))
+                {
+                    connectedEntities.add(relationship.getEntityTwoProxy().getGUID());
+                }
+                else if (relationship.getEntityTwoProxy().getGUID().equals(primaryEntity.getGUID()))
+                {
+                    connectedEntities.add(relationship.getEntityOneProxy().getGUID());
+                }
+            }
+        }
+
+        return connectedEntities;
+    }
+
 
 
     /**
@@ -674,7 +714,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     {
         ConnectorType connectorType = new ConnectorType();
 
-        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+        this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE.typeName, methodName);
 
         /*
          * The initial set of values come from the entity.

@@ -14,7 +14,9 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -25,7 +27,8 @@ import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
 import java.util.List;
 
-public abstract class OMAGServerConnectorBase extends ConnectorBase implements AuditLoggingComponent
+public abstract class OMAGServerConnectorBase extends ConnectorBase implements AuditLoggingComponent,
+                                                                               VirtualConnectorExtension
 {
     private AuditLog auditLog      = null;
     private String   connectorName;

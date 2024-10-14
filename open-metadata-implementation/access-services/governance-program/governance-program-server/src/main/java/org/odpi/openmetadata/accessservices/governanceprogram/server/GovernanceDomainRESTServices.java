@@ -857,8 +857,8 @@ public class GovernanceDomainRESTServices
                                                                                                                         methodName);
 
             response.setElements(domainHandler.getBeansByType(userId,
-                                                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
+                                                              OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                                               null,
                                                               startFrom,
                                                               pageSize,
@@ -974,7 +974,7 @@ public class GovernanceDomainRESTServices
             List<GovernanceDomainSetElement> sets = handler.getAttachedElements(userId,
                                                                                 governanceDomainGUID,
                                                                                 guidParameterName,
-                                                                                OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                                OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                 OpenMetadataType.COLLECTION.typeName,

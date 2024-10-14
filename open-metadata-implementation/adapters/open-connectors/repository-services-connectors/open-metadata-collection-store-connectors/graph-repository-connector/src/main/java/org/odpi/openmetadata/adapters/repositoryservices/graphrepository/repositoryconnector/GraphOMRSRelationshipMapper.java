@@ -376,7 +376,7 @@ class GraphOMRSRelationshipMapper {
     // Outbound methods - i.e. reading from store
 
 
-
+    @SuppressWarnings(value = "unchecked")
     void mapEdgeToRelationship(Edge edge, Relationship relationship)
             throws
             RepositoryErrorException

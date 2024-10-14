@@ -1247,8 +1247,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    methodName);
 
         List<String> relationshipPath = new ArrayList<>();
-        relationshipPath.add(OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID);
-        relationshipPath.add(OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID);
+        relationshipPath.add(OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID);
+        relationshipPath.add(OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID);
 
         List<String> endpointGUIDs = new ArrayList<>();
         while (endpointGUIDs != null)
@@ -3032,9 +3032,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    dataFileGUID,
                                                                    dataFileGUIDParameterName,
                                                                    OpenMetadataType.DATA_FILE.typeName,
-                                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                   OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                   OpenMetadataType.CONNECTION.typeName,
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
@@ -3050,8 +3050,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceName,
                                                      connectionGUID,
                                                      connectionGUIDParameterName,
-                                                     OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                     OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTION.typeGUID,
+                                                     OpenMetadataType.CONNECTION.typeName,
                                                      null,
                                                      null,
                                                      forLineage,
@@ -3125,9 +3125,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    dataFolderGUID,
                                                                    dataFolderGUIDParameterName,
                                                                    OpenMetadataType.DATA_FOLDER.typeName,
-                                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                   OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                   OpenMetadataType.CONNECTION.typeName,
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
@@ -3143,8 +3143,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceName,
                                                      connectionGUID,
                                                      connectionGUIDParameterName,
-                                                     OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                     OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTION.typeGUID,
+                                                     OpenMetadataType.CONNECTION.typeName,
                                                      null,
                                                      null,
                                                      forLineage,

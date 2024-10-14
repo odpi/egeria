@@ -135,8 +135,8 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
-              OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+              OpenMetadataType.CONNECTOR_TYPE.typeGUID,
+              OpenMetadataType.CONNECTOR_TYPE.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -173,7 +173,7 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME,
+                                                                  OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME.name,
                                                                   supportedAssetTypeName,
                                                                   methodName);
 
@@ -185,73 +185,73 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXPECTED_DATA_FORMAT,
+                                                                  OpenMetadataProperty.EXPECTED_DATA_FORMAT.name,
                                                                   expectedDataFormat,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CONNECTOR_PROVIDER_CLASS_NAME.name,
                                                                   connectorProviderClassName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_FRAMEWORK_NAME,
+                                                                  OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME.name,
                                                                   connectorFrameworkName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                  OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE.name,
                                                                   connectorInterfaceLanguage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.CONNECTOR_INTERFACES,
+                                                                       OpenMetadataProperty.CONNECTOR_INTERFACES.name,
                                                                        connectorInterfaces,
                                                                        methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TARGET_TECHNOLOGY_SOURCE,
+                                                                  OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE.name,
                                                                   targetTechnologySource,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TARGET_TECHNOLOGY_NAME,
+                                                                  OpenMetadataProperty.TARGET_TECHNOLOGY_NAME.name,
                                                                   targetTechnologyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.TARGET_TECHNOLOGY_INTERFACES,
+                                                                       OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES.name,
                                                                        targetTechnologyInterfaces,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.TARGET_TECHNOLOGY_VERSIONS,
+                                                                       OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS.name,
                                                                        targetTechnologyVersions,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES.name,
                                                                        recognizedAdditionalProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES.name,
                                                                        recognizedSecuredProperties,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES.name,
                                                                        recognizedConfigurationProperties,
                                                                        methodName);
 

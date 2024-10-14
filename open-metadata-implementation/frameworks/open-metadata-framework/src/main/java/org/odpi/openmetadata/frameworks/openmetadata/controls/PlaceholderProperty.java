@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,55 +18,57 @@ public enum PlaceholderProperty
     /**
      * The host IP address or domain name.
      */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name.", "string", "coconet.com"),
+    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name.", DataType.STRING.getName(), "coconet.com"),
 
     /**
      * The host IP address or domain name.
      */
-    HOST_URL ("hostURL", "The host IP address or domain name of the server with the HTTP protocol prefix.", "string", "https://coconet.com"),
+    HOST_URL ("hostURL", "The host IP address or domain name of the server with the HTTP protocol prefix.", DataType.STRING.getName(), "https://coconet.com"),
 
     /**
      * The number of the port to use to connect to a service.
      */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to a service.", "string", "1234"),
+    PORT_NUMBER ("portNumber", "The number of the port to use to connect to a service.", DataType.STRING.getName(), "1234"),
 
     /**
      * The network address of the server
      */
-    SERVER_NETWORK_ADDRESS("serverNetworkAddress", "The network address of the server.", "string", "http://localhost:8080"),
+    SERVER_NETWORK_ADDRESS("serverNetworkAddress", "The network address of the server.", DataType.STRING.getName(), "http://localhost:8080"),
+
+    /**
+     * The name of the operation to append onto the server host name/port number, or set it to an empty string if not needed.
+     */
+    API_OPERATION("apiOperation", "The name of the operation to append onto the server host name/port number, or set it to an empty string if not needed.", DataType.STRING.getName(), "/api/v1/lineage"),
 
     /**
      * The userId to store in the userId attribute of the connection.
      */
     CONNECTION_USER_ID ("connectionUserId",
                         "The userId to store in the userId attribute of the connection.",
-                        "string",
+                        DataType.STRING.getName(),
                         "user1"),
-
-    /**
-     * The password to store in the clearPassword attribute of the connection.
-     */
-    CONNECTION_PASSWORD ("connectionPassword",
-                         "The password to store in the clearPassword attribute of the connection.",
-                         "string",
-                         "secret"),
 
     /**
      * The name of the server being catalogued.
      */
-    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
+    SERVER_NAME ("serverName", "The name of the server being catalogued.", DataType.STRING.getName(), "myServer"),
+
+    /**
+     * The name of the server being catalogued.
+     */
+    SERVER_ID ("serverId", "The local identifier of the server being catalogued.", DataType.STRING.getName(), "myServer"),
 
     /**
      * The name of the schema being catalogued.
      */
-    SCHEMA_NAME ("schemaName", "The name of the schema being catalogued.", "string", "MyServer.schema"),
+    SCHEMA_NAME ("schemaName", "The name of the schema being catalogued.", DataType.STRING.getName(), "MyServer.schema"),
 
     /**
      * The display name is used to identify the element.
      */
     DISPLAY_NAME("displayName",
                  "The display name is used to identify the element.  It does not need to be unique, but it should help someone know what the element is about.",
-                 "string",
+                 DataType.STRING.getName(),
                  "myDataSet"),
 
     /**
@@ -72,7 +76,7 @@ public enum PlaceholderProperty
      */
     DESCRIPTION ("description",
                  "The description of the element to help a consumer understand its content and purpose.",
-                 "string",
+                 DataType.STRING.getName(),
                  "This file contains a week's worth of patient data for the Teddy Bear Drop Foot clinical trial."),
 
     /**
@@ -80,63 +84,68 @@ public enum PlaceholderProperty
      */
     VERSION_IDENTIFIER ("versionIdentifier",
                  "The string identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
-                 "string",
+                 DataType.STRING.getName(),
                  "V1.0"),
+
+    /**
+     * The description of the element to help a consumer understand its content and purpose.
+     */
+    SECRETS_STORE ("secretsStorePathName",
+                        "The full path name to the secrets store file where the secrets collection for this server is located.",
+                        DataType.STRING.getName(),
+                        "loading-bay/secrets/default.omsecrets"),
 
     /**
      * The formula used to populate the data set.
      */
-    FORMULA("formula", "The formula used to populate the data set.", "string", null),
+    FORMULA("formula", "The formula used to populate the data set.", DataType.STRING.getName(), null),
 
     /**
      * The language/format used in the data set's formula.
      */
-    FORMULA_TYPE("formulaType", "The language/format used in the data set's formula.", "string", null),
-
+    FORMULA_TYPE("formulaType", "The language/format used in the data set's formula.", DataType.STRING.getName(), null),
 
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    FILE_SYSTEM_NAME ("fileSystemName", "The unique name for the file system that this file/directory belongs.  It may be a machine name or a URL to a remote file store.", "string", "/a/b/c/myFile.txt"),
-
+    FILE_SYSTEM_NAME ("fileSystemName", "The unique name for the file system that this file/directory belongs.  It may be a machine name or a URL to a remote file store.", DataType.STRING.getName(), "/a/b/c/myFile.txt"),
 
     /**
      * The format standard used in the file system.
      */
-    FORMAT ("format", "The format standard used in the file system.", "string", "APFS"),
-
+    FORMAT ("format", "The format standard used in the file system.", DataType.STRING.getName(), "APFS"),
 
     /**
      * Is encryption enabled on this file system? If known, what type of encryption?
      */
-    ENCRYPTION ("encryption", "Is encryption enabled on this file system? If known, what type of encryption?", "string", "Not Enabled"),
+    ENCRYPTION ("encryption", "Is encryption enabled on this file system? If known, what type of encryption?", DataType.STRING.getName(), "Not Enabled"),
 
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    DIRECTORY_PATH_NAME ("directoryPathName", "The full path name of the directory including the parent directory names and optional file system name, if applicable", "string", "/a/b/myFiles"),
+    DIRECTORY_PATH_NAME ("directoryPathName", "The full path name of the directory including the parent directory names and optional file system name, if applicable", DataType.STRING.getName(), "/a/b/myFiles"),
 
     /**
      * The name of the leaf directory, without its enclosing directories.
      */
-    DIRECTORY_NAME("directoryName", "The name of the leaf directory, without its enclosing directories.", "string", "myFiles"),
+    DIRECTORY_NAME("directoryName", "The name of the leaf directory, without its enclosing directories.", DataType.STRING.getName(), "myFiles"),
 
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    FILE_PATH_NAME ("filePathName", "The full path name of the file including the directory names, file name and optional file extension, if applicable.", "string", "/a/b/myFiles/myFile.txt"),
+    FILE_PATH_NAME ("filePathName", "The full path name of the file including the directory names, file name and optional file extension, if applicable.", DataType.STRING.getName(), "/a/b/myFiles/myFile.txt"),
 
     /**
      * The short name of the file with its extension but without the directory names.
      */
-    FILE_NAME("fileName", "The short name of the file with its extension but without the directory names.", "string", "myFile.txt"),
+    FILE_NAME("fileName", "The short name of the file with its extension but without the directory names.", DataType.STRING.getName(), "myFile.txt"),
 
     /**
      * The logical file type of the file.
      */
     FILE_TYPE("fileType",
               "The logical file type of the file.",
-              "string",
+              DataType.STRING.getName(),
               "Text File"),
 
     /**
@@ -144,7 +153,7 @@ public enum PlaceholderProperty
      */
     FILE_EXTENSION ("fileExtension",
                     "The postfix identifier in the file name that indicates the format of the file.",
-                    "string",
+                    DataType.STRING.getName(),
                     "txt"),
 
     /**
@@ -152,7 +161,7 @@ public enum PlaceholderProperty
      */
     FILE_ENCODING ("fileEncoding",
                    "The encoding scheme used on the file.",
-                   "string",
+                   DataType.STRING.getName(),
                    "JSON"),
 
     /**
@@ -160,7 +169,7 @@ public enum PlaceholderProperty
      */
     PROGRAMMING_LANGUAGE ("programmingLanguage",
                           "The programming language used to encode the file.",
-                          "string",
+                          DataType.STRING.getName(),
                           "Java"),
 
     /**
@@ -176,28 +185,35 @@ public enum PlaceholderProperty
      */
     CREATION_DATE ("dateCreated",
                   "The date that the file was created.",
-                  "string",
+                  DataType.STRING.getName(),
                   null),
-
 
     /**
      * The date that the file was created.
      */
     LAST_UPDATE_DATE ("dateLastModified",
                    "The date that the file was last changed.",
-                   "string",
+                   DataType.STRING.getName(),
                    null),
 
     LAST_ACCESSED_DATE ("dateLastAccessed",
                         "The date that the file was last read.",
-                        "string",
+                        DataType.STRING.getName(),
                         null),
 
     /**
      * The date/time that the data/resource was received.
      */
-    RECEIVED_DATE("dateReceived", "The date/time that the data/resource was received.", "string", "2024-07-10T16:11:09"),
+    RECEIVED_DATE("dateReceived", "The date/time that the data/resource was received.", DataType.STRING.getName(), "2024-07-10T16:11:09"),
+    
 
+    /**
+     * The unique (qualified) name of a root schema type to describe the data schema (structure/specification) that this element works with.
+     */
+    ROOT_SCHEMA_TYPE_QUALIFIED_NAME("rootSchemaTypeQualifiedName",
+                                    "The unique (qualified) name of a root schema type to describe the data schema (structure/specification) that this element works with.", 
+                                    DataType.STRING.getName(),
+                                    "DeployedAPI:CreateNewCustomerFunctionSpecification"),
 
     ;
 
@@ -312,34 +328,12 @@ public enum PlaceholderProperty
 
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.API_OPERATION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
-
-
-
-    /**
-     * Retrieve all the defined placeholder properties
-     *
-     * @return list of placeholder property types
-     */
-    public static List<PlaceholderPropertyType> getServerWithUserIdAndPasswordPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
-
 
 
     /**
@@ -362,14 +356,12 @@ public enum PlaceholderProperty
     }
 
 
-
-
     /**
      * Retrieve all the defined placeholder properties
      *
      * @return list of placeholder property types
      */
-    public static List<PlaceholderPropertyType> getUnsecuredServerPlaceholderPropertyTypes()
+    public static List<PlaceholderPropertyType> getSecretServerPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
@@ -378,6 +370,7 @@ public enum PlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -418,8 +411,6 @@ public enum PlaceholderProperty
 
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DISPLAY_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());

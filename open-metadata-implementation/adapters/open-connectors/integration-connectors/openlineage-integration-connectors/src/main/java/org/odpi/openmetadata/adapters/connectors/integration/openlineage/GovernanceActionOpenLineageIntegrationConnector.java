@@ -30,8 +30,10 @@ import java.util.*;
 public class GovernanceActionOpenLineageIntegrationConnector extends LineageIntegratorConnector implements AssetManagerEventListener
 {
     private static final URI    producer = URI.create("https://egeria-project.org/");
+    private static final String defaultNameSpace = "GovernanceActions";
     private final        ZoneId zoneId   = ZoneId.systemDefault();
 
+    private String namespace = defaultNameSpace;
 
     /**
      * Default constructor
@@ -47,11 +49,18 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
         final String methodName = "start";
+
+        namespace = super.getStringConfigurationProperty("namespace", connectionProperties.getConfigurationProperties());
+
+        if (namespace == null || namespace.isBlank())
+        {
+            namespace = defaultNameSpace;
+        }
 
         try
         {
@@ -59,15 +68,12 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         methodName,
-                                                                                                                         error.getMessage()),
-                                      error);
-            }
+            auditLog.logException(methodName,
+                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                  error);
         }
     }
 
@@ -103,7 +109,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
             try
             {
                 String previousActionStatus = getActionStatus(event.getPreviousElementProperties());
-                String currentActionStatus = getActionStatus(event.getPreviousElementProperties());
+                String currentActionStatus = getActionStatus(event.getElementProperties());
 
                 /*
                  * Only output an event if the status has changed.
@@ -189,18 +195,6 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         else if (EngineActionStatus.INVALID.getName().equals(engineActionStatus))
         {
             event.setEventType("ABORT");
-        }
-
-        String namespace = engineAction.getProcessName();
-
-        /*
-         * This is a workaround for Marquez that limits its namespaces to 64 chars.
-         */
-        if (namespace.length() > 64)
-        {
-            String[] tokens = namespace.split(":");
-
-            namespace = tokens[tokens.length - 1];
         }
 
         OpenLineageJob job = new OpenLineageJob();

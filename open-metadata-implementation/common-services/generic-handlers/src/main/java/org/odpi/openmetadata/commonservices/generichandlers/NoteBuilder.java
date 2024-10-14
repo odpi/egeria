@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -34,8 +35,8 @@ public class NoteBuilder extends ReferenceableBuilder
                        String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataType.NOTE_TYPE_GUID,
-              OpenMetadataType.NOTE_TYPE_NAME,
+              OpenMetadataType.NOTE_ENTRY.typeGUID,
+              OpenMetadataType.NOTE_ENTRY.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -59,12 +60,12 @@ public class NoteBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TITLE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TITLE.name,
                                                                   title,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TEXT_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TEXT.name,
                                                                   text,
                                                                   methodName);
         return properties;

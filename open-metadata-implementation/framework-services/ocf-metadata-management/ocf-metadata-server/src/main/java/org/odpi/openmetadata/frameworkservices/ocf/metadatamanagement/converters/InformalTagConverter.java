@@ -60,7 +60,7 @@ public class InformalTagConverter<B> extends OMFConverter<B>
 
             if (returnBean instanceof InformalTag bean)
             {
-                this.setUpElementHeader(bean, entity, OpenMetadataType.INFORMAL_TAG_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.INFORMAL_TAG.typeName, methodName);
                 /*
                  * The initial set of values come from the entity.
                  */

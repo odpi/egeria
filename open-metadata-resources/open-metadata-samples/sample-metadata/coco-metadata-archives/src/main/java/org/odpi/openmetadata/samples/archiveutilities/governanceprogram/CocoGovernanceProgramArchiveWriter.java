@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
@@ -20,7 +22,7 @@ import java.util.Map;
  * CocoGovernanceProgramArchiveWriter creates a physical open metadata archive file containing the core definition of Coco Pharmaceuticals'
  * governance program.
  */
-public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
+public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoGovernanceProgramArchive.omarchive";
 
@@ -42,7 +44,8 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
     }
 
 
@@ -284,7 +287,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             leaderRoleQName,
                                             "Community Leader",
                                             null,
@@ -295,7 +298,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_LEADER);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, CommunityMembershipType.LEADER.getOrdinal());
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
@@ -307,7 +310,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             memberRoleQName,
                                             "CommunityMember",
                                             null,
@@ -318,7 +321,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, CommunityMembershipType.CONTRIBUTOR.getOrdinal());
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {

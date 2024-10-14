@@ -8,10 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
 
-import java.io.Serial;
-import java.util.List;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -21,15 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-
 public class IntegrationViewServiceConfig extends ViewServiceConfig
 {
-    private List<ResourceEndpointConfig> resourceEndpoints;
-
     /**
      * Default constructor for use with Jackson libraries
      */
@@ -45,10 +34,6 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig
     public IntegrationViewServiceConfig(IntegrationViewServiceConfig template)
     {
         super(template);
-        if (template != null)
-        {
-            resourceEndpoints = template.getResourceEndpoints();
-        }
     }
 
     /**
@@ -62,31 +47,6 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig
     }
 
 
-
-    /**
-     * Return the resourceEndpoints list.
-     *
-     * @return displayName
-     */
-    public List<ResourceEndpointConfig> getResourceEndpoints()
-    {
-        return resourceEndpoints;
-    }
-
-
-    /**
-     * Set the resourceEndpoints of resource.
-     *
-     * @param resourceEndpoints list of resource endpoint configuration objects
-     */
-    public void setResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints)
-    {
-        this.resourceEndpoints = resourceEndpoints;
-    }
-
-
-
-
     /**
      * Standard toString method.
      *
@@ -95,59 +55,6 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig
     @Override
     public String toString()
     {
-        return "IntegrationViewServiceConfig{" +
-                       "resourceEndpoints=" + resourceEndpoints +
-                       ", viewServiceId=" + getViewServiceId() +
-                       ", viewServiceDevelopmentStatus=" + getViewServiceDevelopmentStatus() +
-                       ", viewServiceAdminClass='" + getViewServiceAdminClass() + '\'' +
-                       ", viewServiceFullName='" + getViewServiceFullName() + '\'' +
-                       ", viewServiceName='" + getViewServiceName() + '\'' +
-                       ", viewServiceURLMarker='" + getViewServiceURLMarker() + '\'' +
-                       ", viewServiceDescription='" + getViewServiceDescription() + '\'' +
-                       ", viewServiceWiki='" + getViewServiceWiki() + '\'' +
-                       ", viewServiceOperationalStatus=" + getViewServiceOperationalStatus() +
-                       ", viewServiceOptions=" + getViewServiceOptions() +
-                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
-                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
-                       '}';
+        return "IntegrationViewServiceConfig{} " + super.toString();
     }
-
-
-    /**
-     * Validate that an object is equal depending on their stored values.
-     *
-     * @param objectToCompare object
-     * @return boolean result
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        IntegrationViewServiceConfig that = (IntegrationViewServiceConfig) objectToCompare;
-        return Objects.equals(resourceEndpoints, that.resourceEndpoints);
-    }
-
-
-    /**
-     * Return a hash code based on the values of this object.
-     *
-     * @return in hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), getResourceEndpoints());
-    }
-
 }

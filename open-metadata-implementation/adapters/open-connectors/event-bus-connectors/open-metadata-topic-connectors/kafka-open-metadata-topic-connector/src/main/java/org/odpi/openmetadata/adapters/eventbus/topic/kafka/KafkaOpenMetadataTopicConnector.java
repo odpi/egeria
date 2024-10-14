@@ -16,12 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -171,7 +166,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                  * If group.id explicitly set using the standard kafka property, then use that.
                  */
 
-                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+                if (configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName) != null)
+                {
+                    serverId = configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName).toString();
+                }
+                else
+                {
+                    serverId = UUID.randomUUID().toString();
+                }
 
                 if (StringUtils.isEmpty((String)consumerProperties.get("group.id")))
                 {

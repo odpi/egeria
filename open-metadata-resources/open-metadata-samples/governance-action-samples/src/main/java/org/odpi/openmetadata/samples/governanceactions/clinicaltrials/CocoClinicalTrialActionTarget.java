@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -42,7 +43,7 @@ public enum CocoClinicalTrialActionTarget
      */
     CONTACT_PERSON("hospitalContactPerson",
                    "The person who can be contacted if there are problems with the data from this hospital.",
-                   OpenMetadataType.PERSON_TYPE_NAME,
+                   OpenMetadataType.PERSON.typeName,
                    null,
                    true),
 
@@ -51,7 +52,7 @@ public enum CocoClinicalTrialActionTarget
      */
     PROCESS_OWNER("processOwner",
                   "The person who is accountable for the correct management of the data.",
-                  OpenMetadataType.PERSON_TYPE_NAME,
+                  OpenMetadataType.PERSON.typeName,
                   null,
                   true),
 
@@ -61,7 +62,7 @@ public enum CocoClinicalTrialActionTarget
      */
     CUSTODIAN("custodian",
               "The person who is responsible for the correct management of data and can be contacted inside of Coco pharmaceuticals.",
-              OpenMetadataType.PERSON_TYPE_NAME,
+              OpenMetadataType.PERSON.typeName,
               null,
               true),
 
@@ -70,7 +71,7 @@ public enum CocoClinicalTrialActionTarget
      */
     STEWARD (ActionTarget.STEWARD.getName(),
              "The person, or team in Coco Pharmaceuticals that sets up metadata for data.",
-             OpenMetadataType.ACTOR_TYPE_NAME,
+             OpenMetadataType.ACTOR.typeName,
              null,
              true),
 
@@ -79,8 +80,8 @@ public enum CocoClinicalTrialActionTarget
      */
     CATALOG("dataLakeCatalog",
             "Schema where the weekly measurements volume is to reside.",
-            DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
-            DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+            UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+            UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
             true),
 
     /**

@@ -3,31 +3,40 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
+import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OSSUnityCatalogServerSyncConnector synchronizes metadata between Unity Catalog and the Open Metadata Ecosystem.
  */
-public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
+public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator,
+                                                                                                 AssetManagerEventListener
 {
     String       defaultFriendshipGUID  = null;
     List<String> defaultExcludeCatalogs = new ArrayList<>();
     List<String> defaultIncludeCatalogs = new ArrayList<>();
+    private Date lastRefreshCompleteTime = null;
+
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -35,7 +44,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         final String methodName = "start";
 
@@ -71,11 +80,17 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
     {
         Map<String, String> templateProperties = new HashMap<>();
 
+        /*
+         * Add the default templates first
+         */
         for (UnityCatalogTemplateType templateType : UnityCatalogTemplateType.values())
         {
             templateProperties.put(templateType.getTemplateName(), templateType.getDefaultTemplateGUID());
         }
 
+        /*
+         * Override templates supplied for the catalog target
+         */
         if (catalogTargetTemplates != null)
         {
             templateProperties.putAll(catalogTargetTemplates);
@@ -135,6 +150,50 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         }
 
         this.refreshCatalogTargets(this);
+
+        /*
+         * Once the connector has completed a single refresh, it registered a listener with open metadata
+         * to handle updates.  The delay in registering the listener is for efficiency-sake in that it
+         * reduces the number of events coming in from updates to the open metadata ecosystem when the connector
+         * is performing its first synchronization from Unity Catalog (UC) to Egeria.
+         *
+         * A listener is registered only if metadata is flowing from the open metadata ecosystem to Unity Catalog (UC).
+         */
+        if ((! super.getContext().isListenerRegistered()) &&
+                (lastRefreshCompleteTime != null) &&
+                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.BOTH_DIRECTIONS) ||
+                (super.getContext().getPermittedSynchronization() == PermittedSynchronization.TO_THIRD_PARTY))
+        {
+            try
+            {
+                /*
+                 * This request registers this connector to receive events from the open metadata ecosystem.  When an event occurs,
+                 * the processEvent() method is called.
+                 */
+                super.getContext().registerListener(this);
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          UCAuditCode.UNABLE_TO_REGISTER_LISTENER.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       error.getMessage()),
+                                          error);
+                }
+
+                throw new ConnectorCheckedException(UCErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
+            }
+        }
+
+        lastRefreshCompleteTime = new Date();
     }
 
 
@@ -149,12 +208,12 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
         {
             String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(ucServerGUID);
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(ucServerGUID, auditLog);
 
                 OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
@@ -191,7 +250,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         {
             super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
-                                        DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                        UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
         }
@@ -292,5 +351,142 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
     public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
+    }
+
+    /**
+     * Process an event that was published by the Asset Manager OMAS.
+     *
+     * @param event event object - call getEventType to find out what type of event.
+     */
+    @Override
+    public void processEvent(AssetManagerOutTopicEvent event)
+    {
+        final String methodName = "processEvent";
+
+        /*
+         * Only process events if refresh() is not running because the refresh() process creates lots of events and proceeding with event processing
+         * at this time causes elements to be processed multiple times.
+         */
+        if (! integrationContext.isRefreshInProgress())
+        {
+            /*
+             * Call the appropriate registered module that matches the type.  Notice that multiple modules can be registered for the same type.
+             */
+            ElementHeader elementHeader = event.getElementHeader();
+
+            Date lastUpdateTime = elementHeader.getVersions().getUpdateTime();
+            String lastUpdateUser = elementHeader.getVersions().getUpdatedBy();
+
+            if (lastUpdateTime == null)
+            {
+                lastUpdateTime = elementHeader.getVersions().getCreateTime();
+                lastUpdateUser = elementHeader.getVersions().getCreatedBy();
+            }
+
+            try
+            {
+                if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
+                    (! lastUpdateUser.equals(super.getContext().getMyUserId())) &&
+                    (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.CATALOG.typeName)))
+                {
+                    /*
+                     * This is a new catalog object.  Is it connected to one of the server that are catalog targets?
+                     */
+                    int startFrom = 0;
+
+                    List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+
+                    while (catalogTargetList != null)
+                    {
+                        for (CatalogTarget catalogTarget : catalogTargetList)
+                        {
+                            if ((catalogTarget != null) && (super.isActive()) &&
+                                    (isCatalogForTargetServer(elementHeader.getGUID(),
+                                                              catalogTarget.getCatalogTargetElement().getGUID())))
+                            {
+
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget, null);
+
+                                requestedCatalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
+
+                                if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                                {
+                                    requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID(),
+                                                                                                                                                       auditLog));
+                                }
+
+                                auditLog.logMessage(methodName,
+                                                    OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                                requestedCatalogTarget.getCatalogTargetName()));
+                                this.integrateCatalogTarget(requestedCatalogTarget);
+                            }
+                        }
+
+                        startFrom         = startFrom + integrationContext.getMaxPageSize();
+                        catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(methodName,
+                                      UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                            exception.getClass().getName(),
+                                                                                            methodName,
+                                                                                            exception.getMessage()),
+                                      exception);
+            }
+        }
+    }
+
+
+    private boolean isCatalogForTargetServer(String catalogGUID,
+                                             String serverGUID)
+    {
+        final String methodName = "isCatalogForTargetServer";
+
+        /*
+         * This is a new catalog object.  Is it connected to one of the server that are catalog targets?
+         */
+        try
+        {
+            int startFrom = 0;
+
+            List<RelatedMetadataElement> relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
+                                                                                                                                                                  2,
+                                                                                                                                                                  OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                                                                                  startFrom,
+                                                                                                                                                                  integrationContext.getMaxPageSize());
+
+            while (relatedServers != null)
+            {
+                for (RelatedMetadataElement relatedServer : relatedServers)
+                {
+                    if ((relatedServer != null) && (serverGUID.equals(relatedServer.getElement().getElementGUID())))
+                    {
+                        return true;
+                    }
+                }
+
+                startFrom      = startFrom + integrationContext.getMaxPageSize();
+                relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
+                                                                                                                                         2,
+                                                                                                                                         OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                                                         startFrom,
+                                                                                                                                         integrationContext.getMaxPageSize());
+
+            }
+        }
+        catch (Exception exception)
+        {
+            auditLog.logException(methodName,
+                                  UCAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                        exception.getClass().getName(),
+                                                                                        methodName,
+                                                                                        exception.getMessage()),
+                                  exception);
+        }
+
+        return false;
     }
 }

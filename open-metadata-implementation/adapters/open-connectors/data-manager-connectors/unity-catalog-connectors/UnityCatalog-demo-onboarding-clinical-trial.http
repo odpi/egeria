@@ -91,6 +91,60 @@ POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-pl
 
 
 
+###
+# @name findGovernanceActionProcesses (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "UnityCatalog"
+}
+
+###
+# @name initiateGovernanceActionProcess UnityCatalogServer:CreateAndSurveyGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "UnityCatalogServer:CreateAndCatalogGovernanceActionProcess",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
+
+
+
+###
+# @name initiate create-unity-catalog-server
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "UnityCatalogGovernanceServices:create-unity-catalog-server",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
+
+
 
 ###
 # @name initiate catalog-unity-catalog-server
@@ -102,16 +156,12 @@ Content-Type: application/json
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
   "governanceActionTypeQualifiedName": "UnityCatalogGovernanceServices:catalog-unity-catalog-server",
-  "requestParameters" : {
-    "hostURL" : "http://localhost",
-    "portNumber" : "8080",
-    "serverName" : "Unity Catalog 1",
-    "versionIdentifier" : "V1.0",
-    "description" : "First instance of the Unity Catalog (UC) Server.",
-    "serverUserId" : "uc1"
-  }
+  "actionTargets" : [{
+      "class" : "NewActionTarget",
+      "actionTargetName": "newAsset",
+      "actionTargetGUID": "db2f9013-90dd-4085-ab08-e9c419f41aa1"
+    }]
 }
-
 
 ###
 # @name createElementFromTemplate (Unity Catalog Server 1)
@@ -226,7 +276,7 @@ Content-Type: application/json
 
 ###
 
-#@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
+#@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.2-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
 @dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data/coco-data-lake/research/clinical-trials/drop-foot/weekly-measurements
 #@dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data
 

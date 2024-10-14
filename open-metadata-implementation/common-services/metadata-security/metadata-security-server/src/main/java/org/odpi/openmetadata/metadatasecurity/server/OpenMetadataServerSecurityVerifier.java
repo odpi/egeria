@@ -1071,36 +1071,22 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                      methodName);
             }
         }
-        else if (connectionEntities.size() == 1)
-        {
-            return connectionEntities.get(0);
-        }
         else if ((connectionEntities == null) || (connectionEntities.isEmpty()))
         {
             return null;
         }
+        else if (connectionEntities.size() == 1)
+        {
+            return connectionEntities.get(0);
+        }
         else
         {
-            Set<String> guids = new HashSet<>();
-
-            for (EntityDetail connectionEntity : connectionEntities)
-            {
-                guids.add(connectionEntity.getGUID());
-            }
-
-            if (guids.size() == 1)
-            {
-                return connectionEntities.get(0);
-            }
-            else
-            {
-                throw new PropertyServerException(OpenMetadataSecurityErrorCode.MULTIPLE_CONNECTIONS_FOUND.getMessageDefinition(Integer.toString(connectionEntities.size()),
-                                                                                                                                assetEntity.getGUID(),
-                                                                                                                                userId,
-                                                                                                                                methodName),
-                                                  this.getClass().getName(),
-                                                  methodName);
-            }
+            throw new PropertyServerException(OpenMetadataSecurityErrorCode.MULTIPLE_CONNECTIONS_FOUND.getMessageDefinition(Integer.toString(connectionEntities.size()),
+                                                                                                                            assetEntity.getGUID(),
+                                                                                                                            userId,
+                                                                                                                            methodName),
+                                              this.getClass().getName(),
+                                              methodName);
         }
     }
 

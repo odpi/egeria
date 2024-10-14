@@ -690,8 +690,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                       assetGUID,
                                                                                                       OpenMetadataType.ASSET.typeName,
-                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                       1,
                                                                                                       forLineage,
                                                                                                       forDuplicateProcessing,
@@ -704,9 +704,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                 Relationship  connectionEndpointRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                              connectionGUID,
-                                                                                                             OpenMetadataType.CONNECTION_TYPE_NAME,
-                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                                                             OpenMetadataType.CONNECTION.typeName,
+                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                                                                             OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                              1,
                                                                                                              forLineage,
                                                                                                              forDuplicateProcessing,
@@ -1365,8 +1365,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetGUID,
                                                                                                   OpenMetadataType.ASSET.typeName,
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                   1,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
@@ -1384,9 +1384,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
-                                        OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                        OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
-                                        OpenMetadataType.CONNECTION_TYPE_NAME,
+                                        OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                        OpenMetadataType.CONNECTION.typeName,
                                         effectiveTime,
                                         methodName);
         }
@@ -1414,7 +1414,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
                 relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.ASSET_SUMMARY.name,
                                                                                       assetSummary,
                                                                                       methodName);
             }
@@ -1423,7 +1423,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
 
                 repositoryHandler.createRelationship(userId,
-                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                      null,
                                                      null,
                                                      connectionGUID,
@@ -1437,11 +1437,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  null,
                                                                  null,
                                                                  connectionGUID,
-                                                                 OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                 OpenMetadataType.CONNECTION.typeName,
                                                                  assetGUID,
                                                                  OpenMetadataType.ASSET.typeName,
-                                                                 OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                 OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                 OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                  relationshipProperties,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
@@ -1974,11 +1974,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         if (ownerType == 0)
         {
-            ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.USER_IDENTITY.typeName;
         }
         else if (ownerType == 1)
         {
-            ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.ACTOR_PROFILE.typeName;
         }
 
         this.addOwner(userId,
@@ -2027,9 +2027,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUID(userId,
                                            connectionGUID,
                                            connectionGUIDParameterName,
-                                           OpenMetadataType.CONNECTION_TYPE_NAME,
-                                           OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                           OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
+                                           OpenMetadataType.CONNECTION.typeName,
+                                           OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                           OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                            OpenMetadataType.ASSET.typeName,
                                            0,
                                            forLineage,
@@ -2147,8 +2147,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         List<String> connectionGUIDs = this.getEntityGUIDsByValue(userId,
                                                                   connectionName,
                                                                   connectionNameParameter,
-                                                                  OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                  OpenMetadataType.CONNECTION.typeGUID,
+                                                                  OpenMetadataType.CONNECTION.typeName,
                                                                   specificMatchPropertyNames,
                                                                   true,
                                                                   null,
@@ -2425,8 +2425,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetEntity.getGUID(),
                                                                                                   assetEntity.getType().getTypeDefName(),
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                   1,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
@@ -2444,7 +2444,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     connectionEntity = this.getEntityFromRepository(userId,
                                                                     end1.getGUID(),
                                                                     connectionGUIDParameterName,
-                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTION.typeName,
                                                                     null,
                                                                     null,
                                                                     forLineage,
@@ -2488,16 +2488,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                             if ((repositoryHelper.isTypeOf(serviceName,
                                                            relationship.getType().getTypeDefName(),
-                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                                     || (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
-                                                                  OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME)))
+                                                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName)))
                             {
                                 entityProxy = relationship.getEntityTwoProxy();
                             }
                             else if (repositoryHelper.isTypeOf(serviceName,
                                                                relationship.getType().getTypeDefName(),
-                                                               OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                               OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                             {
                                 entityProxy = relationship.getEntityOneProxy();
                             }
@@ -2593,19 +2593,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                   OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                             || (repositoryHelper.isTypeOf(serviceName,
                                                           relationship.getType().getTypeDefName(),
-                                                          OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME)))
+                                                          OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName)))
                     {
                         supplementaryRelationships.add(relationship);
                     }
                     else if (repositoryHelper.isTypeOf(serviceName,
                                                        relationship.getType().getTypeDefName(),
-                                                       OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                                                       OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName))
                     {
                         supplementaryRelationships.add(relationship);
 
@@ -3720,9 +3720,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElementGUIDs(userId,
                                             tagGUID,
                                             tagGUIDParameterName,
-                                            OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
-                                            OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                            OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
+                                            OpenMetadataType.INFORMAL_TAG.typeName,
+                                            OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                             OpenMetadataType.ASSET.typeName,
                                             forLineage,
                                             forDuplicateProcessing,

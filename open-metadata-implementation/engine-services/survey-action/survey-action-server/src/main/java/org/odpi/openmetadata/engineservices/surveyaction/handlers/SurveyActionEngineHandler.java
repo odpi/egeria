@@ -320,7 +320,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                  engineUserId,
                                                                  connectedAssetClient,
                                                                  fileSystemAssetOwner,
-                                                                 csvFileAssetOwner);
+                                                                 csvFileAssetOwner,
+                                                                 auditLog);
 
         SurveyOpenMetadataStore openMetadataStore = new SurveyOpenMetadataStore(openMetadataClient,
                                                                                 engineUserId,

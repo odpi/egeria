@@ -32,7 +32,7 @@ import java.util.*;
 
 
 /**
- * The AssetCatalogUIRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
+ * The AssetCatalogRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
  * This interface provides view interfaces for glossary UIs.
  */
 

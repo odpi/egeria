@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.survey;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
@@ -10,7 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
@@ -95,12 +96,12 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName("*");
         actionTargetType.setDescription("Any Software Server entity that represents an Apache Atlas server linked to the connection for the Apache Atlas REST API connector.");
-        actionTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
+        actionTargetType.setTypeName(AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.APACHE_ATLAS_SERVER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{AtlasDeployedImplementationType.APACHE_ATLAS_SERVER});
 
 
         /*

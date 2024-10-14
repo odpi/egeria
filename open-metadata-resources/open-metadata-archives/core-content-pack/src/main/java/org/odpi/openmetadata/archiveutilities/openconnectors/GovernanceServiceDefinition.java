@@ -11,22 +11,23 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.O
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CatalogServerGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.EvaluateAnnotationsGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogMessageGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.reports.surveyreport.SurveyReportProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.ProvisionUnityCatalogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideVolumeSurveyProvider;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceActionDescription;
@@ -44,7 +45,8 @@ public enum GovernanceServiceDefinition
                      "File {move, copy, delete} Governance Action Service",
                      new MoveCopyFileGovernanceActionProvider(),
                      ResourceUse.PROVISION_RESOURCE,
-                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                     DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * New Files Watchdog Governance Action Service
@@ -54,7 +56,8 @@ public enum GovernanceServiceDefinition
                        "New Files Watchdog Governance Action Service",
                        new GenericFolderWatchdogGovernanceActionProvider(),
                        ResourceUse.WATCH_DOG,
-                       DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                       DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                       ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Locate and Set Origin Governance Action Service -
@@ -65,7 +68,8 @@ public enum GovernanceServiceDefinition
                   "Locate and Set Origin Governance Action Service",
                   new OriginSeekerGovernanceActionProvider(),
                   ResourceUse.IMPROVE_METADATA,
-                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Add a Retention classification to an Asset Governance Action Service
@@ -75,7 +79,8 @@ public enum GovernanceServiceDefinition
                          "Add a Retention classification to an Asset Governance Action Service",
                          new RetentionClassifierGovernanceActionProvider(),
                          ResourceUse.IMPROVE_METADATA,
-                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Update Asset's Zone Membership Governance Action Service
@@ -85,7 +90,8 @@ public enum GovernanceServiceDefinition
                    "Update Asset's Zone Membership Governance Action Service",
                    new ZonePublisherGovernanceActionProvider(),
                    ResourceUse.IMPROVE_METADATA,
-                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Detect elements with the same qualified names.
@@ -95,7 +101,8 @@ public enum GovernanceServiceDefinition
                          "Qualified Name De-duplicator Governance Action Service",
                          new QualifiedNamePeerDuplicateGovernanceActionProvider(),
                          ResourceUse.IMPROVE_METADATA,
-                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Verify annotations in a Survey Report.
@@ -105,7 +112,19 @@ public enum GovernanceServiceDefinition
                          "Verify annotations in a Survey Report",
                          new EvaluateAnnotationsGovernanceActionProvider(),
                          ResourceUse.IMPROVE_METADATA,
-                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Print a Survey Report as a markdown document.
+     */
+    PRINT_SURVEY_REPORT("fac65c1a-ef30-4995-b962-28fc070f40f8",
+                         "print-survey-report-governance-action-service",
+                         "Print a Survey Report as a markdown document",
+                         new SurveyReportProvider(),
+                         ResourceUse.INFORM_STEWARD,
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Write an Audit Log Message
@@ -115,7 +134,8 @@ public enum GovernanceServiceDefinition
                     "Write an Audit Log Message",
                     new WriteAuditLogMessageGovernanceActionProvider(),
                     ResourceUse.INFORM_STEWARD,
-                    DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                    DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Detect the day of the week
@@ -125,7 +145,8 @@ public enum GovernanceServiceDefinition
                 "Detect the day of the week",
                 new DaysOfWeekGovernanceActionProvider(),
                 ResourceUse.CHOOSE_PATH,
-                DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                ContentPackDefinition.CORE_CONTENT_PACK),
 
 
     /**
@@ -136,7 +157,8 @@ public enum GovernanceServiceDefinition
                  "Verify an Asset Governance Action Service",
                  new VerifyAssetGovernanceActionProvider(),
                  ResourceUse.IMPROVE_METADATA,
-                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers columns within a CSV File.
@@ -146,7 +168,8 @@ public enum GovernanceServiceDefinition
                     "CSV File Survey Service",
                     new CSVSurveyServiceProvider(),
                     ResourceUse.SURVEY_RESOURCE,
-                    DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                    DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers the name, extension, file type and other characteristics of a file.
@@ -156,7 +179,8 @@ public enum GovernanceServiceDefinition
                      "Data File Survey Service",
                      new FileSurveyServiceProvider(),
                      ResourceUse.SURVEY_RESOURCE,
-                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Discovers the types of files located within a file system directory (and its sub-directories).
@@ -166,7 +190,8 @@ public enum GovernanceServiceDefinition
                   "Folder (directory) Survey Service",
                   new FolderSurveyServiceProvider(),
                   ResourceUse.SURVEY_RESOURCE,
-                  DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                  DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Apache Atlas Survey Service
@@ -176,7 +201,8 @@ public enum GovernanceServiceDefinition
                         "Apache Atlas Survey Service",
                         new SurveyApacheAtlasProvider(),
                         ResourceUse.SURVEY_RESOURCE,
-                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
      * OSS Unity Catalog Server Survey Service
@@ -186,7 +212,8 @@ public enum GovernanceServiceDefinition
                      "OSS Unity Catalog Server Survey Service",
                      new OSSUnityCatalogServerSurveyProvider(),
                      ResourceUse.SURVEY_RESOURCE,
-                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * OSS Unity Catalog Inside Catalog Survey Service
@@ -196,7 +223,8 @@ public enum GovernanceServiceDefinition
                       "OSS Unity Catalog Inside Catalog Survey Service",
                       new OSSUnityCatalogInsideCatalogSurveyProvider(),
                       ResourceUse.SURVEY_RESOURCE,
-                      DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                      DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * OSS Unity Catalog Inside Schema Survey Service
@@ -206,7 +234,30 @@ public enum GovernanceServiceDefinition
                      "OSS Unity Catalog Inside Schema Survey Service",
                      new OSSUnityCatalogInsideSchemaSurveyProvider(),
                      ResourceUse.SURVEY_RESOURCE,
-                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
+     * Discovers the types of files located within a Unity Catalog Volume system directory (and its sub-directories).
+     */
+    UC_VOLUME_SURVEY("a73554b3-c661-4065-a15e-a31f54d0f1a9",
+                     "oss-unity-catalog-volume-survey-service",
+                     "Unity Catalog Volume Folder (directory) Survey Service",
+                     new OSSUnityCatalogInsideVolumeSurveyProvider(),
+                     ResourceUse.SURVEY_RESOURCE,
+                     DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
+     * Creates unity catalog elements in the appropriate metadata collection so that they are provisioned into Unity Catalog (UC).
+     */
+    PROVISION_UC("73ed7824-2bd6-4f7c-922d-d4e3bb985502",
+                 "provision-unity-catalog",
+                 "Provision Unity Catalog Resources",
+                 new ProvisionUnityCatalogGovernanceActionProvider(),
+                 ResourceUse.PROVISION_RESOURCE,
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * PostgreSQL Server Survey Service
@@ -216,7 +267,8 @@ public enum GovernanceServiceDefinition
                            "PostgreSQL Server Survey Service",
                            new PostgresServerSurveyActionProvider(),
                            ResourceUse.SURVEY_RESOURCE,
-                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                           DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                           ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
      * PostgreSQL Database Survey Service
@@ -225,8 +277,9 @@ public enum GovernanceServiceDefinition
                              "postgres-database-survey-service",
                              "PostgreSQL Database Survey Service",
                              new PostgresDatabaseSurveyActionProvider(),
-                            ResourceUse.SURVEY_RESOURCE,
-                             DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                             ResourceUse.SURVEY_RESOURCE,
+                             DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
 
     /**
@@ -237,41 +290,59 @@ public enum GovernanceServiceDefinition
                         "Apache Kafka Server Survey Service",
                         new SurveyApacheKafkaServerProvider(),
                         ResourceUse.SURVEY_RESOURCE,
-                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR),
+                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
+
+    /**
+     * Create Server Governance Service
+     */
+    CREATE_SERVER("e971749f-4b0e-4c46-b4dd-ca0cf8df3900",
+                  "create-server-governance-service",
+                  "Create Server Governance Service",
+                  new CreateServerGovernanceActionProvider(),
+                  ResourceUse.CATALOG_RESOURCE,
+                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Catalog Server Governance Service
      */
     CATALOG_SERVER("96a01919-a361-404d-bcb7-3855fbbc8cd5",
-                        "catalog-server-governance-service",
-                        "Catalog Server Governance Service",
-                        new CatalogServerGovernanceActionProvider(),
-                        ResourceUse.CATALOG_RESOURCE,
-                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                   "catalog-server-governance-service",
+                   "Catalog Server Governance Service",
+                   new CatalogServerGovernanceActionProvider(),
+                   ResourceUse.CATALOG_RESOURCE,
+                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                   ContentPackDefinition.CORE_CONTENT_PACK),
     ;
-    
-    private final String            guid;
-    private final String            name;
-    private final String            displayName;
-    private final GovernanceServiceProviderBase connectorProvider;
-    private final ResourceUse resourceUse;
-    private final DeployedImplementationType deployedImplementationType;
 
-    GovernanceServiceDefinition(String                        guid,
-                                String                        name,
-                                String                        displayName,
-                                GovernanceServiceProviderBase connectorProvider,
-                                ResourceUse                   resourceUse,
-                                DeployedImplementationType    deployedImplementationType)
+    private final String                               guid;
+    private final String                               name;
+    private final String                               displayName;
+    private final GovernanceServiceProviderBase        connectorProvider;
+    private final ResourceUse                          resourceUse;
+    private final DeployedImplementationTypeDefinition deployedImplementationType;
+    private final ContentPackDefinition                contentPackDefinition;
+
+
+    GovernanceServiceDefinition(String                               guid,
+                                String                               name,
+                                String                               displayName,
+                                GovernanceServiceProviderBase        connectorProvider,
+                                ResourceUse                          resourceUse,
+                                DeployedImplementationTypeDefinition deployedImplementationType,
+                                ContentPackDefinition                contentPackDefinition)
     {
-        this.guid              = guid;
-        this.name              = name;
-        this.displayName       = displayName;
-        this.connectorProvider = connectorProvider;
-        this.resourceUse       = resourceUse;
+        this.guid                       = guid;
+        this.name                       = name;
+        this.displayName                = displayName;
+        this.connectorProvider          = connectorProvider;
+        this.resourceUse                = resourceUse;
         this.deployedImplementationType = deployedImplementationType;
+        this.contentPackDefinition      = contentPackDefinition;
     }
+
 
     /**
      * Return the unique identifier of the governance service.
@@ -333,10 +404,22 @@ public enum GovernanceServiceDefinition
      *
      * @return DeployedImplementationType enum
      */
-    public DeployedImplementationType getDeployedImplementationType()
+    public String getDeployedImplementationType()
     {
-        return deployedImplementationType;
+        return deployedImplementationType.getDeployedImplementationType();
     }
+
+
+    /**
+     * Return the deployed implementation type for the service.
+     *
+     * @return DeployedImplementationType enum
+     */
+    public String getOpenMetadataTypeName()
+    {
+        return deployedImplementationType.getAssociatedTypeName();
+    }
+
 
     /**
      * Create a governance action description from the governance service's provider.
@@ -366,6 +449,17 @@ public enum GovernanceServiceDefinition
         governanceActionDescription.governanceServiceDescription = this.getDescription();
 
         return governanceActionDescription;
+    }
+
+
+    /**
+     * Get identifier of content pack where this template should be located.
+     *
+     * @return content pack definition
+     */
+    public ContentPackDefinition getContentPackDefinition()
+    {
+        return contentPackDefinition;
     }
 
 

@@ -11,6 +11,8 @@ plugins {
 dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    compileOnly project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
+    compileOnly project(':open-metadata-implementation:common-services:metadata-security:metadata-security-connectors')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     implementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
@@ -18,10 +20,12 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
 

@@ -183,14 +183,12 @@ public class OpenMetadataTypesArchive3_12
         final String description = "Stores processing state information used by various SoftwareCapabilities.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SoftwareCapability";
-
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
                                                                                  true);
 
         /*

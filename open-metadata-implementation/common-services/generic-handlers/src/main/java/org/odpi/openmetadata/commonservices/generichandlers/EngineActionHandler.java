@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -584,7 +585,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            PropertyServerException
     {
         final String qualifiedNameParameterName  = "processQualifiedName";
+        final String governanceActionProcessGUIDParameterName  = "governanceActionProcessEntity.getGUID()";
+        final String governanceActionProcessInstanceGUIDParameterName  = "governanceActionProcessInstanceGUID";
         final String governanceActionProcessStepGUIDParameterName  = "governanceActionProcessFlowRelationship.getEntityTwoProxy().getGUID()";
+        final String engineActionGUIDParameterName = "engineActionGUID";
 
         /*
          * Effective time is set to "now" so that the process definition that is active now is
@@ -729,7 +733,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 String processInstanceQualifiedName = repositoryHelper.getStringProperty(serviceName,
                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                          governanceActionProcessEntity.getProperties(),
-                                                                                         methodName) + "@" + processInstanceStartTime;
+                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + ":" + UUID.randomUUID();
                 String processInstanceName = repositoryHelper.getStringProperty(serviceName,
                                                                                 OpenMetadataProperty.NAME.name,
                                                                                 governanceActionProcessEntity.getProperties(),
@@ -764,26 +768,69 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          new Date(),
                                                                          methodName);
 
-                prepareEngineActionFromProcessStep(userId,
-                                                   processInstanceGUID,
-                                                   governanceActionProcessStepGUID,
-                                                   governanceActionProcessStepGUIDParameterName,
-                                                   guard,
-                                                   false,
-                                                   requestedStartDate,
+                this.uncheckedLinkElementToElement(userId,
                                                    null,
-                                                   userId,
-                                                   combinedRequestParameters,
-                                                   requestSourceGUIDs,
-                                                   newTargetsForAction,
-                                                   processInstanceQualifiedName,
-                                                   processQualifiedName,
-                                                   originatorServiceName,
-                                                   originatorEngineName,
+                                                   null,
+                                                   governanceActionProcessEntity.getGUID(),
+                                                   governanceActionProcessGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                   processInstanceGUID,
+                                                   governanceActionProcessInstanceGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                   false,
+                                                   false,
                                                    serviceSupportedZones,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                   processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
+                                                   effectiveTime,
                                                    methodName);
 
-                 return processInstanceGUID;
+                String engineActionGUID = prepareEngineActionFromProcessStep(userId,
+                                                                             processInstanceGUID,
+                                                                             governanceActionProcessStepGUID,
+                                                                             governanceActionProcessStepGUIDParameterName,
+                                                                             guard,
+                                                                             false,
+                                                                             requestedStartDate,
+                                                                             null,
+                                                                             userId,
+                                                                             combinedRequestParameters,
+                                                                             requestSourceGUIDs,
+                                                                             newTargetsForAction,
+                                                                             processInstanceQualifiedName,
+                                                                             processQualifiedName,
+                                                                             originatorServiceName,
+                                                                             originatorEngineName,
+                                                                             serviceSupportedZones,
+                                                                             methodName);
+
+                if (engineActionGUID != null)
+                {
+                    this.uncheckedLinkElementToElement(userId,
+                                                       null,
+                                                       null,
+                                                       processInstanceGUID,
+                                                       governanceActionProcessInstanceGUIDParameterName,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                       engineActionGUID,
+                                                       engineActionGUIDParameterName,
+                                                       OpenMetadataType.ENGINE_ACTION.typeName,
+                                                       false,
+                                                       false,
+                                                       serviceSupportedZones,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
+                                                       repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    null,
+                                                                                                    OpenMetadataType.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                                                                    processInstanceName,
+                                                                                                    methodName),
+                                                       effectiveTime,
+                                                       methodName);
+                }
+
+                return processInstanceGUID;
             }
             else
             {
@@ -2795,7 +2842,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                  0,
                                                                                                  effectiveTime,
                                                                                                  methodName);
-            if (nextActionProcessSteps != null)
+            if ((nextActionProcessSteps != null) && (! nextActionProcessSteps.isEmpty()))
             {
                 /*
                  * There are potential follow-on actions.  Need to loop though each one to evaluate if the output guards
@@ -2859,7 +2906,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             }
                         }
                     }
-                }
+            }
             else
             {
                 /*

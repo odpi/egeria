@@ -300,7 +300,7 @@ public class RepositoryHandler
 
 
     /**
-     * Validate an relationship retrieved from the repository is suitable for the requester.
+     * Validate a relationship retrieved from the repository is suitable for the requester.
      * There are two considerations: (1) Are the effectivity dates in the relationship's properties indicating that this relationship
      * is effective at this time? (2) is the type of the relationship correct..
      *
@@ -4126,6 +4126,7 @@ public class RepositoryHandler
                                                                                   errorHandler,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
+                                                                                  auditLog,
                                                                                   methodName);
 
                 accumulator.addRelationships(relationships);
@@ -4411,6 +4412,7 @@ public class RepositoryHandler
                                                                                   errorHandler,
                                                                                   false,
                                                                                   effectiveTime,
+                                                                                  auditLog,
                                                                                   methodName);
 
                 do

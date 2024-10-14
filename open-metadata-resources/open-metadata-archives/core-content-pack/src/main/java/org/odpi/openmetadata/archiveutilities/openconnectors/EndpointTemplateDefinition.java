@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
     REST_ENDPOINT_TEMPLATE("9ea4bff4-d193-492f-bcad-6e68c07c6f9e",
                           DeployedImplementationType.REST_API_ENDPOINT,
                            "JDBC",
-                          PlaceholderProperty.HOST_URL.getPlaceholder() + ":" + PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                          PlaceholderProperty.HOST_URL.getPlaceholder() + ":" + PlaceholderProperty.PORT_NUMBER.getPlaceholder() + PlaceholderProperty.API_OPERATION.getPlaceholder(),
                           PlaceholderProperty.getHTTPEndpointPlaceholderPropertyTypes()),
 
 
@@ -117,7 +118,7 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
      * @return enum
      */
     @Override
-    public DeployedImplementationType getDeployedImplementationType()
+    public DeployedImplementationTypeDefinition getDeployedImplementationType()
     {
         return deployedImplementationType;
     }

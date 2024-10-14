@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.In
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
@@ -297,10 +298,16 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, platformGUID);
+            AssetUniverse asset = handler.getAssetProperties(userId, platformGUID);
+
+            Connector     connector = handler.getConnectorForAsset(userId, platformGUID, auditLog);
 
             if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
             {
+                if (asset != null)
+                {
+                    omagServerPlatformConnector.setPlatformName(asset.getResourceName());
+                }
                 omagServerPlatformConnector.setClientUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
@@ -530,7 +537,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -592,7 +599,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -648,7 +655,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -704,7 +711,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -768,7 +775,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
@@ -827,7 +834,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
@@ -896,7 +903,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof EngineHostConnector omagServerConnector)
             {
@@ -962,7 +969,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1023,7 +1030,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1088,7 +1095,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1159,7 +1166,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1220,7 +1227,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1290,7 +1297,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1363,7 +1370,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1421,7 +1428,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof IntegrationDaemonConnector omagServerConnector)
             {
@@ -1466,10 +1473,13 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      */
-    public BooleanResponse connectToCohort(String serverName,
-                                           String serverGUID,
-                                           String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse connectToCohort(String          serverName,
+                                           String          serverGUID,
+                                           String          cohortName,
+                                           NullRequestBody requestBody)
     {
         final String methodName = "connectToCohort";
 
@@ -1488,7 +1498,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -1524,11 +1534,14 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
-    public BooleanResponse disconnectFromCohort(String serverName,
-                                                String serverGUID,
-                                                String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse disconnectFromCohort(String          serverName,
+                                                String          serverGUID,
+                                                String          cohortName,
+                                                NullRequestBody requestBody)
     {
         final String methodName = "disconnectFromCohort";
 
@@ -1547,7 +1560,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
@@ -1582,11 +1595,14 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
-    public BooleanResponse unregisterFromCohort(String serverName,
-                                                String serverGUID,
-                                                String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse unregisterFromCohort(String          serverName,
+                                                String          serverGUID,
+                                                String          cohortName,
+                                                NullRequestBody requestBody)
     {
         final String methodName = "unregisterFromCohort";
 
@@ -1605,7 +1621,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
 
-            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {

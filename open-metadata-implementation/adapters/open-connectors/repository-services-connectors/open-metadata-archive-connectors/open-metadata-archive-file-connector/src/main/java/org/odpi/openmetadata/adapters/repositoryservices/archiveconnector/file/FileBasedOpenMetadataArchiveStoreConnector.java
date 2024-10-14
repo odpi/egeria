@@ -28,7 +28,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
     /**
      * This is the default name of the open metadata archive file that is used if there is no file name in the connection.
      */
-    private static final String defaultFilename = "open.metadata.archive";
+    private static final String defaultFilename = "open.metadata.omarchive";
 
     /**
      * Variables used in writing to the file.

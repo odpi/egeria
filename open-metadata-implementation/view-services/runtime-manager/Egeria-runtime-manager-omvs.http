@@ -67,8 +67,6 @@ Content-Type: application/json
 }
 
 
-
-
 ###
 # @name getPlatformsByDeployedImplementationType (OMAG Server Platform)
 # Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
@@ -194,7 +192,117 @@ Content-Type: application/json
 
 ###
 # ========================================================================================
-# Open Metadata Archives
+# Integration Daemon Servers
+
+@connectorName=add name here
+@integrationGroupName=add name here
+
+###
+# @name getConfigurationProperties
+# Retrieve the configuration properties of the named integration connector running in the integration daemon.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/{{connectorName}}/configuration-properties
+Authorization: Bearer {{token}}
+
+###
+# @name updateConfigurationProperties
+# Update the configuration properties of the integration connectors, or specific integration connector if a connector name is supplied.  This update is in memory and will not persist over a server restart.
+# mergeUpdate indicates whether properties should be over-written or completely replace existing properties.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/configuration-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ConnectorConfigPropertiesRequestBody",
+  "connectorName" : "{{connectorName}}",
+  "mergeUpdate" : false,
+  "configurationProperties" : {
+     "propertyName1" : "propertyValue1",
+     "propertyName2" : "propertyValue2"
+  }
+}
+
+###
+# @name updateEndpointNetworkAddress
+# Update the endpoint network address for a specific integration connector.  This update is in memory and will not persist over a server restart.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/{{connectorName}}/endpoint-network-address
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "StringRequestBody",
+  "string" : "add new address here"
+}
+
+
+###
+# @name updateConnectorConnection
+# Update the connection for a specific integration connector.  This update is in memory and will not persist over a server restart.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/{{connectorName}}/connection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "Connection"
+}
+
+
+###
+# @name refreshConnectors
+# Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-connectors/refresh
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "add optional name here"
+}
+
+
+###
+# @name refreshIntegrationGroupConfig
+# Request that the integration group refresh its configuration by calling the metadata access server. " +
+# Changes to the connector configuration will result in the affected connectors being restarted. " +
+# This request is useful if the metadata access server has an outage, particularly while the " +
+# integration daemon is initializing.  This request just ensures that the latest configuration " +
+# is in use. See https://egeria-project.org/concepts/integration-group/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/integration-groups/{{integrationGroupName}}/refresh-config
+Authorization: Bearer {{token}}
+
+
+
+###
+# @name publishOpenLineageEvent
+# Pass an open lineage event to the integration daemon.  The event is the request body.  It will pass it on to the
+# integration connectors that have registered a listener for open lineage events.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/integration-daemons/{{serverGUID}}/open-lineage-events/publish
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+
+###
+# ========================================================================================
+# Engine Host
+
+@governanceEngineName=add name here
+
+###
+# @name refreshConfig
+# Request that the governance engine refresh its configuration by calling the metadata server.
+# This request is useful if the metadata server has an outage, particularly while the
+# governance server is initializing.  This request just ensures that the latest configuration
+# is in use. See https://egeria-project.org/concepts/governance-engine-definition/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/engine-hosts/{{serverGUID}}/governance-engines/{{governanceEngineName}}/refresh-config
+Authorization: Bearer {{token}}
+
+###
+# ========================================================================================
+# Metadata Access Servers
+
+@cohortName=add name here
 
 ###
 # @name addOpenMetadataArchiveFile
@@ -216,4 +324,30 @@ Content-Type: application/json
 
 {
 }
+
 ###
+# @name connectToCohort
+# A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+# open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+# event has been sent.
+# If the server has already registered in the past, it sends a reregistration request.
+# See https://egeria-project.org/concepts/cohort-member/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/connect
+Authorization: Bearer {{token}}
+
+
+###
+# @name disconnectFromCohort
+# Disconnect communications from a specific cohort.
+# See https://egeria-project.org/concepts/cohort-member/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/disconnect
+Authorization: Bearer {{token}}
+
+
+###
+# @name unregisterFromCohort
+# Unregister from a specific cohort and disconnect from cohort communications.
+# See https://egeria-project.org/concepts/cohort-member/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/unregister
+Authorization: Bearer {{token}}
+

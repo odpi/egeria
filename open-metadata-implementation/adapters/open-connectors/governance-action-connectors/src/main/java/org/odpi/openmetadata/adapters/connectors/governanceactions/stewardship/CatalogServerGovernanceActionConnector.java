@@ -44,7 +44,7 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
      * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         final String methodName = "start";
 
@@ -56,8 +56,9 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
             List<NewActionTarget>     outputActionTargets = new ArrayList<>();
             CompletionStatus          completionStatus;
             AuditLogMessageDefinition messageDefinition;
+
             ActionTargetElement       integrationConnector = null;
-            String                    templateGUID;
+            String                    newAssetGUID         = null;
 
             if (governanceContext.getActionTargetElements() != null)
             {
@@ -69,12 +70,13 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                         {
                             integrationConnector = actionTargetElement;
                         }
+                        else if (ActionTarget.NEW_ASSET.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            newAssetGUID = actionTargetElement.getActionTargetGUID();
+                        }
                     }
                 }
             }
-
-            templateGUID = getProperty(CatalogServerRequestParameter.TEMPLATE_GUID.getName(), null);
-
 
             if (integrationConnector == null)
             {
@@ -82,28 +84,15 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                 outputGuards.add(CatalogServerGuard.MISSING_CONNECTOR.getName());
                 completionStatus = CatalogServerGuard.MISSING_CONNECTOR.getCompletionStatus();
             }
-            else if (templateGUID == null)
+            else if (newAssetGUID == null)
             {
-                messageDefinition = GovernanceActionConnectorsAuditCode.NO_TEMPLATE_GUID.getMessageDefinition(governanceServiceName);
-                outputGuards.add(CatalogServerGuard.MISSING_TEMPLATE.getName());
-                completionStatus = CatalogServerGuard.MISSING_TEMPLATE.getCompletionStatus();
+                messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET.getMessageDefinition(governanceServiceName, ActionTarget.NEW_ASSET.getName());
+                outputGuards.add(CatalogServerGuard.MISSING_ASSET.getName());
+                completionStatus = CatalogServerGuard.MISSING_ASSET.getCompletionStatus();
             }
             else
             {
-                String serverGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(null,
-                                                                                                               null,
-                                                                                                               true,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               templateGUID,
-                                                                                                               null,
-                                                                                                               governanceContext.getRequestParameters(),
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               null,
-                                                                                                               true);
-
-                OpenMetadataElement serverElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(serverGUID);
+                OpenMetadataElement serverElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(newAssetGUID);
 
                 String serverName = propertyHelper.getStringProperty(governanceServiceName,
                                                                      OpenMetadataProperty.NAME.name,
@@ -121,12 +110,12 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                                                                                              serverName);
 
                 catalogTargetProperties = propertyHelper.addMapProperty(catalogTargetProperties,
-                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                         this.combineProperties());
 
                 governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                       integrationConnector.getTargetElement().getElementGUID(),
-                                                                                      serverGUID,
+                                                                                      newAssetGUID,
                                                                                       null,
                                                                                       null,
                                                                                       catalogTargetProperties);
@@ -134,13 +123,6 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                 messageDefinition = GovernanceActionConnectorsAuditCode.CONNECTOR_CONFIGURED.getMessageDefinition(integrationConnectorName,
                                                                                                                   serverType,
                                                                                                                   serverName);
-
-                NewActionTarget newActionTarget = new NewActionTarget();
-
-                newActionTarget.setActionTargetGUID(serverGUID);
-                newActionTarget.setActionTargetName(ActionTarget.NEW_ASSET.name);
-
-                outputActionTargets.add(newActionTarget);
 
                 completionStatus = CatalogServerGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CatalogServerGuard.SET_UP_COMPLETE.getName());
@@ -175,23 +157,23 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
      */
     Map<String, Object> combineProperties()
     {
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        if (connectionProperties.getConfigurationProperties() != null)
+        {
+            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+        }
 
         if (governanceContext.getRequestParameters() != null)
         {
-            if (configurationProperties == null)
-            {
-                configurationProperties = new HashMap<>();
-            }
-
             configurationProperties.putAll(governanceContext.getRequestParameters());
         }
 
-        if ((configurationProperties == null) || (configurationProperties.isEmpty()))
+        if (configurationProperties.isEmpty())
         {
             return null;
         }
 
-        return  configurationProperties;
+        return configurationProperties;
     }
 }

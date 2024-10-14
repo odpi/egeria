@@ -241,8 +241,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                               OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                               OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                               OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                builder.getRelationshipInstanceProperties(methodName),
                                                effectiveFrom,
                                                methodName);
@@ -337,8 +337,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                    startingEntity,
                                                                    commentGUIDParameterName,
                                                                    OpenMetadataType.COMMENT.typeName,
-                                                                   OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                   OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                   OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                                                   OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                                    null,
                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                    1,
@@ -355,7 +355,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         {
             errorHandler.handleNoRelationship(commentGUID,
                                               OpenMetadataType.COMMENT.typeName,
-                                              OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                              OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                               methodName);
         }
         else if (relationships.size() == 1)
@@ -371,7 +371,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         {
             errorHandler.handleAmbiguousRelationships(commentGUID,
                                                       OpenMetadataType.COMMENT.typeName,
-                                                      OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                      OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                       relationships,
                                                       methodName);
         }
@@ -480,8 +480,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                   instanceProperties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -536,8 +536,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.COMMENT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -587,8 +587,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                        OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                         OpenMetadataType.COMMENT.typeName,
                                         null,
                                         null,
@@ -642,8 +642,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                        OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                         OpenMetadataType.COMMENT.typeName,
                                         null,
                                         null,

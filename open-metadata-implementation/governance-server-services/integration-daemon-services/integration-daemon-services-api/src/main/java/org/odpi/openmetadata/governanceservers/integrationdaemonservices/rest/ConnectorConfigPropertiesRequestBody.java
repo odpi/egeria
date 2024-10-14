@@ -80,7 +80,7 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
 
 
     /**
-     * Return indication of there properties should be over-write or replace existing properties.
+     * Return indication of whether properties should be over-write or replace existing properties.
      *
      * @return boolean flag
      */
@@ -91,7 +91,7 @@ public class ConnectorConfigPropertiesRequestBody implements Serializable
 
 
     /**
-     * Set up the indication of there properties should be over-write or replace existing properties.
+     * Set up the indication of whether properties should be over-write or replace existing properties.
      *
      * @param mergeUpdate boolean flag
      */

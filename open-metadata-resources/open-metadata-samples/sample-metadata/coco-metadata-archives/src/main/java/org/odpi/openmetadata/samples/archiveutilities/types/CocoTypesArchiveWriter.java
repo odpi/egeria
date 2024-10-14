@@ -392,4 +392,30 @@ public class CocoTypesArchiveWriter extends OMRSArchiveWriter
             System.out.println("error is " + error);
         }
     }
+
+
+    /**
+     * Generates and writes out the open metadata archive created in the builder.
+     *
+     * @param folderName name of the folder to add the archive into
+     */
+    public void writeOpenMetadataArchive(String folderName)
+    {
+        try
+        {
+            String pathName = cocoTypesArchiveFileName;
+
+            if (folderName != null)
+            {
+                pathName = folderName + "/" + cocoTypesArchiveFileName;
+            }
+
+            System.out.println("Writing to file: " + pathName);
+            super.writeOpenMetadataArchive(pathName, this.getOpenMetadataArchive());
+        }
+        catch (Exception error)
+        {
+            System.out.println("error is " + error);
+        }
+    }
 }

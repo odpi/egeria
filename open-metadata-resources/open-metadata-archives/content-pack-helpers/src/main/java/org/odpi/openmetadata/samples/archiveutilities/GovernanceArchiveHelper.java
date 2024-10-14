@@ -251,7 +251,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME, catalogTargetName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME, connectionName, methodName);
-        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME, configurationProperties, methodName);
+        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONFIGURATION_PROPERTIES.name, configurationProperties, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.TEMPLATES_PROPERTY_NAME, templates, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
 
@@ -347,7 +347,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     /**
      * Create a governance service entity.
      *
-     * @param deployedImplementationType name of governance service subtype to use - default is GovernanceService
+     * @param typeName name of governance service subtype to use - default is GovernanceService
+     * @param deployedImplementationType deployed implementation type
      * @param connectorProviderName name of the connector provider for the governance service
      * @param configurationProperties configuration properties for the governance service (goes in the connection)
      * @param qualifiedName unique name for the governance service
@@ -357,7 +358,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @return id for the governance service
      */
-    public String addGovernanceService(DeployedImplementationType deployedImplementationType,
+    public String addGovernanceService(String                     typeName,
+                                       String                     deployedImplementationType,
                                        String                     connectorProviderName,
                                        Map<String, Object>        configurationProperties,
                                        String                     qualifiedName,
@@ -367,6 +369,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         try
         {
+            String assetTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
+
+            if (typeName != null)
+            {
+                assetTypeName = typeName;
+            }
+
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
             Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
@@ -397,9 +406,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             Map<String, Object> extendedProperties = new HashMap<>();
 
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                   deployedImplementationType.getDeployedImplementationType());
+                                   deployedImplementationType);
 
-            String serviceGUID = super.addAsset(deployedImplementationType.getAssociatedTypeName(),
+            String serviceGUID = super.addAsset(assetTypeName,
                                                 qualifiedName,
                                                 displayName,
                                                 description,
@@ -409,12 +418,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             if (serviceGUID != null)
             {
                 this.addSupportedConfigurationProperties(serviceGUID,
-                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                         assetTypeName,
                                                          OpenMetadataType.ASSET.typeName,
                                                          serviceProvider.getSupportedConfigurationProperties());
 
                 this.addSupportedTemplateTypes(serviceGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetTypeName,
                                                OpenMetadataType.ASSET.typeName,
                                                serviceProvider.getSupportedTemplateTypes());
 
@@ -430,7 +439,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                             connectorTypeGUID,
                                                             null,
                                                             serviceGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            assetTypeName,
                                                             OpenMetadataType.ASSET.typeName);
 
                 if (connectionGUID != null)
@@ -441,44 +450,44 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 if (serviceProvider instanceof GovernanceServiceProviderBase governanceServiceProviderBase)
                 {
                     addSupportedRequestTypes(serviceGUID,
-                                             deployedImplementationType.getAssociatedTypeName(),
+                                             assetTypeName,
                                              OpenMetadataType.ASSET.typeName,
                                              governanceServiceProviderBase.getSupportedRequestTypes());
 
                     addSupportedRequestParameters(serviceGUID,
-                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  assetTypeName,
                                                   OpenMetadataType.ASSET.typeName,
                                                   governanceServiceProviderBase.getSupportedRequestParameters());
 
                     addSupportedActionTargets(serviceGUID,
-                                              deployedImplementationType.getAssociatedTypeName(),
+                                              assetTypeName,
                                               OpenMetadataType.ASSET.typeName,
                                               governanceServiceProviderBase.getSupportedActionTargetTypes());
 
                     addProducedRequestParameters(serviceGUID,
-                                                 deployedImplementationType.getAssociatedTypeName(),
+                                                 assetTypeName,
                                                  OpenMetadataType.ASSET.typeName,
                                                  governanceServiceProviderBase.getProducedRequestParameters());
 
                     addProducedActionTargets(serviceGUID,
-                                             deployedImplementationType.getAssociatedTypeName(),
+                                             assetTypeName,
                                              OpenMetadataType.ASSET.typeName,
                                              governanceServiceProviderBase.getProducedActionTargetTypes());
 
                     addProducedGuards(serviceGUID,
-                                      deployedImplementationType.getAssociatedTypeName(),
+                                      assetTypeName,
                                       OpenMetadataType.ASSET.typeName,
                                       governanceServiceProviderBase.getProducedGuards());
 
                     if (serviceProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
                     {
                         addSupportedAnalysisSteps(serviceGUID,
-                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  assetTypeName,
                                                   OpenMetadataType.ASSET.typeName,
                                                   surveyActionServiceProvider.getSupportedAnalysisSteps());
 
                         addProducedAnnotationTypes(serviceGUID,
-                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                   assetTypeName,
                                                    OpenMetadataType.ASSET.typeName,
                                                    surveyActionServiceProvider.getProducedAnnotationTypes());
                     }

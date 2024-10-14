@@ -849,6 +849,7 @@ public class OpenMetadataStoreResource
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
+     * @param allowRetrieve can an existing element be returned if it exists
      * @param requestBody properties for the new element
      *
      * @return unique identifier of the new metadata element
@@ -861,9 +862,11 @@ public class OpenMetadataStoreResource
     public GUIDResponse createMetadataElementFromTemplate(@PathVariable String              serverName,
                                                           @PathVariable String              serviceURLMarker,
                                                           @PathVariable String              userId,
+                                                          @RequestParam(required = false, defaultValue = "false")
+                                                                        boolean             allowRetrieve,
                                                           @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createMetadataElementFromTemplate(serverName, serviceURLMarker, userId, requestBody);
+        return restAPI.createMetadataElementFromTemplate(serverName, serviceURLMarker, userId, allowRetrieve, requestBody);
     }
 
 

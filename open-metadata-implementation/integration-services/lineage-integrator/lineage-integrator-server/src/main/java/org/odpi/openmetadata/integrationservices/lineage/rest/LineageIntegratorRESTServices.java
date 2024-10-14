@@ -10,12 +10,15 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorOMISConnector;
 import org.odpi.openmetadata.integrationservices.lineage.contextmanager.LineageIntegratorContextManager;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
@@ -51,7 +54,6 @@ public class LineageIntegratorRESTServices
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
-     *
      *  InvalidParameterException the connector provider class name is not a valid connector for this service;
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service
@@ -98,15 +100,10 @@ public class LineageIntegratorRESTServices
      * @param serverName integration daemon server name
      * @param userId calling user
      * @param event open lineage event to publish.
-     *
-     * @return void or
-     *  InvalidParameterException one of the parameters is null or invalid;
-     *  UserNotAuthorizedException the caller is not authorized to call the service or
-     *  PropertyServerException there is a problem processing the request
      */
-    public VoidResponse publishOpenLineageEvent(String serverName,
-                                                String userId,
-                                                String event)
+    public void publishOpenLineageEvent(String serverName,
+                                        String userId,
+                                        String event)
     {
         final String methodName = "publishOpenLineageEvent";
 
@@ -119,12 +116,21 @@ public class LineageIntegratorRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            LineageIntegratorContextManager contextManager =
-                    (LineageIntegratorContextManager)instanceHandler.getIntegrationServiceContextManager(userId,
-                                                                                                         serverName,
-                                                                                                         IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceURLMarker(),
-                                                                                                         methodName);
-            contextManager.publishOpenLineageRunEvent(event);
+            List<IntegrationContextManager> contextManagers = instanceHandler.getIntegrationServiceContextManagers(userId,
+                                                                                                                   serverName,
+                                                                                                                   IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceURLMarker(),
+                                                                                                                   methodName);
+
+            if (contextManagers != null)
+            {
+                for (IntegrationContextManager contextManager : contextManagers)
+                {
+                    if (contextManager instanceof LineageIntegratorContextManager lineageIntegratorContextManager)
+                    {
+                        lineageIntegratorContextManager.publishOpenLineageRunEvent(event);
+                    }
+                }
+            }
         }
         catch (Exception error)
         {
@@ -132,7 +138,5 @@ public class LineageIntegratorRESTServices
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
     }
 }

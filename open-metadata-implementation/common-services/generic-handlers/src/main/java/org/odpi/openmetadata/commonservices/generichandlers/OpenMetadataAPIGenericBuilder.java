@@ -230,8 +230,8 @@ public class OpenMetadataAPIGenericBuilder
 
                         if (classificationProperties != null)
                         {
-                            classificationProperties = replaceStringPropertiesWithPlaceholders(classificationProperties,
-                                                                                               placeholderProperties);
+                            classificationProperties = replacePropertiesWithPlaceholders(classificationProperties,
+                                                                                         placeholderProperties);
                         }
 
                         if (templateClassification.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
@@ -418,7 +418,7 @@ public class OpenMetadataAPIGenericBuilder
     void setTemplateProperties(InstanceProperties  templateProperties,
                                Map<String, String> placeholderProperties)
     {
-        this.templateProperties = this.replaceStringPropertiesWithPlaceholders(templateProperties, placeholderProperties);
+        this.templateProperties = this.replacePropertiesWithPlaceholders(templateProperties, placeholderProperties);
     }
 
 
@@ -431,10 +431,10 @@ public class OpenMetadataAPIGenericBuilder
      *                              properties
      * @return updated instance properties
      */
-    InstanceProperties replaceStringPropertiesWithPlaceholders(InstanceProperties  templateProperties,
-                                                               Map<String, String> placeholderProperties)
+    InstanceProperties replacePropertiesWithPlaceholders(InstanceProperties  templateProperties,
+                                                         Map<String, String> placeholderProperties)
     {
-        final String methodName = "replaceStringPropertiesWithPlaceholders";
+        final String methodName = "replacePropertiesWithPlaceholders";
 
         if (templateProperties != null)
         {
@@ -476,18 +476,102 @@ public class OpenMetadataAPIGenericBuilder
                                                                       methodName);
                             }
                         }
+                        else if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
+                        {
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            {
+                                repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                          newTemplateProperties,
+                                                                          propertyName,
+                                                                          Integer.getInteger(newProperty),
+                                                                          methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeIntProperty(serviceName,
+                                                                   propertyName,
+                                                                   newTemplateProperties,
+                                                                   methodName);
+                            }
+                        }
+                        else if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
+                        {
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            {
+                                repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                           newTemplateProperties,
+                                                                           propertyName,
+                                                                           Long.getLong(newProperty),
+                                                                           methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeLongProperty(serviceName,
+                                                                    propertyName,
+                                                                    newTemplateProperties,
+                                                                    methodName);
+                            }
+                        }
+                        else if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                        {
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            {
+                                repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                           newTemplateProperties,
+                                                                           propertyName,
+                                                                           new Date(Long.getLong(newProperty)),
+                                                                           methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeDateProperty(serviceName,
+                                                                    propertyName,
+                                                                    newTemplateProperties,
+                                                                    methodName);
+                            }
+                        }
+                        else if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN)
+                        {
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            {
+                                repositoryHelper.addObjectPropertyToInstance(serviceName,
+                                                                             newTemplateProperties,
+                                                                             propertyName,
+                                                                             newProperty,
+                                                                             methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeStringProperty(serviceName,
+                                                                      propertyName,
+                                                                      newTemplateProperties,
+                                                                      methodName);
+                            }
+                        }
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
                     {
-                        arrayPropertyValue.setArrayValues(this.replaceStringPropertiesWithPlaceholders(arrayPropertyValue.getArrayValues(),
-                                                                                                       placeholderProperties));
+                        arrayPropertyValue.setArrayValues(this.replacePropertiesWithPlaceholders(arrayPropertyValue.getArrayValues(),
+                                                                                                 placeholderProperties));
 
                         newTemplateProperties.setProperty(propertyName, arrayPropertyValue);
                     }
                     else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
                     {
-                        mapPropertyValue.setMapValues(this.replaceStringPropertiesWithPlaceholders(mapPropertyValue.getMapValues(),
-                                                                                                   placeholderProperties));
+                        mapPropertyValue.setMapValues(this.replacePropertiesWithPlaceholders(mapPropertyValue.getMapValues(),
+                                                                                             placeholderProperties));
                         newTemplateProperties.setProperty(propertyName, mapPropertyValue);
                     }
                 }

@@ -164,6 +164,17 @@ public class IntegrationGroupHandler
         return integrationGroupGUID;
     }
 
+    /**
+     * Return the context manager for the requested service.
+     *
+     * @param serviceURLMarker identifier for the service
+     * @return context manager or null
+     */
+    public IntegrationContextManager getContextManager(String serviceURLMarker)
+    {
+        return contextManagerMap.get(serviceURLMarker);
+    }
+
 
     /**
      * Request that the integration group refresh its configuration by calling the metadata server.

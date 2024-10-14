@@ -109,6 +109,8 @@ component-id-report.md
 survey-report*.md
 valid-values-report*.md
 surveys/*
+X*GUIDMap.json
+Used*GUIDMap.json
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions;
 
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CatalogTarget extends CatalogTargetProperties
 {
     private String              relationshipGUID            = null;
+    private ElementVersions     relationshipVersions        = null;
     private ElementStub         catalogTargetElement        = null;
 
 
@@ -49,6 +51,7 @@ public class CatalogTarget extends CatalogTargetProperties
         if (template != null)
         {
             relationshipGUID = template.getRelationshipGUID();
+            relationshipVersions = template.getRelationshipVersions();
             catalogTargetElement = template.getCatalogTargetElement();
         }
     }
@@ -73,6 +76,28 @@ public class CatalogTarget extends CatalogTargetProperties
     public void setRelationshipGUID(String relationshipGUID)
     {
         this.relationshipGUID = relationshipGUID;
+    }
+
+
+    /**
+     * Return the latest version information from the catalog target relationship.
+     *
+     * @return version info
+     */
+    public ElementVersions getRelationshipVersions()
+    {
+        return relationshipVersions;
+    }
+
+
+    /**
+     * Set up the latest version information from the catalog target relationship.
+     *
+     * @param relationshipVersions version info
+     */
+    public void setRelationshipVersions(ElementVersions relationshipVersions)
+    {
+        this.relationshipVersions = relationshipVersions;
     }
 
 
@@ -108,9 +133,11 @@ public class CatalogTarget extends CatalogTargetProperties
     {
         return "CatalogTarget{" +
                 "relationshipGUID='" + relationshipGUID + '\'' +
+                ", relationshipVersions=" + relationshipVersions +
                 ", catalogTargetElement=" + catalogTargetElement +
                 "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -125,7 +152,9 @@ public class CatalogTarget extends CatalogTargetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         CatalogTarget that = (CatalogTarget) objectToCompare;
-        return Objects.equals(relationshipGUID, that.relationshipGUID) && Objects.equals(catalogTargetElement, that.catalogTargetElement);
+        return Objects.equals(relationshipGUID, that.relationshipGUID) &&
+                Objects.equals(relationshipVersions, that.relationshipVersions) &&
+                Objects.equals(catalogTargetElement, that.catalogTargetElement);
     }
 
     /**
@@ -136,6 +165,6 @@ public class CatalogTarget extends CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipGUID, catalogTargetElement);
+        return Objects.hash(super.hashCode(), relationshipGUID, relationshipVersions, catalogTargetElement);
     }
 }

@@ -2,7 +2,7 @@
 
 @baseURL=https://localhost:9443
 @server=integration-daemon
-@user=peterprofile
+@user=garygeeke
 
 ###
 # group: Integration Services
@@ -21,7 +21,7 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/integration-services/files-inte
 # group: Integration Services
 # @name Refresh All integration Connectors
 # Refreshes all Integration Connectors running in an integration daemon
-POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/refresh
+POST {{baseURL}}/servers/{{server}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/refresh
 
 ###
 # group: Integration Services

@@ -11,8 +11,9 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminStoreServices;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.tokenmanager.http.HTTPRequestHeadersFilter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -34,7 +35,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+
 import java.util.*;
 
 // TODO Remove when custom class loaders are in place for repository connectors
@@ -53,7 +54,7 @@ import org.apache.lucene.queryparser.classic.QueryParserBase;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "5.1-SNAPSHOT",
+                version = "5.2-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -111,6 +112,12 @@ public class OMAGServerPlatform
     String platformSecurityProvider;
     @Value("${platform.security.name:}") // Default value is zero length string
     String platformSecurityName;
+    @Value("${platform.security.secrets.provider:}") // Default value is zero length string
+    String platformSecuritySecretsProvider;
+    @Value("${platform.security.secrets.location:}") // Default value is zero length string
+    String platformSecuritySecretsLocation;
+    @Value("${platform.security.secrets.collection:}") // Default value is zero length string
+    String platformSecuritySecretsCollection;
 
     @Autowired
     private Environment env;
@@ -301,8 +308,37 @@ public class OMAGServerPlatform
 
                 if ((platformSecurityProvider != null) && (! platformSecurityProvider.isBlank()))
                 {
-                    Connection    securityConnection = new Connection();
-                    ConnectorType connectorType      = new ConnectorType();
+                    Connection    securityConnection;
+
+                    if ((platformSecuritySecretsProvider != null) && (! platformSecuritySecretsProvider.isBlank()))
+                    {
+                        VirtualConnection        virtualConnection = new VirtualConnection();
+                        List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+                        EmbeddedConnection       embeddedConnection = new EmbeddedConnection();
+
+                        Connection secretsConnection = new Connection();
+                        Endpoint   secretsEndpoint   = new Endpoint();
+                        secretsEndpoint.setAddress(platformSecuritySecretsLocation);
+                        secretsConnection.setEndpoint(secretsEndpoint);
+                        ConnectorType secretsConnectorType = new ConnectorType();
+                        secretsConnectorType.setConnectorProviderClassName(platformSecuritySecretsProvider);
+                        secretsConnection.setConnectorType(secretsConnectorType);
+                        Map<String, Object> configurationProperties = new HashMap<>();
+                        configurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), platformSecuritySecretsCollection);
+                        secretsConnection.setConfigurationProperties(configurationProperties);
+
+                        embeddedConnection.setDisplayName(SecretsStorePurpose.USER_DIRECTORY.getName());
+                        embeddedConnection.setEmbeddedConnection(secretsConnection);
+                        embeddedConnections.add(embeddedConnection);
+                        virtualConnection.setEmbeddedConnections(embeddedConnections);
+                        securityConnection = virtualConnection;
+                    }
+                    else
+                    {
+                        securityConnection = new Connection();
+                    }
+
+                    ConnectorType connectorType = new ConnectorType();
                     connectorType.setConnectorProviderClassName(platformSecurityProvider);
 
                     securityConnection.setConnectorType(connectorType);

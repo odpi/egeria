@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adminservices.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
@@ -484,9 +483,8 @@ public class OMAGServerAdminForViewServices
     private ViewServiceConfig createViewServiceConfig(ViewServiceRegistrationEntry registration,
                                                       ViewServiceRequestBody       requestBody)
     {
-        IntegrationViewServiceConfig viewServiceConfig = new IntegrationViewServiceConfig(registration);
+        ViewServiceConfig viewServiceConfig = new ViewServiceConfig(registration);
 
-        viewServiceConfig.setResourceEndpoints(requestBody.getResourceEndpoints());
         viewServiceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
         viewServiceConfig.setOMAGServerName(requestBody.getOMAGServerName());
         viewServiceConfig.setViewServiceOptions(requestBody.getViewServiceOptions());

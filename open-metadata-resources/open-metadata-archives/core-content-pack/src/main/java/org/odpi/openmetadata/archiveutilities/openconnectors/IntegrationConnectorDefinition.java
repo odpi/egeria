@@ -3,17 +3,27 @@
 
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.OMArchiveFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider;
+import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -38,19 +48,21 @@ public enum IntegrationConnectorDefinition
                            "sample-data",
                            getAllFileCataloguerConfigProperties(),
                            1440,
-                           new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER}),
+                           new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
+                           ContentPackDefinition.CORE_CONTENT_PACK),
 
     CONTENT_PACK_CATALOGUER("6bb2181e-7724-4515-ba3c-877cded55980",
-                           "ContentPacksMonitorIntegrationConnector",
-                           "Catalogs files found under the content-packs directory (folder).",
-                           DataFilesMonitorIntegrationProvider.class.getName(),
-                           "ContentPacksCataloguer",
-                           "contentpackcatnpa",
-                           null,
-                           "content-packs",
-                           getFileCataloguerConfigProperties(),
-                           14400,
-                            new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER}),
+                            "ContentPacksMonitorIntegrationConnector",
+                            "Catalogs Open Metadata Archive files found under the content-packs directory (folder) and any other folder added as a catalog target.",
+                            OMArchiveFilesMonitorIntegrationProvider.class.getName(),
+                            "ContentPacksCataloguer",
+                            "contentpackcatnpa",
+                            null,
+                            "content-packs",
+                            getFileCataloguerConfigProperties(),
+                            60,
+                            new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
+                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     GENERAL_FOLDER_CATALOGUER("1b98cdac-dd0a-4621-93db-99ef5a1098bc",
                               "GeneralFilesMonitorIntegrationConnector",
@@ -62,7 +74,8 @@ public enum IntegrationConnectorDefinition
                               null,
                               getFileCataloguerConfigProperties(),
                               60,
-                              new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER}),
+                              new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
+                              ContentPackDefinition.CORE_CONTENT_PACK),
 
     MAINTAIN_LAST_UPDATE_CATALOGUER("fd26f07c-ae44-4bc5-b457-37b43112224f",
                                     "MaintainDataFolderLastUpdateDateIntegrationConnector",
@@ -74,7 +87,8 @@ public enum IntegrationConnectorDefinition
                                     null,
                                     getAllFileCataloguerConfigProperties(),
                                     60,
-                                    new DeployedImplementationType[]{DeployedImplementationType.DATA_FOLDER}),
+                                    new String[]{DeployedImplementationType.DATA_FOLDER.getQualifiedName()},
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     JDBC_CATALOGUER("70dcd0b7-9f06-48ad-ad44-ae4d7a7762aa",
                     "JDBCIntegrationConnector",
@@ -86,7 +100,21 @@ public enum IntegrationConnectorDefinition
                     null,
                     null,
                     60,
-                    new DeployedImplementationType[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE, DeployedImplementationType.POSTGRESQL_DATABASE}),
+                    new String[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getQualifiedName()},
+                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    POSTGRES_DB_CATALOGUER("ef301220-7dfe-4c6c-bb9d-8f92d9f63823",
+                           "PostgreSQLDatabaseIntegrationConnector",
+                           "Catalogs JDBC database schemas, tables and columns attached as catalog targets.",
+                           JDBCIntegrationConnectorProvider.class.getName(),
+                           "PostgreSQLDatabaseCataloguer",
+                           "postgresdbcatnpa",
+                           null,
+                           null,
+                           null,
+                           60,
+                           new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName()},
+                           ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     POSTGRES_SERVER_CATALOGUER("36f69fd0-54ba-4f59-8a44-11ccf2687a34",
                                "PostgreSQLServerIntegrationConnector",
@@ -98,7 +126,22 @@ public enum IntegrationConnectorDefinition
                                null,
                                null,
                                60,
-                               new DeployedImplementationType[]{DeployedImplementationType.POSTGRESQL_SERVER}),
+                               new String[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName()},
+                               ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+
+    APACHE_ATLAS_EXCHANGE("5721627a-2dd4-4f95-a274-6cfb128edb97",
+                               "ApacheAtlasServerIntegrationConnector",
+                               "Catalogs the databases found in PostgreSQL Servers attached as catalog targets.",
+                               ApacheAtlasIntegrationProvider.class.getName(),
+                               "ApacheAtlasExchange",
+                               "atlascatnpa",
+                               null,
+                               null,
+                               null,
+                               60,
+                               new String[]{AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName()},
+                               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     KAFKA_SERVER_CATALOGUER("fa1f711c-0b34-4b57-8e6e-16162b132b0c",
                             "KafkaTopicIntegrationConnector",
@@ -110,7 +153,8 @@ public enum IntegrationConnectorDefinition
                             null,
                             null,
                             60,
-                            new DeployedImplementationType[]{DeployedImplementationType.APACHE_KAFKA_SERVER}),
+                            new String[]{KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName()},
+                            ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     API_CATALOGUER("b89d9a5a-2ea6-49bc-a4fc-e7df9f3ca93e",
                    "OpenAPIIntegrationConnector",
@@ -122,7 +166,8 @@ public enum IntegrationConnectorDefinition
                    null,
                    null,
                    60,
-                   new DeployedImplementationType[]{DeployedImplementationType.OMAG_SERVER_PLATFORM}),
+                   new String[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName()},
+                   ContentPackDefinition.APIS_CONTENT_PACK),
 
     UC_CATALOG_CATALOGUER("74dde22f-2249-4ea3-af2b-b39e73f79b81",
                           "UnityCatalogInsideCatalogIntegrationConnector",
@@ -134,7 +179,8 @@ public enum IntegrationConnectorDefinition
                           null,
                           null,
                           60,
-                          new DeployedImplementationType[]{DeployedImplementationType.OSS_UNITY_CATALOG_SERVER}),
+                          new String[]{UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName()},
+                          ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     UC_SERVER_CATALOGUER("06d068d9-9e08-4e67-8c59-073bbf1013af",
                          "UnityCatalogServerIntegrationConnector",
@@ -146,7 +192,8 @@ public enum IntegrationConnectorDefinition
                          null,
                          getUCServerConfigProperties(),
                          60,
-                         new DeployedImplementationType[]{DeployedImplementationType.OSS_UNITY_CATALOG_SERVER}),
+                         new String[]{UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName()},
+                         ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     OMAG_SERVER_PLATFORM_CATALOGUER("dee84e6e-7a96-4975-86c1-152fb3ab759b",
                                     "OMAGServerPlatformIntegrationConnector",
@@ -158,55 +205,60 @@ public enum IntegrationConnectorDefinition
                                     null,
                                     null,
                                     60,
-                                    new DeployedImplementationType[]{DeployedImplementationType.OMAG_SERVER_PLATFORM}),
+                                    new String[]{EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName()},
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
 
     OPEN_LINEAGE_API_PUBLISHER("2156bc98-973a-4859-908d-4ccc96f53cc5",
-                                    "OpenLineageAPIPublisherIntegrationConnector",
-                                    "Publishes open lineage events to the APIs attached as catalog targets.",
-                                    APIBasedOpenLineageLogStoreProvider.class.getName(),
-                                    "OpenLineageAPIPublisher",
-                                    "olapipubnpa",
-                                    null,
-                                    null,
-                                    null,
-                                    60,
-                                    new DeployedImplementationType[]{DeployedImplementationType.MARQUEZ_SERVER}),
+                               "OpenLineageAPIPublisherIntegrationConnector",
+                               "Publishes open lineage events to the APIs attached as catalog targets.",
+                               APIBasedOpenLineageLogStoreProvider.class.getName(),
+                               "OpenLineageAPIPublisher",
+                               "olapipubnpa",
+                               null,
+                               null,
+                               null,
+                               60,
+                               new String[]{DeployedImplementationType.MARQUEZ_SERVER.getQualifiedName()},
+                               ContentPackDefinition.CORE_CONTENT_PACK),
 
     OPEN_LINEAGE_FILE_PUBLISHER("6271b678-7d22-4cdf-87b1-45b366beaf4e",
-                               "OpenLineageFilePublisherIntegrationConnector",
-                               "Publishes open lineage events as JSON files to each of the folders attached as catalog targets.",
-                               FileBasedOpenLineageLogStoreProvider.class.getName(),
-                               "OpenLineageFilePublisher",
-                               "olfilepubnpa",
-                               null,
-                               null,
-                               null,
-                               60,
-                               new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER}),
+                                "OpenLineageFilePublisherIntegrationConnector",
+                                "Publishes open lineage events as JSON files to each of the folders attached as catalog targets.",
+                                FileBasedOpenLineageLogStoreProvider.class.getName(),
+                                "OpenLineageFilePublisher",
+                                "olfilepubnpa",
+                                null,
+                                "logs/openlineage",
+                                null,
+                                60,
+                                new String[]{DeployedImplementationType.FILE_FOLDER.getQualifiedName(), DeployedImplementationType.DATA_FOLDER.getQualifiedName()},
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
     OPEN_LINEAGE_GA_PUBLISHER("206f8faf-04da-4b6f-8280-eeee3943afeb",
-                               "OpenLineageGovernanceActionPublisherIntegrationConnector",
-                               "Publishes open lineage events as governance actions run in the open metadata ecosystem.",
-                               GovernanceActionOpenLineageIntegrationProvider.class.getName(),
-                               "OpenLineageGovernanceActionPublisher",
-                               "olgapubnpa",
-                               null,
-                               null,
-                               null,
-                               60,
-                               null),
-
-    OPEN_LINEAGE_CATALOGUER("3347ac71-8dd2-403a-bc16-75a71be64bd7",
-                              "OpenLineageCataloguerIntegrationConnector",
-                              "Catalogs the resources detailed in the open lineage events received by the integration daemon.",
-                              OpenLineageCataloguerIntegrationProvider.class.getName(),
-                              "OpenLineageCataloguer",
-                              "olcatnpa",
+                              "OpenLineageGovernanceActionPublisherIntegrationConnector",
+                              "Publishes open lineage events as governance actions run in the open metadata ecosystem.",
+                              GovernanceActionOpenLineageIntegrationProvider.class.getName(),
+                              "OpenLineageGovernanceActionPublisher",
+                              "olgapubnpa",
                               null,
                               null,
                               null,
                               60,
-                              null),
+                              null,
+                              ContentPackDefinition.CORE_CONTENT_PACK),
+
+    OPEN_LINEAGE_CATALOGUER("3347ac71-8dd2-403a-bc16-75a71be64bd7",
+                            "OpenLineageCataloguerIntegrationConnector",
+                            "Catalogs the resources detailed in the open lineage events received by the integration daemon.",
+                            OpenLineageCataloguerIntegrationProvider.class.getName(),
+                            "OpenLineageCataloguer",
+                            "olcatnpa",
+                            null,
+                            null,
+                            null,
+                            60,
+                            null,
+                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     OPEN_LINEAGE_KAFKA_LISTENER("980b989c-de78-4e6a-a58d-51049d7381bf",
                                 "OpenLineageKafkaListenerIntegrationConnector",
@@ -218,11 +270,50 @@ public enum IntegrationConnectorDefinition
                                 null,
                                 null,
                                 60,
-                                null),
+                                new String[]{DeployedImplementationType.APACHE_KAFKA_TOPIC.getQualifiedName()},
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
+    HARVEST_OPEN_METADATA("f8bf326b-d613-4ece-a12e-a1423bc272d7",
+                          "HarvestOpenMetadataIntegrationConnector",
+                          "Monitors metadata changes in the open metadata ecosystem and populates a PostgreSQL database schema.",
+                          HarvestOpenMetadataProvider.class.getName(),
+                          "HarvestOpenMetadata",
+                          "nannyomnpa",
+                          null,
+                          null,
+                          null,
+                          60,
+                          new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName()},
+                          ContentPackDefinition.NANNY_CONTENT_PACK),
 
+    HARVEST_SURVEYS("fae162c3-2bfd-467f-9c47-2e3b63a655de",
+                    "HarvestSurveysIntegrationConnector",
+                    "Scans for new survey reports in the open metadata ecosystem and populates a PostgreSQL database schema.",
+                    HarvestSurveysProvider.class.getName(),
+                    "HarvestSurveys",
+                    "nannysrnpa",
+                    null,
+                    null,
+                    null,
+                    60,
+                    new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName()},
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
+
+    HARVEST_ACTIVITY("856501d9-ec29-4e67-9cd7-120f53710ffa",
+                    "HarvestActivityIntegrationConnector",
+                    "Listens for audit log records published through specific Apache Kafka Topics and populates a PostgreSQL database schema or folder.",
+                    DistributeAuditEventsFromKafkaProvider.class.getName(),
+                    "HarvestActivity",
+                    "nannyalnpa",
+                    null,
+                    null,
+                    null,
+                    60,
+                    new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
+                            DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
     ;
-    
+
 
     /**
      * Get the configuration properties for the Unity Catalog Server Cataloguer.
@@ -267,17 +358,18 @@ public enum IntegrationConnectorDefinition
     }
 
 
-    private final String                       guid;
-    private final String                       displayName;
-    private final String                       description;
-    private final String                       connectorProviderClassName;
-    private final String                       connectorName;
-    private final String                       connectorUserId;
-    private final String                       metadataSourceQualifiedName;
-    private final String                       endpointAddress;
-    private final Map<String, Object>          configurationProperties;
-    private final long                         refreshTimeInterval;
-    private final DeployedImplementationType[] deployedImplementationTypes;
+    private final String                guid;
+    private final String                displayName;
+    private final String                description;
+    private final String                connectorProviderClassName;
+    private final String                connectorName;
+    private final String                connectorUserId;
+    private final String                metadataSourceQualifiedName;
+    private final String                endpointAddress;
+    private final Map<String, Object>   configurationProperties;
+    private final long                  refreshTimeInterval;
+    private final String[]              deployedImplementationTypes;
+    private final ContentPackDefinition contentPackDefinition;
 
 
     IntegrationConnectorDefinition(String                       guid,
@@ -290,7 +382,8 @@ public enum IntegrationConnectorDefinition
                                    String                       endpointAddress,
                                    Map<String, Object>          configurationProperties,
                                    long                         refreshTimeInterval,
-                                   DeployedImplementationType[] deployedImplementationTypes)
+                                   String[]                     deployedImplementationTypes,
+                                   ContentPackDefinition        contentPackDefinition)
     {
         this.guid                        = guid;
         this.displayName                 = displayName;
@@ -303,6 +396,7 @@ public enum IntegrationConnectorDefinition
         this.configurationProperties     = configurationProperties;
         this.refreshTimeInterval         = refreshTimeInterval;
         this.deployedImplementationTypes = deployedImplementationTypes;
+        this.contentPackDefinition       = contentPackDefinition;
     }
 
 
@@ -320,11 +414,12 @@ public enum IntegrationConnectorDefinition
     /**
      * Return the unique name of the integration connector.
      *
+     * @param integrationGroupQualifiedName qualified name of the associated integration group
      * @return string
      */
-    public String getQualifiedName()
+    public String getQualifiedName(String integrationGroupQualifiedName)
     {
-        return OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":" + displayName;
+        return integrationGroupQualifiedName + ":" + displayName;
     }
 
 
@@ -428,11 +523,11 @@ public enum IntegrationConnectorDefinition
 
 
     /**
-     * Return the deployed implementation type that this connector supports
+     * Return the qualified name for the deployed implementation type that this connector supports
      *
      * @return enum
      */
-    public List<DeployedImplementationType> getDeployedImplementationTypes()
+    public List<String> getDeployedImplementationTypes()
     {
         if (deployedImplementationTypes == null)
         {
@@ -451,6 +546,17 @@ public enum IntegrationConnectorDefinition
     public ResourceUse getResourceUse()
     {
         return ResourceUse.CATALOG_RESOURCE;
+    }
+
+
+    /**
+     * Get identifier of content pack where this template should be located.
+     *
+     * @return content pack definition
+     */
+    public ContentPackDefinition getContentPackDefinition()
+    {
+        return contentPackDefinition;
     }
 
 

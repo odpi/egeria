@@ -632,6 +632,58 @@ public interface MetadataElementInterface
 
 
     /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the placeholder values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String getMetadataElementFromTemplate(String                         userId,
+                                          String                         externalSourceGUID,
+                                          String                         externalSourceName,
+                                          String                         metadataElementTypeName,
+                                          String                         anchorGUID,
+                                          boolean                        isOwnAnchor,
+                                          Date                           effectiveFrom,
+                                          Date                           effectiveTo,
+                                          String                         templateGUID,
+                                          ElementProperties              replacementProperties,
+                                          Map<String, String>            placeholderProperties,
+                                          String                         parentGUID,
+                                          String                         parentRelationshipTypeName,
+                                          ElementProperties              parentRelationshipProperties,
+                                          boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
+
+
+    /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
      * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceAllProperties flag.

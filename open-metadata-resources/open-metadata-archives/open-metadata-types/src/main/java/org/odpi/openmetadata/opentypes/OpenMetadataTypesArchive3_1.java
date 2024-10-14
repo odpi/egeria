@@ -201,9 +201,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        final String typeName = "OperatingPlatform";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OPERATING_PLATFORM.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -214,14 +212,9 @@ public class OpenMetadataTypesArchive3_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "operatingSystemPatchLevel";
-        final String attribute1Description     = "Level of patches applied to the operating system.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.name,
+                                                           OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.description,
+                                                           OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -259,14 +252,12 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "Defines the base software installed on the operating platform.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -277,13 +268,12 @@ public class OpenMetadataTypesArchive3_1
         final String                     end1AttributeName            = "packagedInOperatingPlatforms";
         final String                     end1AttributeDescription     = "The operating platforms that use this collection of software packages.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
@@ -294,13 +284,12 @@ public class OpenMetadataTypesArchive3_1
         final String                     end2AttributeName            = "includesSoftwarePackages";
         final String                     end2AttributeDescription     = "The collection of software packages that are included in the operating platform.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -426,11 +415,9 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "A persistent storage volume.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -444,14 +431,12 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "Links a host to a persistent storage volume.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -462,13 +447,12 @@ public class OpenMetadataTypesArchive3_1
         final String                     end1AttributeName            = "hosts";
         final String                     end1AttributeDescription     = "The hosts that are accessing the storage.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
@@ -479,13 +463,12 @@ public class OpenMetadataTypesArchive3_1
         final String                     end2AttributeName            = "storageVolumes";
         final String                     end2AttributeDescription     = "The storage available to a host.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -644,11 +627,9 @@ public class OpenMetadataTypesArchive3_1
         final String descriptionGUID = OpenMetadataType.CATALOG.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.CATALOG.wikiURL;
 
-        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                  description,
                                                  descriptionGUID,
                                                  descriptionWiki);
@@ -663,11 +644,9 @@ public class OpenMetadataTypesArchive3_1
         final String descriptionGUID = OpenMetadataType.DATA_MANAGER.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.DATA_MANAGER.wikiURL;
 
-        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                  description,
                                                  descriptionGUID,
                                                  descriptionWiki);
@@ -689,22 +668,9 @@ public class OpenMetadataTypesArchive3_1
 
     private ClassificationDef addConnectorTypeDirectoryClassification()
     {
-        final String guid = "9678ef11-ed7e-404b-a041-736df7514339";
-
-        final String name            = "ConnectorTypeDirectory";
-        final String description     = "Identifies a collection of related connector types.";
-        final String descriptionGUID = null;
-
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("Collection"));
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  linkedToEntities,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
 
@@ -712,19 +678,8 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addConnectorCategoryEntity()
     {
-        final String guid = "fb60761f-7afd-4d3d-9efa-24bc85a7b22e";
-
-        final String name            = "ConnectorCategory";
-        final String description     = "A detailed description of the effect of some data processing.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONNECTOR_CATEGORY,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
@@ -732,55 +687,19 @@ public class OpenMetadataTypesArchive3_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
-        final String attribute3Name            = "targetTechnologySource";
-        final String attribute3Description     = "Name of the organization providing the technology that the connectors access. For example, Apache Software Foundation";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "targetTechnologyName";
-        final String attribute4Description     = "Name of the technology that the connectors access. For example, Apache Kafka.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute7Name            = "recognizedAdditionalProperties";
-        final String attribute7Description     = "List of additional connection property names supported by the connector implementations.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "recognizedSecuredProperties";
-        final String attribute8Description     = "List of secured connection property names supported by the connector implementations.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "recognizedConfigurationProperties";
-        final String attribute9Description     = "List of secured connection property names supported by the connector implementations.";
-        final String attribute9DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME);
         properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute7Name,
-                                                                     attribute7Description,
-                                                                     attribute7DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES);
         properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute8Name,
-                                                                     attribute8Description,
-                                                                     attribute8DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES);
         properties.add(property);
-        property = archiveHelper.getMapStringBooleanTypeDefAttribute(attribute9Name,
-                                                                     attribute9Description,
-                                                                     attribute9DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -794,9 +713,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        final String typeName = "ConnectorType";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTOR_TYPE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -807,69 +724,23 @@ public class OpenMetadataTypesArchive3_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "supportedAssetTypeName";
-        final String attribute1Description     = "Type of asset supported by the connector implementation.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "expectedDataFormat";
-        final String attribute2Description     = "Description of the format of the data expected by the connector implementation.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "connectorFrameworkName";
-        final String attribute3Description     = "Name of the framework that the connector implements. The default is 'Open Connector Framework (OCF)'";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "connectorInterfaceLanguage";
-        final String attribute4Description     = "The programming language used to implement the connector's interface.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "connectorInterfaces";
-        final String attribute5Description     = "List of interfaces supported by the connector.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "targetTechnologySource";
-        final String attribute6Description     = "Name of the organization providing the technology that the connectors access. For example, Apache Software Foundation";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "targetTechnologyName";
-        final String attribute7Description     = "Name of the technology that the connectors access. For example, Apache Kafka.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "targetTechnologyInterfaces";
-        final String attribute8Description     = "Names of the technology's interfaces that the connectors use.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "targetTechnologyVersions";
-        final String attribute9Description     = "List of versions of the technology that the connector implementation supports.";
-        final String attribute9DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_DATA_FORMAT);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute5Name,
-                                                                attribute5Description,
-                                                                attribute5DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACES);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute8Name,
-                                                                attribute8Description,
-                                                                attribute8DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute9Name,
-                                                                attribute9Description,
-                                                                attribute9DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -879,54 +750,39 @@ public class OpenMetadataTypesArchive3_1
 
     private RelationshipDef addConnectorImplementationChoiceRelationship()
     {
-        final String guid = "633648f3-c951-4ad7-b975-9fc04e0f3d2e";
-
-        final String name            = "ConnectorImplementationChoice";
-        final String description     = "Relates a connector category for a specific type of technology with the connector types that support it.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ConnectorCategory";
         final String                     end1AttributeName            = "connectorCategories";
         final String                     end1AttributeDescription     = "The categories that a connector type belongs to.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_CATEGORY.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ConnectorType";
         final String                     end2AttributeName            = "connectorTypes";
         final String                     end2AttributeDescription     = "The connector types that support the technology described in the connector category.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_TYPE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;

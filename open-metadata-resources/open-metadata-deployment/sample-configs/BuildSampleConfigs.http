@@ -75,6 +75,11 @@ Content-Type: application/json
 ###
 # Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/access-services
+Content-Type: application/json
+
+{
+  "KarmaPointIncrement" : "1"
+}
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
@@ -137,18 +142,6 @@ Content-Type: application/json
   "engineList": [
     {
       "class": "EngineConfig",
-      "engineId": "4fe58760-ec4c-4f23-89c2-f7ae979e0e8b",
-      "engineQualifiedName": "AssetSurveys",
-      "engineUserId": "generalnpa"
-    },
-    {
-      "class": "EngineConfig",
-      "engineId": "a80b17a8-ce6f-4cbc-b8bc-ff71b594f175",
-      "engineQualifiedName": "FileProvisioning",
-      "engineUserId": "generalnpa"
-    },
-    {
-      "class": "EngineConfig",
       "engineId": "6a86651a-c9c1-4aee-8a83-4c028d89f775",
       "engineQualifiedName": "AssetOnboarding",
       "engineUserId": "generalnpa"
@@ -194,6 +187,42 @@ Content-Type: application/json
       "engineId": "4a8f28dc-5257-49e3-bfab-6605d83537dd",
       "engineQualifiedName": "PostgreSQLGovernanceServices",
       "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "9b7a1da6-7882-41c7-b838-0e297787972f",
+      "engineQualifiedName": "ApacheAtlasSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "f5c3b142-0e10-44ae-a160-a1e4d2f32e13",
+      "engineQualifiedName": "ApacheAtlasGovernanceServices",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "6e04ff1b-1ba3-4eaf-a821-0d52951cc3c4",
+      "engineQualifiedName": "EgeriaSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d1d36d25-1176-4cd7-a46c-4dcc62990047",
+      "engineQualifiedName": "EgeriaGovernanceServices",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "5f30c642-ceb4-4374-901f-1990572aa109",
+      "engineQualifiedName": "ApacheKafkaSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "e107c6ea-7fbe-407b-b51f-e35a488ef49d",
+      "engineQualifiedName": "ApacheKafkaGovernanceServices",
+      "engineUserId": "generalnpa"
     }
   ],
   "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
@@ -218,14 +247,52 @@ A server that runs integration connectors that synchronize and exchange metadata
 ###
 # Set up the qualified name of the integration group that this server supports and the location of the
 # metadata access store active-metadata-store
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-groups/configuration
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-groups/configuration/all
 Content-Type: application/json
 
-{
-    "class": "IntegrationGroupConfig",
-    "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
-    "omagserverName" : "active-metadata-store",
-    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
-}
+[
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Default"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheAtlas"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheKafka"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:PostgreSQL"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
+    }
+]
 
 ###

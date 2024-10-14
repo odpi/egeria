@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtop
 
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
@@ -17,11 +16,9 @@ import java.util.List;
 /**
  * EventTopicAuditLogStoreConnector provides a connector implementation for an event topic audit log destination.
  */
-public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase implements VirtualConnectorExtension
+public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBase
 {
     private final List<OpenMetadataTopicConnector> topicConnectors = new ArrayList<>();
-    protected List<Connector>          embeddedConnectors          = null;
-
 
     /**
      * Default constructor used by the connector provider.
@@ -86,13 +83,11 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
             {
                 if (embeddedConnector != null)
                 {
-                    if (embeddedConnector instanceof OpenMetadataTopicConnector)
+                    if (embeddedConnector instanceof OpenMetadataTopicConnector realTopicConnector)
                     {
                         /*
                          * Successfully found an event bus connector of the right type.
                          */
-                        OpenMetadataTopicConnector realTopicConnector = (OpenMetadataTopicConnector)embeddedConnector;
-
                         topicConnectors.add(realTopicConnector);
                     }
                 }
@@ -122,21 +117,5 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
                 topicConnector.start();
             }
         }
-    }
-
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public  void disconnect() throws ConnectorCheckedException
-    {
-        /*
-         * Step through the embedded connectors and shut them down.
-         */
-        super.disconnectConnectors(this.embeddedConnectors);
-        super.disconnect();
     }
 }

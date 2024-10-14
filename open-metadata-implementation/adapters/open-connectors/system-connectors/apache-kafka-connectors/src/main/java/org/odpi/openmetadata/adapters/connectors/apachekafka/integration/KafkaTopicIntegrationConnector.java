@@ -216,7 +216,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
         {
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID());
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
 
                 if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null))
                 {

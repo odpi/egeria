@@ -20,9 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FunctionParameterInfo extends DataFieldInfo
 {
-    private FunctionParameterMode parameter_mode = null;
-    private FunctionParameterType parameter_type = null;
-    private String                parameter_default = null;
+    private String parameter_mode = null;
+    private String parameter_type = null;
+    private String parameter_default = null;
 
 
     /**
@@ -32,22 +32,22 @@ public class FunctionParameterInfo extends DataFieldInfo
     {
     }
 
-    public FunctionParameterMode getParameter_mode()
+    public String getParameter_mode()
     {
         return parameter_mode;
     }
 
-    public void setParameter_mode(FunctionParameterMode parameter_mode)
+    public void setParameter_mode(String parameter_mode)
     {
         this.parameter_mode = parameter_mode;
     }
 
-    public FunctionParameterType getParameter_type()
+    public String getParameter_type()
     {
         return parameter_type;
     }
 
-    public void setParameter_type(FunctionParameterType parameter_type)
+    public void setParameter_type(String parameter_type)
     {
         this.parameter_type = parameter_type;
     }
@@ -92,7 +92,9 @@ public class FunctionParameterInfo extends DataFieldInfo
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         FunctionParameterInfo that = (FunctionParameterInfo) objectToCompare;
-        return parameter_mode == that.parameter_mode && parameter_type == that.parameter_type && Objects.equals(parameter_default, that.parameter_default);
+        return Objects.equals(parameter_mode, that.parameter_mode) &&
+                Objects.equals(parameter_type, that.parameter_type) &&
+                Objects.equals(parameter_default, that.parameter_default);
     }
 
 

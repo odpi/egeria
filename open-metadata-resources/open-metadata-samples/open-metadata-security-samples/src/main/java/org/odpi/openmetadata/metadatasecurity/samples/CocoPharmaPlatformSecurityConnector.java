@@ -5,6 +5,9 @@ package org.odpi.openmetadata.metadatasecurity.samples;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSecurityConnector;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * CocoPharmaPlatformSecurityConnector overrides the default behavior for the security connector
  * to allow requests the Coco Pharmaceutical's server administrator APIs.  In this example,
@@ -12,8 +15,8 @@ import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSec
  */
 public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSecurityConnector
 {
-    final static String  platformAdministrator = "garygeeke";
-    final static String  platformOperations    = "system";
+    final static List<String> platformAdministrators = Arrays.asList(new String[]{"garygeeke", "erinoverview", "peterprofile"});
+    final static String       platformOperations     = "system";
 
     /**
      * Check that the calling user is authorized to create new servers.
@@ -24,7 +27,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
     {
-        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
+        if ((! platformAdministrators.contains(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserForNewServer(userId);
         }
@@ -40,7 +43,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
-        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
+        if ((! platformAdministrators.contains(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserAsOperatorForPlatform(userId);
         }
@@ -56,7 +59,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
-        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
+        if ((! platformAdministrators.contains(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserAsInvestigatorForPlatform(userId);
         }

@@ -22,6 +22,6 @@ public class OpenMetadataTypesArchiveUtility
     {
         OpenMetadataTypesArchiveWriter archiveWriter = new OpenMetadataTypesArchiveWriter();
 
-        archiveWriter.writeOpenMetadataTypesArchive();
+        archiveWriter.writeOpenMetadataTypesArchive("content-packs");
     }
 }

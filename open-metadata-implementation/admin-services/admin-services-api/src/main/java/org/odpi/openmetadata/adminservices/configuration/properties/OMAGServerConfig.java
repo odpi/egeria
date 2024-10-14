@@ -98,7 +98,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
     private EngineHostServicesConfig        engineHostServicesConfig        = null;
-    private LineageWarehouseConfig          lineageWarehouseConfig          = null;
     private List<String>                    auditTrail                      = null;
 
 
@@ -141,7 +140,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
-            lineageWarehouseConfig          = template.getOpenLineageServerConfig();
             auditTrail                      = template.getAuditTrail();
         }
     }
@@ -573,28 +571,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for open lineage services.
-     *
-     * @return OpenLineageConfig properties
-     */
-    public LineageWarehouseConfig getOpenLineageServerConfig()
-    {
-        return lineageWarehouseConfig;
-    }
-
-
-    /**
-     * Set up the configuration for open lineage services.
-     *
-     * @param lineageWarehouseConfig OpenLineageConfig properties
-     */
-    public void setOpenLineageServerConfig(LineageWarehouseConfig lineageWarehouseConfig)
-    {
-        this.lineageWarehouseConfig = lineageWarehouseConfig;
-    }
-
-
-    /**
      * Return the list of audit log entries associated with this config file.
      * The audit log simply keep track of the changed to the configuration.
      *
@@ -644,7 +620,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", viewServicesConfig=" + viewServicesConfig +
                        ", repositoryServicesConfig=" + repositoryServicesConfig +
                        ", conformanceSuiteConfig=" + conformanceSuiteConfig +
-                       ", openLineageServerConfig=" + lineageWarehouseConfig +
                        ", auditTrail=" + auditTrail +
                        '}';
     }
@@ -687,7 +662,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
                        Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                        Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
-                       Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
                        Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -704,7 +678,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getLocalServerURL(),
                             getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
                             getAccessServicesConfig(), getDynamicIntegrationGroupsConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
-                            getRepositoryServicesConfig(), getConformanceSuiteConfig(),
-                            getOpenLineageServerConfig(), getAuditTrail());
+                            getRepositoryServicesConfig(), getConformanceSuiteConfig(), getAuditTrail());
     }
 }

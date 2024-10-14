@@ -38,8 +38,8 @@ public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
-              OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME,
+        super(OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
+              OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
               null,
               InstanceStatus.ACTIVE,
               null,
@@ -66,13 +66,13 @@ public class EmbeddedConnectionBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                null,
-                                                               OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                               OpenMetadataProperty.POSITION.name,
                                                                position,
                                                                methodName);
 
         properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.ARGUMENTS_PROPERTY_NAME,
+                                                               OpenMetadataProperty.ARGUMENTS.name,
                                                                arguments,
                                                                methodName);
 
