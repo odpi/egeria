@@ -110,7 +110,7 @@ ext {
     jacksonjdk8Version = '2.17.1'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
-    snakeYamlVersion = '2.2'
+    snakeYamlVersion = '2.3'
 }
 
 dependencies {
