@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.ProvisionUnityCatalogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
@@ -87,7 +89,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Create the default integration group.
          */
         super.addIntegrationGroups(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK);
-        super.addIntegrationConnectors(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK, IntegrationGroupDefinition.DEFAULT);
+        super.addIntegrationConnectors(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK, IntegrationGroupDefinition.UNITY_CATALOG);
 
         /*
          * Create the default governance engines
@@ -132,12 +134,89 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogCatalog",
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+                                                                RequestTypeDefinition.PROVISION_UC,
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogSchema",
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
+                                                                RequestTypeDefinition.PROVISION_UC,
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogVolume",
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
+                                                                RequestTypeDefinition.PROVISION_UC,
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogTable",
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
+                                                                RequestTypeDefinition.PROVISION_UC,
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogFunction",
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
+                                                                RequestTypeDefinition.PROVISION_UC,
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();
+    }
+
+    /**
+     * Create a two-step governance action process that creates a metadata element for a particular type of server
+     * and then adds it as a catalog target for an appropriate integration connector.
+     *
+     * @param technologyType value for deployed implementation type
+     * @param provisionRequestType request type used to create the server's metadata element
+     * @param provisionEngineDefinition governance action engine
+     */
+    protected void createProvisionUnityCatalogGovernanceActionProcess(String                     technologyName,
+                                                                      String                     technologyType,
+                                                                      RequestTypeDefinition      provisionRequestType,
+                                                                      GovernanceEngineDefinition provisionEngineDefinition)
+    {
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      "Provision:" + technologyName + ":GovernanceActionProcess",
+                                                                      "Provision " + technologyType,
+                                                                      null,
+                                                                      "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "Provision:" + technologyName + ":Step1",
+                                                                        "Create the new element",
+                                                                        "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            super.addStepExecutor(step1GUID, provisionRequestType, provisionEngineDefinition);
+
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(ProvisionUnityCatalogRequestParameter.TECHNOLOGY_TYPE.getName(), technologyType);
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, requestParameters, step1GUID);
+        }
     }
 
 

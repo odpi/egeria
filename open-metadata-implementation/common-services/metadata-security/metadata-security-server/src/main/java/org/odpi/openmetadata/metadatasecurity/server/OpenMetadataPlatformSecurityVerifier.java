@@ -7,8 +7,10 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataUserSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
+import org.odpi.openmetadata.metadatasecurity.properties.OpenMetadataUserAccount;
 
 
 /**
@@ -16,8 +18,9 @@ import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode
  */
 public class OpenMetadataPlatformSecurityVerifier
 {
-    private static Connection                            platformSecurityConnection = null;
-    private static OpenMetadataPlatformSecurityConnector platformSecurityConnector  = null;
+    private static Connection                   platformSecurityConnection = null;
+    private static OpenMetadataPlatformSecurity platformSecurityConnector = null;
+    private static OpenMetadataUserSecurity     userSecurityConnector = null;
 
     /**
      * Override the default location of the configuration documents.
@@ -50,10 +53,15 @@ public class OpenMetadataPlatformSecurityVerifier
             ConnectorBroker connectorBroker = new ConnectorBroker();
             Connector       newConnector    = connectorBroker.getConnector(connection);
 
-            platformSecurityConnector = (OpenMetadataPlatformSecurityConnector)newConnector;
+            platformSecurityConnector = (OpenMetadataPlatformSecurity)newConnector;
+
+            if (newConnector instanceof OpenMetadataUserSecurity openMetadataUserSecurity)
+            {
+                userSecurityConnector     = openMetadataUserSecurity;
+            }
 
             platformSecurityConnector.setServerPlatformURL(serverPlatformURL);
-            platformSecurityConnector.start();
+            newConnector.start();
             platformSecurityConnection = connection;
         }
         catch (Exception error)
@@ -98,8 +106,7 @@ public class OpenMetadataPlatformSecurityVerifier
      * use the default store.
      *
      * @param userId calling user
-     * @throws UserNotAuthorizedException the user is not authorized to access this platform
-     */
+      */
     public static synchronized void clearPlatformSecurityConnection(String   userId) throws UserNotAuthorizedException
     {
         /*
@@ -112,6 +119,32 @@ public class OpenMetadataPlatformSecurityVerifier
 
         platformSecurityConnection = null;
         platformSecurityConnector  = null;
+    }
+
+
+    /**
+     * Return information about a user.
+     *
+     * @param userId user account identifier
+     * @return known details of the user
+     */
+    public static synchronized OpenMetadataUserAccount getUser(String userId)
+    {
+        if (userSecurityConnector != null)
+        {
+            try
+            {
+                return userSecurityConnector.getUserAccount(userId);
+            }
+            catch (Exception error)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
 

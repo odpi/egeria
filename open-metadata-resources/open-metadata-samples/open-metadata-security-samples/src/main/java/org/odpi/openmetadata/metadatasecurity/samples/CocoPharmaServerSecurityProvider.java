@@ -29,7 +29,7 @@ public class CocoPharmaServerSecurityProvider extends OpenMetadataServerSecurity
     private static final String connectorQualifiedName = "Egeria:Sample:ServerSecurity:CocoPharmaceuticals";
     private static final String connectorDisplayName   = "Coco Pharmaceuticals Server Security Connector";
     private static final String connectorDescription   = "Connector supports an in-memory user registry and authorization rules for Coco Pharmaceuticals.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/coco-pharma-server-metadata-security-connector";
+    private static final String connectorWikiPage      = "https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-samples/open-metadata-security-samples";
 
     /*
      * Class of the connector.

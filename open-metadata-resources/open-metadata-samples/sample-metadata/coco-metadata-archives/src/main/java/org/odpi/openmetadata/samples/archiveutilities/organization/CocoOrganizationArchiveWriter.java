@@ -5,6 +5,9 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaSecretsSecurityProvider;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider;
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 
 import java.text.MessageFormat;
@@ -48,6 +51,10 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
+        archiveHelper.addConnectorType(null, new CocoPharmaPlatformSecurityProvider());
+        archiveHelper.addConnectorType(null, new CocoPharmaServerSecurityProvider());
+        archiveHelper.addConnectorType(null, new CocoPharmaSecretsSecurityProvider());
+
         writeContactTypesValidValueSet();
         writeCountryCodesValidValueSet();
         writeEmployeeTypeValidValueSet();

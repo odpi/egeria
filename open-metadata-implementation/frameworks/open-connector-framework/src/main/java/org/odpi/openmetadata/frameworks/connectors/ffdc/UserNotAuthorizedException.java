@@ -279,6 +279,7 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
         }
     }
 
+
     /**
      * This is the copy/clone constructor used for creating an exception from any exception that is a subclass of OCFCheckedExceptionBase
      *

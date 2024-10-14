@@ -4126,6 +4126,7 @@ public class RepositoryHandler
                                                                                   errorHandler,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
+                                                                                  auditLog,
                                                                                   methodName);
 
                 accumulator.addRelationships(relationships);
@@ -4411,6 +4412,7 @@ public class RepositoryHandler
                                                                                   errorHandler,
                                                                                   false,
                                                                                   effectiveTime,
+                                                                                  auditLog,
                                                                                   methodName);
 
                 do

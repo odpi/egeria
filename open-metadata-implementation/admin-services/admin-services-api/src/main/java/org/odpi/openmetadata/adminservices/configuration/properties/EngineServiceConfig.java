@@ -56,7 +56,6 @@ public class EngineServiceConfig extends OMAGServerClientConfig
      *
      * @param template object to copy
      */
-    @SuppressWarnings(value = "deprecation")
     public EngineServiceConfig(EngineServiceConfig template)
     {
         super(template);

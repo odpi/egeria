@@ -337,7 +337,7 @@ public class OpenMetadataTypesArchive2_8
         final String attribute1Name            = "deployedImplementationType";
         final String attribute1Description     = "Deprecated attribute. Use the businessCapabilityType attribute to describe the type of business capability.";
         final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "deployedImplementationType";
+        final String attribute1ReplacedBy      = "businessCapabilityType";
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
                                                          attribute1Name,

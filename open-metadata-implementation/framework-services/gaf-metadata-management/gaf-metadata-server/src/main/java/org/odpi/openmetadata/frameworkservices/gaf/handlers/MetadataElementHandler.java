@@ -1625,11 +1625,18 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
 
+        String parentRelationshipTypeGUID = null;
         if (parentGUID != null)
         {
             final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
 
             invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+
+            parentRelationshipTypeGUID = invalidParameterHandler.validateTypeName(parentRelationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
         }
 
         String metadataElementTypeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
@@ -1728,62 +1735,132 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  effectiveTime,
                                                                  methodName);
 
+        String pathName = propertyHelper.getStringProperty(serviceName,
+                                                           OpenMetadataProperty.PATH_NAME.name,
+                                                           properties,
+                                                           methodName);
+        createParentRelationships(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  metadataElementGUID,
+                                  metadataElementTypeName,
+                                  pathName,
+                                  parentGUID,
+                                  parentRelationshipTypeGUID,
+                                  parentRelationshipTypeName,
+                                  parentRelationshipProperties,
+                                  parentAtEnd1,
+                                  serviceSupportedZones,
+                                  effectiveTime,
+                                  methodName);
+
+        return metadataElementGUID;
+    }
+
+
+    /**
+     * Add parent relationships.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param metadataElementGUID     newly created element
+     * @param pathName                path name property of element (if available)
+     * @param parentGUID              requested parent
+     * @param parentRelationshipTypeGUID requested parent relationship type GUID
+     * @param parentRelationshipTypeName requested parent relationship type name
+     * @param parentRelationshipProperties  requested parent relationship properties
+     * @param parentAtEnd1            which end to attach the parent
+     * @param serviceSupportedZones zones
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    private void createParentRelationships(String            userId,
+                                           String            externalSourceGUID,
+                                           String            externalSourceName,
+                                           String            metadataElementGUID,
+                                           String            metadataElementTypeName,
+                                           String            pathName,
+                                           String            parentGUID,
+                                           String            parentRelationshipTypeGUID,
+                                           String            parentRelationshipTypeName,
+                                           ElementProperties parentRelationshipProperties,
+                                           boolean           parentAtEnd1,
+                                           List<String>      serviceSupportedZones,
+                                           Date              effectiveTime,
+                                           String            methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String parentGUIDParameterName = "parentGUID";
+        final String metadataElementGUIDParameterName = "metadataElementGUID";
+
         if (metadataElementGUID != null)
         {
             if (parentGUID != null)
             {
+                MetadataElementBuilder builder = new MetadataElementBuilder(repositoryHelper, serviceName, serverName);
+
+                InstanceProperties relationshipProperties = builder.getInstanceProperties(this.getElementPropertiesAsOMRSMap(parentRelationshipProperties),
+                                                                                          null,
+                                                                                          null);
                 if (parentAtEnd1)
                 {
-                    createRelatedElementsInStore(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 parentRelationshipTypeName,
-                                                 parentGUID,
-                                                 metadataElementGUID,
-                                                 false,
-                                                 false,
-                                                 null,
-                                                 null,
-                                                 parentRelationshipProperties,
-                                                 serviceSupportedZones,
-                                                 effectiveTime,
-                                                 methodName);
+                    uncheckedLinkElementToElement(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  parentGUID,
+                                                  parentGUIDParameterName,
+                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                  metadataElementGUID,
+                                                  metadataElementGUIDParameterName,
+                                                  metadataElementTypeName,
+                                                  false,
+                                                  false,
+                                                  serviceSupportedZones,
+                                                  parentRelationshipTypeGUID,
+                                                  parentRelationshipTypeName,
+                                                  relationshipProperties,
+                                                  effectiveTime,
+                                                  methodName);
                 }
                 else
                 {
-                    createRelatedElementsInStore(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 parentRelationshipTypeName,
-                                                 metadataElementGUID,
-                                                 parentGUID,
-                                                 false,
-                                                 false,
-                                                 null,
-                                                 null,
-                                                 parentRelationshipProperties,
-                                                 serviceSupportedZones,
-                                                 effectiveTime,
-                                                 methodName);
+                    uncheckedLinkElementToElement(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  metadataElementGUID,
+                                                  metadataElementGUIDParameterName,
+                                                  metadataElementTypeName,
+                                                  parentGUID,
+                                                  parentGUIDParameterName,
+                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                  false,
+                                                  false,
+                                                  serviceSupportedZones,
+                                                  parentRelationshipTypeGUID,
+                                                  parentRelationshipTypeName,
+                                                  relationshipProperties,
+                                                  effectiveTime,
+                                                  methodName);
                 }
             }
 
-
             if ((repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.DATA_FILE.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.FILE_FOLDER.typeName)))
+                    (repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.FILE_FOLDER.typeName)))
             {
-                String pathName = propertyHelper.getStringProperty(serviceName,
-                                                                   OpenMetadataProperty.PATH_NAME.name,
-                                                                   properties,
-                                                                   methodName);
-
                 if (pathName != null)
                 {
                     filesAndFoldersHandler.addFileAssetPath(userId,
                                                             externalSourceGUID,
                                                             externalSourceName,
                                                             metadataElementGUID,
-                                                            "metadataElementGUID",
+                                                            metadataElementGUIDParameterName,
                                                             metadataElementTypeName,
                                                             pathName,
                                                             OpenMetadataProperty.PATH_NAME.name,
@@ -1793,11 +1870,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                             methodName);
                 }
             }
-
-            return metadataElementGUID;
         }
-
-        return null;
     }
 
 
@@ -1863,11 +1936,18 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
 
+        String parentRelationshipTypeGUID = null;
         if (parentGUID != null)
         {
             final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
 
             invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+
+            parentRelationshipTypeGUID = invalidParameterHandler.validateTypeName(parentRelationshipTypeName,
+                                                                                  null,
+                                                                                  serviceName,
+                                                                                  methodName,
+                                                                                  repositoryHelper);
         }
 
         String metadataElementTypeName = suppliedMetadataElementTypeName;
@@ -1970,54 +2050,75 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  placeholderPropertyValues,
                                                                  methodName);
 
-        if (metadataElementGUID != null)
+        /*
+         * This is where we add the parent relationship.  However, due to the "allowRetrieve" flag,
+         * it is possible that the entity GUID returned is for an entity that has been around for a while,
+         * and already has the parent attached.  So the code below checks that the parent is not already there.
+         */
+        if ((metadataElementGUID != null) && (parentGUID != null))
         {
-            /*
-             * If the bean is successfully created, attach it to any supplied parent.
-             */
-            if (parentGUID != null)
-            {
+            final String metadataElementGUIDParameterName = "metadataElementGUID";
 
+            EntityDetail entityDetail = this.getEntityFromRepository(userId,
+                                                                     metadataElementGUID,
+                                                                     metadataElementGUIDParameterName,
+                                                                     metadataElementTypeName,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     serviceSupportedZones,
+                                                                     null,
+                                                                     methodName);
+
+            List<Relationship> existingRelationships = null;
+            if (allowRetrieve)
+            {
+                int attachmentEnd = 2;
                 if (parentAtEnd1)
                 {
-                    createRelatedElementsInStore(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 parentRelationshipTypeName,
-                                                 parentGUID,
-                                                 metadataElementGUID,
-                                                 false,
-                                                 false,
-                                                 null,
-                                                 null,
-                                                 parentRelationshipProperties,
-                                                 serviceSupportedZones,
-                                                 effectiveTime,
-                                                 methodName);
+                    attachmentEnd = 1;
                 }
-                else
-                {
-                    createRelatedElementsInStore(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 parentRelationshipTypeName,
-                                                 metadataElementGUID,
-                                                 parentGUID,
-                                                 false,
-                                                 false,
-                                                 null,
-                                                 null,
-                                                 parentRelationshipProperties,
-                                                 serviceSupportedZones,
-                                                 effectiveTime,
-                                                 methodName);
-                }
+
+                existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
+                                                                                          entityDetail,
+                                                                                          metadataElementTypeName,
+                                                                                          parentGUID,
+                                                                                          parentRelationshipTypeGUID,
+                                                                                          parentRelationshipTypeName,
+                                                                                          attachmentEnd,
+                                                                                          false,
+                                                                                          false,
+                                                                                          effectiveFrom,
+                                                                                          effectiveTo,
+                                                                                          true,
+                                                                                          methodName);
             }
 
-            return metadataElementGUID;
+            if ((existingRelationships == null) || (existingRelationships.isEmpty()))
+            {
+                String pathName = repositoryHelper.getStringProperty(serviceName,
+                                                                     OpenMetadataProperty.PATH_NAME.name,
+                                                                     entityDetail.getProperties(),
+                                                                     methodName);
+                createParentRelationships(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          metadataElementTypeName,
+                                          pathName,
+                                          parentGUID,
+                                          parentRelationshipTypeGUID,
+                                          parentRelationshipTypeName,
+                                          parentRelationshipProperties,
+                                          parentAtEnd1,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+            }
         }
 
-        return null;
+        return metadataElementGUID;
     }
 
 
