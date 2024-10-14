@@ -46,7 +46,7 @@ ext {
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
     guavaVersion = '33.2.1-jre'
-    hamcrestVersion = '2.2'
+    hamcrestVersion = '3.0'
     hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.1.Final'
     jacksonVersion = '2.15.0'
