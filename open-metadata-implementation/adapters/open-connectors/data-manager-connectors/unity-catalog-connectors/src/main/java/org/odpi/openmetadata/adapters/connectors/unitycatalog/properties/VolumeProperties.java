@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VolumeProperties extends StoredDataProperties
 {
-    private VolumeType        volume_type         = null;
+    private String volume_type         = null;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ public class VolumeProperties extends StoredDataProperties
      *
      * @return enum
      */
-    public VolumeType getVolume_type()
+    public String getVolume_type()
     {
         return volume_type;
     }
@@ -46,7 +46,7 @@ public class VolumeProperties extends StoredDataProperties
      *
      * @param volume_type volume type
      */
-    public void setVolume_type(VolumeType volume_type)
+    public void setVolume_type(String volume_type)
     {
         this.volume_type = volume_type;
     }
@@ -79,7 +79,7 @@ public class VolumeProperties extends StoredDataProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         VolumeProperties that = (VolumeProperties) objectToCompare;
-        return volume_type == that.volume_type;
+        return Objects.equals(volume_type, that.volume_type);
     }
 
 

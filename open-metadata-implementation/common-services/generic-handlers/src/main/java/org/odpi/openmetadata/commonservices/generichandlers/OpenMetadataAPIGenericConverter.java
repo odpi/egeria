@@ -2104,7 +2104,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME,
+                                                         OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2126,7 +2126,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.EXPECTED_DATA_FORMAT,
+                                                         OpenMetadataProperty.EXPECTED_DATA_FORMAT.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2148,7 +2148,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             String connectorFrameworkName = repositoryHelper.removeStringProperty(serviceName,
-                                                                                  OpenMetadataType.CONNECTOR_FRAMEWORK_NAME,
+                                                                                  OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME.name,
                                                                                   instanceProperties,
                                                                                   methodName);
             if (connectorFrameworkName != null)
@@ -2174,7 +2174,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             String connectorInterfaceLanguage = repositoryHelper.removeStringProperty(serviceName,
-                                                                                      OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE,
+                                                                                      OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE.name,
                                                                                       instanceProperties,
                                                                                       methodName);
             if (connectorInterfaceLanguage != null)
@@ -2200,7 +2200,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.CONNECTOR_INTERFACES,
+                                                              OpenMetadataProperty.CONNECTOR_INTERFACES.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -2222,7 +2222,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TARGET_TECHNOLOGY_SOURCE,
+                                                         OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2244,7 +2244,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TARGET_TECHNOLOGY_NAME,
+                                                         OpenMetadataProperty.TARGET_TECHNOLOGY_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2266,7 +2266,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.TARGET_TECHNOLOGY_INTERFACES,
+                                                              OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -2288,7 +2288,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.TARGET_TECHNOLOGY_VERSIONS,
+                                                              OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS.name,
                                                               instanceProperties,
                                                               methodName);
         }
@@ -3951,6 +3951,50 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                          OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name,
                                                          instanceProperties,
                                                          methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the processStartTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeProcessStartTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeProcessStartTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                         OpenMetadataProperty.PROCESS_START_TIME.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the processStartTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected Date removeProcessEndTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeProcessEndTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.PROCESS_END_TIME.name,
+                                                       instanceProperties,
+                                                       methodName);
         }
 
         return null;

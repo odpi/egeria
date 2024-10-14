@@ -118,7 +118,7 @@ public class AssetCatalogResource
                     url="https://egeria-project.org/concepts/asset/"))
 
     public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String            serverName,
-                                                             @RequestParam (required = false, defaultValue = "false")
+                                                             @RequestParam (required = false, defaultValue = "true")
                                                                            boolean           startsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                                            boolean           endsWith,

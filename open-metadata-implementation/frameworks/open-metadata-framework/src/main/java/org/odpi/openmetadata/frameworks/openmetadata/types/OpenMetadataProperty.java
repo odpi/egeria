@@ -324,6 +324,11 @@ public enum OpenMetadataProperty
     REQUESTER_USER_ID("requesterUserId", DataType.STRING.getName(), "User identity for the person, process or engine that requested this action.", null, "061de8f4-87a6-45b6-b91b-d375f202fe0f"),
 
     /**
+     * Time that the ending action should start.  This is the request time plus any requested wait time.
+     */
+    REQUESTED_START_DATE("requestedStartDate", DataType.DATE.getName(), "Time that the ending action should start.  This is the request time plus any requested wait time.", null, "7bf281bf-e91c-41f5-883c-af0025d0ad66"),
+
+    /**
      * Properties that configure the governance service for this type of request.
      */
     REQUEST_PARAMETERS("requestParameters", DataType.MAP_STRING_STRING.getName(), "Request parameters to pass to the governance service when called.", null, "882a5a30-3724-41ea-90ff-667cb7627bde"),
@@ -892,7 +897,7 @@ public enum OpenMetadataProperty
     /**
      * The username of the person or process that created the instance in the external system.
      */
-    EXT_INSTANCE_CREATED_BY("externalInstanceCreatedBy"   , DataType.STRING.getName(), "The username of the person or process that created the instance in the external system.", null, "480a57d1-7300-4691-ad8b-540d97ef0870"),
+    EXT_INSTANCE_CREATED_BY("externalInstanceCreatedBy", DataType.STRING.getName(), "The username of the person or process that created the instance in the external system.", null, "480a57d1-7300-4691-ad8b-540d97ef0870"),
 
     /**
      * The date/time when the instance in the external system was created.
@@ -1422,6 +1427,7 @@ public enum OpenMetadataProperty
      */
     OPERATING_SYSTEM_PATCH_LEVEL("operatingSystemPatchLevel", DataType.STRING.getName(), "Level of patches applied to the operating system.", null, "6fdda5ad-488a-477d-a1cc-33bb8267ef4b"),
 
+    MEMBER_ROLE("memberRole", DataType.STRING.getName(), "The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.", null, "9c143e06-6a8c-47ba-acf6-28a87fef4f2b"),
     /**
      * Preferred pronouns to use when addressing this person.
      */
@@ -1491,6 +1497,11 @@ public enum OpenMetadataProperty
      * Spoken or written language preferred by the person.
      */
     PREFERRED_LANGUAGE("preferredLanguage", DataType.STRING.getName(), "Spoken or written language preferred by the person.", null, "caa48b00-1953-46f8-abda-54211f831d98"),
+
+    /**
+     * Country that is the person's primary residence.
+     */
+    RESIDENT_COUNTRY("residentCountry", DataType.STRING.getName(), "Country that is the person's primary residence.", "United Kingdom", "f4d113b2-fc77-48c9-a9b0-73cbc953e2ad"),
 
     /**
      * Principle role or level in the organization.
@@ -1656,6 +1667,51 @@ public enum OpenMetadataProperty
      * List of configuration property names supported by the connector implementation.
      */
     RECOGNIZED_CONFIGURATION_PROPERTIES("recognizedConfigurationProperties", DataType.ARRAY_STRING.getName(), "List of configuration property names supported by the connector implementation.", null, "750b88ff-c9b7-49cd-9c93-4f4c85d71e16"),
+
+    /**
+     * Type of asset supported by the connector implementation.
+     */
+    SUPPORTED_ASSET_TYPE_NAME("supportedAssetTypeName", DataType.STRING.getName(), "Type of asset supported by the connector implementation.", null, "c745e64a-a03e-4780-8a7f-46364a0d815a"),
+
+    /**
+     * Description of the format of the data expected by the connector implementation.
+     */
+    EXPECTED_DATA_FORMAT("expectedDataFormat", DataType.STRING.getName(), "Description of the format of the data expected by the connector implementation.", null, "870c0740-8797-4707-86d4-8d470c3143c5"),
+
+    /**
+     * Name of the framework that the connector implements. The default is 'Open Connector Framework (OCF)'
+     */
+    CONNECTOR_FRAMEWORK_NAME("connectorFrameworkName", DataType.STRING.getName(), "Name of the framework that the connector implements. The default is 'Open Connector Framework (OCF)'", null, "72d7f244-d71d-4efe-80d4-bd564a27ea18"),
+
+    /**
+     * The programming language used to implement the connector's interface.
+     */
+    CONNECTOR_INTERFACE_LANGUAGE("connectorInterfaceLanguage", DataType.STRING.getName(), "The programming language used to implement the connector's interface.", null, "e37051ed-baa0-46f4-a39c-cb6cbaf7a671"),
+
+    /**
+     * List of interfaces supported by the connector.
+     */
+    CONNECTOR_INTERFACES("connectorInterfaces", DataType.ARRAY_STRING.getName(), "List of interfaces supported by the connector.", null, "3ee2f999-cbbc-43e9-82df-241641950fa6"),
+
+    /**
+     * Name of the organization providing the technology that the connectors access. For example, Apache Software Foundation.
+     */
+    TARGET_TECHNOLOGY_SOURCE("targetTechnologySource", DataType.STRING.getName(), "Name of the organization providing the technology that the connectors access. For example, Apache Software Foundation", null, "b8e9b52c-ea79-46b9-ad2e-514807115d99"),
+
+    /**
+     * Name of the technology that the connectors access. For example, Apache Kafka.
+     */
+    TARGET_TECHNOLOGY_NAME("targetTechnologyName", DataType.STRING.getName(), "Name of the technology that the connectors access. For example, Apache Kafka.", null, "a59e71d3-6a81-4f3d-98ee-d5d7bdadd351"),
+
+    /**
+     * Names of the technology's interfaces that the connectors use.
+     */
+    TARGET_TECHNOLOGY_INTERFACES("targetTechnologyInterfaces", DataType.ARRAY_STRING.getName(), "Names of the technology's interfaces that the connectors use.", null, "755d4353-7f33-44b2-805b-dd2c5ac2f916"),
+
+    /**
+     * List of versions of the technology that the connector implementation supports.
+     */
+    TARGET_TECHNOLOGY_VERSIONS("targetTechnologyVersions", DataType.ARRAY_STRING.getName(), "List of versions of the technology that the connector implementation supports.", null, "48324db4-d4a6-46d7-8430-0dba4473f13b"),
 
     /**
      * Additional arguments needed by the virtual connector when using each connection.

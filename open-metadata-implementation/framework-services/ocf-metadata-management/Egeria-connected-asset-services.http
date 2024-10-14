@@ -1,5 +1,10 @@
 # Egeria-connected-asset-services
 
+@guid=8c3705e1-7d99-4949-962f-69e226a13d1f
+###
+@assetGUID=9a352b8a-e286-413b-bed0-71f9fe1d565a
+@serviceURLName=asset-consumer
+
 ###
 # @name Get Connection By GUID
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/{{guid}}
@@ -20,9 +25,7 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURL
 # @name Get Connected Asset Summary
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}
 
-###
-@assetGUID=90e35d5a-cc22-4b5e-9762-7845daaced0e
-@serviceURLName=asset-consumer
+
 ###
 # @name Get Asset Summary
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}

@@ -1182,6 +1182,7 @@ public class OpenGovernanceRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<GovernanceActionProcessElement> processHandler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
+            EngineActionHandler<EngineActionElement> engineActionHandler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
             GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement>
                     handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
                                                                                     serverName,
@@ -1194,7 +1195,7 @@ public class OpenGovernanceRESTServices
                 governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
                                                                                                              processGUID,
                                                                                                              processGUIDParameterName,
-                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                             OpenMetadataType.PROCESS.typeName,
                                                                                                              false,
                                                                                                              false,
                                                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -1206,7 +1207,7 @@ public class OpenGovernanceRESTServices
                 governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
                                                                                                              processGUID,
                                                                                                              processGUIDParameterName,
-                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                             OpenMetadataType.PROCESS.typeName,
                                                                                                              false,
                                                                                                              false,
                                                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -1214,12 +1215,24 @@ public class OpenGovernanceRESTServices
                                                                                                              methodName));
             }
 
+            String processTypeName = governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName();
 
-            governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
-                                                                                             serviceURLMarker,
-                                                                                             userId,
-                                                                                             processGUID,
-                                                                                             methodName));
+            if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME.equals(processTypeName))
+            {
+                governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
+                                                                                                 serviceURLMarker,
+                                                                                                 userId,
+                                                                                                 processGUID,
+                                                                                                 methodName));
+            }
+            else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
+            {
+                governanceActionProcessGraph.setFirstProcessStep(this.getFirstEngineStepElement(serverName,
+                                                                                                serviceURLMarker,
+                                                                                                userId,
+                                                                                                processGUID,
+                                                                                                methodName));
+            }
 
             if (governanceActionProcessGraph.getFirstProcessStep() != null)
             {
@@ -1228,13 +1241,27 @@ public class OpenGovernanceRESTServices
                 List<String>  processedGUIDs = new ArrayList<>();
 
                 processedGUIDs.add(firstProcessStepGUID);
-                getNextProcessSteps(userId,
-                                    handler,
-                                    firstProcessStepGUID,
-                                    governanceActionProcessGraph,
-                                    processedGUIDs,
-                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                    invalidParameterHandler.getMaxPagingSize());
+
+                if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME.equals(processTypeName))
+                {
+                    getNextProcessSteps(userId,
+                                        handler,
+                                        firstProcessStepGUID,
+                                        governanceActionProcessGraph,
+                                        processedGUIDs,
+                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                        invalidParameterHandler.getMaxPagingSize());
+                }
+                else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
+                {
+                    getNextEngineSteps(userId,
+                                        engineActionHandler,
+                                        firstProcessStepGUID,
+                                        governanceActionProcessGraph,
+                                        processedGUIDs,
+                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                        invalidParameterHandler.getMaxPagingSize());
+                }
             }
 
             response.setElement(governanceActionProcessGraph);
@@ -1362,6 +1389,120 @@ public class OpenGovernanceRESTServices
     }
 
 
+
+    /**
+     * Retrieve the next step in the process.
+     *
+     * @param userId calling user
+     * @param handler access to metadata
+     * @param processStepGUID current step
+     * @param governanceActionProcessGraph current state of the graph
+     * @param processedGUIDs the guids we have processed
+     * @param supportedZones zones for this service
+     * @param pageSize max page size
+     * @throws InvalidParameterException bad property
+     * @throws PropertyServerException repository in error
+     * @throws UserNotAuthorizedException user authorization exception
+     */
+    private void getNextEngineSteps(String                                    userId,
+                                     EngineActionHandler<EngineActionElement> handler,
+                                     String                                   processStepGUID,
+                                     GovernanceActionProcessGraph             governanceActionProcessGraph,
+                                     List<String>                             processedGUIDs,
+                                     List<String>                             supportedZones,
+                                     int                                      pageSize) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "getNextEngineSteps";
+
+        RepositoryHandler repositoryHandler = handler.getRepositoryHandler();
+
+        int startFrom = 0;
+        List<Relationship> nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                                   processStepGUID,
+                                                                                                   OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                                                   OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
+                                                                                                   OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
+                                                                                                   2,
+                                                                                                   false,
+                                                                                                   false,
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   null,
+                                                                                                   methodName);
+
+        while (nextProcessStepRelationships != null)
+        {
+            for (Relationship relationship : nextProcessStepRelationships)
+            {
+                this.addEngineStep(userId,
+                                   handler,
+                                   relationship.getEntityOneProxy().getGUID(),
+                                   governanceActionProcessGraph,
+                                   processedGUIDs,
+                                   supportedZones);
+
+                NextGovernanceActionProcessStepLink processStepLink = new NextGovernanceActionProcessStepLink();
+
+                processStepLink.setPreviousProcessStep(handler.getElementStub(relationship.getEntityOneProxy()));
+                processStepLink.setNextProcessStep(handler.getElementStub(relationship.getEntityTwoProxy()));
+                processStepLink.setNextProcessStepLinkGUID(relationship.getGUID());
+                processStepLink.setGuard(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
+                                                                                         OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                         relationship.getProperties(),
+                                                                                         methodName));
+                processStepLink.setMandatoryGuard(handler.getRepositoryHelper().getBooleanProperty(handler.getServiceName(),
+                                                                                                   OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                                   relationship.getProperties(),
+                                                                                                   methodName));
+
+                List<NextGovernanceActionProcessStepLink> processStepLinks = governanceActionProcessGraph.getProcessStepLinks();
+
+                if (processStepLinks == null)
+                {
+                    processStepLinks = new ArrayList<>();
+                }
+
+                processStepLinks.add(processStepLink);
+                governanceActionProcessGraph.setProcessStepLinks(processStepLinks);
+
+                if (! processedGUIDs.contains(relationship.getEntityTwoProxy().getGUID()))
+                {
+                    this.addEngineStep(userId,
+                                       handler,
+                                       relationship.getEntityTwoProxy().getGUID(),
+                                       governanceActionProcessGraph,
+                                       processedGUIDs,
+                                       supportedZones);
+
+                    getNextEngineSteps(userId,
+                                       handler,
+                                       relationship.getEntityTwoProxy().getGUID(),
+                                       governanceActionProcessGraph,
+                                       processedGUIDs,
+                                       supportedZones,
+                                       pageSize);
+                }
+            }
+
+            startFrom = startFrom + pageSize;
+            nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    processStepGUID,
+                                                                                    OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                                    OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
+                                                                                    OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
+                                                                                    2,
+                                                                                    false,
+                                                                                    false,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    null,
+                                                                                    methodName);
+        }
+    }
+
+
     /**
      * Save the next step in the process.
      *
@@ -1393,20 +1534,69 @@ public class OpenGovernanceRESTServices
                                                                                                                  null,
                                                                                                                  methodName);
 
-            List<GovernanceActionProcessStepElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+            List<GovernanceActionProcessStepExecutionElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
 
             if (processStepElements == null)
             {
                 processStepElements = new ArrayList<>();
             }
 
-            processStepElements.add(processStepElement);
+            processStepElements.add(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
             governanceActionProcessGraph.setNextProcessSteps(processStepElements);
 
             processedGUIDs.add(processStepGUID);
         }
     }
+
+
+    /**
+     * Save the next step in the process.
+     *
+     * @param userId calling user
+     * @param handler access to metadata
+     * @param processStepGUID current step
+     * @param governanceActionProcessGraph current state of the graph
+     * @param processedGUIDs the guids we have processed
+     * @param supportedZones zones for this service
+     * @throws InvalidParameterException bad property
+     * @throws PropertyServerException repository in error
+     * @throws UserNotAuthorizedException user authorization exception
+     */
+    private void addEngineStep(String                                   userId,
+                               EngineActionHandler<EngineActionElement> handler,
+                               String                                  processStepGUID,
+                               GovernanceActionProcessGraph            governanceActionProcessGraph,
+                               List<String>                            processedGUIDs,
+                               List<String>                            supportedZones) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "addEngineStep";
+
+        if (! processedGUIDs.contains(processStepGUID))
+        {
+            EngineActionElement engineActionElement = handler.getEngineAction(userId,
+                                                                              processStepGUID,
+                                                                              supportedZones,
+                                                                              null,
+                                                                              methodName);
+
+            List<GovernanceActionProcessStepExecutionElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+
+            if (processStepElements == null)
+            {
+                processStepElements = new ArrayList<>();
+            }
+
+            processStepElements.add(new GovernanceActionProcessStepExecutionElement(engineActionElement));
+
+            governanceActionProcessGraph.setNextProcessSteps(processStepElements);
+
+            processedGUIDs.add(processStepGUID);
+        }
+    }
+
 
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
@@ -2019,11 +2209,12 @@ public class OpenGovernanceRESTServices
                                                                                       firstActionProcessStepLink.getProperties(),
                                                                                       methodName));
 
-            firstProcessStep.setElement(handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                                     firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
-                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                     null,
-                                                                                     methodName));
+            GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                 firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
+                                                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                                 null,
+                                                                                                                 methodName);
+            firstProcessStep.setElement(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
             return firstProcessStep;
         }
@@ -2031,6 +2222,67 @@ public class OpenGovernanceRESTServices
         return null;
     }
 
+
+
+    /**
+     * Return the first process step element of a governance action process.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param processInstanceGUID unique identifier of the governance action process
+     * @param methodName calling method
+     * @return first process step element
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException the user is not authorized to issue this request
+     * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
+     */
+    private FirstGovernanceActionProcessStepElement getFirstEngineStepElement(String serverName,
+                                                                              String serviceURLMarker,
+                                                                              String userId,
+                                                                              String processInstanceGUID,
+                                                                              String methodName) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
+
+        final String processGUIDParameterName = "processInstanceGUID";
+
+        Relationship firstActionProcessStepLink = handler.getUniqueAttachmentLink(userId,
+                                                                                  processInstanceGUID,
+                                                                                  processGUIDParameterName,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
+                                                                                  null,
+                                                                                  OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                                  0,
+                                                                                  false,
+                                                                                  false,
+                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                  null,
+                                                                                  methodName);
+
+        if ((firstActionProcessStepLink != null) && (firstActionProcessStepLink.getEntityTwoProxy() != null))
+        {
+            FirstGovernanceActionProcessStepElement firstProcessStep = new FirstGovernanceActionProcessStepElement();
+
+            firstProcessStep.setLinkGUID(firstActionProcessStepLink.getGUID());
+
+            EngineActionElement engineActionElement = handler.getEngineAction(userId,
+                                                                              firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
+                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                              null,
+                                                                              methodName);
+
+            firstProcessStep.setElement(new GovernanceActionProcessStepExecutionElement(engineActionElement));
+
+            return firstProcessStep;
+        }
+
+        return null;
+    }
 
 
     /**
@@ -2276,11 +2528,13 @@ public class OpenGovernanceRESTServices
                                                                                       relationship.getProperties(),
                                                                                       methodName));
 
-                        element.setNextProcessStep(handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                                                relationship.getEntityTwoProxy().getGUID(),
-                                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                                null,
-                                                                                                methodName));
+                        GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                             relationship.getEntityTwoProxy().getGUID(),
+                                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                                             null,
+                                                                                                                             methodName);
+
+                        element.setNextProcessStep(new GovernanceActionProcessStepExecutionElement(processStepElement));
 
                         elements.add(element);
                     }

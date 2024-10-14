@@ -414,11 +414,12 @@ public enum IntegrationConnectorDefinition
     /**
      * Return the unique name of the integration connector.
      *
+     * @param integrationGroupQualifiedName qualified name of the associated integration group
      * @return string
      */
-    public String getQualifiedName()
+    public String getQualifiedName(String integrationGroupQualifiedName)
     {
-        return OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":" + displayName;
+        return integrationGroupQualifiedName + ":" + displayName;
     }
 
 

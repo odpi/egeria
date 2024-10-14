@@ -47,6 +47,7 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
+    @SuppressWarnings(value = "deprecation")
     public DigitalServiceBuilder(String                                 displayName,
                                  String                                 description,
                                  String                                 versionNumber,

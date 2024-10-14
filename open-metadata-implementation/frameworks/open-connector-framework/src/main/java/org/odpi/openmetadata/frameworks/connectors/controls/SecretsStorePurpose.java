@@ -18,8 +18,14 @@ public enum SecretsStorePurpose
     /**
      * A password used to prove a user's identity - in clear text.
      */
-    REST_BASIC_AUTHENTICATION("basic",
+    REST_BASIC_AUTHENTICATION("basicAuthentication",
                               "A password used to prove a user's identity - in clear text."),
+
+    /**
+     * A collection of user details including secrets used to prove the user's identity.
+     */
+    USER_DIRECTORY("userDirectory",
+                   "A collection of user details including secrets used to prove the user's identity."),
 
     ;
 

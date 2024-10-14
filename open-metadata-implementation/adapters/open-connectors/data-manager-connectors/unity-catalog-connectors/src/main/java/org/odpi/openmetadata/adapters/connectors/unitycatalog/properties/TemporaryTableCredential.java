@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemporaryTableCredential
 {
-    private String              table_id   = null;
-    private TableOperation      operation  = null;
+    private String table_id  = null;
+    private String operation = null;
 
 
     /**
@@ -59,7 +59,7 @@ public class TemporaryTableCredential
      *
      * @return text
      */
-    public TableOperation getOperation()
+    public String getOperation()
     {
         return operation;
     }
@@ -70,7 +70,7 @@ public class TemporaryTableCredential
      *
      * @param operation text
      */
-    public void setOperation(TableOperation operation)
+    public void setOperation(String operation)
     {
         this.operation = operation;
     }
@@ -103,7 +103,8 @@ public class TemporaryTableCredential
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TemporaryTableCredential that = (TemporaryTableCredential) objectToCompare;
-        return Objects.equals(table_id, that.table_id) && operation == that.operation;
+        return Objects.equals(table_id, that.table_id) &&
+                Objects.equals(operation, that.operation);
     }
 
 

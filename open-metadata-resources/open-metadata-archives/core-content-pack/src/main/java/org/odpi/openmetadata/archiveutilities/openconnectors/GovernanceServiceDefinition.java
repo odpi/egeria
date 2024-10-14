@@ -20,6 +20,7 @@ import org.odpi.openmetadata.adapters.connectors.reports.surveyreport.SurveyRepo
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.ProvisionUnityCatalogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider;
@@ -246,6 +247,17 @@ public enum GovernanceServiceDefinition
                      ResourceUse.SURVEY_RESOURCE,
                      DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
+     * Creates unity catalog elements in the appropriate metadata collection so that they are provisioned into Unity Catalog (UC).
+     */
+    PROVISION_UC("73ed7824-2bd6-4f7c-922d-d4e3bb985502",
+                 "provision-unity-catalog",
+                 "Provision Unity Catalog Resources",
+                 new ProvisionUnityCatalogGovernanceActionProvider(),
+                 ResourceUse.PROVISION_RESOURCE,
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * PostgreSQL Server Survey Service
