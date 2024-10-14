@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.Map;
+
 /**
  * The watchdog governance action service is responsible for monitoring changes to the metadata elements and then initiating
  * further governance activity.  It can be written as a log running service that is detecting multiple events over time, or
@@ -37,6 +39,36 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
     public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
+    }
+
+
+    /**
+     * Retrieve the property value from the values passed to this governance action service.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue default value
+     * @return property value
+     */
+    protected String getProperty(String propertyName, String defaultValue)
+    {
+        Map<String, String> requestParameters       = governanceContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        String propertyValue = defaultValue;
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            propertyValue = requestParameters.get(propertyName);
+        }
+        else
+        {
+            if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+            {
+                propertyValue = configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return propertyValue;
     }
 
 

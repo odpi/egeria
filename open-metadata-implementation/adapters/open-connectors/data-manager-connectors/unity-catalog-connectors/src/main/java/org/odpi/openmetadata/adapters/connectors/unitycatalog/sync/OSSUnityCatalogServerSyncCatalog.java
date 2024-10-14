@@ -113,9 +113,11 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         final String methodName = "refreshEgeria";
 
         int parentAtEnd = 1;
-        RelatedElementsIterator iterator = new RelatedElementsIterator(catalogGUID,
+        RelatedElementsIterator iterator = new RelatedElementsIterator(null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
                                                                        catalogName,
-                                                                       catalogTargetName,
                                                                        connectorName,
                                                                        ucServerGUID,
                                                                        parentLinkTypeName,
@@ -137,7 +139,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                 /*
                  * Check that this is a UC Table.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
@@ -146,7 +148,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                 {
                     CatalogInfo info = null;
 
-                    String name = propertyHelper.getStringProperty(catalogTargetName,
+                    String name = propertyHelper.getStringProperty(catalogName,
                                                                    OpenMetadataProperty.NAME.name,
                                                                    nextElement.getElement().getElementProperties(),
                                                                    methodName);
@@ -338,7 +340,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         super.addPropertyFacet(ucCatalogGUID, qualifiedName, catalogInfo, null);
 
         context.addExternalIdentifier(ucCatalogGUID,
-                                      catalogInfo.getName(),
+                                      qualifiedName,
                                       ucCatalogGUID,
                                       OpenMetadataType.CATALOG.typeName,
                                       this.getExternalIdentifierProperties(catalogInfo,
@@ -347,7 +349,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                            catalogInfo.getId(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
-        addCatalogTarget(ucServerGUID, qualifiedName, catalogInfo.getName(), templates, configurationProperties);
+        addCatalogTarget(ucServerGUID, ucCatalogGUID, qualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
 
@@ -368,11 +370,15 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
     {
         String egeriaCatalogGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaCatalogGUID,
+        openMetadataAccess.updateMetadataElementInStore(null,
+                                                        null,
+                                                        egeriaCatalogGUID,
                                                         false,
                                                         getElementProperties(catalogInfo));
 
-        context.confirmSynchronization(egeriaCatalogGUID,
+        context.confirmSynchronization(memberElement.getElement().getElementGUID(),
+                                       super.getQualifiedName(catalogInfo.getName()),
+                                       egeriaCatalogGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
                                        catalogInfo.getId());
     }
@@ -390,19 +396,39 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                                InvalidParameterException,
                                                                                UserNotAuthorizedException
     {
+        final String methodName = "createElementInThirdParty";
+
+        String catalogQualifiedName = propertyHelper.getStringProperty(connectorName,
+                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                       memberElement.getElement().getElementProperties(),
+                                                                       methodName);
+
         CatalogInfo catalogInfo = ucConnector.createCatalog(this.getUCNameFromMember(memberElement),
                                                             this.getUCCommentFomMember(memberElement),
                                                             this.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
-                                      memberElement.getElement().getElementGUID(),
-                                      OpenMetadataType.CATALOG.typeName,
-                                      this.getExternalIdentifierProperties(catalogInfo,
-                                                                           null,
-                                                                           UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
-                                                                           catalogInfo.getId(),
-                                                                           PermittedSynchronization.TO_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+                                          catalogQualifiedName,
+                                          memberElement.getElement().getElementGUID(),
+                                          OpenMetadataType.CATALOG.typeName,
+                                          this.getExternalIdentifierProperties(catalogInfo,
+                                                                               null,
+                                                                               UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                               catalogInfo.getId(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(memberElement.getElement().getElementGUID(),
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           catalogInfo.getId());
+        }
+
+        addCatalogTarget(ucServerGUID, memberElement.getElement().getElementGUID(), catalogQualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
 
@@ -412,10 +438,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      * @param catalogInfo existing catalog in UC
      * @param memberElement elements from Egeria
      *
+     * @throws InvalidParameterException bad call to Egeria
+     * @throws UserNotAuthorizedException security problem
      * @throws PropertyServerException  problem communicating with UC
      */
-    private void updateElementInThirdParty(CatalogInfo    catalogInfo,
-                                           MemberElement memberElement) throws PropertyServerException
+    private void updateElementInThirdParty(CatalogInfo   catalogInfo,
+                                           MemberElement memberElement) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException
     {
         final String methodName = "updateElementInThirdParty";
 
@@ -424,6 +452,12 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                                                              memberElement.getElement().getElementGUID(),
                                                                              catalogInfo.getName(),
                                                                              ucServerEndpoint));
+
+        context.confirmSynchronization(memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       catalogInfo.getId());
     }
 
 
@@ -515,6 +549,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      * catalog inside a UC catalog.  This will start the cataloging of the datasets within this UC catalog.
      *
      * @param ucServerGUID unique identifier of the server asset - this is null if the UC Server was passed as an endpoint nor a catalog target
+     * @param ucCatalogGUID unique identifier of the catalog
      * @param ucCatalogQualifiedName qualified name of the UC Catalog's software capability - becomes metadataSourceQualifiedName
      * @param ucCatalogName name of the catalog - may be used as a placeholder property
      * @param templates list of templates
@@ -525,6 +560,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
      * @throws UserNotAuthorizedException error from call to the metadata store
      */
     private void addCatalogTarget(String              ucServerGUID,
+                                  String              ucCatalogGUID,
                                   String              ucCatalogQualifiedName,
                                   String              ucCatalogName,
                                   Map<String, String> templates,
@@ -552,6 +588,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                 }
 
                 targetConfigurationProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), ucCatalogName);
+                targetConfigurationProperties.put(OpenMetadataProperty.GUID.name, ucCatalogGUID);
 
                 catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 

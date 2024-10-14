@@ -113,8 +113,10 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         final String methodName = "refreshEgeriaTables";
 
         MetadataCollectionIterator tableIterator = new MetadataCollectionIterator(catalogGUID,
+                                                                                  catalogQualifiedName,
+                                                                                  catalogGUID,
+                                                                                  catalogQualifiedName,
                                                                                   catalogName,
-                                                                                  catalogTargetName,
                                                                                   connectorName,
                                                                                   entityTypeName,
                                                                                   openMetadataAccess,
@@ -131,7 +133,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 /*
                  * Check that this is a UC Table.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
@@ -140,7 +142,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 {
                     TableInfo tableInfo = null;
 
-                    String tableName = propertyHelper.getStringProperty(catalogTargetName,
+                    String tableName = propertyHelper.getStringProperty(catalogName,
                                                                         OpenMetadataProperty.RESOURCE_NAME.name,
                                                                         nextElement.getElement().getElementProperties(),
                                                                         methodName);
@@ -286,7 +288,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         if (templateGUID != null)
         {
             ucTableGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                               catalogName,
+                                                                               catalogQualifiedName,
                                                                                deployedImplementationType.getAssociatedTypeName(),
                                                                                schemaGUID,
                                                                                false,
@@ -305,7 +307,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
             String qualifiedName = super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
             ucTableGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                                          catalogName,
+                                                                          catalogQualifiedName,
                                                                           deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
                                                                            null,
@@ -330,7 +332,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         }
 
         context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
+                                      catalogQualifiedName,
                                       ucTableGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(tableInfo,
@@ -361,13 +363,19 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         String egeriaTableGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaTableGUID,
+        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        egeriaTableGUID,
                                                         false,
                                                         this.getElementProperties(tableInfo));
 
         this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
 
-        context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getTable_id());
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       egeriaTableGUID,
+                                       entityTypeName,
+                                       tableInfo.getTable_id());
     }
 
 
@@ -394,15 +402,26 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                       super.getUCStorageLocationFromMember(memberElement),
                                                       super.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(catalogGUID,
-                                      catalogName,
-                                      memberElement.getElement().getElementGUID(),
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(tableInfo,
-                                                                           tableInfo.getSchema_name(),
-                                                                           UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
-                                                                           tableInfo.getTable_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(catalogGUID,
+                                          catalogQualifiedName,
+                                          memberElement.getElement().getElementGUID(),
+                                          deployedImplementationType.getAssociatedTypeName(),
+                                          this.getExternalIdentifierProperties(tableInfo,
+                                                                               tableInfo.getSchema_name(),
+                                                                               UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                               tableInfo.getTable_id(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(catalogGUID,
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           tableInfo.getTable_id());
+        }
     }
 
 
@@ -464,6 +483,12 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                           memberElement.getElement().getElementGUID(),
                                                                           tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
                                                                           ucServerEndpoint));
+
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       tableInfo.getTable_id());
     }
 
 
@@ -642,7 +667,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
          * Create the root schema type.
          */
         openMetadataAccess.createMetadataElementInStore(catalogGUID,
-                                                        catalogName,
+                                                        catalogQualifiedName,
                                                         OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
                                                         ElementStatus.ACTIVE,
                                                         null,

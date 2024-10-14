@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import java.util.Arrays;
 
 /**
- * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+ * CatalogServerGovernanceActionProvider is the OCF connector provider for the "catalog-server"
  * Governance Action Service.
  */
 public class CatalogServerGovernanceActionProvider extends GovernanceActionServiceProviderBase

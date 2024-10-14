@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
 
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class GovernanceActionProcessStepElement
     {
         this.elementHeader = elementHeader;
     }
+
 
     /**
      * Return details of the process

@@ -29,6 +29,8 @@ public abstract class IntegrationIterator
     protected final PropertyHelper           propertyHelper = new PropertyHelper();
     protected final String                   metadataCollectionGUID;
     protected final String                   metadataCollectionQualifiedName;
+    protected final String                   externalScopeGUID;
+    protected final String                   externalScopeName;
     protected final String                   catalogTargetName;
     protected final String                   connectorName;
     protected final String                   metadataTypeName;
@@ -46,6 +48,8 @@ public abstract class IntegrationIterator
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
      * @param metadataCollectionQualifiedName unique name of the metadata collection
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
+     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
@@ -56,6 +60,8 @@ public abstract class IntegrationIterator
      */
     public IntegrationIterator(String                   metadataCollectionGUID,
                                String                   metadataCollectionQualifiedName,
+                               String                   externalScopeGUID,
+                               String                   externalScopeName,
                                String                   catalogTargetName,
                                String                   connectorName,
                                String                   metadataTypeName,
@@ -66,6 +72,8 @@ public abstract class IntegrationIterator
     {
         this.metadataCollectionGUID          = metadataCollectionGUID;
         this.metadataCollectionQualifiedName = metadataCollectionQualifiedName;
+        this.externalScopeGUID               = externalScopeGUID;
+        this.externalScopeName               = externalScopeName;
         this.catalogTargetName               = catalogTargetName;
         this.connectorName                   = connectorName;
         this.metadataTypeName                = metadataTypeName;
@@ -141,6 +149,7 @@ public abstract class IntegrationIterator
                                                                                UserNotAuthorizedException
     {
         OpenMetadataElement element = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+
         if (element != null)
         {
             return this.fillOutMemberElement(element, true);
@@ -182,20 +191,20 @@ public abstract class IntegrationIterator
 
         if (isElementActive)
         {
-            if (metadataCollectionGUID != null)
-            {
-                correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(metadataCollectionGUID,
-                                                                                      metadataCollectionQualifiedName,
-                                                                                      element.getElementGUID(),
-                                                                                      element.getType().getTypeName());
-            }
-            else if (propertyHelper.isTypeOf(element, OpenMetadataType.SOFTWARE_CAPABILITY.typeName))
+            if (externalScopeGUID == null)
             {
                 correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(element.getElementGUID(),
                                                                                       propertyHelper.getStringProperty(element.getElementGUID(),
                                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                        element.getElementProperties(),
                                                                                                                        methodName),
+                                                                                      element.getElementGUID(),
+                                                                                      element.getType().getTypeName());
+            }
+            else
+            {
+                correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(externalScopeGUID,
+                                                                                      externalScopeName,
                                                                                       element.getElementGUID(),
                                                                                       element.getType().getTypeName());
             }
@@ -215,14 +224,44 @@ public abstract class IntegrationIterator
             vendorProperties = new HashMap<>();
         }
 
-        return new MemberElement(element,
-                                 rootSchemaType,
-                                 correlationHeaders,
-                                 vendorProperties,
-                                 isElementActive,
-                                 catalogTargetName,
-                                 connectorName,
-                                 targetPermittedSynchronization,
-                                 auditLog);
+        if (externalScopeGUID != null)
+        {
+            return new MemberElement(element,
+                                     rootSchemaType,
+                                     correlationHeaders,
+                                     externalScopeGUID,
+                                     vendorProperties,
+                                     isElementActive,
+                                     catalogTargetName,
+                                     connectorName,
+                                     targetPermittedSynchronization,
+                                     auditLog);
+        }
+        else if (element != null)
+        {
+            return new MemberElement(element,
+                                     rootSchemaType,
+                                     correlationHeaders,
+                                     element.getElementGUID(),
+                                     vendorProperties,
+                                     isElementActive,
+                                     catalogTargetName,
+                                     connectorName,
+                                     targetPermittedSynchronization,
+                                     auditLog);
+        }
+        else
+        {
+            return new MemberElement(element,
+                                     rootSchemaType,
+                                     correlationHeaders,
+                                     null,
+                                     vendorProperties,
+                                     isElementActive,
+                                     catalogTargetName,
+                                     connectorName,
+                                     targetPermittedSynchronization,
+                                     auditLog);
+        }
     }
 }

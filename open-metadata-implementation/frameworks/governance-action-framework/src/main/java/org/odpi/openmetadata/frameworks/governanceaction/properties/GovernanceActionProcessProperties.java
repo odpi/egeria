@@ -28,6 +28,8 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     private String versionIdentifier    = null;
     private String formula              = null;
     private String formulaType          = null;
+    private Date   processStartTime     = null;
+    private Date   processEndTime       = null;
 
 
     /**
@@ -59,6 +61,9 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
             formula = template.getFormula();
             formulaType = template.getFormulaType();
+
+            processStartTime = template.getProcessStartTime();
+            processEndTime = template.getProcessEndTime();
         }
     }
 
@@ -195,6 +200,50 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
 
 
     /**
+     * Return the date/time that this process started (instance only).
+     *
+     * @return date
+     */
+    public Date getProcessStartTime()
+    {
+        return processStartTime;
+    }
+
+
+    /**
+     * Set up the the date/time that this process started (instance only).
+     *
+     * @param processStartTime date
+     */
+    public void setProcessStartTime(Date processStartTime)
+    {
+        this.processStartTime = processStartTime;
+    }
+
+
+    /**
+     * Return the date/time that this process ended (instance only).
+     *
+     * @return date
+     */
+    public Date getProcessEndTime()
+    {
+        return processEndTime;
+    }
+
+
+    /**
+     * Set up the date/time that this process ended (instance only).
+     *
+     * @param processEndTime date
+     */
+    public void setProcessEndTime(Date processEndTime)
+    {
+        this.processEndTime = processEndTime;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -203,15 +252,15 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceActionProcessProperties{" +
-                       "domainIdentifier=" + domainIdentifier +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", formula='" + formula + '\'' +
-                       ", formulaType='" + formulaType + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "domainIdentifier=" + domainIdentifier +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
+                ", processStartTime=" + processStartTime +
+                ", processEndTime=" + processEndTime +
+                "} " + super.toString();
     }
 
 
@@ -233,7 +282,9 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(formula, that.formula) &&
-                Objects.equals(formulaType, that.formulaType);
+                Objects.equals(formulaType, that.formulaType) &&
+                Objects.equals(processStartTime, that.processStartTime) &&
+                Objects.equals(processEndTime, that.processEndTime);
     }
 
     /**
@@ -245,6 +296,6 @@ public class GovernanceActionProcessProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, versionIdentifier,
-                            formula, formulaType);
+                            formula, formulaType, processStartTime, processEndTime);
     }
 }

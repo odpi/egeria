@@ -157,23 +157,23 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
      */
     Map<String, Object> combineProperties()
     {
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        if (connectionProperties.getConfigurationProperties() != null)
+        {
+            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+        }
 
         if (governanceContext.getRequestParameters() != null)
         {
-            if (configurationProperties == null)
-            {
-                configurationProperties = new HashMap<>();
-            }
-
             configurationProperties.putAll(governanceContext.getRequestParameters());
         }
 
-        if ((configurationProperties == null) || (configurationProperties.isEmpty()))
+        if (configurationProperties.isEmpty())
         {
             return null;
         }
 
-        return  configurationProperties;
+        return configurationProperties;
     }
 }

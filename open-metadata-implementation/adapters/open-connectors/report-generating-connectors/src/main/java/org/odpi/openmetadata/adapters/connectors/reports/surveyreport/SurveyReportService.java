@@ -280,7 +280,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
             {
                 List<String> tableHeadings = new ArrayList<>(Arrays.asList("Name", "Value"));
 
-                outputReport.printReportLine(indentLevel, "\n**" + propertyName + "**:");
+                outputReport.printReportLine(indentLevel, "\n**" + propertyName + "**:\n");
 
                 PropertyValue propertyValue = elementProperties.getPropertyValue(propertyName);
 
@@ -384,60 +384,48 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
         if (annotationElement.getElementProperties() != null)
         {
-            List<String> processedProperties = new ArrayList<>();
             Map<String, String> annotationProperties = annotationElement.getElementProperties().getPropertiesAsStrings();
 
-            processedProperties.add(OpenMetadataProperty.ANNOTATION_TYPE.name);
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.SUMMARY.name, annotationProperties.get(OpenMetadataProperty.SUMMARY.name));
-            processedProperties.add(OpenMetadataProperty.SUMMARY.name);
             if (annotationProperties.get(OpenMetadataProperty.ANNOTATION_STATUS.name) != null)
             {
                 outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANNOTATION_STATUS.name, annotationProperties.get(OpenMetadataProperty.ANNOTATION_STATUS.name));
             }
-            processedProperties.add(OpenMetadataProperty.ANNOTATION_STATUS.name);
             if (annotationProperties.get(OpenMetadataProperty.CONFIDENCE_LEVEL.name) != null)
             {
                 outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.CONFIDENCE_LEVEL.name, annotationProperties.get(OpenMetadataProperty.CONFIDENCE_LEVEL.name));
             }
-            processedProperties.add(OpenMetadataProperty.CONFIDENCE_LEVEL.name);
             if (annotationProperties.get(OpenMetadataProperty.EXPRESSION.name) != null)
             {
                 outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.EXPRESSION.name, annotationProperties.get(OpenMetadataProperty.EXPRESSION.name));
             }
-            processedProperties.add(OpenMetadataProperty.EXPRESSION.name);
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.EXPLANATION.name, annotationProperties.get(OpenMetadataProperty.EXPLANATION.name));
-            processedProperties.add(OpenMetadataProperty.EXPLANATION.name);
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANALYSIS_STEP.name, annotationProperties.get(OpenMetadataProperty.ANALYSIS_STEP.name));
-            processedProperties.add(OpenMetadataProperty.ANALYSIS_STEP.name);
-            this.printMapProperty(annotationIndentLevel,
-                                  OpenMetadataProperty.JSON_PROPERTIES.name,
-                                  annotationElement.getElementProperties(),
-                                  outputReport);
-            processedProperties.add(OpenMetadataProperty.JSON_PROPERTIES.name);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.VALUE_COUNT.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
 
             this.printArrayProperty(annotationIndentLevel,
                                    OpenMetadataProperty.VALUE_LIST.name,
                                    annotationElement.getElementProperties(),
                                    outputReport);
-            processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.PROFILE_PROPERTIES.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.PROFILE_PROPERTIES.name);
+
+            this.printMapProperty(annotationIndentLevel,
+                                  OpenMetadataProperty.RESOURCE_PROPERTIES.name,
+                                  annotationElement.getElementProperties(),
+                                  outputReport);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name);
         }
 
         List<RelatedMetadataElement> associatedElements = openMetadataStoreClient.getRelatedMetadataElements(reportedAnnotationElement.getElement().getElementGUID(),
