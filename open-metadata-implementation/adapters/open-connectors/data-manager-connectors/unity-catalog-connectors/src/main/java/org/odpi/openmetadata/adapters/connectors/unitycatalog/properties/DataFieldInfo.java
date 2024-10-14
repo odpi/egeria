@@ -20,15 +20,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFieldInfo
 {
-    private String         name               = null;
-    private String         comment            = null;
-    private String         type_text          = null;
-    private String         type_json          = null;
-    private ColumnTypeName type_name          = null;
-    private int            type_precision     = 0;
-    private int            type_scale         = 0;
-    private String         type_interval_type = null;
-    private int            position           = 0;
+    private String name               = null;
+    private String comment            = null;
+    private String type_text          = null;
+    private String type_json          = null;
+    private String type_name          = null;
+    private int    type_precision     = 0;
+    private int    type_scale         = 0;
+    private String type_interval_type = null;
+    private int    position           = 0;
 
 
 
@@ -132,7 +132,7 @@ public class DataFieldInfo
      *
      * @return enum
      */
-    public ColumnTypeName getType_name()
+    public String getType_name()
     {
         return type_name;
     }
@@ -143,7 +143,7 @@ public class DataFieldInfo
      *
      * @param type_name enum
      */
-    public void setType_name(ColumnTypeName type_name)
+    public void setType_name(String type_name)
     {
         this.type_name = type_name;
     }

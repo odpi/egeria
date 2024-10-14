@@ -42,7 +42,7 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         super.addIntegrationGroups(ContentPackDefinition.NANNY_CONTENT_PACK);
         super.addIntegrationConnectors(ContentPackDefinition.NANNY_CONTENT_PACK,
-                                       IntegrationGroupDefinition.DEFAULT);
+                                       IntegrationGroupDefinition.NANNY);
 
         /*
          * Create the default governance engines

@@ -20,8 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VolumeInfo extends VolumeProperties implements ElementBase
 {
-    private long   created_at  = 0L;
-    private long   updated_at  = 0L;
+    private long   created_at = 0L;
+    private String created_by = null;
+    private long   updated_at = 0L;
+    private String updated_by = null;
     private String volume_id = null;
     private String full_name   = null;
 
@@ -82,6 +84,54 @@ public class VolumeInfo extends VolumeProperties implements ElementBase
 
 
     /**
+     * Return the userId that created the element.
+     *
+     * @return string name
+     */
+    @Override
+    public String getCreated_by()
+    {
+        return created_by;
+    }
+
+
+    /**
+     * Set up the userId that created the element.
+     *
+     * @param created_by string name
+     */
+    @Override
+    public void setCreated_by(String created_by)
+    {
+        this.created_by = created_by;
+    }
+
+
+    /**
+     * Return the element that last updated the element.
+     *
+     * @return string name
+     */
+    @Override
+    public String getUpdated_by()
+    {
+        return updated_by;
+    }
+
+
+    /**
+     * Set up the element that last updated the element.
+     *
+     * @param updated_by string name
+     */
+    @Override
+    public void setUpdated_by(String updated_by)
+    {
+        this.updated_by = updated_by;
+    }
+
+
+    /**
      * Return the internal identifier of the volume.
      *
      * @return string
@@ -134,7 +184,9 @@ public class VolumeInfo extends VolumeProperties implements ElementBase
     {
         return "VolumeInfo{" +
                 "created_at=" + created_at +
+                ", created_by='" + created_by + '\'' +
                 ", updated_at=" + updated_at +
+                ", updated_by='" + updated_by + '\'' +
                 ", full_name=" + full_name +
                 ", volume_id='" + volume_id + '\'' +
                 "} " + super.toString();
@@ -153,7 +205,12 @@ public class VolumeInfo extends VolumeProperties implements ElementBase
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         VolumeInfo that = (VolumeInfo) objectToCompare;
-        return created_at == that.created_at && updated_at == that.updated_at && Objects.equals(volume_id, that.volume_id) && Objects.equals(full_name, that.full_name);
+        return created_at == that.created_at &&
+                Objects.equals(created_by, that.created_by) &&
+                updated_at == that.updated_at &&
+                Objects.equals(updated_by, that.updated_by) &&
+                Objects.equals(volume_id, that.volume_id)
+                && Objects.equals(full_name, that.full_name);
     }
 
     /**
@@ -164,6 +221,6 @@ public class VolumeInfo extends VolumeProperties implements ElementBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), created_at, updated_at, volume_id, full_name);
+        return Objects.hash(super.hashCode(), created_at, created_by, updated_at, updated_by, volume_id, full_name);
     }
 }

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
@@ -57,7 +58,11 @@ public class DaysOfWeekGovernanceActionConnector extends GeneralGovernanceAction
 
             outputGuards.add(output.toLowerCase(Locale.ROOT));
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards);
+            governanceContext.recordCompletionStatus(completionStatus,
+                                                     outputGuards,
+                                                     null,
+                                                     null,
+                                                     GovernanceActionConnectorsAuditCode.DAY_OF_THE_WEEK.getMessageDefinition(governanceServiceName, output));
         }
         catch (Exception error)
         {

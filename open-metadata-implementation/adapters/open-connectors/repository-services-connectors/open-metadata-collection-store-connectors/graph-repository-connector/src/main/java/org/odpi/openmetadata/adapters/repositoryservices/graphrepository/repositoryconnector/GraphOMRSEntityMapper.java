@@ -568,6 +568,7 @@ public class GraphOMRSEntityMapper {
     }
 
 
+    @SuppressWarnings(value = "unchecked")
     void mapVertexToEntitySummary(Vertex vertex, EntitySummary entity)
             throws RepositoryErrorException
     {
