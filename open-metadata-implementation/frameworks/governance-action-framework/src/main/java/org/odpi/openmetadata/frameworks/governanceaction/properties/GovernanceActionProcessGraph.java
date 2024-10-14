@@ -21,10 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessGraph
 {
-    private GovernanceActionProcessElement            governanceActionProcess = null;
-    private FirstGovernanceActionProcessStepElement   firstProcessStep        = null;
-    private List<GovernanceActionProcessStepElement>  nextProcessSteps        = null;
-    private List<NextGovernanceActionProcessStepLink> processStepLinks        = null;
+    private GovernanceActionProcessElement                    governanceActionProcess = null;
+    private FirstGovernanceActionProcessStepElement           firstProcessStep        = null;
+    private List<GovernanceActionProcessStepExecutionElement> nextProcessSteps        = null;
+    private List<NextGovernanceActionProcessStepLink>         processStepLinks        = null;
 
 
     /**
@@ -101,7 +101,7 @@ public class GovernanceActionProcessGraph
      *
      * @return list of step elements
      */
-    public List<GovernanceActionProcessStepElement> getNextProcessSteps()
+    public List<GovernanceActionProcessStepExecutionElement> getNextProcessSteps()
     {
         return nextProcessSteps;
     }
@@ -112,7 +112,7 @@ public class GovernanceActionProcessGraph
      *
      * @param nextProcessSteps list of step elements
      */
-    public void setNextProcessSteps(List<GovernanceActionProcessStepElement> nextProcessSteps)
+    public void setNextProcessSteps(List<GovernanceActionProcessStepExecutionElement> nextProcessSteps)
     {
         this.nextProcessSteps = nextProcessSteps;
     }

@@ -21,7 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SchemaInfo extends SchemaProperties implements ElementBase
 {
     private long   created_at = 0L;
+    private String created_by = null;
     private long   updated_at = 0L;
+    private String updated_by = null;
     private String schema_id  = null;
     private String full_name  = null;
 
@@ -81,6 +83,55 @@ public class SchemaInfo extends SchemaProperties implements ElementBase
     }
 
 
+
+    /**
+     * Return the userId that created the element.
+     *
+     * @return string name
+     */
+    @Override
+    public String getCreated_by()
+    {
+        return created_by;
+    }
+
+
+    /**
+     * Set up the userId that created the element.
+     *
+     * @param created_by string name
+     */
+    @Override
+    public void setCreated_by(String created_by)
+    {
+        this.created_by = created_by;
+    }
+
+
+    /**
+     * Return the element that last updated the element.
+     *
+     * @return string name
+     */
+    @Override
+    public String getUpdated_by()
+    {
+        return updated_by;
+    }
+
+
+    /**
+     * Set up the element that last updated the element.
+     *
+     * @param updated_by string name
+     */
+    @Override
+    public void setUpdated_by(String updated_by)
+    {
+        this.updated_by = updated_by;
+    }
+
+
     /**
      * Return the internal identifier of the schema.
      *
@@ -135,7 +186,9 @@ public class SchemaInfo extends SchemaProperties implements ElementBase
     {
         return "SchemaInfo{" +
                 "created_at=" + created_at +
+                ", created_by='" + created_by + '\'' +
                 ", updated_at=" + updated_at +
+                ", updated_by='" + updated_by + '\'' +
                 ", schema_id='" + schema_id + '\'' +
                 ", full_name='" + full_name + '\'' +
                 "} " + super.toString();
@@ -155,7 +208,12 @@ public class SchemaInfo extends SchemaProperties implements ElementBase
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SchemaInfo that = (SchemaInfo) objectToCompare;
-        return created_at == that.created_at && updated_at == that.updated_at && Objects.equals(schema_id, that.schema_id) && Objects.equals(full_name, that.full_name);
+        return created_at == that.created_at &&
+                Objects.equals(created_by, that.created_by) &&
+                updated_at == that.updated_at &&
+                Objects.equals(updated_by, that.updated_by) &&
+                Objects.equals(schema_id, that.schema_id) &&
+                Objects.equals(full_name, that.full_name);
     }
 
     /**
@@ -166,6 +224,6 @@ public class SchemaInfo extends SchemaProperties implements ElementBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), created_at, updated_at, schema_id, full_name);
+        return Objects.hash(super.hashCode(), created_at, created_by, updated_at, updated_by, schema_id, full_name);
     }
 }

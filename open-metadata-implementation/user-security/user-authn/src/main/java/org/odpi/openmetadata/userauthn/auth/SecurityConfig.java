@@ -55,14 +55,7 @@ public class SecurityConfig
         return new ProviderManager(authProvider);
     }
 
-    @Value("${ldap.user.search.base}")
-    protected String userSearchBase;
-
-    @Value("${ldap.user.search.filter}")
-    protected String userSearchFilter;
-
     private RSAKey rsaKey = RSAGenerator.generateRSAKeyPair();
-
 
     /**
      * Get the jwk source.
@@ -103,7 +96,7 @@ public class SecurityConfig
             public void addCorsMappings( CorsRegistry registry ) {
                 registry.addMapping("/**")
                         .allowedOrigins(allowedOrigins.toArray(new String[]{}))
-                        .allowedMethods("GET","POST","PUT","DELETE")
+                        .allowedMethods("GET","POST","PUT","PATCH","DELETE")
                         .allowedHeaders("Authorization","Content-type");
             }
         };
@@ -111,7 +104,7 @@ public class SecurityConfig
 
 
     /**
-     * Define the types of URLs that will be permitted to be called.
+     * Define the types of URLs that will be permitted to be called without security.
      *
      * @param httpSecurity security object to configure
      * @return configured HTTP security object
@@ -125,6 +118,7 @@ public class SecurityConfig
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers("/api/about").permitAll()
                         .requestMatchers("/api/token").permitAll()
+                        .requestMatchers("/api/servers/*/token").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/open-metadata/**").permitAll() // platform level services

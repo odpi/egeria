@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollecti
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,6 +158,19 @@ public class SpringRESTClientConnector extends RESTClientConnector
                         {
                             authorizationHeader = this.createAuthorizationHeaders(userId, password);
                             break;
+                        }
+                    }
+                    else if (SecretsStorePurpose.USER_DIRECTORY.getName().equals(secretsStorePurpose))
+                    {
+                        if (userId != null)
+                        {
+                            UserAccount userAccount = secretsStoreConnector.getUser(userId);
+
+                            if ((userAccount != null) && (userAccount.getSecrets() != null) && (userAccount.getSecrets().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
+                            {
+                                authorizationHeader = this.createAuthorizationHeaders(userId, userAccount.getSecrets().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
+                                break;
+                            }
                         }
                     }
                 }

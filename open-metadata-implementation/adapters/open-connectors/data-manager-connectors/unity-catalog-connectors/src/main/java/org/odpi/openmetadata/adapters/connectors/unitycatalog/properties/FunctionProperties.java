@@ -21,17 +21,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class FunctionProperties extends SchemaNamespaceProperties
 {
     private FunctionParameterInfos input_params = null;
-    private ColumnTypeName         data_type = null;
+    private String                 data_type = null;
     private String                 full_data_type = null;
     private FunctionParameterInfos return_params = null;
-    private RoutineBody            routine_body = null;
+    private String                 routine_body = null;
     private String                 routine_definition = null;
     private DependencyList         routine_dependencies = null;
-    private ParameterStyle         parameter_style = null;
+    private String                 parameter_style = null;
     private boolean                is_deterministic = true;
-    private SQLDataAccess          sql_data_access = null;
+    private String                 sql_data_access = null;
     private boolean                is_null_call = false;
-    private SecurityType           security_type = null;
+    private String                 security_type = null;
     private String                 specific_name = null;
     private String                 external_language = null;
 
@@ -69,7 +69,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @return enum
      */
-    public ColumnTypeName getData_type()
+    public String getData_type()
     {
         return data_type;
     }
@@ -80,10 +80,11 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @param data_type enum
      */
-    public void setData_type(ColumnTypeName data_type)
+    public void setData_type(String data_type)
     {
         this.data_type = data_type;
     }
+
 
     /**
      * Return the "pretty-printed" function data type.
@@ -135,7 +136,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @return enum
      */
-    public RoutineBody getRoutine_body()
+    public String getRoutine_body()
     {
         return routine_body;
     }
@@ -147,7 +148,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @param routine_body enum
      */
-    public void setRoutine_body(RoutineBody routine_body)
+    public void setRoutine_body(String routine_body)
     {
         this.routine_body = routine_body;
     }
@@ -203,7 +204,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @return enum
      */
-    public ParameterStyle getParameter_style()
+    public String getParameter_style()
     {
         return parameter_style;
     }
@@ -215,7 +216,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @param parameter_style enum
      */
-    public void setParameter_style(ParameterStyle parameter_style)
+    public void setParameter_style(String parameter_style)
     {
         this.parameter_style = parameter_style;
     }
@@ -248,7 +249,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @return enum
      */
-    public SQLDataAccess getSql_data_access()
+    public String getSql_data_access()
     {
         return sql_data_access;
     }
@@ -259,7 +260,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @param sql_data_access enum
      */
-    public void setSql_data_access(SQLDataAccess sql_data_access)
+    public void setSql_data_access(String sql_data_access)
     {
         this.sql_data_access = sql_data_access;
     }
@@ -292,7 +293,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @return enum
      */
-    public SecurityType getSecurity_type()
+    public String getSecurity_type()
     {
         return security_type;
     }
@@ -303,7 +304,7 @@ public class FunctionProperties extends SchemaNamespaceProperties
      *
      * @param security_type enum
      */
-    public void setSecurity_type(SecurityType security_type)
+    public void setSecurity_type(String security_type)
     {
         this.security_type = security_type;
     }
@@ -394,15 +395,18 @@ public class FunctionProperties extends SchemaNamespaceProperties
         if (!super.equals(objectToCompare)) return false;
         FunctionProperties that = (FunctionProperties) objectToCompare;
         return is_deterministic == that.is_deterministic && is_null_call == that.is_null_call &&
-                Objects.equals(input_params, that.input_params) && data_type == that.data_type &&
+                Objects.equals(input_params, that.input_params) &&
+                Objects.equals(data_type, that.data_type) &&
                 Objects.equals(full_data_type, that.full_data_type) &&
-                Objects.equals(return_params, that.return_params) && routine_body == that.routine_body &&
+                Objects.equals(return_params, that.return_params) &&
+                Objects.equals(routine_body, that.routine_body) &&
                 Objects.equals(routine_definition, that.routine_definition) &&
                 Objects.equals(routine_dependencies, that.routine_dependencies) &&
                 Objects.equals(security_type, that.security_type) &&
                 Objects.equals(specific_name, that.specific_name) &&
                 Objects.equals(external_language, that.external_language) &&
-                parameter_style == that.parameter_style && sql_data_access == that.sql_data_access;
+                Objects.equals(parameter_style, that.parameter_style) &&
+                Objects.equals(sql_data_access, that.sql_data_access);
     }
 
 

@@ -21,12 +21,147 @@ Content-Type: application/json
 
 ###
 
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/garygeeke/servers/active-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/UnityCatalogContentPack.omarchive
+
+###
+
 @ucServerTemplateGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
 @ucCatalogTemplateGUID=5ee006aa-a6d6-411b-9b8d-5f720c079cae
 @ucSchemaTemplateGUID=5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e
 @ucVolumeTemplateGUID=92d2d2dc-0798-41f0-9512-b10548d312b7
 @ucTableTemplateGUID=6cc1e5f5-4c1e-4290-a80e-e06643ffb13d
 @ucFunctionTemplateGUID=a490ba65-6104-4213-9be9-524e16fed8aa
+
+###
+# @name initiateGovernanceActionProcess (create and survey)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "UnityCatalogServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
+
+
+###
+# @name initiateGovernanceActionProcess (create and catalog)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "UnityCatalogServer:CreateAndCatalogGovernanceActionProcess",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
+
+
+
+###
+# @name getTechnologyTypeElements (UC Server)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Server"
+}
+
+
+
+###
+# @name getTechnologyTypeElements (UC Catalog)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Catalog"
+}
+
+
+
+###
+# @name getTechnologyTypeElements (UC Schema)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Schema"
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (UC Volume)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Volume"
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (UC Table)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Table"
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (UC Function)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog Function"
+}
+
+
 
 ###
 # =====================================================================================================================
@@ -49,7 +184,7 @@ Content-Type: application/json
 # @name createElementFromTemplate (Unity Catalog Server 1)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/get-element
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -59,10 +194,10 @@ Content-Type: application/json
   "placeholderPropertyValues" : {
     "hostURL" : "http://localhost",
     "portNumber" : "8080",
-    "serverName" : "Unity Catalog 1",
+    "serverName" : "Unity Catalog 3",
     "versionIdentifier" : "V1.0",
-    "description" : "First instance of the Unity Catalog (UC) Server.",
-    "serverUserId" : "uc1"
+    "description" : "Third instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc3"
   }
 }
 
@@ -92,7 +227,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=5d133ab0-efaf-4c39-aece-0a3f63bb8e63
+@server1GUID=4d0fd1df-74d4-4b7f-b1d2-381b9e0c0f3e
 
 
 ###
@@ -131,7 +266,7 @@ Content-Type: application/json
 
 ###
 
-@ucServerSurveyName=AssetSurvey:survey-unity-catalog-server
+@ucServerSurveyName=UnityCatalogSurveys:survey-unity-catalog-server
 
 ###
 # @name initiateGovernanceActionType
@@ -149,6 +284,27 @@ Content-Type: application/json
       "actionTargetName": "uc1",
       "actionTargetGUID": "{{server1GUID}}"
     } ]
+}
+
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "UnityCatalogServer:CreateAndSurveyGovernanceActionProcess",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
 }
 
 
@@ -175,13 +331,6 @@ Content-Type: application/json
 
 {
   "catalogTargetName" : "uc1",
-  "templateProperties" : {
-    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
-    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
-    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
-    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
-  },
   "configurationProperties" : {
     "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
   }

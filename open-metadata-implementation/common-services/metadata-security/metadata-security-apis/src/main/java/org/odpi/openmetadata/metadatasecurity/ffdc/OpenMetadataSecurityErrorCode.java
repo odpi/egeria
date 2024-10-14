@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -206,6 +207,24 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                "{0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}",
                                "The system is unable to process a request because the calling user does not have sufficient privileges.",
                                "No action is required if this user should not have access to the connection.  To gain access to the connection, either the security credentials of the user need changing, or a different userId is required."),
+
+    /**
+     * OPEN-METADATA-SECURITY-403-017 - User {0} is not recognized
+     */
+    UNKNOWN_USER(403, "OPEN-METADATA-SECURITY-403-017",
+                 "User {0} is not recognized",
+                 "The security service has received a request from an unknown user.",
+                 "Track down the source of the request and either add the user to the user directory or prevent the user from accessing again."),
+
+
+    /**
+     * OPEN-METADATA-SECURITY-403-018 - Exception {0} occurred when retrieving user {1}; message was {2}
+     */
+    FAILED_TO_RETRIEVE_USER(403,"OPEN-METADATA-SECURITY-403-018",
+                            "Exception {0} occurred when retrieving user {1}; message was {2}",
+                            "An exception occurred when the security service tried to retrieve a user account.",
+                            "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
+
 
     /**
      * OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on glossary {2}

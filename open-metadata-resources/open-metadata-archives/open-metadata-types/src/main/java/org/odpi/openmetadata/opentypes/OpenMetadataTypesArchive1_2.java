@@ -5945,16 +5945,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTopicSubscribersRelationship()
     {
-        final String guid            = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";
-        final String name            = "TopicSubscribers";
-        final String description     = "Links the list of subscribers to a topic.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TOPIC_SUBSCRIBERS_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -6027,12 +6019,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDeployedDatabaseSchemaEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.description,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.descriptionGUID,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_DATABASE_SCHEMA,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
     }
 
 
@@ -6070,14 +6058,8 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.INSTANCE.name,
-                                                           OpenMetadataProperty.INSTANCE.description,
-                                                           OpenMetadataProperty.INSTANCE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.IMPORTED_FROM.name,
-                                                           OpenMetadataProperty.IMPORTED_FROM.description,
-                                                           OpenMetadataProperty.IMPORTED_FROM.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INSTANCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IMPORTED_FROM));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -7903,14 +7885,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies that this glossary term describes an abstract concept.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -7922,14 +7902,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies that this glossary term describes a data value.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -8747,15 +8725,13 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a glossary term that describes a context where processing or decisions occur.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                         OpenMetadataType.GLOSSARY_TERM.typeName),
                                                                                  false);
 
         /*
@@ -9180,14 +9156,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a glossary term that describes a type of spine object.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -9199,14 +9173,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a glossary term that describes an attribute of a spine object.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -9218,14 +9190,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Identifies a glossary term that describes an attribute that can be used to identify an instance.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -9252,11 +9222,9 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Defines a glossary term that is developed through a controlled workflow.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "GlossaryTerm";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -9478,11 +9446,9 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Person responsible for a governance domain.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "PersonRole";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -11084,14 +11050,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Describes a primary noun, used in naming standards.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -11103,14 +11067,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Describes classifying or grouping noun, using in naming standards.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -11122,14 +11084,12 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Describes modifying noun or adverb, used in naming standards.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                   false);
     }
 
@@ -11780,11 +11740,9 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "PersonRole";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -17216,9 +17174,6 @@ public class OpenMetadataTypesArchive1_2
         final String attribute5Name            = "discoveryRequestStatus";
         final String attribute5Description     = "Status of the discovery analysis show in the report.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "anchorGUID";
-        final String attribute6Description     = "Optional identifier of the asset that this report is connected to.";
-        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
                                                            OpenMetadataProperty.DISPLAY_NAME.description,
@@ -17241,9 +17196,7 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -17806,9 +17759,6 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "defaultValue";
         final String attribute3Description     = "Default value that is added to the field if no value is specified.";
         final String attribute3DescriptionGUID = null;
-        final String attribute5Name            = "anchorGUID";
-        final String attribute5Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
-        final String attribute5DescriptionGUID = null;
         final String attribute6Name            = "dataFieldDescription";
         final String attribute6Description     = "Optional descriptive information about a data field.";
         final String attribute6DescriptionGUID = null;
@@ -17831,13 +17781,9 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
                                                            attribute6Description,
