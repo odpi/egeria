@@ -26,7 +26,7 @@ public class MemberElement
 {
     private final OpenMetadataElement              element;
     private final RelatedMetadataElement           rootSchemaType;
-    private final List<MetadataCorrelationHeader>  externalIdentifiers;
+    private       MetadataCorrelationHeader        externalIdentifier = null;
     private final Map<String, Map<String, String>> vendorProperties;
     private final String                           catalogTargetName;
     private final String                           connectorName;
@@ -40,8 +40,9 @@ public class MemberElement
      * Create a member element.
      *
      * @param element open metadata element
-     * @param rootSchemaType the schema type element ar the root of the schema (if exists)
+     * @param rootSchemaType the schema type element or the root of the schema (if exists)
      * @param externalIdentifiers external identifiers for this element from the third party system
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
      * @param vendorProperties additional properties related to the particular technology deployment.
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
      * @param catalogTargetName name of target
@@ -52,6 +53,7 @@ public class MemberElement
     MemberElement(OpenMetadataElement              element,
                   RelatedMetadataElement           rootSchemaType,
                   List<MetadataCorrelationHeader>  externalIdentifiers,
+                  String                           externalScopeGUID,
                   Map<String, Map<String, String>> vendorProperties,
                   boolean                          isElementActive,
                   String                           catalogTargetName,
@@ -61,7 +63,6 @@ public class MemberElement
     {
         this.element                        = element;
         this.rootSchemaType                 = rootSchemaType;
-        this.externalIdentifiers            = externalIdentifiers;
         this.vendorProperties               = vendorProperties;
         this.isElementActive                = isElementActive;
         this.catalogTargetName              = catalogTargetName;
@@ -74,12 +75,13 @@ public class MemberElement
             this.instanceSyncDirection = PermittedSynchronization.FROM_THIRD_PARTY;
         }
 
-        if (externalIdentifiers != null)
+        if ((externalIdentifiers != null) && (externalScopeGUID != null))
         {
             for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
             {
-                if (externalIdentifier != null)
+                if ((externalIdentifier != null) && (externalScopeGUID.equals(externalIdentifier.getExternalScopeGUID())))
                 {
+                    this.externalIdentifier = externalIdentifier;
                     if (externalIdentifier.getSynchronizationDirection() != null)
                     {
                         this.instanceSyncDirection = externalIdentifier.getSynchronizationDirection();
@@ -119,15 +121,13 @@ public class MemberElement
 
 
     /**
-     * The list of identifiers from the third party system.  Typically, there is only one.  More
-     * occur when a single open metadata element is used to represent multiple objects from the
-     * third party system.
+     * The specific identifier from the third party system.
      *
-     * @return list of external identifiers
+     * @return selected external identifier
      */
-    public List<MetadataCorrelationHeader> getExternalIdentifiers()
+    public MetadataCorrelationHeader getExternalIdentifier()
     {
-        return externalIdentifiers;
+        return externalIdentifier;
     }
 
 
@@ -162,7 +162,7 @@ public class MemberElement
             {
                 if (thirdPartyElementCreationTime == null)  /* Element just in Egeria. */
                 {
-                    if (externalIdentifiers == null)        /* Element never synchronized before */
+                    if (externalIdentifier == null)        /* Element never synchronized before */
                     {
                         if ((targetPermittedSynchronization == PermittedSynchronization.BOTH_DIRECTIONS) ||
                                 (targetPermittedSynchronization == PermittedSynchronization.TO_THIRD_PARTY))
@@ -284,6 +284,21 @@ public class MemberElement
     }
 
 
+    private Date getLastChangeToElement(Date createTime, Date lastUpdateTime)
+    {
+        Date lastChange = lastUpdateTime;
+
+        if (lastChange == null)
+        {
+            lastChange = createTime;
+        }
+
+        assert (lastChange != null);
+
+        return lastChange;
+    }
+
+
     /**
      * Determine the relative ages of the elements from open metadata and the third party.
      *
@@ -294,25 +309,30 @@ public class MemberElement
     private DateComparison compareAges(Date thirdPartyElementCreationTime,
                                        Date thirdPartyElementLastUpdateTime)
     {
-        Date elementComparisonDate = element.getVersions().getUpdateTime();
+        Date elementComparisonDate = getLastChangeToElement(element.getVersions().getCreateTime(),
+                                                            element.getVersions().getUpdateTime());
 
-        if (elementComparisonDate == null)
+        Date thirdPartyComparisonDate = getLastChangeToElement(thirdPartyElementCreationTime,
+                                                               thirdPartyElementLastUpdateTime);
+
+        if (thirdPartyComparisonDate.after(elementComparisonDate))
         {
-            elementComparisonDate = element.getVersions().getCreateTime();
-        }
+            /*
+             * Third party has the latest copy - was the change before the last synchronization time
+             */
+            if (externalIdentifier != null)
+            {
+                if ((externalIdentifier.getLastSynchronized() != null) && (thirdPartyComparisonDate.after(externalIdentifier.getLastSynchronized())))
+                {
+                    return DateComparison.THIRD_PARTY_COPY_NEWEST;
+                }
 
-        Date thirdPartyComparisonDate = thirdPartyElementLastUpdateTime;
-
-        if (thirdPartyComparisonDate == null)
-        {
-            thirdPartyComparisonDate = thirdPartyElementCreationTime;
-        }
-
-        assert (thirdPartyComparisonDate != null);
-
-        if (elementComparisonDate.before(thirdPartyComparisonDate))
-        {
-            return DateComparison.THIRD_PARTY_COPY_NEWEST;
+                return DateComparison.DATES_EQUAL;
+            }
+            else
+            {
+                return DateComparison.THIRD_PARTY_COPY_NEWEST;
+            }
         }
 
         if (elementComparisonDate.after(thirdPartyComparisonDate))
@@ -321,17 +341,11 @@ public class MemberElement
              * Egeria has the newest copy - has it been updated since the last
              * synchronization date?
              */
-            if (externalIdentifiers != null)
+            if (externalIdentifier != null)
             {
-                for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
+                if ((externalIdentifier.getLastSynchronized() != null) && (externalIdentifier.getLastSynchronized().before(elementComparisonDate)))
                 {
-                    if (externalIdentifier != null)
-                    {
-                        if ((externalIdentifier.getLastSynchronized() != null) && (externalIdentifier.getLastSynchronized().before(elementComparisonDate)))
-                        {
-                            return DateComparison.EGERIA_COPY_NEWEST;
-                        }
-                    }
+                    return DateComparison.EGERIA_COPY_NEWEST;
                 }
 
                 return DateComparison.DATES_EQUAL;
@@ -363,7 +377,7 @@ public class MemberElement
 
         return "MemberElement{" +
                 "element=" + elementGUID +
-                "externalIdentifiers=" + externalIdentifiers +
+                "externalIdentifiers=" + externalIdentifier +
                 ", catalogTargetName='" + catalogTargetName + '\'' +
                 ", isElementActive=" + isElementActive +
                 ", targetPermittedSynchronization=" + targetPermittedSynchronization +

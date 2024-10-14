@@ -4,12 +4,14 @@ package org.odpi.openmetadata.adapters.connectors.reports.surveyreport;
 
 
 import org.odpi.openmetadata.adapters.connectors.reports.ReportRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.reports.ffdc.ReportsAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -97,7 +99,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
             if (annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name) != null)
             {
-                annotationTitle = annotationElement.getType().getTypeName() + ": " + annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name);
+                annotationTitle = annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name);
             }
         }
 
@@ -122,7 +124,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
             if (annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name) != null)
             {
                 String annotationType = annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name);
-                annotationURL = "#" + annotationElement.getType().getTypeName() + "-" + annotationType.replace(' ', '-');
+                annotationURL = "#" + annotationType.replace(' ', '-');
             }
         }
 
@@ -150,27 +152,33 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
+        final String methodName = "printReport";
+
         int annotationIndentLevel = reportIndentLevel + 1;
 
-        outputReport.printReportSubheading(reportIndentLevel, "Survey report: " + surveyReportElement.getVersions().getCreateTime());
+        outputReport.printReportLine(reportIndentLevel, "* Report Start Time: " + surveyReportElement.getVersions().getCreateTime());
+        outputReport.printReportLine(reportIndentLevel, "* Report Completion Time: " +
+                propertyHelper.getDateProperty(governanceServiceName,
+                                               OpenMetadataProperty.COMPLETION_DATE.name,
+                                               surveyReportElement.getElementProperties(),
+                                               methodName));
 
-        /*
-         * Print out the properties of the report
-         */
-        if (surveyReportElement.getElementProperties() != null)
-        {
-            Map<String, String> surveyReportProperties = surveyReportElement.getElementProperties().getPropertiesAsStrings();
+        outputReport.printReportLine(reportIndentLevel, "* Final Analysis Step: " +
+                propertyHelper.getStringProperty(governanceServiceName,
+                                                 OpenMetadataProperty.ANALYSIS_STEP.name,
+                                                 surveyReportElement.getElementProperties(),
+                                                 methodName));
 
-            if (surveyReportProperties != null)
-            {
-                for (String propertyName : surveyReportProperties.keySet())
-                {
-                    outputReport.printReportLine(reportIndentLevel, propertyName, surveyReportProperties.get(propertyName));
-                }
-            }
-        }
 
-        outputReport.printReportLine(reportIndentLevel, "\n**Annotations**");
+        outputReport.printReportLine(reportIndentLevel, "\n" +
+                propertyHelper.getStringProperty(governanceServiceName,
+                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                 surveyReportElement.getElementProperties(),
+                                                 methodName));
+
+
+
+        outputReport.printReportSubheading(reportIndentLevel, "Annotations");
 
         /*
          * Create a table of contents for the annotations
@@ -272,7 +280,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
             {
                 List<String> tableHeadings = new ArrayList<>(Arrays.asList("Name", "Value"));
 
-                outputReport.printReportLine(indentLevel, "* **" + propertyName + "**:");
+                outputReport.printReportLine(indentLevel, "\n**" + propertyName + "**:\n");
 
                 PropertyValue propertyValue = elementProperties.getPropertyValue(propertyName);
 
@@ -376,63 +384,48 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
         if (annotationElement.getElementProperties() != null)
         {
-            List<String> processedProperties = new ArrayList<>();
             Map<String, String> annotationProperties = annotationElement.getElementProperties().getPropertiesAsStrings();
 
-            outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANNOTATION_TYPE.name, annotationProperties.get(OpenMetadataProperty.ANNOTATION_TYPE.name));
-            processedProperties.add(OpenMetadataProperty.ANNOTATION_TYPE.name);
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.SUMMARY.name, annotationProperties.get(OpenMetadataProperty.SUMMARY.name));
-            processedProperties.add(OpenMetadataProperty.SUMMARY.name);
-            outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANNOTATION_STATUS.name, annotationProperties.get(OpenMetadataProperty.ANNOTATION_STATUS.name));
-            processedProperties.add(OpenMetadataProperty.ANNOTATION_STATUS.name);
-            outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.CONFIDENCE_LEVEL.name, annotationProperties.get(OpenMetadataProperty.CONFIDENCE_LEVEL.name));
-            processedProperties.add(OpenMetadataProperty.CONFIDENCE_LEVEL.name);
-            outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.EXPRESSION.name, annotationProperties.get(OpenMetadataProperty.EXPRESSION.name));
-            processedProperties.add(OpenMetadataProperty.EXPRESSION.name);
+            if (annotationProperties.get(OpenMetadataProperty.ANNOTATION_STATUS.name) != null)
+            {
+                outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANNOTATION_STATUS.name, annotationProperties.get(OpenMetadataProperty.ANNOTATION_STATUS.name));
+            }
+            if (annotationProperties.get(OpenMetadataProperty.CONFIDENCE_LEVEL.name) != null)
+            {
+                outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.CONFIDENCE_LEVEL.name, annotationProperties.get(OpenMetadataProperty.CONFIDENCE_LEVEL.name));
+            }
+            if (annotationProperties.get(OpenMetadataProperty.EXPRESSION.name) != null)
+            {
+                outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.EXPRESSION.name, annotationProperties.get(OpenMetadataProperty.EXPRESSION.name));
+            }
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.EXPLANATION.name, annotationProperties.get(OpenMetadataProperty.EXPLANATION.name));
-            processedProperties.add(OpenMetadataProperty.EXPLANATION.name);
             outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.ANALYSIS_STEP.name, annotationProperties.get(OpenMetadataProperty.ANALYSIS_STEP.name));
-            processedProperties.add(OpenMetadataProperty.ANALYSIS_STEP.name);
-            outputReport.printReportLine(annotationIndentLevel, OpenMetadataProperty.JSON_PROPERTIES.name, annotationProperties.get(OpenMetadataProperty.JSON_PROPERTIES.name));
-            processedProperties.add(OpenMetadataProperty.JSON_PROPERTIES.name);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.VALUE_COUNT.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
 
             this.printArrayProperty(annotationIndentLevel,
                                    OpenMetadataProperty.VALUE_LIST.name,
                                    annotationElement.getElementProperties(),
                                    outputReport);
-            processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.PROFILE_PROPERTIES.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.PROFILE_PROPERTIES.name);
+
+            this.printMapProperty(annotationIndentLevel,
+                                  OpenMetadataProperty.RESOURCE_PROPERTIES.name,
+                                  annotationElement.getElementProperties(),
+                                  outputReport);
 
             this.printMapProperty(annotationIndentLevel,
                                   OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
-            processedProperties.add(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name);
-
-            outputReport.printReportLine(annotationIndentLevel, "* **Other Properties**:");
-
-            for (String propertyName : annotationProperties.keySet())
-            {
-                if (! processedProperties.contains(propertyName))
-                {
-                    outputReport.printElementInTable(annotationPropertyIndentLevel,
-                                                     tableHeadings,
-                                                     new ArrayList<>(Arrays.asList(propertyName,
-                                                                                   annotationProperties.get(propertyName))));
-                    tableHeadings = null;
-                }
-            }
         }
 
         List<RelatedMetadataElement> associatedElements = openMetadataStoreClient.getRelatedMetadataElements(reportedAnnotationElement.getElement().getElementGUID(),
@@ -480,8 +473,12 @@ public class SurveyReportService extends GeneralGovernanceActionService
      * @param surveyReport report to print out
      */
     private void createReport(String              surveyReportDirectory,
-                              OpenMetadataElement surveyReport)
+                              OpenMetadataElement surveyReport) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
+        final String methodName = "createReport";
+
         int indentLevel = 0;
 
         try
@@ -490,12 +487,21 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
             if (surveyReport != null)
             {
-                String reportFileName = "survey-report-" + reportDate + ".md";
+                String reportDisplayName =  propertyHelper.getStringProperty(governanceServiceName,
+                                                                             OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                             surveyReport.getElementProperties(),
+                                                                             methodName);
+                if (reportDisplayName == null)
+                {
+                    reportDisplayName = "Asset survey report";
+                }
+
+                String reportFileName = reportDisplayName + "-" + reportDate + ".md";
 
                 EgeriaReport outputReport = new EgeriaReport(surveyReportDirectory + "/" + reportFileName, false);
 
-                outputReport.printReportTitle(indentLevel, "Asset survey report");
-                outputReport.printReportLine(indentLevel, "Date: " + reportDate);
+                outputReport.printReportTitle(indentLevel, reportDisplayName);
+                outputReport.printReportLine(indentLevel, "* Report Print Time: " + reportDate);
 
                 int reportIndentLevel = indentLevel + 1;
 
@@ -505,12 +511,25 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                  outputReport);
 
                 outputReport.closeReport();
+
+                governanceContext.recordCompletionStatus(Guard.SERVICE_COMPLETED.getCompletionStatus(),
+                                                         List.of(Guard.SERVICE_COMPLETED.getName()),
+                                                         null,
+                                                         null,
+                                                         ReportsAuditCode.REPORT_CREATED.getMessageDefinition(governanceServiceName,
+                                                                                                              reportFileName));
             }
         }
         catch (Exception error)
         {
-            System.out.println("There was an " + error.getClass().getName() + " exception when calling the platform.  Error message is: " + error.getMessage());
-            System.exit(-1);
+            governanceContext.recordCompletionStatus(Guard.SERVICE_FAILED.getCompletionStatus(),
+                                                     List.of(Guard.SERVICE_FAILED.getName()),
+                                                     null,
+                                                     null,
+                                                     ReportsAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                error.getClass().getName(),
+                                                                                                                methodName,
+                                                                                                                error.getMessage()));
         }
     }
 }

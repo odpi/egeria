@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
@@ -45,10 +46,16 @@ public class WriteAuditLogMessageGovernanceActionConnector extends GeneralGovern
         {
             List<String> outputGuards = new ArrayList<>();
 
-            auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.BLANK_INFO_LOG_MESSAGE.getMessageDefinition(messageText));
+            AuditLogMessageDefinition auditLogMessageDefinition = GovernanceActionConnectorsAuditCode.BLANK_INFO_LOG_MESSAGE.getMessageDefinition(messageText);
+
+            auditLog.logMessage(methodName, auditLogMessageDefinition);
 
             outputGuards.add(WriteAuditLogGuard.MESSAGE_WRITTEN.getName());
-            governanceContext.recordCompletionStatus(WriteAuditLogGuard.MESSAGE_WRITTEN.getCompletionStatus(), outputGuards);
+            governanceContext.recordCompletionStatus(WriteAuditLogGuard.MESSAGE_WRITTEN.getCompletionStatus(),
+                                                     outputGuards,
+                                                     null,
+                                                     null,
+                                                     auditLogMessageDefinition);
         }
         catch (Exception error)
         {

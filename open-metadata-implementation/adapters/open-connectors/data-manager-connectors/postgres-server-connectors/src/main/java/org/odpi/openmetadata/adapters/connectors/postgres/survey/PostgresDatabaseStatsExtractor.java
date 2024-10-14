@@ -125,6 +125,21 @@ public class PostgresDatabaseStatsExtractor
                 annotation.setAnalysisStep(PostgresAnnotationType.DATABASE_METRICS.getAnalysisStep());
 
                 annotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentDatabase));
+
+                Map<String, String> resourceProperties = new HashMap<>();
+
+                resourceProperties.put("Database Name", currentDatabase.getDatabaseName());
+                resourceProperties.put("Database Size", Long.toString(currentDatabase.getSize()));
+                resourceProperties.put("Rows Fetched", Long.toString(currentDatabase.getRowsFetched()));
+                resourceProperties.put("Rows Inserted", Long.toString(currentDatabase.getRowsInserted()));
+                resourceProperties.put("Rows Updated", Long.toString(currentDatabase.getRowsUpdated()));
+                resourceProperties.put("Rows Deleted", Long.toString(currentDatabase.getRowsDeleted()));
+                resourceProperties.put("Session Time", Double.toString(currentDatabase.getSessionTime()));
+                resourceProperties.put("Active Time", Double.toString(currentDatabase.getActiveTime()));
+
+                annotation.setResourceProperties(resourceProperties);
+
+                annotations.add(annotation);
             }
         }
 

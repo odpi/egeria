@@ -72,7 +72,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(identifier + UUID.randomUUID(),
+        super(identifier + ":" + UUID.randomUUID(),
               OpenMetadataType.EXTERNAL_ID.typeGUID,
               OpenMetadataType.EXTERNAL_ID.typeName,
               repositoryHelper,

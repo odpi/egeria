@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.properties;
 
-import java.util.Map;
 
 /**
  * Common properties of an element returned from UC.
@@ -44,22 +43,6 @@ public interface ElementBase
 
 
     /**
-     * Return arbitrary name-value property pairs.
-     *
-     * @return property string map
-     */
-    //Map<String, String> getProperties();
-
-
-    /**
-     * Set up arbitrary name-value property pairs.
-     *
-     * @param properties property string map
-     */
-    //void setProperties(Map<String, String> properties);
-
-
-    /**
      * Return the time that the element was created.
      *
      * @return date/time as long
@@ -89,4 +72,52 @@ public interface ElementBase
      * @param updated_at  date/time as long
      */
     void setUpdated_at(long updated_at);
+
+
+    /**
+     * Return the userId that created the element.
+     *
+     * @return string name
+     */
+    String getCreated_by();
+
+
+    /**
+     * Set up the userId that created the element.
+     *
+     * @param created_by string name
+     */
+    void setCreated_by(String created_by);
+
+
+    /**
+     * Return the element that last updated the element.
+     *
+     * @return string name
+     */
+    String getUpdated_by();
+
+
+    /**
+     * Set up the element that last updated the element.
+     *
+     * @param updated_by string name
+     */
+    void setUpdated_by(String updated_by);
+
+
+    /**
+     * Return the owner of the element.
+     *
+     * @return string name
+     */
+    String getOwner();
+
+
+    /**
+     * Set up the owner of the element.
+     *
+     * @param owner string name
+     */
+    void setOwner(String owner);
 }

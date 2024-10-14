@@ -28,7 +28,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
 
 
     /**
-     * A function found in Unity Catalog (UC) that is working with data..
+     * A function found in Unity Catalog (UC) that is working with data.
      */
     OSS_UC_FUNCTION("Unity Catalog Function",
                   null,

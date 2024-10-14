@@ -22,10 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TokenAPI
 {
-    private String              httpRequestType = "GET";
-    private String              url             = null;
-    private String              contentType     = "application/json";
-    private Map<String, Object> requestBody     = null;
+    private String              httpRequestType     = "GET";
+    private String              url                 = null;
+    private String              contentType         = "application/json";
+    private Map<String, Object> requestBody         = null;
+    private Map<String, String> responseBodyMapping = null;
+
 
     /**
      * Default constructor
@@ -124,6 +126,28 @@ public class TokenAPI
 
 
     /**
+     * Return mapping from secret name to response property name.
+     *
+     * @return map
+     */
+    public Map<String, String> getResponseBodyMapping()
+    {
+        return responseBodyMapping;
+    }
+
+
+    /**
+     * Set up mapping from secret name to response property name.
+     *
+     * @param responseBodyMapping map
+     */
+    public void setResponseBodyMapping(Map<String, String> responseBodyMapping)
+    {
+        this.responseBodyMapping = responseBodyMapping;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -136,8 +160,11 @@ public class TokenAPI
                 ", url='" + url + '\'' +
                 ", contentType='" + contentType + '\'' +
                 ", requestBody=" + requestBody +
+                ", responseBodyMapping=" + responseBodyMapping +
+                ", URL='" + getURL() + '\'' +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -154,7 +181,8 @@ public class TokenAPI
         return Objects.equals(httpRequestType, tokenAPI.httpRequestType) &&
                 Objects.equals(url, tokenAPI.url) &&
                 Objects.equals(contentType, tokenAPI.contentType) &&
-                Objects.equals(requestBody, tokenAPI.requestBody);
+                Objects.equals(requestBody, tokenAPI.requestBody) &&
+                Objects.equals(responseBodyMapping, tokenAPI.responseBodyMapping);
     }
 
 
@@ -166,6 +194,6 @@ public class TokenAPI
     @Override
     public int hashCode()
     {
-        return Objects.hash(httpRequestType, url, contentType, requestBody);
+        return Objects.hash(httpRequestType, url, contentType, requestBody, responseBodyMapping);
     }
 }

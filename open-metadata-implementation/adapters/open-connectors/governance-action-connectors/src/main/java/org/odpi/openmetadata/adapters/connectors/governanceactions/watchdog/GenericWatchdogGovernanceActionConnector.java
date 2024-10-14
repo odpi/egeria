@@ -422,36 +422,6 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
 
 
     /**
-     * Retrieve the property value from the values passed to this governance action service.
-     *
-     * @param propertyName name of the property
-     * @param defaultValue default value
-     * @return property value
-     */
-    private String getProperty(String propertyName, String defaultValue)
-    {
-        Map<String, String> requestParameters = governanceContext.getRequestParameters();
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        String propertyValue = defaultValue;
-
-        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
-        {
-            propertyValue = requestParameters.get(propertyName);
-        }
-        else
-        {
-            if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
-            {
-                propertyValue = configurationProperties.get(propertyName).toString();
-            }
-        }
-
-        return propertyValue;
-    }
-
-
-    /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
      * or the administrator requested this governance action service stop running or the hosting server is shutting down.
      * If disconnect completes before the governance action service records

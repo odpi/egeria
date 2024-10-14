@@ -22,7 +22,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -48,6 +47,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param catalogGUID guid of the catalog
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -62,6 +62,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     public OSSUnityCatalogInsideCatalogSyncTables(String                           connectorName,
                                                   CatalogIntegratorContext         context,
                                                   String                           catalogTargetName,
+                                                  String                           catalogGUID,
                                                   String                           catalogName,
                                                   Map<String, String>              ucFullNameToEgeriaGUID,
                                                   PermittedSynchronization         targetPermittedSynchronization,
@@ -76,6 +77,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         super(connectorName,
               context,
               catalogTargetName,
+              catalogGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
@@ -110,15 +112,17 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         final String methodName = "refreshEgeriaTables";
 
-        MetadataCollectionIterator tableIterator = new MetadataCollectionIterator(this.context.getMetadataSourceGUID(),
-                                                                                   this.context.getMetadataSourceQualifiedName(),
-                                                                                   catalogTargetName,
-                                                                                   connectorName,
-                                                                                   entityTypeName,
-                                                                                   openMetadataAccess,
-                                                                                   targetPermittedSynchronization,
-                                                                                   context.getMaxPageSize(),
-                                                                                   auditLog);
+        MetadataCollectionIterator tableIterator = new MetadataCollectionIterator(catalogGUID,
+                                                                                  catalogQualifiedName,
+                                                                                  catalogGUID,
+                                                                                  catalogQualifiedName,
+                                                                                  catalogName,
+                                                                                  connectorName,
+                                                                                  entityTypeName,
+                                                                                  openMetadataAccess,
+                                                                                  targetPermittedSynchronization,
+                                                                                  context.getMaxPageSize(),
+                                                                                  auditLog);
 
         while (tableIterator.moreToReceive())
         {
@@ -129,7 +133,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 /*
                  * Check that this is a UC Table.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
@@ -138,7 +142,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 {
                     TableInfo tableInfo = null;
 
-                    String tableName = propertyHelper.getStringProperty(catalogTargetName,
+                    String tableName = propertyHelper.getStringProperty(catalogName,
                                                                         OpenMetadataProperty.RESOURCE_NAME.name,
                                                                         nextElement.getElement().getElementProperties(),
                                                                         methodName);
@@ -166,7 +170,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                         }
 
                         this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                        super.getUCSchemaFomMember(nextElement),
+                                        super.getUCSchemaFromMember(nextElement),
                                         memberAction,
                                         nextElement,
                                         tableInfo);
@@ -283,24 +287,28 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         if (templateGUID != null)
         {
-            ucTableGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
-                                                                                schemaGUID,
-                                                                                false,
-                                                                                null,
-                                                                                null,
-                                                                                templateGUID,
-                                                                                null,
-                                                                                this.getPlaceholderProperties(tableInfo),
-                                                                                schemaGUID,
-                                                                                parentLinkTypeName,
-                                                                                null,
-                                                                                parentAtEnd1);
+            ucTableGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
+                                                                               catalogQualifiedName,
+                                                                               deployedImplementationType.getAssociatedTypeName(),
+                                                                               schemaGUID,
+                                                                               false,
+                                                                               null,
+                                                                               null,
+                                                                               templateGUID,
+                                                                               null,
+                                                                               this.getPlaceholderProperties(tableInfo),
+                                                                               schemaGUID,
+                                                                               parentLinkTypeName,
+                                                                               null,
+                                                                               parentAtEnd1);
         }
         else
         {
             String qualifiedName = super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
-            ucTableGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+            ucTableGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                                          catalogQualifiedName,
+                                                                          deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
                                                                            null,
                                                                            schemaGUID,
@@ -315,31 +323,17 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
             Map<String, String> facetProperties = new HashMap<>();
 
-            if (tableInfo.getTable_type() != null)
-            {
-                facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), tableInfo.getTable_type().getValue());
-            }
-            else
-            {
-                facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), null);
-            }
-
-            if (tableInfo.getData_source_format() != null)
-            {
-                facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), tableInfo.getData_source_format().getValue());
-            }
-            else
-            {
-                facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), null);
-            }
-
+            facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), tableInfo.getTable_type());
+            facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), tableInfo.getData_source_format());
             facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), tableInfo.getStorage_location());
 
 
-            super.addPropertyFacet(ucTableGUID, qualifiedName, facetProperties);
+            super.addPropertyFacet(ucTableGUID, qualifiedName, tableInfo, facetProperties);
         }
 
-        context.addExternalIdentifier(ucTableGUID,
+        context.addExternalIdentifier(catalogGUID,
+                                      catalogQualifiedName,
+                                      ucTableGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(tableInfo,
                                                                            tableInfo.getSchema_name(),
@@ -369,13 +363,19 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         String egeriaTableGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaTableGUID,
+        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        egeriaTableGUID,
                                                         false,
                                                         this.getElementProperties(tableInfo));
 
         this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
 
-        context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getTable_id());
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       egeriaTableGUID,
+                                       entityTypeName,
+                                       tableInfo.getTable_id());
     }
 
 
@@ -402,13 +402,26 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                       super.getUCStorageLocationFromMember(memberElement),
                                                       super.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(tableInfo,
-                                                                           tableInfo.getSchema_name(),
-                                                                           UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
-                                                                           tableInfo.getTable_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(catalogGUID,
+                                          catalogQualifiedName,
+                                          memberElement.getElement().getElementGUID(),
+                                          deployedImplementationType.getAssociatedTypeName(),
+                                          this.getExternalIdentifierProperties(tableInfo,
+                                                                               tableInfo.getSchema_name(),
+                                                                               UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                               tableInfo.getTable_id(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(catalogGUID,
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           tableInfo.getTable_id());
+        }
     }
 
 
@@ -418,21 +431,13 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param memberElement elements from Egeria
      * @return table type enum
      */
-    private TableType getUCTableTypeFromMember(MemberElement memberElement)
+    private String getUCTableTypeFromMember(MemberElement memberElement)
     {
         Map<String, String> vendorProperties = memberElement.getVendorProperties(PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE);
 
         if (vendorProperties != null)
         {
-            String tableTypeValue = vendorProperties.get(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName());
-
-            for (TableType tableType : TableType.values())
-            {
-                if (tableType.getValue().equals(tableTypeValue))
-                {
-                    return tableType;
-                }
-            }
+            return vendorProperties.get(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName());
         }
 
         return null;
@@ -445,27 +450,14 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param memberElement elements from Egeria
      * @return table type enum
      */
-    private DataSourceFormat getUCDataSourceFormatFromMember(MemberElement memberElement)
+    private String getUCDataSourceFormatFromMember(MemberElement memberElement)
     {
         final String methodName = "getUCDataSourceFormatFromMember";
 
-        String encoding = propertyHelper.getStringPropertyFromClassification(memberElement.getElement(),
-                                                                             OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
-                                                                             OpenMetadataProperty.ENCODING.name,
-                                                                             methodName);
-
-        if (encoding != null)
-        {
-            for (DataSourceFormat dataSourceFormat : DataSourceFormat.values())
-            {
-                if (dataSourceFormat.getValue().equals(encoding))
-                {
-                    return dataSourceFormat;
-                }
-            }
-        }
-
-        return null;
+        return propertyHelper.getStringPropertyFromClassification(memberElement.getElement(),
+                                                                  OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+                                                                  OpenMetadataProperty.ENCODING.name,
+                                                                  methodName);
     }
 
 
@@ -491,6 +483,12 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                           memberElement.getElement().getElementGUID(),
                                                                           tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
                                                                           ucServerEndpoint));
+
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       tableInfo.getTable_id());
     }
 
 
@@ -530,22 +528,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), info.getComment());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), info.getStorage_location());
-        if (info.getTable_type() != null)
-        {
-            placeholderProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), info.getTable_type().getValue());
-        }
-        else
-        {
-            placeholderProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), null);
-        }
-        if (info.getData_source_format() != null)
-        {
-            placeholderProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), info.getData_source_format().getValue());
-        }
-        else
-        {
-            placeholderProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), null);
-        }
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), info.getTable_type());
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), info.getData_source_format());
 
         return placeholderProperties;
     }
@@ -682,7 +666,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         /*
          * Create the root schema type.
          */
-        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
+        openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         tableGUID,

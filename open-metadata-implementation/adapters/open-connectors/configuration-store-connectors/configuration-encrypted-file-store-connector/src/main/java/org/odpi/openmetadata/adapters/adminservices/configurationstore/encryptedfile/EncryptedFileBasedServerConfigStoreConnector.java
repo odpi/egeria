@@ -691,6 +691,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      *
      * @return File
      */
+    @SuppressWarnings(value = "deprecation")
     private File createKeyStore() {
 
         final String methodName = "createKeyStore";

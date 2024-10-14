@@ -30,6 +30,8 @@ public class RelatedElementsIterator extends IntegrationIterator
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
      * @param metadataCollectionQualifiedName unique name of the metadata collection
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
+     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param parentGUID unique identifier of element that the desired results are linked to
@@ -43,6 +45,8 @@ public class RelatedElementsIterator extends IntegrationIterator
      */
     public RelatedElementsIterator(String                   metadataCollectionGUID,
                                    String                   metadataCollectionQualifiedName,
+                                   String                   externalScopeGUID,
+                                   String                   externalScopeName,
                                    String                   catalogTargetName,
                                    String                   connectorName,
                                    String                   parentGUID,
@@ -56,6 +60,8 @@ public class RelatedElementsIterator extends IntegrationIterator
     {
         super(metadataCollectionGUID,
               metadataCollectionQualifiedName,
+              externalScopeGUID,
+              externalScopeName,
               catalogTargetName,
               connectorName,
               metadataTypeName,
