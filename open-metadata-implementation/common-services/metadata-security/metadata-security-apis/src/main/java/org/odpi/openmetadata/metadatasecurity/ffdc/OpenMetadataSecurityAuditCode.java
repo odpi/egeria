@@ -228,6 +228,25 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                               "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
 
     /**
+     * OPEN-METADATA-SECURITY-0022 - User {0} is not recognized
+     */
+    UNKNOWN_USER("OPEN-METADATA-SECURITY-0022",
+                 AuditLogRecordSeverityLevel.SECURITY,
+                 "User {0} is not recognized",
+                 "The security service has received a request from an unknown user.",
+                 "Track down the source of the request and either add the user to the user directory or prevent the user from accessing again."),
+
+
+    /**
+     * OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; message was {2}
+     */
+    FAILED_TO_RETRIEVE_USER("OPEN-METADATA-SECURITY-0023",
+                 AuditLogRecordSeverityLevel.SECURITY,
+                 "Exception {0} occurred when retrieving user {1}; message was {2}",
+                 "An exception occurred when the security service tried to retrieve a user account.",
+                 "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
+
+    /**
      * OPEN-METADATA-SECURITY-0050 - User {0} retrieved {1} asset {2} during operation {3} of service {4}
      */
     ASSET_ACTIVITY_READ("OPEN-METADATA-SECURITY-0050",
@@ -293,6 +312,17 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                           "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
                           "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
                           "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches."),
+
+
+    /**
+     * OPEN-METADATA-SECURITY-0099 - The security connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION("OPEN-METADATA-SECURITY-0099",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The security connector received an unexpected {0} exception during method {1}; the error message was: {2}",
+                         "The connector is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     ;
 
     private final String                     logMessageId;

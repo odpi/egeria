@@ -50,6 +50,14 @@ public enum UCErrorCode implements ExceptionMessageSet
                          "The connector is unable to process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
+    /**
+     * UNITY-CATALOG-CONNECTOR-500-002 - The {0} Unity Catalog (UC) governance service has detected an invalid technology type in code that runs after the technology type has been validated.
+     */
+    LOGIC_ERROR(500, "UNITY-CATALOG-CONNECTOR-500-002",
+                "The {0} Unity Catalog (UC) governance service has detected an invalid technology type in code that runs after the technology type has been validated.",
+                "The connector ends with an exception.",
+                "The code in the service needs to be fixed to ensure the list of valid unity catalog resources is consistent throughout."),
+
 
     /**
      * UNITY-CATALOG-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}

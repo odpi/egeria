@@ -761,7 +761,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         archiveHelper.addConnectorType(null, new MetadataAccessServerProvider());
         archiveHelper.addConnectorType(null, new ViewServerProvider());
 
-
         /*
          * Add catalog templates
          */
@@ -1731,7 +1730,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                       "Egeria:DailyGovernanceActionProcess",
                                                                       "DailyGovernanceActionProcess",
                                                                       null,
-                                                                      null,
+                                                                      "Determines which day of the week it is today, and puts out a message on the audit log matching the assigned task for the day of the week.",
                                                                       null,
                                                                       0,
                                                                       null,

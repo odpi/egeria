@@ -348,6 +348,19 @@ public enum RequestTypeDefinition
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
+     * provision-unity-catalog-resource
+     */
+    PROVISION_UC("provision-unity-catalog-resource",
+                     null,
+                     null,
+                     null,
+                     GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.PROVISION_UC,
+                     "b67bce2e-fc02-43b1-a45b-e3c7be02da66",
+                     null,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
      * survey-postgres-server
      */
     SURVEY_POSTGRES_SERVER("survey-postgres-server",

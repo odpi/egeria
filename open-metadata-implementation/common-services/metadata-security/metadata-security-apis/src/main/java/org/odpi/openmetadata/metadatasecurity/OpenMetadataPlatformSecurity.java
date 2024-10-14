@@ -16,6 +16,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 public interface OpenMetadataPlatformSecurity
 {
     /**
+     * Set up the URL Root for the platform where this is running.
+     *
+     * @param serverURLRoot url root
+     */
+     void setServerPlatformURL(String    serverURLRoot);
+
+
+    /**
      * Check that the calling user is authorized to create new servers.
      *
      * @param userId calling user

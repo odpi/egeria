@@ -157,6 +157,12 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                           "A classification request is being retried because of a race condition between two threads, both trying to add the first instance of a classification to an entity.  The classification will be reapplied.",
                           "Check that the resulting classification of the entity is what is required."),
 
+    RELATION_DEDUP_SUMMARY("OMAG-REPOSITORY-HANDLER-0014",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "Successfully deduplicated relationships {0} down to {1}",
+                           "The relationship accumulator has successfully removed deduplicated relationships.",
+                           "Check that these are valid duplicates."),
+
     ;
 
     private final String                     logMessageId;

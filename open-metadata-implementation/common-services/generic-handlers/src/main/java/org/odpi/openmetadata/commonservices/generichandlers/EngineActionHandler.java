@@ -588,6 +588,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         final String governanceActionProcessGUIDParameterName  = "governanceActionProcessEntity.getGUID()";
         final String governanceActionProcessInstanceGUIDParameterName  = "governanceActionProcessInstanceGUID";
         final String governanceActionProcessStepGUIDParameterName  = "governanceActionProcessFlowRelationship.getEntityTwoProxy().getGUID()";
+        final String engineActionGUIDParameterName = "engineActionGUID";
 
         /*
          * Effective time is set to "now" so that the process definition that is active now is
@@ -780,31 +781,56 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    false,
                                                    serviceSupportedZones,
                                                    OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
                                                    processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
                                                    effectiveTime,
                                                    methodName);
 
-                prepareEngineActionFromProcessStep(userId,
-                                                   processInstanceGUID,
-                                                   governanceActionProcessStepGUID,
-                                                   governanceActionProcessStepGUIDParameterName,
-                                                   guard,
-                                                   false,
-                                                   requestedStartDate,
-                                                   null,
-                                                   userId,
-                                                   combinedRequestParameters,
-                                                   requestSourceGUIDs,
-                                                   newTargetsForAction,
-                                                   processInstanceQualifiedName,
-                                                   processQualifiedName,
-                                                   originatorServiceName,
-                                                   originatorEngineName,
-                                                   serviceSupportedZones,
-                                                   methodName);
+                String engineActionGUID = prepareEngineActionFromProcessStep(userId,
+                                                                             processInstanceGUID,
+                                                                             governanceActionProcessStepGUID,
+                                                                             governanceActionProcessStepGUIDParameterName,
+                                                                             guard,
+                                                                             false,
+                                                                             requestedStartDate,
+                                                                             null,
+                                                                             userId,
+                                                                             combinedRequestParameters,
+                                                                             requestSourceGUIDs,
+                                                                             newTargetsForAction,
+                                                                             processInstanceQualifiedName,
+                                                                             processQualifiedName,
+                                                                             originatorServiceName,
+                                                                             originatorEngineName,
+                                                                             serviceSupportedZones,
+                                                                             methodName);
 
-                 return processInstanceGUID;
+                if (engineActionGUID != null)
+                {
+                    this.uncheckedLinkElementToElement(userId,
+                                                       null,
+                                                       null,
+                                                       processInstanceGUID,
+                                                       governanceActionProcessInstanceGUIDParameterName,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                       engineActionGUID,
+                                                       engineActionGUIDParameterName,
+                                                       OpenMetadataType.ENGINE_ACTION.typeName,
+                                                       false,
+                                                       false,
+                                                       serviceSupportedZones,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
+                                                       repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    null,
+                                                                                                    OpenMetadataType.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                                                                    processInstanceName,
+                                                                                                    methodName),
+                                                       effectiveTime,
+                                                       methodName);
+                }
+
+                return processInstanceGUID;
             }
             else
             {

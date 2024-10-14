@@ -20,8 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemporaryVolumeCredential
 {
-    private String               volume_id   = null;
-    private VolumeOperation      operation  = null;
+    private String volume_id  = null;
+    private String operation  = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class TemporaryVolumeCredential
      *
      * @return text
      */
-    public VolumeOperation getOperation()
+    public String getOperation()
     {
         return operation;
     }
@@ -69,7 +69,7 @@ public class TemporaryVolumeCredential
      *
      * @param operation text
      */
-    public void setOperation(VolumeOperation operation)
+    public void setOperation(String operation)
     {
         this.operation = operation;
     }
@@ -102,7 +102,8 @@ public class TemporaryVolumeCredential
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TemporaryVolumeCredential that = (TemporaryVolumeCredential) objectToCompare;
-        return Objects.equals(volume_id, that.volume_id) && operation == that.operation;
+        return Objects.equals(volume_id, that.volume_id) &&
+                Objects.equals(operation, that.operation);
     }
 
     

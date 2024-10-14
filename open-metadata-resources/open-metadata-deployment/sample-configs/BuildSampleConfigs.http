@@ -247,14 +247,52 @@ A server that runs integration connectors that synchronize and exchange metadata
 ###
 # Set up the qualified name of the integration group that this server supports and the location of the
 # metadata access store active-metadata-store
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-groups/configuration
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-groups/configuration/all
 Content-Type: application/json
 
-{
-    "class": "IntegrationGroupConfig",
-    "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
-    "omagserverName" : "active-metadata-store",
-    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
-}
+[
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Default"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheAtlas"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheKafka"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:PostgreSQL"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
+    }
+]
 
 ###

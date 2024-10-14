@@ -52,7 +52,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     {
         if (connectorConfigProperties != null)
         {
-            this.connectorConfigProperties = connectorConfigProperties;
+            this.connectorConfigProperties = new HashMap<>(connectorConfigProperties);
         }
         else
         {
@@ -72,11 +72,16 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      */
     private Map<String,Object> getCombinedConfigurationProperties(Map<String,Object> targetConfigProperties)
     {
-        Map<String,Object> combinedConfigurationProperties = this.connectorConfigProperties;
+        Map<String, Object> combinedConfigurationProperties = new HashMap<>(this.connectorConfigProperties);
 
         if (targetConfigProperties != null)
         {
             combinedConfigurationProperties.putAll(targetConfigProperties);
+        }
+
+        if (combinedConfigurationProperties.isEmpty())
+        {
+            return null;
         }
 
         return combinedConfigurationProperties;

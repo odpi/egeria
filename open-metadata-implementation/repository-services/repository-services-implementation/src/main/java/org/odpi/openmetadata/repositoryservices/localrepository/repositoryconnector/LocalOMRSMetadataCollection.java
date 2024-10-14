@@ -21,9 +21,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSTypeDefManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 /**
  * LocalOMRSMetadataCollection provides a wrapper around the metadata collection for the real local repository.
@@ -118,7 +116,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Set up a new security verifier (the handler runs with a default verifier until this
      * method is called).
-     *
      * The security verifier provides authorization checks for access and maintenance
      * changes to open metadata.  Authorization checks are enabled through the
      * OpenMetadataServerSecurityConnector.
@@ -1469,18 +1466,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<EntityDetail>   resultList = new ArrayList<>();
+            /*
+             * We have seen duplicate instances coming out of XTDB - the map de-duplicates.
+             */
+            Map<String, EntityDetail>   resultList = new HashMap<>();
 
             for (EntityDetail   entity : instanceList)
             {
                 if (entity != null)
                 {
                     setLocalProvenanceThroughoutEntity(entity);
-                    resultList.add(entity);
+                    resultList.put(entity.getGUID(), entity);
                 }
             }
 
-            return resultList;
+            return new ArrayList<>(resultList.values());
         }
     }
 
@@ -1499,18 +1499,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            List<Relationship>   resultList = new ArrayList<>();
+            /*
+             * We have seen duplicate instances coming out of XTDB - the map de-duplicates.
+             */
+            Map<String, Relationship> resultList = new HashMap<>();
 
             for (Relationship   relationship : instanceList)
             {
                 if (relationship != null)
                 {
                     setLocalProvenanceThroughoutRelationship(relationship);
-                    resultList.add(relationship);
+                    resultList.put(relationship.getGUID(), relationship);
                 }
             }
 
-            return resultList;
+            return new ArrayList<>(resultList.values());
         }
     }
 

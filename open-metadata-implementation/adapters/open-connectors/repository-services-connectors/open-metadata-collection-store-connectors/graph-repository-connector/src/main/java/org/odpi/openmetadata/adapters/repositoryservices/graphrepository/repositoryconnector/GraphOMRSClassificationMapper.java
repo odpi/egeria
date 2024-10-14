@@ -404,7 +404,7 @@ public class GraphOMRSClassificationMapper {
 
     }
 
-
+    @SuppressWarnings(value = "unchecked")
     public void mapVertexToInstanceAuditHeader(Vertex vertex, Classification classification)
             throws RepositoryErrorException
     {
