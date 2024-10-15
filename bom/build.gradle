@@ -26,7 +26,7 @@ ext {
     avroVersion = '1.12.0'
     xtdbVersion = '1.24.4'
     clojureVersion = '1.12.0'
-    classgraphVersion = '4.8.172'
+    classgraphVersion = '4.8.177'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
     // Version 1.17.0 breaks XTDB because of a change in lucene's library names
