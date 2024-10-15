@@ -106,7 +106,7 @@ ext {
     jnrVersion = '3.1.19'
     cassandraVersion = '4.1.5'
     protobufVersion = '3.25.3'
-    log4jVersion = '2.23.1'
+    log4jVersion = '2.24.1'
     jacksonjdk8Version = '2.17.1'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
