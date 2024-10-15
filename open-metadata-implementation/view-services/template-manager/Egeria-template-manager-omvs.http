@@ -20,52 +20,327 @@ Content-Type: application/json
 
 
 ###
-# @name findTemplates
-# Retrieve the metadata elements that contain the requested string in its Template classification.
-# Optional Request parameters
-#     *  elementTypeName optional type name for the template
-#     *  viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-#     *  accessServiceURLMarker optional access service URL marker used to identify which back end service to call (default digital-architecture)
-#     *  startFrom paging start point (default 0)
-#     *  pageSize maximum results that can be returned (default 0)
-#
-# Further Information: https://egeria-project.org/services/gaf-metadata-management/
+# =====================================================================================================================
+# Maintain the metadata elements that makes up the template
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/templates/by-search-string)
+@metadataElementGUID=add guid here
+@classificationName=add name here
+@relationshipGUID=add guid here
+
+###
+# @name createMetadataElementInStore
+# Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+# The selected type also controls the names and types of the properties that are allowed.
+# This version of the method allows access to advanced features such as multiple states and
+# effectivity dates.
+     
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class": "TemplateClassificationRequestBody",
-  "templateClassificationProperties": {
-    "class": "TemplateClassificationProperties",
-    "name" : "add value here",
-    "description" : "add value here",
-    "versionIdentifier" : "add value here",
-    "additionalProperties" : {
-      "propertyName2" : "propertyValue",
-      "propertyName1" : "propertyValue"
-    }
-  }
+  "class" : "NewOpenMetadataElementRequestBody",
+  "externalSourceGUID" : "",
+  "externalSourceName" : "",
+  "typeName" : "",
+  "initialStatus" : "ACTIVE",
+  "initialClassifications" : {},
+  "anchorGUID" : "",
+  "isOwnAnchor" : false,
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "properties" : {},
+  "parentGUID" : "",
+  "parentRelationshipTypeName" : "",
+  "parentRelationshipProperties" : {},
+  "parentAtEnd1" : true,
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
 ###
+# @name createMetadataElementFromTemplate
+# Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+# The selected type also controls the names and types of the properties that are allowed.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 {
-  "class": "TemplateClassificationRequestBody",
-  "templateClassificationProperties": {
-    "class": "TemplateClassificationProperties",
-    "name" : "add value here",
-    "description" : "add value here",
-    "versionIdentifier" : "add value here",
-    "additionalProperties" : {
-      "propertyName2" : "propertyValue",
-      "propertyName1" : "propertyValue"
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "typeName" : "",
+  "templateGUID" : "",
+  "anchorGUID" : "",
+  "isOwnAnchor" : false,
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "replacementProperties" : { },
+  "placeholderProperties" : {
+     "placeholderName1" : "placeholderValue1",
+     "placeholderName2" : "placeholderValue2"
+  },
+  "parentGUID" : "",
+  "parentRelationshipTypeName" : "",
+  "parentRelationshipProperties" : {},
+  "parentAtEnd1" : true,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateMetadataElementInStore
+# Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+# metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
+# the value used in the replaceProperties flag.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateMetadataElementStatusInStore
+# Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+# assigned when it was created.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateStatusRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateMetadataElementEffectivityInStore
+# Update the effectivity dates control the visibility of the element through specific APIs.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name deleteMetadataElementInStore
+# Delete a specific metadata element.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name archiveMetadataElementInStore
+# Archive a specific metadata element.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/archive
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ArchiveRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "archiveProperties" : {
+    "archiveDate" : "{{$isoTimestamp}}",
+    "archiveProcess" : "",
+    "archiveProperties": {
+       "propertyName1" : "propertyValue1",
+       "propertyName2" : "propertyValue2"
     }
   },
-  "specification" : {
-    "specificationFieldName" : [ {
-      "propertyName1" : "propertyValue",
-      "propertyName2" : "propertyValue"
-    }]
-  }
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
 }
+
+
+###
+# @name classifyMetadataElementInStore
+# Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+# a metadata element.
+
+ POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name reclassifyMetadataElementInStore
+# Update the properties of a classification that is currently attached to a specific metadata element.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateClassificationEffectivityInStore
+# Update the effectivity dates of a specific classification attached to a metadata element.
+# The effectivity dates control the visibility of the classification through specific APIs.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name declassifyMetadataElementInStore
+# Remove the named classification from a specific metadata element.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name createRelatedElementsInStore
+# Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+# according to the type definition since this will affect how the relationship is interpreted.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelatedElementsRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateRelatedElementsInStore
+# Update the properties associated with a relationship.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateRelatedElementsEffectivityInStore
+# Update the effectivity dates of a specific relationship between metadata elements.
+# The effectivity dates control the visibility of the classification through specific APIs.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name deleteRelatedElementsInStore
+# Delete a relationship between two metadata elements.
+
+POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+

@@ -108,11 +108,11 @@ public class AppointmentHandler
                     List<Relationship>  appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                                   governanceRole.getElementHeader().getGUID(),
                                                                                                   governanceRoleGUIDParameterName,
-                                                                                                  OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                  OpenMetadataType.PERSON_ROLE.typeName,
+                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeGUID,
+                                                                                                  OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                   null,
-                                                                                                  OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                                                  OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                                   1,
                                                                                                   false,
                                                                                                   false,
@@ -145,7 +145,7 @@ public class AppointmentHandler
                             }
                             else
                             {
-                                errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                 relationship,
                                                                 methodName);
                             }
@@ -195,7 +195,7 @@ public class AppointmentHandler
         GovernanceRoleElement governanceRole = roleHandler.getBeanFromRepository(userId,
                                                                                  governanceRoleGUID,
                                                                                  governanceRoleGUIDParameterName,
-                                                                                 OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                                                                 OpenMetadataType.PERSON_ROLE.typeName,
                                                                                  false,
                                                                                  false,
                                                                                  new Date(),
@@ -208,11 +208,11 @@ public class AppointmentHandler
             List<Relationship>  appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                           governanceRole.getElementHeader().getGUID(),
                                                                                           governanceRoleGUIDParameterName,
-                                                                                          OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                          OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                          OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                          OpenMetadataType.PERSON_ROLE.typeName,
+                                                                                          OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeGUID,
+                                                                                          OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                           null,
-                                                                                          OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                                          OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                           1,
                                                                                           false,
                                                                                           false,
@@ -315,7 +315,7 @@ public class AppointmentHandler
             ProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                           relationship.getEntityOneProxy().getGUID(),
                                                                           profileGUIDParameterName,
-                                                                          OpenMetadataType.PERSON_TYPE_NAME,
+                                                                          OpenMetadataType.PERSON.typeName,
                                                                           false,
                                                                           false,
                                                                           new Date(),
@@ -327,7 +327,7 @@ public class AppointmentHandler
         }
         else
         {
-            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                             relationship,
                                             methodName);
         }

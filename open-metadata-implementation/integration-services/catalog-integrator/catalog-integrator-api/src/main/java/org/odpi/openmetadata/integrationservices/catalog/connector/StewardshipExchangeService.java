@@ -7,15 +7,18 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Steward
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
@@ -318,13 +321,13 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getConfidenceClassifiedElements(boolean returnSpecificLevel,
-                                                             int     levelIdentifier,
-                                                             int     startFrom,
-                                                             int     pageSize,
-                                                             Date    effectiveTime) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<MetadataElementSummary> getConfidenceClassifiedElements(boolean returnSpecificLevel,
+                                                                        int     levelIdentifier,
+                                                                        int     startFrom,
+                                                                        int     pageSize,
+                                                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         return stewardshipExchangeClient.getConfidenceClassifiedElements(userId, assetManagerGUID, assetManagerName, returnSpecificLevel, levelIdentifier, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -421,13 +424,13 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getCriticalityClassifiedElements(boolean returnSpecificLevel,
-                                                              int     levelIdentifier,
-                                                              int     startFrom,
-                                                              int     pageSize,
-                                                              Date    effectiveTime) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<MetadataElementSummary> getCriticalityClassifiedElements(boolean returnSpecificLevel,
+                                                                         int     levelIdentifier,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         return stewardshipExchangeClient.getCriticalityClassifiedElements(userId, assetManagerGUID, assetManagerName, returnSpecificLevel, levelIdentifier, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -526,13 +529,13 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getConfidentialityClassifiedElements(boolean returnSpecificLevel,
-                                                                  int     levelIdentifier,
-                                                                  int     startFrom,
-                                                                  int     pageSize,
-                                                                  Date    effectiveTime) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public List<MetadataElementSummary> getConfidentialityClassifiedElements(boolean returnSpecificLevel,
+                                                                             int     levelIdentifier,
+                                                                             int     startFrom,
+                                                                             int     pageSize,
+                                                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         return stewardshipExchangeClient.getConfidentialityClassifiedElements(userId, assetManagerGUID, assetManagerName, returnSpecificLevel, levelIdentifier, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -631,13 +634,13 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getRetentionClassifiedElements(boolean returnSpecificBasisIdentifier,
-                                                            int     basisIdentifier,
-                                                            int     startFrom,
-                                                            int     pageSize,
-                                                            Date    effectiveTime) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public List<MetadataElementSummary> getRetentionClassifiedElements(boolean returnSpecificBasisIdentifier,
+                                                                       int     basisIdentifier,
+                                                                       int     startFrom,
+                                                                       int     pageSize,
+                                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         return stewardshipExchangeClient.getRetentionClassifiedElements(userId, assetManagerGUID, assetManagerName, returnSpecificBasisIdentifier, basisIdentifier, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -731,11 +734,11 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getSecurityTaggedElements(int     startFrom,
-                                                       int     pageSize,
-                                                       Date    effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<MetadataElementSummary> getSecurityTaggedElements(int     startFrom,
+                                                                  int     pageSize,
+                                                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         return stewardshipExchangeClient.getSecurityTaggedElements(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -829,12 +832,12 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getOwnersElements(String  owner,
-                                               int     startFrom,
-                                               int     pageSize,
-                                               Date    effectiveTime) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<MetadataElementSummary> getOwnersElements(String  owner,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         return stewardshipExchangeClient.getOwnersElements(userId, assetManagerGUID, assetManagerName, owner, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -1027,12 +1030,12 @@ public class StewardshipExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<ElementStub> getMembersOfSubjectArea(String  subjectAreaName,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<MetadataElementSummary> getMembersOfSubjectArea(String  subjectAreaName,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         return stewardshipExchangeClient.getMembersOfSubjectArea(userId, assetManagerGUID, assetManagerName, subjectAreaName, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -1046,7 +1049,7 @@ public class StewardshipExchangeService
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param properties properties for the relationship
      * @param effectiveTime the time that the retrieved elements must be effective for
-    *
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1150,12 +1153,12 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<RelatedElement> getSemanticAssignees(String  glossaryTermGUID,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<RelatedMetadataElementSummary> getSemanticAssignees(String  glossaryTermGUID,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         return stewardshipExchangeClient.getSemanticAssignees(userId, assetManagerGUID, assetManagerName, glossaryTermGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -1165,7 +1168,7 @@ public class StewardshipExchangeService
     /**
      * Link a governance definition to an element using the GovernedBy relationship.
      *
-    * @param definitionGUID identifier of the governance definition to link
+     * @param definitionGUID identifier of the governance definition to link
      * @param elementGUID unique identifier of the metadata element to link
      * @param effectiveTime the time that the retrieved elements must be effective for
      *
@@ -1271,12 +1274,12 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<RelatedElement> getGovernedElements(String  governanceDefinitionGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<RelatedMetadataElementSummary> getGovernedElements(String  governanceDefinitionGUID,
+                                                                   int     startFrom,
+                                                                   int     pageSize,
+                                                                   Date    effectiveTime) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         return stewardshipExchangeClient.getGovernedElements(userId, assetManagerGUID, assetManagerName, governanceDefinitionGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -1296,12 +1299,12 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<RelatedElement> getSourceElements(String  elementGUID,
-                                                  int     startFrom,
-                                                  int     pageSize,
-                                                  Date    effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<RelatedMetadataElementSummary> getSourceElements(String  elementGUID,
+                                                                 int     startFrom,
+                                                                 int     pageSize,
+                                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         return stewardshipExchangeClient.getSourceElements(userId, assetManagerGUID, assetManagerName, elementGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
@@ -1321,13 +1324,100 @@ public class StewardshipExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<RelatedElement> getElementsSourceFrom(String  elementGUID,
-                                                      int     startFrom,
-                                                      int     pageSize,
-                                                      Date    effectiveTime) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<RelatedMetadataElementSummary> getElementsSourceFrom(String  elementGUID,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         return stewardshipExchangeClient.getElementsSourceFrom(userId, assetManagerGUID, assetManagerName, elementGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<MetadataElementSummary> getElements(FindProperties     findProperties,
+                                                    int                startFrom,
+                                                    int                pageSize) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        return stewardshipExchangeClient.getElements(userId,
+                                                     findProperties,
+                                                     startFrom,
+                                                     pageSize,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+
+    public List<MetadataElementSummary> getElementsByPropertyValue(FindPropertyNamesProperties findProperties,
+                                                                   int                         startFrom,
+                                                                   int                         pageSize) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        final String methodName = "getElementsByPropertyValue";
+
+        return stewardshipExchangeClient.getElementsByPropertyValue(userId,
+                                                                    findProperties,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<MetadataElementSummary> findElementsByPropertyValue(FindPropertyNamesProperties findProperties,
+                                                                    int                         startFrom,
+                                                                    int                         pageSize) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
+    {
+        return stewardshipExchangeClient.findElementsByPropertyValue(userId,
+                                                                     findProperties,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing);
     }
 }

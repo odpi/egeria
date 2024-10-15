@@ -96,7 +96,7 @@ public class IntegrationConnectorConverter<B> extends GovernanceEngineOMASConver
                         {
                             if ((entity != null) && (entity.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION.typeName))
                                 {
                                     properties.setConnection(super.getEmbeddedConnection(beanClass,
                                                                                          entity,

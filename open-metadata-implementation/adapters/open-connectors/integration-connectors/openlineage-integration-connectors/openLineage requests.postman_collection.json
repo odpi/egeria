@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "1dfa2283-a0e6-457c-843a-768b14e4405b",
+		"name": "openLineage requests",
+		"description": "This postman collection includes requests to an endpoint called {{openLineageBackend}}/api/v1/lineage that supports the receipt of openLineage events.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Onboard Data File Start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"START\",\n    \"inputs\": [\n        {\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"name\": \"onboard-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job1 Run Quality Analysis Start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"START\",\n    \"inputs\": [\n        {\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"name\": \"run-quality-analysis\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"runId\": \"4cb8a46b-6271-4791-925c-9ae7123d1{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job1 Quality Report",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"OTHER\",\n    \"inputs\": [\n        {\n            \"facets\": {\n                \"dataQualityAssertions\": {\n                    \"_producer\": \"https://www.postman.com/\",\n                    \"_schemaURL\": \"#/definitions/DataQualityAssertionsDatasetFacet\",\n                    \"assertions\": [\n                        {\n                            \"column\": \"id\",\n                            \"assertion\": \"not_null\",\n                            \"success\": true\n                        },\n                        {\n                            \"column\": \"second_id\",\n                            \"assertion\": \"not_null\",\n                            \"success\": true\n                        },\n                        {\n                            \"column\": \"id\",\n                            \"assertion\": \"unique\",\n                            \"success\": true\n                        },\n                        {\n                            \"column\": \"second_id\",\n                            \"assertion\": \"unique\",\n                            \"success\": true\n                        }\n                    ]\n                }\n            },\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"facets\": {},\n        \"name\": \"run-quality-analysis\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"facets\": {\n            \"parent\": {\n                \"_producer\": \"https://www.postman.com/\",\n                \"_schemaURL\": \"https://raw.githubusercontent.com/OpenLineage/OpenLineage/main/spec/OpenLineage.json#/definitions/ParentRunFacet\",\n                \"job\": {\"name\": \"onboard-data-file\", \"namespace\": \"{{openLineageNamespace}}\"},\n                \"run\": {\"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"}\n            }\n        },\n        \"runId\": \"4cb8a46b-6271-4791-925c-9ae7123d1{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job1 Run Quality Analysis End",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"COMPLETE\",\n    \"inputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"facets\": {},\n        \"name\": \"run-quality-analysis\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"facets\": {\n            \"parent\": {\n                \"_producer\": \"https://www.postman.com/\",\n                \"_schemaURL\": \"https://raw.githubusercontent.com/OpenLineage/OpenLineage/main/spec/OpenLineage.json#/definitions/ParentRunFacet\",\n                \"job\": {\"name\": \"onboard-data-file\", \"namespace\": \"{{openLineageNamespace}}\"},\n                \"run\": {\"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"}\n            }\n        },\n        \"runId\": \"4cb8a46b-6271-4791-925c-9ae7123d1{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job2 Categorise Data File Start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"START\",\n    \"inputs\": [\n        {\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"name\": \"categorise-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"runId\": \"ecea439e-228c-4264-82d9-4a82576d5{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job2 Categorise Data File End",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"COMPLETE\",\n    \"inputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"name\": \"categorise-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"facets\": {\n            \"parent\": {\n                \"_producer\": \"https://www.postman.com/\",\n                \"_schemaURL\": \"https://raw.githubusercontent.com/OpenLineage/OpenLineage/main/spec/OpenLineage.json#/definitions/ParentRunFacet\",\n                \"job\": {\"name\": \"onboard-data-file\", \"namespace\": \"{{openLineageNamespace}}\"},\n                \"run\": {\"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"}\n            }\n        },\n        \"runId\": \"ecea439e-228c-4264-82d9-4a82576d5{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job3 Move Data File Start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"START\",\n    \"inputs\": [\n        {\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"name\": \"move-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"runId\": \"d4736e42-125d-436f-97ce-34b11940d{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job3 Move Data File End",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"COMPLETE\",\n    \"inputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"facets\": {},\n        \"name\": \"move-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"data-lake-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"facets\": {\n            \"parent\": {\n                \"_producer\": \"https://www.postman.com/\",\n                \"_schemaURL\": \"https://raw.githubusercontent.com/OpenLineage/OpenLineage/main/spec/OpenLineage.json#/definitions/ParentRunFacet\",\n                \"job\": {\"name\": \"onboard-data-file\", \"namespace\": \"{{openLineageNamespace}}\"},\n                \"run\": {\"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"}\n            }\n        },\n        \"runId\": \"d4736e42-125d-436f-97ce-34b11940d{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Onboard Data File Complete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"eventTime\": \"{{$isoTimestamp}}\",\n    \"eventType\": \"COMPLETE\",\n    \"inputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"landing-area-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"job\": {\n        \"facets\": {},\n        \"name\": \"onboard-data-file\",\n        \"namespace\": \"{{openLineageNamespace}}\"\n    },\n    \"outputs\": [\n        {\n            \"facets\": {},\n            \"name\": \"data-lake-file\",\n            \"namespace\": \"{{openLineageNamespace}}\"\n        }\n    ],\n    \"producer\": \"https://www.postman.com/\",\n    \"run\": {\n        \"facets\": {},\n        \"runId\": \"304e5f23-4667-4d26-9499-2f30d8e17{{openLineageRunId}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"producer\":\"https://egeria-project.org/\",\n    \"schemaURL\":\"https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/RunEvent\",\n    \"eventType\":\"COMPLETE\",\n    \"eventTime\":\"2021-11-05T10:28:18.969066Z[Europe/London]\",\n    \"run\":\n    {\n        \"runId\":\"ce649429-2b5d-4897-899d-0e3a0c1fef44\",\n        \"facets\":\n        {\n            \"nominalTime\":\n            {\n                \"_producer\":\"https://egeria-project.org/\",\n                \"_schemaURL\":\"https://openlineage.io/spec/facets/1-0-0/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet\",\n                \"nominalStartTime\":\"2021-11-05T10:28:10.076Z[Europe/London]\",\n                \"nominalEndTime\":\"2021-11-05T10:28:13.502Z[Europe/London]\"\n            },\n            \"additionalProperties\":{}\n        },\n        \"additionalProperties\":{}\n    },\n    \"job\":\n    {\n        \"namespace\":\"initiateGovernanceAction\",\n        \"name\":\"AssetGovernance:copy-file\"\n    },\n    \"inputs\":[],\n    \"outputs\":\n    [\n        {\n            \"namespace\":\"initiateGovernanceAction\",\n            \"name\":\"provisioning-complete\"\n        }\n    ]\n       \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{openLineageBackend}}/api/v1/lineage",
+					"host": [
+						"{{openLineageBackend}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"lineage"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

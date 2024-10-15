@@ -25,9 +25,12 @@ public interface TriageGovernanceContext extends GovernanceContext
      * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
      * @param instructions further details on what to do
+     * @param toDoType type of to do
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
-     * @param assignTo qualified name of the PersonRole element for the recipient
+     * @param assignToGUID unique identifier for the recipient actor
+     * @param actionTargetGUID unique identifier of the element to work on.
+     * @param actionTargetName name of the element to work on.
      * @return unique identifier of new to do element
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a to do
@@ -36,9 +39,12 @@ public interface TriageGovernanceContext extends GovernanceContext
     String openToDo(String toDoQualifiedName,
                     String title,
                     String instructions,
+                    String toDoType,
                     int    priority,
                     Date   dueDate,
-                    String assignTo) throws InvalidParameterException,
-                                            UserNotAuthorizedException,
-                                            PropertyServerException;
+                    String assignToGUID,
+                    String actionTargetGUID,
+                    String actionTargetName) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
 }

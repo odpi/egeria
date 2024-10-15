@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.control;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,6 @@ public enum KafkaPlaceholderProperty
      * The display name of the topic.
      */
     SHORT_TOPIC_NAME ("shortTopicName", "The display name of the topic.", "string", "AssetConsumer.outTopic on active-metadata-store"),
-
-    /**
-     * The description of the topic.
-     */
-    TOPIC_DESCRIPTION ("topicDescription", "The description of the topic.", "string", "Details of changes to assets in the open metadata ecosystem."),
 
     /**
      * By default, this connector supports both the receiving and sending of events on a particular topic. It is possible to turn off, either the ability to listen for events through the consumer, or send events through the producer. This is achieved by setting the eventDirection configuration property, which can be 'inOut' (default value), 'outOnly' or 'inOnly'.

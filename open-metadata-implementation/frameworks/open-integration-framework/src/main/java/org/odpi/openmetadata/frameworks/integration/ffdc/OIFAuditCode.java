@@ -84,7 +84,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
      */
     GET_CATALOG_TARGET_EXCEPTION("OIF-CONNECTOR-0006",
                                 AuditLogRecordSeverityLevel.ERROR,
-                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}",
+                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the catalog targets.  The error message was {2}",
                                 "The exception is logged and the integration connector waits for the next refresh.",
                                 "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
                                         "resolved, follow the instructions to prepare the integration connector for the next refresh."),
@@ -94,7 +94,7 @@ public enum OIFAuditCode implements AuditLogMessageSet
      */
     NO_CATALOG_TARGETS("OIF-CONNECTOR-0007",
                                  AuditLogRecordSeverityLevel.INFO,
-                                 "No action targets are defined for the {0} integration connector",
+                                 "No catalog targets are defined for the {0} integration connector",
                                  "The integration connector waits for the next refresh.",
                                  "Add one or more action targets to the integration connector to provide it with work to do."),
 
@@ -135,6 +135,32 @@ public enum OIFAuditCode implements AuditLogMessageSet
                     "The connector stops processing.",
                     "Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened."),
 
+    /**
+     * OIF-CONNECTOR-0012 - The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}
+     */
+    DISCONNECT_EXCEPTION("OIF-CONNECTOR-0012",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}",
+                         "The connector is is unable to disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
+                         "Use the details from the error message to determine the cause of the error.  Check the remote target for errors and correct as needed."),
+
+    /**
+     * OIF-CONNECTOR-0013 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION("OIF-CONNECTOR-0013",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
+                         "The connector records the error anf tries to continue; subsequent errors may occur as a result of this initial failure",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * OIF-CONNECTOR-0013 - The {0} integration connector has stopped its monitoring and is shutting down
+     */
+    CONNECTOR_STOPPING("OIF-CONNECTOR-0014",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has stopped its monitoring and is shutting down",
+                       "The connector is disconnecting.",
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
     ;
 
     private final String                      logMessageId;

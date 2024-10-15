@@ -649,8 +649,8 @@ public class GovernanceConfigurationHandler
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      governanceServiceGUID,
                                                                                      OpenMetadataType.GOVERNANCE_SERVICE.typeName,
-                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                      1,
                                                                                      false,
                                                                                      false,
@@ -2216,7 +2216,7 @@ public class GovernanceConfigurationHandler
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
-                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
 
@@ -2328,7 +2328,7 @@ public class GovernanceConfigurationHandler
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
-                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
 

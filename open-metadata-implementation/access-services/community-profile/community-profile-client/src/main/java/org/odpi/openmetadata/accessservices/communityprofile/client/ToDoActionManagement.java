@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 
 import java.util.*;
 
@@ -160,7 +160,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         invalidParameterHandler.validateObject(properties, toDoPropertiesName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String toDoTypeName = OpenMetadataType.TO_DO_TYPE_NAME;
+        String toDoTypeName = OpenMetadataType.TO_DO.typeName;
 
         if (properties.getTypeName() != null)
         {
@@ -184,7 +184,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                properties.getEffectiveTo(),
                                                                                this.getToDoProperties(properties),
                                                                                originatorGUID,
-                                                                               OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME,
+                                                                               OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
                                                                                null,
                                                                                true);
 
@@ -195,7 +195,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                 openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                      null,
                                                                      null,
-                                                                     OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                      assignToActorGUID,
                                                                      toDoGUID,
                                                                      false,
@@ -211,7 +211,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                 openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                      null,
                                                                      null,
-                                                                     OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
                                                                      actionSponsorGUID,
                                                                      toDoGUID,
                                                                      false,
@@ -235,7 +235,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                         openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                              null,
                                                                              null,
-                                                                             OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                             OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                              toDoGUID,
                                                                              newActionTarget.getActionTargetGUID(),
                                                                              false,
@@ -359,8 +359,8 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
         List<RelatedMetadataElement> assignedActors = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                          toDoGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                         2,
+                                                                                                         OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                          false,
                                                                                                          false,
                                                                                                          new Date(),
@@ -384,9 +384,9 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                              null,
                                                              null,
-                                                             OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                             toDoGUID,
+                                                             OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                              actorGUID,
+                                                             toDoGUID,
                                                              false,
                                                              false,
                                                              null,
@@ -453,7 +453,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                    false,
                                                                                                    new Date());
 
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO_TYPE_NAME)))
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO.typeName)))
         {
             List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                       openMetadataElement.getElementGUID(),
@@ -503,7 +503,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   elementGUID,
                                                                                                                   2,
-                                                                                                                  OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                                                   false,
                                                                                                                   false,
                                                                                                                   new Date(),
@@ -546,7 +546,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   elementGUID,
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
                                                                                                                   false,
                                                                                                                   false,
                                                                                                                   new Date(),
@@ -587,7 +587,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   actorGUID,
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                                   false,
                                                                                                                   false,
                                                                                                                   new Date(),
@@ -629,7 +629,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
-                                                                                                                OpenMetadataType.TO_DO_TYPE_NAME,
+                                                                                                                OpenMetadataType.TO_DO.typeName,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -667,22 +667,20 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = List.of(OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.TO_DO_TYPE_NAME,
-                                                                                                      null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames,
-                                                                                                                                               toDoType),
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date(),
-                                                                                                      startFrom,
-                                                                                                      pageSize);
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                                    OpenMetadataType.TO_DO.typeName,
+                                                                                                                    null,
+                                                                                                                    OpenMetadataProperty.TO_DO_TYPE.name,
+                                                                                                                    toDoType,
+                                                                                                                    null,
+                                                                                                                    null,
+                                                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                    SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                                    false,
+                                                                                                                    false,
+                                                                                                                    new Date(),
+                                                                                                                    startFrom,
+                                                                                                                    pageSize);
 
         return convertToDos(userId, openMetadataElements, toDoStatus, methodName);
     }
@@ -827,15 +825,15 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                  toDoProperties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.TO_DO_TYPE.name,
                                                                  toDoProperties.getToDoType());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                              OpenMetadataProperty.PRIORITY.name,
                                                               toDoProperties.getPriority());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.CREATION_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.CREATION_TIME.name,
                                                                toDoProperties.getCreationTime());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
@@ -843,11 +841,11 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                toDoProperties.getLastReviewTime());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.DUE_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.DUE_TIME.name,
                                                                toDoProperties.getDueTime());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.COMPLETION_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.COMPLETION_TIME.name,
                                                                toDoProperties.getCompletionTime());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,

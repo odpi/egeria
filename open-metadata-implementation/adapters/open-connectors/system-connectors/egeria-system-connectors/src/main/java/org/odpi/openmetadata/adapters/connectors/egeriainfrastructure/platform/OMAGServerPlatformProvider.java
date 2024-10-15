@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
@@ -62,8 +63,8 @@ public class OMAGServerPlatformProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

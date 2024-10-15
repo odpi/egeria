@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
@@ -98,6 +98,10 @@ public class GovernanceDefinitionConverter<B> extends OMFConverter<B>
                         governanceDefinitionProperties = new SecurityGroupProperties();
 
                         ((SecurityGroupProperties) governanceDefinitionProperties).setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                    }
+                    else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName))
+                    {
+                        governanceDefinitionProperties = new DataProcessingPurposeProperties();
                     }
                     else
                     {

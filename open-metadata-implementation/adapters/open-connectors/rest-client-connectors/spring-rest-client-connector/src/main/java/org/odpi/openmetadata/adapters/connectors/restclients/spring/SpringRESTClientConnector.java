@@ -8,8 +8,12 @@ import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConn
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 import org.odpi.openmetadata.tokenmanager.http.HTTPHeadersThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +31,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
 /**
- * RESTClient is responsible for issuing calls to the server's REST APIs.
+ * SpringRESTClientConnector is responsible for issuing calls to the server's REST APIs using Spring.
  * It is supported through a connector because there are often changes in this integration, and it saves
  * maintenance work if all Egeria clients use this connector.
  */
@@ -40,10 +45,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
 {
     private final RestTemplate restTemplate;
 
-    private String       serverName               = null;
-    private String       serverPlatformURLRoot    = null;
-    private HttpHeaders  basicAuthorizationHeader = null;
-
+    private String      serverName                 = null;
+    private String      serverPlatformURLRoot      = null;
+    private HttpHeaders authorizationHeader        = null;
+    private Date        authorizationHeaderTimeout = null;
+    private long        refreshTimeInterval         = 0L;
     private final MessageFormatter messageFormatter = new MessageFormatter();
 
     private static final Logger log = LoggerFactory.getLogger(SpringRESTClientConnector.class);
@@ -81,18 +87,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
         converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
+
     /**
-     * Initialize the connector.
+     * Indicates that the connector is completely configured and can begin processing.
      *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
-        EndpointProperties   endpoint             = connectionProperties.getEndpoint();
+        EndpointProperties  endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
         {
@@ -107,19 +113,88 @@ public class SpringRESTClientConnector extends RESTClientConnector
             this.serverName = null;
         }
 
-        String     userId = connectionProperties.getUserId();
-        String     password = connectionProperties.getClearPassword();
+        refreshAuthorizationToken();
+    }
 
-        if ((userId != null) && (password != null))
+
+    /**
+     * Retrieve new values for the authorization header.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    private void refreshAuthorizationToken() throws ConnectorCheckedException
+    {
+        String userId = connectionProperties.getUserId();
+        String password = connectionProperties.getClearPassword();
+
+        if ((secretsStoreConnectorMap != null) && (! secretsStoreConnectorMap.isEmpty()))
         {
-            log.debug("Using basic authentication to call server {}  on platform {} .", this.serverName, this.serverPlatformURLRoot);
+            log.debug("Using secrets connector to call server {} on platform {} .", this.serverName, this.serverPlatformURLRoot);
 
-            basicAuthorizationHeader = this.createHeaders(userId, password);
+            for (String secretsStorePurpose : secretsStoreConnectorMap.keySet())
+            {
+                SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretsStorePurpose);
+
+                if (secretsStoreConnector != null)
+                {
+                    refreshTimeInterval = secretsStoreConnector.getRefreshTimeInterval();
+
+                    if (SecretsStorePurpose.REST_BEARER_TOKEN.getName().equals(secretsStorePurpose))
+                    {
+                        String token = secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.TOKEN.getName());
+
+                        if (token != null)
+                        {
+                            authorizationHeader = this.createAuthorizationHeaders(token);
+                            break;
+                        }
+                    }
+                    else if (SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName().equals(secretsStorePurpose))
+                    {
+                        userId = secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName());
+                        password = secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName());
+
+                        if ((userId != null) && (password != null))
+                        {
+                            authorizationHeader = this.createAuthorizationHeaders(userId, password);
+                            break;
+                        }
+                    }
+                    else if (SecretsStorePurpose.USER_DIRECTORY.getName().equals(secretsStorePurpose))
+                    {
+                        if (userId != null)
+                        {
+                            UserAccount userAccount = secretsStoreConnector.getUser(userId);
+
+                            if ((userAccount != null) && (userAccount.getSecrets() != null) && (userAccount.getSecrets().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
+                            {
+                                authorizationHeader = this.createAuthorizationHeaders(userId, userAccount.getSecrets().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if ((userId != null) && (password != null))
+        {
+            log.debug("Using basic authentication to call server {} on platform {} .", this.serverName, this.serverPlatformURLRoot);
+
+            authorizationHeader = this.createAuthorizationHeaders(userId, password);
         }
         else
         {
             log.debug("Using no authentication to call server {} on platform {} .", this.serverName, this.serverPlatformURLRoot );
+        }
 
+        if (refreshTimeInterval != 0L)
+        {
+            long newRefreshTime = new Date().getTime() + (refreshTimeInterval * 60 * 1000);
+            authorizationHeaderTimeout = new Date(newRefreshTime);
+        }
+        else
+        {
+            authorizationHeaderTimeout = null;
         }
     }
 
@@ -131,7 +206,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @param password password of the caller
      * @return HTTPHeaders object
      */
-    private HttpHeaders createHeaders(String username, String password)
+    private HttpHeaders createAuthorizationHeaders(String username, String password)
     {
         String authorizationString = username + ":" + password;
         byte[] encodedAuthorizationString = Base64.encodeBase64(authorizationString.getBytes(StandardCharsets.US_ASCII));
@@ -143,6 +218,60 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
         return header;
     }
+
+
+    /**
+     * Create the HTTP header for token authorization.
+     *
+     * @param token bearer token
+     * @return HTTPHeaders object
+     */
+    private HttpHeaders createAuthorizationHeaders(String token)
+    {
+        String authHeader = "Bearer " + token;
+
+        HttpHeaders header = new HttpHeaders();
+
+        header.set( "Authorization", authHeader );
+
+        return header;
+    }
+
+
+    /**
+     * Creates the http headers for each request. It checks if there are headers saved in the thread local or
+     * any authorisation headers and adds them to the list.
+     *
+     * @return http headers
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    private HttpHeaders getHttpHeaders() throws ConnectorCheckedException
+    {
+        HttpHeaders headers = new HttpHeaders();
+
+        Map<String, String> threadLocalHeaders = HTTPHeadersThreadLocal.getHeadersThreadLocal().get();
+
+        if (threadLocalHeaders != null)
+        {
+            for (Map.Entry<String, String> entry : threadLocalHeaders.entrySet())
+            {
+                headers.set(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if ((authorizationHeaderTimeout != null) && (new Date().after(authorizationHeaderTimeout)))
+        {
+            refreshAuthorizationToken();
+        }
+
+        if (authorizationHeader != null)
+        {
+            headers.addAll(authorizationHeader);
+        }
+
+        return headers;
+    }
+
 
 
     /**
@@ -519,23 +648,22 @@ public class SpringRESTClientConnector extends RESTClientConnector
         {
             if (log.isDebugEnabled())
             {
-                //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
                           methodName,
                           urlTemplate,
                           Arrays.toString(params));
             }
 
-            HttpEntity<?> request = new HttpEntity<>(requestBody);
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
 
-            if (requestBody == null)
+            if (httpHeaders == null)
             {
-                // continue with a null body, we may want to fail this request here in the future.
-                log.warn("Poorly formed PUT call made by {}.", methodName);
+                request = new HttpEntity<>(requestBody);
             }
-            if (basicAuthorizationHeader != null)
+            else
             {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                request = new HttpEntity<>(requestBody, httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
@@ -600,16 +728,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            HttpEntity<?> request = new HttpEntity<>(requestBody);
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
 
-            if (requestBody == null)
+            if (httpHeaders == null)
             {
-                // continue with a null body, we may want to fail this request here in the future.
-                log.warn("Poorly formed PUT call made by {}.", methodName);
+                request = new HttpEntity<>(requestBody);
             }
-            if (basicAuthorizationHeader != null)
+            else
             {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                request = new HttpEntity<>(requestBody, httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass);
@@ -774,11 +902,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
                           Arrays.toString(params));
             }
 
-            // requestBody may be null
-            HttpEntity<?> request = new HttpEntity<>(requestBody) ;
-            if (basicAuthorizationHeader != null) {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
+
+            if (httpHeaders == null)
+            {
+                request = new HttpEntity<>(requestBody);
             }
+            else
+            {
+                request = new HttpEntity<>(requestBody, httpHeaders);
+            }
+
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
             T  responseObject = responseEntity.getBody();
 
@@ -847,11 +982,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
                           Arrays.toString(params));
             }
 
-            // requestBody may be null
-            HttpEntity<?> request = new HttpEntity<>(requestBody) ;
-            if (basicAuthorizationHeader != null) {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
+
+            if (httpHeaders == null)
+            {
+                request = new HttpEntity<>(requestBody);
             }
+            else
+            {
+                request = new HttpEntity<>(requestBody, httpHeaders);
+            }
+
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PATCH, request, returnClass, params);
             T  responseObject = responseEntity.getBody();
 
@@ -1103,12 +1245,18 @@ public class SpringRESTClientConnector extends RESTClientConnector
                           Arrays.toString(params));
             }
 
-            // requestBody may be null
-            HttpEntity<?> request = new HttpEntity<>(requestBody);
-            if (basicAuthorizationHeader != null)
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
+
+            if (httpHeaders == null)
             {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                request = new HttpEntity<>(requestBody);
             }
+            else
+            {
+                request = new HttpEntity<>(requestBody, httpHeaders);
+            }
+
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, responseType, params);
             T responseObject = responseEntity.getBody();
 
@@ -1178,16 +1326,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 );
             }
 
-            HttpEntity<?> request = new HttpEntity<>(requestBody);
+            HttpEntity<?> request;
+            HttpHeaders httpHeaders = getHttpHeaders();
 
-            if (requestBody == null)
+            if (httpHeaders == null)
             {
-                // continue with a null body, we may want to fail this request here in the future.
-                log.warn("Poorly formed PUT call made by {}", methodName);
+                request = new HttpEntity<>(requestBody);
             }
-            if (basicAuthorizationHeader != null)
+            else
             {
-                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                request = new HttpEntity<>(requestBody, httpHeaders);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, responseType, params);
@@ -1229,34 +1377,5 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           messageDefinition.getUserAction(),
                                           error);
         }
-    }
-
-
-    /**
-     * Creates the http headers for the requests. It checks if there are headers saved in the thread local or
-     * any basic authorisation headers and adds them to the list.
-     *
-     * @return http headers
-     */
-    private HttpHeaders getHttpHeaders()
-    {
-        HttpHeaders headers = new HttpHeaders();
-
-        Map<String, String> threadLocalHeaders = HTTPHeadersThreadLocal.getHeadersThreadLocal().get();
-
-        if (threadLocalHeaders != null)
-        {
-            for (Map.Entry<String, String> entry : threadLocalHeaders.entrySet())
-            {
-                headers.set(entry.getKey(), entry.getValue());
-            }
-        }
-
-        if (basicAuthorizationHeader != null)
-        {
-            headers.addAll(basicAuthorizationHeader);
-        }
-
-        return headers;
     }
 }

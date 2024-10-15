@@ -139,10 +139,10 @@ public class FindAssetOriginProperties extends FindProperties
     public String toString()
     {
         return "FindAssetOriginProperties{" +
-                       "organizationGUID='" + organizationGUID + '\'' +
-                       ", businessCapabilityGUID='" + businessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
-                       '}';
+                "organizationGUID='" + organizationGUID + '\'' +
+                ", businessCapabilityGUID='" + businessCapabilityGUID + '\'' +
+                ", otherOriginValues=" + otherOriginValues +
+                "} " + super.toString();
     }
 
 

@@ -3,27 +3,26 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.OrganizationDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
  * CocoGovernanceProgramArchiveWriter creates a physical open metadata archive file containing the core definition of Coco Pharmaceuticals'
  * governance program.
  */
-public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
+public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoGovernanceProgramArchive.omarchive";
 
@@ -45,18 +44,21 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
     }
 
 
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
         writeDomains();
         writeLicenseTypes();
         writeCertificationTypes();
+        writeDataProcessingPurposes();
         writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
@@ -171,7 +173,9 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, certificationTypeDefinition.getDetails());
 
-            archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+            archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
+
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                   certificationTypeDefinition.getQualifiedName(),
                                                   certificationTypeDefinition.getTitle(),
                                                   certificationTypeDefinition.getSummary(),
@@ -184,10 +188,34 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                                   null,
                                                   null,
                                                   extendedProperties);
+
+            assert (certificationTypeDefinition.getGUID().equals(guid));
         }
     }
 
 
+    /**
+     * Creates DataProcessing definitions.
+     */
+    private void writeDataProcessingPurposes()
+    {
+        for (DataProcessingPurposeDefinition dataProcessingPurposeDefinition : DataProcessingPurposeDefinition.values())
+        {
+            archiveHelper.addGovernanceDefinition(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
+                                                  dataProcessingPurposeDefinition.getQualifiedName(),
+                                                  dataProcessingPurposeDefinition.getTitle(),
+                                                  dataProcessingPurposeDefinition.getSummary(),
+                                                  dataProcessingPurposeDefinition.getScope().getPreferredValue(),
+                                                  dataProcessingPurposeDefinition.getDescription(),
+                                                  0,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null);
+        }
+    }
 
     /**
      * Creates Governance Zone definitions.
@@ -259,7 +287,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             leaderRoleQName,
                                             "Community Leader",
                                             null,
@@ -270,7 +298,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_LEADER);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, CommunityMembershipType.LEADER.getOrdinal());
 
                 for (PersonDefinition leader : communityDefinition.getLeaders())
                 {
@@ -282,7 +310,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER_TYPE_NAME,
+                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
                                             memberRoleQName,
                                             "CommunityMember",
                                             null,
@@ -293,7 +321,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                             null,
                                             null);
 
-                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR);
+                archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, CommunityMembershipType.CONTRIBUTOR.getOrdinal());
 
                 for (PersonDefinition member : communityDefinition.getMembers())
                 {
@@ -452,46 +480,5 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             }
         }
-
-        archiveHelper.addGovernedByRelationship(ProjectDefinition.CLINICAL_TRIALS.getQualifiedName(),
-                                                CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
-
-        String oakDeneGUID = archiveHelper.queryGUID(OrganizationDefinition.OAK_DENE.getQualifiedName());
-        String hamptonGUID = archiveHelper.queryGUID(OrganizationDefinition.HAMPTON.getQualifiedName());
-        String dropFootGUID = archiveHelper.queryGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
-
-        archiveHelper.addCertification(oakDeneGUID,
-                                       UUID.randomUUID().toString(),
-                                       new Date(),
-                                       null,
-                                       null,
-                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.ROBBIE_RECORDS.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       null,
-                                       dropFootGUID);
-
-        archiveHelper.addCertification(hamptonGUID,
-                                       UUID.randomUUID().toString(),
-                                       new Date(),
-                                       null,
-                                       null,
-                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.GRANT_ABLE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       null,
-                                       dropFootGUID);
     }
 }

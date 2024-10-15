@@ -3,25 +3,34 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
+import org.odpi.openmetadata.frameworks.integration.context.StewardshipAction;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Manages the cataloguing of data files for a specific catalog target.
+ */
 public class DataFilesMonitorForTarget extends DirectoryToMonitor
 {
     private static final Logger log = LoggerFactory.getLogger(DataFilesMonitorIntegrationConnector.class);
@@ -210,15 +219,16 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
         {
             try
             {
+                FileClassifier fileClassifier = integrationConnector.getContext().getFileClassifier();
+
+                FileClassification fileClassification = fileClassifier.classifyFile(file);
+
                 DataFileElement cataloguedElement = integrationConnector.getContext().getFileByPathName(file.getAbsolutePath());
 
                 if (cataloguedElement == null)
                 {
                     if (fileTemplateQualifiedName == null)
                     {
-                        FileClassifier     fileClassifier     = integrationConnector.getContext().getFileClassifier();
-                        FileClassification fileClassification = fileClassifier.classifyFile(file);
-
                         if ((! catalogClassifiedFiles) ||
                                 (fileClassification.getFileType() != null) ||
                                 (fileClassification.getAssetTypeName() != null) ||
@@ -250,70 +260,119 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             properties.setAdditionalProperties(additionalProperties);
 
-                            List<String> guids = integrationConnector.getContext().addDataFileToCatalog(properties, null);
+                            String guid = this.addDataFileToCatalog(properties);
 
-                            if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
+                            if (guid != null)
                             {
                                 auditLog.logMessage(methodName,
                                                     BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
                                                                                                                                     properties.getPathName(),
-                                                                                                                                    guids.get(guids.size() - 1)));
+                                                                                                                                    guid));
                             }
                         }
                     }
                     else
                     {
+                        OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+
                         if (fileTemplateGUID == null)
                         {
-                            DataFileElement templateElement = integrationConnector.getContext().getFileByPathName(fileTemplateQualifiedName);
-
+                            OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByUniqueName(fileTemplateQualifiedName,
+                                                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name);
                             if (templateElement != null)
                             {
-                                if ((templateElement.getElementHeader() != null) && (templateElement.getElementHeader().getGUID() != null))
-                                {
-                                    fileTemplateGUID = templateElement.getElementHeader().getGUID();
-                                }
-                                else
-                                {
-                                    if (auditLog != null)
-                                    {
-                                        auditLog.logMessage(methodName,
-                                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(
-                                                                    sourceName,
-                                                                    templateElement.toString()));
-                                    }
-                                }
+                                fileTemplateGUID = templateElement.getElementGUID();
                             }
                             else
                             {
-                                if (auditLog != null)
-                                {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                       fileTemplateQualifiedName));
-                                }
+                                auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName, fileTemplateQualifiedName));
                             }
                         }
 
                         if (fileTemplateGUID != null)
                         {
-                            TemplateProperties properties = new TemplateProperties();
+                            Map<String, String> placeholderProperties = new HashMap<>();
 
-                            properties.setPathName(file.getAbsolutePath());
-                            properties.setDisplayName(file.getName());
-                            properties.setNetworkAddress(file.getAbsolutePath());
+                            placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), fileClassification.getPathName());
+                            placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), fileClassification.getFileType());
+                            placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), fileClassification.getFileExtension());
+                            placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), fileClassification.getFileName());
+                            if (fileClassification.getCreationTime() != null)
+                            {
+                                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), fileClassification.getCreationTime().toString());
+                                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), fileClassification.getCreationTime().toString());
+                            }
+                            else
+                            {
+                                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), "");
+                                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), "");
+                            }
+                            if (fileClassification.getLastModifiedTime() != null)
+                            {
+                                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), fileClassification.getLastModifiedTime().toString());
+                            }
+                            else
+                            {
+                                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), "");
+                            }
+                            if (fileClassification.getLastAccessedTime() != null)
+                            {
+                                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), fileClassification.getLastAccessedTime().toString());
+                            }
+                            else
+                            {
+                                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
+                            }
 
-                            List<String> guids = integrationConnector.getContext().addDataFileToCatalogFromTemplate(fileTemplateGUID, properties);
+                            String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
+                                                                             fileTemplateGUID,
+                                                                             null,
+                                                                             placeholderProperties);
 
-                            if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
+                            if (newFileGUID != null)
                             {
                                 auditLog.logMessage(methodName,
                                                     BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED_FROM_TEMPLATE.getMessageDefinition(
                                                             sourceName,
-                                                            properties.getPathName(),
-                                                            guids.get(guids.size() - 1),
+                                                            fileClassification.getPathName(),
+                                                            newFileGUID,
                                                             fileTemplateQualifiedName,
                                                             fileTemplateGUID));
+                            }
+
+                            if (newFileProcessName != null)
+                            {
+                                StewardshipAction stewardshipAction = integrationConnector.getContext().getIntegrationGovernanceContext().getStewardshipAction();
+
+                                Map<String, String> requestParameters = new HashMap<>();
+
+                                if (configurationProperties != null)
+                                {
+                                    for (String configurationProperty : configurationProperties.keySet())
+                                    {
+                                        if (configurationProperties.get(configurationProperty) != null)
+                                        {
+                                            requestParameters.put(configurationProperty, configurationProperties.get(configurationProperty).toString());
+                                        }
+                                    }
+                                }
+
+                                List<NewActionTarget> actionTargets = new ArrayList<>();
+
+                                NewActionTarget actionTarget = new NewActionTarget();
+
+                                actionTarget.setActionTargetGUID(newFileGUID);
+                                actionTarget.setActionTargetName("sourceFile");
+                                actionTargets.add(actionTarget);
+
+                                stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
+                                                                                  null,
+                                                                                  actionTargets,
+                                                                                  null,
+                                                                                  requestParameters,
+                                                                                  connectorName,
+                                                                                  null);
                             }
                         }
                     }
@@ -341,8 +400,6 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
     }
 
 
-
-
     /**
      * Update the last modified time in the catalogued asset for the file.
      *
@@ -361,7 +418,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                 if (dataFileInCatalog != null)
                 {
                     if ((dataFileInCatalog.getElementHeader() != null) && (dataFileInCatalog.getElementHeader().getGUID() != null) &&
-                            (dataFileInCatalog.getDataFileProperties() != null) && (dataFileInCatalog.getDataFileProperties().getPathName() != null))
+                            (dataFileInCatalog.getProperties() != null) && (dataFileInCatalog.getProperties().getPathName() != null))
                     {
                         DataFileProperties properties = new DataFileProperties();
 
@@ -373,39 +430,94 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             integrationConnector.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                    dataFileInCatalog.getDataFileProperties().getPathName(),
-                                                                                                                                    dataFileInCatalog.getElementHeader().getGUID()));
-                            }
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                dataFileInCatalog.getProperties().getPathName(),
+                                                                                                                                dataFileInCatalog.getElementHeader().getGUID()));
                         }
                     }
                     else
                     {
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
+                        auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
                                                                                                                                dataFileInCatalog.toString()));
-                        }
                     }
                 }
             }
             catch (Exception error)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  sourceName,
-                                                  file.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-                }
+                auditLog.logException(methodName,
+                                      BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                              error.getClass().getName(),
+                                              sourceName,
+                                              file.getAbsolutePath(),
+                                              error.getMessage()),
+                                      error);
             }
         }
+    }
+
+
+    /**
+     * Return the unique identifier of a new metadata element describing the file.
+     *
+     * @param properties basic properties to use
+     * @return unique identifier (guid)
+     * @throws ConnectorCheckedException connector has been shutdown
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException unable to communicate with the repository
+     * @throws UserNotAuthorizedException access problem for userId
+     */
+    protected String addDataFileToCatalog(DataFileProperties properties) throws ConnectorCheckedException,
+                                                                                InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        List<String> guids = integrationConnector.getContext().addDataFileToCatalog(properties, null);
+
+        if ((guids != null) && (!guids.isEmpty()))
+        {
+            return guids.get(guids.size() - 1);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the unique identifier of a new metadata element describing the file created using the supplied template.
+     *
+     * @param assetTypeName type of asset to create
+     * @param fileTemplateGUID template to use
+     * @param replacementProperties properties from the template to replace
+     * @param placeholderProperties values to use to replace placeholders in the template
+     * @return unique identifier (guid)
+     * @throws ConnectorCheckedException connector has been shutdown
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException unable to communicate with the repository
+     * @throws UserNotAuthorizedException access problem for userId
+     */
+    protected String addDataFileViaTemplate(String              assetTypeName,
+                                            String              fileTemplateGUID,
+                                            ElementProperties   replacementProperties,
+                                            Map<String, String> placeholderProperties) throws ConnectorCheckedException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
+
+        return openMetadataAccess.createMetadataElementFromTemplate(assetTypeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    fileTemplateGUID,
+                                                                    replacementProperties,
+                                                                    placeholderProperties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 }

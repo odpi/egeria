@@ -4,15 +4,15 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.Map;
+
 /**
- * The remediation governance actin service is responsible for correct omissions and errors in
+ * The remediation governance action service is responsible for correct omissions and errors in
  * open metadata and the associated digital landscape.
- *
  * To create your own remediation governance action service, create a new class that extends this class
  * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then includes the logic to correct the metadata elements.
  * This is done using the methods available through the governanceContext which is set up just before your start() method is called.
- *
  * Once the remediation work is complete, your start() method should call
  * governanceContext.recordCompletionStatus() and then return.
  */
@@ -27,9 +27,39 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
+    public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
+    }
+
+
+    /**
+     * Retrieve the property value from the values passed to this governance action service.
+     *
+     * @param propertyName name of the property
+     * @param defaultValue default value
+     * @return property value
+     */
+    protected String getProperty(String propertyName, String defaultValue)
+    {
+        Map<String, String> requestParameters       = governanceContext.getRequestParameters();
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        String propertyValue = defaultValue;
+
+        if ((requestParameters != null) && (requestParameters.get(propertyName) != null))
+        {
+            propertyValue = requestParameters.get(propertyName);
+        }
+        else
+        {
+            if ((configurationProperties != null) && (configurationProperties.get(propertyName) != null))
+            {
+                propertyValue = configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return propertyValue;
     }
 
 
@@ -51,13 +81,11 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
 
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
-     * or the administer requested this governance action service stop running or the hosting server is shutting down.
-     *
+     * or the administrator requested this governance action service stop running or the hosting server is shutting down.
      * If disconnect completes before the governance action service records
      * its completion status then the governance action service is restarted either at the administrator's request
      * or the next time the server starts.
      * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     *
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *

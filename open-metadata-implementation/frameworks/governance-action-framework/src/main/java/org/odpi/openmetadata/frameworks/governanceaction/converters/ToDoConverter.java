@@ -113,19 +113,19 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                         {
                             if (relatedMetadataElement != null)
                             {
-                                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME))
+                                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName))
                                 {
                                     bean.setToDoSource(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
                                 }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME))
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName))
                                 {
                                     assignedActors.add(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
                                 }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME))
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName))
                                 {
                                     sponsors.add(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
                                 }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME))
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName))
                                 {
                                     ToDoActionTargetElement actionTargetElement = new ToDoActionTargetElement();
 

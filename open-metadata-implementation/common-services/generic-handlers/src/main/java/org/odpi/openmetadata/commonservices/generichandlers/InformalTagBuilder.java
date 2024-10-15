@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -35,8 +36,8 @@ public class InformalTagBuilder extends OpenMetadataAPIGenericBuilder
                        String               serviceName,
                        String               serverName)
     {
-        super(OpenMetadataType.INFORMAL_TAG_TYPE_GUID,
-              OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
+        super(OpenMetadataType.INFORMAL_TAG.typeGUID,
+              OpenMetadataType.INFORMAL_TAG.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -62,19 +63,19 @@ public class InformalTagBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TAG_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TAG_NAME.name,
                                                                   tagName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TAG_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TAG_DESCRIPTION.name,
                                                                   tagDescription,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.TAG_IS_PUBLIC_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_PUBLIC.name,
                                                                    isPublic,
                                                                    methodName);
 

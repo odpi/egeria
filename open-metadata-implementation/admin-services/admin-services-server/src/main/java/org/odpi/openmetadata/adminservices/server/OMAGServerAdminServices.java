@@ -1426,6 +1426,57 @@ public class OMAGServerAdminServices
     }
 
 
+
+    /**
+     * Set up the JDBC based audit log destination for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connectionString address of database schema
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addJDBCAuditLogDestination(String       userId,
+                                                   String       serverName,
+                                                   String       connectionString,
+                                                   List<String> supportedSeverities)
+    {
+        final String methodName = "addJDBCAuditLogDestination";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getJDBCBasedAuditLogConnection(connectionString, supportedSeverities));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Set up the File based audit log destination for the server.
      *

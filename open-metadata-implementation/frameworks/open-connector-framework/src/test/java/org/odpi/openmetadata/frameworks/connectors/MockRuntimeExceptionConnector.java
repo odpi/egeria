@@ -165,19 +165,6 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
 
 
     /**
-     * Return a flag indicating whether the connector is active.  This means it has been started and not yet
-     * disconnected.
-     *
-     * @return isActive flag
-     */
-    @Override
-    public boolean isActive()
-    {
-        return isActive;
-    }
-
-
-    /**
      * Provide a common implementation of hashCode for all OCF Connector objects.  The UUID is unique and
      * is randomly assigned and so its hashCode is as good as anything to describe the hash code of the connector
      * object.

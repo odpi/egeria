@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.frameworks.governanceaction.search;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -135,14 +137,44 @@ public class PropertyHelper
 
 
     /**
+     * Return the anchorGUID for an element.
+     *
+     * @param elementHeader header of the element
+     * @return unique identifier or null;
+     */
+    public String getAnchorGUID(ElementHeader elementHeader)
+    {
+        List<ElementClassification> classifications = elementHeader.getClassifications();
+
+        if (classifications != null)
+        {
+            for (ElementClassification classification : classifications)
+            {
+                if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+                {
+                    if (classification.getClassificationProperties() != null)
+                    {
+                        return classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the search properties that requests elements with an exactly matching name in any of the listed property names.
      *
      * @param propertyNames list of property names
-     * @param name name to match on
+     * @param value name to match on
+     * @param propertyComparisonOperator set to EQ for exact match and LIKE for fuzzy match
      * @return search properties
      */
-    public SearchProperties getSearchPropertiesByName(List<String> propertyNames,
-                                                      String       name)
+    public SearchProperties getSearchPropertiesByName(List<String>               propertyNames,
+                                                      String                     value,
+                                                      PropertyComparisonOperator propertyComparisonOperator)
     {
         if ((propertyNames != null) && (! propertyNames.isEmpty()))
         {
@@ -151,7 +183,15 @@ public class PropertyHelper
             PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
             propertyValue.setTypeName("string");
             propertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-            propertyValue.setPrimitiveValue(name);
+
+            if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
+            {
+                propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+            }
+            else
+            {
+                propertyValue.setPrimitiveValue(value);
+            }
 
             List<PropertyCondition> propertyConditions = new ArrayList<>();
 
@@ -161,7 +201,15 @@ public class PropertyHelper
 
                 propertyCondition.setValue(propertyValue);
                 propertyCondition.setProperty(propertyName);
-                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                if (propertyComparisonOperator == null)
+                {
+                    propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                }
+                else
+                {
+                    propertyCondition.setOperator(propertyComparisonOperator);
+                }
 
                 propertyConditions.add(propertyCondition);
             }
@@ -2637,6 +2685,27 @@ public class PropertyHelper
 
         return null;
     }
+
+
+    public boolean isClassified(ElementHeader elementHeader,
+                                String        classificationName)
+    {
+        if (elementHeader== null || elementHeader.getClassifications() == null)
+        {
+            return false;
+        }
+
+        for (ElementClassification classification : elementHeader.getClassifications())
+        {
+            if ((classification != null) && (classificationName.equals(classification.getClassificationName())))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
     /**

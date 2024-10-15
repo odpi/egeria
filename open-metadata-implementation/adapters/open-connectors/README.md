@@ -32,10 +32,6 @@ and repository-service-connectors.
 assessing and acting on governance issues detected in the metadata ecosystem.
 These connectors support the [Governance Action Framework (GAF)](../../frameworks/governance-action-framework).
 
-* **[governance-daemon-connectors](governance-daemon-connectors)** contains connectors for the governance
-servers that monitor activity or synchronize metadata and configuration
-asynchronously between different tools.
-
 * **[integration-connectors](integration-connectors)** contains governance actions for assessing and acting on
 governance issues detected in the metadata ecosystem.
 

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
@@ -106,7 +105,7 @@ public class ProfileConverter<B> extends OMFConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY.typeName))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();

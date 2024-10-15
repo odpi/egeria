@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterf
 import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
@@ -715,32 +716,19 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
         invalidParameterHandler.validateName(classificationName, parameterName, methodName);
 
-        SearchClassifications searchClassifications =  new SearchClassifications();
-
-        List<ClassificationCondition> classificationConditions = new ArrayList<>();
-        ClassificationCondition       classificationCondition  = new ClassificationCondition();
-
-        classificationCondition.setName(classificationName);
-
-        classificationConditions.add(classificationCondition);
-
-        searchClassifications.setConditions(classificationConditions);
-        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.PROJECT.typeName,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      searchClassifications,
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date(),
-                                                                                                      startFrom,
-                                                                                                      pageSize);
-
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.getMetadataElementsByClassification(userId,
+                                                                                                                     OpenMetadataType.PROJECT.typeName,
+                                                                                                                     null,
+                                                                                                                     classificationName,
+                                                                                                                     null,
+                                                                                                                     null,
+                                                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                     SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                                     false,
+                                                                                                                     false,
+                                                                                                                     new Date(),
+                                                                                                                     startFrom,
+                                                                                                                     pageSize);
         return convertProjects(openMetadataElements);
     }
 

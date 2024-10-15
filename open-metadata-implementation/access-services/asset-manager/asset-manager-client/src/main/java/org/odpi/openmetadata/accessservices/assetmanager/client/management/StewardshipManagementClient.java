@@ -9,16 +9,23 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataElementSummaryResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+
 import java.util.Date;
 import java.util.List;
 
@@ -219,14 +226,14 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                                                                                     PropertyServerException
     {
         return client.getDataFieldClassifiedElements(userId,
-                                                      null,
-                                                      null,
-                                                      properties,
-                                                      startFrom,
-                                                      pageSize,
-                                                      effectiveTime,
-                                                      forLineage,
-                                                      forDuplicateProcessing);
+                                                     null,
+                                                     null,
+                                                     properties,
+                                                     startFrom,
+                                                     pageSize,
+                                                     effectiveTime,
+                                                     forLineage,
+                                                     forDuplicateProcessing);
     }
 
 
@@ -265,7 +272,7 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * confidence to assign to the element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -306,16 +313,16 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getConfidenceClassifiedElements(String  userId,
-                                                             boolean returnSpecificLevel,
-                                                             int     levelIdentifier,
-                                                             int     startFrom,
-                                                             int     pageSize,
-                                                             Date    effectiveTime,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<MetadataElementSummary> getConfidenceClassifiedElements(String  userId,
+                                                                        boolean returnSpecificLevel,
+                                                                        int     levelIdentifier,
+                                                                        int     startFrom,
+                                                                        int     pageSize,
+                                                                        Date    effectiveTime,
+                                                                        boolean forLineage,
+                                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
         return client.getConfidenceClassifiedElements(userId,
                                                       null,
@@ -365,7 +372,7 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * criticality to assign to the element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -408,16 +415,16 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getCriticalityClassifiedElements(String  userId,
-                                                              boolean returnSpecificLevel,
-                                                              int     levelIdentifier,
-                                                              int     startFrom,
-                                                              int     pageSize,
-                                                              Date    effectiveTime,
-                                                              boolean forLineage,
-                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public List<MetadataElementSummary> getCriticalityClassifiedElements(String  userId,
+                                                                         boolean returnSpecificLevel,
+                                                                         int     levelIdentifier,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         Date    effectiveTime,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         return client.getCriticalityClassifiedElements(userId,
                                                        null,
@@ -468,7 +475,7 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * confidentiality to assign to the element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -509,16 +516,16 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getConfidentialityClassifiedElements(String  userId,
-                                                                  boolean returnSpecificLevel,
-                                                                  int     levelIdentifier,
-                                                                  int     startFrom,
-                                                                  int     pageSize,
-                                                                  Date    effectiveTime,
-                                                                  boolean forLineage,
-                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+    public List<MetadataElementSummary> getConfidentialityClassifiedElements(String  userId,
+                                                                             boolean returnSpecificLevel,
+                                                                             int     levelIdentifier,
+                                                                             int     startFrom,
+                                                                             int     pageSize,
+                                                                             Date    effectiveTime,
+                                                                             boolean forLineage,
+                                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
         return client.getConfidentialityClassifiedElements(userId,
                                                            null,
@@ -569,7 +576,7 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * track the retention period to assign to the element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -611,16 +618,16 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getRetentionClassifiedElements(String  userId,
-                                                            boolean returnSpecificBasisIdentifier,
-                                                            int     basisIdentifier,
-                                                            int     startFrom,
-                                                            int     pageSize,
-                                                            Date    effectiveTime,
-                                                            boolean forLineage,
-                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public List<MetadataElementSummary> getRetentionClassifiedElements(String  userId,
+                                                                       boolean returnSpecificBasisIdentifier,
+                                                                       int     basisIdentifier,
+                                                                       int     startFrom,
+                                                                       int     pageSize,
+                                                                       Date    effectiveTime,
+                                                                       boolean forLineage,
+                                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
     {
         return client.getRetentionClassifiedElements(userId,
                                                      null,
@@ -706,14 +713,14 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getSecurityTaggedElements(String userId,
-                                                       int    startFrom,
-                                                       int    pageSize,
-                                                       Date    effectiveTime,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public List<MetadataElementSummary> getSecurityTaggedElements(String userId,
+                                                                  int    startFrom,
+                                                                  int    pageSize,
+                                                                  Date    effectiveTime,
+                                                                  boolean forLineage,
+                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         return client.getSecurityTaggedElements(userId,
                                                 null,
@@ -798,15 +805,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getOwnersElements(String userId,
-                                               String owner,
-                                               int    startFrom,
-                                               int    pageSize,
-                                               Date    effectiveTime,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<MetadataElementSummary> getOwnersElements(String userId,
+                                                          String owner,
+                                                          int    startFrom,
+                                                          int    pageSize,
+                                                          Date    effectiveTime,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         return client.getOwnersElements(userId,
                                         null,
@@ -1002,15 +1009,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getMembersOfSubjectArea(String userId,
-                                                     String subjectAreaName,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<MetadataElementSummary> getMembersOfSubjectArea(String userId,
+                                                                String subjectAreaName,
+                                                                int    startFrom,
+                                                                int    pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
 
     {
         return client.getMembersOfSubjectArea(userId,
@@ -1140,15 +1147,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSemanticAssignees(String userId,
-                                                     String glossaryTermGUID,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<RelatedMetadataElementSummary> getSemanticAssignees(String userId,
+                                                                    String glossaryTermGUID,
+                                                                    int    startFrom,
+                                                                    int    pageSize,
+                                                                    Date    effectiveTime,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
 
     {
         return client.getSemanticAssignees(userId,
@@ -1277,15 +1284,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernedElements(String  userId,
-                                                    String  governanceDefinitionGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedMetadataElementSummary> getGovernedElements(String  userId,
+                                                                   String  governanceDefinitionGUID,
+                                                                   int     startFrom,
+                                                                   int     pageSize,
+                                                                   Date    effectiveTime,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
 
     {
         return client.getGovernedElements(userId,
@@ -1318,15 +1325,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSourceElements(String  userId,
-                                                  String  elementGUID,
-                                                  int     startFrom,
-                                                  int     pageSize,
-                                                  Date    effectiveTime,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<RelatedMetadataElementSummary> getSourceElements(String  userId,
+                                                                 String  elementGUID,
+                                                                 int     startFrom,
+                                                                 int     pageSize,
+                                                                 Date    effectiveTime,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
 
     {
         return client.getSourceElements(userId,
@@ -1359,15 +1366,15 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getElementsSourceFrom(String  userId,
-                                                      String  elementGUID,
-                                                      int     startFrom,
-                                                      int     pageSize,
-                                                      Date    effectiveTime,
-                                                      boolean forLineage,
-                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<RelatedMetadataElementSummary> getElementsSourceFrom(String  userId,
+                                                                     String  elementGUID,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime,
+                                                                     boolean forLineage,
+                                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
 
     {
         return client.getElementsSourceFrom(userId,
@@ -1379,5 +1386,595 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                             effectiveTime,
                                             forLineage,
                                             forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public MetadataElementSummary getMetadataElementByGUID(String  userId,
+                                                           String  elementGUID,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return client.getMetadataElementByGUID(userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId calling user
+     * @param uniqueName             unique name for the metadata element
+     * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public MetadataElementSummary getMetadataElementByUniqueName(String  userId,
+                                                                 String  uniqueName,
+                                                                 String  uniquePropertyName,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing,
+                                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        return client.getMetadataElementByUniqueName(userId, uniqueName, uniquePropertyName, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId calling user
+     * @param uniqueName             unique name for the metadata element
+     * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String getMetadataElementGUIDByUniqueName(String  userId,
+                                                     String  uniqueName,
+                                                     String  uniquePropertyName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return client.getMetadataElementGUIDByUniqueName(userId, uniqueName, uniquePropertyName, forLineage, forDuplicateProcessing, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param userId calling user
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElements(String             userId,
+                                                    FindProperties     findProperties,
+                                                    int                startFrom,
+                                                    int                pageSize,
+                                                    boolean            forLineage,
+                                                    boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        return client.getElements(userId,
+                                  findProperties,
+                                  startFrom,
+                                  pageSize,
+                                  forLineage,
+                                  forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElementsByPropertyValue(String                      userId,
+                                                                   FindPropertyNamesProperties findProperties,
+                                                                   int                         startFrom,
+                                                                   int                         pageSize,
+                                                                   boolean                     forLineage,
+                                                                   boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        return client.getElementsByPropertyValue(userId,
+                                                 findProperties,
+                                                 startFrom,
+                                                 pageSize,
+                                                 forLineage,
+                                                 forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> findElementsByPropertyValue(String                      userId,
+                                                                    FindPropertyNamesProperties findProperties,
+                                                                    int                         startFrom,
+                                                                    int                         pageSize,
+                                                                    boolean                     forLineage,
+                                                                    boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException
+    {
+        return client.findElementsByPropertyValue(userId,
+                                                  findProperties,
+                                                  startFrom,
+                                                  pageSize,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
+    }
+
+
+
+    /**
+     * Retrieve elements with the requested classification name. It is also possible to limit the results
+     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * any type of element may be returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElementsByClassification(String             userId,
+                                                                    String             classificationName,
+                                                                    FindProperties     findProperties,
+                                                                    int                startFrom,
+                                                                    int                pageSize,
+                                                                    boolean            forLineage,
+                                                                    boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        return client.getElementsByClassification(userId,
+                                                  classificationName,
+                                                  findProperties,
+                                                  startFrom,
+                                                  pageSize,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+
+    public List<MetadataElementSummary> getElementsByClassificationWithPropertyValue(String                      userId,
+                                                                                     String                      classificationName,
+                                                                                     FindPropertyNamesProperties findProperties,
+                                                                                     int                         startFrom,
+                                                                                     int                         pageSize,
+                                                                                     boolean                     forLineage,
+                                                                                     boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                                PropertyServerException
+    {
+        return client.getElementsByClassificationWithPropertyValue(userId,
+                                                                   classificationName,
+                                                                   findProperties,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> findElementsByClassificationWithPropertyValue(String                      userId,
+                                                                                      String                      classificationName,
+                                                                                      FindPropertyNamesProperties findProperties,
+                                                                                      int                         startFrom,
+                                                                                      int                         pageSize,
+                                                                                      boolean                     forLineage,
+                                                                                      boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                                 PropertyServerException
+    {
+        return client.findElementsByClassificationWithPropertyValue(userId,
+                                                                    classificationName,
+                                                                    findProperties,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve related elements of the requested type name.
+     *
+     * @param userId                 calling user
+     * @param elementGUID            unique identifier of the starting end
+     * @param relationshipTypeName   name of relationship
+     * @param startingAtEnd          indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties         open metadata type to search on
+     * @param startFrom              index of the list to start from (0 for start)
+     * @param pageSize               maximum number of elements to return.
+     * @param forLineage             return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> getRelatedElements(String             userId,
+                                                                  String             elementGUID,
+                                                                  String             relationshipTypeName,
+                                                                  int                startingAtEnd,
+                                                                  FindProperties     findProperties,
+                                                                  int                startFrom,
+                                                                  int                pageSize,
+                                                                  boolean            forLineage,
+                                                                  boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        return client.getRelatedElements(userId,
+                                         elementGUID,
+                                         relationshipTypeName,
+                                         startingAtEnd,
+                                         findProperties,
+                                         startFrom,
+                                         pageSize,
+                                         forLineage,
+                                         forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> getRelatedElementsWithPropertyValue(String                      userId,
+                                                                                   String                      elementGUID,
+                                                                                   String                      relationshipTypeName,
+                                                                                   int                         startingAtEnd,
+                                                                                   FindPropertyNamesProperties findProperties,
+                                                                                   int                         startFrom,
+                                                                                   int                         pageSize,
+                                                                                   boolean                     forLineage,
+                                                                                   boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                              UserNotAuthorizedException,
+                                                                                                                                              PropertyServerException
+    {
+        return client.getRelatedElementsWithPropertyValue(userId,
+                                                          elementGUID,
+                                                          relationshipTypeName,
+                                                          startingAtEnd,
+                                                          findProperties,
+                                                          startFrom,
+                                                          pageSize,
+                                                          forLineage,
+                                                          forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must be contained in the by a value found in one of the properties specified.
+     * The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> findRelatedElementsWithPropertyValue(String                      userId,
+                                                                                    String                      elementGUID,
+                                                                                    String                      relationshipTypeName,
+                                                                                    int                         startingAtEnd,
+                                                                                    FindPropertyNamesProperties findProperties,
+                                                                                    int                         startFrom,
+                                                                                    int                         pageSize,
+                                                                                    boolean                     forLineage,
+                                                                                    boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                               UserNotAuthorizedException,
+                                                                                                                                               PropertyServerException
+    {
+        return client.findRelatedElementsWithPropertyValue(userId,
+                                                           elementGUID,
+                                                           relationshipTypeName,
+                                                           startingAtEnd,
+                                                           findProperties,
+                                                           startFrom,
+                                                           pageSize,
+                                                           forLineage,
+                                                           forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties describing the search
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> getRelationships(String             userId,
+                                                       String             relationshipTypeName,
+                                                       FindProperties     findProperties,
+                                                       int                startFrom,
+                                                       int                pageSize,
+                                                       boolean            forLineage,
+                                                       boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        return client.getRelationships(userId,
+                                       relationshipTypeName,
+                                       findProperties,
+                                       startFrom,
+                                       pageSize,
+                                       forLineage,
+                                       forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> getRelationshipsWithPropertyValue(String                      userId,
+                                                                        String                      relationshipTypeName,
+                                                                        FindPropertyNamesProperties findProperties,
+                                                                        int                         startFrom,
+                                                                        int                         pageSize,
+                                                                        boolean                     forLineage,
+                                                                        boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                   UserNotAuthorizedException,
+                                                                                                                                   PropertyServerException
+    {
+        return client.getRelationshipsWithPropertyValue(userId,
+                                                        relationshipTypeName,
+                                                        findProperties,
+                                                        startFrom,
+                                                        pageSize,
+                                                        forLineage,
+                                                        forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> findRelationshipsWithPropertyValue(String                      userId,
+                                                                         String                      relationshipTypeName,
+                                                                         FindPropertyNamesProperties findProperties,
+                                                                         int                         startFrom,
+                                                                         int                         pageSize,
+                                                                         boolean                     forLineage,
+                                                                         boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
+    {
+        return client.findRelationshipsWithPropertyValue(userId,
+                                                         relationshipTypeName,
+                                                         findProperties,
+                                                         startFrom,
+                                                         pageSize,
+                                                         forLineage,
+                                                         forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the header for the instance identified by the supplied unique identifier.
+     * It may be an element (entity) or a relationship between elements.
+     *
+     * @param userId  name of the server instance to connect to
+     * @param guid identifier to use in the lookup
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime effective time
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ElementHeader retrieveInstanceForGUID(String  userId,
+                                                 String  guid,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return client.retrieveInstanceForGUID(userId,
+                                              guid,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime);
     }
 }

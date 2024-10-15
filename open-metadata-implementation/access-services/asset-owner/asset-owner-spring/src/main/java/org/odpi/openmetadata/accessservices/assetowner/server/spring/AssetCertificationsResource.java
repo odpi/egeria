@@ -229,7 +229,7 @@ public class AssetCertificationsResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param certificationGUID unique identifier for the certification
+     * @param certificationTypeGUID unique identifier for the certification
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -238,15 +238,15 @@ public class AssetCertificationsResource
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @GetMapping (path = "/elements/certifications/{certificationGUID}")
+    @GetMapping (path = "/elements/certifications/{certificationTypeGUID}")
 
     public RelatedElementsResponse getCertifiedElements(@PathVariable String serverName,
                                                         @PathVariable String userId,
-                                                        @PathVariable String certificationGUID,
+                                                        @PathVariable String certificationTypeGUID,
                                                         @RequestParam int    startFrom,
                                                         @RequestParam int    pageSize)
     {
-        return restAPI.getCertifiedElements(serverName, userId, certificationGUID, startFrom, pageSize);
+        return restAPI.getCertifiedElements(serverName, userId, certificationTypeGUID, startFrom, pageSize);
     }
 
 

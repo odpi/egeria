@@ -33,7 +33,7 @@ public class ServerOperationsClient
     private final String                     platformRootURL;            /* Initialized in constructor */
     protected     AuditLog                   auditLog;                   /* Initialized in constructor */
 
-    private final String                     retrieveURLTemplatePrefix   = "/open-metadata/server-operations/users/{1}/server-platform";
+    private final String                     retrieveURLTemplatePrefix   = "/open-metadata/server-operations/users/{0}";
 
     private final InvalidParameterHandler    invalidParameterHandler     = new InvalidParameterHandler();
 

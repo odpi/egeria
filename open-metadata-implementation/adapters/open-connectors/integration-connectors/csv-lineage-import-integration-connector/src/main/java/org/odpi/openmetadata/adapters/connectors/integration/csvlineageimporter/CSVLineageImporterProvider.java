@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
         catalogTargetType.setName(CATALOG_TARGET_NAME);
         catalogTargetType.setTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.CSV_FILE});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.CSV_FILE});
 
         super.catalogTargets = new ArrayList<>();
         super.catalogTargets.add(catalogTargetType);

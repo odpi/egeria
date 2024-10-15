@@ -14,6 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -31,7 +32,7 @@ import java.util.*;
 
 
 /**
- * The AssetCatalogUIRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
+ * The AssetCatalogRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
  * This interface provides view interfaces for glossary UIs.
  */
 
@@ -333,6 +334,7 @@ public class AssetCatalogRESTServices extends TokenController
                                                                              null,
                                                                              searchProperties,
                                                                              activeElementsOnly,
+                                                                             null,
                                                                              this.getMatchClassifications(instanceHandler.getSupportedAssetTypes(userId, serverName, methodName),
                                                                                                           typeNames),
                                                                              sequencingProperty,

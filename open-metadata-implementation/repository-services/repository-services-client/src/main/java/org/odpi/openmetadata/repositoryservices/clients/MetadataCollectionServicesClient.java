@@ -5269,7 +5269,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
             clientFactory = new RESTClientFactory(serverName,
                                                   serverPlatformURLRoot,
                                                   userId,
-                                                  password);
+                                                  password,
+                                                  null,
+                                                  auditLog);
         }
         else
         {

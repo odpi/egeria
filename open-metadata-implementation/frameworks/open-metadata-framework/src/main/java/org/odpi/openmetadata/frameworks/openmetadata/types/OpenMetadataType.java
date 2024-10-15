@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * OpenMetadataType provides property name mapping for the open metadata types.
  * It includes identifiers for all the types.
@@ -236,6 +239,87 @@ public enum OpenMetadataType
                         "Link between a property facet and the element it relates to."),
 
     /**
+     * A physical place, digital location or area.
+     */
+    LOCATION("3e09cb2b-5f15-4fd2-b004-fe0146ad8628",
+                  "Location",
+                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                  "b9ab8933-9453-4cfd-9fa7-61c8dd99934a",
+                  "A physical place, digital location or area."),
+
+    /**
+     * A location linked to a physical place.
+     */
+    FIXED_LOCATION_CLASSIFICATION("bc111963-80c7-444f-9715-946c03142dd2",
+                                  "FixedLocation",
+                                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                  "6c543c13-890e-4df5-968e-d06a38f11bf5",
+                                  "A location linked to a physical place."),
+
+    /**
+     * A location that protects the assets in its care.
+     */
+    SECURE_LOCATION_CLASSIFICATION("e7b563c0-fcdd-4ba7-a046-eecf5c4638b8",
+                                   "SecureLocation",
+                                   OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                   "efdc3472-bb97-4340-aefe-b954b64aba4d",
+                                   "A location that protects the assets in its care."),
+
+    /**
+     * A digital location.
+     */
+    CYBER_LOCATION_CLASSIFICATION("f9ec3633-8ac8-480b-aa6d-5e674b9e1b17",
+                                  "CyberLocation",
+                                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                  "51be87f3-f16e-4ff7-bce1-9d91d6f26959",
+                                  "A digital location."),
+
+    /**
+     * An asset not restricted to a single physical location.
+     */
+    MOBILE_ASSET_CLASSIFICATION("b25fb90d-8fa2-4aa9-b884-ff0a6351a697",
+                                "MobileAsset",
+                                OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                "ccc9a6f2-f6dc-4236-8a9b-e122a2988bc3",
+                                "An asset not restricted to a single physical location."),
+
+    /**
+     * Location of an Asset.
+     */
+    ASSET_LOCATION_RELATIONSHIP("bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1",
+                                "AssetLocation",
+                                OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                "1879264f-938b-457a-9e4a-cd8960195868",
+                                "Location of an Asset."),
+
+    /**
+     * Identifies an association between an Actor Profile and a Location, such as a person's primary work location.
+     */
+    PROFILE_LOCATION_RELATIONSHIP("4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4",
+                                  "ProfileLocation",
+                                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                  "7e772ba9-56b4-4236-9512-b559d2c0ab43",
+                                  "Identifies an association between an Actor Profile and a Location, such as a person's primary work location."),
+
+    /**
+     * Link between two locations to show one is nested inside another.
+     */
+    NESTED_LOCATION_RELATIONSHIP("f82a96c2-95a3-4223-88c0-9cbf2882b772",
+                                 "NestedLocation",
+                                 OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                 "de4a6f41-55ff-4532-8810-c70c0e5253ed",
+                                 "Link between two locations to show one is nested inside another."),
+
+    /**
+     * Link between two locations that are next to one another.
+     */
+    ADJACENT_LOCATION_RELATIONSHIP("017d0518-fc25-4e5e-985e-491d91e61e17",
+                                   "AdjacentLocation",
+                                   OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                   "ec37be06-e8ed-48e6-9e94-40da18c7366b",
+                                   "Link between two locations that are next to one another."),
+
+    /**
      * Defines an endpoint associated with a server.
      */
     SERVER_ENDPOINT_RELATIONSHIP("2b8bfab4-8023-4611-9833-82a0dc95f187",
@@ -262,6 +346,15 @@ public enum OpenMetadataType
                       OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                       "6da11871-b04e-4973-beb5-4b1aac37e164",
                       "Hardware and base software that supports an IT system."),
+
+    /**
+     * Identifies the operating platform installed on the IT Infrastructure asset.
+     */
+    OPERATING_PLATFORM_USE("0943e0ba-73ac-476b-8ebe-2ef30ba44976",
+                            "OperatingPlatformUse",
+                            OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                            "8030885a-6639-40a6-8b02-277553ab6041",
+                            "Identifies the operating platform installed on the IT Infrastructure asset."),
 
     /**
      * Named IT infrastructure system that supports multiple software platforms and servers.
@@ -645,9 +738,186 @@ public enum OpenMetadataType
                                "faa47e2b-4987-4ad8-bc39-5a4f91f9658c",
                                "An engine capable of creating new data sets by dynamically combining data from one or more data stores or data sets."),
 
+
+    /**
+     * Defines a capability that manages metadata about assets.
+     */
+    ASSET_MANAGER("03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c",
+                  "AssetManager",
+                  OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                  "44a1d90a-689e-4dc1-8dbb-cf3107388a1b",
+                  "Defines a capability that manages metadata about assets."),
+
+    /**
+     * A capability that supports a store of files organized into a hierarchy of file folders.
+     */
+    FILE_SYSTEM_CLASSIFICATION("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
+                               "FileSystem",
+                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                               "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
+                               "A capability that supports a store of files organized into a hierarchy of file folders."),
+
+    /**
+     * A system that stores descriptions of individuals and their roles/interests in an organization.
+     */
+    USER_PROFILE_MANAGER("53ef4062-9e0a-4892-9824-8d51d4ad59d3",
+                         "UserProfileManager",
+                         OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                         "c62b9be8-c01e-4750-9ef6-4687077614a2",
+                         "A system that stores descriptions of individuals and their roles/interests in an organization."),
+
+    /**
+     * A system that stores the access rights and groups for users (people and automated processes).
+     */
+    USER_ACCESS_DIRECTORY("29c98cf7-32b3-47d2-a411-48c1c9967e6d",
+                          "UserAccessDirectory",
+                          OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                          "e8f1cd26-31db-4663-9cd6-67e9e6a4ac19",
+                          "A system that stores the access rights and groups for users (people and automated processes)."),
+
+    /**
+     * A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts.
+     */
+    MASTER_DATA_MANAGER("5bdad12e-57e7-4ff9-b7be-5d869e77d30b",
+                        "MasterDataManager",
+                        OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                        "5e9d07f7-977c-4f60-a3c1-1e1107db6df1",
+                        "A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts."),
+
+    /**
+     * f3f69251-adb1-4042-9d95-70082f95a028
+     */
+    SOFTWARE_SERVICE("f3f69251-adb1-4042-9d95-70082f95a028",
+                     "SoftwareService",
+                     OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                     "18db6f5d-d1c0-453b-a55a-b0aa2ba1a78f",
+                     ""),
+
+    /**
+     * Interconnectivity for systems.
+     */
+    NETWORK("e0430f59-f021-411a-9d81-883e1ff3f6f6",
+            "Network",
+            OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
+            "48cecd57-b223-4d23-af15-0efe65f74639",
+            "Interconnectivity for systems."),
+
+    /**
+     * A connection point enabling network traffic to pass between two networks.
+     */
+    NETWORK_GATEWAY("9bbae94d-e109-4c96-b072-4f97123f04fd",
+                    "NetworkGateway",
+                    OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
+                    "7e665e17-f0bc-4c20-95e3-be1fec37bc52",
+                    "A connection point enabling network traffic to pass between two networks."),
+
+    /**
+     * f2bd7401-c064-41ac-862c-e5bcdc98fa1e
+     */
+   HOST_NETWORK("f2bd7401-c064-41ac-862c-e5bcdc98fa1e",
+                "HostNetwork",
+                OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
+                "575f2f35-a81d-4fdc-94d8-6a043bc9631d",
+                "One of the hosts connected to a network."),
+
+    /**
+     * Link from a network to one of its network gateways.
+     */
+    NETWORK_GATEWAY_LINK_RELATIONSHIP("5bece460-1fa6-41fb-a29f-fdaf65ec8ce3",
+                                      "NetworkGatewayLink",
+                                      OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
+                                      "c8f17969-ee97-41cf-b5dc-80353a864220",
+                                      "Link from a network to one of its network gateways."),
+
+    /**
+     * Shows that network that an endpoint is visible through.
+     */
+    VISIBLE_ENDPOINT("5e1722c7-0167-49a0-bd77-fbf9dc5eb5bb",
+                     "VisibleEndpoint",
+                     OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
+                     "fc2a05a1-69bd-437f-bef7-20940a97f052",
+                     "Shows that network that an endpoint is visible through."),
+
+    /**
+     * A host supporting cloud services.
+     */
+    CLOUD_PROVIDER_CLASSIFICATION("a2bfdd08-d0a8-49db-bc97-7f240628104",
+                                  "CloudProvider",
+                                  OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
+                                  "0ef5ffaa-6497-40be-8781-5e7e9d74e890",
+                                  "A host supporting cloud services."),
+
+
+    /**
+     * A software server platform supporting cloud services.
+     */
+    CLOUD_PLATFORM_CLASSIFICATION("1b8f8511-e606-4f65-86d3-84891706ad12",
+                                  "CloudPlatform",
+                                  OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
+                                  "4cf8cae4-e9e1-4ab2-8aeb-ffb393a1c7ff",
+                                  "A software server platform supporting cloud services."),
+
+    /**
+     * A software server supporting cloud services.
+     */
+    CLOUD_TENANT_CLASSIFICATION("1b8f8522-e606-4f65-86d3-84891706ad12",
+                                "CloudTenant",
+                                OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
+                                "5516ce5f-df5c-485d-90ca-7ab5647e2371",
+                                "A software server supporting cloud services."),
+
+
+    /**
+     * A service running on a cloud platform.
+     */
+    CLOUD_SERVICE_CLASSIFICATION("337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6",
+                                 "CloudService",
+                                 OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
+                                 "78ad50d9-8d7a-4dc3-ac87-697614d7c417",
+                                 "A service running on a cloud platform."),
+
+
     /* ============================================================================================================================*/
     /* Area 1 - Collaboration                                                                                                      */
     /* ============================================================================================================================*/
+
+    /**
+     * The representation of a person or group of people that are identified to perform an action or take on a responsibility.
+     */
+    ACTOR("16d2c34a-43db-476b-93ae-6a2996f514ec",
+          "Actor",
+          OpenMetadataWikiPages.MODEL_0110_ACTORS,
+          "93583bce-636d-4981-90db-729aafa6a76f",
+          "The representation of a person or group of people that are identified to perform an action or take on a responsibility."),
+
+
+    /**
+     * Description of a person, team or automated process that is working with data.
+     */
+    ACTOR_PROFILE("5a2f38dc-d69d-4a6f-ad26-ac86f118fa35",
+                  "ActorProfile",
+                  OpenMetadataWikiPages.MODEL_0110_ACTORS,
+                  "5669141f-816d-45b4-899d-379674f0bcf3",
+                  "Description of a person, team or automated process that is working with data."),
+
+    /**
+     * Name of the security account for a person or automated process.
+     */
+    USER_IDENTITY("fbe95779-1f3c-4ac6-aa9d-24963ff16282",
+                  "UserIdentity",
+                  OpenMetadataWikiPages.MODEL_0110_ACTORS,
+                  "d1313986-d512-49bf-bc1c-a3a529316978",
+                  "Name of the security account for a person or automated process."),
+
+    /**
+     * Correlates a user identity with an actor profile.
+     */
+    PROFILE_IDENTITY_RELATIONSHIP("01664609-e777-4079-b543-6baffe910ff1",
+                                  "ProfileIdentity",
+                                  OpenMetadataWikiPages.MODEL_0110_ACTORS,
+                                  "f8ef0a3c-aa8d-4de3-8baf-2577365afa67",
+                                  "Correlates a user identity with an actor profile."),
+
 
     /**
      * Information on how to send a message to an individual or automated process.
@@ -668,13 +938,152 @@ public enum OpenMetadataType
                                  "he contact details associated with an actor profile."),
 
     /**
-     * An action that has been identified to support the development, improvement, or remedy of an object or situation.
+     * An individual.
      */
-    ACTION("95261f26-8fe0-4723-b953-4ae5789ec639",
-           "Action",
-           OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
-           "d1df6cb0-80af-473f-aacf-f29972fd4c34",
-           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
+    PERSON("ac406bf8-e53e-49f1-9088-2af28bbbd285",
+           "Person",
+           OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+           "dc55b455-b2ea-4065-a972-6bbdc52ca688",
+           "An individual."),
+
+
+    /**
+     * Relationship identifying a person's contribution record.
+     */
+   PERSONAL_CONTRIBUTION_RELATIONSHIP("4a316abe-eeee-4d11-ad5a-4bfb4079b80b",
+                                      "PersonalContribution",
+                                      OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                                      "73d21888-20f0-485f-b88e-36617b51b0a8",
+                                      "Relationship identifying a person's contribution record."),
+
+    /**
+     * A record of the contribution of an individual.
+     */
+    CONTRIBUTION_RECORD("ac406bf8-e53e-49f1-9088-2af28cccd285",
+                        "ContributionRecord",
+                        OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                        "43bc8cc3-4496-45ad-a40c-42bcf22b0111",
+                        "A record of the contribution of an individual."),
+
+
+    /**
+     * A role performed by one or more individuals.
+     */
+    PERSON_ROLE("ac406bf8-e53e-49f1-9088-2af28bcbd285",
+                "PersonRole",
+                OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                "6259c839-f310-4b73-87dc-28e60a119e1a",
+                "A role performed by one or more individuals."),
+
+
+    /**
+     * Relationship identifying a person's roles.
+     */
+    PERSON_ROLE_APPOINTMENT_RELATIONSHIP("4a316abe-bcce-4d11-ad5a-4bfb4079b80b",
+                                         "PersonRoleAppointment",
+                                         OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                                         "41282fe0-3d45-403f-97bc-c9c80c5081de",
+                                         "Relationship identifying a person's roles."),
+
+    /**
+     * Relationship identifying a person's peer network.
+     */
+    PEER_RELATIONSHIP("4a316abe-bccd-4d11-ad5a-4bfb4079b80b",
+                      "Peer",
+                      OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                      "1d21a0e8-a80b-455f-9e5e-475026a6b8f4",
+                      "Relationship identifying a person's peer network."),
+
+    /**
+     * Group of people working together.
+     */
+    TEAM("36db26d5-aba2-439b-bc15-d62d373c5db6",
+         "Team",
+         OpenMetadataWikiPages.MODEL_0115_TEAMS,
+         "1e008894-4221-4409-838b-e78125da060b",
+         "Group of people working together."),
+
+    /**
+     * Relationship identifying a team reporting hierarchy.
+     */
+    TEAM_STRUCTURE_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2229ca",
+                                "TeamStructure",
+                                OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                                "51a4a318-d9d9-4833-a55b-b3f7948a1a37",
+                                "Relationship identifying a team reporting hierarchy."),
+
+    /**
+     * Person assigned to a team.
+     */
+    TEAM_MEMBER("46db26d5-abb2-538b-bc15-d62d373c5db6",
+                "TeamMember",
+                OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                "69b06feb-3880-4796-ae15-f85fcce35900",
+                "Person assigned to a team."),
+
+    /**
+     * Relationship identifying the members of teams.
+     */
+    TEAM_MEMBERSHIP_RELATIONSHIP("1ebc4fb2-b62a-4269-8f18-e9237a2119ca",
+                                 "TeamMembership",
+                                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                                 "623667d6-2d09-4e2c-8078-bbfd7f8bdbcc",
+                                 "Relationship identifying the members of teams."),
+
+    /**
+     * Person leading a team.
+     */
+    TEAM_LEADER("36db26d5-abb2-439b-bc15-d62d373c5db6",
+                "TeamLeader",
+                OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                "021c3a71-c912-49e1-a099-1866746e4825",
+                "Person leading a team."),
+
+    /**
+     * Relationship identifying the leaders of teams.
+     */
+    TEAM_LEADERSHIP_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2119ca",
+                                 "TeamLeadership",
+                                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
+                                 "83e54789-e20e-439c-99af-e5dcb21e3b29",
+                                 "Relationship identifying the leaders of teams."),
+
+    /**
+     * Descriptive details about a processing engine or other IT infrastructure.
+     */
+    IT_PROFILE("81394f85-6008-465b-926e-b3fae4668937",
+               "ITProfile",
+               OpenMetadataWikiPages.MODEL_0117_IT_PROFILES,
+               "c4fcd82e-24c8-40ef-8d80-e787841a6f92",
+               "Descriptive details about a processing engine or other IT infrastructure."),
+
+    /**
+     * Link between an ITProfile and the asset for the piece of infrastructure it describes.
+     */
+    IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP("4c579e3d-a4ff-41c1-9931-33e6fc992f2b",
+                                           "ITInfrastructureProfile",
+                                           OpenMetadataWikiPages.MODEL_0117_IT_PROFILES,
+                                           "f52f4e19-f148-495b-84df-8ec2f2b02263",
+                                           "Link between an ITProfile and the asset for the piece of infrastructure it describes."),
+
+    /**
+     * Links a profile, role or project to the elements that they are responsible for managing.
+     */
+    ASSIGNMENT_SCOPE_RELATIONSHIP("e3fdafe3-692a-46c6-a595-c538cc189dd9",
+                                  "AssignmentScope",
+                                  OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
+                                  "d2f5cbd5-36f7-4471-83fb-b1aec78d39df",
+                                  "Links a profile, role or project to the elements that they are responsible for managing."),
+
+
+    /**
+     * Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets.
+     */
+   STAKEHOLDER_RELATIONSHIP("efd8a136-0aea-4668-b91a-30f947e38b82",
+                            "Stakeholder",
+                            OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
+                            "97aa5776-e978-4684-b014-5be35c497ffe",
+                            "Identifies the Actor that commissioned work (such as a project or a community) or a capability, service or assets."),
 
     /**
      * An organized activity, typically to achieve a well-defined goal.
@@ -767,6 +1176,64 @@ public enum OpenMetadataType
                                  "A focused analysis of a topic, person, object or situation."),
 
     /**
+     * Two or more people come together to discuss a topic, agree and action or exchange information.
+     */
+    MEETING("6bf90c79-32f4-47ad-959c-8fff723fe744",
+            "Meeting",
+            OpenMetadataWikiPages.MODEL_0135_MEETINGS,
+            "dd75c9f3-8e17-4307-9729-c391bd7981bd",
+            "Two or more people come together to discuss a topic, agree and action or exchange information."),
+
+    /**
+     * A meeting about a specific project, deliverable, situation or plan of action.
+     */
+    MEETINGS("a05f918e-e7e2-419d-8016-5b37406df63a",
+             "Meetings",
+             OpenMetadataWikiPages.MODEL_0135_MEETINGS,
+             "02ff69de-bb0d-40ad-a7ec-367938b7767b",
+             "A meeting about a specific project, deliverable, situation or plan of action."),
+
+
+    /**
+     * An action that has been identified to support the development, improvement, or remedy of an object or situation.
+     */
+    ACTION("95261f26-8fe0-4723-b953-4ae5789ec639",
+           "Action",
+           OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+           "d1df6cb0-80af-473f-aacf-f29972fd4c34",
+           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
+
+
+    /**
+     * The source of the to do, such as a person, meeting or a governance action.
+     */
+    TO_DO_SOURCE_RELATIONSHIP("a0b7ba50-4c97-4b76-9a7d-c6a00e1be646",
+                              "ToDoSource",
+                              OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+                              "4b7c5d49-cef0-495e-8710-23c293828575",
+                              "The source of the to do, such as a person, meeting or a governance action."),
+
+
+    /**
+     * Identifies the sponsor that requires the action (To Do) to be completed.
+     */
+    ACTION_SPONSOR_RELATIONSHIP("aca1277b-bf1c-42f5-9b3b-fbc2c9047325",
+                                "ActionSponsor",
+                                OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+                                "c3d68cbc-9e1e-4820-8647-cdf29a64fb2b",
+                                "Identifies the sponsor that requires the action (ToDo) to be completed."),
+
+    /**
+     * A person who has been assigned to complete the to do (action).
+     */
+    ACTION_ASSIGNMENT_RELATIONSHIP("af2b5fab-8f83-4a2b-b749-1e6219f61f79",
+                                   "ActionAssignment",
+                                   OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+                                   "5d77cc38-d0fa-410b-85fd-e077a6f9efb1",
+                                   "A person who has been assigned to complete the to do (action)."),
+
+
+    /**
      * An action assigned to an individual.
      */
     TO_DO("93dbc58d-c826-4bc2-b36f-195148d46f86",
@@ -774,6 +1241,42 @@ public enum OpenMetadataType
           OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
           "12780d85-66e8-45b3-9d0e-ef4bebbf1ed9",
           "An action assigned to an individual."),
+
+    /**
+     * Associates a To Do with one or more elements to work on.
+     */
+    ACTION_TARGET_RELATIONSHIP("207e2594-e3e4-4be8-a12c-4c401656e241",
+                               "ActionTarget",
+                               OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+                               "e087a192-707d-41fb-97c6-84861383e4b5",
+                               "Associates a To Do with one or more elements to work on."),
+
+    /**
+     * A group of people with a common interest or skill.
+     */
+    COMMUNITY("fbd42379-f6c3-4f08-b6f7-378565cda993",
+              "Community",
+              OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
+              "e7300c49-b5ad-4808-aaa8-64ee81f40df6",
+              "A group of people with a common interest or skill."),
+
+    /**
+     * A person who has joined a community.
+     */
+    COMMUNITY_MEMBER("fbd42379-f6c3-4f09-b6f7-378565cda993",
+              "CommunityMember",
+              OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
+              "38833f01-dbad-4cf7-b825-54a9a97d6d78",
+              "A person who has joined a community."),
+
+    /**
+     * Associates an actor profile with a community.
+     */
+    COMMUNITY_MEMBERSHIP_RELATIONSHIP("7c7da1a3-01b3-473e-972e-606eff0cb112",
+                                      "CommunityMembership",
+                                      OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
+                                      "a4f0935f-78f3-4d0a-aa11-a3f86a50ea36",
+                                      "Associates an actor profile with a community."),
 
 
     /**
@@ -830,6 +1333,8 @@ public enum OpenMetadataType
          "b2bbaacb-c547-41b9-9bb2-e11d55bf74f7",
          "Boolean type of rating expressing a favorable impression."),
 
+
+
     /**
      * Links a like to an item.
      */
@@ -856,6 +1361,24 @@ public enum OpenMetadataType
                               OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                               "f5f7ed7d-bebe-454f-94aa-1029ff37ac6a",
                               "Links an informal tag to an item."),
+
+    /**
+     * Person contributing new content.
+     */
+    CROWD_SOURCING_CONTRIBUTOR("3a84c94c-ac6f-4be1-a72a-07dcec7b1fe3",
+                               "CrowdSourcingContributor",
+                               OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
+                               "ee2046c9-aadd-4519-a76d-43e6cfce03a8",
+                               "Person contributing new content."),
+
+    /**
+     * Defines one of the actors contributing content to a new description or asset.
+     */
+    CROWD_SOURCING_CONTRIBUTION("4db83564-b200-4956-94a4-c95a5c30e65a",
+                                "CrowdSourcingContribution",
+                                 OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
+                                "715c667a-7a9b-45f0-b44e-06c1c0401929",
+                                "Defines one of the actors contributing content to a new description or asset."),
 
     /**
      * An ordered list of related notes.
@@ -917,6 +1440,93 @@ public enum OpenMetadataType
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
 
+    CONNECTION("114e9f8f-5ff3-4c32-bd37-a7eb42712253",
+               "Connection",
+               OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+               "6c57f5f6-e692-4688-8a16-e81e5eb985f6",
+               "A set of properties to identify and configure a connector instance."),
+
+    /**
+     * A set of properties describing a type of connector.
+     */
+    CONNECTOR_TYPE("954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+                   "ConnectorType",
+                   OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                   "83d59e58-8f1d-4554-8a93-3c3b9c9808d1",
+                   "A set of properties describing a type of connector."),
+
+    /**
+     * A detailed description of the effect of some data processing.
+     */
+    CONNECTOR_CATEGORY("fb60761f-7afd-4d3d-9efa-24bc85a7b22e",
+                       "ConnectorCategory",
+                       OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                       "81791f28-6d73-439d-ac2f-30b8aeaebcf9",
+                       "A detailed description of the effect of some data processing."),
+
+    /**
+     * Identifies a collection of related connector types.
+     */
+    CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION("9678ef11-ed7e-404b-a041-736df7514339",
+                                            "ConnectorTypeDirectory",
+                                            OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                            "1387ff91-42bc-4eb3-8945-ab21826802ca",
+                                            "Identifies a collection of related connector types."),
+
+    /**
+     * Relates a connector category for a specific type of technology with the connector types that support it.
+     */
+    CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP("633648f3-c951-4ad7-b975-9fc04e0f3d2e",
+                                                 "ConnectorImplementationChoice",
+                                                 OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                                 "62313ce0-7a48-461e-910e-6ec8a17abcae",
+                                                 "Relates a connector category for a specific type of technology with the connector types that support it."),
+
+    /**
+     * A link between a connection and the endpoint that the connector should use.
+     */
+    CONNECTION_ENDPOINT_RELATIONSHIP("887a7132-d6bc-4b92-a483-e80b60c86fb2",
+                                     "ConnectionEndpoint",
+                                     OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                     "02af6e89-05df-4cc5-ac32-2de8299c6e2f",
+                                     "A link between a connection and the endpoint that the connector should use."),
+
+    /**
+     * A link between a connection and the connector type that should be used.
+     */
+    CONNECTION_CONNECTOR_TYPE_RELATIONSHIP("e542cfc1-0b4b-42b9-9921-f0a5a88aaf96",
+                                           "ConnectionConnectorType",
+                                           OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
+                                           "3ee0cc02-f058-4d88-a510-d463f448b4ac",
+                                           "A link between a connection and the connector type that should be used."),
+
+    /**
+     * A connector for a virtual resource that needs to retrieve data from multiple places.
+     */
+    VIRTUAL_CONNECTION("82f9c664-e59d-484c-a8f3-17088c23a2f3",
+                       "VirtualConnection",
+                       OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                       "04928167-1a20-4137-bbd8-b42151a38d8c",
+                       "A connector for a virtual resource that needs to retrieve data from multiple places."),
+
+    /**
+     * A link between a virtual connection and one of the connections it depends on.
+     */
+    EMBEDDED_CONNECTION_RELATIONSHIP("eb6dfdd2-8c6f-4f0d-a17d-f6ce4799f64f",
+                                     "EmbeddedConnection",
+                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                                     "c05c1143-3ac4-4044-a0aa-eed71e949097",
+                                     "A link between a virtual connection and one of the connections it depends on."),
+
+    /**
+     * Link between a connection and the description of the asset it can be used to access.
+     */
+    CONNECTION_TO_ASSET_RELATIONSHIP("e777d660-8dbe-453e-8b83-903771f054c0",
+                                     "ConnectionToAsset",
+                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                                     "4fedfcf8-05c4-4c8c-8284-3554c4f4c295",
+                                     "Link between a connection and the description of the asset it can be used to access."),
+
     /**
      * Collection of related data, not necessarily stored together.
      */
@@ -935,6 +1545,16 @@ public enum OpenMetadataType
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                "186e8199-1987-4578-9799-c13a8eaa08b6",
                "A physical store of data."),
+
+
+    /**
+     * Description for how data is organized and represented in a data store.
+     */
+    DATA_STORE_ENCODING_CLASSIFICATION("f08e48b5-6b66-40f5-8ff6-c2bfe527330b",
+                                       "DataStoreEncoding",
+                                       OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                                       "327553db-b35b-49cc-8435-d2c665f5e260",
+                                       "Description for how data is organized and represented in a data store."),
 
     /**
      * A data source that provides a constant stream of data, such as a sensor monitoring the environment.
@@ -980,6 +1600,33 @@ public enum OpenMetadataType
                               OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
                               "481182e8-90cf-47b2-ae1e-6247bf89698b",
                               "The endpoint for a deployed API."),
+
+    /**
+     * Identifies an API that supports a request response interaction style.
+     */
+    REQUEST_RESPONSE_INTERFACE_CLASSIFICATION("14a29330-e830-4343-a41e-d57e2cec82f8",
+                                              "RequestResponseInterface",
+                                              OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                                              "343d4892-1f13-4a68-a9fc-32719cecb4a3",
+                                              "Identifies an API that supports a request response interaction style."),
+
+    /**
+     * Identifies an API that listens for incoming events and processes them.
+     */
+    LISTENER_INTERFACE_CLASSIFICATION("4099d2ed-2a5e-4c44-8443-9de4e378a4ba",
+                                      "ListenerInterface",
+                                      OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                                      "39e5a428-663e-4fff-a4dd-e6d5e627c143",
+                                      "Identifies an API that listens for incoming events and processes them."),
+
+    /**
+     * Identifies an API that sends out events to other listening components.
+     */
+    PUBLISHER_INTERFACE_CLASSIFICATION("4fdedcd5-b186-4bee-887a-02fa29a10750",
+                                      "PublisherInterface",
+                                      OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                                      "7c7d9e1c-72cd-4d64-89bf-be898edad980",
+                                      "Identifies an API that sends out events to other listening components."),
 
 
     /**
@@ -1072,6 +1719,296 @@ public enum OpenMetadataType
               "8fc52dce-17fe-426a-b504-c15d5df35524",
               "A description of a file that follows the JavaScript Object Notation specification."),
 
+    /**
+     * A file containing tabular data with formula.
+     */
+    SPREADSHEET_FILE("2f38d248-8633-402b-b085-c88fcbc33fa8",
+                     "SpreadsheetFile",
+                     OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                     "777064c4-756e-4c78-84d7-268316481b9d",
+                     "A file containing tabular data with formula."),
+
+    /**
+     * A file containing an XML structure.
+     */
+    XML_FILE("e1d8d6f1-3e75-41c7-a038-6e25ab985b44",
+             "XMLFile",
+             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+             "0dbaed30-1cd5-4259-a0b2-f586966890ee",
+             "A file containing an XML structure."),
+
+    /**
+     * A data file which is formatted using the Apache Parquet format.
+     */
+    PARQUET_FILE("97cba3a0-1dfd-4129-82b6-798de3eec0a4",
+                 "ParquetFile",
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                 "b472c4a1-708d-4787-b0c3-730052cf19f4",
+                 "A data file which is formatted using the Apache Parquet format."),
+
+    /**
+     * A nested relationship between two file folders.
+     */
+    FOLDER_HIERARCHY_RELATIONSHIP("48ac9028-45dd-495d-b3e1-622685b54a01",
+                                  "FolderHierarchy",
+                                  OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                                  "1c35e932-a116-486c-891a-32c3300db62d",
+                                  "A nested relationship between two file folders."),
+
+    /**
+     * The link between a data file and its containing folder.
+     */
+    NESTED_FILE_RELATIONSHIP("4cb88900-1446-4eb6-acea-29cd9da45e63",
+                             "NestedFile",
+                             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                             "25f5b1b2-3ed4-452c-8e67-9dae915195ef",
+                             "The link between a data file and its containing folder."),
+
+    /**
+     * A data file that is linked to a file folder (rather than stored in it).
+     */
+    LINKED_FILE_RELATIONSHIP("970a3405-fde1-4039-8249-9aa5f56d5151",
+                             "LinkedFile",
+                             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                             "214c7af3-89e7-4ff1-9642-68af6b9fa12d",
+                             "A data file that is linked to a file folder (rather than stored in it)."),
+
+    /**
+     * A data set that consists of a collection files (do not need to be co-located).
+     */
+    DATA_FILE_COLLECTION("962de053-ab51-40eb-b843-85b98013f5ca",
+                         "DataFileCollection",
+                         OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                         "c2833bb5-5508-4328-a81d-f9b5971be095",
+                         "A data set that consists of a collection files (do not need to be co-located)."),
+
+
+    /**
+     * A group of related media files.
+     */
+    MEDIA_COLLECTION("0075d603-1627-41c5-8cae-f5458d1247fe",
+                     "MediaCollection",
+                     OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                     "5d968079-c51d-4168-8208-d6dabeab2105",
+                     "A group of related media files."),
+
+    /**
+     * Identifies a data store as one that contains documents.
+     */
+    DOCUMENT_STORE("37156790-feac-4e1a-a42e-88858ae6f8e1",
+                   "DocumentStore",
+                   OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                   "a39cc327-bd4f-4cb7-9355-b7dbf55fa5c2",
+                   "Identifies a data store as one that contains documents."),
+
+    /**
+     * Links a media file to another media file and describes relationship.
+     */
+    LINKED_MEDIA_RELATIONSHIP("cee3a190-fc8d-4e53-908a-f1b9689581e0",
+                              "LinkedMedia",
+                              OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                              "7eabb4c2-017e-4215-8ca0-5596ad4880d6",
+                              "Links a media file to another media file and describes relationship."),
+
+    /**
+     * A data file containing formatted media such as images, audio or video.
+     */
+    MEDIA_FILE("c5ce5499-9582-42ea-936c-9771fbd475f8",
+               "MediaFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "6e9220c4-6f47-417a-93b5-18f365e19ade",
+               "A data file containing formatted media such as images, audio or video."),
+
+    /**
+     * A data file containing formatted text.
+     */
+    DOCUMENT("b463827c-c0a0-4cfb-a2b2-ddc63746ded4",
+             "Document",
+             OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+             "d5f2b2eb-9fc9-4088-b64e-539ec5a70f2a",
+             "A data file containing formatted text."),
+
+    /**
+     * A file containing an audio recording.
+     */
+    AUDIO_FILE("713c26b6-7158-4cd7-918b-7d6f9d216893",
+               "AudioFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "a064efd8-eff6-44ae-8608-4580691a3fb0",
+               "A file containing an audio recording."),
+
+    /**
+     * A file containing a video recording.
+     */
+    VIDEO_FILE("68f06c88-083e-42f0-8268-f4f822aeab0e",
+               "VideoFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "adc363ff-49ba-449c-9e0b-8e1705dcd436",
+               "A file containing a video recording."),
+
+    /**
+     * A file containing a three-dimensional image.
+     */
+    THREE_D_IMAGE_FILE("b2d56d90-ef55-4fa4-b1d6-a6049fd49466",
+                       "3DImageFile",
+                       OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                       "a37ea95a-4e43-499b-b2c6-a73ac99abbf8",
+                       "A file containing a three-dimensional image."),
+
+    /**
+     * A file containing an image as a matrix of pixels.
+     */
+    RASTER_FILE("6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147",
+                "RasterFile",
+                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                "b92af812-05c4-4764-a8f0-d898277f69c1",
+                "A file containing an image as a matrix of pixels."),
+
+    /**
+     * A file containing an image described using mathematical formulas.
+     */
+    VECTOR_FILE("007620a2-960e-4c3b-b625-cbefebefc737",
+                "VectorFile",
+                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                "35d56124-280c-4434-9206-84eff153f73b",
+                "A file containing an image described using mathematical formulas."),
+
+
+    /**
+     * Identifies a data store as one that contains one or more graphs.
+     */
+    GRAPH_STORE("86de3633-eec8-4bf9-aad1-e92df1ca2024",
+                "GraphStore",
+                OpenMetadataWikiPages.MODEL_0222_GRAPH_STORES,
+                "ca06f2ea-ba2d-4538-9deb-76240bb616d2",
+                "Identifies a data store as one that contains one or more graphs."),
+
+    /**
+     * A location for storing and distributing related events.
+     */
+    TOPIC("29100f49-338e-4361-b05d-7e4e8e818325",
+          "Topic",
+          OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+          "a724d481-625b-4855-bc29-76f90983311f",
+          "A location for storing and distributing related events."),
+
+    /**
+     * An event topic supported by Apache Kafka.
+     */
+    KAFKA_TOPIC("f2f5dae9-8410-420f-81f4-5d08543e07aa",
+                "KafkaTopic",
+                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                "38bdd80b-706a-483c-8c39-4cba69e9a767,",
+                "An event topic supported by Apache Kafka."),
+
+    /**
+     * A collection of elements registered to receive events from a topic.
+     */
+    SUBSCRIBER_LIST("69751093-35f9-42b1-944b-ba6251ff513d",
+                    "SubscriberList",
+                    OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                    "934517a0-c664-4d08-80c9-d61da42a3167",
+                    "A collection of elements registered to receive events from a topic."),
+
+    /**
+     * Links the list of subscribers to a topic.
+     */
+    TOPIC_SUBSCRIBERS_RELATIONSHIP("bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e",
+                                   "TopicSubscribers",
+                                   OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                                   "e42ab697-7457-48ae-89f8-b786a08e94aa",
+                                   "Links the list of subscribers to a topic."),
+
+    /**
+     * "Identifies a data file as one containing log records."
+     */
+    LOG_FILE("ff4c8484-9127-464a-97fc-99579d5bc429",
+             "LogFile",
+             OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+             "4ee71abb-c5b0-4b40-ac0e-63d6c4dad9dd",
+             "Identifies a data file as one containing log records."),
+
+    /**
+     * Defines destination information for the log of activity associated with an element.
+     */
+    ASSOCIATED_LOG_RELATIONSHIP("0999e2b9-45d6-42c4-9767-4b74b0b48b89",
+                                "AssociatedLog",
+                                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                                "b6a17f72-2add-4db8-bf4d-9c6460386318",
+                                "Defines destination information for the log of activity associated with an element."),
+
+    /**
+     * 0921c83f-b2db-4086-a52c-0d10e52ca078
+     */
+    DATABASE("0921c83f-b2db-4086-a52c-0d10e52ca078",
+             "Database",
+             OpenMetadataWikiPages.MODEL_0224_DATABASES,
+             "735bb7f4-342c-4830-a8e9-6c56ec5f9e50",
+             ""),
+
+    /**
+     * 6a28e242-4eca-4664-81cb-e2096d769568
+     */
+    RELATIONAL_DATABASE("6a28e242-4eca-4664-81cb-e2096d769568",
+                        "RelationalDatabase",
+                        OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                        "36e696b2-6795-4f53-9867-baaa4d50800e",
+                        ""),
+
+    /**
+     * A collection of database tables and views running in a database server.
+     */
+    DEPLOYED_DATABASE_SCHEMA("eab811ec-556a-45f1-9091-bc7ac8face0f",
+                             "DeployedDatabaseSchema",
+                             OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                             "85fcc8e5-01ec-4898-aac7-e7ca97326b94",
+                             "A collection of database tables and views running in a database server."),
+
+    /**
+     * A tabular data source (typically a database table) that is an asset in its own right.
+     */
+    TABLE_DATA_SET("20c45531-5d2e-4eb6-9a47-035cb1067b82",
+                   "TableDataSet",
+                   OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                   "ff9fced9-daaf-4512-97c1-88381ffe05aa",
+                   "A tabular data source (typically a database table) that is an asset in its own right."),
+
+
+    /**
+     * A file containing compressed files.  These files may be organized into a directory (folder) structure.
+     */
+    ARCHIVE_FILE("ba5111df-3878-4694-82d7-0b0e47565523",
+                 "ArchiveFile",
+                 OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
+                 "de153806-44cd-465f-981b-4b703536018b",
+                 "A file containing compressed files.  These files may be organized into a directory (folder) structure."),
+
+    /**
+     * Links an archive to a collection that has a description of the archive's contents as its members.
+     */
+    ARCHIVE_CONTENTS_RELATIONSHIP("51e59b71-013b-4f77-9a51-2d6fbb3dfeeb",
+                                  "ArchiveContents",
+                                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
+                                  "01341540-1132-4412-adb1-e5725d55ab6f",
+                                  "Links an archive to a collection that has a description of the archive's contents as its members."),
+
+    /**
+     * An encrypted data store containing authentication and related security information.
+     */
+    KEYSTORE_FILE("17bee904-5b35-4c81-ac63-871c615424a2",
+                  "KeystoreFile",
+                  OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
+                  "8b628220-8c35-4ca7-814f-7f391ab0466e",
+                  "An encrypted data store containing authentication and related security information."),
+
+    /**
+     * A data set containing authentication and related security information.
+     */
+    SECRETS_COLLECTION("979d97dd-6782-4648-8e2a-8982994533e6",
+                       "SecretsCollection",
+                       OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
+                       "4aa6aae8-a0d6-4e05-8b93-6bab1962c3a6",
+                       "A data set containing authentication and related security information."),
 
 
     /**
@@ -1148,215 +2085,6 @@ public enum OpenMetadataType
               "5e0ea8d1-bb58-4a85-931d-886f8388b9d2",
               "A file containing properties in YAML format.  This it typically used for configuration."),
 
-    /**
-     * A file containing tabular data with formula.
-     */
-    SPREADSHEET_FILE("2f38d248-8633-402b-b085-c88fcbc33fa8",
-                     "SpreadsheetFile",
-                     OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
-                     "777064c4-756e-4c78-84d7-268316481b9d",
-                     "A file containing tabular data with formula."),
-
-    /**
-     * A file containing an XML structure.
-     */
-    XML_FILE("e1d8d6f1-3e75-41c7-a038-6e25ab985b44",
-             "XMLFile",
-             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
-             "0dbaed30-1cd5-4259-a0b2-f586966890ee",
-             "A file containing an XML structure."),
-
-    /**
-     * A data file which is formatted using the Apache Parquet format.
-     */
-    PARQUET_FILE("97cba3a0-1dfd-4129-82b6-798de3eec0a4",
-                 "ParquetFile",
-                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
-                 "b472c4a1-708d-4787-b0c3-730052cf19f4",
-                 "A data file which is formatted using the Apache Parquet format."),
-
-    /**
-     * A data file containing formatted media such as images, audio or video.
-     */
-    MEDIA_FILE("c5ce5499-9582-42ea-936c-9771fbd475f8",
-               "MediaFile",
-               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-               "6e9220c4-6f47-417a-93b5-18f365e19ade",
-               "A data file containing formatted media such as images, audio or video."),
-
-    /**
-     * A data file containing formatted text.
-     */
-    DOCUMENT("b463827c-c0a0-4cfb-a2b2-ddc63746ded4",
-             "Document",
-             OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-             "d5f2b2eb-9fc9-4088-b64e-539ec5a70f2a",
-             "A data file containing formatted text."),
-
-    /**
-     * A file containing an audio recording.
-     */
-    AUDIO_FILE("713c26b6-7158-4cd7-918b-7d6f9d216893",
-               "AudioFile",
-               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-               "a064efd8-eff6-44ae-8608-4580691a3fb0",
-               "A file containing an audio recording."),
-
-    /**
-     * A file containing a video recording.
-     */
-    VIDEO_FILE("68f06c88-083e-42f0-8268-f4f822aeab0e",
-               "VideoFile",
-               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-               "adc363ff-49ba-449c-9e0b-8e1705dcd436",
-               "A file containing a video recording."),
-
-    /**
-     * A file containing a three-dimensional image.
-     */
-   THREE_D_IMAGE_FILE("b2d56d90-ef55-4fa4-b1d6-a6049fd49466",
-                      "3DImageFile",
-                      OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-                      "a37ea95a-4e43-499b-b2c6-a73ac99abbf8",
-                      "A file containing a three-dimensional image."),
-
-    /**
-     * A file containing an image as a matrix of pixels.
-     */
-    RASTER_FILE("6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147",
-                "RasterFile",
-                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-                "b92af812-05c4-4764-a8f0-d898277f69c1",
-                "A file containing an image as a matrix of pixels."),
-
-    /**
-     * A file containing an image described using mathematical formulas.
-     */
-    VECTOR_FILE("007620a2-960e-4c3b-b625-cbefebefc737",
-                "VectorFile",
-                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
-                "35d56124-280c-4434-9206-84eff153f73b",
-                "A file containing an image described using mathematical formulas."),
-
-    /**
-     * A data set that consists of a collection files (do not need to be co-located).
-     */
-    DATA_FILE_COLLECTION("962de053-ab51-40eb-b843-85b98013f5ca",
-                         "DataFileCollection",
-                         OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
-                         "c2833bb5-5508-4328-a81d-f9b5971be095",
-                         "A data set that consists of a collection files (do not need to be co-located)."),
-
-    /**
-     * A location for storing and distributing related events.
-     */
-    TOPIC("29100f49-338e-4361-b05d-7e4e8e818325",
-          "Topic",
-          OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-          "a724d481-625b-4855-bc29-76f90983311f",
-          "A location for storing and distributing related events."),
-
-    /**
-     * An event topic supported by Apache Kafka.
-     */
-    KAFKA_TOPIC("f2f5dae9-8410-420f-81f4-5d08543e07aa",
-                "KafkaTopic",
-                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-                "38bdd80b-706a-483c-8c39-4cba69e9a767,",
-                "An event topic supported by Apache Kafka."),
-
-    /**
-     * "Identifies a data file as one containing log records."
-     */
-    LOG_FILE("ff4c8484-9127-464a-97fc-99579d5bc429",
-             "LogFile",
-             OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-             "4ee71abb-c5b0-4b40-ac0e-63d6c4dad9dd",
-             "Identifies a data file as one containing log records."),
-
-    /**
-     * Defines destination information for the log of activity associated with an element.
-     */
-    ASSOCIATED_LOG_RELATIONSHIP("0999e2b9-45d6-42c4-9767-4b74b0b48b89",
-                                "AssociatedLog",
-                                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-                                "b6a17f72-2add-4db8-bf4d-9c6460386318",
-                                "Defines destination information for the log of activity associated with an element."),
-
-
-
-    /**
-     * 0921c83f-b2db-4086-a52c-0d10e52ca078
-     */
-    DATABASE("0921c83f-b2db-4086-a52c-0d10e52ca078",
-             "Database",
-             OpenMetadataWikiPages.MODEL_0224_DATABASES,
-             "735bb7f4-342c-4830-a8e9-6c56ec5f9e50",
-             ""),
-
-    /**
-     * 6a28e242-4eca-4664-81cb-e2096d769568
-     */
-    RELATIONAL_DATABASE("6a28e242-4eca-4664-81cb-e2096d769568",
-                        "RelationalDatabase",
-                        OpenMetadataWikiPages.MODEL_0224_DATABASES,
-                        "36e696b2-6795-4f53-9867-baaa4d50800e",
-                        ""),
-
-    /**
-     * A collection of database tables and views running in a database server.
-     */
-    DEPLOYED_DATABASE_SCHEMA("eab811ec-556a-45f1-9091-bc7ac8face0f",
-                             "DeployedDatabaseSchema",
-                             OpenMetadataWikiPages.MODEL_0224_DATABASES,
-                             "85fcc8e5-01ec-4898-aac7-e7ca97326b94",
-                             "A collection of database tables and views running in a database server."),
-
-    /**
-     * A tabular data source (typically a database table) that is an asset in its own right.
-     */
-    TABLE_DATA_SET("20c45531-5d2e-4eb6-9a47-035cb1067b82",
-                   "TableDataSet",
-                   OpenMetadataWikiPages.MODEL_0224_DATABASES,
-                   "ff9fced9-daaf-4512-97c1-88381ffe05aa",
-                   "A tabular data source (typically a database table) that is an asset in its own right."),
-
-
-    /**
-     * A file containing compressed files.  These files may be organized into a directory (folder) structure.
-     */
-    ARCHIVE_FILE("ba5111df-3878-4694-82d7-0b0e47565523",
-                 "ArchiveFile",
-                 OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
-                 "de153806-44cd-465f-981b-4b703536018b",
-                 "A file containing compressed files.  These files may be organized into a directory (folder) structure."),
-
-    /**
-     * Links an archive to a collection that has a description of the archive's contents as its members.
-     */
-    ARCHIVE_CONTENTS_RELATIONSHIP("51e59b71-013b-4f77-9a51-2d6fbb3dfeeb",
-                                  "ArchiveContents",
-                                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
-                                  "01341540-1132-4412-adb1-e5725d55ab6f",
-                                  "Links an archive to a collection that has a description of the archive's contents as its members."),
-
-    /**
-     * An encrypted data store containing authentication and related security information.
-     */
-    KEYSTORE_FILE("17bee904-5b35-4c81-ac63-871c615424a2",
-                  "KeystoreFile",
-                  OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
-                  "8b628220-8c35-4ca7-814f-7f391ab0466e",
-                  "An encrypted data store containing authentication and related security information."),
-
-    /**
-     * A data set containing authentication and related security information.
-     */
-    SECRETS_COLLECTION("979d97dd-6782-4648-8e2a-8982994533e6",
-                       "SecretsCollection",
-                       OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
-                       "4aa6aae8-a0d6-4e05-8b93-6bab1962c3a6",
-                       "A data set containing authentication and related security information."),
 
     /* ============================================================================================================================*/
     /* Area 3 - Glossary                                                                                                         */
@@ -1548,42 +2276,6 @@ public enum OpenMetadataType
                           "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
 
     /**
-     * A description of an adverse situation or activity.
-     */
-    INCIDENT_REPORT("072f252b-dea7-4b88-bb2e-8f741c9ca7f6e",
-                    "IncidentReport",
-                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
-                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
-                    "A description of an adverse situation or activity."),
-
-    /**
-     * A server capability for running open discovery services.
-     */
-    OPEN_DISCOVERY_ENGINE("be650674-790b-487a-a619-0a9002488055",
-                          "OpenDiscoveryEngine",
-                          OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                          "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
-                          "A server capability for running open discovery services."),
-
-    /**
-     * A pluggable component for discovering properties about an asset.
-     */
-    OPEN_DISCOVERY_SERVICE("2f278dfc-4640-4714-b34b-303e84e4fc40",
-                           "OpenDiscoveryService",
-                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                           "38b8d73d-3c60-4e86-8561-256c77e10c16",
-                           "A pluggable component for discovering properties about an asset."),
-
-    /**
-     * A pluggable component that calls multiple discovery services.
-     */
-    OPEN_DISCOVERY_PIPELINE("081abe00-740e-4143-b0d5-a1f55450fc22",
-                            "OpenDiscoveryPipeline",
-                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                            "85a985ab-2f07-4ffc-99d5-d423d787c51e",
-                            "A pluggable component that calls multiple discovery services."),
-
-    /**
      * A governance engine for open metadata repositories.
      */
     REPOSITORY_GOVERNANCE_ENGINE("2b3bed05-c227-47d7-87a3-139ab0568361",
@@ -1609,6 +2301,33 @@ public enum OpenMetadataType
                                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                               "346ca38f-287d-401f-bbe9-375ecd2b938f",
                                               "Link between a governance engine and one of its services."),
+
+    /**
+     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller.
+     */
+    TARGET_FOR_ACTION_TYPE("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
+                      "TargetForActionType",
+                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                      "433f34f5-572e-44cf-888d-653bed1bce54",
+                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller."),
+
+    /**
+     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller.
+     */
+    TARGET_FOR_ACTION_PROCESS("7a72262e-c466-49cf-b67d-01b7b45c3f19",
+                      "TargetForActionProcess",
+                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                      "90dea768-2b9e-4a3c-b065-95efcfd5a48f",
+                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
+
+    /**
+     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship..
+     */
+    GOVERNANCE_ACTION_PROCESS_INSTANCE("206a6e44-ffe7-408b-8e59-79842d362776",
+                              "GovernanceActionProcessInstance",
+                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                              "6fcfbc4c-f08d-4946-a311-e76237fa1263",
+                              "Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship."),
 
     /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.
@@ -1672,6 +2391,15 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                           "fe907752-40e5-4bbc-9984-5a363bfd0241",
                           "A definition to control the execution of an integration connector."),
+
+    /**
+     * A description of an adverse situation or activity.
+     */
+    INCIDENT_REPORT("072f252b-dea7-4b88-bb2e-8f741c9ca7f6e",
+                    "IncidentReport",
+                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
+                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
+                    "A description of an adverse situation or activity."),
 
 
     /* ============================================================================================================================*/
@@ -2069,10 +2797,111 @@ public enum OpenMetadataType
                                       "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
                                       "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
 
+    /**
+     * A detailed description of the effect of some data processing.
+     */
+    DATA_PROCESSING_DESCRIPTION("685f91fb-c74b-437b-a9b6-c5e557c6d3b2",
+                                "DataProcessingDescription",
+                                OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                "3c1d6681-5ef6-404a-8876-4ad6d9b48e37",
+                                "A detailed description of the effect of some data processing."),
+
+    /**
+     * Expected outcome, service or value from processing.
+     */
+    DATA_PROCESSING_PURPOSE("9062df4c-9f4a-4012-a67a-968d7a3f4bcf",
+                            "DataProcessingPurpose",
+                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                            "596481bd-0771-406b-8dd2-bac9487bf565",
+                            "Expected outcome, service or value from processing."),
+
+    /**
+     * Description of the processing on a single target item.
+     */
+    DATA_PROCESSING_ACTION("7f53928f-9148-4710-ad37-47633f33cb08",
+                           "DataProcessingActionProperties",
+                           OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                           "85954b5a-ef3e-4bf7-94a6-ce7a24153ef6",
+                           "Description of the processing on a single target item."),
+
+    /**
+     * Relationship relates data processing descriptions with purposes (outcomes).
+     */
+    PERMITTED_PROCESSING_RELATIONSHIP("b472a2ec-f419-4d3f-86fb-e9d97365f961",
+                                      "PermittedProcessing",
+                                      OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                      "0cf13128-42c3-4d22-a3c6-c3ab70f7ae43",
+                                      "Relationship relates data processing descriptions with purposes (outcomes)."),
+
+    /**
+     * Relationship identifying the proposes that processes/people have permission to process data for.
+     */
+    APPROVED_PURPOSE_RELATIONSHIP("33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3",
+                                  "ApprovedPurpose",
+                                  OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                  "f39090c4-c4bb-4594-8a9d-e9d43f3bdb1a",
+                                  "Relationship identifying the proposes that processes/people have permission to process data for."),
+
+    /**
+     * Relationship identifying the individual actions in a data processing description.
+     */
+    DETAILED_PROCESSING_ACTION_RELATIONSHIP("0ac0e793-6727-45d2-9403-06bd19d9ce2e",
+                                            "DetailedProcessingAction",
+                                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                            "11d4a348-15ab-4520-b5cc-ddfe9c88559d",
+                                            "Relationship identifying the individual actions in a data processing description."),
+
+    /**
+     * Relationship identifying the processing being performed by processes or people.
+     */
+    DATA_PROCESSING_SPECIFICATION_RELATIONSHIP("1dfdec0f-f206-4db7-bac8-ec344205fb3c",
+                                               "DataProcessingSpecification",
+                                               OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                               "21ba7de7-62ff-442c-aa97-84b8ac4d6291",
+                                               "Relationship identifying the processing being performed by processes or people."),
+
+    /**
+     * Relationship identifying the actions being performed on data.
+     */
+    DATA_PROCESSING_TARGET_RELATIONSHIP("6ad18aa4-f5fc-47e7-99e1-80acfc536c9a",
+                                        "DataProcessingTarget",
+                                        OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                        "bb2dfb94-fa8e-4e01-83a2-8a8558fa8515",
+                                        "Relationship identifying the actions being performed on data."),
+
+
 
     /* ============================================================================================================================*/
     /* Area 6 - Metadata Surveys                                                                                                   */
     /* ============================================================================================================================*/
+
+
+    /**
+     * A server capability for running open discovery services.
+     */
+    OPEN_DISCOVERY_ENGINE("be650674-790b-487a-a619-0a9002488055",
+                          "OpenDiscoveryEngine",
+                          OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                          "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
+                          "A server capability for running open discovery services."),
+
+    /**
+     * A pluggable component for discovering properties about an asset.
+     */
+    OPEN_DISCOVERY_SERVICE("2f278dfc-4640-4714-b34b-303e84e4fc40",
+                           "OpenDiscoveryService",
+                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                           "38b8d73d-3c60-4e86-8561-256c77e10c16",
+                           "A pluggable component for discovering properties about an asset."),
+
+    /**
+     * A pluggable component that calls multiple discovery services.
+     */
+    OPEN_DISCOVERY_PIPELINE("081abe00-740e-4143-b0d5-a1f55450fc22",
+                            "OpenDiscoveryPipeline",
+                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                            "85a985ab-2f07-4ffc-99d5-d423d787c51e",
+                            "A pluggable component that calls multiple discovery services."),
 
     /**
      * A set of results describing the analysis from the execution of a survey action service.
@@ -2433,7 +3262,7 @@ public enum OpenMetadataType
 
 
     /**
-     * "Identifies an element that represents a digital product."
+     * Identifies an element that represents a digital product.
      */
     DIGITAL_PRODUCT_CLASSIFICATION("4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0",
                                    "DigitalProduct",
@@ -2442,6 +3271,28 @@ public enum OpenMetadataType
                                    "Identifies an element that represents a digital product."),
     ;
 
+
+    private final static Map<String, String> openMetadataTypeGUIDs = new HashMap<>();
+
+    static
+    {
+        for (OpenMetadataType openMetadataType : OpenMetadataType.values())
+        {
+            openMetadataTypeGUIDs.put(openMetadataType.typeName, openMetadataType.descriptionGUID);
+        }
+    }
+
+
+    /**
+     * Return the description GUID for the named type.
+     *
+     * @param typeName name of type
+     * @return description GUID
+     */
+    public static String getDescriptionGUIDForType(String typeName)
+    {
+        return openMetadataTypeGUIDs.get(typeName);
+    }
 
 
     public final String typeGUID;
@@ -2464,822 +3315,12 @@ public enum OpenMetadataType
     }
 
 
-    /**
-     * 3e09cb2b-5f15-4fd2-b004-fe0146ad8628
-     */
-    public static final String LOCATION_TYPE_GUID = "3e09cb2b-5f15-4fd2-b004-fe0146ad8628";
-
-    /**
-     * Location - inherits from Referenceable
-     */
-    public static final String LOCATION_TYPE_NAME = "Location";
-
-    /**
-     * bc111963-80c7-444f-9715-946c03142dd2
-     */
-    public static final String FIXED_LOCATION_CLASSIFICATION_TYPE_GUID = "bc111963-80c7-444f-9715-946c03142dd2";
-
-    /**
-     * FixedLocation
-     */
-    public static final String FIXED_LOCATION_CLASSIFICATION_TYPE_NAME = "FixedLocation";
-
-    /**
-     * coordinates
-     */
-    public static final String COORDINATES_PROPERTY_NAME = "coordinates";
-
-    /**
-     * mapProjection
-     */
-    public static final String MAP_PROJECTION_PROPERTY_NAME = "mapProjection";
-
-    /**
-     * postalAddress
-     */
-    public static final String POSTAL_ADDRESS_PROPERTY_NAME = "postalAddress";
-
-    /**
-     * address
-     */
-    public static final String POSTAL_ADDRESS_PROPERTY_NAME_DEP = "address";
-
-    /**
-     * timezone
-     */
-    public static final String TIME_ZONE_PROPERTY_NAME = "timezone";
-
-    /**
-     * e7b563c0-fcdd-4ba7-a046-eecf5c4638b8
-     */
-    public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_GUID = "e7b563c0-fcdd-4ba7-a046-eecf5c4638b8";
-
-    /**
-     * SecureLocation
-     */
-    public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_NAME = "SecureLocation";
-
-    /**
-     * level
-     */
-    public static final String LEVEL_PROPERTY_NAME = "level";
-
-    /**
-     * f9ec3633-8ac8-480b-aa6d-5e674b9e1b17
-     */
-    public static final String CYBER_LOCATION_CLASSIFICATION_TYPE_GUID = "f9ec3633-8ac8-480b-aa6d-5e674b9e1b17";
-
-    /**
-     * CyberLocation
-     */
-    public static final String CYBER_LOCATION_CLASSIFICATION_TYPE_NAME = "CyberLocation";
-
-    /**
-     * address
-     */
-    public static final String NETWORK_ADDRESS_PROPERTY_NAME_DEP = "address";
-
-    /**
-     * b25fb90d-8fa2-4aa9-b884-ff0a6351a697
-     */
-    public static final String MOBILE_ASSET_CLASSIFICATION_TYPE_GUID = "b25fb90d-8fa2-4aa9-b884-ff0a6351a697";
-
-    /**
-     * MobileAsset
-     */
-    public static final String MOBILE_ASSET_CLASSIFICATION_TYPE_NAME = "MobileAsset";
-
-    /**
-     * bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1
-     */
-    public static final String ASSET_LOCATION_TYPE_GUID = "bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1";  /* from Area 0 */
-
-    /**
-     * AssetLocation - End1 = Location; End 2 = Asset
-     */
-    public static final String ASSET_LOCATION_TYPE_NAME = "AssetLocation";
-
-    /**
-     * 4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4
-     */
-    public static final String PROFILE_LOCATION_TYPE_GUID = "4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4";  /* from Area 1 */
-
-    /**
-     * ProfileLocation - End1 = ActorProfile; End 2 = Location
-     */
-    public static final String PROFILE_LOCATION_TYPE_NAME = "ProfileLocation";
-
-    /**
-     * associationType
-     */
-    public static final String ASSOCIATION_TYPE_PROPERTY_NAME = "associationType";
-
-    /**
-     * f82a96c2-95a3-4223-88c0-9cbf2882b772
-     */
-    public static final String NESTED_LOCATION_TYPE_GUID = "f82a96c2-95a3-4223-88c0-9cbf2882b772";  /* from Area 0 */
-
-    /**
-     * NestedLocation - End1 = ParentLocation; End 2 = ChildLocation
-     */
-    public static final String NESTED_LOCATION_TYPE_NAME = "NestedLocation";
-
-    /**
-     * 017d0518-fc25-4e5e-985e-491d91e61e17
-     */
-    public static final String ADJACENT_LOCATION_TYPE_GUID = "017d0518-fc25-4e5e-985e-491d91e61e17";  /* from Area 0 */
-
-    /**
-     * AdjacentLocation - End1 = Location; End 2 = Location
-     */
-    public static final String ADJACENT_LOCATION_TYPE_NAME = "AdjacentLocation";
-
-    /**
-     * operatingSystem
-     */
-    public static final String OPERATING_SYSTEM_PROPERTY_NAME = "operatingSystem";           /* from OperatingPlatform entity */
-
-    /**
-     * operatingSystemPatchLevel
-     */
-    public static final String OPERATING_SYSTEM_PATCH_LEVEL_PROPERTY_NAME = "operatingSystemPatchLevel"; /* from OperatingPlatform entity */
-
-    /**
-     * b9179df5-6e23-4581-a8b0-2919e6322b12
-     */
-    public static final String HOST_OPERATING_PLATFORM_TYPE_GUID = "b9179df5-6e23-4581-a8b0-2919e6322b12";  /* from Area 0 */
-
-    /**
-     * HostOperatingPlatform - End1 = Host; End2 = OperatingPlatform
-     */
-    public static final String HOST_OPERATING_PLATFORM_TYPE_NAME = "HostOperatingPlatform";
-
-
-    /**
-     * 09439481-9489-467c-9ae5-178a6e0b6b5a
-     */
-    public static final String SERVER_ASSET_USE_TYPE_TYPE_GUID = "09439481-9489-467c-9ae5-178a6e0b6b5a";  /* from Area 0 */
-
-    /**
-     * ServerAssetUseType
-     */
-    public static final String SERVER_ASSET_USE_TYPE_TYPE_NAME = "ServerAssetUseType";
-
-    /**
-     * 0
-     */
-    public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL = 0;
-    public static final String SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME = "Owns";
-
-    /**
-     * 1
-     */
-    public static final int SERVER_ASSET_USE_TYPE_GOVERNS_ORDINAL = 1;
-
-    /**
-     * 2
-     */
-    public static final int SERVER_ASSET_USE_TYPE_MAINTAINS_ORDINAL = 2;
-
-    /**
-     * 3
-     */
-    public static final int SERVER_ASSET_USE_TYPE_USES_ORDINAL = 3;
-
-    /**
-     * 99
-     */
-    public static final int SERVER_ASSET_USE_TYPE_OTHER_ORDINAL = 99;
-
-
-
-    /**
-     * 03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c
-     */
-    public static final String ASSET_MANAGER_TYPE_GUID = "03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c";
-
-    /**
-     * AssetManager - Attaches to Referenceable - preferably SoftwareServer
-     */
-    public static final String ASSET_MANAGER_TYPE_NAME = "AssetManager";
-
-    /**
-     * 53ef4062-9e0a-4892-9824-8d51d4ad59d3
-     */
-    public static final String USER_PROFILE_MANAGER_TYPE_GUID = "53ef4062-9e0a-4892-9824-8d51d4ad59d3";
-
-    /**
-     * UserProfileManager - Attaches to Referenceable - preferably SoftwareServer
-     */
-    public static final String USER_PROFILE_MANAGER_TYPE_NAME = "UserProfileManager";
-
-    /**
-     * 29c98cf7-32b3-47d2-a411-48c1c9967e6d
-     */
-    public static final String USER_ACCESS_DIRECTORY_TYPE_GUID = "29c98cf7-32b3-47d2-a411-48c1c9967e6d";
-
-    /**
-     * UserAccessDirectory = Attaches to Referenceable - preferably SoftwareServer
-     */
-    public static final String USER_ACCESS_DIRECTORY_TYPE_NAME = "UserAccessDirectory";
-
-    /**
-     * 5bdad12e-57e7-4ff9-b7be-5d869e77d30b
-     */
-    public static final String MASTER_DATA_MANAGER_TYPE_GUID = "5bdad12e-57e7-4ff9-b7be-5d869e77d30b";
-
-    /**
-     * MasterDataManager - Attaches to Referenceable - preferably SoftwareServer
-     */
-    public static final String MASTER_DATA_MANAGER_TYPE_NAME = "MasterDataManager";
-
-    /**
-     * f3f69251-adb1-4042-9d95-70082f95a028
-     */
-    public static final String SOFTWARE_SERVICE_TYPE_GUID = "f3f69251-adb1-4042-9d95-70082f95a028";
-
-    /**
-     * SoftwareService - inherits from SoftwareServerCapability
-     */
-    public static final String SOFTWARE_SERVICE_TYPE_NAME = "SoftwareService";
-
-    /**
-     * e0430f59-f021-411a-9d81-883e1ff3f6f6
-     */
-    public static final String NETWORK_TYPE_GUID = "e0430f59-f021-411a-9d81-883e1ff3f6f6";
-
-    /**
-     * Network - inherits from ITInfrastructure
-     */
-    public static final String NETWORK_TYPE_NAME = "Network";
-
-    /**
-     * 9bbae94d-e109-4c96-b072-4f97123f04fd
-     */
-    public static final String NETWORK_GATEWAY_TYPE_GUID = "9bbae94d-e109-4c96-b072-4f97123f04fd";
-
-    /**
-     * NetworkGateway - inherits from SoftwareServerCapability
-     */
-    public static final String NETWORK_GATEWAY_TYPE_NAME = "NetworkGateway";
-
-    /**
-     * f2bd7401-c064-41ac-862c-e5bcdc98fa1e
-     */
-    public static final String HOST_NETWORK_TYPE_GUID = "f2bd7401-c064-41ac-862c-e5bcdc98fa1e";  /* from Area 0 */
-
-    /**
-     * HostNetwork - End1 = Host; End2 = Network
-     */
-    public static final String HOST_NETWORK_TYPE_NAME = "HostNetwork";
-
-    /**
-     * 5bece460-1fa6-41fb-a29f-fdaf65ec8ce3
-     */
-    public static final String NETWORK_GATEWAY_LINK_TYPE_GUID = "5bece460-1fa6-41fb-a29f-fdaf65ec8ce3";  /* from Area 0 */
-
-    /**
-     * NetworkGatewayLink - End1 = NetworkGateway; End2 = Network
-     */
-    public static final String NETWORK_GATEWAY_LINK_TYPE_NAME = "NetworkGatewayLink";
-
-    /**
-     * a2bfdd08-d0a8-49db-bc97-7f240628104
-     */
-    public static final String CLOUD_PROVIDER_CLASSIFICATION_GUID = "a2bfdd08-d0a8-49db-bc97-7f240628104";
-
-    /**
-     * CloudProvider - inherits from Host
-     */
-    public static final String CLOUD_PROVIDER_CLASSIFICATION_NAME = "CloudProvider";
-
-    /**
-     * providerName
-     */
-    public static final String PROVIDER_NAME_PROPERTY_NAME = "providerName";  /* from CloudProvider */
-
-    /**
-     * 1b8f8511-e606-4f65-86d3-84891706ad12
-     */
-    public static final String CLOUD_PLATFORM_CLASSIFICATION_GUID = "1b8f8511-e606-4f65-86d3-84891706ad12";
-
-    /**
-     * CloudPlatform - attaches to SoftwareServerPlatform
-     */
-    public static final String CLOUD_PLATFORM_CLASSIFICATION_NAME = "CloudPlatform";
-
-    /**
-     * 1b8f8522-e606-4f65-86d3-84891706ad12
-     */
-    public static final String CLOUD_TENANT_CLASSIFICATION_GUID = "1b8f8522-e606-4f65-86d3-84891706ad12";
-
-    /**
-     * CloudTenant - attaches to SoftwareServer
-     */
-    public static final String CLOUD_TENANT_CLASSIFICATION_NAME = "CloudTenant";
-
-    /**
-     * tenantName
-     */
-    public static final String TENANT_NAME_PROPERTY_NAME = "tenantName";  /* from CloudTenant */
-
-    /**
-     * tenantType
-     */
-    public static final String TENANT_TYPE_PROPERTY_NAME = "tenantType";  /* from CloudTenant */
-
-    /**
-     * 337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6
-     */
-    public static final String CLOUD_SERVICE_CLASSIFICATION_GUID = "337e7b1a-ad4b-4818-aa3e-0ff3307b2fbe6";
-
-    /**
-     * CloudService - attaches to SoftwareServerCapability
-     */
-    public static final String CLOUD_SERVICE_CLASSIFICATION_NAME = "CloudService";
-
-    /**
-     * offeringName
-     */
-    public static final String OFFERING_NAME_PROPERTY_NAME = "offeringName";  /* from CloudService */
-
-    /**
-     * serviceType
-     */
-    public static final String SERVICE_TYPE_PROPERTY_NAME = "serviceType";   /* from CloudService */
-
-    /* ============================================================================================================================*/
-    /* Area 1 - Collaboration                                                                                                      */
-    /* ============================================================================================================================*/
-
-    public static final String ACTOR_TYPE_GUID = "16d2c34a-43db-476b-93ae-6a2996f514ec";
-    public static final String ACTOR_TYPE_NAME = "Actor";                 /* from Area 1 */
-    /* Referenceable */
-
-
-    public static final String ACTOR_PROFILE_TYPE_GUID = "5a2f38dc-d69d-4a6f-ad26-ac86f118fa35";
-    public static final String ACTOR_PROFILE_TYPE_NAME = "ActorProfile";                 /* from Area 1 */
-    /* Actor */
-
-    public static final String USER_IDENTITY_TYPE_GUID = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
-    public static final String USER_IDENTITY_TYPE_NAME = "UserIdentity";
-    /* Actor */
-
-    public static final String DISTINGUISHED_NAME_PROPERTY_NAME = "distinguishedName"; /* from UserIdentity entity */
-
-
-    public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID = "01664609-e777-4079-b543-6baffe910ff1";   /* from Area 1 */
-    public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME = "ProfileIdentity";
-    /* End1 = ActorProfile; End 2 = UserIdentity */
-
-    public static final String ROLE_TYPE_NAME_PROPERTY_NAME = "roleTypeName"; /* from ProfileIdentity relationship */
-    public static final String ROLE_GUID_PROPERTY_NAME      = "roleGUID";     /* from ProfileIdentity relationship */
-
-    public static final String PERSON_TYPE_GUID = "ac406bf8-e53e-49f1-9088-2af28bbbd285";
-    public static final String PERSON_TYPE_NAME = "Person";                 /* from Area 1 */
-    /* ActorProfile */
-
-    public static final String TITLE_PROPERTY_NAME              = "title";          /* from Person entity */
-    public static final String INITIALS_PROPERTY_NAME           = "initials";       /* from Person entity */
-    public static final String GIVEN_NAMES_PROPERTY_NAME        = "givenNames";     /* from Person entity */
-    public static final String SURNAME_PROPERTY_NAME            = "surname";        /* from Person entity */
-    public static final String FULL_NAME_PROPERTY_NAME          = "fullName";       /* from Person entity */
-    public static final String PRONOUNS_PROPERTY_NAME           = "pronouns";       /* from Person entity */
-    public static final String PREFERRED_LANGUAGE_PROPERTY_NAME = "preferredLanguage";  /* from Person entity */
-    public static final String JOB_TITLE_PROPERTY_NAME          = "jobTitle";       /* from Person entity */
-    public static final String EMPLOYEE_NUMBER_PROPERTY_NAME    = "employeeNumber"; /* from Person entity */
-    public static final String EMPLOYEE_TYPE_PROPERTY_NAME      = "employeeType";   /* from Person entity */
-
-    public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID = "4a316abe-eeee-4d11-ad5a-4bfb4079b80b";   /* from Area 1 */
-    public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME = "PersonalContribution";
-    /* End1 = Person; End 2 = ContributionRecord */
-
-    public static final String CONTRIBUTION_RECORD_TYPE_GUID = "ac406bf8-e53e-49f1-9088-2af28cccd285";
-    public static final String CONTRIBUTION_RECORD_TYPE_NAME = "ContributionRecord";                 /* from Area 1 */
-    /* Referenceable */
-
-    public static final String KARMA_POINTS_PROPERTY_NAME = "karmaPoints";   /* from ContributionRecord entity */
-
-    public static final String PERSON_ROLE_TYPE_GUID = "ac406bf8-e53e-49f1-9088-2af28bcbd285";
-    public static final String PERSON_ROLE_TYPE_NAME = "PersonRole";
-    /* Actor */
-
-    public static final String HEAD_COUNT_PROPERTY_NAME = "headCount";   /* from PersonRole entity */
-
-    public static final String PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID = "4a316abe-bcce-4d11-ad5a-4bfb4079b80b";   /* from Area 1 */
-    public static final String PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME = "PersonRoleAppointment";
-    /* End1 = Person; End 2 = PersonRole */
-
-    public static final String PEER_RELATIONSHIP_TYPE_GUID = "4a316abe-bccd-4d11-ad5a-4bfb4079b80b";   /* from Area 1 */
-    public static final String PEER_RELATIONSHIP_TYPE_NAME = "Peer";
-    /* End1 = Person; End 2 = Person */
-
-    public static final String TEAM_TYPE_GUID = "36db26d5-aba2-439b-bc15-d62d373c5db6";
-    public static final String TEAM_TYPE_NAME = "Team";                 /* from Area 1 */
-    /* ActorProfile */
-
-    public static final String TEAM_TYPE_PROPERTY_NAME = "teamType";   /* from Team entity */
-
-    public static final String TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID = "5ebc4fb2-b62a-4269-8f18-e9237a2229ca";   /* from Area 1 */
-    public static final String TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME = "TeamStructure";
-    /* End1 = Team; End 2 = Team */
-
-    public static final String DELEGATION_ESCALATION_PROPERTY_NAME = "delegationEscalationAuthority";   /* from TeamStructure relationship */
-
-    public static final String TEAM_MEMBER_TYPE_GUID = "46db26d5-abb2-538b-bc15-d62d373c5db6";
-    public static final String TEAM_MEMBER_TYPE_NAME = "TeamMember";                 /* from Area 1 */
-    /* PersonRole */
-
-    public static final String TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID = "1ebc4fb2-b62a-4269-8f18-e9237a2119ca";   /* from Area 1 */
-    public static final String TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME = "TeamMembership";
-    /* End1 = TeamMember; End 2 = Team */
-
-    public static final String TEAM_LEADER_TYPE_GUID = "36db26d5-abb2-439b-bc15-d62d373c5db6";
-    public static final String TEAM_LEADER_TYPE_NAME = "TeamLeader";                 /* from Area 1 */
-    /* PersonRole */
-
-    public static final String TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID = "5ebc4fb2-b62a-4269-8f18-e9237a2119ca";   /* from Area 1 */
-    public static final String TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME = "TeamLeadership";
-    /* End1 = TeamLeader; End 2 = Team */
-
-    public static final String IT_PROFILE_TYPE_GUID = "81394f85-6008-465b-926e-b3fae4668937";
-    public static final String IT_PROFILE_TYPE_NAME = "ITProfile";                 /* from Area 1 */
-    /* ActorProfile */
-
-    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID = "4c579e3d-a4ff-41c1-9931-33e6fc992f2b";   /* from Area 1 */
-    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME = "ITInfrastructureProfile";
-    /* End1 = ITInfrastructure; End 2 = ITProfile */
-
-    public static final String ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID = "e3fdafe3-692a-46c6-a595-c538cc189dd9";   /* from Area 1 */
-    public static final String ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME = "AssignmentScope";
-    /* End1 = assignedActors - Referenceable; End 2 = assignedScope - Referenceable */
-
-    public static final String ASSIGNMENT_TYPE_PROPERTY_NAME = "assignmentType";                          /* from Area 1 */
-
-    public static final String PROJECT_STATUS_PROPERTY_NAME     = "projectStatus";                     /* from Area 1 */
-    public static final String TEAM_ROLE_PROPERTY_NAME          = "teamRole";                          /* from Area 1 */
-    public static final String DEPENDENCY_SUMMARY_PROPERTY_NAME = "dependencySummary";                 /* from Area 1 */
-
-    public static final String STAKEHOLDER_RELATIONSHIP_TYPE_GUID = "efd8a136-0aea-4668-b91a-30f947e38b82";
-    public static final String STAKEHOLDER_RELATIONSHIP_TYPE_NAME = "Stakeholder";   /* from Area 1 */
-    /* End1 = commissioned - Referenceable; End 2 = commissionedBy - Referenceable */
-
-    public static final String STAKEHOLDER_ROLE_PROPERTY_NAME = "stakeholderRole";                          /* from Area 1 */
-
-    public static final String MEETING_TYPE_GUID = "6bf90c79-32f4-47ad-959c-8fff723fe744";
-    public static final String MEETING_TYPE_NAME = "Meeting";   /* from Area 1 */
-    /* Referenceable */
-
-    public static final String START_TIME_PROPERTY_NAME   = "startTime";                          /* from Area 1 */
-    public static final String END_TIME_PROPERTY_NAME     = "endTime";                          /* from Area 1 */
-
-    /**
-     * 93dbc58d-c826-4bc2-b36f-195148d46f86
-     */
-    public static final String TO_DO_TYPE_GUID = "93dbc58d-c826-4bc2-b36f-195148d46f86";
-
-    /**
-     * To Do - inherits from Action
-     */
-    public static final String TO_DO_TYPE_NAME = "ToDo";   /* from Area 1 */
-
-    /**
-     * creationTime
-     */
-    public static final String CREATION_TIME_PROPERTY_NAME = "creationTime";                      /* from Area 1 */
-
-
-    /**
-     * toDoType
-     */
-    public static final String TO_DO_TYPE_PROPERTY_NAME = "toDoType";                      /* from Area 1 */
-
-    /**
-     * priority
-     */
-    public static final String PRIORITY_PROPERTY_NAME = "priority";                          /* from Area 1 */
-    public static final String IMPORTANCE_PROPERTY_NAME = "importance";                          /* from Area 1 */
-
-    /**
-     * dueTime
-     */
-    public static final String DUE_TIME_PROPERTY_NAME = "dueTime";                           /* from Area 1 */
-
-    /**
-     * completionTime
-     */
-    public static final String COMPLETION_TIME_PROPERTY_NAME = "completionTime";                    /* from Area 1 */
-
-
-    /**
-     * a0b7ba50-4c97-4b76-9a7d-c6a00e1be646
-     */
-    public static final String TO_DO_SOURCE_RELATIONSHIP_TYPE_GUID = "a0b7ba50-4c97-4b76-9a7d-c6a00e1be646";
-
-    /**
-     * ToDoSource - End1 = source - Referenceable; End 2 = To Do
-     */
-    public static final String TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME = "ToDoSource";   /* from Area 1 */
-
-    /**
-     * aca1277b-bf1c-42f5-9b3b-fbc2c9047325
-     */
-    public static final String ACTIONS_RELATIONSHIP_TYPE_GUID = "aca1277b-bf1c-42f5-9b3b-fbc2c9047325";
-
-    /**
-     * Actions - End1 = originator - Referenceable; End 2 = To Do
-     */
-    public static final String ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME = "ActionSponsor";   /* from Area 1 */
-
-    /**
-     * 207e2594-e3e4-4be8-a12c-4c401656e241
-     */
-    public static final String ACTION_TARGET_RELATIONSHIP_TYPE_GUID = "207e2594-e3e4-4be8-a12c-4c401656e241";
-
-    /**
-     * ActionTarget - End1 = To Do; End 2 = Referenceable
-     */
-    public static final String ACTION_TARGET_RELATIONSHIP_TYPE_NAME = "ActionTarget";   /* from Area 1 */
-
-    /**
-     * af2b5fab-8f83-4a2b-b749-1e6219f61f79
-     */
-    public static final String ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_GUID = "af2b5fab-8f83-4a2b-b749-1e6219f61f79";
-
-    /**
-     * ActionAssignment - End1 = PersonRole; End 2 = To Do
-     */
-    public static final String ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME = "ActionAssignment";   /* from Area 1 */
-
-
-    public static final String COMMUNITY_TYPE_GUID = "ba846a7b-2955-40bf-952b-2793ceca090a";
-    public static final String COMMUNITY_TYPE_NAME = "Community";          /* from Area 1 */
-    /* Referenceable */
-
-    public static final String COMMUNITY_MEMBER_TYPE_GUID = "fbd42379-f6c3-4f09-b6f7-378565cda993";
-    public static final String COMMUNITY_MEMBER_TYPE_NAME = "CommunityMember";    /* from Area 1 */
-    /* PersonRole */
-
-    public static final String COMMUNITY_MEMBERSHIP_TYPE_ENUM_TYPE_GUID = "b0ef45bf-d12b-4b6f-add6-59c14648d750";
-    public static final String COMMUNITY_MEMBERSHIP_TYPE_ENUM_TYPE_NAME = "CommunityMembershipType";
-
-    public static final int COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR   = 0;
-    public static final int COMMUNITY_MEMBERSHIP_TYPE_ADMINISTRATOR = 1;
-    public static final int COMMUNITY_MEMBERSHIP_TYPE_LEADER        = 2;
-    public static final int COMMUNITY_MEMBERSHIP_TYPE_OBSERVER      = 3;
-    public static final int COMMUNITY_MEMBERSHIP_TYPE_OTHER         = 99;
-
-    public static final String COMMUNITY_MEMBERSHIP_TYPE_GUID = "7c7da1a3-01b3-473e-972e-606eff0cb112";
-    public static final String COMMUNITY_MEMBERSHIP_TYPE_NAME = "CommunityMembership";
-    /* End1 = Community; End 2 = CommunityMember */
-
-    public static final String MISSION_PROPERTY_NAME         = "mission";
-    public static final String MEMBERSHIP_TYPE_PROPERTY_NAME = "membershipType";
-
-    public static final String INFORMAL_TAG_TYPE_GUID = "ba846a7b-2955-40bf-952b-2793ceca090a";
-    public static final String INFORMAL_TAG_TYPE_NAME = "InformalTag";          /* from Area 1 */
-
-    public static final String TAG_IS_PUBLIC_PROPERTY_NAME   = "isPublic"; /* from InformalTag entity and AttachedTag relationship */
-    public static final String TAG_NAME_PROPERTY_NAME        = "tagName";              /* from InformalTag entity */
-    public static final String TAG_DESCRIPTION_PROPERTY_NAME = "tagDescription";       /* from InformalTag entity */
-    public static final String TAG_USER_PROPERTY_NAME        = "createdBy";            /* From Audit Header */
-
-    public static final String REFERENCEABLE_TO_TAG_TYPE_GUID = "4b1641c4-3d1a-4213-86b2-d6968b6c65ab";
-    public static final String REFERENCEABLE_TO_TAG_TYPE_NAME = "AttachedTag";
-    /* End1 = Referenceable; End 2 = InformalTag */
-    /* Also isPublic */
-
-    public static final String LIKE_TYPE_GUID = "deaa5ca0-47a0-483d-b943-d91c76744e01";
-    public static final String LIKE_TYPE_NAME = "Like";          /* from Area 1 */
-
-    public static final String REFERENCEABLE_TO_LIKE_TYPE_GUID = "e2509715-a606-415d-a995-61d00503dad4";
-    public static final String REFERENCEABLE_TO_LIKE_TYPE_NAME = "AttachedLike";
-    /* End1 = Referenceable; End 2 = Like */
-
-    public static final String LIKE_IS_PUBLIC_PROPERTY_NAME = "isPublic";      /* from AttachedLike relationship*/
-
-    public static final String RATING_TYPE_GUID = "7299d721-d17f-4562-8286-bcd451814478";
-    public static final String RATING_TYPE_NAME = "Rating";          /* from Area 1 */
-
-    public static final String STAR_RATING_ENUM_TYPE_GUID = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
-    public static final String STAR_RATING_ENUM_TYPE_NAME = "StarRating";              /* from Area 1 */
-
-    public static final String STARS_PROPERTY_NAME  = "stars";           /* from Rating entity */
-    /* StarRating enum */
-    public static final String REVIEW_PROPERTY_NAME = "review";          /* from Rating entity */
-
-    public static final String REFERENCEABLE_TO_RATING_TYPE_GUID = "0aaad9e9-9cc5-4ad8-bc2e-c1099bab6344";
-    public static final String REFERENCEABLE_TO_RATING_TYPE_NAME = "AttachedRating";
-    /* End1 = Referenceable; End 2 = Rating */
-
-
-    public static final String COMMENT_TEXT_PROPERTY_NAME     = "text";          /* from Comment entity */
-
-    public static final String REFERENCEABLE_TO_COMMENT_TYPE_GUID = "0d90501b-bf29-4621-a207-0c8c953bdac9";
-    public static final String REFERENCEABLE_TO_COMMENT_TYPE_NAME = "AttachedComment";
-    /* End1 = Referenceable; End 2 = Comment */
-
-    public static final String ANSWER_RELATIONSHIP_TYPE_GUID = "ecf1a3ca-adc5-4747-82cf-10ec590c5c69";
-    public static final String ANSWER_RELATIONSHIP_TYPE_NAME = "AcceptedAnswer";
-    /* End1 = Comment; End 2 = Comment */
-
-    public static final String TEXT_PROPERTY_NAME = "text";   /* from NoteEntry entity */
-
-    public static final String REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID = "4f798c0c-6769-4a2d-b489-d2714d89e0a4";
-    public static final String REFERENCEABLE_TO_NOTE_LOG_TYPE_NAME = "AttachedNoteLog";
-    /* End1 = Referenceable; End 2 = NoteLog */
-    /* And isPublicProperty */
-
-    public static final String NOTE_LOG_TYPE_GUID = "646727c7-9ad4-46fa-b660-265489ad96c6";
-    public static final String NOTE_LOG_TYPE_NAME = "NoteLog";              /* from Area 1 */
-    /* Referenceable */
-
-    public static final String NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID = "38edecc6-f385-4574-8144-524a44e3e712";
-    public static final String NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME = "AttachedNoteLogEntry";
-    /* End1 = NoteLog; End 2 = NoteEntry */
-
-    public static final String NOTE_TYPE_GUID = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
-    public static final String NOTE_TYPE_NAME = "NoteEntry";              /* from Area 1 */
-    /* Referenceable */
-
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
 
-    /**
-     * 114e9f8f-5ff3-4c32-bd37-a7eb42712253
-     */
-    public static final String CONNECTION_TYPE_GUID = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
 
-    /**
-     * Connection - inherits from Referenceable
-     */
-    public static final String CONNECTION_TYPE_NAME = "Connection";
 
-    /**
-     * securedProperties
-     */
-    public static final String SECURED_PROPERTIES_PROPERTY_NAME = "securedProperties";                    /* from Connection entity */
-
-    /**
-     * configurationProperties
-     */
-    public static final String CONFIGURATION_PROPERTIES_PROPERTY_NAME = "configurationProperties";              /* from Connection entity */
-
-    /**
-     * userId
-     */
-    public static final String USER_ID_PROPERTY_NAME = "userId";                               /* from Connection entity */
-
-    /**
-     * clearPassword
-     */
-    public static final String CLEAR_PASSWORD_PROPERTY_NAME = "clearPassword";                        /* from Connection entity */
-
-    /**
-     * encryptedPassword
-     */
-    public static final String ENCRYPTED_PASSWORD_PROPERTY_NAME = "encryptedPassword";                    /* from Connection entity */
-
-    /**
-     * recognizedAdditionalProperties
-     */
-    public static final String RECOGNIZED_ADDITIONAL_PROPERTIES_PROPERTY_NAME = "recognizedAdditionalProperties";    /* from Connection entity */
-
-    /**
-     * recognizedSecuredProperties
-     */
-    public static final String RECOGNIZED_SECURED_PROPERTIES_PROPERTY_NAME = "recognizedSecuredProperties";       /* from Connection entity */
-
-    /**
-     * recognizedConfigurationProperties
-     */
-    public static final String RECOGNIZED_CONFIGURATION_PROPERTIES_PROPERTY_NAME = "recognizedConfigurationProperties"; /* from Connection entity */
-
-    /**
-     * 887a7132-d6bc-4b92-a483-e80b60c86fb2
-     */
-    public static final String CONNECTION_ENDPOINT_TYPE_GUID = "887a7132-d6bc-4b92-a483-e80b60c86fb2";
-
-    /**
-     * ConnectionEndpoint - End1 = Endpoint; End 2 = Connection
-     */
-    public static final String CONNECTION_ENDPOINT_TYPE_NAME = "ConnectionEndpoint";
-
-    /**
-     * e542cfc1-0b4b-42b9-9921-f0a5a88aaf96
-     */
-    public static final String CONNECTION_CONNECTOR_TYPE_TYPE_GUID = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
-
-    /**
-     * ConnectionConnectorType - End1 = Connection; End 2 = ConnectorType
-     */
-    public static final String CONNECTION_CONNECTOR_TYPE_TYPE_NAME = "ConnectionConnectorType";
-
-    /**
-     * 954421eb-33a6-462d-a8ca-b5709a1bd0d4
-     */
-    public static final String CONNECTOR_TYPE_TYPE_GUID = "954421eb-33a6-462d-a8ca-b5709a1bd0d4";
-
-    /**
-     * ConnectorType - inherits from Referenceable
-     */
-    public static final String CONNECTOR_TYPE_TYPE_NAME = "ConnectorType";
-
-    /**
-     * supportedAssetTypeName
-     */
-    public static final String SUPPORTED_ASSET_TYPE_PROPERTY_NAME = "supportedAssetTypeName";
-
-    /**
-     * expectedDataFormat
-     */
-    public static final String EXPECTED_DATA_FORMAT_PROPERTY_NAME = "expectedDataFormat";
-
-    /**
-     * connectorFrameworkName
-     */
-    public static final String CONNECTOR_FRAMEWORK_PROPERTY_NAME = "connectorFrameworkName";
-
-    /**
-     * connectorInterfaceLanguage
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE_PROPERTY_NAME = "connectorInterfaceLanguage";
-
-    /**
-     * connectorInterfaces
-     */
-    public static final String CONNECTOR_INTERFACES_PROPERTY_NAME = "connectorInterfaces";
-
-    /**
-     * targetTechnologySource
-     */
-    public static final String TARGET_TECHNOLOGY_SOURCE_PROPERTY_NAME = "targetTechnologySource";
-
-    /**
-     * targetTechnologyName
-     */
-    public static final String TARGET_TECHNOLOGY_NAME_PROPERTY_NAME = "targetTechnologyName";
-
-    /**
-     * targetTechnologyInterfaces
-     */
-    public static final String TARGET_TECHNOLOGY_INTERFACES_PROPERTY_NAME = "targetTechnologyInterfaces";
-
-    /**
-     * targetTechnologyVersions
-     */
-    public static final String TARGET_TECHNOLOGY_VERSIONS_PROPERTY_NAME = "targetTechnologyVersions";
-
-    /**
-     * fb60761f-7afd-4d3d-9efa-24bc85a7b22e
-     */
-    public static final String CONNECTOR_CATEGORY_TYPE_GUID = "fb60761f-7afd-4d3d-9efa-24bc85a7b22e";
-
-    /**
-     * ConnectorCategory - inherits from Referenceable
-     */
-    public static final String CONNECTOR_CATEGORY_TYPE_NAME = "ConnectorCategory";
-
-    /**
-     * 9678ef11-ed7e-404b-a041-736df7514339
-     */
-    public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_GUID = "9678ef11-ed7e-404b-a041-736df7514339";
-
-    /**
-     * ConnectorTypeDirectory - attached to Collection
-     */
-    public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME = "ConnectorTypeDirectory";
-
-    /**
-     * 633648f3-c951-4ad7-b975-9fc04e0f3d2e
-     */
-    public static final String CONNECTOR_IMPLEMENTATION_CHOICE_TYPE_GUID = "633648f3-c951-4ad7-b975-9fc04e0f3d2e";
-
-    /**
-     * ConnectorImplementationChoice - End1 = ConnectorCategory; End 2 = ConnectorType
-     */
-    public static final String CONNECTOR_IMPLEMENTATION_CHOICE_TYPE_NAME = "ConnectorImplementationChoice";
-
-    /**
-     * supportedAssetTypeName
-     */
-    public static final String SUPPORTED_ASSET_TYPE_NAME = "supportedAssetTypeName";               /* from ConnectorType entity */
-
-    /**
-     * expectedDataFormat
-     */
-    public static final String EXPECTED_DATA_FORMAT = "expectedDataFormat";                   /* from ConnectorType entity */
-
-    /**
-     * connectorProviderClassName
-     */
-    public static final String CONNECTOR_PROVIDER_PROPERTY_NAME = "connectorProviderClassName";           /* from ConnectorType entity */
-
-    /**
-     * connectorFrameworkName
-     */
-    public static final String CONNECTOR_FRAMEWORK_NAME = "connectorFrameworkName";               /* from ConnectorType entity */
 
     /**
      * Open Connector Framework (OCF)
@@ -3287,104 +3328,9 @@ public enum OpenMetadataType
     public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
 
     /**
-     * connectorInterfaceLanguage
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE = "connectorInterfaceLanguage";           /* from ConnectorType entity */
-
-    /**
      * Java
      */
     public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
-
-    /**
-     * connectorInterfaces
-     */
-    public static final String CONNECTOR_INTERFACES = "connectorInterfaces";                  /* from ConnectorType entity */
-
-    /**
-     * targetTechnologySource
-     */
-    public static final String TARGET_TECHNOLOGY_SOURCE = "targetTechnologySource";               /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * targetTechnologyName
-     */
-    public static final String TARGET_TECHNOLOGY_NAME = "targetTechnologyName";                 /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * targetTechnologyInterfaces
-     */
-    public static final String TARGET_TECHNOLOGY_INTERFACES = "targetTechnologyInterfaces";           /* from ConnectorType entity */
-
-    /**
-     * targetTechnologyVersions
-     */
-    public static final String TARGET_TECHNOLOGY_VERSIONS = "targetTechnologyVersions";             /* from ConnectorType entity */
-
-    /**
-     * recognizedAdditionalProperties
-     */
-    public static final String RECOGNIZED_ADD_PROPS_PROPERTY_NAME = "recognizedAdditionalProperties";       /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * recognizedSecuredProperties
-     */
-    public static final String RECOGNIZED_SEC_PROPS_PROPERTY_NAME = "recognizedSecuredProperties";          /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * recognizedConfigurationProperties
-     */
-    public static final String RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME = "recognizedConfigurationProperties";    /* from ConnectorType and ConnectorCategory entity */
-
-    /**
-     * 82f9c664-e59d-484c-a8f3-17088c23a2f3
-     */
-    public static final String VIRTUAL_CONNECTION_TYPE_GUID = "82f9c664-e59d-484c-a8f3-17088c23a2f3";
-
-    /**
-     * VirtualConnection
-     */
-    public static final String VIRTUAL_CONNECTION_TYPE_NAME = "VirtualConnection";
-
-    /**
-     * eb6dfdd2-8c6f-4f0d-a17d-f6ce4799f64f
-     */
-    public static final String EMBEDDED_CONNECTION_TYPE_GUID = "eb6dfdd2-8c6f-4f0d-a17d-f6ce4799f64f";
-
-    /**
-     * EmbeddedConnection - End1 = VirtualConnection; End 2 = Connection
-     */
-    public static final String EMBEDDED_CONNECTION_TYPE_NAME = "EmbeddedConnection";
-
-    /**
-     * position
-     */
-    public static final String POSITION_PROPERTY_NAME = "position";              /* from EmbeddedConnection relationship */
-
-    /**
-     * arguments
-     */
-    public static final String ARGUMENTS_PROPERTY_NAME = "arguments";             /* from EmbeddedConnection relationship */
-
-    /**
-     * e777d660-8dbe-453e-8b83-903771f054c0
-     */
-    public static final String ASSET_TO_CONNECTION_TYPE_GUID = "e777d660-8dbe-453e-8b83-903771f054c0";
-
-    /**
-     * ConnectionToAsset - End1 = Connection; End 2 = Asset
-     */
-    public static final String ASSET_TO_CONNECTION_TYPE_NAME = "ConnectionToAsset";
-
-    public static final String CONNECTION_TO_ASSET_TYPE_GUID = "e777d660-8dbe-453e-8b83-903771f054c0";
-    public static final String CONNECTION_TO_ASSET_TYPE_NAME = "ConnectionToAsset";
-    /* End1 = Connection; End 2 = Asset */
-
-    /**
-     * assetSummary
-     */
-    public static final String ASSET_SUMMARY_PROPERTY_NAME = "assetSummary";          /* from ConnectionToAsset relationship */
-
 
 
     /**
@@ -3894,8 +3840,8 @@ public enum OpenMetadataType
     /* Area 4 - Governance                                                                                                         */
     /* ============================================================================================================================*/
 
-    public static final String GOVERNANCE_DOMAIN_TYPE_GUID = "578a3500-9ad3-45fe-8ada-e4e9572c37c8";
-    public static final String GOVERNANCE_DOMAIN_TYPE_NAME = "GovernanceDomainDescription";
+    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID = "084cd115-5d0d-4f12-8093-697526a120ea";
+    public static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME = "GovernanceDomainDescription";
     /* Referenceable */
 
     public static final String GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME = "GovernanceDomainSet";
@@ -4698,14 +4644,7 @@ public enum OpenMetadataType
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
 
-    public static final String DIGITAL_SERVICE_TYPE_GUID = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
-    public static final String DIGITAL_SERVICE_TYPE_NAME = "DigitalService";
 
-    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_GUID = "e8303911-ba1c-4640-974e-c4d57ee1b310";
-    public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_NAME = "DigitalServiceDependency";
-
-    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_GUID = "51465a59-c785-406d-929c-def34596e9af";
-    public static final String DIGITAL_SERVICE_PRODUCT_RELATIONSHIP_TYPE_NAME = "DigitalServiceProduct";
 
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID = "28f63c94-aaef-4c84-98f7-d77aa605272e";
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME = "ImplementedBy";
@@ -4742,12 +4681,6 @@ public enum OpenMetadataType
     public static final String LINEAGE_MAPPING_TYPE_NAME = "LineageMapping";
     /* End1 = Referenceable - sourceElement; End 2 = Referenceable - targetElement */
 
-    public static final String INCOMPLETE_CLASSIFICATION_TYPE_GUID = "078432fb-a889-4a51-8ebe-9797becea9f1";
-    public static final String INCOMPLETE_CLASSIFICATION_TYPE_NAME = "Incomplete";
-
-    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_GUID = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
-    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_NAME = "ProcessingState";
-
 
     /* ============================================================================================================================*/
     /* Deprecated Types                                                                                                            */
@@ -4759,10 +4692,7 @@ public enum OpenMetadataType
     /* Referenceable */
 
     public static final String EXECUTION_DATE_PROPERTY_NAME           = "executionDate";              /* from OpenDiscoveryAnalysisReport entity */
-    public static final String DISCOVERY_SERVICE_STATUS_PROPERTY_NAME = "discoveryServiceStatus";     /* from OpenDiscoveryAnalysisReport entity */
 
-    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_GUID = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
-    public static final String DISCOVERY_REQUEST_STATUS_ENUM_TYPE_NAME = "DiscoveryServiceRequestStatus";
 
     public static final String REPORT_TO_ASSET_TYPE_GUID = "7eded424-f176-4258-9ae6-138a46b2845f";     /* from Area 6 */
     public static final String REPORT_TO_ASSET_TYPE_NAME = "AssetDiscoveryReport";

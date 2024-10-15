@@ -22,27 +22,27 @@ public enum MediaUsage implements OpenMetadataEnum
     /**
      * Provides a small image to represent the asset in tree views and graphs.
      */
-    ICON           (0, 0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
+    ICON           ("a54bdf05-b0e4-4b7d-a4c6-171eb5a1106f", 0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
 
     /**
      * Provides a small image about the asset that can be used in lists.
      */
-    THUMBNAIL      (1, 1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
+    THUMBNAIL      ("af0ba30c-dc67-4b12-863c-9a4bf955a197", 1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
 
     /**
      * Illustrates how the asset works or what it contains. It is complementary to the asset's description.
      */
-    ILLUSTRATION   (2, 2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
+    ILLUSTRATION   ("cc3cc0b9-dbd1-4e3e-a97b-8a57d77a09cf", 2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
 
     /**
      * Provides guidance to a person on how to use the asset.
      */
-    USAGE_GUIDANCE (3, 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
+    USAGE_GUIDANCE ("7d51d180-52f4-46a5-b4f4-14fed97dcdb6", 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
 
     /**
      * Another usage.
      */
-    OTHER          (99, 99, "Other", "Another usage.");
+    OTHER          ("2eb7afc3-1c9f-42fb-8634-6ec06d6023af", 99, "Other", "Another usage.");
 
     private static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";
     private static final String ENUM_TYPE_NAME  = "MediaUsage";
@@ -50,29 +50,29 @@ public enum MediaUsage implements OpenMetadataEnum
     private static final String ENUM_DESCRIPTION = "Defines how a related media reference should be used.";
     private static final String ENUM_DESCRIPTION_GUID = "55f8bcb1-2cd5-4965-859c-62cd083985ce";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES;
-    private final int    openTypeOrdinal;
+    private final String descriptionGUID;
 
-    private final int    ordinal;
-    private final String name;
-    private final String description;
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
 
 
     /**
-     * Constructor to set up the instance of this enum.
+     * Default constructor for the enumeration.
      *
-     * @param ordinal code number
-     * @param openTypeOrdinal code number from the equivalent Enum Type
-     * @param name default name
-     * @param description default description
+     * @param ordinal numerical representation of the enumeration
+     * @param descriptionGUID identifier for valid value
+     * @param name default string name of the enumeration
+     * @param description default string description of the enumeration
      */
-    MediaUsage(int    ordinal,
-               int    openTypeOrdinal,
-               String name,
-               String description)
+    MediaUsage(String  descriptionGUID,
+               int     ordinal,
+               String  name,
+               String  description)
     {
         this.ordinal         = ordinal;
-        this.openTypeOrdinal = openTypeOrdinal;
         this.name            = name;
+        this.descriptionGUID = descriptionGUID;
         this.description     = description;
     }
 
@@ -120,7 +120,7 @@ public enum MediaUsage implements OpenMetadataEnum
     @Override
     public String getDescriptionGUID()
     {
-        return null;
+        return descriptionGUID;
     }
 
 
@@ -133,17 +133,6 @@ public enum MediaUsage implements OpenMetadataEnum
     public boolean isDefault()
     {
         return false;
-    }
-
-
-    /**
-     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
-     *
-     * @return int code number
-     */
-    public int getOpenTypeOrdinal()
-    {
-        return openTypeOrdinal;
     }
 
 
@@ -161,7 +150,6 @@ public enum MediaUsage implements OpenMetadataEnum
      * @return string name
      */
     public static String getOpenTypeName() { return ENUM_TYPE_NAME; }
-
 
 
     /**
@@ -205,10 +193,6 @@ public enum MediaUsage implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "MediaUsage{" +
-                "mediaUsageCode=" + ordinal +
-                ", mediaUsageName='" + name + '\'' +
-                ", mediaUsageDescription='" + description + '\'' +
-                '}';
+        return "MediaUsage{mediaUsageName='" + name + '\'' + '}';
     }
 }

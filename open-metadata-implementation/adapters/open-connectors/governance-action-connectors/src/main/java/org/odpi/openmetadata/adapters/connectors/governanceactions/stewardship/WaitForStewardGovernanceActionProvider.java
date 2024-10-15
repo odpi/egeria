@@ -5,15 +5,16 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
 /**
- * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+ * WaitForStewardGovernanceActionProvider is the OCF connector provider for the "WaitForSteward"
  * Governance Action Service.
  */
 public class WaitForStewardGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "18d2ee53-5f1c-440e-827d-e141cb7b53db";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:WaitForSteward";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Stewardship:WaitForSteward";
     private static final String  connectorTypeDisplayName = "Wait For Steward Governance Action Service";
     private static final String  connectorTypeDescription = "Governance Action Service that waits for a steward to complete a to do.";
 
@@ -30,7 +31,7 @@ public class WaitForStewardGovernanceActionProvider extends GovernanceActionServ
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedActionTargetTypes = StewardshipHandoverActionTarget.getActionTargetTypes();
+        supportedActionTargetTypes = SurveyActionTarget.getStewardshipHandoverActionTargetTypes();
 
         producedGuards = WaitForStewardGuard.getGuardTypes();
 

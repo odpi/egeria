@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Lineage
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
@@ -133,6 +134,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
      * @param connectedAssetClient client for connectors
@@ -164,6 +166,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                     OpenIntegrationClient           openIntegrationClient,
                                     GovernanceConfiguration         governanceConfiguration,
                                     OpenMetadataClient              openMetadataStoreClient,
+                                    ActionControlInterface          actionControlInterface,
                                     ExternalAssetManagerClient      assetManagerClient,
                                     AssetManagerEventClient         eventClient,
                                     ConnectedAssetClient            connectedAssetClient,
@@ -194,6 +197,7 @@ public class CatalogIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               assetManagerGUID,
@@ -510,6 +514,36 @@ public class CatalogIntegratorContext extends IntegrationContext
 
 
     /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param externalScopeGUID      unique identifier of the software capability that owns this collection
+     * @param externalScopeName      unique name of the software capability that owns this collection
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addExternalIdentifier(String                       externalScopeGUID,
+                                      String                       externalScopeName,
+                                      String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        openMetadataStoreClient.addExternalIdentifier(userId,
+                                                      externalScopeGUID,
+                                                      externalScopeName,
+                                                      openMetadataElementGUID,
+                                                      openMetadataElementTypeName,
+                                                      externalIdentifierProperties);
+    }
+
+
+    /**
      * Update the description of a specific external identifier.
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
@@ -583,6 +617,37 @@ public class CatalogIntegratorContext extends IntegrationContext
         openMetadataStoreClient.confirmSynchronization(userId,
                                                        externalSourceGUID,
                                                        externalSourceName,
+                                                       openMetadataGUID,
+                                                       openMetadataElementTypeName,
+                                                       externalIdentifier);
+    }
+
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
+     * @param externalScopeName unique name for the owning scope (typically a catalog)
+     * @param openMetadataGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifier unique identifier of this element in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void confirmSynchronization(String externalScopeGUID,
+                                       String externalScopeName,
+                                       String openMetadataGUID,
+                                       String openMetadataElementTypeName,
+                                       String externalIdentifier) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        openMetadataStoreClient.confirmSynchronization(userId,
+                                                       externalScopeGUID,
+                                                       externalScopeName,
                                                        openMetadataGUID,
                                                        openMetadataElementTypeName,
                                                        externalIdentifier);

@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
@@ -166,7 +163,7 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    FilesAndFoldersHandler<FileSystemElement, FolderElement, FileElement> getFilesAndFoldersHandler(String userId,
+    FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> getFilesAndFoldersHandler(String userId,
                                                                                                     String serverName,
                                                                                                     String serviceOperationName) throws InvalidParameterException,
                                                                                                                                         UserNotAuthorizedException,

@@ -5,13 +5,13 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
@@ -24,8 +24,10 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 {
     private static final String fullNameProperty                   = "Full Name";
     private static final String descriptionProperty                = "Description";
-    private static final String creationDateProperty               = "Creation Date";
-    private static final String lastUpdateProperty                 = "Last Update Date";
+    private static final String creationDateProperty = "Creation Date";
+    private static final String createdByProperty    = "Created By";
+    private static final String lastUpdateProperty   = "Last Update Date";
+    private static final String lastUpdatedByProperty              = "Last Updated By";
     private static final String deployedImplementationTypeProperty = "Deployed Implementation Type";
 
 
@@ -215,14 +217,14 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
                                                                                      UserNotAuthorizedException,
                                                                                      IOException
     {
-        List<String>              propertyNames = Arrays.asList(new String[]{fullNameProperty, descriptionProperty, creationDateProperty, lastUpdateProperty, deployedImplementationTypeProperty});
+        List<String>              propertyNames = Arrays.asList(new String[]{fullNameProperty, descriptionProperty, creationDateProperty, createdByProperty, lastUpdateProperty, lastUpdatedByProperty, deployedImplementationTypeProperty});
         List<Map<String, String>> propertyList = new ArrayList<>();
 
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(), catalogList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(), schemaList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(), tableList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(), functionList, propertyList);
-        this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(), volumeList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(), catalogList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(), schemaList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(), tableList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(), functionList, propertyList);
+        this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(), volumeList, propertyList);
 
         ResourceProfileLogAnnotation annotation = super.writePropertyListInventory(UnityCatalogAnnotationType.RESOURCE_INVENTORY,
                                                                                    inventoryName,
@@ -260,13 +262,29 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
                         properties.put(fullNameProperty, name);
                         properties.put(descriptionProperty, resourceProperties.description);
                         properties.put(creationDateProperty, resourceProperties.creationDate.toString());
+                        if (resourceProperties.createdBy != null)
+                        {
+                            properties.put(createdByProperty, resourceProperties.createdBy);
+                        }
+                        else
+                        {
+                            properties.put(createdByProperty, "???");
+                        }
                         if (resourceProperties.lastUpdateDate != null)
                         {
                             properties.put(lastUpdateProperty, resourceProperties.lastUpdateDate.toString());
                         }
                         else
                         {
-                            properties.put(lastUpdateProperty, "--");
+                            properties.put(lastUpdateProperty, "---");
+                        }
+                        if (resourceProperties.lastUpdatedBy != null)
+                        {
+                            properties.put(lastUpdatedByProperty, resourceProperties.lastUpdatedBy);
+                        }
+                        else
+                        {
+                            properties.put(lastUpdatedByProperty, "???");
                         }
                         properties.put(deployedImplementationTypeProperty, deployedImplementationType);
 
@@ -285,6 +303,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
     {
         protected String description    = null;
         protected Date   creationDate   = null;
+        protected String createdBy      = null;
         protected Date   lastUpdateDate = null;
+        protected String lastUpdatedBy  = null;
+        protected String owner          = null;
     }
 }

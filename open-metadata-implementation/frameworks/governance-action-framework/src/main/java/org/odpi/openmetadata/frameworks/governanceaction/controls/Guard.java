@@ -15,9 +15,36 @@ import java.util.List;
  */
 public enum Guard
 {
+    /**
+     * The service completed successfully.
+     */
+    SERVICE_COMPLETED("service-completed", CompletionStatus.ACTIONED,  "The service completed successfully."),
+
+    /**
+     * An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error.
+     */
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
 
-    INVALID_ACTION_TARGET_TYPE(  "invalid-action-target-type", CompletionStatus.INVALID, "One or all of the action targets passed to this service are not of the correct type and so the service has failed to start.");
+    /**
+     * One or all of the action targets passed to this service are not of the correct type and so the service has failed to start.
+     */
+    INVALID_ACTION_TARGET_TYPE(  "invalid-action-target-type", CompletionStatus.INVALID, "One or all of the action targets passed to this service are not of the correct type and so the service has failed to start."),
+
+    /**
+     * There is no supplied action target and so the governance service does not know which asset to work on.
+     */
+    NO_TARGETS_DETECTED("no-targets-detected", CompletionStatus.INVALID, "There is no supplied action target and so the governance service does not know which asset to work on."),
+
+    /**
+     * The action target is not an asset.
+     */
+    TARGET_NOT_ASSET("target-not-asset", CompletionStatus.INVALID, "The action target is not an asset."),
+
+    /**
+     * Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the origin search could be different for each action target making it difficult to automate the response.
+     */
+    MULTIPLE_TARGETS_DETECTED("multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the origin search could be different for each action target making it difficult to automate the response."),
+
     ;
 
 

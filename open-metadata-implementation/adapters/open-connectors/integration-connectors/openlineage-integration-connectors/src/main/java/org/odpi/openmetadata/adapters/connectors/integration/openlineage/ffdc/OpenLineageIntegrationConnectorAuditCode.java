@@ -26,9 +26,9 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
      */
     KAFKA_RECEIVER_CONFIGURATION("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0001",
                                  AuditLogRecordSeverityLevel.INFO,
-                                 "The {0} integration connector has been initialized to monitor Apache Kafka topic {1} with connection: {2}",
+                                 "The {0} integration connector is monitoring Apache Kafka topic {1} with connection: {2}",
                                  "The connector is designed to monitor open lineage events published to an Apache Kafka topic.",
-                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector."),
+                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector.  It is output for each unique embedded connector and KafkaTopic catalog target"),
 
     /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening connector to topic {2} during the {3} method.  The exception message included was {4} and the connection was {5}
@@ -72,15 +72,6 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                               "The {0} integration connector is listening for open lineage events on topic {1}",
                               "The connector will pass any events received to the other integration connectors that have registered listeners.",
                               "No action is required unless there are errors that follow indicating that there are problems access events from the topic."),
-
-    /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its monitoring and is shutting down
-     */
-    CONNECTOR_STOPPING("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0009",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} integration connector has stopped its monitoring and is shutting down",
-                                  "The connector is disconnecting.",
-                                  "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
     /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}

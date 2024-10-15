@@ -28,27 +28,27 @@ public enum MediaType implements OpenMetadataEnum
     /**
      * The media is an image.
      */
-    IMAGE(0,    0,  "Image",    "The media is an image."),
+    IMAGE("9f7d9fff-1b66-4461-b9c1-32b84ab6f8b70",    0,  "Image",    "The media is an image."),
 
     /**
      * The media is an audio recording.
      */
-    AUDIO(1,    1,  "Audio",    "The media is an audio recording."),
+    AUDIO("53dad430-81c0-422e-a265-8ef49748ab1a",    1,  "Audio",    "The media is an audio recording."),
 
     /**
      * The media is a text document - probably rich text.
      */
-    DOCUMENT(2, 2,  "Document", "The media is a text document - probably rich text."),
+    DOCUMENT("9e1447cd-a053-4c55-9a99-b6771697fcfb", 2,  "Document", "The media is a text document - probably rich text."),
 
     /**
      * The media is a video recording.
      */
-    VIDEO(3,    3,  "Video",    "The media is a video recording."),
+    VIDEO("3e351708-b5ae-46c9-890e-83892cd96bb6",    3,  "Video",    "The media is a video recording."),
 
     /**
      * The media type is not supported.
      */
-    OTHER(99,   99, "Other",    "The media type is not supported.");
+    OTHER("340ffbeb-3076-4038-ae07-417b685c4825",   99, "Other",    "The media type is not supported.");
 
     private static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";
     private static final String ENUM_TYPE_NAME  = "MediaType";
@@ -57,31 +57,29 @@ public enum MediaType implements OpenMetadataEnum
     private static final String ENUM_DESCRIPTION_GUID = "7d2d2830-d95b-4d9e-8f46-26f5eace592b";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES;
 
-    private final int    openTypeOrdinal;
+    private final String descriptionGUID;
 
-    private final int    ordinal;
-    private final String name;
-    private final String description;
-
-
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
 
 
     /**
-     * Constructor to set up the instance of this enum.
+     * Default constructor for the enumeration.
      *
-     * @param ordinal code number
-     * @param openTypeOrdinal code number from the equivalent Enum Type
-     * @param name default name
-     * @param description default description
+     * @param ordinal numerical representation of the enumeration
+     * @param descriptionGUID identifier for valid value
+     * @param name default string name of the enumeration
+     * @param description default string description of the enumeration
      */
-    MediaType(int    ordinal,
-              int    openTypeOrdinal,
-              String name,
-              String description)
+    MediaType(String  descriptionGUID,
+              int     ordinal,
+              String  name,
+              String  description)
     {
-        this.ordinal         = ordinal;
-        this.openTypeOrdinal = openTypeOrdinal;
+        this.ordinal = ordinal;
         this.name            = name;
+        this.descriptionGUID = descriptionGUID;
         this.description     = description;
     }
 
@@ -126,7 +124,7 @@ public enum MediaType implements OpenMetadataEnum
     @Override
     public String getDescriptionGUID()
     {
-        return null;
+        return descriptionGUID;
     }
 
 
@@ -139,17 +137,6 @@ public enum MediaType implements OpenMetadataEnum
     public boolean isDefault()
     {
         return false;
-    }
-
-
-    /**
-     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
-     *
-     * @return int code number
-     */
-    public int getOpenTypeOrdinal()
-    {
-        return openTypeOrdinal;
     }
 
 
@@ -210,10 +197,6 @@ public enum MediaType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "MediaType{" +
-                "mediaTypeCode=" + ordinal +
-                ", mediaTypeName='" + name + '\'' +
-                ", mediaTypeDescription='" + description + '\'' +
-                '}';
+        return "MediaType{mediaTypeName='" + name + '\'' + '}';
     }
 }

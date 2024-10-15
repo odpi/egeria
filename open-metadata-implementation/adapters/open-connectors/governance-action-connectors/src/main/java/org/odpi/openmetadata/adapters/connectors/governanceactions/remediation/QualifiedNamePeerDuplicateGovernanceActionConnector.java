@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
@@ -18,7 +19,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePro
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,8 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_TARGETS_DETECTED.getName());
+                outputGuards.add(Guard.NO_TARGETS_DETECTED.getName());
+                completionStatus = Guard.NO_TARGETS_DETECTED.getCompletionStatus();
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
@@ -70,6 +71,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 null,
                                                                                 null,
+                                                                                null,
                                                                                 0,
                                                                                 0);
 
@@ -79,7 +81,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                     if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID))
                     {
                         outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_DUPLICATION_DETECTED.getName());
-                        completionStatus = CompletionStatus.ACTIONED;
+                        completionStatus = QualifiedNamePeerDuplicateGuard.NO_DUPLICATION_DETECTED.getCompletionStatus();
                     }
                     for (OpenMetadataElement duplicateAsset : elements)
                     {
@@ -99,14 +101,15 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                        null,
                                                                        true);
                         outputGuards.add(QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getName());
-                        completionStatus = CompletionStatus.ACTIONED;
+                        completionStatus = QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getCompletionStatus();
                         break;
                     }
                 }
             }
             else
             {
-                outputGuards.add(OriginSeekerGuard.MULTIPLE_TARGETS_DETECTED.getName());
+                outputGuards.add(Guard.MULTIPLE_TARGETS_DETECTED.getName());
+                completionStatus = Guard.MULTIPLE_TARGETS_DETECTED.getCompletionStatus();
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);

@@ -7,6 +7,9 @@ import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropert
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -248,7 +251,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME, catalogTargetName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME, connectionName, methodName);
-        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME, configurationProperties, methodName);
+        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONFIGURATION_PROPERTIES.name, configurationProperties, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.TEMPLATES_PROPERTY_NAME, templates, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
 
@@ -339,10 +342,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                                      end2));
     }
 
+
+
     /**
      * Create a governance service entity.
      *
-     * @param deployedImplementationType name of governance service subtype to use - default is GovernanceService
+     * @param typeName name of governance service subtype to use - default is GovernanceService
+     * @param deployedImplementationType deployed implementation type
      * @param connectorProviderName name of the connector provider for the governance service
      * @param configurationProperties configuration properties for the governance service (goes in the connection)
      * @param qualifiedName unique name for the governance service
@@ -352,7 +358,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @return id for the governance service
      */
-    public String addGovernanceService(DeployedImplementationType deployedImplementationType,
+    public String addGovernanceService(String                     typeName,
+                                       String                     deployedImplementationType,
                                        String                     connectorProviderName,
                                        Map<String, Object>        configurationProperties,
                                        String                     qualifiedName,
@@ -362,6 +369,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         try
         {
+            String assetTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
+
+            if (typeName != null)
+            {
+                assetTypeName = typeName;
+            }
+
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
             Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
@@ -392,9 +406,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             Map<String, Object> extendedProperties = new HashMap<>();
 
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                   deployedImplementationType.getDeployedImplementationType());
+                                   deployedImplementationType);
 
-            String serviceGUID = super.addAsset(deployedImplementationType.getAssociatedTypeName(),
+            String serviceGUID = super.addAsset(assetTypeName,
                                                 qualifiedName,
                                                 displayName,
                                                 description,
@@ -404,12 +418,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             if (serviceGUID != null)
             {
                 this.addSupportedConfigurationProperties(serviceGUID,
-                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                         assetTypeName,
                                                          OpenMetadataType.ASSET.typeName,
                                                          serviceProvider.getSupportedConfigurationProperties());
 
                 this.addSupportedTemplateTypes(serviceGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetTypeName,
                                                OpenMetadataType.ASSET.typeName,
                                                serviceProvider.getSupportedTemplateTypes());
 
@@ -425,7 +439,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                             connectorTypeGUID,
                                                             null,
                                                             serviceGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            assetTypeName,
                                                             OpenMetadataType.ASSET.typeName);
 
                 if (connectionGUID != null)
@@ -436,44 +450,44 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 if (serviceProvider instanceof GovernanceServiceProviderBase governanceServiceProviderBase)
                 {
                     addSupportedRequestTypes(serviceGUID,
-                                             deployedImplementationType.getAssociatedTypeName(),
+                                             assetTypeName,
                                              OpenMetadataType.ASSET.typeName,
                                              governanceServiceProviderBase.getSupportedRequestTypes());
 
                     addSupportedRequestParameters(serviceGUID,
-                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  assetTypeName,
                                                   OpenMetadataType.ASSET.typeName,
                                                   governanceServiceProviderBase.getSupportedRequestParameters());
 
                     addSupportedActionTargets(serviceGUID,
-                                              deployedImplementationType.getAssociatedTypeName(),
+                                              assetTypeName,
                                               OpenMetadataType.ASSET.typeName,
                                               governanceServiceProviderBase.getSupportedActionTargetTypes());
 
                     addProducedRequestParameters(serviceGUID,
-                                                 deployedImplementationType.getAssociatedTypeName(),
+                                                 assetTypeName,
                                                  OpenMetadataType.ASSET.typeName,
                                                  governanceServiceProviderBase.getProducedRequestParameters());
 
                     addProducedActionTargets(serviceGUID,
-                                             deployedImplementationType.getAssociatedTypeName(),
+                                             assetTypeName,
                                              OpenMetadataType.ASSET.typeName,
                                              governanceServiceProviderBase.getProducedActionTargetTypes());
 
                     addProducedGuards(serviceGUID,
-                                      deployedImplementationType.getAssociatedTypeName(),
+                                      assetTypeName,
                                       OpenMetadataType.ASSET.typeName,
                                       governanceServiceProviderBase.getProducedGuards());
 
                     if (serviceProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
                     {
                         addSupportedAnalysisSteps(serviceGUID,
-                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  assetTypeName,
                                                   OpenMetadataType.ASSET.typeName,
                                                   surveyActionServiceProvider.getSupportedAnalysisSteps());
 
                         addProducedAnnotationTypes(serviceGUID,
-                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                   assetTypeName,
                                                    OpenMetadataType.ASSET.typeName,
                                                    surveyActionServiceProvider.getProducedAnnotationTypes());
                     }
@@ -665,7 +679,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            parentTypeName + ":" + parentGUID + ":SupportedTemplate:" + templateType.getTemplateName(),
                                                            templateType.getTemplateName(),
                                                            SpecificationPropertyType.SUPPORTED_TEMPLATE.getDescription(),
-                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
+                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
                                                            null,
                                                            null,
                                                            null,
@@ -1630,11 +1644,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param governanceActionProcessGUID unique identifier of the governance action process
      * @param guard initial guard for the first step in the process
+     * @param requestParameters predefined request parameters
      * @param governanceActionProcessStepGUID unique identifier of the implementing governance engine
      */
-    public void addGovernanceActionProcessFlow(String governanceActionProcessGUID,
-                                               String guard,
-                                               String governanceActionProcessStepGUID)
+    public void addGovernanceActionProcessFlow(String              governanceActionProcessGUID,
+                                               String              guard,
+                                               Map<String, String> requestParameters,
+                                               String              governanceActionProcessStepGUID)
     {
         final String methodName = "addGovernanceActionFlow";
 
@@ -1645,6 +1661,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(actionTypeEntity);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
+
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + governanceActionProcessStepGUID + "_governance_action_process_flow_relationship"),
@@ -1728,6 +1746,90 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionGUID + "_to_" + governanceEngineGUID + "_governance_action_executor_relationship"),
                                                                      properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create the relationship between a governance action type and a pre-defined action target.
+     *
+     * @param governanceActionTypeGUID unique identifier of the governance action type/process step
+     * @param actionTarget details of the action target
+     */
+    public void addTargetForActionType(String          governanceActionTypeGUID,
+                                       NewActionTarget actionTarget)
+    {
+        final String methodName = "addTargetForActionType";
+
+        EntityDetail actionTypeEntity = archiveBuilder.getEntity(governanceActionTypeGUID);
+        EntityDetail targetEntity = archiveBuilder.getEntity(actionTarget.getActionTargetGUID());
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(targetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ACTION_TARGET_NAME.name, actionTarget.getActionTargetName(), methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                     idToGUIDMap.getGUID(governanceActionTypeGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_type_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+
+    /**
+     * Create the relationship between a governance action process and a pre-defined action target.
+     *
+     * @param governanceActionProcessGUID unique identifier of the governance action type/process step
+     * @param actionTarget details of the action target
+     */
+    public void addTargetForActionProcess(String          governanceActionProcessGUID,
+                                          NewActionTarget actionTarget)
+    {
+        final String methodName = "addTargetForActionProcess";
+
+        EntityDetail actionTypeEntity = archiveBuilder.getEntity(governanceActionProcessGUID);
+        EntityDetail targetEntity = archiveBuilder.getEntity(actionTarget.getActionTargetGUID());
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(targetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ACTION_TARGET_NAME.name, actionTarget.getActionTargetName(), methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                                                                     idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_process_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create the relationship between a referenceable and a data processing purpose.
+     *
+     * @param referenceableGUID unique identifier of the element that is approved
+     * @param dataProcessingPurposeGUID unique identifier of the
+     */
+    public void addApprovedPurpose(String referenceableGUID,
+                                   String dataProcessingPurposeGUID)
+    {
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail purposeEntity = archiveBuilder.getEntity(dataProcessingPurposeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(purposeEntity);
+
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + dataProcessingPurposeGUID + "_approved_purpose_relationship"),
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));

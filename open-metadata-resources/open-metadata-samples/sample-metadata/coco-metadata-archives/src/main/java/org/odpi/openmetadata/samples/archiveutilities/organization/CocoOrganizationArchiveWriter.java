@@ -5,7 +5,10 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaSecretsSecurityProvider;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -17,7 +20,7 @@ import java.util.Map;
  * CocoOrganizationArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals'
  * featured persona.  This includes the definition of the organizations they work with and
  */
-public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
+public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoOrganizationArchive.omarchive";
 
@@ -45,8 +48,13 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
+        archiveHelper.addConnectorType(null, new CocoPharmaPlatformSecurityProvider());
+        archiveHelper.addConnectorType(null, new CocoPharmaServerSecurityProvider());
+        archiveHelper.addConnectorType(null, new CocoPharmaSecretsSecurityProvider());
+
         writeContactTypesValidValueSet();
         writeCountryCodesValidValueSet();
         writeEmployeeTypeValidValueSet();
@@ -405,7 +413,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             if (personDefinition.getEmail() != null)
             {
                 archiveHelper.addContactDetails(profileGUID,
-                                                OpenMetadataType.PERSON_TYPE_NAME,
+                                                OpenMetadataType.PERSON.typeName,
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDisplayName(),
                                                 ContactTypeDefinition.COMPANY_EMAIL.getPreferredValue(),
                                                 ContactMethodType.EMAIL.getOrdinal(),
@@ -478,7 +486,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
             String leadershipRoleQName = "TeamLeader:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER.typeName,
                                         leadershipRoleQName,
                                         leadershipRoleQName,
                                         null,
@@ -502,7 +510,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             }
 
             String membershipRoleQName = "TeamMembers:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER.typeName,
                                         membershipRoleQName,
                                         membershipRoleQName,
                                         null,

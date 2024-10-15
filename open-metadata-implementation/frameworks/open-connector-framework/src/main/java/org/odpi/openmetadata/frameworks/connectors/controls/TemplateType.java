@@ -21,7 +21,7 @@ public class TemplateType
     private String templateDescription = null;
 
     /**
-     * Open metadata type name for the parent entity of the type name.
+     * Open metadata type name of the template.
      */
     private String typeName = null;
 
@@ -30,13 +30,20 @@ public class TemplateType
      */
     private boolean required = true;
 
+
+    /**
+     * Option guid for a template to use if no template is specified.
+     */
+    private String defaultTemplateGUID = null;
+
     /**
      * A map of property name to property value for values that should match in the catalog template for it to be compatible with this integration
      * connector.
      */
     private Map<String, String> otherPropertyValues = null;
 
-    
+
+
     /**
      * Constructor
      */
@@ -134,6 +141,28 @@ public class TemplateType
 
 
     /**
+     * Return the unique identifier of the default template to use with this connector - this is optional.
+     *
+     * @return string
+     */
+    public String getDefaultTemplateGUID()
+    {
+        return defaultTemplateGUID;
+    }
+
+
+    /**
+     * Set up  the unique identifier of the default template to use with this connector - this is optional.
+     *
+     * @param defaultTemplateGUID string
+     */
+    public void setDefaultTemplateGUID(String defaultTemplateGUID)
+    {
+        this.defaultTemplateGUID = defaultTemplateGUID;
+    }
+
+
+    /**
      * Return a map of property name to property value that the catalog template should have to be valid for this integration connector.
      *
      * @return map of string to string
@@ -168,6 +197,7 @@ public class TemplateType
                 ", templateDescription='" + templateDescription + '\'' +
                 ", typeName='" + typeName + '\'' +
                 ", required=" + required +
+                ", defaultTemplateGUID=" + defaultTemplateGUID +
                 ", otherPropertyValues=" + otherPropertyValues +
                 '}';
     }

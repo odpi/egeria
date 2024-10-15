@@ -60,7 +60,7 @@ public class LikeConverter<B> extends OMFConverter<B>
 
             if (returnBean instanceof Like bean)
             {
-                this.setUpElementHeader(bean, entity, OpenMetadataType.LIKE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.LIKE.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

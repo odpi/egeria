@@ -38,7 +38,7 @@ public abstract class GeneralGovernanceActionService extends GovernanceActionSer
      * @param governanceContext specialist context for this type of governance action.
      */
     @Override
-    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
+    public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }
@@ -82,7 +82,7 @@ public abstract class GeneralGovernanceActionService extends GovernanceActionSer
      * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
         super.validateContext(governanceContext);

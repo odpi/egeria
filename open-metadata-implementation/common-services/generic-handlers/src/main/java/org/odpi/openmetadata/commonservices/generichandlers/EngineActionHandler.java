@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -95,7 +96,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
-     * @return unique identifier of the first governance action
+     * @return unique identifier of the first engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
@@ -161,21 +162,190 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Prepare the next engine action to follow-on from the previous request.  It may not run immediately if
-     * there are outstanding guards.
+     * Take the supplied request parameters and combine them with the definitions from the GovernanceActionExecutor relationship.
+     *
+     * @param governanceActionExecutorRelationship relationship with the properties to use
+     * @param suppliedRequestParameters request parameters from either the governance action or the caller.
+     * @return request parameters to pass to the governance service via the engine action.
+     */
+    private Map<String,String> getExecutorRequestParameters(Relationship        governanceActionExecutorRelationship,
+                                                            Map<String, String> suppliedRequestParameters)
+    {
+        final String methodName = "getExecutorRequestParameters";
+
+        Map<String, String> executorsRequestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                   OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                   governanceActionExecutorRelationship.getProperties(),
+                                                                                                   methodName);
+
+        if (executorsRequestParameters == null)
+        {
+            executorsRequestParameters = new HashMap<>();
+        }
+
+        if (suppliedRequestParameters != null)
+        {
+            executorsRequestParameters.putAll(suppliedRequestParameters);
+        }
+
+        Map<String, String> requestParameterMap = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                            OpenMetadataProperty.REQUEST_PARAMETER_MAP.name,
+                                                                                            governanceActionExecutorRelationship.getProperties(),
+                                                                                            methodName);
+
+        if (requestParameterMap != null)
+        {
+            Map<String, String> mappedRequestParameters = new HashMap<>();
+
+            for (String requestParameterName : executorsRequestParameters.keySet())
+            {
+                if (requestParameterName != null)
+                {
+                    if (requestParameterMap.containsKey(requestParameterName))
+                    {
+                        String newRequestParameterName = requestParameterMap.get(requestParameterName);
+
+                        mappedRequestParameters.put(newRequestParameterName, executorsRequestParameters.get(requestParameterName));
+                    }
+                    else
+                    {
+                        mappedRequestParameters.put(requestParameterName, executorsRequestParameters.get(requestParameterName));
+                    }
+                }
+            }
+
+            executorsRequestParameters = mappedRequestParameters;
+        }
+
+        List<String> requestParameterFilter = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                      OpenMetadataProperty.REQUEST_PARAMETER_FILTER.name,
+                                                                                      governanceActionExecutorRelationship.getProperties(),
+                                                                                      methodName);
+
+        if (requestParameterFilter != null)
+        {
+            Map<String, String> filteredRequestParameters = new HashMap<>();
+
+            for (String requestParameterName : executorsRequestParameters.keySet())
+            {
+                if ((requestParameterName != null) && (! requestParameterFilter.contains(requestParameterName)))
+                {
+                    filteredRequestParameters.put(requestParameterName, executorsRequestParameters.get(requestParameterName));
+                }
+            }
+
+            executorsRequestParameters = filteredRequestParameters;
+        }
+
+        if (executorsRequestParameters.isEmpty())
+        {
+            executorsRequestParameters = null;
+        }
+
+        return executorsRequestParameters;
+    }
+
+
+    /**
+     * Take the supplied request parameters and combine them with the definitions from the GovernanceActionExecutor relationship.
+     *
+     * @param governanceActionExecutorRelationship relationship with the properties to use
+     * @param suppliedTargetsForAction targets from either the governance action or the caller.
+     * @return targets for action to pass to the governance service via the engine action.
+     */
+    private List<NewActionTarget> getExecutorTargetsForAction(Relationship          governanceActionExecutorRelationship,
+                                                              List<NewActionTarget> suppliedTargetsForAction)
+    {
+        final String methodName = "getExecutorTargetsForAction";
+
+        if ((suppliedTargetsForAction != null) && (! suppliedTargetsForAction.isEmpty()))
+        {
+            Map<String, NewActionTarget> executorsActionTargets = new HashMap<>();
+
+            for (NewActionTarget newActionTarget : suppliedTargetsForAction)
+            {
+                if ((newActionTarget != null) && (newActionTarget.getActionTargetName() != null))
+                {
+                    executorsActionTargets.put(newActionTarget.getActionTargetName(), newActionTarget);
+                }
+            }
+
+            Map<String, String> actionTargetMap = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                OpenMetadataProperty.ACTION_TARGET_MAP.name,
+                                                                                                governanceActionExecutorRelationship.getProperties(),
+                                                                                                methodName);
+
+            if (actionTargetMap != null)
+            {
+                Map<String, NewActionTarget> mappedTargetsForAction = new HashMap<>();
+
+                for (String actionTargetName : executorsActionTargets.keySet())
+                {
+                    if (actionTargetName != null)
+                    {
+                        if (actionTargetMap.containsKey(actionTargetName))
+                        {
+                            String newTargetForActionName = actionTargetMap.get(actionTargetName);
+
+                            mappedTargetsForAction.put(newTargetForActionName, executorsActionTargets.get(actionTargetName));
+                        }
+                        else
+                        {
+                            mappedTargetsForAction.put(actionTargetName, executorsActionTargets.get(actionTargetName));
+                        }
+                    }
+                }
+
+                executorsActionTargets = mappedTargetsForAction;
+            }
+
+            List<String> actionTargetFilter = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                      OpenMetadataProperty.ACTION_TARGET_FILTER.name,
+                                                                                      governanceActionExecutorRelationship.getProperties(),
+                                                                                      methodName);
+
+            if (actionTargetFilter != null)
+            {
+                Map<String, NewActionTarget> filteredTargetsForAction = new HashMap<>();
+
+                for (String actionTargetName : executorsActionTargets.keySet())
+                {
+                    if ((actionTargetName != null) && (!actionTargetFilter.contains(actionTargetName)))
+                    {
+                        filteredTargetsForAction.put(actionTargetName, executorsActionTargets.get(actionTargetName));
+                    }
+                }
+
+                executorsActionTargets = filteredTargetsForAction;
+            }
+
+            if (! executorsActionTargets.isEmpty())
+            {
+                return new ArrayList<>(executorsActionTargets.values());
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Prepare an engine action to run a single governance action type.  The governance action type is used as a
+     * template to set up the engine action.
      *
      * @param userId caller's userId
      * @param governanceActionTypeEntity entity to create engine action from
      * @param suppliedStartTime has the caller requested a start time?
      * @param initialRequestParameters request parameters  from the caller
      * @param requestSourceGUIDs identifiers of the request sources
-     * @param actionTargets action targets for the next governance action
+     * @param callersActionTargets action targets for the engine action supplied by the caller
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
-     * @return unique identifier of the prepared governance action
+     * @return unique identifier of the prepared engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
@@ -185,7 +355,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                Date                  suppliedStartTime,
                                                Map<String, String>   initialRequestParameters,
                                                List<String>          requestSourceGUIDs,
-                                               List<NewActionTarget> actionTargets,
+                                               List<NewActionTarget> callersActionTargets,
                                                String                requestSourceName,
                                                String                originatorServiceName,
                                                String                originatorEngineName,
@@ -230,6 +400,71 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             requestedStartDate = new Date(startTime);
         }
 
+        int startFrom = 0;
+
+        /*
+         * It is possible that action targets are predefined for the governance action.
+         */
+        List<Relationship> targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                                       governanceActionTypeEntity,
+                                                                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                                       OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
+                                                                                       OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                                       2,
+                                                                                       false,
+                                                                                       false,
+                                                                                       null,
+                                                                                       startFrom,
+                                                                                       invalidParameterHandler.getMaxPagingSize(),
+                                                                                       new Date(),
+                                                                                       methodName);
+
+        List<NewActionTarget> newTargetsForAction = new ArrayList<>();
+
+        if (callersActionTargets != null)
+        {
+            newTargetsForAction.addAll(callersActionTargets);
+        }
+
+        while (targetsForAction != null)
+        {
+            for (Relationship targetForAction : targetsForAction)
+            {
+                if (targetForAction != null)
+                {
+                    NewActionTarget newActionTarget = new NewActionTarget();
+
+                    newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
+                                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                           targetForAction.getProperties(),
+                                                                                           methodName));
+                    newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
+
+                    newTargetsForAction.add(newActionTarget);
+                }
+            }
+
+            startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+            targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                        governanceActionTypeEntity,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                        2,
+                                                                        false,
+                                                                        false,
+                                                                        null,
+                                                                        startFrom,
+                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                        new Date(),
+                                                                        methodName);
+        }
+
+        if (newTargetsForAction.isEmpty())
+        {
+            newTargetsForAction = null;
+        }
+
         /*
          * Locate the governance engine (via the GovernanceActionExecutor relationship)
          */
@@ -263,26 +498,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 governanceActionExecutorRelationship.getProperties(),
                                                                 methodName);
 
-        Map<String, String> requestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                          OpenMetadataProperty.REQUEST_PARAMETERS.name,
-                                                                                          governanceActionExecutorRelationship.getProperties(),
-                                                                                          methodName);
-
-        if ((initialRequestParameters != null) && (! initialRequestParameters.isEmpty()))
-        {
-            /*
-             * Overlay the request parameters from the model with those supplied by the caller
-             */
-            if (requestParameters == null)
-            {
-                requestParameters = initialRequestParameters;
-            }
-            else
-            {
-                requestParameters.putAll(initialRequestParameters);
-            }
-        }
-
+        Map<String, String> executorsRequestParameters = this.getExecutorRequestParameters(governanceActionExecutorRelationship, initialRequestParameters);
 
         String engineActionGUID = createEngineAction(userId,
                                                      governanceActionTypeName + ":" + UUID.randomUUID(),
@@ -290,14 +506,14 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      displayName,
                                                      description,
                                                      requestSourceGUIDs,
-                                                     actionTargets,
+                                                     this.getExecutorTargetsForAction(governanceActionExecutorRelationship, newTargetsForAction),
                                                      null,
                                                      null,
                                                      requestedStartDate,
                                                      governanceEngineName,
                                                      userId,
                                                      requestType,
-                                                     requestParameters,
+                                                     executorsRequestParameters,
                                                      governanceActionTypeEntity.getGUID(),
                                                      governanceActionTypeName,
                                                      null,
@@ -323,7 +539,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    requestedStartDate,
                                    governanceEngineName,
                                    requestType,
-                                   requestParameters,
+                                   executorsRequestParameters,
                                    governanceActionTypeName,
                                    requestSourceName,
                                    serviceSupportedZones,
@@ -342,15 +558,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId caller's userId
      * @param processQualifiedName unique name to give this governance action process
      * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
-     * @param requestParameters initial set of request parameters from the caller
+     * @param callersActionTargets list of action target names to GUIDs for the resulting governance service
+     * @param callersRequestParameters initial set of request parameters from the caller
      * @param requestedStartDate future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
-     * @return unique identifier of the first governance action
+     * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException this governance service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
@@ -358,8 +574,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public String initiateGovernanceActionProcess(String                userId,
                                                   String                processQualifiedName,
                                                   List<String>          requestSourceGUIDs,
-                                                  List<NewActionTarget> actionTargets,
-                                                  Map<String, String>   requestParameters,
+                                                  List<NewActionTarget> callersActionTargets,
+                                                  Map<String, String>   callersRequestParameters,
                                                   Date                  requestedStartDate,
                                                   String                originatorServiceName,
                                                   String                originatorEngineName,
@@ -369,7 +585,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            PropertyServerException
     {
         final String qualifiedNameParameterName  = "processQualifiedName";
+        final String governanceActionProcessGUIDParameterName  = "governanceActionProcessEntity.getGUID()";
+        final String governanceActionProcessInstanceGUIDParameterName  = "governanceActionProcessInstanceGUID";
         final String governanceActionProcessStepGUIDParameterName  = "governanceActionProcessFlowRelationship.getEntityTwoProxy().getGUID()";
+        final String engineActionGUIDParameterName = "engineActionGUID";
 
         /*
          * Effective time is set to "now" so that the process definition that is active now is
@@ -377,22 +596,26 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
          */
         Date effectiveTime = new Date();
 
-        String governanceActionProcessGUID = this.getBeanGUIDByUniqueName(userId,
-                                                                          processQualifiedName,
-                                                                          qualifiedNameParameterName,
-                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                          false,
-                                                                          false,
-                                                                          serviceSupportedZones,
-                                                                          effectiveTime,
-                                                                          methodName);
+        List<String> propertyNames = new ArrayList<>();
 
-        if (governanceActionProcessGUID != null)
+        propertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+
+        EntityDetail governanceActionProcessEntity = this.getEntityByValue(userId,
+                                                                           processQualifiedName,
+                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                           propertyNames,
+                                                                           false,
+                                                                           false,
+                                                                           serviceSupportedZones,
+                                                                           effectiveTime,
+                                                                           methodName);
+
+        if (governanceActionProcessEntity != null)
         {
             Relationship governanceActionFlowRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                                          governanceActionProcessGUID,
+                                                                                                          governanceActionProcessEntity.getGUID(),
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                                                           true,
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_GUID,
@@ -411,24 +634,203 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   governanceActionFlowRelationship.getProperties(),
                                                                   methodName);
 
-                return prepareEngineActionFromProcessStep(userId,
-                                                          null,
-                                                          governanceActionProcessStepGUID,
-                                                          governanceActionProcessStepGUIDParameterName,
-                                                          guard,
-                                                          false,
-                                                          requestedStartDate,
-                                                          null,
-                                                          userId,
-                                                          requestParameters,
-                                                          requestSourceGUIDs,
-                                                          actionTargets,
-                                                          processQualifiedName + UUID.randomUUID(), // Unique identifier for the process instance
-                                                          processQualifiedName,
-                                                          originatorServiceName,
-                                                          originatorEngineName,
-                                                          serviceSupportedZones,
-                                                          methodName);
+                Map<String,String> additionalRequestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                           OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                           governanceActionFlowRelationship.getProperties(),
+                                                                                                           methodName);
+                Map<String, String> combinedRequestParameters = new HashMap<>();
+
+                if (additionalRequestParameters != null)
+                {
+                    combinedRequestParameters.putAll(additionalRequestParameters);
+                }
+
+                if (callersRequestParameters != null)
+                {
+                    combinedRequestParameters.putAll(callersRequestParameters);
+                }
+
+                if (combinedRequestParameters.isEmpty())
+                {
+                    combinedRequestParameters = null;
+                }
+
+                /*
+                 * Combine the action targets from the caller with any attached to the process
+                 */
+                List<NewActionTarget> newTargetsForAction = new ArrayList<>();
+                int                   startFrom = 0;
+
+                /*
+                 * Add the caller's action targets first.
+                 */
+                if (callersActionTargets != null)
+                {
+                    newTargetsForAction.addAll(callersActionTargets);
+                }
+
+                /*
+                 * Add any targets for action that are associated with the process.
+                 */
+                List<Relationship> targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                                               governanceActionProcessEntity,
+                                                                                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                               OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeGUID,
+                                                                                               OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                                                                                               2,
+                                                                                               false,
+                                                                                               false,
+                                                                                               null,
+                                                                                               startFrom,
+                                                                                               invalidParameterHandler.getMaxPagingSize(),
+                                                                                               new Date(),
+                                                                                               methodName);
+
+                while (targetsForAction != null)
+                {
+                    for (Relationship targetForAction : targetsForAction)
+                    {
+                        if (targetForAction != null)
+                        {
+                            NewActionTarget newActionTarget = new NewActionTarget();
+
+                            newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
+                                                                                                   OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                   targetForAction.getProperties(),
+                                                                                                   methodName));
+                            newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
+
+                            newTargetsForAction.add(newActionTarget);
+                        }
+                    }
+
+                    startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+                    targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                                governanceActionProcessEntity,
+                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeGUID,
+                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                                                                                2,
+                                                                                false,
+                                                                                false,
+                                                                                null,
+                                                                                startFrom,
+                                                                                invalidParameterHandler.getMaxPagingSize(),
+                                                                                new Date(),
+                                                                                methodName);
+                }
+
+                if (newTargetsForAction.isEmpty())
+                {
+                    newTargetsForAction = null;
+                }
+
+                /*
+                 * Create a process instance for this run of the process.
+                 */
+                Date processInstanceStartTime = new Date();
+
+                String processInstanceQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                         governanceActionProcessEntity.getProperties(),
+                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + ":" + UUID.randomUUID();
+                String processInstanceName = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataProperty.NAME.name,
+                                                                                governanceActionProcessEntity.getProperties(),
+                                                                                methodName) +  "@" + processInstanceStartTime;
+                ProcessBuilder processBuilder = new ProcessBuilder(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                                   processInstanceQualifiedName,
+                                                                   processInstanceName,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   processInstanceStartTime,
+                                                                   null,
+                                                                   repositoryHelper,
+                                                                   serviceName,
+                                                                   serverName);
+
+                processBuilder.setAnchors(userId,
+                                          governanceActionProcessEntity.getGUID(),
+                                          OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                          OpenMetadataType.ASSET.typeName,
+                                          methodName);
+
+                String processInstanceGUID = this.createBeanInRepository(userId,
+                                                                         null,
+                                                                         null,
+                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                                         OpenMetadataType.ASSET.typeName,
+                                                                         processBuilder,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName);
+
+                this.uncheckedLinkElementToElement(userId,
+                                                   null,
+                                                   null,
+                                                   governanceActionProcessEntity.getGUID(),
+                                                   governanceActionProcessGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                   processInstanceGUID,
+                                                   governanceActionProcessInstanceGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                   false,
+                                                   false,
+                                                   serviceSupportedZones,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                   processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
+                                                   effectiveTime,
+                                                   methodName);
+
+                String engineActionGUID = prepareEngineActionFromProcessStep(userId,
+                                                                             processInstanceGUID,
+                                                                             governanceActionProcessStepGUID,
+                                                                             governanceActionProcessStepGUIDParameterName,
+                                                                             guard,
+                                                                             false,
+                                                                             requestedStartDate,
+                                                                             null,
+                                                                             userId,
+                                                                             combinedRequestParameters,
+                                                                             requestSourceGUIDs,
+                                                                             newTargetsForAction,
+                                                                             processInstanceQualifiedName,
+                                                                             processQualifiedName,
+                                                                             originatorServiceName,
+                                                                             originatorEngineName,
+                                                                             serviceSupportedZones,
+                                                                             methodName);
+
+                if (engineActionGUID != null)
+                {
+                    this.uncheckedLinkElementToElement(userId,
+                                                       null,
+                                                       null,
+                                                       processInstanceGUID,
+                                                       governanceActionProcessInstanceGUIDParameterName,
+                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                       engineActionGUID,
+                                                       engineActionGUIDParameterName,
+                                                       OpenMetadataType.ENGINE_ACTION.typeName,
+                                                       false,
+                                                       false,
+                                                       serviceSupportedZones,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
+                                                       repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    null,
+                                                                                                    OpenMetadataType.REQUEST_SOURCE_NAME_PROPERTY_NAME,
+                                                                                                    processInstanceName,
+                                                                                                    methodName),
+                                                       effectiveTime,
+                                                       methodName);
+                }
+
+                return processInstanceGUID;
             }
             else
             {
@@ -450,7 +852,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
     /**
      * Prepare the next engine action to follow-on from the previous request.  It may not run immediately if
-     * there are outstanding guards.
+     * there are outstanding guards to be generated by other steps in the process.
      *
      * @param userId caller's userId
      * @param anchorGUID the unique identifier of the first engine action in the governance action process (if any)
@@ -463,7 +865,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param requesterUserId original requesting user
      * @param initialRequestParameters request parameters  from the caller
      * @param requestSourceGUIDs identifiers of the request sources
-     * @param newActionTargets action targets for the next governance action
+     * @param callersActionTargets action targets for the next governance action
      * @param processName name of process this is a part of
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -486,7 +888,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       String                requesterUserId,
                                                       Map<String, String>   initialRequestParameters,
                                                       List<String>          requestSourceGUIDs,
-                                                      List<NewActionTarget> newActionTargets,
+                                                      List<NewActionTarget> callersActionTargets,
                                                       String                processName,
                                                       String                requestSourceName,
                                                       String                originatorServiceName,
@@ -582,38 +984,131 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 governanceActionProcessStepExecutorRelationship.getProperties(),
                                                                 methodName);
 
-        Map<String, String> requestParameters = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                          OpenMetadataProperty.REQUEST_PARAMETERS.name,
-                                                                                          governanceActionProcessStepExecutorRelationship.getProperties(),
-                                                                                          methodName);
+        Map<String, String> requestParameters = this.getExecutorRequestParameters(governanceActionProcessStepExecutorRelationship,
+                                                                                  initialRequestParameters);
 
-        if ((initialRequestParameters != null) && (! initialRequestParameters.isEmpty()))
+        List<NewActionTarget> newTargetsForAction = new ArrayList<>();
+        int                   startFrom = 0;
+
+        /*
+         * Add the caller's action targets first.
+         */
+        if (callersActionTargets != null)
         {
-            /*
-             * Overlay the request parameters from the model with those supplied by the caller
-             */
-            if (requestParameters == null)
+            newTargetsForAction.addAll(callersActionTargets);
+        }
+
+        /*
+         * Add any targets for action that are associated with the process.
+         */
+        List<Relationship> targetsForAction;
+        if (previousEngineActionGUID != null)
+        {
+            targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                        previousEngineActionGUID,
+                                                                        OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION.typeName,
+                                                                        2,
+                                                                        false,
+                                                                        false,
+                                                                        startFrom,
+                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                        new Date(),
+                                                                        methodName);
+
+            while (targetsForAction != null)
             {
-                requestParameters = initialRequestParameters;
+                for (Relationship targetForAction : targetsForAction)
+                {
+                    if (targetForAction != null)
+                    {
+                        NewActionTarget newActionTarget = new NewActionTarget();
+
+                        newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
+                                                                                               OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                               targetForAction.getProperties(),
+                                                                                               methodName));
+                        newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
+
+                        newTargetsForAction.add(newActionTarget);
+                    }
+                }
+
+                startFrom        = startFrom + invalidParameterHandler.getMaxPagingSize();
+                targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                            previousEngineActionGUID,
+                                                                            OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                            OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
+                                                                            OpenMetadataType.TARGET_FOR_ACTION.typeName,
+                                                                            2,
+                                                                            false,
+                                                                            false,
+                                                                            startFrom,
+                                                                            invalidParameterHandler.getMaxPagingSize(),
+                                                                            new Date(),
+                                                                            methodName);
             }
-            else
+        }
+
+        /*
+         * It is possible that action targets are also predefined for the governance action process step.
+         */
+        startFrom = 0;
+        targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                    governanceActionProcessStepEntity,
+                                                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                    OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
+                                                                    OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                    2,
+                                                                    false,
+                                                                    false,
+                                                                    null,
+                                                                    startFrom,
+                                                                    invalidParameterHandler.getMaxPagingSize(),
+                                                                    new Date(),
+                                                                    methodName);
+
+        while (targetsForAction != null)
+        {
+            for (Relationship targetForAction : targetsForAction)
             {
-                requestParameters.putAll(initialRequestParameters);
+                if (targetForAction != null)
+                {
+                    NewActionTarget newActionTarget = new NewActionTarget();
+
+                    newActionTarget.setActionTargetName(repositoryHelper.getStringProperty(serviceName,
+                                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                           targetForAction.getProperties(),
+                                                                                           methodName));
+                    newActionTarget.setActionTargetGUID(targetForAction.getEntityTwoProxy().getGUID());
+
+                    newTargetsForAction.add(newActionTarget);
+                }
             }
+
+            startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+            targetsForAction = repositoryHandler.getRelationshipsByType(userId,
+                                                                        governanceActionProcessStepEntity,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
+                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                        2,
+                                                                        false,
+                                                                        false,
+                                                                        null,
+                                                                        startFrom,
+                                                                        invalidParameterHandler.getMaxPagingSize(),
+                                                                        new Date(),
+                                                                        methodName);
+        }
+
+        if (newTargetsForAction.isEmpty())
+        {
+            newTargetsForAction = null;
         }
 
         List<String> mandatoryGuards = this.getMandatoryGuards(userId, governanceActionProcessStepGUID);
-
-        /*
-         * If the anchorGUID is null, it means the previous engine action was the first in the process.
-         * Subsequent governance actions will have the first engine action as their anchorGUID.
-         */
-        String newAnchorGUID = anchorGUID;
-
-        if (anchorGUID == null)
-        {
-            newAnchorGUID = previousEngineActionGUID;
-        }
 
         String engineActionGUID = getEngineActionForProcessStep(userId,
                                                                 governanceActionProcessStepName + ":" + UUID.randomUUID(),
@@ -621,7 +1116,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 displayName,
                                                                 description,
                                                                 requestSourceGUIDs,
-                                                                newActionTargets,
+                                                                newTargetsForAction,
                                                                 mandatoryGuards,
                                                                 ignoreMultipleTriggers,
                                                                 receivedGuards,
@@ -632,7 +1127,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 requestParameters,
                                                                 governanceActionProcessStepGUID,
                                                                 governanceActionProcessStepName,
-                                                                newAnchorGUID,
+                                                                anchorGUID,
                                                                 processName,
                                                                 requestSourceName,
                                                                 originatorServiceName,
@@ -2026,7 +2521,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param status completion status enum value
      * @param callerRequestParameters request parameters used by the caller
      * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param newActionTargets additional elements to add to the action targets for the next phase
+     * @param newActionTargets additional elements to add to the action targets for the next phase;
+     *                         these are supplied by the governance service that ran the previous step
      * @param completionMessage message to describe completion results or reasons for failure
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param serviceSupportedZones supported zones for calling service
@@ -2234,7 +2730,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                 OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
                                                                                                 OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                                                 2,
-                                                                                                false,
+                                                                                                true,
                                                                                                 false,
                                                                                                 0, 0,
                                                                                                 effectiveTime,
@@ -2326,6 +2822,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         final String nextGovernanceActionProcessStepParameterName = "nextActionProcessStep.getEntityTwoProxy().getGUID()";
 
+        /*
+         * Only need to do something if the completing engine action is part of a process.
+         */
         if (previousGovernanceActionProcessStepGUID != null)
         {
             /*
@@ -2343,7 +2842,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                  0,
                                                                                                  effectiveTime,
                                                                                                  methodName);
-            if (nextActionProcessSteps != null)
+            if ((nextActionProcessSteps != null) && (! nextActionProcessSteps.isEmpty()))
             {
                 /*
                  * There are potential follow-on actions.  Need to loop though each one to evaluate if the output guards
@@ -2407,8 +2906,88 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             }
                         }
                     }
+            }
+            else
+            {
+                /*
+                 * No more steps in the current branch of the process.  Is this the end of the process?
+                 */
+                final String  processNameParameterName = "processName";
+
+                List<String> specificMatchPropertyNames = new ArrayList<>();
+                specificMatchPropertyNames.add(OpenMetadataProperty.PROCESS_NAME.name);
+
+                List<EntityDetail> actionsInProcess = this.getEntitiesByValue(userId,
+                                                                              processName,
+                                                                              processNameParameterName,
+                                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                              OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                              specificMatchPropertyNames,
+                                                                              true,
+                                                                              true,
+                                                                              null,
+                                                                              null,
+                                                                              false,
+                                                                              false,
+                                                                              serviceSupportedZones,
+                                                                              null,
+                                                                              0,
+                                                                              0,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                if (actionsInProcess != null)
+                {
+                    int incompleteActions = 0;
+
+                    for (EntityDetail actionInProcess : actionsInProcess)
+                    {
+                        if (actionInProcess != null)
+                        {
+                            int storedStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                                       OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                       actionInProcess.getProperties(),
+                                                                                       methodName);
+
+                            if ((storedStatus == EngineActionStatus.REQUESTED.getOrdinal()) ||
+                                    (storedStatus == EngineActionStatus.APPROVED.getOrdinal()) ||
+                                    (storedStatus == EngineActionStatus.WAITING.getOrdinal()) ||
+                                    (storedStatus == EngineActionStatus.ACTIVATING.getOrdinal()) ||
+                                    (storedStatus == EngineActionStatus.IN_PROGRESS.getOrdinal()))
+                            {
+                                incompleteActions++;
+                            }
+                        }
+                    }
+
+                    if (incompleteActions == 0)
+                    {
+                        final String anchorGUIDParameterName = "anchorGUID";
+                        /*
+                         * The anchorGUID should be the guid of the process.
+                         */
+                        this.updateBeanInRepository(userId,
+                                                    null,
+                                                    null,
+                                                    anchorGUID,
+                                                    anchorGUIDParameterName,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                    false,
+                                                    false,
+                                                    serviceSupportedZones,
+                                                    repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                                               null,
+                                                                                               OpenMetadataProperty.PROCESS_END_TIME.name,
+                                                                                               new Date(),
+                                                                                               methodName),
+                                                    true,
+                                                    effectiveTime,
+                                                    methodName);
+                    }
                 }
             }
+        }
     }
 
 

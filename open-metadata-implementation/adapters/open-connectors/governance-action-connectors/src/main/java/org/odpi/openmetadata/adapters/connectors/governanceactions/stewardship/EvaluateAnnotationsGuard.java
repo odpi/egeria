@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public enum EvaluateAnnotationsGuard
 {
-    NO_ACTION_REQUIRED("no-action-required", CompletionStatus.ACTIONED, "The survey report does not contain any Request For Action (RfA) annotations."),
     ACTIONS_DETECTED("actions-detected", CompletionStatus.INVALID, "The survey report does contain at least one Request For Action (RfA) but no template is provided to action them."),
     ACTIONS_ACTIONED("actions-actioned", CompletionStatus.ACTIONED, "The survey report contains at least one Request For Action and ToDos have been created to resolve any issues they report."),
+    MISSING_STEWARD("missing-steward", CompletionStatus.INVALID, "No steward has been provided in the action targets."),
     NO_SURVEY_REPORT("no-survey-report", CompletionStatus.INVALID, "There is no survey report to process.  Details of the survey report should be provided as an action target."),
     EVALUATION_FAILED("evaluation-failed", CompletionStatus.FAILED, "An unexpected error occurred during the evaluation and it is not able to complete."),
 
@@ -89,13 +90,7 @@ public enum EvaluateAnnotationsGuard
 
         for (EvaluateAnnotationsGuard guard : EvaluateAnnotationsGuard.values())
         {
-            GuardType guardType = new GuardType();
-
-            guardType.setGuard(guard.getName());
-            guardType.setDescription(guard.getDescription());
-            guardType.setCompletionStatus(guard.getCompletionStatus());
-
-            guardTypes.add(guardType);
+            guardTypes.add(guard.getGuardType());
         }
 
         return guardTypes;

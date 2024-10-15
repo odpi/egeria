@@ -30,10 +30,11 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     private Map<String, ElementProperties> initialClassifications       = null;
     private String                         anchorGUID                   = null;
     private boolean                        isOwnAnchor                  = false;
+    private boolean                        allowRetrieve                = false;
     private Date                           effectiveFrom                = null;
     private Date                           effectiveTo                  = null;
     private String                         templateGUID                 = null;
-    private ElementProperties              templateProperties           = null;
+    private ElementProperties              replacementProperties        = null;
     private Map<String, String>            placeholderPropertyValues    = null;
     private String                         parentGUID                   = null;
     private String                         parentRelationshipTypeName   = null;
@@ -62,18 +63,19 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
 
         if (template != null)
         {
-            typeName = template.getTypeName();
-            initialStatus = template.getInitialStatus();
-            initialClassifications = template.getInitialClassifications();
-            anchorGUID = template.getAnchorGUID();
-            isOwnAnchor = template.getIsOwnAnchor();
-            effectiveFrom = template.getEffectiveFrom();
-            effectiveTo        = template.getEffectiveTo();
-            templateProperties = template.getTemplateProperties();
-            templateGUID       = template.getTemplateGUID();
-            parentGUID                 = template.getParentGUID();
-            placeholderPropertyValues  = template.getPlaceholderPropertyValues();
-            parentRelationshipTypeName = template.getParentRelationshipTypeName();
+            typeName                     = template.getTypeName();
+            initialStatus                = template.getInitialStatus();
+            initialClassifications       = template.getInitialClassifications();
+            anchorGUID                   = template.getAnchorGUID();
+            isOwnAnchor                  = template.getIsOwnAnchor();
+            allowRetrieve                = template.getAllowRetrieve();
+            effectiveFrom                = template.getEffectiveFrom();
+            effectiveTo                  = template.getEffectiveTo();
+            replacementProperties        = template.getReplacementProperties();
+            templateGUID                 = template.getTemplateGUID();
+            parentGUID                   = template.getParentGUID();
+            placeholderPropertyValues    = template.getPlaceholderPropertyValues();
+            parentRelationshipTypeName   = template.getParentRelationshipTypeName();
             parentRelationshipProperties = template.getParentRelationshipProperties();
             parentAtEnd1                 = template.getParentAtEnd1();
             effectiveTime                = template.getEffectiveTime();
@@ -183,6 +185,30 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
 
 
     /**
+     * Return whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
+     * qualified name (default is false).
+     *
+     * @return boolean
+     */
+    public boolean getAllowRetrieve()
+    {
+        return allowRetrieve;
+    }
+
+
+    /**
+     * Set up whether the code allowed to retrieve an existing element, or must it create a new one - the match is done on the
+     * qualified name (default is false).
+     *
+     * @param allowRetrieve boolean
+     */
+    public void setAllowRetrieve(boolean allowRetrieve)
+    {
+        this.allowRetrieve = allowRetrieve;
+    }
+
+
+    /**
      * Set up the initial status of the metadata element (typically ACTIVE).
      *
      * @param initialStatus element status enum value
@@ -242,9 +268,9 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
      *
      * @return list of properties
      */
-    public ElementProperties getTemplateProperties()
+    public ElementProperties getReplacementProperties()
     {
-        return templateProperties;
+        return replacementProperties;
     }
 
 
@@ -253,9 +279,9 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
      *
      * @param templateProperties list of properties
      */
-    public void setTemplateProperties(ElementProperties templateProperties)
+    public void setReplacementProperties(ElementProperties templateProperties)
     {
-        this.templateProperties = templateProperties;
+        this.replacementProperties = templateProperties;
     }
 
 
@@ -432,7 +458,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", templateGUID='" + templateGUID + '\'' +
-                       ", templateProperties=" + templateProperties +
+                       ", replacementProperties=" + replacementProperties +
                        ", placeholderProperties=" + placeholderPropertyValues +
                        ", parentGUID='" + parentGUID + '\'' +
                        ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
@@ -473,7 +499,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        Objects.equals(anchorGUID, that.anchorGUID) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
-                       Objects.equals(templateProperties, that.templateProperties) &&
+                       Objects.equals(replacementProperties, that.replacementProperties) &&
                        Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
                        Objects.equals(templateGUID, that.templateGUID) &&
                        Objects.equals(parentGUID, that.parentGUID) &&
@@ -491,7 +517,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, templateProperties,
+        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, replacementProperties,
                             templateGUID, placeholderPropertyValues, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

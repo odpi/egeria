@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 
 import java.util.ArrayList;
@@ -18,18 +17,18 @@ import java.util.Map;
 public enum PostgresTarget
 {
     SERVER("postgreSQLServer",
-                   DeployedImplementationType.POSTGRESQL_SERVER.getDescription(),
-                   DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
-                   DeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
-                   null),
+           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDescription(),
+           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
+           null),
 
     /**
      * PostgreSQL Database.
      */
     DATABASE("postgresDatabase",
-             DeployedImplementationType.POSTGRESQL_DATABASE.getDescription(),
-             DeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
-             DeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDescription(),
+             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
              null),
 
     ;;

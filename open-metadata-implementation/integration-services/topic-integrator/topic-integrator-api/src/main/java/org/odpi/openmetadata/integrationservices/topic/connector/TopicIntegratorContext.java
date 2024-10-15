@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManager
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
@@ -55,6 +56,7 @@ public class TopicIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param eventBrokerClient client to map request to
      * @param connectionManagerClient client for managing connections
      * @param validValueManagement client for managing valid value sets and definitions
@@ -75,6 +77,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                   OpenIntegrationClient        openIntegrationClient,
                                   GovernanceConfiguration      governanceConfiguration,
                                   OpenMetadataClient           openMetadataStoreClient,
+                                  ActionControlInterface       actionControlInterface,
                                   EventBrokerClient            eventBrokerClient,
                                   ConnectionManagerClient      connectionManagerClient,
                                   ValidValueManagement         validValueManagement,
@@ -94,6 +97,7 @@ public class TopicIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,

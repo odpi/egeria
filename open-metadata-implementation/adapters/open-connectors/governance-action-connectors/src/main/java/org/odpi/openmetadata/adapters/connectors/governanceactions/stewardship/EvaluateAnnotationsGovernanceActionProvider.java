@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget
 public class EvaluateAnnotationsGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "02e8bace-0035-4e80-afef-f5677a8c5ba4";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:EvaluateAnnotations";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Stewardship:EvaluateAnnotations";
     private static final String  connectorTypeDisplayName = "Evaluate Annotations Governance Action Service";
     private static final String  connectorTypeDescription = "Governance Action Service that checks whether there are Request For Action Annotations in a survey report.";
 
@@ -30,9 +30,10 @@ public class EvaluateAnnotationsGovernanceActionProvider extends GovernanceActio
         super();
         super.setConnectorClassName(connectorClassName);
 
-        super.supportedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
+        super.supportedActionTargetTypes = SurveyActionTarget.getStewardshipReviewActionTargetTypes();
         super.producedGuards             = EvaluateAnnotationsGuard.getGuardTypes();
-        super.producedActionTargetTypes  = StewardshipHandoverActionTarget.getActionTargetTypes();
+        super.supportedActionTargetTypes = SurveyActionTarget.getStewardshipHandoverActionTargetTypes();
+
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());

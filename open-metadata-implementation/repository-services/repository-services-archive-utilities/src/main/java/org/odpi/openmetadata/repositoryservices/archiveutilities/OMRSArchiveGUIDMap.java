@@ -28,8 +28,8 @@ public class OMRSArchiveGUIDMap
     private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.reader();
 
     private final String              guidMapFileName;
-    private Map<String, String> idToGUIDMap;
-    private Map<String, String> usedIdToGUIDMap = new HashMap<>();
+    private       Map<String, String> idToGUIDMap;
+    private final Map<String, String> usedIdToGUIDMap = new HashMap<>();
 
 
     /**
@@ -163,21 +163,21 @@ public class OMRSArchiveGUIDMap
      */
     public void  saveUsedGUIDs()
     {
-        System.out.println("Writing to Id File: " + guidMapFileName);
+        System.out.println("Writing to Id File: " + "Used" + guidMapFileName);
 
-        File         idFile = new File(guidMapFileName);
+        File         idFile = new File("Used" + guidMapFileName);
 
         try
         {
             if (usedIdToGUIDMap.isEmpty())
             {
-                log.debug("Deleting id file because map is empty: " + guidMapFileName);
+                log.debug("Deleting id file because map is empty: " + "Used" +  guidMapFileName);
 
                 idFile.delete();
             }
             else
             {
-                log.debug("Writing id file " + guidMapFileName);
+                log.debug("Writing id file " + "Used" + guidMapFileName);
 
                 String mapContents = OBJECT_WRITER.writeValueAsString(usedIdToGUIDMap);
 
@@ -213,11 +213,6 @@ public class OMRSArchiveGUIDMap
      */
     public int getUsedSize()
     {
-        if (usedIdToGUIDMap == null)
-        {
-            return 0;
-        }
-
         return usedIdToGUIDMap.size();
     }
 }

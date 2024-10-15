@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
@@ -43,6 +43,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param connectorName name of this connector
      * @param context context for the connector
      * @param catalogTargetName the catalog target name
+     * @param catalogGUID guid of the catalog
      * @param catalogName name of the catalog
      * @param ucFullNameToEgeriaGUID map of full names from UC to the GUID of the entity in Egeria.
      * @param targetPermittedSynchronization the policy that controls the direction of metadata exchange
@@ -57,6 +58,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     public OSSUnityCatalogInsideCatalogSyncSchema(String                           connectorName,
                                                   CatalogIntegratorContext         context,
                                                   String                           catalogTargetName,
+                                                  String                           catalogGUID,
                                                   String                           catalogName,
                                                   Map<String, String>              ucFullNameToEgeriaGUID,
                                                   PermittedSynchronization         targetPermittedSynchronization,
@@ -71,12 +73,13 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         super(connectorName,
               context,
               catalogTargetName,
+              catalogGUID,
               catalogName,
               ucFullNameToEgeriaGUID,
               targetPermittedSynchronization,
               ucConnector,
               ucServerEndpoint,
-              DeployedImplementationType.OSS_UC_SCHEMA,
+              UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA,
               templates,
               configurationProperties,
               excludeNames,
@@ -85,7 +88,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         if (templates != null)
         {
-            this.templateGUID = templates.get(DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
+            this.templateGUID = templates.get(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
         }
     }
 
@@ -105,9 +108,11 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         final String methodName = "refreshEgeria";
 
-        MetadataCollectionIterator iterator = new MetadataCollectionIterator(this.context.getMetadataSourceGUID(),
-                                                                             this.context.getMetadataSourceQualifiedName(),
-                                                                             catalogTargetName,
+        MetadataCollectionIterator iterator = new MetadataCollectionIterator(catalogGUID,
+                                                                             catalogQualifiedName,
+                                                                             catalogGUID,
+                                                                             catalogQualifiedName,
+                                                                             catalogName,
                                                                              connectorName,
                                                                              deployedImplementationType.getAssociatedTypeName(),
                                                                              openMetadataAccess,
@@ -124,17 +129,17 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                 /*
                  * Check that this is a UC Schema.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                                      nextElement.getElement().getElementProperties(),
                                                                                      methodName);
 
-                if (DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
+                if (UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
                 {
                     SchemaInfo schemaInfo = null;
 
-                    String schemaName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                         OpenMetadataProperty.NAME.name,
+                    String schemaName = propertyHelper.getStringProperty(catalogName,
+                                                                         OpenMetadataProperty.RESOURCE_NAME.name,
                                                                          nextElement.getElement().getElementProperties(),
                                                                          methodName);
 
@@ -246,18 +251,21 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         final boolean parentAtEnd1 = true;
 
         String ucSchemaGUID;
+        String qualifiedName = super.getQualifiedName(schemaInfo.getFull_name());
 
         if (templateGUID != null)
         {
-            ucSchemaGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
-                                                                                context.getAssetManagerGUID(),
+            ucSchemaGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
+                                                                                catalogQualifiedName,
+                                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                                catalogGUID,
                                                                                 false,
                                                                                 null,
                                                                                 null,
                                                                                 templateGUID,
                                                                                 null,
                                                                                 this.getPlaceholderProperties(schemaInfo),
-                                                                                context.getAssetManagerGUID(),
+                                                                                catalogGUID,
                                                                                 parentLinkTypeName,
                                                                                 propertyHelper.addEnumProperty(null,
                                                                                                                OpenMetadataProperty.USE_TYPE.name,
@@ -267,15 +275,17 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         }
         else
         {
-            ucSchemaGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+            ucSchemaGUID = openMetadataAccess.createMetadataElementInStore(catalogGUID,
+                                                                           catalogQualifiedName,
+                                                                           deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
                                                                            null,
-                                                                           context.getAssetManagerGUID(),
+                                                                           catalogGUID,
                                                                            false,
                                                                            null,
                                                                            null,
-                                                                           this.getElementProperties(super.getQualifiedName(schemaInfo.getFull_name()), schemaInfo),
-                                                                           context.getAssetManagerGUID(),
+                                                                           this.getElementProperties(qualifiedName, schemaInfo),
+                                                                           catalogGUID,
                                                                            parentLinkTypeName,
                                                                            propertyHelper.addEnumProperty(null,
                                                                                                           OpenMetadataProperty.USE_TYPE.name,
@@ -284,7 +294,11 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                            parentAtEnd1);
         }
 
-        context.addExternalIdentifier(ucSchemaGUID,
+        super.addPropertyFacet(ucSchemaGUID, qualifiedName, schemaInfo, null);
+
+        context.addExternalIdentifier(catalogGUID,
+                                      catalogQualifiedName,
+                                      ucSchemaGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(schemaInfo,
                                                                            schemaInfo.getName(),
@@ -315,10 +329,15 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         String egeriaSchemaGUID = memberElement.getElement().getElementGUID();
 
-        openMetadataAccess.updateMetadataElementInStore(egeriaSchemaGUID,
-                                                        false, getElementProperties(schemaInfo));
+        openMetadataAccess.updateMetadataElementInStore(catalogGUID,
+                                                        catalogQualifiedName,
+                                                        egeriaSchemaGUID,
+                                                        false,
+                                                        getElementProperties(schemaInfo));
 
-        context.confirmSynchronization(egeriaSchemaGUID,
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       egeriaSchemaGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
                                        schemaInfo.getSchema_id());
     }
@@ -341,13 +360,26 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                          super.getUCCommentFomMember(memberElement),
                                                          super.getUCPropertiesFomMember(memberElement));
 
-        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(schemaInfo,
-                                                                           schemaInfo.getName(),
-                                                                           PlaceholderProperty.SCHEMA_NAME.getName(),
-                                                                           schemaInfo.getSchema_id(),
-                                                                           PermittedSynchronization.TO_THIRD_PARTY));
+        if (memberElement.getExternalIdentifier() == null)
+        {
+            context.addExternalIdentifier(catalogGUID,
+                                          catalogQualifiedName,
+                                          memberElement.getElement().getElementGUID(),
+                                          deployedImplementationType.getAssociatedTypeName(),
+                                          this.getExternalIdentifierProperties(schemaInfo,
+                                                                               schemaInfo.getName(),
+                                                                               PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                               schemaInfo.getSchema_id(),
+                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+        }
+        else
+        {
+            context.confirmSynchronization(catalogGUID,
+                                           catalogQualifiedName,
+                                           memberElement.getElement().getElementGUID(),
+                                           deployedImplementationType.getAssociatedTypeName(),
+                                           schemaInfo.getSchema_id());
+        }
     }
 
 
@@ -357,10 +389,14 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param schemaInfo existing schema in UC
      * @param memberElement elements from Egeria
      *
-     * @throws PropertyServerException  problem communicating with UC
+     * @throws InvalidParameterException bad call to Egeria
+     * @throws UserNotAuthorizedException security problem
+     * @throws PropertyServerException  problem communicating with UC or egeria
      */
     private void updateElementInThirdParty(SchemaInfo    schemaInfo,
-                                           MemberElement memberElement) throws PropertyServerException
+                                           MemberElement memberElement) throws PropertyServerException,
+                                                                               InvalidParameterException,
+                                                                               UserNotAuthorizedException
     {
         final String methodName = "updateElementInThirdParty";
 
@@ -369,6 +405,12 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                              memberElement.getElement().getElementGUID(),
                                                                              schemaInfo.getCatalog_name() + "." + schemaInfo.getName(),
                                                                              ucServerEndpoint));
+
+        context.confirmSynchronization(catalogGUID,
+                                       catalogQualifiedName,
+                                       memberElement.getElement().getElementGUID(),
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       schemaInfo.getSchema_id());
     }
 
 
@@ -416,7 +458,15 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.NAME.name,
-                                                                               info.getFull_name());
+                                                                               info.getName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                             info.getFull_name());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                             info.getFull_name());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,
@@ -424,11 +474,11 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                             DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
+                                                             UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
 
-        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                info.getProperties());
+       elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                               OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                               info.getProperties());
 
         return elementProperties;
     }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.controls;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class SupportedTechnologyType
      *
      * @param template object to copy
      */
-    public SupportedTechnologyType(DeployedImplementationType template)
+    public SupportedTechnologyType(DeployedImplementationTypeDefinition template)
     {
         if (template != null)
         {
@@ -169,7 +169,7 @@ public class SupportedTechnologyType
      * @param deployedImplementationTypes deployed implementation type enums
      * @return list of analysis step types for the service provider
      */
-    public static List<SupportedTechnologyType> getSupportedTechnologyTypes(DeployedImplementationType[] deployedImplementationTypes)
+    public static List<SupportedTechnologyType> getSupportedTechnologyTypes(DeployedImplementationTypeDefinition[] deployedImplementationTypes)
     {
         if ((deployedImplementationTypes == null) || (deployedImplementationTypes.length == 0))
         {
@@ -178,7 +178,7 @@ public class SupportedTechnologyType
 
         List<SupportedTechnologyType> supportedTechnologyTypes = new ArrayList<>();
 
-        for (DeployedImplementationType deployedImplementationType : deployedImplementationTypes)
+        for (DeployedImplementationTypeDefinition deployedImplementationType : deployedImplementationTypes)
         {
             supportedTechnologyTypes.add(new SupportedTechnologyType(deployedImplementationType));
         }

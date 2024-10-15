@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingFileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FolderElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -702,20 +702,20 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public FolderElement getFolderByGUID(String   userId,
-                                         String   folderGUID) throws InvalidParameterException,
+    public FileFolderElement getFolderByGUID(String   userId,
+                                             String   folderGUID) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
@@ -726,11 +726,11 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
 
-        FolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
-                                                                     urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     folderGUID);
+        FileFolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         folderGUID);
 
         return restResult.getElement();
     }
@@ -742,17 +742,17 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * @param userId calling user
      * @param pathName path name
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public FolderElement getFolderByPathName(String   userId,
-                                             String   pathName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public FileFolderElement getFolderByPathName(String   userId,
+                                                 String   pathName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "pathName";
@@ -761,11 +761,11 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameter, methodName);
 
-        FolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
-                                                                     urlTemplate,
-                                                                     serverName,
-                                                                     userId,
-                                                                     pathName);
+        FileFolderResponse restResult = restClient.callFolderGetRESTCall(methodName,
+                                                                        urlTemplate,
+                                                                        serverName,
+                                                                        userId,
+                                                                        pathName);
 
         return restResult.getElement();
     }

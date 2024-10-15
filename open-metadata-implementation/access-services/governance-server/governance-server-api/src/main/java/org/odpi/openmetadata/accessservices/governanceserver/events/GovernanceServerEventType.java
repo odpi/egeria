@@ -51,7 +51,7 @@ public enum GovernanceServerEventType
      */
     REFRESH_INTEGRATION_CONNECTOR_EVENT     (2,
                                           "Refresh Integration Connector Configuration",
-                                          "The configuration for am Integration Connector has changed."),
+                                          "The configuration for an Integration Connector has changed."),
 
 
     /**

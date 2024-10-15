@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
@@ -19,7 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementCla
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -537,7 +538,8 @@ public class AutomatedCurationRESTServices extends TokenController
                     List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
                                                                                                       OpenMetadataType.REFERENCEABLE.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter()),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter(), PropertyComparisonOperator.LIKE),
+                                                                                                      null,
                                                                                                       null,
                                                                                                       null,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -700,12 +702,77 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                requestBody.getEffectiveFrom(),
                                                                                requestBody.getEffectiveTo(),
                                                                                requestBody.getTemplateGUID(),
-                                                                               requestBody.getTemplateProperties(),
+                                                                               requestBody.getReplacementProperties(),
                                                                                requestBody.getPlaceholderPropertyValues(),
                                                                                requestBody.getParentGUID(),
                                                                                requestBody.getParentRelationshipTypeName(),
                                                                                requestBody.getParentRelationshipProperties(),
                                                                                requestBody.getParentAtEnd1()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Create a new element from a template.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody information about the template
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse getElementFromTemplate(String              serverName,
+                                               TemplateRequestBody requestBody)
+    {
+        final String methodName = "getElementFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                response.setGUID(openHandler.getMetadataElementFromTemplate(userId,
+                                                                            requestBody.getExternalSourceGUID(),
+                                                                            requestBody.getExternalSourceName(),
+                                                                            requestBody.getTypeName(),
+                                                                            requestBody.getAnchorGUID(),
+                                                                            requestBody.getIsOwnAnchor(),
+                                                                            requestBody.getEffectiveFrom(),
+                                                                            requestBody.getEffectiveTo(),
+                                                                            requestBody.getTemplateGUID(),
+                                                                            requestBody.getReplacementProperties(),
+                                                                            requestBody.getPlaceholderPropertyValues(),
+                                                                            requestBody.getParentGUID(),
+                                                                            requestBody.getParentRelationshipTypeName(),
+                                                                            requestBody.getParentRelationshipProperties(),
+                                                                            requestBody.getParentAtEnd1()));
             }
             else
             {
@@ -1808,7 +1875,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param requestBody properties to initiate the new instance of the process
      *
-     * @return unique identifier of the first governance action of the process or
+     * @return unique identifier of the governance action process instance or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      *  PropertyServerException there is a problem with the metadata store

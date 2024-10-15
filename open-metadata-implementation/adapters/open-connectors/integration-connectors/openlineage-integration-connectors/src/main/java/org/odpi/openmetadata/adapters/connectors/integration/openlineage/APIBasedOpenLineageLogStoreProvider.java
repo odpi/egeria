@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 /**
  * APIBasedOpenLineageLogStoreProvider is the OCF connector provider for the API based open lineage log store.

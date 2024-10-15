@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.samples.archiveutilities.combo;
 
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.businesssystems.CocoBusinessSystemsArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates.CocoClinicalTrialsArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoGovernanceEnginesArchiveWriter;
@@ -17,7 +19,7 @@ import java.util.Date;
 /**
  * CocoComboArchiveWriter creates a physical open metadata archive file containing the combination of Coco Pharmaceuticals open metadata instances.
  */
-public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
+public class CocoComboArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoComboArchive.omarchive";
 
@@ -38,10 +40,9 @@ public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
               archiveName,
               archiveDescription,
               new Date(),
-              archiveFileName);
+              archiveFileName,
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive()});
     }
-
-
 
 
     /**
@@ -63,14 +64,10 @@ public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
         CocoOrganizationArchiveWriter      organizationArchiveWriter      = new CocoOrganizationArchiveWriter();
-        CocoGovernanceProgramArchiveWriter governanceProgramArchiveWriter = new CocoGovernanceProgramArchiveWriter();
-        CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
-        CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
-        CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter   = new CocoBusinessSystemsArchiveWriter();
-        CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter    = new CocoSustainabilityArchiveWriter();
 
         /*
          * By setting the builder to the combo builder, the archive writers create content in the combo builder rather than their own private builder.
@@ -80,20 +77,42 @@ public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
         organizationArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
         organizationArchiveWriter.getArchiveContent();
 
-        governanceProgramArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
+        archiveHelper.saveGUIDs();
+
+        CocoGovernanceProgramArchiveWriter governanceProgramArchiveWriter = new CocoGovernanceProgramArchiveWriter();
+
+        governanceProgramArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
         governanceProgramArchiveWriter.getArchiveContent();
+
+        archiveHelper.saveGUIDs();
+
+        CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
 
         clinicalTrialsArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
         clinicalTrialsArchiveWriter.getArchiveContent();
 
+        archiveHelper.saveGUIDs();
+
+        CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
+
         governanceEnginesArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
         governanceEnginesArchiveWriter.getArchiveContent();
+
+        archiveHelper.saveGUIDs();
+
+        CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter    = new CocoSustainabilityArchiveWriter();
 
         sustainabilityArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
         sustainabilityArchiveWriter.getArchiveContent();
 
+        archiveHelper.saveGUIDs();
+
+        CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter   = new CocoBusinessSystemsArchiveWriter();
+
         businessSystemsArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
         businessSystemsArchiveWriter.getArchiveContent();
-    }
 
+        archiveHelper.saveGUIDs();
+        archiveHelper.saveUsedGUIDs();
+    }
 }

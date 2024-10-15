@@ -1568,1028 +1568,6 @@ public class GlossaryBrowserRESTServices extends TokenController
         return response;
     }
 
-
-    /**
-     * Adds a star rating and optional review text to the element.  If the user has already attached
-     * a rating then the original one is over-ridden.
-     *
-     * @param serverName name of the server instances for this request
-     * @param guid        String - unique id for the element.
-     * @param isPublic is this visible to other people
-     * @param requestBody containing the StarRating and user review of referenceable (probably element).
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse addRatingToElement(String           serverName,
-                                           String           guid,
-                                           boolean          isPublic,
-                                           RatingProperties requestBody)
-    {
-        final String methodName = "addRatingToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-                handler.addRatingToElement(userId, guid, isPublic, requestBody);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, RatingProperties.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Removes a star rating that was added to the element by this user.
-     *
-     * @param serverName name of the server instances for this request
-     * @param guid        String - unique id for the rating object
-     * @param requestBody null request body needed to satisfy the HTTP Post request
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeRatingFromElement(String          serverName,
-                                                String          guid,
-                                                NullRequestBody requestBody)
-    {
-        final String methodName = "removeRatingFromElement";
-        final String guidParameterName = "guid";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeRatingFromElement(userId, guid);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Adds a "LikeProperties" to the element.
-     *
-     * @param serverName name of the server instances for this request
-     * @param guid        String - unique id for the element.
-     * @param isPublic is this visible to other people
-     * @param requestBody feedback request body .
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse addLikeToElement(String          serverName,
-                                         String          guid,
-                                         boolean         isPublic,
-                                         NullRequestBody requestBody)
-    {
-        final String methodName        = "addLikeToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addLikeToElement(userId, guid, isPublic);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Removes a "LikeProperties" added to the element by this user.
-     *
-     * @param serverName name of the server instances for this request
-     * @param guid  String - unique id for the like object
-     * @param requestBody null request body needed to satisfy the HTTP Post request
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeLikeFromElement(String          serverName,
-                                              String          guid,
-                                              NullRequestBody requestBody)
-    {
-        final String methodName        = "removeLikeFromElement";
-        final String guidParameterName = "guid";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeLikeFromElement(userId, guid);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Adds a comment to the element.
-     *
-     * @param serverName name of the server instances for this request
-     * @param guid  String - unique id for the element.
-     * @param isPublic is this visible to other people
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody containing type of comment enum and the text of the comment.
-     *
-     * @return guid for new comment object or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse addCommentToElement(String                         serverName,
-                                            String                         guid,
-                                            boolean                        isPublic,
-                                            boolean                        forLineage,
-                                            boolean                        forDuplicateProcessing,
-                                            ReferenceableUpdateRequestBody requestBody)
-    {
-        final String methodName = "addCommentToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse  response = new GUIDResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
-                {
-                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                    response.setGUID(handler.addCommentToElement(userId,
-                                                                 guid,
-                                                                 isPublic,
-                                                                 commentProperties,
-                                                                 requestBody.getEffectiveTime(),
-                                                                 forLineage,
-                                                                 forDuplicateProcessing));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Adds a reply to a comment.
-     *
-     * @param serverName name of the server instances for this request
-     * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param isPublic is this visible to other people
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody  containing type of comment enum and the text of the comment.
-     *
-     * @return guid for new comment object or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem adding the element properties to
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse addCommentReply(String                         serverName,
-                                        String                         commentGUID,
-                                        boolean                        isPublic,
-                                        boolean                        forLineage,
-                                        boolean                        forDuplicateProcessing,
-                                        ReferenceableUpdateRequestBody requestBody)
-    {
-        final String methodName = "addCommentReply";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse  response = new GUIDResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
-                {
-                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                    response.setGUID(handler.addCommentReply(userId,
-                                                             commentGUID,
-                                                             isPublic,
-                                                             commentProperties,
-                                                             null,
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update an existing comment.
-     *
-     * @param serverName   name of the server instances for this request.
-     * @param commentGUID  unique identifier for the comment to change.
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param isPublic is this visible to other people
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody  containing type of comment enum and the text of the comment.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the element properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   updateComment(String                         serverName,
-                                        String                         commentGUID,
-                                        boolean                        isMergeUpdate,
-                                        boolean                        isPublic,
-                                        boolean                        forLineage,
-                                        boolean                        forDuplicateProcessing,
-                                        ReferenceableUpdateRequestBody requestBody)
-    {
-        final String methodName = "updateComment";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getElementProperties() instanceof  CommentProperties commentProperties)
-                {
-                    CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                    handler.updateComment(userId,
-                                          commentGUID,
-                                          isMergeUpdate,
-                                          isPublic,
-                                          commentProperties,
-                                          requestBody.getEffectiveTime(),
-                                          forLineage,
-                                          forDuplicateProcessing);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a comment that contains the best answer to a question posed in another comment.
-     *
-     * @param serverName name of the server to route the request to
-     * @param questionCommentGUID unique identifier of the comment containing the question
-     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setupAcceptedAnswer(String                  serverName,
-                                            String                  questionCommentGUID,
-                                            String                  answerCommentGUID,
-                                            boolean                 forLineage,
-                                            boolean                 forDuplicateProcessing,
-                                            RelationshipRequestBody requestBody)
-    {
-        final String methodName = "setupAcceptedAnswer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof FeedbackProperties feedbackProperties)
-                {
-                    handler.setupAcceptedAnswer(userId,
-                                                questionCommentGUID,
-                                                answerCommentGUID,
-                                                feedbackProperties,
-                                                requestBody.getEffectiveTime(),
-                                                forLineage,
-                                                forDuplicateProcessing);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, RelationshipRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Unlink a comment that contains an answer to a question posed in another comment.
-     *
-     * @param serverName name of the server to route the request to
-     * @param questionCommentGUID unique identifier of the comment containing the question
-     * @param answerCommentGUID unique identifier of the comment containing the accepted answer
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse clearAcceptedAnswer(String                        serverName,
-                                            String                        questionCommentGUID,
-                                            String                        answerCommentGUID,
-                                            boolean                       forLineage,
-                                            boolean                       forDuplicateProcessing,
-                                            EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "clearAcceptedAnswer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.clearAcceptedAnswer(userId,
-                                            questionCommentGUID,
-                                            answerCommentGUID,
-                                            requestBody.getEffectiveTime(),
-                                            forLineage,
-                                            forDuplicateProcessing);
-            }
-            else
-            {
-                handler.clearAcceptedAnswer(userId,
-                                            questionCommentGUID,
-                                            answerCommentGUID,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Removes a comment added to the element by this user.
-     *
-     * @param serverName name of the server instances for this request
-     * @param elementGUID  String - unique id for the element object
-     * @param commentGUID  String - unique id for the comment object
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody null request body needed to satisfy the HTTP Post request
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * PropertyServerException - there is a problem updating the element properties in
-     *                                   the metadata repository or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeCommentFromElement(String                         serverName,
-                                                 String                         elementGUID,
-                                                 String                         commentGUID,
-                                                 boolean                        forLineage,
-                                                 boolean                        forDuplicateProcessing,
-                                                 ReferenceableUpdateRequestBody requestBody)
-    {
-        final String guidParameterName = "commentGUID";
-        final String methodName        = "removeElementComment";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.removeComment(userId,
-                                      commentGUID,
-                                      requestBody.getEffectiveTime(),
-                                      forLineage,
-                                      forDuplicateProcessing);
-            }
-            else
-            {
-                handler.removeComment(userId,
-                                      commentGUID,
-                                      null,
-                                      forLineage,
-                                      forDuplicateProcessing);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the requested comment.
-     *
-     * @param serverName name of the server instances for this request
-     * @param commentGUID  unique identifier for the comment object.
-     * @param forLineage               return elements marked with the Memento classification?
-     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
-     * @param requestBody effectiveTime and asset manager identifiers
-     * @return comment properties or
-     *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
-     *  UserNotAuthorizedException the user does not have permission to perform this request.
-     */
-    public CommentElementResponse getCommentByGUID(String                        serverName,
-                                                   String                        commentGUID,
-                                                   boolean                       forLineage,
-                                                   boolean                       forDuplicateProcessing,
-                                                   EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getComment";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CommentElementResponse response = new CommentElementResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElement(handler.getComment(userId,
-                                                       commentGUID,
-                                                       requestBody.getEffectiveTime(),
-                                                       forLineage,
-                                                       forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getComment(userId,
-                                                       commentGUID,
-                                                       null,
-                                                       forLineage,
-                                                       forDuplicateProcessing));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the comments attached to an element.
-     *
-     * @param serverName name of the server instances for this request
-     * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage               return elements marked with the Memento classification?
-     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
-     * @param requestBody effectiveTime and asset manager identifiers
-     * @return list of comments or
-     *  InvalidParameterException one of the parameters is null or invalid.
-     *  PropertyServerException there is a problem updating the element properties in the property server.
-     *  UserNotAuthorizedException the user does not have permission to perform this request.
-     */
-    public CommentElementsResponse getAttachedComments(String                        serverName,
-                                                       String                        elementGUID,
-                                                       int                           startFrom,
-                                                       int                           pageSize,
-                                                       boolean                       forLineage,
-                                                       boolean                       forDuplicateProcessing,
-                                                       EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getAttachedComments";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CommentElementsResponse response = new CommentElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getAttachedComments(userId,
-                                                                    elementGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getAttachedComments(userId,
-                                                                    elementGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of comment metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody string to find in the properties
-    *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public CommentElementsResponse findComments(String                  serverName,
-                                                int                     startFrom,
-                                                int                     pageSize,
-                                                boolean                 startsWith,
-                                                boolean                 endsWith,
-                                                boolean                 ignoreCase,
-                                                boolean                 forLineage,
-                                                boolean                 forDuplicateProcessing,
-                                                SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findComments";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CommentElementsResponse response = new CommentElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElementList(handler.findComments(userId,
-                                                             instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Creates a new informal tag and returns the unique identifier for it.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param requestBody  contains the name of the tag and (optional) description of the tag
-     *
-     * @return guid for new tag or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createInformalTag(String        serverName,
-                                          TagProperties requestBody)
-    {
-        final String   methodName = "createTag";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse  response = new GUIDResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setGUID(handler.createInformalTag(userId, requestBody));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, TagProperties.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Updates the description of an existing tag (either private or public).
-     *
-     * @param serverName   name of the server instances for this request
-     * @param tagGUID      unique id for the tag.
-     * @param requestBody  contains the name of the tag and (optional) description of the tag.
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   updateTagDescription(String                       serverName,
-                                               String                       tagGUID,
-                                               InformalTagUpdateRequestBody requestBody)
-    {
-        final String methodName = "updateTagDescription";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateTagDescription(userId,
-                                             tagGUID,
-                                             requestBody.getDescription());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, InformalTagUpdateRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Removes a tag from the repository.  All the relationships to referenceables are lost.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param tagGUID   unique id for the tag.
-     * @param requestBody  null request body.
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse   deleteTag(String          serverName,
-                                    String          tagGUID,
-                                    NullRequestBody requestBody)
-    {
-        final String methodName           = "deleteTag";
-        final String tagGUIDParameterName = "tagGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.deleteTag(userId, tagGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the tag for the supplied unique identifier (guid).
-     *
-     * @param serverName   name of the server instances for this request
-     * @param guid unique identifier of the tag.
-     *
-     * @return Tag object or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public InformalTagResponse getTag(String serverName,
-                                      String guid)
-    {
-        final String methodName = "getTag";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        InformalTagResponse response = new InformalTagResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTag(handler.getTag(userId, guid));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
     /**
      * Return the list of tags exactly matching the supplied name.
      *
@@ -2831,650 +1809,6 @@ public class GlossaryBrowserRESTServices extends TokenController
 
 
     /**
-     * Adds a tag (either private of public) to an element.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param elementGUID    unique id for the element.
-     * @param tagGUID      unique id of the tag.
-     * @param requestBody  feedback request body.
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   addTagToElement(String              serverName,
-                                          String              elementGUID,
-                                          String              tagGUID,
-                                          FeedbackProperties requestBody)
-    {
-        final String methodName = "addTagToElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        boolean  isPublic = false;
-
-        if (requestBody != null)
-        {
-            isPublic = requestBody.getIsPublic();
-        }
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addTagToElement(userId, elementGUID, tagGUID, isPublic);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Removes a tag from the element that was added by this user.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param elementGUID unique id for the element.
-     * @param tagGUID   unique id for the tag.
-     * @param requestBody  null request body needed for correct protocol exchange.
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse   removeTagFromElement(String          serverName,
-                                               String          elementGUID,
-                                               String          tagGUID,
-                                               NullRequestBody requestBody)
-    {
-        final String   methodName  = "removeTagFromElement";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            handler.removeTagFromElement(userId, elementGUID, tagGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the list of unique identifiers for elements that are linked to a specific tag either directly, or via one
-     * of its schema elements.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param tagGUID unique identifier of tag.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return element guid list or
-     * InvalidParameterException the userId is null or invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public GUIDListResponse getElementsByTag(String serverName,
-                                             String tagGUID,
-                                             int    startFrom,
-                                             int    pageSize)
-    {
-        final String methodName = "getElementsByTag";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDListResponse  response = new GUIDListResponse();
-        AuditLog          auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUIDs(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /* =====================================================================================================================
-     * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
-     * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
-     */
-
-
-    /**
-     * Retrieve the list of note log metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteLogElementsResponse findNoteLogs(String                  serverName,
-                                                int                     startFrom,
-                                                int                     pageSize,
-                                                boolean                 startsWith,
-                                                boolean                 endsWith,
-                                                boolean                 ignoreCase,
-                                                boolean                 forLineage,
-                                                boolean                 forDuplicateProcessing,
-                                                SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findNoteLogs";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteLogElementsResponse response = new NoteLogElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                response.setElementList(handler.findNoteLogs(userId,
-                                                             instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
-                                                             startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of note log metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody name to search for and correlators
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteLogElementsResponse getNoteLogsByName(String          serverName,
-                                                     int             startFrom,
-                                                     int             pageSize,
-                                                     boolean         forLineage,
-                                                     boolean         forDuplicateProcessing,
-                                                     NameRequestBody requestBody)
-    {
-        final String methodName = "getNoteLogsByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteLogElementsResponse response = new NoteLogElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                response.setElementList(handler.getNoteLogsByName(userId,
-                                                                  requestBody.getName(),
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NameRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-
-    /**
-     * Retrieve the list of note log metadata elements attached to the element.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param elementGUID unique identifier of the note log of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of associated metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteLogElementsResponse getNoteLogsForElement(String                        serverName,
-                                                         String                        elementGUID,
-                                                         int                           startFrom,
-                                                         int                           pageSize,
-                                                         boolean                       forLineage,
-                                                         boolean                       forDuplicateProcessing,
-                                                         EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getNotesForNoteLog";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteLogElementsResponse response = new NoteLogElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getNoteLogsForElement(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getNoteLogsForElement(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      null,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-
-    /**
-     * Retrieve the note log metadata element with the supplied unique identifier.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteLogGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody correlators
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteLogElementResponse getNoteLogByGUID(String                        serverName,
-                                                   String                        noteLogGUID,
-                                                   boolean                       forLineage,
-                                                   boolean                       forDuplicateProcessing,
-                                                   EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getNoteLogByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteLogElementResponse response = new NoteLogElementResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElement(handler.getNoteLogByGUID(userId,
-                                                             noteLogGUID,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getNoteLogByGUID(userId,
-                                                             noteLogGUID,
-                                                             null,
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /* ===============================================================================
-     * A note log typically contains many notes, linked with relationships.
-     */
-
-    /**
-     * Retrieve the list of note metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the server to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteElementsResponse findNotes(String                  serverName,
-                                          int                     startFrom,
-                                          int                     pageSize,
-                                          boolean                 startsWith,
-                                          boolean                 endsWith,
-                                          boolean                 ignoreCase,
-                                          boolean                 forLineage,
-                                          boolean                 forDuplicateProcessing,
-                                          SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findNotes";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteElementsResponse response = new NoteElementsResponse();
-        AuditLog                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-                response.setElementList(handler.findNotes(userId,
-                                                          instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
-                                                          startFrom,
-                                                          pageSize,
-                                                          requestBody.getEffectiveTime(),
-                                                          forLineage,
-                                                          forDuplicateProcessing));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of notes associated with a note log.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteLogGUID unique identifier of the note log of interest
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return list of associated metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteElementsResponse getNotesForNoteLog(String                        serverName,
-                                                   String                        noteLogGUID,
-                                                   int                           startFrom,
-                                                   int                           pageSize,
-                                                   boolean                       forLineage,
-                                                   boolean                       forDuplicateProcessing,
-                                                   EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getNotesForNoteLog";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteElementsResponse response = new NoteElementsResponse();
-        AuditLog             auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getNotesForNoteLog(userId,
-                                                                   noteLogGUID,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   requestBody.getEffectiveTime(),
-                                                                   forLineage,
-                                                                   forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getNotesForNoteLog(userId,
-                                                                   noteLogGUID,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Retrieve the note metadata element with the supplied unique identifier.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteGUID unique identifier of the requested metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
-     *
-     * @return matching metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NoteElementResponse getNoteByGUID(String                        serverName,
-                                             String                        noteGUID,
-                                             boolean                       forLineage,
-                                             boolean                       forDuplicateProcessing,
-                                             EffectiveTimeQueryRequestBody requestBody)
-    {
-        final String methodName = "getNoteByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NoteElementResponse response = new NoteElementResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CollaborationManagementClient handler = instanceHandler.getCollaborationManagementClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-
-                response.setElement(handler.getNoteByGUID(userId,
-                                                          noteGUID,
-                                                          requestBody.getEffectiveTime(),
-                                                          forLineage,
-                                                          forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getNoteByGUID(userId,
-                                                          noteGUID,
-                                                          null,
-                                                          forLineage,
-                                                          forDuplicateProcessing));            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Return information about the elements classified with the data field classification.
      *
      * @param serverName  name of the server instance to connect to
@@ -3542,12 +1876,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getDataFieldClassifiedElements(userId,
-                                                                               null,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing));
+                                                                            null,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            null,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3575,18 +1909,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getConfidenceClassifiedElements(String                      serverName,
-                                                                int                         startFrom,
-                                                                int                         pageSize,
-                                                                boolean                     forLineage,
-                                                                boolean                     forDuplicateProcessing,
-                                                                FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidenceClassifiedElements(String                      serverName,
+                                                                            int                         startFrom,
+                                                                            int                         pageSize,
+                                                                            boolean                     forLineage,
+                                                                            boolean                     forDuplicateProcessing,
+                                                                            FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getConfidenceClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3603,24 +1937,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                    properties.getReturnSpecificLevel(),
-                                                                                    properties.getLevelIdentifier(),
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                                                                                 properties.getReturnSpecificLevel(),
+                                                                                 properties.getLevelIdentifier(),
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 requestBody.getEffectiveTime(),
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                    false,
-                                                                                    0,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                                                                                 false,
+                                                                                 0,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 requestBody.getEffectiveTime(),
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing));
                 }
                 else
                 {
@@ -3630,13 +1964,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                false,
-                                                                                0,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing));
+                                                                             false,
+                                                                             0,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3664,18 +1998,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getCriticalityClassifiedElements(String                      serverName,
-                                                                 int                         startFrom,
-                                                                 int                         pageSize,
-                                                                 boolean                     forLineage,
-                                                                 boolean                     forDuplicateProcessing,
-                                                                 FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getCriticalityClassifiedElements(String                      serverName,
+                                                                             int                         startFrom,
+                                                                             int                         pageSize,
+                                                                             boolean                     forLineage,
+                                                                             boolean                     forDuplicateProcessing,
+                                                                             FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getCriticalityClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3692,24 +2026,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                     properties.getReturnSpecificLevel(),
-                                                                                     properties.getLevelIdentifier(),
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  properties.getReturnSpecificLevel(),
+                                                                                  properties.getLevelIdentifier(),
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                     false,
-                                                                                     0,
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  false,
+                                                                                  0,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
                 }
                 else
                 {
@@ -3719,13 +2053,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                 false,
-                                                                                 0,
-                                                                                 startFrom,
-                                                                                 pageSize,
-                                                                                 null,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing));
+                                                                              false,
+                                                                              0,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              null,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3753,18 +2087,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getConfidentialityClassifiedElements(String                      serverName,
-                                                                     int                         startFrom,
-                                                                     int                         pageSize,
-                                                                     boolean                     forLineage,
-                                                                     boolean                     forDuplicateProcessing,
-                                                                     FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidentialityClassifiedElements(String                      serverName,
+                                                                                 int                         startFrom,
+                                                                                 int                         pageSize,
+                                                                                 boolean                     forLineage,
+                                                                                 boolean                     forDuplicateProcessing,
+                                                                                 FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getConfidentialityClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3781,24 +2115,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                         properties.getReturnSpecificLevel(),
-                                                                                         properties.getLevelIdentifier(),
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing));
+                                                                                      properties.getReturnSpecificLevel(),
+                                                                                      properties.getLevelIdentifier(),
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      requestBody.getEffectiveTime(),
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                         false,
-                                                                                         0,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing));
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      requestBody.getEffectiveTime(),
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing));
                 }
                 else
                 {
@@ -3808,13 +2142,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                     false,
-                                                                                     0,
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     null,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  false,
+                                                                                  0,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  null,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3842,18 +2176,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getRetentionClassifiedElements(String                      serverName,
-                                                               int                         startFrom,
-                                                               int                         pageSize,
-                                                               boolean                     forLineage,
-                                                               boolean                     forDuplicateProcessing,
-                                                               FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getRetentionClassifiedElements(String                      serverName,
+                                                                           int                         startFrom,
+                                                                           int                         pageSize,
+                                                                           boolean                     forLineage,
+                                                                           boolean                     forDuplicateProcessing,
+                                                                           FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getRetentionClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3870,24 +2204,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                                   properties.getReturnSpecificLevel(),
-                                                                                   properties.getLevelIdentifier(),
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing));
+                                                                                properties.getReturnSpecificLevel(),
+                                                                                properties.getLevelIdentifier(),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                                   false,
-                                                                                   0,
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing));
+                                                                                false,
+                                                                                0,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else
                 {
@@ -3897,13 +2231,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                               false,
-                                                                               0,
-                                                                               startFrom,
-                                                                               pageSize,
-                                                                               null,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing));
+                                                                            false,
+                                                                            0,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            null,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3931,18 +2265,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getSecurityTaggedElements(String                      serverName,
-                                                          int                         startFrom,
-                                                          int                         pageSize,
-                                                          boolean                     forLineage,
-                                                          boolean                     forDuplicateProcessing,
-                                                          FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getSecurityTaggedElements(String                      serverName,
+                                                                      int                         startFrom,
+                                                                      int                         pageSize,
+                                                                      boolean                     forLineage,
+                                                                      boolean                     forDuplicateProcessing,
+                                                                      FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getSecurityTaggedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3957,20 +2291,20 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getSecurityTaggedElements(userId,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          requestBody.getEffectiveTime(),
-                                                                          forLineage,
-                                                                          forDuplicateProcessing));
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       forLineage,
+                                                                       forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSecurityTaggedElements(userId,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing));
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3998,18 +2332,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getOwnersElements(String                      serverName,
-                                                  int                         startFrom,
-                                                  int                         pageSize,
-                                                  boolean                     forLineage,
-                                                  boolean                     forDuplicateProcessing,
-                                                  FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getOwnersElements(String                      serverName,
+                                                              int                         startFrom,
+                                                              int                         pageSize,
+                                                              boolean                     forLineage,
+                                                              boolean                     forDuplicateProcessing,
+                                                              FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getOwnersElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4026,22 +2360,22 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
                     response.setElements(handler.getOwnersElements(userId,
-                                                                      properties.getName(),
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   properties.getName(),
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getOwnersElements(userId,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   null,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
                 }
                 else
                 {
@@ -4051,12 +2385,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getOwnersElements(userId,
-                                                                  null,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  null,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4084,18 +2418,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getMembersOfSubjectArea(String                      serverName,
-                                                        int                         startFrom,
-                                                        int                         pageSize,
-                                                        boolean                     forLineage,
-                                                        boolean                     forDuplicateProcessing,
-                                                        FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getMembersOfSubjectArea(String                      serverName,
+                                                                    int                         startFrom,
+                                                                    int                         pageSize,
+                                                                    boolean                     forLineage,
+                                                                    boolean                     forDuplicateProcessing,
+                                                                    FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getMembersOfSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4112,22 +2446,22 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
                     response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                            properties.getName(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                         properties.getName(),
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                            null,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                         null,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing));
                 }
                 else
                 {
@@ -4137,12 +2471,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                        null,
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        null,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing));
+                                                                     null,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4242,19 +2576,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getSemanticAssignees(String                        serverName,
-                                                        String                        glossaryTermGUID,
-                                                        int                           startFrom,
-                                                        int                           pageSize,
-                                                        boolean                       forLineage,
-                                                        boolean                       forDuplicateProcessing,
-                                                        EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSemanticAssignees(String                        serverName,
+                                                                        String                        glossaryTermGUID,
+                                                                        int                           startFrom,
+                                                                        int                           pageSize,
+                                                                        boolean                       forLineage,
+                                                                        boolean                       forDuplicateProcessing,
+                                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSemanticAssignees";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4269,22 +2603,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getSemanticAssignees(userId,
-                                                                     glossaryTermGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                                                                  glossaryTermGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  null,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSemanticAssignees(userId,
-                                                                     glossaryTermGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     requestBody.getEffectiveTime(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                                                                  glossaryTermGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  forLineage,
+                                                                  forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4313,19 +2647,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getGovernedElements(String                        serverName,
-                                                       String                        governanceDefinitionGUID,
-                                                       int                           startFrom,
-                                                       int                           pageSize,
-                                                       boolean                       forLineage,
-                                                       boolean                       forDuplicateProcessing,
-                                                       EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getGovernedElements(String                        serverName,
+                                                                       String                        governanceDefinitionGUID,
+                                                                       int                           startFrom,
+                                                                       int                           pageSize,
+                                                                       boolean                       forLineage,
+                                                                       boolean                       forDuplicateProcessing,
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGovernedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4340,22 +2674,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
+                                                                 governanceDefinitionGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
+                                                                 governanceDefinitionGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4456,19 +2790,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getSourceElements(String                        serverName,
-                                                     String                        elementGUID,
-                                                     int                           startFrom,
-                                                     int                           pageSize,
-                                                     boolean                       forLineage,
-                                                     boolean                       forDuplicateProcessing,
-                                                     EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSourceElements(String                        serverName,
+                                                                     String                        elementGUID,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSourceElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4483,22 +2817,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  null,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               elementGUID,
+                                                               startFrom,
+                                                               pageSize,
+                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               elementGUID,
+                                                               startFrom,
+                                                               pageSize,
+                                                               requestBody.getEffectiveTime(),
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4528,19 +2862,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getElementsSourceFrom(String                        serverName,
-                                                         String                        elementGUID,
-                                                         int                           startFrom,
-                                                         int                           pageSize,
-                                                         boolean                       forLineage,
-                                                         boolean                       forDuplicateProcessing,
-                                                         EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getElementsSourceFrom(String                        serverName,
+                                                                         String                        elementGUID,
+                                                                         int                           startFrom,
+                                                                         int                           pageSize,
+                                                                         boolean                       forLineage,
+                                                                         boolean                       forDuplicateProcessing,
+                                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getElementsSourceFrom";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4555,22 +2889,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      null,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   elementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   elementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
             }
         }
         catch (Exception error)

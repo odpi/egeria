@@ -8,6 +8,8 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
@@ -208,11 +210,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         CompletionStatus completionStatus;
         String           completionMessage = null;
 
-        if (RequestType.MOVE_FILE.requestType.equals(governanceContext.getRequestType()))
+        if (MoveCopyFileRequestType.MOVE_FILE.requestType.equals(governanceContext.getRequestType()))
         {
             copyFile = false;
         }
-        else if (RequestType.DELETE_FILE.requestType.equals(governanceContext.getRequestType()))
+        else if (MoveCopyFileRequestType.DELETE_FILE.requestType.equals(governanceContext.getRequestType()))
         {
             deleteFile = true;
         }
@@ -224,63 +226,63 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
          */
         if (configurationProperties != null)
         {
-            Object noLineageOption = configurationProperties.get(RequestParameter.NO_LINEAGE.getName());
+            Object noLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.NO_LINEAGE.getName());
 
             if (noLineageOption != null)
             {
                 createLineage = false;
             }
 
-            Object processNameOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
+            Object processNameOption = configurationProperties.get(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
 
             if (processNameOption != null)
             {
                 topLevelProcessName = processNameOption.toString();
             }
 
-            Object templateNameOption = configurationProperties.get(RequestParameter.DESTINATION_TEMPLATE_NAME.getName());
+            Object templateNameOption = configurationProperties.get(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName());
 
             if (templateNameOption != null)
             {
                 destinationFileTemplateQualifiedName = templateNameOption.toString();
             }
 
-            templateNameOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
+            templateNameOption = configurationProperties.get(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
 
             if (templateNameOption != null)
             {
                 topLevelProcessTemplateQualifiedName = templateNameOption.toString();
             }
 
-            Object fileNamePatternOption = configurationProperties.get(RequestParameter.TARGET_FILE_NAME_PATTERN.getName());
+            Object fileNamePatternOption = configurationProperties.get(MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName());
 
             if (fileNamePatternOption != null)
             {
                 destinationFileNamePattern = fileNamePatternOption.toString();
             }
 
-            Object destinationFolderOption = configurationProperties.get(RequestParameter.DESTINATION_DIRECTORY.getName());
+            Object destinationFolderOption = configurationProperties.get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
 
             if (destinationFolderOption != null)
             {
                 destinationFolderName = destinationFolderOption.toString();
             }
 
-            Object sourceLineageOption = configurationProperties.get(RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
+            Object sourceLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
 
             if (sourceLineageOption != null)
             {
                 sourceLineageFromFile = false;
             }
 
-            Object destinationLineageOption = configurationProperties.get(RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
+            Object destinationLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
 
             if (destinationLineageOption != null)
             {
                 destinationLineageToFile = false;
             }
 
-            Object processLineageOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
+            Object processLineageOption = configurationProperties.get(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
 
             if (processLineageOption != null)
             {
@@ -298,43 +300,43 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
             for (String requestParameterName : requestParameters.keySet())
             {
-                if (RequestParameter.SOURCE_FILE.name.equals(requestParameterName))
+                if (MoveCopyFileRequestParameter.SOURCE_FILE.name.equals(requestParameterName))
                 {
                     sourceFileName = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.DESTINATION_DIRECTORY.name.equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.name.equals(requestParameterName))
                 {
                     destinationFolderName = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.DESTINATION_TEMPLATE_NAME.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName().equals(requestParameterName))
                 {
                     destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.TARGET_FILE_NAME_PATTERN.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName().equals(requestParameterName))
                 {
                     destinationFileNamePattern = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.NO_LINEAGE.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.NO_LINEAGE.getName().equals(requestParameterName))
                 {
                     createLineage = false;
                 }
-                else if (RequestParameter.TOP_LEVEL_PROCESS_NAME.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_NAME.getName().equals(requestParameterName))
                 {
                     topLevelProcessName = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName().equals(requestParameterName))
                 {
                     topLevelProcessTemplateQualifiedName = requestParameters.get(requestParameterName);
                 }
-                else if (RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName().equals(requestParameterName))
                 {
                     childProcessLineage = false;
                 }
-                else if (RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName().equals(requestParameterName))
                 {
                     sourceLineageFromFile = false;
                 }
-                else if (RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName().equals(requestParameterName))
+                else if (MoveCopyFileRequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName().equals(requestParameterName))
                 {
                     destinationLineageToFile = false;
                 }
@@ -426,7 +428,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                         NewActionTarget actionTarget = new NewActionTarget();
 
                         actionTarget.setActionTargetGUID(newActionTargetGUID);
-                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_PROPERTY);
+                        actionTarget.setActionTargetName(ActionTarget.NEW_ASSET.name);
                         newActionTargets.add(actionTarget);
                     }
 
@@ -740,7 +742,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         String newFileGUID;
 
-        governanceContext.getOpenMetadataStore().setForLineage(true);
+        metadataStore.setForLineage(true);
 
         String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null);
         String processGUID;
@@ -812,11 +814,18 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (parentGUID == null)
         {
+            parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.RESOURCE_NAME.name);
+        }
+
+        if (parentGUID == null)
+        {
             parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
         }
 
         ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.NAME.name, destinationFileClassification.getFileName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.RESOURCE_NAME.name, destinationFileClassification.getPathName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.PATH_NAME.name, destinationFileClassification.getPathName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_NAME.name, destinationFileClassification.getFileName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_TYPE.name, destinationFileClassification.getFileType());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_EXTENSION.name, destinationFileClassification.getFileExtension());
@@ -830,7 +839,43 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             {
                 auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
                                                                                                                           destinationFileTemplateQualifiedName,
-                                                                                                                          RequestParameter.DESTINATION_TEMPLATE_NAME.getName()));
+                                                                                                                          MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName()));
+            }
+
+            /*
+             * The template uses place holders rather than fixed values
+             */
+            Map<String, String> placeholderProperties = new HashMap<>();
+
+            placeholderProperties.put(PlaceholderProperty.FILE_PATH_NAME.getName(), destinationFileClassification.getPathName());
+            placeholderProperties.put(PlaceholderProperty.FILE_TYPE.getName(), destinationFileClassification.getFileType());
+            placeholderProperties.put(PlaceholderProperty.FILE_EXTENSION.getName(), destinationFileClassification.getFileExtension());
+            placeholderProperties.put(PlaceholderProperty.FILE_NAME.getName(), destinationFileClassification.getFileName());
+            if (destinationFileClassification.getCreationTime() != null)
+            {
+                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), destinationFileClassification.getCreationTime().toString());
+                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), destinationFileClassification.getCreationTime().toString());
+            }
+            else
+            {
+                placeholderProperties.put(PlaceholderProperty.CREATION_DATE.getName(), "");
+                placeholderProperties.put(PlaceholderProperty.RECEIVED_DATE.getName(), "");
+            }
+            if (destinationFileClassification.getLastModifiedTime() != null)
+            {
+                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), destinationFileClassification.getLastModifiedTime().toString());
+            }
+            else
+            {
+                placeholderProperties.put(PlaceholderProperty.LAST_UPDATE_DATE.getName(), "");
+            }
+            if (destinationFileClassification.getLastAccessedTime() != null)
+            {
+                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), destinationFileClassification.getLastAccessedTime().toString());
+            }
+            else
+            {
+                placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
             }
 
             newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
@@ -839,25 +884,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                           null,
                                                                           null,
                                                                           assetTemplateGUID,
-                                                                          destinationFileProperties,
                                                                           null,
-                                                                          parentGUID,
-                                                                          OpenMetadataType.NESTED_FILE_TYPE_NAME,
-                                                                          null,
-                                                                          true);        }
-        else if (sourceFileGUID != null)
-        {
-            /*
-             * Use the source file as a template
-             */
-            newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
-                                                                          null,
-                                                                          true,
-                                                                          null,
-                                                                          null,
-                                                                          sourceFileGUID,
-                                                                          destinationFileProperties,
-                                                                          null,
+                                                                          placeholderProperties,
                                                                           parentGUID,
                                                                           OpenMetadataType.NESTED_FILE_TYPE_NAME,
                                                                           null,

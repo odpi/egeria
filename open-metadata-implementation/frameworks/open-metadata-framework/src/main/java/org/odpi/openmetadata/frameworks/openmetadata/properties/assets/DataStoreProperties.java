@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderProperties;
 
 import java.util.Date;
 import java.util.Map;
@@ -30,9 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataFileProperties.class, name = "DataFileProperties"),
         @JsonSubTypes.Type(value = DatabaseProperties.class, name = "DatabaseProperties"),
-        @JsonSubTypes.Type(value = FileProperties.class, name = "FileProperties"),
         @JsonSubTypes.Type(value = FileFolderProperties.class, name = "FileFolderProperties"),
-        @JsonSubTypes.Type(value = FolderProperties.class, name = "FolderProperties"),
 
               })
 public class DataStoreProperties extends DataAssetProperties

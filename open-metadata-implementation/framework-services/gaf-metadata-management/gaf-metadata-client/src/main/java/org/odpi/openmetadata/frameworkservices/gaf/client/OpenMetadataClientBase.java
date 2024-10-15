@@ -7,10 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
@@ -682,8 +683,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         List<OpenMetadataElement> matchingElements = this.findMetadataElements(userId,
                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                null,
-                                                                               propertyHelper.getSearchPropertiesByName(propertyNames, uniqueName),
+                                                                               propertyHelper.getSearchPropertiesByName(propertyNames, uniqueName, PropertyComparisonOperator.EQ),
                                                                                requiredStatuses,
+                                                                               null,
                                                                                null,
                                                                                null,
                                                                                SequencingOrder.LAST_UPDATE_RECENT,
@@ -1097,6 +1099,825 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param classificationPropertyName  property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String                userId,
+                                                                                      String                metadataElementTypeName,
+                                                                                      List<String>          metadataElementSubtypeNames,
+                                                                                      String                classificationName,
+                                                                                      String                classificationPropertyName,
+                                                                                      String                classificationPropertyValue,
+                                                                                      List<ElementStatus>   limitResultsByStatus,
+                                                                                      Date                  asOfTime,
+                                                                                      String                sequencingProperty,
+                                                                                      SequencingOrder       sequencingOrder,
+                                                                                      boolean               forLineage,
+                                                                                      boolean               forDuplicateProcessing,
+                                                                                      Date                  effectiveTime,
+                                                                                      int                   startFrom,
+                                                                                      int                   pageSize) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException
+    {
+        PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
+
+        requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        requestedPropertyValue.setPrimitiveValue(classificationPropertyValue);
+        requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        PropertyCondition nameCondition = new PropertyCondition();
+
+        nameCondition.setProperty(classificationPropertyName);
+        nameCondition.setOperator(PropertyComparisonOperator.EQ);
+        nameCondition.setValue(requestedPropertyValue);
+
+        conditions.add(nameCondition);
+
+        SearchProperties searchClassificationProperties = new SearchProperties();
+
+        searchClassificationProperties.setConditions(conditions);
+        searchClassificationProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationCondition.setSearchProperties(searchClassificationProperties);
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param classificationPropertyName  property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String                userId,
+                                                                                      String                metadataElementTypeName,
+                                                                                      List<String>          metadataElementSubtypeNames,
+                                                                                      String                classificationName,
+                                                                                      String                classificationPropertyName,
+                                                                                      int                   classificationPropertyValue,
+                                                                                      List<ElementStatus>   limitResultsByStatus,
+                                                                                      Date                  asOfTime,
+                                                                                      String                sequencingProperty,
+                                                                                      SequencingOrder       sequencingOrder,
+                                                                                      boolean               forLineage,
+                                                                                      boolean               forDuplicateProcessing,
+                                                                                      Date                  effectiveTime,
+                                                                                      int                   startFrom,
+                                                                                      int                   pageSize) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException
+    {
+        PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
+
+        requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT);
+        requestedPropertyValue.setPrimitiveValue(classificationPropertyValue);
+        requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT.getName());
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        PropertyCondition nameCondition = new PropertyCondition();
+
+        nameCondition.setProperty(classificationPropertyName);
+        nameCondition.setOperator(PropertyComparisonOperator.EQ);
+        nameCondition.setValue(requestedPropertyValue);
+
+        conditions.add(nameCondition);
+
+        SearchProperties searchClassificationProperties = new SearchProperties();
+
+        searchClassificationProperties.setConditions(conditions);
+        searchClassificationProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationCondition.setSearchProperties(searchClassificationProperties);
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param classificationPropertyName  property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsByClassificationPropertyValue(String                userId,
+                                                                                       String                metadataElementTypeName,
+                                                                                       List<String>          metadataElementSubtypeNames,
+                                                                                       String                classificationName,
+                                                                                       String                classificationPropertyName,
+                                                                                       String                classificationPropertyValue,
+                                                                                       List<ElementStatus>   limitResultsByStatus,
+                                                                                       Date                  asOfTime,
+                                                                                       String                sequencingProperty,
+                                                                                       SequencingOrder       sequencingOrder,
+                                                                                       boolean               forLineage,
+                                                                                       boolean               forDuplicateProcessing,
+                                                                                       Date                  effectiveTime,
+                                                                                       int                   startFrom,
+                                                                                       int                   pageSize) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
+
+        requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        requestedPropertyValue.setPrimitiveValue(".*" + Pattern.quote(classificationPropertyValue) + ".*");
+        requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        PropertyCondition nameCondition = new PropertyCondition();
+
+        nameCondition.setProperty(classificationPropertyName);
+        nameCondition.setOperator(PropertyComparisonOperator.LIKE);
+        nameCondition.setValue(requestedPropertyValue);
+
+        conditions.add(nameCondition);
+
+        SearchProperties searchClassificationProperties = new SearchProperties();
+
+        searchClassificationProperties.setConditions(conditions);
+        searchClassificationProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationCondition.setSearchProperties(searchClassificationProperties);
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with the requested classification containing any of the supplied list of property
+     * names exactly matching the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param classificationPropertyNames property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByClassificationPropertyValue(String                userId,
+                                                                                      String                metadataElementTypeName,
+                                                                                      List<String>          metadataElementSubtypeNames,
+                                                                                      String                classificationName,
+                                                                                      List<String>          classificationPropertyNames,
+                                                                                      String                classificationPropertyValue,
+                                                                                      List<ElementStatus>   limitResultsByStatus,
+                                                                                      Date                  asOfTime,
+                                                                                      String                sequencingProperty,
+                                                                                      SequencingOrder       sequencingOrder,
+                                                                                      boolean               forLineage,
+                                                                                      boolean               forDuplicateProcessing,
+                                                                                      Date                  effectiveTime,
+                                                                                      int                   startFrom,
+                                                                                      int                   pageSize) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException
+    {
+        PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
+
+        requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        requestedPropertyValue.setPrimitiveValue(classificationPropertyValue);
+        requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        if (classificationPropertyNames != null)
+        {
+            for (String propertyName : classificationPropertyNames)
+            {
+                PropertyCondition nameCondition = new PropertyCondition();
+
+                nameCondition.setProperty(propertyName);
+                nameCondition.setOperator(PropertyComparisonOperator.EQ);
+                nameCondition.setValue(requestedPropertyValue);
+
+                conditions.add(nameCondition);
+            }
+        }
+
+        SearchProperties searchClassificationProperties = new SearchProperties();
+
+        searchClassificationProperties.setConditions(conditions);
+        searchClassificationProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationCondition.setSearchProperties(searchClassificationProperties);
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with the requested classification containing any of the supplied list of property
+     * names exactly matching the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param classificationPropertyNames property name to match against
+     * @param classificationPropertyValue value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsByClassificationPropertyValue(String                userId,
+                                                                                       String                metadataElementTypeName,
+                                                                                       List<String>          metadataElementSubtypeNames,
+                                                                                       String                classificationName,
+                                                                                       List<String>          classificationPropertyNames,
+                                                                                       String                classificationPropertyValue,
+                                                                                       List<ElementStatus>   limitResultsByStatus,
+                                                                                       Date                  asOfTime,
+                                                                                       String                sequencingProperty,
+                                                                                       SequencingOrder       sequencingOrder,
+                                                                                       boolean               forLineage,
+                                                                                       boolean               forDuplicateProcessing,
+                                                                                       Date                  effectiveTime,
+                                                                                       int                   startFrom,
+                                                                                       int                   pageSize) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
+
+        requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        requestedPropertyValue.setPrimitiveValue(".*" + Pattern.quote(classificationPropertyValue) + ".*");
+        requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
+        List<PropertyCondition> conditions = new ArrayList<>();
+
+        if (classificationPropertyNames != null)
+        {
+            for (String propertyName : classificationPropertyNames)
+            {
+                PropertyCondition nameCondition = new PropertyCondition();
+
+                nameCondition.setProperty(propertyName);
+                nameCondition.setOperator(PropertyComparisonOperator.LIKE);
+                nameCondition.setValue(requestedPropertyValue);
+
+                conditions.add(nameCondition);
+            }
+        }
+
+        SearchProperties searchClassificationProperties = new SearchProperties();
+
+        searchClassificationProperties.setConditions(conditions);
+        searchClassificationProperties.setMatchCriteria(MatchCriteria.ANY);
+
+        SearchClassifications searchClassifications = new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationCondition.setSearchProperties(searchClassificationProperties);
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param classificationName         name of the classification
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByClassification(String                userId,
+                                                                         String                metadataElementTypeName,
+                                                                         List<String>          metadataElementSubtypeNames,
+                                                                         String                classificationName,
+                                                                         List<ElementStatus>   limitResultsByStatus,
+                                                                         Date                  asOfTime,
+                                                                         String                sequencingProperty,
+                                                                         SequencingOrder       sequencingOrder,
+                                                                         boolean               forLineage,
+                                                                         boolean               forDuplicateProcessing,
+                                                                         Date                  effectiveTime,
+                                                                         int                   startFrom,
+                                                                         int                   pageSize) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        SearchClassifications searchClassifications =  new SearchClassifications();
+
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+        classificationCondition.setName(classificationName);
+
+        classificationConditions.add(classificationCondition);
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         null,
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         searchClassifications,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param propertyName               property name to match against
+     * @param propertyValue              value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByPropertyValue(String                userId,
+                                                                        String                metadataElementTypeName,
+                                                                        List<String>          metadataElementSubtypeNames,
+                                                                        String                propertyName,
+                                                                        String                propertyValue,
+                                                                        List<ElementStatus>   limitResultsByStatus,
+                                                                        Date                  asOfTime,
+                                                                        String                sequencingProperty,
+                                                                        SequencingOrder       sequencingOrder,
+                                                                        boolean               forLineage,
+                                                                        boolean               forDuplicateProcessing,
+                                                                        Date                  effectiveTime,
+                                                                        int                   startFrom,
+                                                                        int                   pageSize) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        List<String> propertyNames = List.of(propertyName);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ),
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         null,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param propertyName               property name to match against
+     * @param propertyValue              value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsByPropertyValue(String                userId,
+                                                                         String                metadataElementTypeName,
+                                                                         List<String>          metadataElementSubtypeNames,
+                                                                         String                propertyName,
+                                                                         String                propertyValue,
+                                                                         List<ElementStatus>   limitResultsByStatus,
+                                                                         Date                  asOfTime,
+                                                                         String                sequencingProperty,
+                                                                         SequencingOrder       sequencingOrder,
+                                                                         boolean               forLineage,
+                                                                         boolean               forDuplicateProcessing,
+                                                                         Date                  effectiveTime,
+                                                                         int                   startFrom,
+                                                                         int                   pageSize) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        List<String> propertyNames = List.of(propertyName);
+
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE),
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         null,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names similar to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param propertyNames              list of property names to match against
+     * @param propertyValue              value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> getMetadataElementsByPropertyValue(String                userId,
+                                                                        String                metadataElementTypeName,
+                                                                        List<String>          metadataElementSubtypeNames,
+                                                                        List<String>          propertyNames,
+                                                                        String                propertyValue,
+                                                                        List<ElementStatus>   limitResultsByStatus,
+                                                                        Date                  asOfTime,
+                                                                        String                sequencingProperty,
+                                                                        SequencingOrder       sequencingOrder,
+                                                                        boolean               forLineage,
+                                                                        boolean               forDuplicateProcessing,
+                                                                        Date                  effectiveTime,
+                                                                        int                   startFrom,
+                                                                        int                   pageSize) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.EQ),
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         null,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
+     * Retrieve metadata elements with any of the supplied list of property names set (exactly) to the supplied value.
+     *
+     * @param userId                     caller's userId
+     * @param metadataElementTypeName    type of interest (null means any element type)
+     * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
+     *                                   include in the search results. Null means all subtypes.
+     * @param propertyNames              list of property names to match against
+     * @param propertyValue              value to match against
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty         String name of the property that is to be used to sequence the results.
+     *                                   Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder            Enum defining how the results should be ordered.
+     * @param forLineage                 the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing     the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime              only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom                  paging start point
+     * @param pageSize                   maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     *
+     * @throws InvalidParameterException  one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataElement> findMetadataElementsByPropertyValue(String                userId,
+                                                                         String                metadataElementTypeName,
+                                                                         List<String>          metadataElementSubtypeNames,
+                                                                         List<String>          propertyNames,
+                                                                         String                propertyValue,
+                                                                         List<ElementStatus>   limitResultsByStatus,
+                                                                         Date                  asOfTime,
+                                                                         String                sequencingProperty,
+                                                                         SequencingOrder       sequencingOrder,
+                                                                         boolean               forLineage,
+                                                                         boolean               forDuplicateProcessing,
+                                                                         Date                  effectiveTime,
+                                                                         int                   startFrom,
+                                                                         int                   pageSize) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        return this.findMetadataElements(userId,
+                                         metadataElementTypeName,
+                                         metadataElementSubtypeNames,
+                                         propertyHelper.getSearchPropertiesByName(propertyNames, propertyValue, PropertyComparisonOperator.LIKE),
+                                         limitResultsByStatus,
+                                         asOfTime,
+                                         null,
+                                         sequencingProperty,
+                                         sequencingOrder,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         effectiveTime,
+                                         startFrom,
+                                         pageSize);
+    }
+
+
+    /**
      * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
      *
      * @param userId                     caller's userId
@@ -1106,6 +1927,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param searchProperties           Optional list of entity property conditions to match.
      * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
      *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime                   Requests a historical query of the entity.  Null means return the present values.
      * @param matchClassifications       Optional list of classifications to match.
      * @param sequencingProperty         String name of the property that is to be used to sequence the results.
      *                                   Null means do not sequence on a property name (see SequencingOrder).
@@ -1128,6 +1950,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           List<String>          metadataElementSubtypeNames,
                                                           SearchProperties      searchProperties,
                                                           List<ElementStatus>   limitResultsByStatus,
+                                                          Date                  asOfTime,
                                                           SearchClassifications matchClassifications,
                                                           String                sequencingProperty,
                                                           SequencingOrder       sequencingOrder,
@@ -1152,7 +1975,17 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setMatchClassifications(matchClassifications);
         requestBody.setSequencingProperty(sequencingProperty);
-        requestBody.setSequencingOrder(sequencingOrder);
+
+        if (sequencingOrder == null)
+        {
+            requestBody.setSequencingOrder(SequencingOrder.LAST_UPDATE_RECENT);
+        }
+        else
+        {
+            requestBody.setSequencingOrder(sequencingOrder);
+        }
+
+        requestBody.setAsOfTime(asOfTime);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
                                                                                                   urlTemplate,
@@ -1176,6 +2009,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param userId                 caller's userId
      * @param relationshipTypeName   relationship's type.  Null means all types
      *                               (but may be slow so not recommended).
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param searchProperties       Optional list of relationship property conditions to match.
      * @param sequencingProperty     String name of the property that is to be used to sequence the results.
      *                               Null means do not sequence on a property name (see SequencingOrder).
@@ -1193,18 +2029,20 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String           userId,
-                                                                                   String           relationshipTypeName,
-                                                                                   SearchProperties searchProperties,
-                                                                                   String           sequencingProperty,
-                                                                                   SequencingOrder  sequencingOrder,
-                                                                                   boolean          forLineage,
-                                                                                   boolean          forDuplicateProcessing,
-                                                                                   Date             effectiveTime,
-                                                                                   int              startFrom,
-                                                                                   int              pageSize) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
+                                                                                   String              relationshipTypeName,
+                                                                                   SearchProperties    searchProperties,
+                                                                                   List<ElementStatus> limitResultsByStatus,
+                                                                                   Date                asOfTime,
+                                                                                   String              sequencingProperty,
+                                                                                   SequencingOrder     sequencingOrder,
+                                                                                   boolean             forLineage,
+                                                                                   boolean             forDuplicateProcessing,
+                                                                                   Date                effectiveTime,
+                                                                                   int                 startFrom,
+                                                                                   int                 pageSize) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
@@ -1217,6 +2055,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setSearchProperties(searchProperties);
         requestBody.setSequencingProperty(sequencingProperty);
         requestBody.setSequencingOrder(sequencingOrder);
+        requestBody.setLimitResultsByStatus(limitResultsByStatus);
+        requestBody.setAsOfTime(asOfTime);
 
         RelatedMetadataElementsListResponse restResult = restClient.callRelatedMetadataElementsListPostRESTCall(methodName,
                                                                                                                 urlTemplate,
@@ -1611,7 +2451,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
-     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param replacementProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
@@ -1635,7 +2475,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
-                                                    ElementProperties              templateProperties,
+                                                    ElementProperties              replacementProperties,
                                                     Map<String, String>            placeholderProperties,
                                                     String                         parentGUID,
                                                     String                         parentRelationshipTypeName,
@@ -1668,7 +2508,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveFrom(effectiveFrom);
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setTemplateGUID(templateGUID);
-        requestBody.setTemplateProperties(templateProperties);
+        requestBody.setReplacementProperties(replacementProperties);
         requestBody.setPlaceholderPropertyValues(placeholderProperties);
         requestBody.setParentGUID(parentGUID);
         requestBody.setParentRelationshipTypeName(parentRelationshipTypeName);
@@ -1681,6 +2521,102 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                   serverName,
                                                                   serviceURLMarker,
                                                                   userId);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String getMetadataElementFromTemplate(String                         userId,
+                                                 String                         externalSourceGUID,
+                                                 String                         externalSourceName,
+                                                 String                         metadataElementTypeName,
+                                                 String                         anchorGUID,
+                                                 boolean                        isOwnAnchor,
+                                                 Date                           effectiveFrom,
+                                                 Date                           effectiveTo,
+                                                 String                         templateGUID,
+                                                 ElementProperties              replacementProperties,
+                                                 Map<String, String>            placeholderProperties,
+                                                 String                         parentGUID,
+                                                 String                         parentRelationshipTypeName,
+                                                 ElementProperties              parentRelationshipProperties,
+                                                 boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName                = "getMetadataElementFromTemplate";
+        final String templateGUIDParameterName = "templateGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/from-template?allowRetrieve={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+
+        if (parentGUID != null)
+        {
+            final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
+
+            invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+        }
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setTypeName(metadataElementTypeName);
+        requestBody.setAnchorGUID(anchorGUID);
+        requestBody.setIsOwnAnchor(isOwnAnchor);
+        requestBody.setEffectiveFrom(effectiveFrom);
+        requestBody.setEffectiveTo(effectiveTo);
+        requestBody.setTemplateGUID(templateGUID);
+        requestBody.setReplacementProperties(replacementProperties);
+        requestBody.setPlaceholderPropertyValues(placeholderProperties);
+        requestBody.setParentGUID(parentGUID);
+        requestBody.setParentRelationshipTypeName(parentRelationshipTypeName);
+        requestBody.setParentRelationshipProperties(parentRelationshipProperties);
+        requestBody.setParentAtEnd1(parentAtEnd1);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId,
+                                                                  true);
 
         return restResult.getGUID();
     }
@@ -2975,7 +3911,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
-     * @return unique identifier of the first engine action of the process
+     * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
@@ -3093,7 +4029,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
-     * @param assignTo qualified name of the Actor element for the recipient
+     * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param originatorGUID unique identifier of the source of the to do
      * @param actionTargets the list of elements that should be acted upon
@@ -3113,7 +4049,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                            int                   priority,
                            Date                  dueDate,
                            Map<String, String>   additionalProperties,
-                           String                assignTo,
+                           String                assignToGUID,
                            String                sponsorGUID,
                            String                originatorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
@@ -3121,35 +4057,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                        PropertyServerException
     {
         final String methodName = "openToDo";
-        final String openEnumPropertyValue     = "Open";
         final String toDoQualifiedNameParameterName = "qualifiedName";
-        final String assignToParameterName          = "assignTo";
+        final String assignToParameterName          = "assignToGUID";
 
         propertyHelper.validateMandatoryName(qualifiedName, toDoQualifiedNameParameterName, methodName);
-        propertyHelper.validateMandatoryName(assignTo, assignToParameterName, methodName);
-
-
-        /*
-         * Validate that there is a person role to assign the "to do" to
-         */
-        OpenMetadataElement personRoleElement = this.getMetadataElementByUniqueName(userId,
-                                                                                    assignTo,
-                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                    false,
-                                                                                    false,
-                                                                                    new Date());
-
-        if (personRoleElement == null)
-        {
-            throw new InvalidParameterException(GAFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(qualifiedName,
-                                                                                                  toDoQualifiedNameParameterName,
-                                                                                                  methodName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                toDoQualifiedNameParameterName);
-        }
-
-        String personRoleGUID = personRoleElement.getElementGUID();
+        propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
 
 
         /*
@@ -3159,53 +4071,91 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                         qualifiedName);
 
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.NAME.name,
-                                                      title);
-
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.DESCRIPTION.name,
-                                                      instructions);
-
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
-                                                      category);
-
-        properties = propertyHelper.addDateProperty(properties,
-                                                    OpenMetadataType.DUE_TIME_PROPERTY_NAME,
-                                                    dueDate);
-
-        properties = propertyHelper.addIntProperty(properties,
-                                                   OpenMetadataType.PRIORITY_PROPERTY_NAME,
-                                                   priority);
-
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, title);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, instructions);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.TO_DO_TYPE.name, category);
+        properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.DUE_TIME.name, dueDate);
+        properties = propertyHelper.addIntProperty(properties, OpenMetadataProperty.PRIORITY.name, priority);
         properties = propertyHelper.addEnumProperty(properties,
                                                     OpenMetadataProperty.TO_DO_STATUS.name,
                                                     ToDoStatus.getOpenTypeName(),
-                                                    openEnumPropertyValue);
+                                                    ToDoStatus.OPEN.getName());
 
-        String todoGUID = this.createMetadataElementInStore(userId,
-                                                            OpenMetadataType.TO_DO_TYPE_NAME,
+        String toDoGUID = this.createMetadataElementInStore(userId,
+                                                            OpenMetadataType.TO_DO.typeName,
                                                             ElementStatus.ACTIVE,
                                                             null,
                                                             null,
-                                                            properties);
+                                                            false,
+                                                            null,
+                                                            null,
+                                                            properties,
+                                                            assignToGUID,
+                                                            OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                            null,
+                                                            true);
 
-        /*
-         * Link the "to do" and the person role
-         */
-        this.createRelatedElementsInStore(userId,
-                                          OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                          personRoleGUID,
-                                          todoGUID,
-                                          false,
-                                          false,
-                                          null,
-                                          null,
-                                          null,
-                                          new Date());
+        if (toDoGUID != null)
+        {
+            if (actionTargets != null)
+            {
+                for (NewActionTarget actionTarget : actionTargets)
+                {
+                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
+                    {
+                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                    actionTarget.getActionTargetName());
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                          toDoGUID,
+                                                          actionTarget.getActionTargetGUID(),
+                                                          false,
+                                                          false,
+                                                          null,
+                                                          null,
+                                                          relationshipProperties,
+                                                          null);
+                    }
+                }
+            }
 
-        return todoGUID;
+            if (sponsorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the sponsor
+                 */
+                this.createRelatedElementsInStore(userId,
+                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                  sponsorGUID,
+                                                  toDoGUID,
+                                                  false,
+                                                  false,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  new Date());
+            }
+
+            if (originatorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the originator
+                 */
+                this.createRelatedElementsInStore(userId,
+                                                  OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
+                                                  originatorGUID,
+                                                  toDoGUID,
+                                                  false,
+                                                  false,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  new Date());
+            }
+        }
+
+        return toDoGUID;
     }
 
 

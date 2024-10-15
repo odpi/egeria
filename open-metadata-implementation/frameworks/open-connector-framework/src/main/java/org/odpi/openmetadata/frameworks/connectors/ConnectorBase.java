@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
@@ -16,6 +19,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -38,13 +43,21 @@ import java.util.*;
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
  */
-public abstract class ConnectorBase extends Connector implements SecureConnectorExtension
+public abstract class ConnectorBase extends Connector implements SecureConnectorExtension,
+                                                                 VirtualConnectorExtension
 {
-    protected String                   connectorInstanceId      = null;
-    protected ConnectionProperties     connectionProperties     = null;
-    protected Connection               connectionBean           = null;
+    protected String                             connectorInstanceId      = null;
+    protected ConnectionProperties               connectionProperties     = null;
+    protected Connection                         connectionBean           = null;
     protected ConnectedAssetProperties           connectedAssetProperties = null;
     protected Map<String, SecretsStoreConnector> secretsStoreConnectorMap = new HashMap<>();
+    protected List<Connector>                    embeddedConnectors       = null;
+
+    /*
+     * For connectors to log with or without an audit log.
+     */
+    protected final MessageFormatter messageFormatter    = new MessageFormatter();
+    protected AuditLog auditLog = null;
 
     private volatile boolean           isActive                 = false;
 
@@ -88,6 +101,119 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         this.connectionBean = protectedConnection.getConnectionBean();
 
         log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
+    }
+
+
+    /**
+     * Combine the connector's configuration properties with the supplied additional configuration
+     * properties into a new map.
+     *
+     * @param additionalConfigurationProperties additional properties (can be null)
+     * @return combination of the connectors properties and the additional properties.  Null is returned if both are null/empty.
+     */
+    protected Map<String,Object> combineConfigurationProperties(Map<String, Object> additionalConfigurationProperties)
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        if (connectionProperties.getConfigurationProperties() != null)
+        {
+            configurationProperties.putAll(connectionProperties.getConfigurationProperties());
+        }
+
+        if (additionalConfigurationProperties != null)
+        {
+            configurationProperties.putAll(additionalConfigurationProperties);
+        }
+
+        if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     *
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param actionDescription calling method
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(actionDescription, messageDefinition);
+        }
+        else
+        {
+            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
+        }
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     *
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param actionDescription calling method
+     */
+    protected void logRecord(String                    actionDescription,
+                             AuditLogMessageDefinition messageDefinition,
+                             String                    additionalInformation)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(actionDescription, messageDefinition, additionalInformation);
+        }
+        else
+        {
+            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
+            System.out.println(additionalInformation);
+        }
+    }
+
+
+    /**
+     * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
+     *
+     * @param messageDefinition description of the audit log record including specific resources involved
+     * @param actionDescription calling method
+     */
+    protected void logExceptionRecord(String                    actionDescription,
+                                      AuditLogMessageDefinition messageDefinition,
+                                      Throwable                 exception)
+    {
+        if (auditLog != null)
+        {
+            auditLog.logException(actionDescription, messageDefinition, exception);
+        }
+        else
+        {
+            System.out.println(messageDefinition.getSeverity().getName() + " " + messageFormatter.getFormattedMessage(messageDefinition));
+
+            StringWriter stackTrace = new StringWriter();
+            exception.printStackTrace(new PrintWriter(stackTrace));
+
+            System.out.println(stackTrace);
+        }
+    }
+
+
+    /**
+     * Set up the list of connectors that this virtual connector will use to support its interface.
+     * The connectors are initialized waiting to start.  When start() is called on the
+     * virtual connector, it needs to pass start() to each of the embedded connectors.
+     * Similar processing is needed for the disconnect() method.
+     *
+     * @param embeddedConnectors list of connectors
+     */
+    @Override
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -184,9 +310,9 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
-        isActive = true;
+        setIsActive(true);
     }
 
 
@@ -303,6 +429,33 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         }
 
         return 0;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is an integer.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return integer value or zero if not supplied
+     */
+    protected long getLongConfigurationProperty(String              propertyName,
+                                                Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(propertyName) != null)
+            {
+                Object integerOption = configurationProperties.get(propertyName);
+
+                if (integerOption != null)
+                {
+                    return Long.parseLong(integerOption.toString());
+                }
+            }
+        }
+
+        return 0L;
     }
 
 
@@ -556,9 +709,10 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
-        isActive = false;
+        setIsActive(false);
+        disconnectConnectors(embeddedConnectors);
     }
 
 
@@ -599,6 +753,17 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     public synchronized boolean isActive()
     {
         return isActive;
+    }
+
+
+    /**
+     * Set up the is active flag.
+     *
+     * @param flag value
+     */
+    private synchronized void setIsActive(boolean flag)
+    {
+        this.isActive = flag;
     }
 
 
@@ -654,7 +819,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
                 ", connectionProperties=" + connectionProperties +
                 ", connectedAssetProperties=" + connectedAssetProperties +
-                ", isActive=" + isActive +
+                ", isActive=" + isActive() +
                 ", hashCode=" + hashCode +
                 '}';
     }

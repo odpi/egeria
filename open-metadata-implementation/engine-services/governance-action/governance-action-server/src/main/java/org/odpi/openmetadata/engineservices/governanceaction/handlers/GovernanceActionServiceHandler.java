@@ -11,15 +11,14 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GovernanceActionServiceHandler provides the thread to run a governance action service.  A new instance is created for each request.
@@ -94,12 +93,12 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GeneralGovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
-        final String genericGovernanceActionServiceType      = "GeneralGovernanceActionService";
-        final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceActionService";
-        final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceActionService";
-        final String verificationGovernanceActionServiceType = "VerificationGovernanceActionService";
-        final String triageGovernanceActionServiceType       = "TriageGovernanceActionService";
-        final String remediationGovernanceActionServiceType  = "RemediationGovernanceActionService";
+        final String genericGovernanceActionServiceType      = "General";
+        final String watchdogGovernanceActionServiceType     = "Watchdog";
+        final String provisioningGovernanceActionServiceType = "Provisioning";
+        final String verificationGovernanceActionServiceType = "Verification";
+        final String triageGovernanceActionServiceType       = "Triage";
+        final String remediationGovernanceActionServiceType  = "Remediation";
 
         try
         {
@@ -278,7 +277,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 if (completionStatus == null)
                 {
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
+                    governanceContext.recordCompletionStatus(Guard.SERVICE_FAILED.getCompletionStatus(), Collections.singletonList(Guard.SERVICE_FAILED.getName()), null, null, error.getMessage());
                     super.disconnect();
                 }
             }

@@ -22,6 +22,21 @@ public enum SurveyActionTarget
                   OpenMetadataType.SURVEY_REPORT.typeName,
                   null),
 
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    STEWARD("steward",
+            "The person, or team who is responsible for setting up the governance metadata associated with .",
+            OpenMetadataType.ACTOR.typeName,
+            null),
+
+    /**
+     * To Do element created for the steward.
+     */
+    TO_DO_ELEMENT("stewardAction",
+                  "To Do element created for the steward.",
+                  OpenMetadataType.TO_DO.typeName,
+                  null),
     ;
 
 
@@ -63,6 +78,51 @@ public enum SurveyActionTarget
         this.deployedImplementationType = deployedImplementationType;
     }
 
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getStewardshipReviewActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(STEWARD.getActionTargetType());
+        actionTargetTypes.add(SURVEY_REPORT.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getStewardshipHandoverActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(TO_DO_ELEMENT.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getReportActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(SURVEY_REPORT.getActionTargetType());
+
+        return actionTargetTypes;
+    }
 
     /**
      * Return all the action targets defined in this enum.

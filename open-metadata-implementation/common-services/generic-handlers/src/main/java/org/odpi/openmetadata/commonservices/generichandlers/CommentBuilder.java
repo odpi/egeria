@@ -86,7 +86,7 @@ public class CommentBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.COMMENT_TEXT_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TEXT.name,
                                                                   commentText,
                                                                   methodName);
 

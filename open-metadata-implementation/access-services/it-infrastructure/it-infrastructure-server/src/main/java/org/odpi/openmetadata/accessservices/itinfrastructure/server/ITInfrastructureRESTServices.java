@@ -3265,9 +3265,9 @@ public class ITInfrastructureRESTServices
                     instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     instanceProperties,
                                                                                     OpenMetadataProperty.USE_TYPE.name,
-                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                    properties.getUseType().getOpenTypeOrdinal(),
+                                                                                    ServerAssetUseType.getOpenTypeGUID(),
+                                                                                    ServerAssetUseType.getOpenTypeName(),
+                                                                                    properties.getUseType().getOrdinal(),
                                                                                     methodName);
                 }
                 catch (TypeErrorException error)
@@ -3806,7 +3806,7 @@ public class ITInfrastructureRESTServices
         }
         else
         {
-            if (requestedUseType.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
+            if (requestedUseType.getOrdinal() == propertyUseTypeOrdinal)
             {
                 matchingUseType = true;
             }
@@ -3873,7 +3873,7 @@ public class ITInfrastructureRESTServices
 
                             for (ServerAssetUseType useTypeValue : ServerAssetUseType.values())
                             {
-                                if (useTypeValue.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
+                                if (useTypeValue.getOrdinal() == propertyUseTypeOrdinal)
                                 {
                                     properties.setUseType(useTypeValue);
                                 }

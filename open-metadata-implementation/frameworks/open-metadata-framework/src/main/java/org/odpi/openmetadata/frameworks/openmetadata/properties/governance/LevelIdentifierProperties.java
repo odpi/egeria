@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -100,8 +102,37 @@ public class LevelIdentifierProperties extends FindProperties
     public String toString()
     {
         return "LevelIdentifierProperties{" +
-                       "returnSpecificLevel=" + returnSpecificLevel +
-                       ", levelIdentifier=" + levelIdentifier +
-                       '}';
+                "returnSpecificLevel=" + returnSpecificLevel +
+                ", levelIdentifier=" + levelIdentifier +
+                "} " + super.toString();
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        LevelIdentifierProperties that = (LevelIdentifierProperties) objectToCompare;
+        return returnSpecificLevel == that.returnSpecificLevel && levelIdentifier == that.levelIdentifier;
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), returnSpecificLevel, levelIdentifier);
     }
 }

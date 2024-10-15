@@ -8,10 +8,10 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 
 public class CocoClinicalTrialHospitalOnboardingProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "c6186776-aef8-4444-8a88-d613a5867177";
+    private static final String  connectorTypeGUID = "a2963773-e3e3-4d46-92c9-cb836f71a751";
     private static final String  connectorTypeQualifiedName = "CocoPharmaceuticals:GovernanceActionService:ClinicalTrial:OnboardHospital";
     private static final String  connectorTypeDisplayName = "Clinical Trial Hospital Onboarding Governance Action Service";
-    private static final String  connectorTypeDescription = "Sets up the data onboarding mechanisms for a new hospital joining a clinical trial.";
+    private static final String  connectorTypeDescription = "Sets up the landing area for data from a hospital as part of a clinical trial, along with the pipeline that catalogued the data and moved it into the data lake.  The aim is that the data is moved from the landing area as soon as possible.";
 
     private static final String connectorClassName = CocoClinicalTrialHospitalOnboardingService.class.getName();
 
@@ -25,7 +25,8 @@ public class CocoClinicalTrialHospitalOnboardingProvider extends GovernanceActio
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedActionTargetTypes = CocoClinicalTrialActionTarget.getHospitalActionTargetTypes();
+        supportedActionTargetTypes = CocoClinicalTrialActionTarget.getHospitalOnboardingActionTargetTypes();
+        supportedRequestParameters = CocoClinicalTrialRequestParameter.getHospitalOnboardingRequestParameterTypes();
 
         producedGuards = CocoClinicalTrialGuard.getGuardTypes();
 

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.analytics.connector;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
@@ -26,6 +27,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
@@ -42,6 +44,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
                                       OpenIntegrationClient        openIntegrationClient,
                                       GovernanceConfiguration      governanceConfiguration,
                                       OpenMetadataClient           openMetadataStoreClient,
+                                      ActionControlInterface       actionControlInterface,
                                       boolean                      generateIntegrationReport,
                                       PermittedSynchronization     permittedSynchronization,
                                       String                       integrationConnectorGUID,
@@ -57,6 +60,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,

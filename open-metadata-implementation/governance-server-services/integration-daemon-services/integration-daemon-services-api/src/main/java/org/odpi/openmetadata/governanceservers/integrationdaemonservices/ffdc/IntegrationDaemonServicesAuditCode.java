@@ -330,7 +330,7 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
      * INTEGRATION-DAEMON-SERVICES-0028 - Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}
      */
     INTEGRATION_GROUP_NO_CONFIG("INTEGRATION-DAEMON-SERVICES-0028",
-                                AuditLogRecordSeverityLevel.ERROR,
+                                AuditLogRecordSeverityLevel.INFO,
                                 "Failed to refresh configuration for integration group {0}.  The exception was {1} with error message {2}",
                                 "The integration group is unable to process any integration connector requests until its configuration can be retrieved.",
                                 "Review the error messages and resolve the cause of the problem.  " +

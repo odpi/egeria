@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.analytics.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datascience.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.accessservices.datascience.client.OpenGovernanceClient;
 import org.odpi.openmetadata.accessservices.datascience.client.OpenIntegrationServiceClient;
 import org.odpi.openmetadata.accessservices.datascience.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -77,6 +78,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
     {
         super.openIntegrationClient   = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.actionControlInterface = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
     }
 
@@ -151,6 +153,7 @@ public class AnalyticsIntegratorContextManager extends IntegrationContextManager
                                                                                           openIntegrationClient,
                                                                                           governanceConfiguration,
                                                                                           openMetadataStoreClient,
+                                                                                          actionControlInterface,
                                                                                           generateIntegrationReport,
                                                                                           permittedSynchronization,
                                                                                           integrationConnectorGUID,

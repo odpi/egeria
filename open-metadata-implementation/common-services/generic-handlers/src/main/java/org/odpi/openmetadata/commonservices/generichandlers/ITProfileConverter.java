@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactMethodProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
@@ -109,7 +108,7 @@ public class ITProfileConverter<B> extends OMFConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY.typeName))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
@@ -179,7 +178,7 @@ public class ITProfileConverter<B> extends OMFConverter<B>
                             {
                                 String relationshipTypeName = relationship.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -187,7 +186,7 @@ public class ITProfileConverter<B> extends OMFConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

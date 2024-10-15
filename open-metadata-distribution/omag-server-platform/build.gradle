@@ -22,6 +22,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-jdbc-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
@@ -36,7 +37,6 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
@@ -44,9 +44,9 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
@@ -56,8 +56,8 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
@@ -85,7 +85,6 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
-    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
@@ -105,6 +104,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
+    implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
 }
 
 distributions {
@@ -165,6 +165,11 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/platform" }
                 fileMode = 0755
             }
+            into('assembly/platform/loading-bay/secrets') {
+                // Identify how the platform is started
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/secrets" }
+                fileMode = 0755
+            }
             into('assembly/platform/data') {
                 // Describe the data files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
@@ -190,6 +195,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-jdbc-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').jar }
@@ -207,25 +213,27 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:governance-action-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:yaml-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors').jar }
+                from { project(':open-metadata-resources:open-metadata-reports:report-utilities').jar }
                 fileMode = 0755
             }
             into('assembly/platform/extra') {

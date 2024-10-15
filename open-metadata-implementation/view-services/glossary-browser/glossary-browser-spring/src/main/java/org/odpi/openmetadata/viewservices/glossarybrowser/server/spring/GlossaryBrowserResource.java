@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ElementStubsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesRequestBody;
@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/api/open-metadata/glossary-browser")
 
 @Tag(name="API: Glossary Browser OMVS",
-     description="Explore the contents of a glossary, such as its top-level glossary element, glossary categories and glossary terms, along with the elements that are linked to the terms, such assets.  Each operation includes optional forLineage and forDuplicateProcessing request parameters and an optional request body that includes an effective time field.  These affect the elements that are returned on the query.",
-     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/glossary-browser/overview/"))
+        description="Explore the contents of a glossary, such as its top-level glossary element, glossary categories and glossary terms, along with the elements that are linked to the terms, such assets.  Each operation includes optional forLineage and forDuplicateProcessing request parameters and an optional request body that includes an effective time field.  These affect the elements that are returned on the query.",
+        externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/glossary-browser/overview/"))
 
 public class GlossaryBrowserResource
 {
@@ -56,9 +56,9 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/status-list")
 
     @Operation(summary="getGlossaryTermStatuses",
-               description="Return the list of glossary term status enum values.  These values are used in a glossary workflow to describe the state of the content of the term.",
-               externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
-                                                   url="https://egeria-project.org/services/omvs/glossary-manager/overview/#controlled-glossary-terms"))
+            description="Return the list of glossary term status enum values.  These values are used in a glossary workflow to describe the state of the content of the term.",
+            externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/#controlled-glossary-terms"))
 
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName)
@@ -76,9 +76,9 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
     @Operation(summary="getGlossaryTermRelationshipStatuses",
-               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted.",
-               externalDocs=@ExternalDocumentation(description="Relationship statuses",
-                                                   url="https://egeria-project.org/services/omvs/glossary-manager/overview/#relationship-statuses"))
+            description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted.",
+            externalDocs=@ExternalDocumentation(description="Relationship statuses",
+                    url="https://egeria-project.org/services/omvs/glossary-manager/overview/#relationship-statuses"))
 
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName)
     {
@@ -95,9 +95,9 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/activity-types")
 
     @Operation(summary="getGlossaryTermActivityTypes",
-               description="Return the list of glossary term activity type enum values.  These values are used in the ActivityDescription classification that is attached to a glossary term that represents some type of activity.",
-               externalDocs=@ExternalDocumentation(description="Activity description",
-                                                   url="https://egeria-project.org/types/3/0340-Dictionary/#activitydescription"))
+            description="Return the list of glossary term activity type enum values.  These values are used in the ActivityDescription classification that is attached to a glossary term that represents some type of activity.",
+            externalDocs=@ExternalDocumentation(description="Activity description",
+                    url="https://egeria-project.org/types/3/0340-Dictionary/#activitydescription"))
 
     public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName)
     {
@@ -126,23 +126,23 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/by-search-string")
 
     @Operation(summary="findGlossaries",
-               description="Retrieve the list of glossary metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.",
-               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+            description="Retrieve the list of glossary metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.",
+            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                    url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public GlossaryElementsResponse findGlossaries(@PathVariable String                          serverName,
                                                    @RequestParam int                             startFrom,
                                                    @RequestParam int                             pageSize,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                        startsWith,
+                                                   boolean                        startsWith,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                        endsWith,
+                                                   boolean                        endsWith,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                        ignoreCase,
+                                                   boolean                        ignoreCase,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                        forLineage,
+                                                   boolean                        forLineage,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                        forDuplicateProcessing,
+                                                   boolean                        forDuplicateProcessing,
                                                    @RequestBody  SearchStringRequestBody        requestBody)
     {
         return restAPI.findGlossaries(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
@@ -168,17 +168,17 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/by-name")
 
     @Operation(summary="getGlossariesByName",
-               description="Retrieve the list of glossary metadata elements with an exactly matching qualified or display name. There are no wildcards supported on this request.",
-               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
-    
+            description="Retrieve the list of glossary metadata elements with an exactly matching qualified or display name. There are no wildcards supported on this request.",
+            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                    url="https://egeria-project.org/types/3/0310-Glossary/"))
+
     public GlossaryElementsResponse   getGlossariesByName(@PathVariable String                  serverName,
                                                           @RequestParam int                     startFrom,
                                                           @RequestParam int                     pageSize,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                 forLineage,
+                                                          boolean                 forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                 forDuplicateProcessing,
+                                                          boolean                 forDuplicateProcessing,
                                                           @RequestBody  NameRequestBody         requestBody)
     {
         return restAPI.getGlossariesByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
@@ -202,18 +202,18 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/retrieve")
 
     @Operation(summary="getGlossaryByGUID",
-               description="Retrieve the glossary metadata element with the supplied unique identifier.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
-               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+            description="Retrieve the glossary metadata element with the supplied unique identifier.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
+            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                    url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public GlossaryElementResponse getGlossaryByGUID(@PathVariable String                        serverName,
                                                      @PathVariable String                        glossaryGUID,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                       forLineage,
+                                                     boolean                       forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                       forDuplicateProcessing,
+                                                     boolean                       forDuplicateProcessing,
                                                      @RequestBody(required = false)
-                                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryByGUID(serverName, glossaryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -236,18 +236,18 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/for-category/{glossaryCategoryGUID}/retrieve")
 
     @Operation(summary="getGlossaryForCategory",
-               description="Retrieve the glossary metadata element for the requested category.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
-               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+            description="Retrieve the glossary metadata element for the requested category.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
+            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                    url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public GlossaryElementResponse getGlossaryForCategory(@PathVariable String                        serverName,
                                                           @PathVariable String                        glossaryCategoryGUID,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                       forLineage,
+                                                          boolean                       forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                       forDuplicateProcessing,
+                                                          boolean                       forDuplicateProcessing,
                                                           @RequestBody(required = false)
-                                                                        EffectiveTimeQueryRequestBody requestBody)
+                                                          EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryForCategory(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -270,23 +270,23 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/for-term/{glossaryTermGUID}/retrieve")
 
     @Operation(summary="getGlossaryForTerm",
-               description="Retrieve the glossary metadata element for the requested term.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
-               externalDocs=@ExternalDocumentation(description="Glossary metadata element",
-                                                   url="https://egeria-project.org/types/3/0310-Glossary/"))
+            description="Retrieve the glossary metadata element for the requested term.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
+            externalDocs=@ExternalDocumentation(description="Glossary metadata element",
+                    url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public GlossaryElementResponse getGlossaryForTerm(@PathVariable String                        serverName,
                                                       @PathVariable String                        glossaryTermGUID,
                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                    boolean                       forLineage,
+                                                      boolean                       forLineage,
                                                       @RequestParam (required = false, defaultValue = "false")
-                                                                    boolean                       forDuplicateProcessing,
+                                                      boolean                       forDuplicateProcessing,
                                                       @RequestBody(required = false)
-                                                                    EffectiveTimeQueryRequestBody requestBody)
+                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryForTerm(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
-    
+
     /**
      * Retrieve the list of glossary category metadata elements that contain the search string.
      *
@@ -308,25 +308,25 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/categories/by-search-string")
 
     @Operation(summary="findGlossaryCategories",
-               description="Retrieve the list of glossary category metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Retrieve the list of glossary category metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementsResponse findGlossaryCategories(@PathVariable String                          serverName,
                                                                    @RequestParam (required = false, defaultValue = "0")
-                                                                                 int                             startFrom,
+                                                                   int                             startFrom,
                                                                    @RequestParam (required = false, defaultValue = "0")
-                                                                                 int                             pageSize,
+                                                                   int                             pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                         startsWith,
+                                                                   boolean                         startsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                         endsWith,
+                                                                   boolean                         endsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                         ignoreCase,
+                                                                   boolean                         ignoreCase,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                         forLineage,
+                                                                   boolean                         forLineage,
                                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                                 boolean                         forDuplicateProcessing,
+                                                                   boolean                         forDuplicateProcessing,
                                                                    @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
         return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
@@ -352,22 +352,22 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/categories/retrieve")
 
     @Operation(summary="getCategoriesForGlossary",
-               description="Return the list of categories associated with a glossary.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Return the list of categories associated with a glossary.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementsResponse getCategoriesForGlossary(@PathVariable String                             serverName,
                                                                      @PathVariable String                             glossaryGUID,
                                                                      @RequestParam (required = false, defaultValue = "0")
-                                                                                   int                                startFrom,
+                                                                     int                                startFrom,
                                                                      @RequestParam (required = false, defaultValue = "0")
-                                                                                   int                                pageSize,
+                                                                     int                                pageSize,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                            forLineage,
+                                                                     boolean                            forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                            forDuplicateProcessing,
+                                                                     boolean                            forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   EffectiveTimeQueryRequestBody      requestBody)
+                                                                     EffectiveTimeQueryRequestBody      requestBody)
     {
         return restAPI.getCategoriesForGlossary(serverName, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -392,22 +392,22 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/categories/retrieve")
 
     @Operation(summary="getCategoriesForTerm",
-               description="Return the list of categories associated with a term.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Return the list of categories associated with a term.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementsResponse getCategoriesForTerm(@PathVariable String                             serverName,
                                                                  @PathVariable String                             glossaryTermGUID,
                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                               int                                startFrom,
+                                                                 int                                startFrom,
                                                                  @RequestParam (required = false, defaultValue = "0")
-                                                                               int                                pageSize,
+                                                                 int                                pageSize,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                            forLineage,
+                                                                 boolean                            forLineage,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                            forDuplicateProcessing,
+                                                                 boolean                            forDuplicateProcessing,
                                                                  @RequestBody(required = false)
-                                                                               EffectiveTimeQueryRequestBody      requestBody)
+                                                                 EffectiveTimeQueryRequestBody      requestBody)
     {
         return restAPI.getCategoriesForTerm(serverName, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -432,17 +432,17 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/categories/by-name")
 
     @Operation(summary="getGlossaryCategoriesByName",
-               description="Retrieve the list of glossary category metadata elements that either have the requested qualified name or display name.  The name to search for is located in the request body and is interpreted as a plain string.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Retrieve the list of glossary category metadata elements that either have the requested qualified name or display name.  The name to search for is located in the request body and is interpreted as a plain string.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(@PathVariable String                  serverName,
                                                                           @RequestParam int                     startFrom,
                                                                           @RequestParam int                     pageSize,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                        boolean                 forLineage,
+                                                                          boolean                 forLineage,
                                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                                        boolean                 forDuplicateProcessing,
+                                                                          boolean                 forDuplicateProcessing,
                                                                           @RequestBody  GlossaryNameRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoriesByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
@@ -466,18 +466,18 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/retrieve")
 
     @Operation(summary="getGlossaryCategoryByGUID",
-               description="Retrieve the requested glossary category metadata element.  The optional request body contain an effective time for the query.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Retrieve the requested glossary category metadata element.  The optional request body contain an effective time for the query.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(@PathVariable String                             serverName,
                                                                      @PathVariable String                             glossaryCategoryGUID,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forLineage,
+                                                                     boolean                      forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forDuplicateProcessing,
+                                                                     boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoryByGUID(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -501,18 +501,18 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/parent/retrieve")
 
     @Operation(summary="getGlossaryCategoryParent",
-               description="Glossary categories can be organized in a hierarchy. Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the requested category does not have a parent category, null is returned.  The optional request body contain an effective time for the query.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Glossary categories can be organized in a hierarchy. Retrieve the parent glossary category metadata element for the glossary category with the supplied unique identifier.  If the requested category does not have a parent category, null is returned.  The optional request body contain an effective time for the query.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementResponse getGlossaryCategoryParent(@PathVariable String                        serverName,
                                                                      @PathVariable String                        glossaryCategoryGUID,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                       forLineage,
+                                                                     boolean                       forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                       forDuplicateProcessing,
+                                                                     boolean                       forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryCategoryParent(serverName, glossaryCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -537,20 +537,20 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/subcategories/retrieve")
 
     @Operation(summary="getGlossarySubCategories",
-               description="Glossary categories can be organized in a hierarchy. Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.  If the requested category does not have any subcategories, null is returned.  The optional request body contain an effective time for the query.",
-               externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
-                                                   url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
+            description="Glossary categories can be organized in a hierarchy. Retrieve the subcategories for the glossary category metadata element with the supplied unique identifier.  If the requested category does not have any subcategories, null is returned.  The optional request body contain an effective time for the query.",
+            externalDocs=@ExternalDocumentation(description="Glossary category metadata element",
+                    url="https://egeria-project.org/types/3/0320-Category-Hierarchy/"))
 
     public GlossaryCategoryElementsResponse getGlossarySubCategories(@PathVariable String                             serverName,
                                                                      @PathVariable String                             glossaryCategoryGUID,
                                                                      @RequestParam int                                startFrom,
                                                                      @RequestParam int                                pageSize,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forLineage,
+                                                                     boolean                      forLineage,
                                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                                   boolean                      forDuplicateProcessing,
+                                                                     boolean                      forDuplicateProcessing,
                                                                      @RequestBody(required = false)
-                                                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossarySubCategories(serverName, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -578,23 +578,23 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/terms/by-search-string")
 
     @Operation(summary="findGlossaryTerms",
-               description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
-               externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
-                                                   url="https://egeria-project.org/types/3/0330-Terms/"))
+            description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+            externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
+                    url="https://egeria-project.org/types/3/0330-Terms/"))
 
     public GlossaryTermElementsResponse findGlossaryTerms(@PathVariable String                          serverName,
                                                           @RequestParam int                             startFrom,
                                                           @RequestParam int                             pageSize,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                         startsWith,
+                                                          boolean                         startsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                         endsWith,
+                                                          boolean                         endsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                         ignoreCase,
+                                                          boolean                         ignoreCase,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                         forLineage,
+                                                          boolean                         forLineage,
                                                           @RequestParam (required = false, defaultValue = "false")
-                                                                        boolean                         forDuplicateProcessing,
+                                                          boolean                         forDuplicateProcessing,
                                                           @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
         return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
@@ -620,20 +620,20 @@ public class GlossaryBrowserResource
     @PostMapping(path = "/glossaries/{glossaryGUID}/terms/retrieve")
 
     @Operation(summary="getTermsForGlossary",
-               description="Retrieve the list of glossary terms associated with a glossary.  The request body also supports the specification of an effective time for the query.",
-               externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
-                                                   url="https://egeria-project.org/types/3/0330-Terms/"))
+            description="Retrieve the list of glossary terms associated with a glossary.  The request body also supports the specification of an effective time for the query.",
+            externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
+                    url="https://egeria-project.org/types/3/0330-Terms/"))
 
     public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                        serverName,
                                                             @PathVariable String                        glossaryGUID,
                                                             @RequestParam int                           startFrom,
                                                             @RequestParam int                           pageSize,
                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forLineage,
+                                                            boolean                       forLineage,
                                                             @RequestParam (required = false, defaultValue = "false")
-                                                                          boolean                       forDuplicateProcessing,
+                                                            boolean                       forDuplicateProcessing,
                                                             @RequestBody(required = false)
-                                                                          EffectiveTimeQueryRequestBody requestBody)
+                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getTermsForGlossary(serverName, glossaryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -662,11 +662,11 @@ public class GlossaryBrowserResource
                                                                     @RequestParam int                                 startFrom,
                                                                     @RequestParam int                                 pageSize,
                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                                  boolean                             forLineage,
+                                                                    boolean                             forLineage,
                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                                  boolean                             forDuplicateProcessing,
+                                                                    boolean                             forDuplicateProcessing,
                                                                     @RequestBody(required = false)
-                                                                                  GlossaryTermRelationshipRequestBody requestBody)
+                                                                    GlossaryTermRelationshipRequestBody requestBody)
     {
         return restAPI.getTermsForGlossaryCategory(serverName, glossaryCategoryGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -695,11 +695,11 @@ public class GlossaryBrowserResource
                                                         @RequestParam int                                 startFrom,
                                                         @RequestParam int                                 pageSize,
                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean                             forLineage,
+                                                        boolean                             forLineage,
                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                      boolean                             forDuplicateProcessing,
+                                                        boolean                             forDuplicateProcessing,
                                                         @RequestBody(required = false)
-                                                                      GlossaryTermRelationshipRequestBody requestBody)
+                                                        GlossaryTermRelationshipRequestBody requestBody)
     {
         return restAPI.getRelatedTerms(serverName, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -727,9 +727,9 @@ public class GlossaryBrowserResource
                                                                  @RequestParam int                     startFrom,
                                                                  @RequestParam int                     pageSize,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                 forLineage,
+                                                                 boolean                 forLineage,
                                                                  @RequestParam (required = false, defaultValue = "false")
-                                                                               boolean                 forDuplicateProcessing,
+                                                                 boolean                 forDuplicateProcessing,
                                                                  @RequestBody  GlossaryNameRequestBody requestBody)
     {
         return restAPI.getGlossaryTermsByName(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
@@ -755,11 +755,11 @@ public class GlossaryBrowserResource
     public GlossaryTermElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                              @PathVariable String                             glossaryTermGUID,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forLineage,
+                                                             boolean                      forLineage,
                                                              @RequestParam (required = false, defaultValue = "false")
-                                                                           boolean                      forDuplicateProcessing,
+                                                             boolean                      forDuplicateProcessing,
                                                              @RequestBody(required = false)
-                                                                           EffectiveTimeQueryRequestBody requestBody)
+                                                             EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -790,13 +790,13 @@ public class GlossaryBrowserResource
                                                                @RequestParam int                    startFrom,
                                                                @RequestParam int                    pageSize,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                             boolean                oldestFirst,
+                                                               boolean                oldestFirst,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                             boolean                forLineage,
+                                                               boolean                forLineage,
                                                                @RequestParam (required = false, defaultValue = "false")
-                                                                             boolean                forDuplicateProcessing,
+                                                               boolean                forDuplicateProcessing,
                                                                @RequestBody(required = false)
-                                                                             HistoryRequestBody     requestBody)
+                                                               HistoryRequestBody     requestBody)
     {
         return restAPI.getGlossaryTermHistory(serverName, glossaryTermGUID, startFrom, pageSize, oldestFirst, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -852,17 +852,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-confidence")
 
-    public ElementStubsResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
-                                                                @RequestParam(required = false, defaultValue = "0")
-                                                                int                         startFrom,
-                                                                @RequestParam(required = false, defaultValue = "0")
-                                                                int                         pageSize,
-                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                boolean                     forLineage,
-                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                boolean                     forDuplicateProcessing,
-                                                                @RequestBody(required = false)
-                                                                FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
+                                                                            @RequestParam(required = false, defaultValue = "0")
+                                                                            int                         startFrom,
+                                                                            @RequestParam(required = false, defaultValue = "0")
+                                                                            int                         pageSize,
+                                                                            @RequestParam(required = false, defaultValue = "false")
+                                                                            boolean                     forLineage,
+                                                                            @RequestParam(required = false, defaultValue = "false")
+                                                                            boolean                     forDuplicateProcessing,
+                                                                            @RequestBody(required = false)
+                                                                            FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getConfidenceClassifiedElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -885,17 +885,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-criticality")
 
-    public ElementStubsResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
-                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                 int                         startFrom,
-                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                 int                         pageSize,
-                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                     forLineage,
-                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                     forDuplicateProcessing,
-                                                                 @RequestBody(required = false)
-                                                                 FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
+                                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                             int                         startFrom,
+                                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                             int                         pageSize,
+                                                                             @RequestParam(required = false, defaultValue = "false")
+                                                                             boolean                     forLineage,
+                                                                             @RequestParam(required = false, defaultValue = "false")
+                                                                             boolean                     forDuplicateProcessing,
+                                                                             @RequestBody(required = false)
+                                                                             FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getCriticalityClassifiedElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -918,17 +918,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-confidentiality")
 
-    public ElementStubsResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
-                                                                     @RequestParam(required = false, defaultValue = "0")
-                                                                     int                         startFrom,
-                                                                     @RequestParam(required = false, defaultValue = "0")
-                                                                     int                         pageSize,
-                                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                     forLineage,
-                                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                     forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
+                                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                                 int                         startFrom,
+                                                                                 @RequestParam(required = false, defaultValue = "0")
+                                                                                 int                         pageSize,
+                                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                                 boolean                     forLineage,
+                                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                                 boolean                     forDuplicateProcessing,
+                                                                                 @RequestBody(required = false)
+                                                                                 FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getConfidentialityClassifiedElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -951,17 +951,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-retention")
 
-    public ElementStubsResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         startFrom,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         pageSize,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forLineage,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forDuplicateProcessing,
-                                                               @RequestBody(required = false)
-                                                               FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
+                                                                           @RequestParam(required = false, defaultValue = "0")
+                                                                           int                         startFrom,
+                                                                           @RequestParam(required = false, defaultValue = "0")
+                                                                           int                         pageSize,
+                                                                           @RequestParam(required = false, defaultValue = "false")
+                                                                           boolean                     forLineage,
+                                                                           @RequestParam(required = false, defaultValue = "false")
+                                                                           boolean                     forDuplicateProcessing,
+                                                                           @RequestBody(required = false)
+                                                                           FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getRetentionClassifiedElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -984,17 +984,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-security-tags")
 
-    public ElementStubsResponse getSecurityTaggedElements(@PathVariable String                      serverName,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int                         startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int                         pageSize,
-                                                          @RequestParam(required = false, defaultValue = "false")
-                                                          boolean                     forLineage,
-                                                          @RequestParam(required = false, defaultValue = "false")
-                                                          boolean                     forDuplicateProcessing,
-                                                          @RequestBody(required = false)
-                                                          FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getSecurityTaggedElements(@PathVariable String                      serverName,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                         startFrom,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                         pageSize,
+                                                                      @RequestParam(required = false, defaultValue = "false")
+                                                                      boolean                     forLineage,
+                                                                      @RequestParam(required = false, defaultValue = "false")
+                                                                      boolean                     forDuplicateProcessing,
+                                                                      @RequestBody(required = false)
+                                                                      FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getSecurityTaggedElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1017,17 +1017,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-ownership")
 
-    public ElementStubsResponse getOwnersElements(@PathVariable String                      serverName,
-                                                  @RequestParam(required = false, defaultValue = "0")
-                                                  int                         startFrom,
-                                                  @RequestParam(required = false, defaultValue = "0")
-                                                  int                         pageSize,
-                                                  @RequestParam(required = false, defaultValue = "false")
-                                                  boolean                     forLineage,
-                                                  @RequestParam(required = false, defaultValue = "false")
-                                                  boolean                     forDuplicateProcessing,
-                                                  @RequestBody(required = false)
-                                                  FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getOwnersElements(@PathVariable String                      serverName,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int                         startFrom,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int                         pageSize,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean                     forLineage,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean                     forDuplicateProcessing,
+                                                              @RequestBody(required = false)
+                                                              FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getOwnersElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1050,17 +1050,17 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/by-subject-area-membership")
 
-    public ElementStubsResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                         startFrom,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                         pageSize,
-                                                        @RequestParam(required = false, defaultValue = "false")
-                                                        boolean                     forLineage,
-                                                        @RequestParam(required = false, defaultValue = "false")
-                                                        boolean                     forDuplicateProcessing,
-                                                        @RequestBody(required = false)
-                                                        FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
+                                                                    @RequestParam(required = false, defaultValue = "0")
+                                                                    int                         startFrom,
+                                                                    @RequestParam(required = false, defaultValue = "0")
+                                                                    int                         pageSize,
+                                                                    @RequestParam(required = false, defaultValue = "false")
+                                                                    boolean                     forLineage,
+                                                                    @RequestParam(required = false, defaultValue = "false")
+                                                                    boolean                     forDuplicateProcessing,
+                                                                    @RequestBody(required = false)
+                                                                    FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getMembersOfSubjectArea(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1120,18 +1120,18 @@ public class GlossaryBrowserResource
      */
     @PostMapping("/elements/by-semantic-assignment/{glossaryTermGUID}")
 
-    public RelatedElementsResponse getSemanticAssignees(@PathVariable String                        serverName,
-                                                        @PathVariable String                        glossaryTermGUID,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                         startFrom,
-                                                        @RequestParam(required = false, defaultValue = "0")
-                                                        int                         pageSize,
-                                                        @RequestParam(required = false, defaultValue = "false")
-                                                        boolean                     forLineage,
-                                                        @RequestParam(required = false, defaultValue = "false")
-                                                        boolean                     forDuplicateProcessing,
-                                                        @RequestBody(required = false)
-                                                        EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSemanticAssignees(@PathVariable String                        serverName,
+                                                                        @PathVariable String                        glossaryTermGUID,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                         startFrom,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                         pageSize,
+                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                        boolean                     forLineage,
+                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                        boolean                     forDuplicateProcessing,
+                                                                        @RequestBody(required = false)
+                                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getSemanticAssignees(serverName, glossaryTermGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1155,18 +1155,18 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/governed-by/{governanceDefinitionGUID}")
 
-    public RelatedElementsResponse getGovernedElements(@PathVariable String                        serverName,
-                                                       @PathVariable String                        governanceDefinitionGUID,
-                                                       @RequestParam(required = false, defaultValue = "0")
-                                                       int                         startFrom,
-                                                       @RequestParam(required = false, defaultValue = "0")
-                                                       int                         pageSize,
-                                                       @RequestParam(required = false, defaultValue = "false")
-                                                       boolean                     forLineage,
-                                                       @RequestParam(required = false, defaultValue = "false")
-                                                       boolean                     forDuplicateProcessing,
-                                                       @RequestBody(required = false)
-                                                       EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getGovernedElements(@PathVariable String                        serverName,
+                                                                       @PathVariable String                        governanceDefinitionGUID,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int                         startFrom,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int                         pageSize,
+                                                                       @RequestParam(required = false, defaultValue = "false")
+                                                                       boolean                     forLineage,
+                                                                       @RequestParam(required = false, defaultValue = "false")
+                                                                       boolean                     forDuplicateProcessing,
+                                                                       @RequestBody(required = false)
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getGovernedElements(serverName, governanceDefinitionGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1226,18 +1226,18 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/sourced-from/{elementGUID}")
 
-    public RelatedElementsResponse getSourceElements(@PathVariable String                        serverName,
-                                                     @PathVariable String elementGUID,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                   int                         startFrom,
-                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                   int                         pageSize,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                     forLineage,
-                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                     forDuplicateProcessing,
-                                                     @RequestBody  (required = false)
-                                                                   EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSourceElements(@PathVariable String                        serverName,
+                                                                     @PathVariable String elementGUID,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                         startFrom,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int                         pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                     forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                     forDuplicateProcessing,
+                                                                     @RequestBody  (required = false)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getSourceElements(serverName, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1262,18 +1262,18 @@ public class GlossaryBrowserResource
      */
     @PostMapping(path = "/elements/{elementGUID}/sourced-from")
 
-    public RelatedElementsResponse getElementsSourceFrom(@PathVariable String                        serverName,
-                                                         @PathVariable String                        elementGUID,
-                                                         @RequestParam (required = false, defaultValue = "0")
-                                                                       int                           startFrom,
-                                                         @RequestParam (required = false, defaultValue = "0")
-                                                                       int                           pageSize,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                       forLineage,
-                                                         @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                       forDuplicateProcessing,
-                                                         @RequestBody  (required = false)
-                                                                       EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getElementsSourceFrom(@PathVariable String                        serverName,
+                                                                         @PathVariable String                        elementGUID,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                         int                           startFrom,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                         int                           pageSize,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                       forLineage,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean                       forDuplicateProcessing,
+                                                                         @RequestBody  (required = false)
+                                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getElementsSourceFrom(serverName, elementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }

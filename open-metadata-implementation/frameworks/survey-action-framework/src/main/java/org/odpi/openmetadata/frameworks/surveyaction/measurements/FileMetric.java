@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FileDirectoryMetric describes the metrics for a directory (folder) that are captured by the Folder Survey Action Service.
+ * FileMetric describes the metrics for a file that are captured by the File Survey Action Service.
  */
 public enum FileMetric implements SurveyMetric
 {

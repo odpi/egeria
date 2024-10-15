@@ -13,10 +13,10 @@ import java.util.List;
 
 public class CocoClinicalTrialSetUpDataLakeProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "4afcfed3-b0b9-456a-8983-cb84568c3cd9";
+    private static final String  connectorTypeGUID = "2e82b30e-0c31-4cf0-82a8-9f84afe63e8a";
     private static final String  connectorTypeQualifiedName = "CocoPharmaceuticals:GovernanceActionService:ClinicalTrial:InitiateDataLake";
     private static final String  connectorTypeDisplayName = "Clinical Trial Initiate Data Lake Governance Action Service";
-    private static final String  connectorTypeDescription = "Sets up the data lake to receive data for a new clinical trial.";
+    private static final String  connectorTypeDescription = "Sets up the storage definitions that support the receipt of weekly patient measurement data for a clinical trial.  This data is accessible through OSS Unity Catalog (UC).";
 
     private static final String connectorClassName = CocoClinicalTrialSetUpDataLakeService.class.getName();
 
@@ -31,7 +31,6 @@ public class CocoClinicalTrialSetUpDataLakeProvider extends GovernanceActionServ
         super.setConnectorClassName(connectorClassName);
 
         supportedRequestParameters = CocoClinicalTrialRequestParameter.getSetUpDataLakeRequestParameterTypes();
-
         supportedActionTargetTypes = CocoClinicalTrialActionTarget.getSetUpDataLakeActionTargetTypes();
 
         producedGuards = CocoClinicalTrialGuard.getGuardTypes();
@@ -47,10 +46,6 @@ public class CocoClinicalTrialSetUpDataLakeProvider extends GovernanceActionServ
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
-
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(CocoClinicalTrialRequestParameter.DATA_LAKE_CATALOG.getName());
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
     }

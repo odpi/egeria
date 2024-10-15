@@ -67,12 +67,12 @@ public enum ElementStatus implements OpenMetadataEnum
     /**
      * The request or proposal is rejected.
      */
-    REJECTED                (5,  "Rejected",                "The request or proposal is rejected.", "75fe7545-37bb-4bf1-974c-0a0514c00f4b"),
+    REJECTED                (5,  "Rejected",                "The request or proposal is rejected.", "7133d0d1-0ff9-4de0-8221-75ba5a06948c"),
 
     /**
      * The request or proposal is approved for development.
      */
-    APPROVED_CONCEPT        (6,  "Approved concept",        "The request or proposal is approved for development.", "75fe7545-37bb-4bf1-974c-0a0514c00f4b"),
+    APPROVED_CONCEPT        (6,  "Approved concept",        "The request or proposal is approved for development.", "0117b3e2-e3eb-4121-adce-b3ee690f0927"),
 
     /**
      * The instance is being developed.

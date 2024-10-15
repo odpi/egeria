@@ -12,7 +12,6 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 /**
  * DataFileElement contains the properties and header for a data file retrieved from the metadata repository.
@@ -23,7 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 public class DataFileElement implements MetadataElement
 {
     private ElementHeader      elementHeader = null;
-    private DataFileProperties dataFileProperties = null;
+    private DataFileProperties properties    = null;
 
 
     /**
@@ -45,7 +44,7 @@ public class DataFileElement implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            dataFileProperties = template.getDataFileProperties();
+            properties    = template.getProperties();
         }
     }
 
@@ -79,20 +78,20 @@ public class DataFileElement implements MetadataElement
      *
      * @return file properties
      */
-    public DataFileProperties getDataFileProperties()
+    public DataFileProperties getProperties()
     {
-        return dataFileProperties;
+        return properties;
     }
 
 
     /**
      * Set up the data file properties.
      *
-     * @param dataFileProperties file properties
+     * @param properties file properties
      */
-    public void setDataFileProperties(DataFileProperties dataFileProperties)
+    public void setProperties(DataFileProperties properties)
     {
-        this.dataFileProperties = dataFileProperties;
+        this.properties = properties;
     }
 
 
@@ -106,7 +105,7 @@ public class DataFileElement implements MetadataElement
     {
         return "DataFileElement{" +
                 "elementHeader=" + elementHeader +
-                ", dataFileProperties=" + dataFileProperties +
+                ", properties=" + properties +
                 '}';
     }
 
@@ -130,7 +129,7 @@ public class DataFileElement implements MetadataElement
         }
         DataFileElement that = (DataFileElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(dataFileProperties, that.dataFileProperties);
+                Objects.equals(properties, that.properties);
     }
 
 
@@ -142,6 +141,6 @@ public class DataFileElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, dataFileProperties);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

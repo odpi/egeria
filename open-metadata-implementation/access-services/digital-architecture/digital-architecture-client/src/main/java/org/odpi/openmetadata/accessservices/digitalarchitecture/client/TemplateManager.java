@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageTemplates;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.TemplateElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateClassificationProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * TemplateManager provides specialist methods for managing templates
@@ -261,6 +263,7 @@ public class TemplateManager extends DigitalArchitectureClientBase implements Ma
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
+                                                                                                      null,
                                                                                                       searchClassifications,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
@@ -349,6 +352,7 @@ public class TemplateManager extends DigitalArchitectureClientBase implements Ma
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
+                                                                                                      null,
                                                                                                       this.getSearchClassifications(searchString, PropertyComparisonOperator.LIKE),
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
@@ -398,6 +402,7 @@ public class TemplateManager extends DigitalArchitectureClientBase implements Ma
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
+                                                                                                      null,
                                                                                                       this.getSearchClassifications(name, PropertyComparisonOperator.EQ),
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
@@ -425,12 +430,26 @@ public class TemplateManager extends DigitalArchitectureClientBase implements Ma
         PrimitiveTypePropertyValue requestedPropertyValue = new PrimitiveTypePropertyValue();
 
         requestedPropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        requestedPropertyValue.setPrimitiveValue(searchValue);
+
+        if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
+        {
+            requestedPropertyValue.setPrimitiveValue(".*" + Pattern.quote(searchValue) + ".*");
+        }
+        else
+        {
+            requestedPropertyValue.setPrimitiveValue(searchValue);
+        }
         requestedPropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
         PropertyCondition nameCondition = new PropertyCondition();
 
         nameCondition.setProperty(OpenMetadataProperty.NAME.name);
+        nameCondition.setOperator(propertyComparisonOperator);
+        nameCondition.setValue(requestedPropertyValue);
+
+        PropertyCondition resourceNameCondition = new PropertyCondition();
+
+        nameCondition.setProperty(OpenMetadataProperty.RESOURCE_NAME.name);
         nameCondition.setOperator(propertyComparisonOperator);
         nameCondition.setValue(requestedPropertyValue);
 
@@ -445,6 +464,7 @@ public class TemplateManager extends DigitalArchitectureClientBase implements Ma
         List<PropertyCondition> conditions = new ArrayList<>();
 
         conditions.add(nameCondition);
+        conditions.add(resourceNameCondition);
         conditions.add(descriptionCondition);
         conditions.add(versionCondition);
 

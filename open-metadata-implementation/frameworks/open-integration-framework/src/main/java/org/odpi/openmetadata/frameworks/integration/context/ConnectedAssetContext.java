@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.integration.context;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -100,6 +101,7 @@ public class ConnectedAssetContext
      * Return the connector to the requested asset.
      *
      * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @param auditLog    optional logging destination
      * @return Open Connector Framework (OCF) connector
      * @throws InvalidParameterException the asset guid is not recognized or the userId is null
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -109,12 +111,13 @@ public class ConnectedAssetContext
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    public  Connector  getConnectorToAsset(String assetGUID) throws InvalidParameterException,
-                                                                    ConnectionCheckedException,
-                                                                    ConnectorCheckedException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public  Connector  getConnectorToAsset(String   assetGUID,
+                                           AuditLog auditLog) throws InvalidParameterException,
+                                                                     ConnectionCheckedException,
+                                                                     ConnectorCheckedException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        return openIntegrationClient.getConnectorToAsset(userId, assetGUID);
+        return openIntegrationClient.getConnectorToAsset(userId, assetGUID, auditLog);
     }
 }

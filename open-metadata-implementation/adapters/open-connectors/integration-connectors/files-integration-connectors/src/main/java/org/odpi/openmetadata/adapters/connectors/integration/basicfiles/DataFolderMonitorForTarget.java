@@ -93,15 +93,18 @@ public class DataFolderMonitorForTarget extends DirectoryToMonitor
 
                         if (directoryToMonitor.dataFolderElement != null)
                         {
-                            Date lastRecordedChange = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
+                            Date lastRecordedChange   = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
 
                             if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(directoryToMonitor.directoryFile.lastModified()))))
                             {
                                 FileFolderProperties properties = new FileFolderProperties();
 
                                 properties.setModifiedTime(modifiedTime);
-                                integrationConnector.getContext().updateDataFolderInCatalog(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(), true,
-                                                                            properties);
+                                integrationConnector.getContext().updateDataFolderInCatalog(directoryToMonitor.metadataSourceGUID,
+                                                                                            directoryToMonitor.metadataSourceName,
+                                                                                            directoryToMonitor.dataFolderElement.getElementHeader().getGUID(),
+                                                                                            true,
+                                                                                            properties);
 
                                 if (auditLog != null)
                                 {

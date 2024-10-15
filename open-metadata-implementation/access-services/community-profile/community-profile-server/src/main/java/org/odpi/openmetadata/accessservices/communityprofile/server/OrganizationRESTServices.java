@@ -604,7 +604,7 @@ public class OrganizationRESTServices
             response.setElement(handler.getActorProfileByGUID(userId,
                                                               actorProfileGUID,
                                                               guidParameterName,
-                                                              OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                              OpenMetadataType.ACTOR_PROFILE.typeName,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -653,7 +653,7 @@ public class OrganizationRESTServices
             response.setElement(handler.getActorProfileForUser(userId,
                                                                actorProfileUserId,
                                                                nameParameterName,
-                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -706,8 +706,8 @@ public class OrganizationRESTServices
             response.setElements(handler.getActorProfilesByName(userId,
                                                                 requestBody.getName(),
                                                                 nameParameterName,
-                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.ACTOR_PROFILE.typeGUID,
+                                                                OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -757,8 +757,8 @@ public class OrganizationRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getActorProfiles(userId,
-                                                          OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                                          OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                          OpenMetadataType.ACTOR_PROFILE.typeGUID,
+                                                          OpenMetadataType.ACTOR_PROFILE.typeName,
                                                           startFrom,
                                                           pageSize,
                                                           false,
@@ -813,7 +813,7 @@ public class OrganizationRESTServices
             response.setElements(handler.getActorProfilesByLocation(userId,
                                                                     locationGUID,
                                                                     guidParameterName,
-                                                                    OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                    OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                     startFrom,
                                                                     pageSize,
                                                                     false,
@@ -868,8 +868,8 @@ public class OrganizationRESTServices
             response.setElements(handler.findActorProfiles(userId,
                                                            requestBody.getSearchString(),
                                                            searchStringParameterName,
-                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                           OpenMetadataType.ACTOR_PROFILE.typeGUID,
+                                                           OpenMetadataType.ACTOR_PROFILE.typeName,
                                                            startFrom,
                                                            pageSize,
                                                            false,
@@ -1221,11 +1221,11 @@ public class OrganizationRESTServices
                 List<Relationship> appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                              personRoleGUID,
                                                                                              personRoleGUIDParameterName,
-                                                                                             OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                             OpenMetadataType.PERSON_ROLE.typeName,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeGUID,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                              null,
-                                                                                             OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                                             OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                              1,
                                                                                              false,
                                                                                              false,
@@ -1284,7 +1284,7 @@ public class OrganizationRESTServices
                         }
                         else
                         {
-                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                             relationship,
                                                             methodName);
                         }
@@ -1360,7 +1360,7 @@ public class OrganizationRESTServices
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
-                                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                false,
                                                                                false,
                                                                                new Date(),
@@ -1372,7 +1372,7 @@ public class OrganizationRESTServices
         }
         else
         {
-            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                             relationship,
                                             methodName);
         }

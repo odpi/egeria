@@ -31,6 +31,11 @@ public enum ScopeDefinition
     /**
      * Within the team.
      */
+    WITHIN_DISCIPLINE ("Within Discipline","Within work of the same type performed by the same professionals for the same purposes."),
+
+    /**
+     * Within the team.
+     */
     WITHIN_TEAM ("Within Team","Within the team."),
 
     /**

@@ -285,13 +285,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.COMPLETION_MESSAGE.name;
-        final String attribute1Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE.name,
+                                                           OpenMetadataProperty.COMPLETION_MESSAGE.description,
+                                                           OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -317,14 +313,12 @@ public class OpenMetadataTypesArchive3_15
         final String description     = "A digital product that is maintained by a digital service.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -335,29 +329,26 @@ public class OpenMetadataTypesArchive3_15
         final String                     end1AttributeName            = "managingDigitalService";
         final String                     end1AttributeDescription     = "Digital service responsible for the production of the digital product.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef1(relationshipEndDef);
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalProducts";
         final String                     end2AttributeDescription     = "The associated digital products.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -409,9 +400,6 @@ public class OpenMetadataTypesArchive3_15
         final String attribute9Name = OpenMetadataProperty.WITHDRAW_DATE.name;
         final String attribute9Description = OpenMetadataProperty.WITHDRAW_DATE.description;
         final String attribute9DescriptionGUID = OpenMetadataProperty.WITHDRAW_DATE.descriptionGUID;
-        final String attribute10Name = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
-        final String attribute10Description = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
-        final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
                                                                   attribute1Description,
@@ -451,9 +439,9 @@ public class OpenMetadataTypesArchive3_15
                                                          attribute9Description,
                                                          attribute9DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
-                                                                    attribute10Description,
-                                                                    attribute10DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -486,17 +474,15 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                     end2AttributeName,
                                                                                     end2AttributeDescription,
                                                                                     end2AttributeDescriptionGUID,
-                                                                                    end2Cardinality);
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
 
 
         typeDefPatch.setEndDef2(relationshipEndDef);
@@ -529,17 +515,15 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "digitalServiceOperators";
         final String                     end2AttributeDescription     = "The unit (team, capability, ...) responsible for managing this digital service.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                     end2AttributeName,
                                                                                     end2AttributeDescription,
                                                                                     end2AttributeDescriptionGUID,
-                                                                                    end2Cardinality);
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
 
 
         typeDefPatch.setEndDef2(relationshipEndDef);

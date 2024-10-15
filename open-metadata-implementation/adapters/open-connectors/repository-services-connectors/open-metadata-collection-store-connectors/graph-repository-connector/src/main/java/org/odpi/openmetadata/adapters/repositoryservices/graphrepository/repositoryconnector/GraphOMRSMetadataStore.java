@@ -1643,6 +1643,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByPropertyForType
+    @SuppressWarnings(value = "rawtypes")
     List<EntityDetail> findEntitiesByPropertyForType(String               typeDefName,
                                                      InstanceProperties   matchProperties,
                                                      MatchCriteria        matchCriteria,
@@ -2080,6 +2081,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByPropertyForTypes
+    @SuppressWarnings(value = "rawtypes")
     List<EntityDetail> findEntitiesByPropertyForTypes(List<String>                   entityTypeNames,
                                                       String                         filterTypeName,
                                                       Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -2540,6 +2542,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByProperty
+    @SuppressWarnings(value = "rawtypes")
     List<EntityDetail> findEntitiesByPropertyValueForTypes(List<String>                   entityTypeNames,
                                                            String                         filterTypeName,
                                                            Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -2997,6 +3000,7 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsByPropertyForType
+    @SuppressWarnings(value = "rawtypes")
     List<Relationship> findRelationshipsByPropertyForType(String               typeDefName,
                                                           InstanceProperties   matchProperties,
                                                           MatchCriteria        matchCriteria,
@@ -3426,6 +3430,7 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsByProperty
+    @SuppressWarnings(value = "rawtypes")
     List<Relationship> findRelationshipsByPropertyForTypes(List<String>                   relationshipTypeNames,
                                                            String                         filterTypeName,
                                                            Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -3896,6 +3901,7 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsByPropertyValueForTypes
+    @SuppressWarnings(value = "rawtypes")
     List<Relationship> findRelationshipsByPropertyValueForTypes(List<String>                   validTypeNames,
                                                                 String                         filterTypeName,
                                                                 Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -4905,6 +4911,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByClassification
+    @SuppressWarnings(value = "rawtypes")
     public List<EntityDetail> findEntitiesByClassification(String               classificationName,
                                                            InstanceProperties   classificationProperties,
                                                            MatchCriteria        matchCriteria,
@@ -6021,6 +6028,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesForType
+    @SuppressWarnings(value = "rawtypes")
     List<EntityDetail> findEntitiesForType(String              typeDefName,
                                            SearchProperties    searchProperties,
                                            boolean             fullMatch)
@@ -6216,6 +6224,7 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesForTypes
+    @SuppressWarnings(value = "rawtypes")
     List<EntityDetail> findEntitiesForTypes(List<String>                   validTypeNames,
                                             String                         filterTypeName,
                                             Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -6439,6 +6448,7 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsForTypes
+    @SuppressWarnings(value = "rawtypes")
     List<Relationship> findRelationshipsForTypes(List<String>                   validTypeNames,
                                                  String                         filterTypeName,
                                                  Map<String, TypeDefAttribute>  qualifiedPropertyNameToTypeDefinedAttribute,
@@ -6641,6 +6651,7 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsForType
+    @SuppressWarnings(value = "rawtypes")
     List<Relationship> findRelationshipsForType(String              typeDefName,
                                                 SearchProperties    searchProperties,
                                                 boolean             fullMatch)
@@ -6819,6 +6830,7 @@ class GraphOMRSMetadataStore {
      * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
      * in this method, that is done by the caller.
      */
+    @SuppressWarnings(value = "rawtypes")
     private List<GraphTraversal<Vertex, Vertex>> processEntitySearchPropertiesForType(String                           typeDefName,
                                                                                       SearchProperties                 searchProperties,
                                                                                       boolean                          fullMatch)
@@ -6925,6 +6937,7 @@ class GraphOMRSMetadataStore {
      * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
      * in this method, that is done by the caller.
      */
+    @SuppressWarnings(value = "rawtypes")
     private List<GraphTraversal<Edge, Edge>> processRelationshipSearchPropertiesForType(String                           typeDefName,
                                                                                         SearchProperties                 searchProperties,
                                                                                         boolean                          fullMatch)
@@ -7033,6 +7046,7 @@ class GraphOMRSMetadataStore {
      * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
      * in this method, that is done by the caller.
      */
+    @SuppressWarnings(value = "rawtypes")
     private List<GraphTraversal<Vertex, Vertex>> processEntitySearchPropertiesForTypes(SearchProperties                searchProperties,
                                                                                        Map<String, TypeDefAttribute>    qualifiedPropertyNameToTypeDefinedAttribute,
                                                                                        Map<String, List<String>>        shortPropertyNameToQualifiedPropertyNames)
@@ -7148,6 +7162,7 @@ class GraphOMRSMetadataStore {
      * Parse the conditions in the search properties into a list of propCriteria. Do not combine them
      * in this method, that is done by the caller.
      */
+    @SuppressWarnings(value = "rawtypes")
     private List<GraphTraversal<Edge, Edge>> processRelationshipSearchPropertiesForTypes(SearchProperties                searchProperties,
                                                                                          Map<String, TypeDefAttribute>    qualifiedPropertyNameToTypeDefinedAttribute,
                                                                                          Map<String, List<String>>        shortPropertyNameToQualifiedPropertyNames)
@@ -9503,6 +9518,7 @@ class GraphOMRSMetadataStore {
         return t;
     }
 
+    @SuppressWarnings(value = "rawtypes")
     private  GraphTraversal<Vertex, Vertex> vertexApplyOperatorToObject(String                                  propNameInGraph,
                                                                         PropertyComparisonOperator              operator,
                                                                         Object                                  primValue)
@@ -9653,6 +9669,7 @@ class GraphOMRSMetadataStore {
         return t;
     }
 
+    @SuppressWarnings(value = "rawtypes")
     private  GraphTraversal<Edge, Edge> edgeApplyOperatorToObject(String                                  propNameInGraph,
                                                                   PropertyComparisonOperator              operator,
                                                                   Object                                  primValue)

@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -78,7 +78,7 @@ public class PersonRoleConverter<B> extends OMFConverter<B>
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
                     roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataType.HEAD_COUNT_PROPERTY_NAME) != null);
+                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataProperty.HEAD_COUNT.name) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
                     roleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));

@@ -13,7 +13,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  * DeployedImplementationType describes the standard deployed implementation types supplied with Egeria. These are encoded in the
  * CoreContentPack.omarchive and are available in the open metadata repository as valid values.
  */
-public enum DeployedImplementationType
+public enum DeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
      * A collection of data, either at rest or in motion.
@@ -45,7 +45,6 @@ public enum DeployedImplementationType
                  "A file containing program logic.",
                  OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
 
-
     /**
      * A file containing program logic.
      */
@@ -55,8 +54,6 @@ public enum DeployedImplementationType
                  null,
                  "A file containing data.  This may be structured data, text or some form or media file.",
                  OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
-
-
 
     /**
      * CSV Data File.
@@ -286,11 +283,11 @@ public enum DeployedImplementationType
     /**
      * A directory (folder) that holds files that are potential data sources.
      */
-    FILE_FOLDER("FileFolder",
+    FILE_FOLDER("File System Directory",
                 DeployedImplementationType.DATA_ASSET,
                 OpenMetadataType.FILE_FOLDER.typeName,
                 null,
-                "A directory (folder) that holds files that are potential data sources.",
+                "A directory (folder) that holds files that are potential data sources in a file system.",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
 
@@ -303,28 +300,6 @@ public enum DeployedImplementationType
                 null,
                 "A directory (folder) that holds files representing a single data source.",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
-
-
-    /**
-     * A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.
-     */
-    OSS_UC_VOLUME("Unity Catalog Volume",
-              DeployedImplementationType.DATA_FOLDER,
-              OpenMetadataType.DATA_FOLDER.typeName,
-              null,
-              "A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.",
-              "https://github.com/unitycatalog/unitycatalog"),
-
-
-    /**
-     * A function found in Unity Catalog (UC) that is working with data..
-     */
-    OSS_UC_FUNCTION("Unity Catalog Function",
-                  null,
-                  OpenMetadataType.DEPLOYED_API.typeName,
-                  null,
-                  "A function found in Unity Catalog (UC) that is working with data.",
-                  "https://github.com/unitycatalog/unitycatalog"),
 
 
     /**
@@ -358,58 +333,6 @@ public enum DeployedImplementationType
                                     "A database table hosted on a relational database server capable of being called through a JDBC Driver.",
                                     "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
-    /**
-     * A relational table within the Unity Catalog (UC) 'catalog of catalogs'.
-     */
-    OSS_UC_TABLE("Unity Catalog Table",
-                  DeployedImplementationType.DATA_ASSET,
-                  OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
-                  null,
-                  "A relational table within the Unity Catalog (UC) 'catalog of catalogs'.",
-                  "https://github.com/unitycatalog/unitycatalog"),
-
-    /**
-     * A database hosted on a PostgreSQL server.
-     */
-    POSTGRESQL_DATABASE("PostgreSQL Relational Database",
-                        DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
-                        OpenMetadataType.RELATIONAL_DATABASE.typeName,
-                        null,
-                        "A database hosted on a PostgreSQL server.",
-                        "https://www.postgresql.org/"),
-
-
-    /**
-     * A database schema hosted on a relational PostgreSQL database server capable of being called through a JDBC Driver.
-     */
-    POSTGRESQL_DATABASE_SCHEMA("PostgreSQL Relational Database Schema",
-                                    DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
-                                    OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                    null,
-                                    "A database schema hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
-                                    "https://www.postgresql.org/"),
-
-
-    /**
-     * A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
-     */
-    OSS_UC_SCHEMA("Unity Catalog Schema",
-               DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
-               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-               null,
-               "A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
-               "https://github.com/unitycatalog/unitycatalog"),
-
-
-    /**
-     * A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.
-     */
-    POSTGRESQL_DATABASE_TABLE("PostgreSQL Relational Database Table",
-                              DeployedImplementationType.DATA_ASSET,
-                              OpenMetadataType.TABLE_DATA_SET.typeName,
-                              null,
-                              "A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
-                              "https://www.postgresql.org/"),
 
     /**
      * A computer (hardware) with operating system for running software.
@@ -476,67 +399,15 @@ public enum DeployedImplementationType
                     "A callable software capability supporting specific types of assets.",
                         OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES),
 
-
     /**
-     * A database server running the PostgreSQL software.
+     * A data catalog for data observability.
      */
-    POSTGRESQL_SERVER("PostgreSQL Server",
-                      DeployedImplementationType.SOFTWARE_SERVER,
-                      OpenMetadataType.SOFTWARE_SERVER.typeName,
-                      OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName,
-                      "A database server running the PostgreSQL software.",
-                      "https://www.postgresql.org/"),
-
-
-    /**
-     * An operational metadata catalog that supports controlled access to data managed through a data platform.
-     */
-    OSS_UNITY_CATALOG_SERVER("Unity Catalog Server",
-                         DeployedImplementationType.SOFTWARE_SERVER,
-                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                         OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
-                         "The OSS Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
-                         "https://github.com/unitycatalog/unitycatalog"),
-
-    /**
-     * A data catalog for the Hadoop ecosystem.
-     */
-    APACHE_ATLAS_SERVER("Apache Atlas Server",
+    MARQUEZ_SERVER("Marquez Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
                         OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
-                        "A data catalog for the Hadoop ecosystem.",
-                        "https://atlas.apache.org/"),
-
-    /**
-     * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
-     */
-    APACHE_KAFKA_SERVER("Apache Kafka Server",
-                        DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
-                        "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
-                        "https://kafka.apache.org/"),
-
-    /**
-     * A software capability that enables high speed, reliable topic-based event exchange.
-     */
-    APACHE_KAFKA_EVENT_BROKER("Apache Kafka Event Broker",
-                        DeployedImplementationType.SOFTWARE_CAPABILITY,
-                        OpenMetadataType.EVENT_BROKER.typeName,
-                        null,
-                        "A software capability that enables high speed, reliable topic-based event exchange.",
-                        "https://kafka.apache.org/"),
-
-    /**
-     * An event topic supporting high speed, reliable event exchange.
-     */
-    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
-                       DeployedImplementationType.DATA_ASSET,
-                       OpenMetadataType.KAFKA_TOPIC.typeName,
-                       null,
-                       "An event topic supporting high speed, reliable event exchange.",
-                       "https://kafka.apache.org/"),
+                        "A data catalog for data observability.",
+                        "https://marquezproject.ai/"),
 
     /**
      * A system that manages hierarchically organized files on persistent storage.
@@ -547,7 +418,6 @@ public enum DeployedImplementationType
                 OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
                 "A system that manages hierarchically organized files on persistent storage.",
                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
-
 
     /**
      * A UNIX capability that manages hierarchically organized files on persistent storage.
@@ -569,7 +439,6 @@ public enum DeployedImplementationType
                   "Software supporting a business function.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
-
     /**
      * Software supporting a business function.
      */
@@ -586,21 +455,9 @@ public enum DeployedImplementationType
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
                   OpenMetadataType.CATALOG.typeName,
-                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+                  OpenMetadataType.ASSET_MANAGER.typeName,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
-
-
-    /**
-     * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
-     */
-    OSS_UC_CATALOG("Unity Catalog Catalog",
-               DeployedImplementationType.ASSET_CATALOG,
-               OpenMetadataType.CATALOG.typeName,
-               OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
-               "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
-               "https://github.com/unitycatalog/unitycatalog"),
-
 
     /**
      * A software capability that provides callable APIs.
@@ -611,6 +468,37 @@ public enum DeployedImplementationType
                 null,
                 "A software capability that provides callable APIs.",
                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
+
+    /**
+     * A callable network address.
+     */
+    ENDPOINT("Endpoint",
+                      null,
+                      OpenMetadataType.ENDPOINT.typeName,
+                      null,
+                      "A callable network address.",
+                      OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+
+    /**
+     * A callable network address supporting the REST protocol.
+     */
+    REST_API_ENDPOINT("REST API Endpoint",
+                     DeployedImplementationType.ENDPOINT,
+                     OpenMetadataType.ENDPOINT.typeName,
+                     null,
+                     "A callable network address supporting the REST protocol.",
+                     OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+
+
+    /**
+     * A callable network address supporting the JDBC protocol.
+     */
+    JDBC_ENDPOINT("JDBC Endpoint",
+                      DeployedImplementationType.ENDPOINT,
+                      OpenMetadataType.ENDPOINT.typeName,
+                      null,
+                      "A callable network address supporting the JDBC protocol.",
+                      OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
 
 
     /**
@@ -643,38 +531,6 @@ public enum DeployedImplementationType
                                 null,
                                 "A capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
                                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
-
-    /**
-     * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
-     */
-    POSTGRESQL_DATABASE_MANAGER("PostgreSQL database manager (RDBMS)",
-                                DeployedImplementationType.RELATIONAL_DATABASE_MANAGER,
-                                OpenMetadataType.DATABASE_MANAGER.typeName,
-                                null,
-                                "The PostgreSQL capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
-                                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
-
-
-    /**
-     * An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.
-     */
-    OMAG_SERVER_PLATFORM("OMAG Server Platform",
-                         DeployedImplementationType.SOFTWARE_SERVER,
-                         OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
-                         null,
-                         "An Open Metadata and Governance (OMAG) runtime for running one to many OMAG Servers.",
-                         "https://egeria-project.org/concepts/omag-server-platform/"),
-
-    /**
-     * An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.
-     */
-    OMAG_SERVER_RUNTIME("OMAG Server Runtime",
-                        DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
-                        null,
-                        "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
-                        "https://egeria-project.org/concepts/omag-server-runtime/"),
-
 
     /**
      * A deployable software component.
@@ -727,27 +583,6 @@ public enum DeployedImplementationType
                       "Provides the description of a component that implements an automated governance activity.",
                       "https://egeria-project.org/concepts/governance-service/"),
 
-
-    /**
-     * Open Discovery Service - A connector that analyzing the contents of a digital resource.
-     */
-    OPEN_DISCOVERY_SERVICE_CONNECTOR("Open Discovery Service",
-                                     DeployedImplementationType.GOVERNANCE_SERVICE,
-                                     OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName,
-                                     null,
-                                     "A connector that analyzing the contents of a digital resource and produces a discovery analysis report.",
-                                     "https://egeria-project.org/concepts/open-discovery-service/"),
-
-    /**
-     * Open Discovery Engine - A governance engine that runs open discovery services.
-     */
-    OPEN_DISCOVERY_ENGINE("Open Discovery Engine",
-                          DeployedImplementationType.GOVERNANCE_ENGINE,
-                          OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
-                          null,
-                          "A governance engine that runs open discovery services.",
-                          "https://egeria-project.org/concepts/open-discovery-engine/"),
-
     /**
      * Governance Action Service - A connector that coordinates governance of digital resources and metadata.
      */
@@ -758,7 +593,6 @@ public enum DeployedImplementationType
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/concepts/governance-action-service/"),
 
-
     /**
      * Governance Action Engine - A governance engine that runs governance action services.
      */
@@ -768,7 +602,6 @@ public enum DeployedImplementationType
                              null,
                              "A governance engine that runs governance action services.",
                              "https://egeria-project.org/concepts/governance-action-engine/"),
-
 
     /**
      * Context Event Service - A connector that coordinates governance of context events.
@@ -801,7 +634,6 @@ public enum DeployedImplementationType
                                     "A connector that coordinates asset surveys.",
                                     "https://egeria-project.org/concepts/survey-action-service/"),
 
-
     /**
      * Event Action Engine - A governance engine that runs survey action services.
      */
@@ -811,7 +643,6 @@ public enum DeployedImplementationType
                          null,
                          "A governance engine that runs survey action services.",
                          "https://egeria-project.org/concepts/survey-action-engine/"),
-
 
     /**
      * Repository Governance Service - A connector that dynamically governs the activity of the open metadata repositories.
@@ -852,7 +683,6 @@ public enum DeployedImplementationType
                                     null,
                                     "Connector that manages metadata exchange with a third party analytics technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
-
 
     /**
      * API Integration Connector - Connector that manages metadata exchange with a third-party API management technology.
@@ -914,7 +744,6 @@ public enum DeployedImplementationType
                                          "Connector that manages metadata exchange with a third party infrastructure catalog (CMDB) technology.",
                                          "https://egeria-project.org/services/omvs/infrastructure-integrator/overview"),
 
-
     /**
      * Lineage Integration Connector - Connector that manages metadata exchange with a third-party lineage capture technology.
      */
@@ -924,7 +753,6 @@ public enum DeployedImplementationType
                                   null,
                                   "Connector that manages metadata exchange with a third party lineage capture technology.",
                                   "https://egeria-project.org/services/omvs/lineage-integrator/overview"),
-
 
     /**
      * Organization Integration Connector - Connector that manages metadata exchange with a third-party application containing data about people and organizations.
@@ -1016,7 +844,6 @@ public enum DeployedImplementationType
                           "Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.",
                           "https://egeria-project.org/concepts/audit-log/"),
 
-
     /**
      * Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.
      */
@@ -1029,55 +856,14 @@ public enum DeployedImplementationType
 
 
     /**
-     * An Open Metadata and Governance (OMAG) Server.
+     * An event topic supporting high speed, reliable event exchange.
      */
-    OMAG_SERVER("OMAG Server",
-                         DeployedImplementationType.SOFTWARE_SERVER,
-                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                         null,
-                         "A server providing Open Metadata and Governance (OMAG) services.",
-                         "https://egeria-project.org/concepts/omag-server/"),
-
-    /**
-     * A server that runs governance engines.
-     */
-    ENGINE_HOST("Engine Host",
-                DeployedImplementationType.OMAG_SERVER,
-                OpenMetadataType.SOFTWARE_SERVER.typeName,
-                OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName,
-                "A server that runs governance engines.",
-                "https://egeria-project.org/concepts/engine-host/"),
-
-    /**
-     * A server that runs integration connectors that synchronize metadata between different types of technologies.
-     */
-    INTEGRATION_DAEMON("Integration Daemon",
-                DeployedImplementationType.OMAG_SERVER,
-                OpenMetadataType.SOFTWARE_SERVER.typeName,
-                OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
-                "A server that runs integration connectors that synchronize metadata between different types of technologies.",
-                "https://egeria-project.org/concepts/integration-daemon/"),
-
-    /**
-     * A server that provides access to one or more open metadata repositories.
-     */
-    METADATA_ACCESS_SERVER("Metadata Access Server",
-                       DeployedImplementationType.OMAG_SERVER,
-                       OpenMetadataType.SOFTWARE_SERVER.typeName,
-                       OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
-                       "A server that provides access to one or more open metadata repositories.",
-                       "https://egeria-project.org/concepts/metadata-access-server/"),
-
-    /**
-     * A server that provides access to end user open metadata and governance services.
-     */
-    VIEW_SERVER("View Server",
-                           DeployedImplementationType.OMAG_SERVER,
-                           OpenMetadataType.SOFTWARE_SERVER.typeName,
-                           OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName,
-                           "A server that provides access to end user open metadata and governance services.",
-                           "https://egeria-project.org/concepts/metadata-access-server/"),
-
+    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
+                       DeployedImplementationType.DATA_ASSET,
+                       OpenMetadataType.KAFKA_TOPIC.typeName,
+                       null,
+                       "An event topic supporting high speed, reliable event exchange.",
+                       "https://kafka.apache.org/"),
     ;
 
 

@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * CocoBusinessSystemsArchiveWriter creates a physical open metadata archive file containing the descriptions of the
  * data flows from Coco Pharmaceuticals business systems to the data lake.
  */
-public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
+public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoBusinessSystemsArchive.omarchive";
 
@@ -42,7 +43,8 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
                                          new CocoSustainabilityArchiveWriter().getOpenMetadataArchive() });
     }
 
@@ -50,6 +52,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
         addHosts();
@@ -67,7 +70,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
 
             Map<String, String> additionalProperties = new HashMap<>();
 
-            additionalProperties.put(OpenMetadataType.OPERATING_SYSTEM_PROPERTY_NAME, hostDefinition.getOperatingSystem());
+            additionalProperties.put(OpenMetadataProperty.OPERATING_SYSTEM.name, hostDefinition.getOperatingSystem());
             additionalProperties.put(OpenMetadataProperty.PATCH_LEVEL.name, hostDefinition.getPatchLevel());
 
             archiveHelper.addAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
@@ -95,7 +98,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
             Map<String, Object> extendedProperties = new HashMap<>();
 
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
-            extendedProperties.put(OpenMetadataType.USER_ID_PROPERTY_NAME, systemDefinition.getUserId());
+            extendedProperties.put(OpenMetadataProperty.USER_ID.name, systemDefinition.getUserId());
 
 
             String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,

@@ -5,34 +5,32 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalIdentifierManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataElementSummaryConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.MetadataRelationshipSummaryConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.RelatedMetadataElementSummaryConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
@@ -60,6 +58,11 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
     final protected NullRequestBody nullRequestBody = new NullRequestBody();
 
     final protected String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}";
+
+    final protected MetadataElementSummaryConverter<MetadataElementSummary>               metadataElementSummaryConverter;
+    final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
+    final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
+
     AuditLog auditLog = null;
 
     /**
@@ -89,6 +92,15 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         this.auditLog = auditLog;
         this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                     serverName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                                   serverName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               serverName);
     }
 
 
@@ -116,6 +128,16 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
         this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot);
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                     serverName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                                   serverName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               serverName);
     }
 
 
@@ -148,6 +170,16 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
         this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                     serverName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                                   serverName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               serverName);
     }
 
 
@@ -183,6 +215,16 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         this.auditLog = auditLog;
         this.restClient = new AssetManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                     serverName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                                   serverName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               serverName);
     }
 
 
@@ -215,6 +257,16 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         this.auditLog = auditLog;
         this.restClient = restClient;
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                     serverName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                                   serverName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                               serverName);
     }
 
     /* ========================================================
@@ -1990,11 +2042,9 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * Retrieve a relationship.
      *
      * @param userId   calling user
-     * @param assetManagerGUID                unique identifier of software capability representing the caller
-     * @param assetManagerName                unique name of software capability representing the caller
      * @param startingElementGUID   unique identifier of the primary element
-     * @param startingElementGUIDParameterName   name of parameter passing the startingElementGUID
-     * @param urlTemplate  URL to call (no expected placeholders)
+     * @param startingAtEnd   0=either, or 1 or 2
+     * @param relationshipTypeName  URL to call (no expected placeholders)
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param effectiveTime                     the time that the retrieved elements must be effective for
@@ -2007,41 +2057,32 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    protected List<RelatedElement> getRelatedElements(String  userId,
-                                                      String  assetManagerGUID,
-                                                      String  assetManagerName,
-                                                      String  startingElementGUID,
-                                                      String  startingElementGUIDParameterName,
-                                                      String  urlTemplate,
-                                                      int     startFrom,
-                                                      int     pageSize,
-                                                      Date    effectiveTime,
-                                                      boolean forLineage,
-                                                      boolean forDuplicateProcessing,
-                                                      String  methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    protected List<RelatedMetadataElementSummary> getRelatedElements(String          userId,
+                                                                     String          startingElementGUID,
+                                                                     int             startingAtEnd,
+                                                                     String          relationshipTypeName,
+                                                                     int             startFrom,
+                                                                     int             pageSize,
+                                                                     Date            effectiveTime,
+                                                                     boolean         forLineage,
+                                                                     boolean         forDuplicateProcessing,
+                                                                     String          methodName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
-        final String requestParamsURLTemplate = "?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
+        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                  startingElementGUID,
+                                                                                                                  startingAtEnd,
+                                                                                                                  relationshipTypeName,
+                                                                                                                  forLineage,
+                                                                                                                  forDuplicateProcessing,
+                                                                                                                  effectiveTime,
+                                                                                                                  startFrom,
+                                                                                                                  pageSize);
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        RelatedElementsResponse restResult = restClient.callRelatedElementsPostRESTCall(methodName,
-                                                                                        urlTemplate + requestParamsURLTemplate,
-                                                                                        getEffectiveTimeQueryRequestBody(assetManagerGUID,
-                                                                                                                         assetManagerName,
-                                                                                                                         effectiveTime),
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startingElementGUID,
-                                                                                        startFrom,
-                                                                                        validatedPageSize,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
-
-        return restResult.getElements();
+        return relatedMetadataElementSummaryConverter.getNewBeans(RelatedMetadataElementSummary.class,
+                                                                  relatedMetadataElements,
+                                                                  methodName);
     }
 
 
@@ -2102,6 +2143,192 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                   forDuplicateProcessing);
 
         return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve a collection of classified elements that also have specific classification properties.
+     * It is also possible to restrict the results using the entity type name.
+     *
+     * @param userId   calling user
+     * @param classificationName  name of the classification to search for
+     * @param entityTypeName optional type name to restrict the search by
+     * @param propertyValue value to search for in the classification
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime                     the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName    calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected List<MetadataElementSummary> getClassifiedElements(String         userId,
+                                                                 String         classificationName,
+                                                                 String         entityTypeName,
+                                                                 String         propertyValue,
+                                                                 String         propertyName,
+                                                                 int            startFrom,
+                                                                 int            pageSize,
+                                                                 Date           effectiveTime,
+                                                                 boolean        forLineage,
+                                                                 boolean        forDuplicateProcessing,
+                                                                 String         methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String classificationNameProperty = "classificationName";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNameProperty = "propertyName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+        invalidParameterHandler.validateObject(propertyValue, propertyValueProperty, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameProperty, methodName);
+
+        List<OpenMetadataElement> elements = openMetadataStoreClient.getMetadataElementsByClassificationPropertyValue(userId,
+                                                                                                                      entityTypeName,
+                                                                                                                      null,
+                                                                                                                      classificationName,
+                                                                                                                      propertyName,
+                                                                                                                      propertyValue,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                      forLineage,
+                                                                                                                      forDuplicateProcessing,
+                                                                                                                      effectiveTime,
+                                                                                                                      startFrom,
+                                                                                                                      pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           elements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve a collection of classified elements that also have specific classification properties.
+     * It is also possible to restrict the results using the entity type name.
+     *
+     * @param userId   calling user
+     * @param classificationName  name of the classification to search for
+     * @param entityTypeName optional type name to restrict the search by
+     * @param propertyValue value to search for in the classification
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime                     the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName    calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected List<MetadataElementSummary> getClassifiedElements(String         userId,
+                                                                 String         classificationName,
+                                                                 String         entityTypeName,
+                                                                 int            propertyValue,
+                                                                 String         propertyName,
+                                                                 int            startFrom,
+                                                                 int            pageSize,
+                                                                 Date           effectiveTime,
+                                                                 boolean        forLineage,
+                                                                 boolean        forDuplicateProcessing,
+                                                                 String         methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String classificationNameProperty = "classificationName";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNameProperty = "propertyName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+        invalidParameterHandler.validateObject(propertyValue, propertyValueProperty, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameProperty, methodName);
+
+        List<OpenMetadataElement> elements = openMetadataStoreClient.getMetadataElementsByClassificationPropertyValue(userId,
+                                                                                                                      entityTypeName,
+                                                                                                                      null,
+                                                                                                                      classificationName,
+                                                                                                                      propertyName,
+                                                                                                                      propertyValue,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                      forLineage,
+                                                                                                                      forDuplicateProcessing,
+                                                                                                                      effectiveTime,
+                                                                                                                      startFrom,
+                                                                                                                      pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           elements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve a collection of classified elements that also have specific classification properties.
+     * It is also possible to restrict the results using the entity type name.
+     *
+     * @param userId   calling user
+     * @param classificationName  name of the classification to search for
+     * @param entityTypeName optional type name to restrict the search by
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime                     the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param methodName    calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    protected List<MetadataElementSummary> getClassifiedElements(String         userId,
+                                                                 String         classificationName,
+                                                                 String         entityTypeName,
+                                                                 int            startFrom,
+                                                                 int            pageSize,
+                                                                 Date           effectiveTime,
+                                                                 boolean        forLineage,
+                                                                 boolean        forDuplicateProcessing,
+                                                                 String         methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String classificationNameProperty = "classificationName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+
+        List<OpenMetadataElement> elements = openMetadataStoreClient.getMetadataElementsByClassification(userId,
+                                                                                                         entityTypeName,
+                                                                                                         null,
+                                                                                                         classificationName,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.LAST_UPDATE_RECENT,
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         effectiveTime,
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           elements,
+                                                           methodName);
     }
 
 

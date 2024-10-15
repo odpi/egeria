@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.*;
 
@@ -148,7 +147,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                     if ((matchFolderToFileName(metadataElementEvent.getMetadataElement().getElementProperties())) || (fileInFolder(fileGUID)))
                     {
-                        Map<String, String>   requestParameters = new HashMap<>();
+                        Map<String, String>   requestParameters = governanceContext.getRequestParameters();
+
+                        if (requestParameters == null)
+                        {
+                            requestParameters = new HashMap<>();
+                        }
+
                         List<NewActionTarget> actionTargets     = new ArrayList<>();
 
                         NewActionTarget actionTarget = new NewActionTarget();
@@ -160,7 +165,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                         {
                             initiateProcess(newElementProcessName,
-                                            null,
+                                            requestParameters,
                                             actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
@@ -182,7 +187,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                         {
                             initiateProcess(deletedElementProcessName,
-                                            null,
+                                            requestParameters,
                                             actionTargets);
                         }
                         else
@@ -257,7 +262,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     List<String> outputGuards = new ArrayList<>();
                     outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
 
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards, null, null, null);
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards);
                 }
                 catch (Exception error)
                 {

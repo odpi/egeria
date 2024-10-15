@@ -126,9 +126,8 @@ public class CertificationTypeConverter<B> extends OMFConverter<B>
         final String thisMethodName = "getNewBean(entity, relationship)";
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof CertificationTypeElement)
+        if (returnBean instanceof CertificationTypeElement bean)
         {
-            CertificationTypeElement bean = (CertificationTypeElement) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }

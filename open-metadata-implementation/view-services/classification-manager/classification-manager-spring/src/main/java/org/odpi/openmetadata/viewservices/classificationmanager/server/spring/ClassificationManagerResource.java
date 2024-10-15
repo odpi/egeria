@@ -6,12 +6,11 @@ package org.odpi.openmetadata.viewservices.classificationmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.classificationmanager.rest.ReferenceableUpdateRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.server.ClassificationManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +24,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/api/open-metadata/classification-manager")
 
 @Tag(name="API: Classification Manager OMVS",
-     description="The Classification Manager OMVS enables the caller to maintain classifications and governance relationships attached to open metadata elements.",
-     externalDocs=@ExternalDocumentation(description="Further Information",
-                                         url="https://egeria-project.org/services/omvs/classification-manager/overview/"))
+        description="The Classification Manager OMVS enables the caller to maintain classifications and governance relationships attached to open metadata elements.",
+        externalDocs=@ExternalDocumentation(description="Further Information",
+                url="https://egeria-project.org/services/omvs/classification-manager/overview/"))
 
 public class ClassificationManagerResource
 {
@@ -74,11 +73,11 @@ public class ClassificationManagerResource
     public VoidResponse setConfidenceClassification(@PathVariable String                    serverName,
                                                     @PathVariable String                    elementGUID,
                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                  boolean                   forLineage,
+                                                    boolean                   forLineage,
                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                  boolean                   forDuplicateProcessing,
+                                                    boolean                   forDuplicateProcessing,
                                                     @RequestBody  (required = false)
-                                                                  ClassificationRequestBody requestBody)
+                                                    ClassificationRequestBody requestBody)
     {
         return restAPI.setConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -89,7 +88,7 @@ public class ClassificationManagerResource
      * confidence to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -113,7 +112,7 @@ public class ClassificationManagerResource
                                                       @RequestParam (required = false, defaultValue = "false")
                                                       boolean                   forDuplicateProcessing,
                                                       @RequestBody  (required = false)
-                                                          EffectiveTimeRequestBody requestBody)
+                                                      EffectiveTimeRequestBody requestBody)
     {
         return restAPI.clearConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -144,11 +143,11 @@ public class ClassificationManagerResource
     public VoidResponse setCriticalityClassification(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestParam(required = false, defaultValue = "false")
-                                                                   boolean                   forLineage,
+                                                     boolean                   forLineage,
                                                      @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean                   forDuplicateProcessing,
+                                                     boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                                   ClassificationRequestBody requestBody)
+                                                     ClassificationRequestBody requestBody)
     {
         return restAPI.setCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -159,7 +158,7 @@ public class ClassificationManagerResource
      * criticality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -179,11 +178,11 @@ public class ClassificationManagerResource
     public VoidResponse clearCriticalityClassification(@PathVariable String                    serverName,
                                                        @PathVariable String                    elementGUID,
                                                        @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                   forLineage,
+                                                       boolean                   forLineage,
                                                        @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                   forDuplicateProcessing,
+                                                       boolean                   forDuplicateProcessing,
                                                        @RequestBody  (required = false)
-                                                                     EffectiveTimeRequestBody requestBody)
+                                                       EffectiveTimeRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -216,11 +215,11 @@ public class ClassificationManagerResource
     public VoidResponse setConfidentialityClassification(@PathVariable String                    serverName,
                                                          @PathVariable String                    elementGUID,
                                                          @RequestParam(required = false, defaultValue = "false")
-                                                                       boolean                   forLineage,
+                                                         boolean                   forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
-                                                                       boolean                   forDuplicateProcessing,
+                                                         boolean                   forDuplicateProcessing,
                                                          @RequestBody  (required = false)
-                                                                       ClassificationRequestBody requestBody)
+                                                         ClassificationRequestBody requestBody)
     {
         return restAPI.setConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -231,7 +230,7 @@ public class ClassificationManagerResource
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -251,11 +250,11 @@ public class ClassificationManagerResource
     public VoidResponse clearConfidentialityClassification(@PathVariable String                    serverName,
                                                            @PathVariable String                    elementGUID,
                                                            @RequestParam(required = false, defaultValue = "false")
-                                                                         boolean                   forLineage,
+                                                           boolean                   forLineage,
                                                            @RequestParam (required = false, defaultValue = "false")
-                                                                         boolean                   forDuplicateProcessing,
+                                                           boolean                   forDuplicateProcessing,
                                                            @RequestBody  (required = false)
-                                                                         EffectiveTimeRequestBody requestBody)
+                                                           EffectiveTimeRequestBody requestBody)
     {
         return restAPI.clearConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -288,11 +287,11 @@ public class ClassificationManagerResource
     public VoidResponse setRetentionClassification(@PathVariable String                    serverName,
                                                    @PathVariable String                    elementGUID,
                                                    @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                   forLineage,
+                                                   boolean                   forLineage,
                                                    @RequestParam (required = false, defaultValue = "false")
-                                                                 boolean                   forDuplicateProcessing,
+                                                   boolean                   forDuplicateProcessing,
                                                    @RequestBody  (required = false)
-                                                                 ClassificationRequestBody requestBody)
+                                                   ClassificationRequestBody requestBody)
     {
         return restAPI.setRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -303,7 +302,7 @@ public class ClassificationManagerResource
      * track the retention period to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -391,11 +390,11 @@ public class ClassificationManagerResource
     public VoidResponse clearSecurityTags(@PathVariable String          serverName,
                                           @PathVariable String          elementGUID,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                   forLineage,
+                                          boolean                   forLineage,
                                           @RequestParam (required = false, defaultValue = "false")
-                                                        boolean                   forDuplicateProcessing,
+                                          boolean                   forDuplicateProcessing,
                                           @RequestBody(required = false)
-                                                        ClassificationRequestBody requestBody)
+                                          ClassificationRequestBody requestBody)
     {
         return restAPI.clearSecurityTags(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -679,5 +678,677 @@ public class ClassificationManagerResource
                                                               EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.removeGovernanceDefinitionFromElement(serverName, definitionGUID, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/{elementGUID}")
+
+    @Operation(summary="getMetadataElementByGUID",
+            description="Retrieve the metadata element using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public MetadataElementSummaryResponse getMetadataElementByGUID(@PathVariable String  serverName,
+                                                                   @PathVariable String  elementGUID,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean forDuplicateProcessing,
+                                                                   @RequestBody  (required = false)
+                                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByGUID(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/by-unique-name")
+
+    @Operation(summary="getMetadataElementByUniqueName",
+            description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public MetadataElementSummaryResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forLineage,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forDuplicateProcessing,
+                                                                         @RequestBody (required = false) NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByUniqueName(serverName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element unique identifier (guid) or
+     *  InvalidParameterException the unique identifier is null or not known or
+     *  UserNotAuthorizedException the governance action service is not able to access the element or
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/guid-by-unique-name")
+
+    @Operation(summary="getMetadataElementGUIDByUniqueName",
+            description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                           boolean         forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                           boolean         forDuplicateProcessing,
+                                                           @RequestBody (required = false) NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-type")
+
+    @Operation(summary="getElements",
+            description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse getElements(@PathVariable String                    serverName,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                       startFrom,
+                                                        @RequestParam(required = false, defaultValue = "0")
+                                                        int                       pageSize,
+                                                        @RequestParam(required = false, defaultValue = "false")
+                                                        boolean                       forLineage,
+                                                        @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                       forDuplicateProcessing,
+                                                        @RequestBody  (required = false)
+                                                        FindProperties requestBody)
+    {
+        return restAPI.getElements(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-exact-property-value")
+
+    @Operation(summary="getElementsByPropertyValue",
+            description="Retrieve elements by a value found in one of the properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the results.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse getElementsByPropertyValue(@PathVariable String                       serverName,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int                       startFrom,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int                       pageSize,
+                                                                       @RequestParam(required = false, defaultValue = "false")
+                                                                       boolean                       forLineage,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                       forDuplicateProcessing,
+                                                                       @RequestBody  (required = false)
+                                                                           FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getElementsByPropertyValue(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must only be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-property-value-search")
+
+    @Operation(summary="findElementsByPropertyValue",
+            description="Retrieve elements by a value found in one of the properties specified.  The value must only be contained in the" +
+                    " properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse findElementsByPropertyValue(@PathVariable String                       serverName,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                       startFrom,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                       pageSize,
+                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                        boolean                       forLineage,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                       forDuplicateProcessing,
+                                                                        @RequestBody  (required = false)
+                                                                            FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findElementsByPropertyValue(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name. It is also possible to limit the results
+     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * any type of element may be returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-classification/{classificationName}")
+
+    @Operation(summary="getElementsByClassification",
+            description="Retrieve elements with the requested classification name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse getElementsByClassification(@PathVariable String                    serverName,
+                                                                        @PathVariable String                    classificationName,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                       startFrom,
+                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                        int                       pageSize,
+                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                        boolean                       forLineage,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                        boolean                       forDuplicateProcessing,
+                                                                        @RequestBody  (required = false)
+                                                                        FindProperties requestBody)
+    {
+        return restAPI.getElementsByClassification(serverName, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-classification/{classificationName}/with-exact-property-value")
+
+    @Operation(summary="getElementsByClassificationWithPropertyValue",
+            description="Retrieve elements with the requested classification name and with the requested a value found in one of the classification's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
+                                                                                         @PathVariable String                    classificationName,
+                                                                                         @RequestParam(required = false, defaultValue = "0")
+                                                                                         int                       startFrom,
+                                                                                         @RequestParam(required = false, defaultValue = "0")
+                                                                                         int                       pageSize,
+                                                                                         @RequestParam(required = false, defaultValue = "false")
+                                                                                         boolean                       forLineage,
+                                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                                         boolean                       forDuplicateProcessing,
+                                                                                         @RequestBody  (required = false)
+                                                                                         FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getElementsByClassificationWithPropertyValue(serverName, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must only be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/by-classification/{classificationName}/with-property-value-search")
+
+    @Operation(summary="findElementsByClassificationWithPropertyValue",
+            description="Retrieve elements with the requested classification name and with the requested a value found in one of the classification's" +
+                    " properties specified.  The value must only be contained in the" +
+                    " properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(@PathVariable String                       serverName,
+                                                                                          @PathVariable String                    classificationName,
+                                                                                          @RequestParam(required = false, defaultValue = "0")
+                                                                                          int                       startFrom,
+                                                                                          @RequestParam(required = false, defaultValue = "0")
+                                                                                          int                       pageSize,
+                                                                                          @RequestParam(required = false, defaultValue = "false")
+                                                                                          boolean                       forLineage,
+                                                                                          @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean                       forDuplicateProcessing,
+                                                                                          @RequestBody  (required = false)
+                                                                                              FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findElementsByClassificationWithPropertyValue(serverName, classificationName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve related elements of any type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/by-relationship")
+
+    @Operation(summary="getRelatedElements",
+            description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public RelatedMetadataElementSummariesResponse getRelatedElements(@PathVariable String                    serverName,
+                                                                      @PathVariable String                  elementGUID,
+                                                                      @RequestParam (required = false, defaultValue = "0")
+                                                                          int     startingAtEnd,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                       startFrom,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                       pageSize,
+                                                                      @RequestParam(required = false, defaultValue = "false")
+                                                                      boolean                       forLineage,
+                                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                       forDuplicateProcessing,
+                                                                      @RequestBody  (required = false)
+                                                                      FindProperties requestBody)
+    {
+        return restAPI.getRelatedElements(serverName, elementGUID, null, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+
+    /**
+     * Retrieve related elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}")
+
+    @Operation(summary="getRelatedElements",
+            description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public RelatedMetadataElementSummariesResponse getRelatedElements(@PathVariable String                    serverName,
+                                                                      @PathVariable String                  elementGUID,
+                                                                      @PathVariable String       relationshipTypeName,
+                                                                      @RequestParam (required = false, defaultValue = "0")
+                                                                      int     startingAtEnd,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                       startFrom,
+                                                                      @RequestParam(required = false, defaultValue = "0")
+                                                                      int                       pageSize,
+                                                                      @RequestParam(required = false, defaultValue = "false")
+                                                                      boolean                       forLineage,
+                                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                       forDuplicateProcessing,
+                                                                      @RequestBody  (required = false)
+                                                                          FindProperties requestBody)
+    {
+        return restAPI.getRelatedElements(serverName, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-exact-property-value")
+
+    @Operation(summary="getRelatedElementsWithPropertyValue",
+            description="Retrieve elements linked via the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                       @PathVariable String                  elementGUID,
+                                                                                       @PathVariable String       relationshipTypeName,
+                                                                                       @RequestParam (required = false, defaultValue = "0")
+                                                                                           int     startingAtEnd,
+                                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                                       int                       startFrom,
+                                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                                       int                       pageSize,
+                                                                                       @RequestParam(required = false, defaultValue = "false")
+                                                                                       boolean                       forLineage,
+                                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                                       boolean                       forDuplicateProcessing,
+                                                                                       @RequestBody  (required = false)
+                                                                                           FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getRelatedElementsWithPropertyValue(serverName, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must only be contained in the by a value found in one of the properties specified.
+     * The value must only be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-property-value-search")
+
+    @Operation(summary="findRelatedElementsWithPropertyValue",
+            description="Retrieve elements linked via the requested relationship type name and with the requested value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                        @PathVariable String                  elementGUID,
+                                                                                        @PathVariable String       relationshipTypeName,
+                                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                                            int     startingAtEnd,
+                                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                                        int                       startFrom,
+                                                                                        @RequestParam(required = false, defaultValue = "0")
+                                                                                        int                       pageSize,
+                                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                                        boolean                       forLineage,
+                                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                                        boolean                       forDuplicateProcessing,
+                                                                                        @RequestBody  (required = false)
+                                                                                            FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findRelatedElementsWithPropertyValue(serverName, elementGUID, relationshipTypeName, startingAtEnd, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}")
+
+    @Operation(summary="getRelationships",
+            description="Retrieve relationships of the requested relationship type name.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
+                                                                  @PathVariable String       relationshipTypeName,
+                                                                  @RequestParam(required = false, defaultValue = "0")
+                                                          int                       startFrom,
+                                                                  @RequestParam(required = false, defaultValue = "0")
+                                                          int                       pageSize,
+                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                          boolean                       forLineage,
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                          boolean                       forDuplicateProcessing,
+                                                                  @RequestBody  (required = false)
+                                                          FindProperties requestBody)
+    {
+        return restAPI.getRelationships(serverName, relationshipTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-exact-property-value")
+
+    @Operation(summary="getRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                   @PathVariable String       relationshipTypeName,
+                                                                                   @RequestParam(required = false, defaultValue = "0")
+                                                                                       int                       startFrom,
+                                                                                   @RequestParam(required = false, defaultValue = "0")
+                                                                                       int                       pageSize,
+                                                                                   @RequestParam(required = false, defaultValue = "false")
+                                                                                       boolean                       forLineage,
+                                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                                       boolean                       forDuplicateProcessing,
+                                                                                   @RequestBody  (required = false)
+                                                                               FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getRelationshipsWithPropertyValue(serverName, relationshipTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-property-value-search")
+
+    @Operation(summary="findRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                    @PathVariable String       relationshipTypeName,
+                                                                                    @RequestParam(required = false, defaultValue = "0")
+                                                                                        int                       startFrom,
+                                                                                    @RequestParam(required = false, defaultValue = "0")
+                                                                                        int                       pageSize,
+                                                                                    @RequestParam(required = false, defaultValue = "false")
+                                                                                        boolean                       forLineage,
+                                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                                        boolean                       forDuplicateProcessing,
+                                                                                    @RequestBody  (required = false)
+                                                                                FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findRelationshipsWithPropertyValue(serverName, relationshipTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the header for the instance identified by the supplied unique identifier.  It may be an element (entity) or a relationship between elements.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param guid identifier to use in the lookup
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/guids/{guid}")
+
+    @Operation(summary="retrieveInstanceForGUID",
+            description="Retrieve the header for the instance identified by the supplied unique identifier.  It may be an element (entity) or a relationship between elements.",
+            externalDocs=@ExternalDocumentation(description="Unique Identifiers (GUID)", url="https://egeria-project.org/concepts/guid/"))
+
+    public ElementHeaderResponse retrieveInstanceForGUID(@PathVariable String                       serverName,
+                                                         @PathVariable String       guid,
+                                                         @RequestParam(required = false, defaultValue = "false")
+                                                         boolean                       forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                       forDuplicateProcessing,
+                                                         @RequestBody(required = false) EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.retrieveInstanceForGUID(serverName, guid, forLineage, forDuplicateProcessing, requestBody);
     }
 }

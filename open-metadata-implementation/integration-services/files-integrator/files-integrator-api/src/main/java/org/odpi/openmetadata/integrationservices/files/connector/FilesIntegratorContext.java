@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManager
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
@@ -55,6 +56,7 @@ public class FilesIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param filesAndFoldersClient client to map request to
      * @param connectionManagerClient client for managing connections
      * @param validValueManagement client for managing valid value sets and definitions
@@ -75,6 +77,7 @@ public class FilesIntegratorContext extends IntegrationContext
                                   OpenIntegrationClient        openIntegrationClient,
                                   GovernanceConfiguration      governanceConfiguration,
                                   OpenMetadataClient           openMetadataStoreClient,
+                                  ActionControlInterface       actionControlInterface,
                                   FilesAndFoldersClient        filesAndFoldersClient,
                                   ConnectionManagerClient      connectionManagerClient,
                                   ValidValueManagement         validValueManagement,
@@ -94,6 +97,7 @@ public class FilesIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,
@@ -651,6 +655,40 @@ public class FilesIntegratorContext extends IntegrationContext
 
 
     /**
+     * Update the data folder asset description in the catalog.
+     *
+     * @param dataFolderGUID unique identifier of the data folder asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param fileFolderProperties properties for the asset
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateDataFolderInCatalog(String               metadataSourceGUID,
+                                          String               metadataSourceName,
+                                          String               dataFolderGUID,
+                                          boolean              isMergeUpdate,
+                                          FileFolderProperties fileFolderProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        filesAndFoldersClient.updateDataFolderInCatalog(userId,
+                                                        metadataSourceGUID,
+                                                        metadataSourceName,
+                                                        dataFolderGUID,
+                                                        isMergeUpdate,
+                                                        fileFolderProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
+            integrationReportWriter.reportElementUpdate(dataFolderGUID);
+        }
+    }
+
+
+    /**
      * Mark the data folder asset description in the catalog as archived.
      *
      * @param dataFolderGUID unique identifier of the data folder asset
@@ -733,11 +771,11 @@ public class FilesIntegratorContext extends IntegrationContext
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return Folder properties
+     * @return FileFolder properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -756,7 +794,7 @@ public class FilesIntegratorContext extends IntegrationContext
      *
      * @param pathName path name
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -863,7 +901,7 @@ public class FilesIntegratorContext extends IntegrationContext
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param fileGUID unique identifier used to locate the folder
      *

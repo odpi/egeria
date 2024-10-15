@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 
 /**
@@ -29,7 +30,7 @@ public class DataFolderProvider extends ConnectorProviderBase
     private static final String  connectorQualifiedName = "Egeria:ResourceConnector:DataFolder";
     private static final String  connectorTypeName = "Data Folder Connector";
     private static final String  connectorTypeDescription = "Connector supports reading of data files grouped under a single folder.";
-    private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/data-folder-resource-connector/";
+    private static final String  connectorWikiPage = "https://egeria-project.org/connectors/resource/data-folder-resource-connector/";
 
 
     private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderConnector";
@@ -73,6 +74,6 @@ public class DataFolderProvider extends ConnectorProviderBase
 
         super.setConnectorComponentDescription(componentDescription);
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.DATA_FOLDER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.DATA_FOLDER});
     }
 }

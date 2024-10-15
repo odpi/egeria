@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -30,10 +31,6 @@ import java.util.Map;
 public class ConnectorBroker
 {
     private static final Logger log      = LoggerFactory.getLogger(ConnectorBroker.class);
-
-    private static final String userIdPropertyName = "userId";
-    private static final String clearPasswordPropertyName = "clearPassword";
-    private static final String encryptedPasswordPropertyName = "encryptedPassword";
 
     private AuditLog auditLog = null;
 
@@ -366,6 +363,95 @@ public class ConnectorBroker
             ((AuditLoggingComponent) connectorProvider).setAuditLog(auditLog);
         }
 
+        List<Connector>                    embeddedConnectors              = new ArrayList<>();
+        ConnectionProperties               processedConnection             = connection;
+        Map<String, SecretsStoreConnector> secretsStoreConnectorMap        = new HashMap<>();
+
+        /*
+         * If a virtual connection was passed to the connector broker then the connector broker needs to create
+         * connectors for its embedded connections.
+         */
+        if (connection instanceof VirtualConnectionProperties virtualConnectionProperties)
+        {
+            AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
+            Connection           connectionBean       = accessibleConnection.getConnectionBean();
+
+            processedConnection = accessibleConnection;
+
+            /*
+             * All ok so create the embedded connectors.  Note: one of these connectors may itself be
+             * a virtual connector with embedded connectors of its own.  So this method may be called
+             * recursively as the tree of connectors is explored.
+             */
+            log.debug("Creating embedded connectors for connection name: " + connectionName);
+
+            List<EmbeddedConnectionProperties> embeddedConnections  = virtualConnectionProperties.getEmbeddedConnections();
+
+            for (EmbeddedConnectionProperties  embeddedConnection : embeddedConnections)
+            {
+                Connector embeddedConnector = getConnector(this.getConnection(embeddedConnection));
+
+                /*
+                 * If the embedded connector is a secrets store connector, extract the standard secrets and add them to the new
+                 * connector's connection.  It first tries to retrieve the secrets directly from the store, or via any names specified in the
+                 * securedProperties.
+                 */
+                if (embeddedConnector instanceof SecretsStoreConnector secretsStoreConnector)
+                {
+                    secretsStoreConnector.start();
+
+                    if (connectionBean.getUserId() == null)
+                    {
+                        connectionBean.setUserId(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.USER_ID.getName()));
+
+                        if (connectionBean.getUserId() == null)
+                        {
+                            if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName()) != null))
+                            {
+                                connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.USER_ID.getName())));
+                            }
+                        }
+                    }
+                    if (connection.getClearPassword() == null)
+                    {
+                        connectionBean.setClearPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()));
+
+                        if (connectionBean.getClearPassword() == null)
+                        {
+                            if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName()) != null))
+                            {
+                                connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.CLEAR_PASSWORD.getName())));
+                            }
+                        }
+                    }
+                    if (connection.getEncryptedPassword() == null)
+                    {
+                        connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()));
+
+                        if (connectionBean.getEncryptedPassword() == null)
+                        {
+                            if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName()) != null))
+                            {
+                                connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(SecretsStoreCollectionProperty.ENCRYPTED_PASSWORD.getName())));
+                            }
+                        }
+                    }
+
+                    if (embeddedConnection.getDisplayName() != null)
+                    {
+                        secretsStoreConnectorMap.put(embeddedConnection.getDisplayName(), secretsStoreConnector);
+                    }
+                    else
+                    {
+                        secretsStoreConnectorMap.put(String.valueOf(secretsStoreConnectorMap.size()), secretsStoreConnector);
+                    }
+                }
+
+                embeddedConnectors.add(embeddedConnector);
+            }
+        }
+
+
 
         /*
          * At this point we hopefully have a valid connector provider so all that is left to do is call
@@ -381,7 +467,7 @@ public class ConnectorBroker
             /*
              * The connector is initialized status at this point.
              */
-            connectorInstance = connectorProvider.getConnector(connection);
+            connectorInstance = connectorProvider.getConnector(processedConnection);
         }
         catch (ConnectionCheckedException | ConnectorCheckedException ocfError)
         {
@@ -421,100 +507,24 @@ public class ConnectorBroker
 
 
         /*
-         * If a virtual connection was passed to the connector broker then (1) the connector provider
-         * should have created a VirtualConnector and (2) the connector broker needs to create
+         * If a virtual connection was passed to the connector broker then pass
          * connectors for its embedded connections.
          */
-        if (connection instanceof VirtualConnectionProperties virtualConnectionProperties)
+        if (connectorInstance instanceof VirtualConnectorExtension virtualConnectorExtension)
         {
-            if (connectorInstance instanceof VirtualConnectorExtension virtualConnectorExtension)
-            {
-                AccessibleConnection accessibleConnection = new AccessibleConnection(connection);
-                Connection           connectionBean       = accessibleConnection.getConnectionBean();
-
-                /*
-                 * All ok so create the embedded connectors.  Note: one of these connectors may itself be
-                 * a virtual connector with embedded connectors of its own.  So this method may be called
-                 * recursively as the tree of connectors is explored.
-                 */
-                log.debug("Creating embedded connectors for connection name: " + connectionName + "; connectorId: " + connectorInstance.getConnectorInstanceId());
-
-                List<EmbeddedConnectionProperties> embeddedConnections         = virtualConnectionProperties.getEmbeddedConnections();
-                List<Connector>                    embeddedConnectors          = new ArrayList<>();
-
-                for (EmbeddedConnectionProperties  embeddedConnection : embeddedConnections)
-                {
-                    Connector embeddedConnector = getConnector(this.getConnection(embeddedConnection));
-
-                    /*
-                     * If the embedded connector is a secrets store connector, extract the standard secrets and add them to the new
-                     * connector's connection.  It first tries to retrieve the secrets directly from the store, or via any names specified in the
-                     * securedProperties.
-                     */
-                    if (embeddedConnector instanceof SecretsStoreConnector secretsStoreConnector)
-                    {
-                        secretsStoreConnector.start();
-
-                        if (connectionBean.getUserId() == null)
-                        {
-                            connectionBean.setUserId(secretsStoreConnector.getSecret(userIdPropertyName));
-
-                            if (connectionBean.getUserId() == null)
-                            {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(userIdPropertyName) != null))
-                                {
-                                    connectionBean.setUserId(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(userIdPropertyName)));
-                                }
-                            }
-                        }
-                        if (connection.getClearPassword() == null)
-                        {
-                            connectionBean.setClearPassword(secretsStoreConnector.getSecret(clearPasswordPropertyName));
-
-                            if (connectionBean.getClearPassword() == null)
-                            {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(clearPasswordPropertyName) != null))
-                                {
-                                    connectionBean.setClearPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(clearPasswordPropertyName)));
-                                }
-                            }
-                        }
-                        if (connection.getEncryptedPassword() == null)
-                        {
-                            connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(encryptedPasswordPropertyName));
-
-                            if (connectionBean.getEncryptedPassword() == null)
-                            {
-                                if ((connection.getSecuredProperties() != null) && (connection.getSecuredProperties().get(encryptedPasswordPropertyName) != null))
-                                {
-                                    connectionBean.setEncryptedPassword(secretsStoreConnector.getSecret(connection.getSecuredProperties().get(encryptedPasswordPropertyName)));
-                                }
-                            }
-                        }
-
-                        if (connectorInstance instanceof SecureConnectorExtension secureConnectorExtension)
-                        {
-                            secureConnectorExtension.initializeSecretsStoreConnector(embeddedConnection.getDisplayName(), secretsStoreConnector);
-                        }
-                    }
-
-                    embeddedConnectors.add(embeddedConnector);
-                }
-
-                virtualConnectorExtension.initializeEmbeddedConnectors(embeddedConnectors);
-            }
-            else
-            {
-                /*
-                 * Build and throw exception.
-                 */
-                throw new OCFRuntimeException(OCFErrorCode.NOT_VIRTUAL_CONNECTOR.getMessageDefinition(requestedConnectorType.getConnectorProviderClassName(),
-                                                                                                      connection.getConnectionName()),
-                                              this.getClass().getName(),
-                                              methodName);
-            }
+            virtualConnectorExtension.initializeEmbeddedConnectors(embeddedConnectors);
         }
 
+        /*
+         * Add the secrets connectors to the new connector.
+         */
+        if (connectorInstance instanceof SecureConnectorExtension secureConnectorExtension)
+        {
+            for (String displayName : secretsStoreConnectorMap.keySet())
+            {
+                secureConnectorExtension.initializeSecretsStoreConnector(displayName, secretsStoreConnectorMap.get(displayName));
+            }
+        }
 
         /*
          * If we reach this point the connector provider has returned a connector that can be passed to the caller.

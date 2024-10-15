@@ -5,13 +5,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
@@ -197,18 +199,18 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getConfidenceClassifiedElements(String  userId,
-                                                      String  assetManagerGUID,
-                                                      String  assetManagerName,
-                                                      boolean returnSpecificLevel,
-                                                      int     levelIdentifier,
-                                                      int     startFrom,
-                                                      int     pageSize,
-                                                      Date    effectiveTime,
-                                                      boolean forLineage,
-                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    List<MetadataElementSummary> getConfidenceClassifiedElements(String  userId,
+                                                                 String  assetManagerGUID,
+                                                                 String  assetManagerName,
+                                                                 boolean returnSpecificLevel,
+                                                                 int     levelIdentifier,
+                                                                 int     startFrom,
+                                                                 int     pageSize,
+                                                                 Date    effectiveTime,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException;
 
 
     /**
@@ -291,18 +293,18 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getCriticalityClassifiedElements(String  userId,
-                                                       String  assetManagerGUID,
-                                                       String  assetManagerName,
-                                                       boolean returnSpecificLevel,
-                                                       int     levelIdentifier,
-                                                       int     startFrom,
-                                                       int     pageSize,
-                                                       Date    effectiveTime,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    List<MetadataElementSummary> getCriticalityClassifiedElements(String  userId,
+                                                                  String  assetManagerGUID,
+                                                                  String  assetManagerName,
+                                                                  boolean returnSpecificLevel,
+                                                                  int     levelIdentifier,
+                                                                  int     startFrom,
+                                                                  int     pageSize,
+                                                                  Date    effectiveTime,
+                                                                  boolean forLineage,
+                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
 
 
     /**
@@ -389,18 +391,18 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getConfidentialityClassifiedElements(String  userId,
-                                                           String  assetManagerGUID,
-                                                           String  assetManagerName,
-                                                           boolean returnSpecificLevel,
-                                                           int     levelIdentifier,
-                                                           int     startFrom,
-                                                           int     pageSize,
-                                                           Date    effectiveTime,
-                                                           boolean forLineage,
-                                                           boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+    List<MetadataElementSummary> getConfidentialityClassifiedElements(String  userId,
+                                                                      String  assetManagerGUID,
+                                                                      String  assetManagerName,
+                                                                      boolean returnSpecificLevel,
+                                                                      int     levelIdentifier,
+                                                                      int     startFrom,
+                                                                      int     pageSize,
+                                                                      Date    effectiveTime,
+                                                                      boolean forLineage,
+                                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
 
 
     /**
@@ -485,18 +487,18 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getRetentionClassifiedElements(String  userId,
-                                                     String  assetManagerGUID,
-                                                     String  assetManagerName,
-                                                     boolean returnSpecificBasisIdentifier,
-                                                     int     basisIdentifier,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    List<MetadataElementSummary> getRetentionClassifiedElements(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                boolean returnSpecificBasisIdentifier,
+                                                                int     basisIdentifier,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException;
 
 
     /**
@@ -575,16 +577,16 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getSecurityTaggedElements(String  userId,
-                                                String  assetManagerGUID,
-                                                String  assetManagerName,
-                                                int     startFrom,
-                                                int     pageSize,
-                                                Date    effectiveTime,
-                                                boolean forLineage,
-                                                boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
+    List<MetadataElementSummary> getSecurityTaggedElements(String  userId,
+                                                           String  assetManagerGUID,
+                                                           String  assetManagerName,
+                                                           int     startFrom,
+                                                           int     pageSize,
+                                                           Date    effectiveTime,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
     /**
      * Add or replace the ownership classification for an element.
@@ -663,17 +665,17 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getOwnersElements(String  userId,
-                                        String  assetManagerGUID,
-                                        String  assetManagerName,
-                                        String  owner,
-                                        int     startFrom,
-                                        int     pageSize,
-                                        Date    effectiveTime,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+    List<MetadataElementSummary> getOwnersElements(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  owner,
+                                                   int     startFrom,
+                                                   int     pageSize,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
 
     /**
@@ -843,17 +845,17 @@ public interface StewardshipExchangeInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<ElementStub> getMembersOfSubjectArea(String  userId,
-                                              String  assetManagerGUID,
-                                              String  assetManagerName,
-                                              String  subjectAreaName,
-                                              int     startFrom,
-                                              int     pageSize,
-                                              Date    effectiveTime,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<MetadataElementSummary> getMembersOfSubjectArea(String  userId,
+                                                         String  assetManagerGUID,
+                                                         String  assetManagerName,
+                                                         String  subjectAreaName,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         Date    effectiveTime,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
@@ -963,17 +965,17 @@ public interface StewardshipExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getSemanticAssignees(String  userId,
-                                              String  assetManagerGUID,
-                                              String  assetManagerName,
-                                              String  glossaryTermGUID,
-                                              int     startFrom,
-                                              int     pageSize,
-                                              Date    effectiveTime,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<RelatedMetadataElementSummary> getSemanticAssignees(String  userId,
+                                                             String  assetManagerGUID,
+                                                             String  assetManagerName,
+                                                             String  glossaryTermGUID,
+                                                             int     startFrom,
+                                                             int     pageSize,
+                                                             Date    effectiveTime,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -1082,17 +1084,17 @@ public interface StewardshipExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getGovernedElements(String  userId,
-                                             String  assetManagerGUID,
-                                             String  assetManagerName,
-                                             String  governanceDefinitionGUID,
-                                             int     startFrom,
-                                             int     pageSize,
-                                             Date    effectiveTime,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    List<RelatedMetadataElementSummary> getGovernedElements(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  governanceDefinitionGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
     /**
      * Retrieve the elements linked via a "SourceFrom" relationship to the requested element.
@@ -1113,17 +1115,17 @@ public interface StewardshipExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getSourceElements(String  userId,
-                                           String  assetManagerGUID,
-                                           String  assetManagerName,
-                                           String  elementGUID,
-                                           int     startFrom,
-                                           int     pageSize,
-                                           Date    effectiveTime,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException;
+    List<RelatedMetadataElementSummary> getSourceElements(String  userId,
+                                                          String  assetManagerGUID,
+                                                          String  assetManagerName,
+                                                          String  elementGUID,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          Date    effectiveTime,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**
@@ -1145,15 +1147,459 @@ public interface StewardshipExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<RelatedElement> getElementsSourceFrom(String  userId,
-                                               String  assetManagerGUID,
-                                               String  assetManagerName,
-                                               String  elementGUID,
-                                               int     startFrom,
-                                               int     pageSize,
-                                               Date    effectiveTime,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    List<RelatedMetadataElementSummary> getElementsSourceFrom(String  userId,
+                                                              String  assetManagerGUID,
+                                                              String  assetManagerName,
+                                                              String  elementGUID,
+                                                              int     startFrom,
+                                                              int     pageSize,
+                                                              Date    effectiveTime,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    MetadataElementSummary getMetadataElementByGUID(String  userId,
+                                                    String  elementGUID,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId calling user
+     * @param uniqueName             unique name for the metadata element
+     * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    MetadataElementSummary getMetadataElementByUniqueName(String  userId,
+                                                          String  uniqueName,
+                                                          String  uniquePropertyName,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId calling user
+     * @param uniqueName             unique name for the metadata element
+     * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element unique identifier (guid)
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String getMetadataElementGUIDByUniqueName(String  userId,
+                                              String  uniqueName,
+                                              String  uniquePropertyName,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
+    /**
+     * Retrieve elements of the requested type name and/or name.
+     *
+     * @param userId calling user
+     * @param findProperties open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> getElements(String         userId,
+                                             FindProperties findProperties,
+                                             int            startFrom,
+                                             int            pageSize,
+                                             boolean        forLineage,
+                                             boolean        forDuplicateProcessing) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> getElementsByPropertyValue(String                      userId,
+                                                            FindPropertyNamesProperties findProperties,
+                                                            int                         startFrom,
+                                                            int                         pageSize,
+                                                            boolean                     forLineage,
+                                                            boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException;
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> findElementsByPropertyValue(String                      userId,
+                                                             FindPropertyNamesProperties findProperties,
+                                                             int                         startFrom,
+                                                             int                         pageSize,
+                                                             boolean                     forLineage,
+                                                             boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve elements with the requested classification name. It is also possible to limit the results
+     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * any type of element may be returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> getElementsByClassification(String             userId,
+                                                             String             classificationName,
+                                                             FindProperties     findProperties,
+                                                             int                startFrom,
+                                                             int                pageSize,
+                                                             boolean            forLineage,
+                                                             boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> getElementsByClassificationWithPropertyValue(String                      userId,
+                                                                              String                      classificationName,
+                                                                              FindPropertyNamesProperties findProperties,
+                                                                              int                         startFrom,
+                                                                              int                         pageSize,
+                                                                              boolean                     forLineage,
+                                                                              boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                         PropertyServerException;
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataElementSummary> findElementsByClassificationWithPropertyValue(String                      userId,
+                                                                               String                      classificationName,
+                                                                               FindPropertyNamesProperties findProperties,
+                                                                               int                         startFrom,
+                                                                               int                         pageSize,
+                                                                               boolean                     forLineage,
+                                                                               boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                          UserNotAuthorizedException,
+                                                                                                                                          PropertyServerException;
+
+
+    /**
+     * Retrieve related elements of the requested type name.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting end
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param relationshipTypeName name of relationship
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedMetadataElementSummary> getRelatedElements(String             userId,
+                                                           String             elementGUID,
+                                                           String             relationshipTypeName,
+                                                           int                startingAtEnd,
+                                                           FindProperties     findProperties,
+                                                           int                startFrom,
+                                                           int                pageSize,
+                                                           boolean            forLineage,
+                                                           boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedMetadataElementSummary> getRelatedElementsWithPropertyValue(String                      userId,
+                                                                            String                      elementGUID,
+                                                                            String                      relationshipTypeName,
+                                                                            int                         startingAtEnd,
+                                                                            FindPropertyNamesProperties findProperties,
+                                                                            int                         startFrom,
+                                                                            int                         pageSize,
+                                                                            boolean                     forLineage,
+                                                                            boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                       UserNotAuthorizedException,
+                                                                                                                                       PropertyServerException;
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must be contained in the by a value found in one of the properties specified.
+     * The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedMetadataElementSummary> findRelatedElementsWithPropertyValue(String                      userId,
+                                                                             String                      elementGUID,
+                                                                             String                      relationshipTypeName,
+                                                                             int                         startingAtEnd,
+                                                                             FindPropertyNamesProperties findProperties,
+                                                                             int                         startFrom,
+                                                                             int                         pageSize,
+                                                                             boolean                     forLineage,
+                                                                             boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                        UserNotAuthorizedException,
+                                                                                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties for the search
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataRelationshipSummary> getRelationships(String             userId,
+                                                String             relationshipTypeName,
+                                                FindProperties     findProperties,
+                                                int                startFrom,
+                                                int                pageSize,
+                                                boolean            forLineage,
+                                                boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataRelationshipSummary> getRelationshipsWithPropertyValue(String                      userId,
+                                                                 String                      relationshipTypeName,
+                                                                 FindPropertyNamesProperties findProperties,
+                                                                 int                         startFrom,
+                                                                 int                         pageSize,
+                                                                 boolean                     forLineage,
+                                                                 boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            PropertyServerException;
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<MetadataRelationshipSummary> findRelationshipsWithPropertyValue(String                      userId,
+                                                                  String                      relationshipTypeName,
+                                                                  FindPropertyNamesProperties findProperties,
+                                                                  int                         startFrom,
+                                                                  int                         pageSize,
+                                                                  boolean                     forLineage,
+                                                                  boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException;
+
+
+    /**
+     * Retrieve the header for the instance identified by the supplied unique identifier.
+     * It may be an element (entity) or a relationship between elements.
+     *
+     * @param userId  name of the server instance to connect to
+     * @param guid identifier to use in the lookup
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime effective time
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    ElementHeader retrieveInstanceForGUID(String  userId,
+                                          String  guid,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 }

@@ -174,7 +174,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 if (this.getEntityFromRepository(userId,
                                                  connectionGUID,
                                                  guidParameterName,
-                                                 OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                 OpenMetadataType.CONNECTION.typeName,
                                                  null,
                                                  null,
                                                  forLineage,
@@ -202,8 +202,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          qualifiedName,
                                                          qualifiedNameParameter,
                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                         OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                         OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                         OpenMetadataType.CONNECTION.typeGUID,
+                                                         OpenMetadataType.CONNECTION.typeName,
                                                          false,
                                                          false,
                                                          supportedZones,
@@ -217,8 +217,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                          displayName,
                                                          displayNameParameter,
                                                          OpenMetadataProperty.DISPLAY_NAME.name,
-                                                         OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                         OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                         OpenMetadataType.CONNECTION.typeGUID,
+                                                         OpenMetadataType.CONNECTION.typeName,
                                                          false,
                                                          false,
                                                          supportedZones,
@@ -397,8 +397,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                      null,
                                                      endpointGUID,
                                                      connectionGUID,
-                                                     OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                     OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                      null,
                                                      forLineage,
                                                      forDuplicateProcessing,
@@ -418,9 +418,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            externalSourceGUID,
                                                            externalSourceName,
                                                            connectionGUID,
-                                                           OpenMetadataType.CONNECTION_TYPE_NAME,
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                           OpenMetadataType.CONNECTION.typeName,
+                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime,
@@ -441,11 +441,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 repositoryHandler.ensureRelationship(userId,
                                                      externalSourceGUID,
                                                      externalSourceName,
-                                                     OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTION.typeName,
                                                      connectionGUID,
                                                      connectorTypeGUID,
-                                                     OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                                     OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                     OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                                      null,
                                                      forLineage,
                                                      forDuplicateProcessing,
@@ -465,9 +465,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                            externalSourceGUID,
                                                            externalSourceName,
                                                            connectionGUID,
-                                                           OpenMetadataType.CONNECTION_TYPE_NAME,
-                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                                           OpenMetadataType.CONNECTION.typeName,
+                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
+                                                           OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime,
@@ -484,12 +484,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                externalSourceName,
                                connectionGUID,
                                connectionGUIDParameterName,
-                               OpenMetadataType.CONNECTION_TYPE_NAME,
+                               OpenMetadataType.CONNECTION.typeName,
                                forLineage,
                                forDuplicateProcessing,
                                serviceSupportedZones,
-                               OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
-                               OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME,
+                               OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
+                               OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                effectiveTime,
                                methodName);
 
@@ -528,7 +528,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                               serverName);
 
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
+                                                             OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              connectionGUID,
@@ -591,20 +591,20 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateObject(connection.getConnectorType(), connectionParameterName, methodName);
 
-        String                   connectionTypeGUID  = OpenMetadataType.CONNECTION_TYPE_GUID;
-        String                   connectionTypeName  = OpenMetadataType.CONNECTION_TYPE_NAME;
+        String                   connectionTypeGUID  = OpenMetadataType.CONNECTION.typeGUID;
+        String                   connectionTypeName  = OpenMetadataType.CONNECTION.typeName;
         List<EmbeddedConnection> embeddedConnections = null;
 
         if (connection instanceof VirtualConnection virtualConnection)
         {
-            connectionTypeGUID = OpenMetadataType.VIRTUAL_CONNECTION_TYPE_GUID;
-            connectionTypeName = OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME;
+            connectionTypeGUID = OpenMetadataType.VIRTUAL_CONNECTION.typeGUID;
+            connectionTypeName = OpenMetadataType.VIRTUAL_CONNECTION.typeName;
 
             embeddedConnections = virtualConnection.getEmbeddedConnections();
         }
 
         String anchorTypeName = null;
-        String anchorDomainName = OpenMetadataType.CONNECTION_TYPE_NAME;
+        String anchorDomainName = OpenMetadataType.CONNECTION.typeName;
 
         if (anchorGUID != null)
         {
@@ -642,8 +642,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     connection.getUserId(),
                                                                     connection.getClearPassword(),
                                                                     connection.getEncryptedPassword(),
-                                                                    OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTION.typeGUID,
+                                                                    OpenMetadataType.CONNECTION.typeName,
                                                                     connection.getExtendedProperties(),
                                                                     repositoryHelper,
                                                                     serviceName,
@@ -694,7 +694,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 {
                     properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               null,
-                                                                              OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.ASSET_SUMMARY.name,
                                                                               assetSummary,
                                                                               methodName);
                 }
@@ -704,15 +704,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           null,
                                           connectionGUID,
                                           connectionParameterName,
-                                          OpenMetadataType.CONNECTION_TYPE_NAME,
+                                          OpenMetadataType.CONNECTION.typeName,
                                           assetGUID,
                                           assetGUIDParameterName,
                                           assetTypeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                          OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                          OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                           properties,
                                           null,
                                           null,
@@ -764,12 +764,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateObject(connection.getConnectorType(), parameterName, methodName);
 
-        String                   connectionTypeName  = OpenMetadataType.CONNECTION_TYPE_NAME;
+        String                   connectionTypeName  = OpenMetadataType.CONNECTION.typeName;
         List<EmbeddedConnection> embeddedConnections = null;
 
         if (connection instanceof VirtualConnection virtualConnection)
         {
-            connectionTypeName = OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME;
+            connectionTypeName = OpenMetadataType.VIRTUAL_CONNECTION.typeName;
 
             embeddedConnections = virtualConnection.getEmbeddedConnections();
         }
@@ -975,7 +975,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   null,
                                   null,
                                   null,
-                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION.typeName,
                                   null,
                                   connectorTypeGUID,
                                   connectorTypeGUIDParameterName,
@@ -1073,7 +1073,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      connectorUserId,
                                      clearPassword,
                                      encryptedPassword,
-                                     OpenMetadataType.CONNECTION_TYPE_NAME,
+                                     OpenMetadataType.CONNECTION.typeName,
                                      null,
                                      connectorTypeGUID,
                                      connectorTypeGUIDParameterName,
@@ -1164,7 +1164,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
         String connectionTypeId = invalidParameterHandler.validateTypeName(connectionTypeName,
-                                                                           OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                           OpenMetadataType.CONNECTION.typeName,
                                                                            serviceName,
                                                                            methodName,
                                                                            repositoryHelper);
@@ -1186,7 +1186,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
-        String domainName = OpenMetadataType.CONNECTION_TYPE_NAME;
+        String domainName = OpenMetadataType.CONNECTION.typeName;
 
         if (assetGUID != null)
         {
@@ -1230,7 +1230,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 {
                     relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.ASSET_SUMMARY.name,
                                                                                           assetSummary,
                                                                                           methodName);
                 }
@@ -1247,8 +1247,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    serviceSupportedZones,
-                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                   OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                    this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
                                                    effectiveTime,
                                                    methodName);
@@ -1264,12 +1264,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           connectionTypeName,
                                           connectorTypeGUID,
                                           connectorTypeGUIDParameterName,
-                                          OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                                          OpenMetadataType.CONNECTOR_TYPE.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                           null,
                                           effectiveFrom,
                                           effectiveTo,
@@ -1291,8 +1291,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                          OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                           null,
                                           effectiveFrom,
                                           effectiveTo,
@@ -1357,7 +1357,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                   null,
-                                                                                  OpenMetadataType.POSITION_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.POSITION.name,
                                                                                   position,
                                                                                   methodName);
 
@@ -1374,7 +1374,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         {
             properties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.ARGUMENTS_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.ARGUMENTS.name,
                                                                    arguments,
                                                                    methodName);
         }
@@ -1384,15 +1384,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   virtualConnectionGUID,
                                   virtualConnectionGUIDParameterName,
-                                  OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.VIRTUAL_CONNECTION.typeName,
                                   embeddedConnectionGUID,
                                   embeddedConnectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   serviceSupportedZones,
-                                  OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
-                                  OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -1442,16 +1442,16 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       connectionGUID,
                                       connectionGUIDParameterName,
-                                      OpenMetadataType.VIRTUAL_CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.VIRTUAL_CONNECTION.typeName,
                                       embeddedConnectionGUID,
                                       embeddedConnectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION_TYPE_GUID,
-                                      OpenMetadataType.CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION.typeGUID,
+                                      OpenMetadataType.CONNECTION.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       serviceSupportedZones,
-                                      OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
-                                      OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -1507,8 +1507,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.CONNECTION_TYPE_GUID,
-                                           OpenMetadataType.CONNECTION_TYPE_NAME,
+                                           OpenMetadataType.CONNECTION.typeGUID,
+                                           OpenMetadataType.CONNECTION.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
@@ -1585,7 +1585,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                   OpenMetadataType.CONNECTION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1667,15 +1667,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   connectionGUID,
                                   connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION.typeName,
                                   connectorTypeGUID,
                                   connectorTypeGUIDParameterName,
-                                  OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                                  OpenMetadataType.CONNECTOR_TYPE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -1723,16 +1723,16 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       connectionGUID,
                                       connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION.typeName,
                                       connectorTypeGUID,
                                       connectorTypeGUIDParameterName,
-                                      OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
-                                      OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                                      OpenMetadataType.CONNECTOR_TYPE.typeGUID,
+                                      OpenMetadataType.CONNECTOR_TYPE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
-                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -1783,12 +1783,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   OpenMetadataType.ENDPOINT.typeName,
                                   connectionGUID,
                                   connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                  OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -1839,13 +1839,13 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataType.ENDPOINT.typeName,
                                       connectionGUID,
                                       connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION_TYPE_GUID,
-                                      OpenMetadataType.CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION.typeGUID,
+                                      OpenMetadataType.CONNECTION.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
-                                      OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -1893,7 +1893,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.ASSET_SUMMARY.name,
                                                                                      assetSummary,
                                                                                      methodName);
         this.linkElementToElement(userId,
@@ -1901,15 +1901,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   connectionGUID,
                                   connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION.typeName,
                                   assetGUID,
                                   assetGUIDParameterName,
                                   OpenMetadataType.ASSET.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                  OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -1930,7 +1930,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             this.addAnchorsClassification(userId,
                                           connectionGUID,
                                           connectionGUIDParameterName,
-                                          OpenMetadataType.CONNECTION_TYPE_NAME,
+                                          OpenMetadataType.CONNECTION.typeName,
                                           assetGUID,
                                           assetEntity.getType().getTypeDefName(),
                                           OpenMetadataType.ASSET.typeName,
@@ -1981,7 +1981,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       connectionGUID,
                                       connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION.typeName,
                                       assetGUID,
                                       assetGUIDParameterName,
                                       OpenMetadataType.ASSET.typeGUID,
@@ -1989,8 +1989,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
-                                      OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -2030,8 +2030,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     guid,
                                     guidParameterName,
-                                    OpenMetadataType.CONNECTION_TYPE_GUID,
-                                    OpenMetadataType.CONNECTION_TYPE_NAME,
+                                    OpenMetadataType.CONNECTION.typeGUID,
+                                    OpenMetadataType.CONNECTION.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -2092,9 +2092,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          assetEntity,
                                                                          assetGUIDParameterName,
                                                                          OpenMetadataType.ASSET.typeName,
-                                                                         OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                         OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                         OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                         OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                         OpenMetadataType.CONNECTION.typeName,
                                                                          null,
                                                                          null,
                                                                          1,
@@ -2167,16 +2167,16 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
                         if ((repositoryHelper.isTypeOf(serviceName,
                                                        relationship.getType().getTypeDefName(),
-                                                       OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                       OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                                     || (repositoryHelper.isTypeOf(serviceName,
                                                                   relationship.getType().getTypeDefName(),
-                                                                  OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME)))
+                                                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName)))
                         {
                             entityProxy = relationship.getEntityTwoProxy();
                         }
                         else if (repositoryHelper.isTypeOf(serviceName,
                                                            relationship.getType().getTypeDefName(),
-                                                           OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                           OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                         {
                             entityProxy = relationship.getEntityOneProxy();
                         }
@@ -2266,24 +2266,28 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                 {
                     if ((repositoryHelper.isTypeOf(serviceName,
                                                    relationship.getType().getTypeDefName(),
-                                                   OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                                                   OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName))
                                 || (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName))
                                 || (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME)))
+                                                              OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName)))
                     {
                         supplementaryRelationships.add(relationship);
                     }
                     else if (repositoryHelper.isTypeOf(serviceName,
                                                        relationship.getType().getTypeDefName(),
-                                                       OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                                                       OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName))
                     {
                         supplementaryRelationships.add(relationship);
 
+                        /*
+                         * Navigate DOWN to the embedded connections
+                         */
                         EntityProxy embeddedConnectionEnd = relationship.getEntityTwoProxy();
-                        if ((embeddedConnectionEnd != null) && (embeddedConnectionEnd.getGUID() != null))
+                        if ((embeddedConnectionEnd != null) && (embeddedConnectionEnd.getGUID() != null) &&
+                                (! embeddedConnectionEnd.getGUID().equals(connectionEntity.getGUID())))
                         {
                             List<Relationship> embeddedConnectionRelationships = this.getEmbeddedRelationships(userId,
                                                                                                                embeddedConnectionEnd,
@@ -2404,9 +2408,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                 assetGUID,
                                                                 assetGUIDParameterName,
                                                                 OpenMetadataType.ASSET.typeName,
-                                                                OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
+                                                                OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                OpenMetadataType.CONNECTION.typeName,
                                                                 null,
                                                                 null,
                                                                 1,
@@ -2457,8 +2461,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.findEntities(userId,
                                                         searchString,
                                                         searchStringParameterName,
-                                                        OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                        OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                        OpenMetadataType.CONNECTION.typeGUID,
+                                                        OpenMetadataType.CONNECTION.typeName,
                                                         null,
                                                         null,
                                                         null,
@@ -2512,8 +2516,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities =  this.getEntitiesByValue(userId,
                                                                name,
                                                                nameParameterName,
-                                                               OpenMetadataType.CONNECTION_TYPE_GUID,
-                                                               OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                               OpenMetadataType.CONNECTION.typeGUID,
+                                                               OpenMetadataType.CONNECTION.typeName,
                                                                specificMatchPropertyNames,
                                                                true,
                                                                false,
@@ -2562,7 +2566,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            guid,
                                                            guidParameterName,
-                                                           OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                           OpenMetadataType.CONNECTION.typeName,
                                                            null,
                                                            null,
                                                            forLineage,

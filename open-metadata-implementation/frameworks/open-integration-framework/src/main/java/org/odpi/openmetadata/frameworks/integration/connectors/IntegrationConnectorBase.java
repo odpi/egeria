@@ -11,15 +11,13 @@ import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * IntegrationConnectorBase is the base class for an integration connector.  It manages the storing of the audit log for the connector
@@ -33,9 +31,11 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     protected AuditLog                 auditLog                    = null;
     protected String                   connectorName               = null;
     protected IntegrationContext       integrationContext          = null;
-    protected List<Connector>          embeddedConnectors          = null;
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
+    protected final PropertyHelper propertyHelper = new PropertyHelper();
+
+    protected RequestedCatalogTargetsManager catalogTargetsManager = null;
+
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -68,21 +68,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
 
     /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
-    }
-
-
-    /**
      * Set up the connector name for logging.
      *
      * @param connectorName connector name from the configuration
@@ -104,6 +89,21 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
         this.integrationContext = integrationContext;
     }
 
+
+    /**
+     * Indicates that the connector is completely configured and can begin processing.
+     * This call can be used to register with non-blocking services.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void start() throws ConnectorCheckedException
+    {
+        super.start();
+
+        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionProperties.getConfigurationProperties(),
+                                                                   connectorName,
+                                                                   auditLog);
+    }
 
 
     /**
@@ -131,6 +131,17 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
 
     /**
+     * Add a new listener for changes to this connector's catalog targets.
+     *
+     * @param listener listener to register
+     */
+    protected void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
+    {
+        this.catalogTargetsManager.registerCatalogTargetChangeListener(listener);
+    }
+
+
+    /**
      * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
      *
      * @param catalogTargetIntegrator the integration component that will process each catalog target
@@ -140,92 +151,66 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     {
         final String methodName = "refreshCatalogTargets";
 
-        try
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
+                                                                                                                catalogTargetIntegrator);
+
+        if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
         {
-            int startFrom = 0;
-
-            int catalogTargetCount = 0;
-            List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom,
-                                                                                         integrationContext.getMaxPageSize());
-
-
-            while (catalogTargetList != null)
+            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+        }
+        else
+        {
+            try
             {
-                for (CatalogTarget catalogTarget : catalogTargetList)
+                for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
                 {
-                    boolean savedExternalSourceIsHome = integrationContext.getExternalSourceIsHome();
+                    boolean savedExternalSourceIsHome        = integrationContext.getExternalSourceIsHome();
                     String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
 
-                    if ((catalogTarget != null) && (super.isActive()))
+                    if ((requestedCatalogTarget != null) && (super.isActive()))
                     {
-                        catalogTargetCount = catalogTargetCount + 1;
-
-                        if (catalogTarget.getMetadataSourceQualifiedName() == null)
+                        try
                         {
-                            integrationContext.setExternalSourceIsHome(false);
-                        }
-                        else
-                        {
-                            integrationContext.setMetadataSourceQualifiedName(catalogTarget.getMetadataSourceQualifiedName());
-                            integrationContext.setExternalSourceIsHome(true);
-                        }
-
-                        RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget);
-
-                        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-                        if (catalogTarget.getConfigurationProperties() != null)
-                        {
-                            if (configurationProperties == null)
+                            if (requestedCatalogTarget.getMetadataSourceQualifiedName() == null)
                             {
-                                configurationProperties = new HashMap<>();
+                                integrationContext.setExternalSourceIsHome(false);
+                            }
+                            else
+                            {
+                                integrationContext.setMetadataSourceQualifiedName(requestedCatalogTarget.getMetadataSourceQualifiedName());
+                                integrationContext.setExternalSourceIsHome(true);
                             }
 
-                            configurationProperties.putAll(catalogTarget.getConfigurationProperties());
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                         }
-
-                        requestedCatalogTarget.setConfigurationProperties(configurationProperties);
-
-                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                        catch (Exception error)
                         {
-                            requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID()));
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName + ":" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       error.getMessage()));
                         }
-
-                        auditLog.logMessage(methodName,
-                                            OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                                        requestedCatalogTarget.getCatalogTargetName()));
-                        catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                     }
 
                     integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
                     integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
                 }
-
-                startFrom = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
-
-                if (catalogTargetCount == 0)
-                {
-                    auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
-                }
-                else
-                {
-                    auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
-                                                                                                                Integer.toString(catalogTargetCount)));
-                }
             }
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
-        }
-        catch (Exception exception)
-        {
-            auditLog.logException(methodName,
-                                  OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(exception.getClass().getName(),
-                                                                                                 connectorName,
-                                                                                                 exception.getMessage()),
-                                  exception);
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()));
+            }
+
+            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                        Integer.toString(requestedCatalogTargets.size())));
         }
     }
 
@@ -259,9 +244,13 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
-        super.disconnectConnectors(this.embeddedConnectors);
+        if (catalogTargetsManager != null)
+        {
+            catalogTargetsManager.disconnect();
+        }
+
         super.disconnect();
     }
 }

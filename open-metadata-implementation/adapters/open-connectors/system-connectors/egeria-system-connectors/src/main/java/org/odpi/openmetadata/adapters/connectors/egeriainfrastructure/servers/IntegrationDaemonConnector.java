@@ -98,6 +98,7 @@ public class IntegrationDaemonConnector extends OMAGServerConnectorBase
         extractor.updateEndpointNetworkAddress(connectorName, networkAddress);
     }
 
+
     /**
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
@@ -192,10 +193,28 @@ public class IntegrationDaemonConnector extends OMAGServerConnectorBase
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the integration group.
      */
-    public  void refreshConfig(String integrationGroupName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public  void refreshIntegrationGroupConfig(String integrationGroupName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
-        extractor.refreshConfig(integrationGroupName);
+        extractor.refreshIntegrationGroupConfig(integrationGroupName);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(String event) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        extractor.publishOpenLineageEvent(event);
     }
 }

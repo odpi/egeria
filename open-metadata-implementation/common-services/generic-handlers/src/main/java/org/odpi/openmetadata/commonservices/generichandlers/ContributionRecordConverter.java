@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContributionRecord;

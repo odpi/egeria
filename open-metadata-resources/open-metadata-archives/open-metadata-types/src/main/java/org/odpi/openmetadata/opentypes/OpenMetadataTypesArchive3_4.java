@@ -250,9 +250,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "UserIdentity";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USER_IDENTITY.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -263,14 +261,9 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "distinguishedName";
-        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
         properties.add(property);
 
 
@@ -285,9 +278,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "ProfileIdentity";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -298,28 +289,18 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "roleTypeName";
-        final String attribute1Description     = "The type name of the PersonRole that the UserIdentity is used for.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "roleGUID";
-        final String attribute2Description     = "The unique identifier of the specific PersonRole that the UserIdentity is used for.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_TYPE_NAME.name,
+                                                           OpenMetadataProperty.ROLE_TYPE_NAME.description,
+                                                           OpenMetadataProperty.ROLE_TYPE_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_GUID.name,
+                                                           OpenMetadataProperty.ROLE_GUID.description,
+                                                           OpenMetadataProperty.ROLE_GUID.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -359,17 +340,15 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "PersonRole";
         final String                     end1AttributeName            = "teamMembers";
         final String                     end1AttributeDescription     = "The members of the team.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef1(relationshipEndDef);
 
 
@@ -380,13 +359,12 @@ public class OpenMetadataTypesArchive3_4
         final String                     end2AttributeName            = "memberOfTeam";
         final String                     end2AttributeDescription     = "The team that this role is a member of.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
@@ -410,17 +388,15 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "PersonRole";
         final String                     end1AttributeName            = "teamLeaders";
         final String                     end1AttributeDescription     = "The leaders of the team.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef1(relationshipEndDef);
 
 
@@ -431,13 +407,12 @@ public class OpenMetadataTypesArchive3_4
         final String                     end2AttributeName            = "leadsTeam";
         final String                     end2AttributeDescription     = "The team lead by this person role.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
@@ -459,53 +434,39 @@ public class OpenMetadataTypesArchive3_4
 
     private RelationshipDef addITInfrastructureProfileRelationship()
     {
-        final String guid            = "4c579e3d-a4ff-41c1-9931-33e6fc992f2b";
-        final String name            = "ITInfrastructureProfile";
-        final String description     = "Link between an ITProfile and the asset for the piece of infrastructure it describes.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end1AttributeName            = "describedByProfile";
         final String                     end1AttributeDescription     = "The IT infrastructure that is described by the IT profile.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ITProfile";
         final String                     end2AttributeName            = "usedByAsset";
         final String                     end2AttributeDescription     = "Description of the user identifies used by the asset.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_PROFILE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -549,13 +510,9 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "distinguishedName";
-        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -574,7 +531,7 @@ public class OpenMetadataTypesArchive3_4
 
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("UserIdentity"));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.USER_IDENTITY.typeName));
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,

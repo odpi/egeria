@@ -1476,6 +1476,63 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @return instance properties object.
      */
     @Override
+    public InstanceProperties addObjectPropertyToInstance(String             sourceName,
+                                                          InstanceProperties properties,
+                                                          String             propertyName,
+                                                          Object             propertyValue,
+                                                          String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (propertyValue != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (properties == null)
+            {
+                log.debug("First property");
+
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+
+            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+            primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+            primitivePropertyValue.setPrimitiveValue(propertyValue);
+            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
+            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getGUID());
+
+            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+            return resultingProperties;
+        }
+        else
+        {
+            log.debug("Null property");
+            return properties;
+        }
+    }
+
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
     public InstanceProperties addStringPropertyToInstance(String             sourceName,
                                                           InstanceProperties properties,
                                                           String             propertyName,

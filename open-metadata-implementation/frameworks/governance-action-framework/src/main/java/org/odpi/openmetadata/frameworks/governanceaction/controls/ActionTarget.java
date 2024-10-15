@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ public enum ActionTarget
                       OpenMetadataType.REFERENCEABLE.typeName,
                       null),
 
-
     /**
      * Any element of type Referenceable (or a subtype of).
      */
@@ -39,6 +39,65 @@ public enum ActionTarget
               "Any element of type Asset (or a subtype of).",
               OpenMetadataType.ASSET.typeName,
               null),
+
+
+    /**
+     * A newly created Asset (or a subtype of).
+     */
+    NEW_ASSET("newAsset",
+              "A newly created Asset (or a subtype of).",
+              OpenMetadataType.ASSET.typeName,
+              null),
+
+    /**
+     * A person or team who is accountable for the correct operation of a process.
+     */
+    PROCESS_OWNER("processOwner",
+               "A person or team who is accountable for the correct operation of a process.",
+               OpenMetadataType.ACTOR.typeName,
+               null),
+
+    /**
+     * A person or team who is accountable for the correct management and use of a particular collection of data.
+     */
+    DATA_OWNER("dataOwner",
+              "A person or team who is accountable for the correct management and use of a particular collection of data.",
+              OpenMetadataType.ACTOR.typeName,
+              null),
+
+
+    /**
+     * A person that is described by some data.
+     */
+    DATA_SUBJECT("dataSubject",
+               "A person that is described by some data.",
+               OpenMetadataType.ACTOR.typeName,
+               null),
+
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    CUSTODIAN("custodian",
+              "The person, or team who is responsible for the correct management and use of a particular collection of data inside the consuming organization.",
+              OpenMetadataType.ACTOR.typeName,
+              null),
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    STEWARD("steward",
+              "The person, or team who is responsible for setting up the governance metadata associated with a resource.",
+              OpenMetadataType.ACTOR.typeName,
+              null),
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    INTEGRATION_CONNECTOR("integrationConnector",
+                          "An integration connector that the service should work with.",
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
     ;
 
 

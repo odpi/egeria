@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
 
         producedGuards = GenericWatchdogGuard.getGuardTypes();
 

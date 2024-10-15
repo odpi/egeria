@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 
-import java.io.Serial;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ViewServiceRequestBody extends OMAGServerClientConfig
 {
     private Map<String, Object>          viewServiceOptions = null;
-    private List<ResourceEndpointConfig> resourceEndpoints;
 
 
     /**
@@ -49,7 +45,6 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
         if (template != null)
         {
             viewServiceOptions = template.getViewServiceOptions();
-            resourceEndpoints = template.getResourceEndpoints();
         }
     }
 
@@ -88,28 +83,6 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
 
 
     /**
-     * Return the resourceEndpoints list.
-     *
-     * @return displayName
-     */
-    public List<ResourceEndpointConfig> getResourceEndpoints()
-    {
-        return resourceEndpoints;
-    }
-
-
-    /**
-     * Set the resourceEndpoints of resource.
-     *
-     * @param resourceEndpoints list of resource endpoint configuration objects
-     */
-    public void setResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints)
-    {
-        this.resourceEndpoints = resourceEndpoints;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -119,7 +92,6 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
     {
         return "ViewServiceRequestBody{" +
                 "viewServiceOptions=" + viewServiceOptions +
-                ", resourceEndpoints=" + resourceEndpoints +
                 ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
                 ", OMAGServerName='" + getOMAGServerName() + '\'' +
                 '}';
@@ -149,8 +121,7 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
             return false;
         }
         ViewServiceRequestBody that = (ViewServiceRequestBody) objectToCompare;
-        return Objects.equals(viewServiceOptions, that.viewServiceOptions) &&
-                Objects.equals(resourceEndpoints, that.resourceEndpoints);
+        return Objects.equals(viewServiceOptions, that.viewServiceOptions);
     }
 
 
@@ -162,6 +133,6 @@ public class ViewServiceRequestBody extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), viewServiceOptions, resourceEndpoints);
+        return Objects.hash(super.hashCode(), viewServiceOptions);
     }
 }

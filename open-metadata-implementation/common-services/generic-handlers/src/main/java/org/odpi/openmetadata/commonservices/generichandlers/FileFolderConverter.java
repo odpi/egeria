@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FolderElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -57,9 +57,9 @@ public class FileFolderConverter<B> extends AssetConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FolderElement bean)
+            if (returnBean instanceof FileFolderElement bean)
             {
-                FolderProperties folderProperties = new FolderProperties();
+                FileFolderProperties folderProperties = new FileFolderProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -97,7 +97,7 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                     folderProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
                     folderProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
 
-                    bean.setFolderProperties(folderProperties);
+                    bean.setFileFolderProperties(folderProperties);
                 }
                 else
                 {

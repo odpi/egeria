@@ -134,6 +134,6 @@ public enum WriteAuditLogRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "MoveCopyFileRequestParameter{ name=" + name + "}";
     }
 }

@@ -69,6 +69,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;

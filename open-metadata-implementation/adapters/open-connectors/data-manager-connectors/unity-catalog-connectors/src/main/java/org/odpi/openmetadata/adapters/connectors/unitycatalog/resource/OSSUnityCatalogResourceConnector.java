@@ -117,7 +117,9 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             RESTClientFactory factory = new RESTClientFactory(ucInstanceName,
                                                               targetRootURL,
                                                               connectionProperties.getUserId(),
-                                                              connectionProperties.getClearPassword());
+                                                              connectionProperties.getClearPassword(),
+                                                              secretsStoreConnectorMap,
+                                                              auditLog);
 
             this.clientConnector = factory.getClientConnector();
 
@@ -226,7 +228,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         catalogProperties.setName(name);
         catalogProperties.setComment(comment);
-        catalogProperties.setProperties(properties);
+        //catalogProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
                                         CatalogInfo.class,
@@ -381,7 +383,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         schemaProperties.setName(name);
         schemaProperties.setCatalog_name(catalogName);
         schemaProperties.setComment(comment);
-        schemaProperties.setProperties(properties);
+        //schemaProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
                                         SchemaInfo.class,
@@ -530,12 +532,12 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
      * @return resulting volume info
      * @throws PropertyServerException problem with the call
      */
-    public VolumeInfo createVolume(String              name,
-                                   String              catalogName,
-                                   String              schemaName,
-                                   String              comment,
-                                   VolumeType          volumeType,
-                                   String              storageLocation) throws PropertyServerException
+    public VolumeInfo createVolume(String name,
+                                   String catalogName,
+                                   String schemaName,
+                                   String comment,
+                                   String volumeType,
+                                   String storageLocation) throws PropertyServerException
     {
         VolumeProperties volumeProperties = new VolumeProperties();
 
@@ -713,8 +715,8 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                  String              catalogName,
                                  String              schemaName,
                                  String              comment,
-                                 TableType           tableType,
-                                 DataSourceFormat    dataSourceFormat,
+                                 String              tableType,
+                                 String              dataSourceFormat,
                                  List<ColumnInfo>    columns,
                                  String              storageLocation,
                                  Map<String, String> properties) throws PropertyServerException
@@ -729,7 +731,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         tableProperties.setData_source_format(dataSourceFormat);
         tableProperties.setColumns(columns);
         tableProperties.setStorage_location(storageLocation);
-        tableProperties.setProperties(properties);
+       // tableProperties.setProperties(properties);
 
         return createTable(tableProperties);
     }
@@ -1088,12 +1090,11 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     {
         if ((auditLog != null) && (logMessage))
         {
-            auditLog.logException(methodName,
-                                  UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
-                                                                                              ucInstanceName,
-                                                                                              targetRootURL,
-                                                                                              error.getMessage()),
-                                  error);
+            auditLog.logMessage(methodName,
+                                UCAuditCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
+                                                                                            ucInstanceName,
+                                                                                            targetRootURL,
+                                                                                            error.getMessage()));
         }
 
         throw new PropertyServerException(UCErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,

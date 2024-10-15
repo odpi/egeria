@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -134,6 +134,9 @@ public class FindRequestBody
 
     /**
      * Return the status values that the resulting metadata elements must match.
+     * By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     * to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *  status values except DELETED.
      *
      * @return status values
      */
@@ -146,7 +149,9 @@ public class FindRequestBody
     /**
      * Set up the status values that the resulting metadata elements must match.
      *
-     * @param limitResultsByStatus status values
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
      */
     public void setLimitResultsByStatus(List<ElementStatus> limitResultsByStatus)
     {
@@ -281,13 +286,14 @@ public class FindRequestBody
             return false;
         }
         FindRequestBody that = (FindRequestBody) objectToCompare;
-        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) && Objects.equals(metadataElementSubtypeNames,
-                                                                                                       that.metadataElementSubtypeNames) && Objects.equals(
-                searchProperties, that.searchProperties) && Objects.equals(limitResultsByStatus,
-                                                                           that.limitResultsByStatus) && Objects.equals(
-                matchClassifications, that.matchClassifications) && Objects.equals(sequencingProperty,
-                                                                                   that.sequencingProperty) && sequencingOrder == that.sequencingOrder && Objects.equals(
-                asOfTime, that.asOfTime);
+        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
+                Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
+                Objects.equals(searchProperties, that.searchProperties) &&
+                Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
+                Objects.equals(matchClassifications, that.matchClassifications) &&
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                sequencingOrder == that.sequencingOrder &&
+                Objects.equals(asOfTime, that.asOfTime);
     }
 
 

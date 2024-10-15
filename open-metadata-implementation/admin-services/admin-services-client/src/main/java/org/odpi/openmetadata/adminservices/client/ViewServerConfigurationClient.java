@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adminservices.client;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -12,7 +11,6 @@ import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody;
 import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.List;
@@ -191,30 +189,6 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
                                                                                     OMAGInvalidParameterException,
                                                                                     OMAGConfigurationErrorException
     {
-        this.configureViewService(partnerOMASServerURLRoot, partnerOMASServerName, serviceURLMarker, viewServiceOptions, null);
-    }
-
-    /**
-     * Enable a single view service.
-     *
-     * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
-     * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
-     * @param serviceURLMarker string indicating which view service it is configuring
-     * @param viewServiceOptions property name/value pairs used to configure the view service
-     * @param resourceEndpoints list of resource endpoint configuration objects
-     *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void configureViewService(String                       partnerOMASServerURLRoot,
-                                     String                       partnerOMASServerName,
-                                     String                       serviceURLMarker,
-                                     Map<String, Object>          viewServiceOptions,
-                                     List<ResourceEndpointConfig> resourceEndpoints) throws OMAGNotAuthorizedException,
-                                                                                            OMAGInvalidParameterException,
-                                                                                            OMAGConfigurationErrorException
-    {
         final String methodName    = "configureViewService";
         final String parameterName = "serviceURLMarker";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services/{2}";
@@ -233,7 +207,6 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
         requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
         requestBody.setOMAGServerName(partnerOMASServerName);
         requestBody.setViewServiceOptions(viewServiceOptions);
-        requestBody.setResourceEndpoints(resourceEndpoints);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
@@ -285,7 +258,6 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      * @param partnerOMASServerURLRoot URL root of the OMAG Server Platform where the access service used by this view service is running
      * @param partnerOMASServerName name of metadata access server where the access service used by this view service is running
      * @param viewServiceOptions property name/value pairs used to configure the view service
-     * @param resourceEndpoints list of resource endpoint configuration objects
      *
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException invalid parameter.
@@ -293,10 +265,9 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
      */
     public void configureAllViewService(String                       partnerOMASServerURLRoot,
                                         String                       partnerOMASServerName,
-                                        Map<String, Object>          viewServiceOptions,
-                                        List<ResourceEndpointConfig> resourceEndpoints) throws OMAGNotAuthorizedException,
-                                                                                               OMAGInvalidParameterException,
-                                                                                               OMAGConfigurationErrorException
+                                        Map<String, Object>          viewServiceOptions) throws OMAGNotAuthorizedException,
+                                                                                                OMAGInvalidParameterException,
+                                                                                                OMAGConfigurationErrorException
     {
         final String methodName    = "configureAllViewService";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/view-services";
@@ -306,7 +277,6 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
         requestBody.setOMAGServerPlatformRootURL(partnerOMASServerURLRoot);
         requestBody.setOMAGServerName(partnerOMASServerName);
         requestBody.setViewServiceOptions(viewServiceOptions);
-        requestBody.setResourceEndpoints(resourceEndpoints);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,

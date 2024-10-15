@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * CocoSustainabilityArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals'
  * sustainability initiative.
  */
-public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
+public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoSustainabilityArchive.omarchive";
 
@@ -41,13 +42,15 @@ public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });
     }
 
 
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
         writeFacilityTypeValidValueSet();

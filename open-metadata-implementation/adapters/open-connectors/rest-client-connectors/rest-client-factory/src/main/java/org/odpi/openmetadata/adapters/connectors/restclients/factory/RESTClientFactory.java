@@ -4,15 +4,21 @@ package org.odpi.openmetadata.adapters.connectors.restclients.factory;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnectorProvider;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -23,6 +29,7 @@ public class RESTClientFactory
     private static final Logger log = LoggerFactory.getLogger(RESTClientFactory.class);
 
     private final Connection   clientConnection;
+    private final AuditLog     auditLog;
 
     /**
      * Constructor for unsecured client connector
@@ -33,7 +40,8 @@ public class RESTClientFactory
     public RESTClientFactory(String serverName,
                              String serverPlatformURLRoot)
     {
-        clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot);
+        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, null, null, null);
+        this.auditLog = null;
     }
 
 
@@ -44,60 +52,79 @@ public class RESTClientFactory
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
+     * @param secretsStoreConnectorMap map from authentication type to supplied secrets store
      */
-    public RESTClientFactory(String serverName,
-                             String serverPlatformURLRoot,
-                             String userId,
-                             String password)
+    public RESTClientFactory(String                             serverName,
+                             String                             serverPlatformURLRoot,
+                             String                             userId,
+                             String                             password,
+                             Map<String, SecretsStoreConnector> secretsStoreConnectorMap,
+                             AuditLog                           auditLog)
     {
-        clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, userId, password);
+        this.clientConnection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot, userId, password, secretsStoreConnectorMap);
+        this.auditLog = auditLog;
     }
 
 
     /**
-     * Return the connection object for a Spring based REST Client.
+     * Return the connection object for a Spring based REST Client.  This connection object is built up from
+     * information from the caller.
      *
      * @param serverName name of the OMAG Server to call
      * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
      * @param userId userId of the calling server/client
      * @param password clear text password of the calling server/client
+     * @param secretsStoreConnectorMap supplied secrets store
      * @return connection object
      */
-    private Connection getSpringRESTClientConnection(String    serverName,
-                                                     String    serverPlatformURLRoot,
-                                                     String    userId,
-                                                     String    password)
+    private Connection getSpringRESTClientConnection(String                             serverName,
+                                                     String                             serverPlatformURLRoot,
+                                                     String                             userId,
+                                                     String                             password,
+                                                     Map<String, SecretsStoreConnector> secretsStoreConnectorMap)
     {
-        Connection  connection = this.getSpringRESTClientConnection(serverName, serverPlatformURLRoot);
+        Connection  connection;
 
-        connection.setUserId(userId);
-        connection.setClearPassword(password);
+        if ((secretsStoreConnectorMap == null) || (secretsStoreConnectorMap.isEmpty()))
+        {
+            connection = new Connection();
+        }
+        else
+        {
+            VirtualConnection  virtualConnection = new VirtualConnection();
 
-        return connection;
-    }
+            List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+            for (String secretsConnectorName : secretsStoreConnectorMap.keySet())
+            {
+                EmbeddedConnection embeddedConnection = new EmbeddedConnection();
 
+                embeddedConnection.setDisplayName(secretsConnectorName);
 
-    /**
-     * Return the connection object for a Spring based REST Client.
-     *
-     * @param serverName name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
-     * @return connection object
-     */
-    private Connection getSpringRESTClientConnection(String    serverName,
-                                                     String    serverPlatformURLRoot)
-    {
+                SecretsStoreConnector secretsStoreConnector = secretsStoreConnectorMap.get(secretsConnectorName);
+                AccessibleConnection  secretStoreConnection = new AccessibleConnection(secretsStoreConnector.getConnection());
+
+                embeddedConnection.setEmbeddedConnection(secretStoreConnection.getConnectionBean());
+
+                embeddedConnections.add(embeddedConnection);
+            }
+
+            virtualConnection.setEmbeddedConnections(embeddedConnections);
+
+            connection = virtualConnection;
+        }
+
         Endpoint endpoint = new Endpoint();
 
         endpoint.setAddress(serverPlatformURLRoot);
         endpoint.setDisplayName(serverName);
         endpoint.setQualifiedName(serverName);
 
-        Connection  connection = new Connection();
-
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(SpringRESTClientConnectorProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
+
+        connection.setUserId(userId);
+        connection.setClearPassword(password);
 
         return connection;
     }
@@ -160,9 +187,33 @@ public class RESTClientFactory
      */
     public RESTClientConnector getClientConnector() throws Exception
     {
-        ConnectorBroker     connectorBroker = new ConnectorBroker();
+        ConnectorBroker     connectorBroker = new ConnectorBroker(auditLog);
         Connector           connector       = connectorBroker.getConnector(clientConnection);
 
+        connector.start();
         return (RESTClientConnector)connector;
+    }
+
+
+    /**
+     * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
+     * connection in order to supply them to the Connector implementation.
+     */
+    private static class AccessibleConnection extends ConnectionProperties
+    {
+        AccessibleConnection(ConnectionProperties templateConnection)
+        {
+            super(templateConnection);
+        }
+
+        /**
+         * Return a copy of the ConnectionBean.
+         *
+         * @return Connection bean
+         */
+        protected Connection getConnectionBean()
+        {
+            return super.getConnectionBean();
+        }
     }
 }

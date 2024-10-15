@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RequestParameter provides some standard definitions for request parameters used to pass properties
+ * RequestParameter provides definitions for request parameters used to pass properties
  * to governance actions when they run.  Using standard names for request parameters wherever necessary
  * helps to simplify the integration of governance services.
  */
@@ -133,6 +133,6 @@ public enum ZonePublisherRequestParameter
     @Override
     public String toString()
     {
-        return "RequestParameter{ name=" + name + "}";
+        return "MoveCopyFileRequestParameter{ name=" + name + "}";
     }
 }

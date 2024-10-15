@@ -7,23 +7,24 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Common properties of an element stored in Unity catalog.
+ * Common properties of an element (Catalog, Schema, Volume, Table, Function) stored in Unity catalog.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BasicElementProperties
+public class BasicElementProperties extends BasicProperties
 {
-    private String              name       = null;
-    private String              comment    = null;
-    private Map<String, String> properties = null;
+    private String  metastore_id   = null;
+    private String  securable_type = null;
+    private String  securable_kind = null;
+    private String  owner          = null;
+    private boolean browse_only    = false;
 
 
     /**
@@ -34,68 +35,112 @@ public class BasicElementProperties
     }
 
     /**
-     * Return the unique name of the element within its name space.
+     * Return the guid is the associated hive metastore.
      *
-     * @return string
+     * @return guid
      */
-    public String getName()
+    public String getMetastore_id()
     {
-        return name;
+        return metastore_id;
     }
 
 
     /**
-     * Set up the unique name of the element within its name space.
+     * Set up the guid is the associated hive metastore.
      *
-     * @param name string name
+     * @param metastore_id string guid
      */
-    public void setName(String name)
+    public void setMetastore_id(String metastore_id)
     {
-        this.name = name;
+        this.metastore_id = metastore_id;
     }
 
 
     /**
-     * Return a comment describing the element within its name space.
+     * Return the type of securable element - eg SCHEMA.
      *
-     * @return text
+     * @return string name
      */
-    public String getComment()
+    public String getSecurable_type()
     {
-        return comment;
+        return securable_type;
     }
 
 
     /**
-     * Set up a comment describing the element within its name space.
+     * Set up the type of securable element - eg SCHEMA.
      *
-     * @param comment text
+     * @param securable_type string name
      */
-    public void setComment(String comment)
+    public void setSecurable_type(String securable_type)
     {
-        this.comment = comment;
+        this.securable_type = securable_type;
     }
 
 
     /**
-     * Return arbitrary name-value property pairs.
+     * Return the kind of securable element eg SCHEMA_STANDARD.
      *
-     * @return property string map
+     * @return string name
      */
-    public Map<String, String> getProperties()
+    public String getSecurable_kind()
     {
-        return properties;
+        return securable_kind;
     }
 
 
     /**
-     * Set up arbitrary name-value property pairs.
+     * Set up the kind of securable element eg SCHEMA_STANDARD.
      *
-     * @param properties property string map
+     * @param securable_kind string name
      */
-    public void setProperties(Map<String, String> properties)
+    public void setSecurable_kind(String securable_kind)
     {
-        this.properties = properties;
+        this.securable_kind = securable_kind;
+    }
+
+
+    /**
+     * Return the owner of the element.
+     *
+     * @return string name
+     */
+    public String getOwner()
+    {
+        return owner;
+    }
+
+
+    /**
+     * Set up the owner of the element.
+     *
+     * @param owner string name
+     */
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
+
+
+    /**
+     * Return whether this element is read only or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isBrowse_only()
+    {
+        return browse_only;
+    }
+
+
+    /**
+     * Set up whether this element is read only or not.
+     *
+     * @param browse_only boolean flag
+     */
+    public void setBrowse_only(boolean browse_only)
+    {
+        this.browse_only = browse_only;
     }
 
 
@@ -108,10 +153,12 @@ public class BasicElementProperties
     public String toString()
     {
         return "BasicElementProperties{" +
-                "name='" + name + '\'' +
-                ", comment='" + comment + '\'' +
-                ", properties=" + properties +
-                '}';
+                "metastore_id='" + metastore_id + '\'' +
+                ", securable_type='" + securable_type + '\'' +
+                ", securable_kind='" + securable_kind + '\'' +
+                ", owner='" + owner + '\'' +
+                ", browse_only=" + browse_only +
+                "} " + super.toString();
     }
 
 
@@ -126,10 +173,14 @@ public class BasicElementProperties
     {
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         BasicElementProperties that = (BasicElementProperties) objectToCompare;
-        return Objects.equals(name, that.name) && Objects.equals(comment, that.comment) && Objects.equals(properties, that.properties);
+        return browse_only == that.browse_only &&
+                Objects.equals(metastore_id, that.metastore_id) &&
+                Objects.equals(securable_type, that.securable_type) &&
+                Objects.equals(securable_kind, that.securable_kind) &&
+                Objects.equals(owner, that.owner);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -139,6 +190,6 @@ public class BasicElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, comment, properties);
+        return Objects.hash(metastore_id, securable_type, securable_kind, owner, browse_only);
     }
 }

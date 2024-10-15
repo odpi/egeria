@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
@@ -268,7 +270,7 @@ public class AssetConsumerRESTServices
                         if (metadataElement != null)
                         {
                             relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
-                                                                                              metadataElement.getGUID(),
+                                                                                              metadataElement.getElementHeader().getGUID(),
                                                                                               anchoredElementParameterName,
                                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                               false,
@@ -409,6 +411,11 @@ public class AssetConsumerRESTServices
                 displayNamePropertyCondition.setValue(displayNamePropertyValue);
                 propertyConditions.add(displayNamePropertyCondition);
 
+                displayNamePropertyCondition.setProperty(OpenMetadataProperty.RESOURCE_NAME.name);
+                displayNamePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                displayNamePropertyCondition.setValue(displayNamePropertyValue);
+                propertyConditions.add(displayNamePropertyCondition);
+
                 descPropertyCondition.setProperty(OpenMetadataProperty.DESCRIPTION.name);
                 descPropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
                 descPropertyCondition.setValue(descPropertyValue);
@@ -504,15 +511,24 @@ public class AssetConsumerRESTServices
 
                     for (String assetGUID : organizedEntities.keySet())
                     {
-                        AssetElement asset = assetHandler.getBeanFromRepository(userId,
-                                                                                assetGUID,
-                                                                                parameterName,
-                                                                                OpenMetadataType.ASSET.typeName,
-                                                                                methodName);
+                        AssetElement asset;
+
+                        try
+                        {
+                            asset = assetHandler.getBeanFromRepository(userId,
+                                                                       assetGUID,
+                                                                       parameterName,
+                                                                       OpenMetadataType.ASSET.typeName,
+                                                                       methodName);
+                        }
+                        catch (InvalidParameterException | UserNotAuthorizedException notVisible)
+                        {
+                            asset = null;
+                        }
 
                         if (asset != null)
                         {
-                            AssetSearchMatches         assetSearchMatches = new AssetSearchMatches(asset);
+                            AssetSearchMatches           assetSearchMatches = new AssetSearchMatches(asset);
                             Map<String, EntityDetail>    assetEntityMap   = organizedEntities.get(assetGUID);
                             List<MetadataElementSummary> anchoredElements = new ArrayList<>();
 

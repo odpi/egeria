@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
@@ -133,9 +132,8 @@ public class SecurityGroupConverter<B> extends OMFConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof SecurityGroupElement)
+        if (returnBean instanceof SecurityGroupElement bean)
         {
-            SecurityGroupElement bean = (SecurityGroupElement) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }

@@ -32,7 +32,6 @@ public class IntegrationServiceHandler
     private final IntegrationContextManager contextManager;                /* Initialized in constructor */
     private final AuditLog                  auditLog;                      /* Initialized in constructor */
 
-    private final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
     private final List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
 
     /**
@@ -211,7 +210,7 @@ public class IntegrationServiceHandler
             {
                 if (connectorHandler != null)
                 {
-                    connectorHandler.refreshConnector(actionDescription, false);
+                    connectorHandler.refreshConnector(actionDescription);
                 }
             }
         }
@@ -223,7 +222,7 @@ public class IntegrationServiceHandler
                 {
                     if (connectorName.equals(connectorHandler.getIntegrationConnectorName()))
                     {
-                        connectorHandler.refreshConnector(actionDescription, false);
+                        connectorHandler.refreshConnector(actionDescription);
                         return;
                     }
                 }

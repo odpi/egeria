@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -62,10 +62,13 @@ public class MetadataElementConverter<B> extends OMFConverter<B>
 
             if (returnBean instanceof MetadataElementSummary bean)
             {
+                ElementHeader elementHeader = new ElementHeader();
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.OPEN_METADATA_ROOT.typeName, methodName);
+                this.setUpElementHeader(elementHeader, entity, OpenMetadataType.OPEN_METADATA_ROOT.typeName, methodName);
+
+                bean.setElementHeader(elementHeader);
 
                 /*
                  * Save the properties as a map.

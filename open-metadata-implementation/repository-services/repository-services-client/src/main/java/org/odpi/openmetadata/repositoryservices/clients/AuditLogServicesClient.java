@@ -243,7 +243,9 @@ public class AuditLogServicesClient implements AuditLoggingComponent
             clientFactory = new RESTClientFactory(serverName,
                                                   serverPlatformURLRoot,
                                                   userId,
-                                                  password);
+                                                  password,
+                                                  null,
+                                                  auditLog);
         }
         else
         {

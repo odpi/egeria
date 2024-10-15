@@ -98,7 +98,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "FileFolder"
+  "filter" : "File System Directory"
 }
 
 
@@ -217,7 +217,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add technology type name here"
+  "filter" : "File System Directory"
 }
 
 
@@ -260,6 +260,26 @@ Content-Type: application/json
    }
 }
 
+
+
+###
+# @name getElementFromTemplate
+# Retrieve existing element/create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/get-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "add guid here",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "placeholderPropertyName1" : "placeholderPropertyValue1",
+    "placeholderPropertyName2" : "placeholderPropertyValue2"
+  }
+}
+
+
 ###
 # Full body
 # {
@@ -292,11 +312,35 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "553f51cf-3981-480e-acd8-86ed3e25329d",
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
-    "pathName" : "Add full path name here, eg a/b/c/myFolder",
-    "folderName" : "Add directory name without enclosing directory names, eg myFolder"
+    "fileSystemName" : "Add file system name",
+    "directoryPathName" : "Add full path name here, eg a/b/c/myFolder",
+    "directoryName" : "Add directory name without enclosing directory names, eg myFolder",
+    "description" : "Add description",
+    "versionIdentifier" : "Add version identifier eg V1.0",
+  }
+}
+
+
+###
+# @name createElementFromTemplate - Marquez endpoint
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "9ea4bff4-d193-492f-bcad-6e68c07c6f9e",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "description" : "Link to Marquez",
+    "portNumber" : "5050",
+    "serverName" : "Marquez",
+    "hostURL" : "http://egeria.pdr-associates.com",
+    "apiOperation" : "/api/v1/lineage"
   }
 }
 
@@ -316,6 +360,29 @@ Content-Type: application/json
     "serverName" : "localKafka2",
     "hostIdentifier" : "localhost",
     "portNumber" : "9092"
+  }
+}
+
+###
+# @name createElementFromTemplate (Apache Kafka Topic)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "ea8f81c9-c59c-47de-9525-7cc59d1251e5",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName": "localKafka",
+    "hostIdentifier": "localhost",
+    "portNumber": "9092",
+    "description": "Open Lineage Events for Backend Proxy",
+    "topicDescription": "Open Lineage Events for Backend Proxy",
+    "fullTopicName": "openlineage.events",
+    "shortTopicName": "openlineage.events",
+    "eventDirection": "inOut"
   }
 }
 
@@ -595,6 +662,13 @@ Authorization: Bearer {{token}}
 # Retrieve the governance action process metadata element with the supplied unique identifier
 # along with the flow definition describing its implementation.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/dde1e255-6d0c-4589-b4a6-17e7d01db5ab/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getGovernanceActionProcessGraph (Onboarding Data Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/508d3878-8eae-47e5-8507-ee936f33b418/graph
 Authorization: Bearer {{token}}
 
 

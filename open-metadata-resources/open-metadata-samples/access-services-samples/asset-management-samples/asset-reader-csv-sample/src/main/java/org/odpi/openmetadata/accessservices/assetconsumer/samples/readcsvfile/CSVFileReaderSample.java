@@ -280,7 +280,7 @@ public class CSVFileReaderSample
             System.out.println(columnNames);
             System.out.println("------------------------------------------------------------------------");
 
-            for (int i=0; i<displayedRecords; i++)
+            for (long i=0; i<displayedRecords; i++)
             {
                 List<String>  columns = connector.readRecord(i);
 

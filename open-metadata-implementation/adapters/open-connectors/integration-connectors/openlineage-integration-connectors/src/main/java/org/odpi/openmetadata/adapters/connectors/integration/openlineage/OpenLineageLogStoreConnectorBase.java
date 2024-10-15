@@ -12,13 +12,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -32,9 +37,10 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
                                                                                                      OpenLineageEventListener
 {
 
-    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
-    protected String                   destinationName = "<Unknown";
+    private static final ObjectWriter  OBJECT_WRITER   = new ObjectMapper().writer();
+    protected String                   distributorName = "<Unknown>";
     protected LineageIntegratorContext myContext       = null;
+    protected final List<String>       destinationAddresses = new ArrayList<>();
 
 
     /**
@@ -46,45 +52,44 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
 
     /**
-     * Return the name of this open lineage log destination.
-     *
-     * @return string display name suitable for messages.
-     */
-    public String  getDestinationName()
-    {
-        return destinationName;
-    }
-    
-
-    /**
      * Store the open lineage event in the open lineage log store.  If the raw event is null, a json version of the open lineage event is
      * generated using the Egeria beans.
      *
      * @param openLineageEvent event formatted using Egeria beans
      * @param rawEvent event in Json form from the originator - may have facets that are not known to Egeria
+     * @param logDestinationAddress address to send the event to
      *                 
      * @throws InvalidParameterException indicates that the openLineageEvent parameter is invalid.
      * @throws UserNotAuthorizedException indicates that the caller is not authorized to access the log store.
      * @throws PropertyServerException  indicates that the  log store is not available or has an error.
      */
+    @Override
     public abstract void storeEvent(OpenLineageRunEvent openLineageEvent,
-                                    String              rawEvent) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
-    
+                                    String              rawEvent,
+                                    String              logDestinationAddress) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
+
+
+    /**
+     * Informs the subclasses that there is a new destination - in case they need to do special setup.
+     *
+     * @param destinationAddress new destination
+     * @throws ConnectorCheckedException new destination not valid
+     */
+    protected abstract void newDestinationIdentified(String destinationAddress) throws ConnectorCheckedException;
 
 
     /**
      * Create JSON version of the openLineage event.
      *
      * @param openLineageEvent event formatted using Egeria beans
-     * @param methodName calling method
      * @return JSON string
      * @throws InvalidParameterException unable to convert the openLineage event.
      */
-    private String getJSONOpenLineageEvent(OpenLineageRunEvent openLineageEvent,
-                                           String              methodName) throws InvalidParameterException
+    private String getJSONOpenLineageEvent(OpenLineageRunEvent openLineageEvent) throws InvalidParameterException
     {
+        final String methodName = "getJSONOpenLineageEvent";
         final String parameterName = "openLineageEvent";
 
         if (openLineageEvent != null)
@@ -128,7 +133,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
         {
             if (connectionProperties.getDisplayName() != null)
             {
-                destinationName = connectionProperties.getDisplayName();
+                distributorName = connectionProperties.getDisplayName();
             }
             else if (connectionProperties.getConnectorType() != null)
             {
@@ -136,7 +141,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
                 if (connectorType.getDisplayName() != null)
                 {
-                    destinationName = connectorType.getDisplayName();
+                    distributorName = connectorType.getDisplayName();
                 }
             }
         }
@@ -149,9 +154,17 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
+
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+
+        if ((endpoint != null) && (endpoint.getAddress() != null))
+        {
+            destinationAddresses.add(endpoint.getAddress());
+            this.newDestinationIdentified(endpoint.getAddress());
+        }
 
         myContext = super.getContext();
 
@@ -163,15 +176,99 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
 
     /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
+     * Maintains the list of catalog targets.
      *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
      */
+    @Override
     public void refresh() throws ConnectorCheckedException
     {
-        // nothing to do
+        final String methodName = "refresh";
+
+        try
+        {
+            int                startFrom = 0;
+            List<CatalogTarget> catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+
+            while (catalogTargets != null)
+            {
+                for (CatalogTarget catalogTarget : catalogTargets)
+                {
+                    if (catalogTarget != null)
+                    {
+                        String endpointGUID = null;
+                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ENDPOINT.typeName))
+                        {
+                            endpointGUID = catalogTarget.getCatalogTargetElement().getGUID();
+                        }
+                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION.typeName))
+                        {
+                            RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
+                                                                                                                                                                          2,
+                                                                                                                                                                          OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                                                                                                          new Date());
+
+                            if (endpointElement != null)
+                            {
+                                endpointGUID = endpointElement.getElement().getElementGUID();
+                            }
+                        }
+                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                        {
+                            RelatedMetadataElement connectionElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
+                                                                                                                                                                     2,
+                                                                                                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                                                                                                                     new Date());
+
+                            if (connectionElement != null)
+                            {
+                                RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionElement.getElement().getElementGUID(),
+                                                                                                                                                                       2,
+                                                                                                                                                                       OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
+                                                                                                                                                                       new Date());
+
+                                if (endpointElement != null)
+                                {
+                                    endpointGUID = endpointElement.getElement().getElementGUID();
+                                }
+                            }
+                        }
+
+                        if (endpointGUID != null)
+                        {
+                            OpenMetadataElement endpoint = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getMetadataElementByGUID(endpointGUID);
+
+                            if (endpoint != null)
+                            {
+                                String networkAddress = propertyHelper.getStringProperty(connectorName,
+                                                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
+                                                                                         endpoint.getElementProperties(),
+                                                                                         methodName);
+
+                                if ((networkAddress != null) && (! destinationAddresses.contains(networkAddress)))
+                                {
+                                    destinationAddresses.add(networkAddress);
+                                    newDestinationIdentified(networkAddress);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                startFrom = startFrom + myContext.getMaxPageSize();
+
+                catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                  error);
+        }
     }
 
 
@@ -195,23 +292,23 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
         {
             if (jsonEvent == null)
             {
-                jsonEvent = this.getJSONOpenLineageEvent(event, methodName);
+                jsonEvent = this.getJSONOpenLineageEvent(event);
             }
 
-            storeEvent(event, rawEvent);
+            for (String destinationAddress : destinationAddresses)
+            {
+                storeEvent(event, rawEvent, destinationAddress);
+            }
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         methodName,
-                                                                                                                         error.getMessage()),
-                                      jsonEvent,
-                                      error);
-            }
+            auditLog.logException(methodName,
+                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                  jsonEvent,
+                                  error);
         }
     }
 
@@ -220,12 +317,11 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * Throws an invalid parameter exception.  Used by the subclasses when this class has failed to pass a raw event.
      *
      * @param openLineageEvent supplied open lineage event - may also be null
-     * @param methodName calling method
      * @throws InvalidParameterException resulting exception
      */
-    protected void logNoRawEvent(OpenLineageRunEvent openLineageEvent,
-                                 String              methodName) throws InvalidParameterException
+    protected void logNoRawEvent(OpenLineageRunEvent openLineageEvent) throws InvalidParameterException
     {
+        final String methodName = "logNoRawEvent";
         final String parameterName = "rawEvent";
 
         Map<String, Object> additionalProperties = new HashMap<>();

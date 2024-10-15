@@ -59,7 +59,7 @@ public class ConnectorTypeConverter<B> extends OMFConverter<B>
 
             if (returnBean instanceof ConnectorType connectorType)
             {
-                this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+                this.setUpElementHeader(connectorType, entity, OpenMetadataType.CONNECTOR_TYPE.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

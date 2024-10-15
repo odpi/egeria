@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementTyp
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -44,6 +45,7 @@ public class IntegrationContext
     protected final PropertyHelper           propertyHelper = new PropertyHelper();
 
     protected final OpenIntegrationClient    openIntegrationClient;
+    protected final ActionControlInterface   actionControlInterface;
     protected final GovernanceConfiguration  governanceConfiguration;
     protected final OpenMetadataClient       openMetadataStoreClient;
     protected final String                   userId;
@@ -79,6 +81,7 @@ public class IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization enum
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
@@ -94,6 +97,7 @@ public class IntegrationContext
                               OpenIntegrationClient        openIntegrationClient,
                               GovernanceConfiguration      governanceConfiguration,
                               OpenMetadataClient           openMetadataStoreClient,
+                              ActionControlInterface       actionControlInterface,
                               boolean                      generateIntegrationReport,
                               PermittedSynchronization     permittedSynchronization,
                               String                       externalSourceGUID,
@@ -105,6 +109,7 @@ public class IntegrationContext
         this.openIntegrationClient        = openIntegrationClient;
         this.governanceConfiguration      = governanceConfiguration;
         this.openMetadataStoreClient      = openMetadataStoreClient;
+        this.actionControlInterface       = actionControlInterface;
         this.permittedSynchronization     = permittedSynchronization;
         this.userId                       = connectorUserId;
         this.connectorName                = connectorName;
@@ -133,6 +138,7 @@ public class IntegrationContext
         this.connectedAssetContext = new ConnectedAssetContext(connectorUserId, openIntegrationClient);
 
         this.integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
+                                                                                  actionControlInterface,
                                                                                   connectorUserId,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
@@ -145,6 +151,7 @@ public class IntegrationContext
      * Return a new integrationGovernanceContext for a specific connector.
      *
      * @param openMetadataStore client implementation
+     * @param actionControlInterface interface for creating governance actions
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
@@ -153,6 +160,7 @@ public class IntegrationContext
      * @return new context
      */
     private IntegrationGovernanceContext constructIntegrationGovernanceContext(OpenMetadataClient      openMetadataStore,
+                                                                               ActionControlInterface  actionControlInterface,
                                                                                String                  userId,
                                                                                String                  externalSourceGUID,
                                                                                String                  externalSourceName,
@@ -168,13 +176,25 @@ public class IntegrationContext
                                                                            originatorGUID,
                                                                            integrationReportWriter);
             MultiLanguageManagement    multiLanguageManagement    = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId, originatorGUID);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, actionControlInterface, userId, originatorGUID);
             ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
             return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the userId for this connector.  It is used to determine if changes where made by this connector.
+     * It should not be needed to issue calls to open metadata.
+     *
+     * @return string
+     */
+    public String getMyUserId()
+    {
+        return userId;
     }
 
 
@@ -203,6 +223,11 @@ public class IntegrationContext
                                              List<String> excludedNames,
                                              List<String> includedNames)
     {
+        if (elementName == null)
+        {
+            return false;
+        }
+
         if (includedNames != null)
         {
             return includedNames.contains(elementName);
@@ -576,7 +601,7 @@ public class IntegrationContext
      * normally needed by the integration connector since it is called by the
      * connector handler just before refresh.  It is also called by publish report.
      */
-    public void startRecording()
+    void startRecording()
     {
         if (integrationReportWriter != null)
         {
@@ -691,9 +716,9 @@ public class IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized
      * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
      */
-    public void publishReport() throws InvalidParameterException,
-                                       UserNotAuthorizedException,
-                                       PropertyServerException
+    void publishReport() throws InvalidParameterException,
+                                UserNotAuthorizedException,
+                                PropertyServerException
     {
         if (integrationReportWriter != null)
         {

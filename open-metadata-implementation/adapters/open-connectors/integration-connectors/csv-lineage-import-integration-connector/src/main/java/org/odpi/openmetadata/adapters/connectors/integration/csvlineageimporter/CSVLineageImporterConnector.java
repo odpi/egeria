@@ -128,7 +128,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
             long numberOfRecords = csvFileStoreConnector.getRecordCount();
 
-            for (int i = 0; i < numberOfRecords; i++)
+            for (long i = 0; i < numberOfRecords; i++)
             {
                 List<String> columns = csvFileStoreConnector.readRecord(i);
 
@@ -295,7 +295,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
 
         try
         {
-            ConnectorBroker broker = new ConnectorBroker();
+            ConnectorBroker broker = new ConnectorBroker(auditLog);
 
             connector = (CSVFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }

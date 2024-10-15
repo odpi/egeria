@@ -4,8 +4,9 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,51 +18,90 @@ import java.util.List;
 public enum UnityCatalogPlaceholderProperty
 {
     /**
+     * The unique name of a Unity Catalog (UC) server
+     */
+    SERVER_QUALIFIED_NAME ("ucServerQualifiedName", "The unique name of a Unity Catalog (UC) server.", DataType.STRING.getName(), "Unity Catalog Server:Unity Catalog 1"),
+
+    /**
      * The name of the catalog being described.
      */
-    CATALOG_NAME ("ucCatalogName", "The name of a catalog within Unity Catalog (UC).", "string", "my_catalog"),
+    CATALOG_NAME ("ucCatalogName", "The name of a catalog within Unity Catalog (UC).", DataType.STRING.getName(), "my_catalog"),
 
     /**
      * The name of a schema within a catalog in Unity Catalog (UC).
      */
-    SCHEMA_NAME ("ucSchemaName", "The name of a schema within a catalog in Unity Catalog (UC).  This value is combined with the name of the catalog to get the full name.", "string", "my_schema"),
+    SCHEMA_NAME ("ucSchemaName", "The name of a schema within a catalog in Unity Catalog (UC).  This value is combined with the name of the catalog to get the full name.", DataType.STRING.getName(), "my_schema"),
+
+    /**
+     * The identifier of the owner of this element
+     */
+    OWNER ("ucOwner", "The identifier of the owner of this element", DataType.STRING.getName(), null),
+
+    /**
+     * GUID for the associated Hive Metadata Store.
+     */
+    METASTORE_ID("ucMetaStoreId", "GUID for the associated Hive Metadata Store.", DataType.STRING.getName(), null),
+
+    /**
+     * Type of element to secure.
+     */
+    SECURABLE_TYPE("ucSecurableType", "Type of element to secure.", DataType.STRING.getName(), null),
+
+    /**
+     * Kind of security got this element.
+     */
+    SECURABLE_KIND("ucSecurableKind", "Kind of security got this element.", DataType.STRING.getName(), null),
+
+    /**
+     * Can this be updated?
+     */
+    BROWSE_ONLY("ucBrowseOnly", "Can this be updated?", DataType.BOOLEAN.getName(), null),
+
+    /**
+     * Isolation mode, such as OPEN.
+     */
+    ISOLATION_MODE("ucIsolationMode", "Isolation mode, such as OPEN.", DataType.STRING.getName(), null),
+
+    /**
+     * Access mode.
+     */
+    ACCESSIBLE_IN_CURRENT_WORKSPACE("ucAccessibleInCurrentWorkspace", "Access mode.", DataType.BOOLEAN.getName(), null),
 
     /**
      * The location where the data associated with this element in Unity Catalog is stored.
      */
-    STORAGE_LOCATION ("ucStorageLocation", "The location where the data associated with this element in Unity Catalog is stored.", "string", "a/b/c"),
+    STORAGE_LOCATION ("ucStorageLocation", "The location where the data associated with this element in Unity Catalog is stored.", DataType.STRING.getName(), "a/b/c"),
 
     /**
      * The name of a table within a schema and catalog in Unity Catalog (UC).
      */
-    TABLE_NAME ("ucTableName", "The name of a table within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_table"),
+    TABLE_NAME ("ucTableName", "The name of a table within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_table"),
 
     /**
-     * The type of a table: MANAGED or EXTERNAL.
+     * The type a table: MANAGED or EXTERNAL.
      */
-    TABLE_TYPE ("ucTableType", "The type of a table: MANAGED or EXTERNAL.", "string", "MANAGED"),
+    TABLE_TYPE ("ucTableType", "The type of a table: MANAGED or EXTERNAL.", DataType.STRING.getName(), "MANAGED"),
 
     /**
      * The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.
      */
-    DATA_SOURCE_FORMAT ("ucDataSourceFormat", "The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.", "string", "CSV"),
-
-
+    DATA_SOURCE_FORMAT ("ucDataSourceFormat", "The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.", DataType.STRING.getName(), "CSV"),
 
     /**
      * The name of a volume within a schema and catalog in Unity Catalog (UC).
      */
-    VOLUME_NAME ("ucVolumeName", "The name of a volume within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_volume"),
+    VOLUME_NAME ("ucVolumeName", "The name of a volume within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_volume"),
 
     /**
-     * The type of a volume: MANAGED or EXTERNAL.
+     * The type of volume: MANAGED or EXTERNAL.
      */
-    VOLUME_TYPE ("ucVolumeType", "The type of a volume: MANAGED or EXTERNAL.", "string", "MANAGED"),
+    VOLUME_TYPE ("ucVolumeType", "The type of a volume: MANAGED or EXTERNAL.", DataType.STRING.getName(), "MANAGED"),
 
     /**
      * The name of a function within a schema and catalog in Unity Catalog (UC).
      */
-    FUNCTION_NAME ("ucFunctionName", "The name of a function within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_function"),
+    FUNCTION_NAME ("ucFunctionName", "The name of a function within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_function"),
+
 
     ;
 
@@ -164,6 +204,26 @@ public enum UnityCatalogPlaceholderProperty
         return placeholderPropertyTypes;
     }
 
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getSecureServerPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
     /**
      * Retrieve all the defined placeholder properties
      *
@@ -173,6 +233,7 @@ public enum UnityCatalogPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.SERVER_QUALIFIED_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
         placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
@@ -220,6 +281,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.TABLE_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -262,6 +324,7 @@ public enum UnityCatalogPlaceholderProperty
         placeholderPropertyTypes.add(FUNCTION_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }

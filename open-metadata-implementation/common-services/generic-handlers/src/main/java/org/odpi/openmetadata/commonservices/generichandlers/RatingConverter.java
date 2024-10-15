@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FeedbackTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RatingElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -151,7 +152,7 @@ public class RatingConverter<B> extends OMFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataType.STARS_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataProperty.STARS.name);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -177,7 +178,7 @@ public class RatingConverter<B> extends OMFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.STARS_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataProperty.STARS.name);
 
                 if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {

@@ -183,55 +183,37 @@ public class OpenMetadataTypesArchive2_9
 
     private ClassificationDef getUserProfileManagerClassification()
     {
-        final String guid            = "53ef4062-9e0a-4892-9824-8d51d4ad59d3";
-        final String name            = "UserProfileManager";
-        final String description     = "A system that sores descriptions of individuals and their roles/interests in an organization.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.USER_PROFILE_MANAGER.typeGUID,
+                                                  OpenMetadataType.USER_PROFILE_MANAGER.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.USER_PROFILE_MANAGER.description,
+                                                  OpenMetadataType.USER_PROFILE_MANAGER.descriptionGUID,
+                                                  OpenMetadataType.USER_PROFILE_MANAGER.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
 
     private ClassificationDef getUserAccessDirectoryClassification()
     {
-        final String guid            = "29c98cf7-32b3-47d2-a411-48c1c9967e6d";
-        final String name            = "UserAccessDirectory";
-        final String description     = "A system that stores the access rights and groups for users (people and automated processes).";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.USER_ACCESS_DIRECTORY.typeGUID,
+                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.description,
+                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.descriptionGUID,
+                                                  OpenMetadataType.USER_ACCESS_DIRECTORY.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
 
     private ClassificationDef getMasterDataManagerClassification()
     {
-        final String guid            = "5bdad12e-57e7-4ff9-b7be-5d869e77d30b";
-        final String name            = "MasterDataManager";
-        final String description     = "A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.MASTER_DATA_MANAGER.typeGUID,
+                                                  OpenMetadataType.MASTER_DATA_MANAGER.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.MASTER_DATA_MANAGER.description,
+                                                  OpenMetadataType.MASTER_DATA_MANAGER.descriptionGUID,
+                                                  OpenMetadataType.MASTER_DATA_MANAGER.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
 
@@ -252,53 +234,43 @@ public class OpenMetadataTypesArchive2_9
 
     private RelationshipDef getActionTargetRelationship()
     {
-        final String guid            = "207e2594-e3e4-4be8-a12c-4c401656e241";
-        final String name            = "ActionTarget";
-        final String description     = "Associates a To Do with one or more elements to work on.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ToDo";
         final String                     end1AttributeName            = "identifiedToDoActions";
         final String                     end1AttributeDescription     = "Actions that have been identified for this element.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TO_DO.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
         final String                     end2AttributeName            = "elementsToWorkOn";
         final String                     end2AttributeDescription     = "Elements that will be updated or used to complete the action.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -325,14 +297,12 @@ public class OpenMetadataTypesArchive2_9
         final String description     = "A set of measurements on the performance and use of the connected resource.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -468,14 +438,12 @@ public class OpenMetadataTypesArchive2_9
         final String description     = "Defines a category as being the base category of a glossary term";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "GlossaryTerm";
-
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
                                                                                  true);
 
         /*

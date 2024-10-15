@@ -4,20 +4,17 @@ package org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates;
 
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.*;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
@@ -28,7 +25,7 @@ import java.util.*;
  * CocoClinicalTrialsArchiveWriter creates a physical open metadata archive file containing the clinical trials templates
  * needed by Coco Pharmaceuticals.
  */
-public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
+public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoClinicalTrialsTemplatesArchive.omarchive";
 
@@ -51,14 +48,15 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive(),
-                                         new CoreContentArchiveWriter().getOpenMetadataArchive()});
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive()});
     }
 
 
     /**
      * Add the content to the archive builder.
      */
+    @Override
     public void getArchiveContent()
     {
         writeGlossary();
@@ -185,6 +183,14 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                        null,
                                                                        otherOriginValues));
 
+        classifications.add(archiveHelper.getConfidentialityClassification(3,
+                                                                           100,
+                                                                           "tanyatidie",
+                                                                           OpenMetadataType.USER_IDENTITY.typeName,
+                                                                           OpenMetadataProperty.USER_ID.name,
+                                                                           "Clinical Trial Board",
+                                                                           "Level approved assuming the data remains anonymized.",
+                                                                           2));
 
         classifications.add(archiveHelper.getTemplateClassification("Landing Area weekly teddy bear measurements for drop foot clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
@@ -267,6 +273,10 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                  obligations,
                                  null,
                                  licenseTypeGUID);
+
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+
+        archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),
@@ -472,6 +482,10 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                  obligations,
                                  null,
                                  licenseTypeGUID);
+
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+
+        archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),

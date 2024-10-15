@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyT
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
@@ -31,7 +32,7 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
     private static final String  connectorTypeGUID = "297ede10-a004-4aa6-9af3-55e400551531";
     private static final String  connectorTypeQualifiedName = "Egeria:SurveyActionService:FolderSurveyService";
     private static final String  connectorTypeName = "Folder Survey Action Service Connector";
-    private static final String  connectorTypeDescription = "Connector supports the surveying of file in a directory (folder) and the directories beneath it.";
+    private static final String  connectorTypeDescription = "Connector supports the surveying of files in a directory (folder) and the directories beneath it.";
     private static final String  connectorWikiPage  = "https://egeria-project.org/connectors/survey-action/folder-survey-action-service/";
 
     /*
@@ -72,7 +73,10 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{
+                DeployedImplementationType.FILE_FOLDER,
+                DeployedImplementationType.DATA_FOLDER});
+
         super.supportedActionTargetTypes.add(actionTargetType);
         super.producedAnnotationTypes = SurveyFolderAnnotationType.getAnnotationTypeTypes();
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();

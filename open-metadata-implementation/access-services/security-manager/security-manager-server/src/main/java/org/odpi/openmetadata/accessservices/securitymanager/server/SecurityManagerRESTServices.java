@@ -466,17 +466,17 @@ public class SecurityManagerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getGovernanceDefinitionsByStringParameter(userId,
-                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
-                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
-                                                                                      distinguishedName,
-                                                                                      distinguishedNameParameterName,
-                                                                                      OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      false,
-                                                                                      false,
-                                                                                      new Date(),
-                                                                                      methodName));
+                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
+                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
+                                                                                   distinguishedName,
+                                                                                   distinguishedNameParameterName,
+                                                                                   OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date(),
+                                                                                   methodName));
         }
         catch (Exception error)
         {
@@ -1004,8 +1004,8 @@ public class SecurityManagerRESTServices
                 List<UserIdentityElement> elements = handler.findBeans(userId,
                                                                        requestBody.getSearchString(),
                                                                        searchStringParameterName,
-                                                                       OpenMetadataType.USER_IDENTITY_TYPE_GUID,
-                                                                       OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+                                                                       OpenMetadataType.USER_IDENTITY.typeGUID,
+                                                                       OpenMetadataType.USER_IDENTITY.typeName,
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
@@ -1177,7 +1177,7 @@ public class SecurityManagerRESTServices
             response.setElement(handler.getActorProfileByGUID(userId,
                                                               actorProfileGUID,
                                                               guidParameterName,
-                                                              OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                              OpenMetadataType.ACTOR_PROFILE.typeName,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -1226,7 +1226,7 @@ public class SecurityManagerRESTServices
             response.setElement(handler.getActorProfileForUser(userId,
                                                                actorProfileUserId,
                                                                nameParameterName,
-                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -1279,8 +1279,8 @@ public class SecurityManagerRESTServices
             response.setElements(handler.getActorProfilesByName(userId,
                                                                 requestBody.getName(),
                                                                 nameParameterName,
-                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.ACTOR_PROFILE.typeGUID,
+                                                                OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -1335,8 +1335,8 @@ public class SecurityManagerRESTServices
             response.setElements(handler.findActorProfiles(userId,
                                                            requestBody.getSearchString(),
                                                            searchStringParameterName,
-                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                                           OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                           OpenMetadataType.ACTOR_PROFILE.typeGUID,
+                                                           OpenMetadataType.ACTOR_PROFILE.typeName,
                                                            startFrom,
                                                            pageSize,
                                                            false,
@@ -1397,11 +1397,11 @@ public class SecurityManagerRESTServices
                 List<Relationship> appointmentRelationships = roleHandler.getAttachmentLinks(userId,
                                                                                              personRoleGUID,
                                                                                              personRoleGUIDParameterName,
-                                                                                             OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                             OpenMetadataType.PERSON_ROLE.typeName,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeGUID,
+                                                                                             OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                              null,
-                                                                                             OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                                             OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                              1,
                                                                                              false,
                                                                                              false,
@@ -1460,7 +1460,7 @@ public class SecurityManagerRESTServices
                         }
                         else
                         {
-                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                             relationship,
                                                             methodName);
                         }
@@ -1536,7 +1536,7 @@ public class SecurityManagerRESTServices
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
-                                                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                false,
                                                                                false,
                                                                                new Date(),
@@ -1548,7 +1548,7 @@ public class SecurityManagerRESTServices
         }
         else
         {
-            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+            errorHandler.logBadRelationship(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                             relationship,
                                             methodName);
         }

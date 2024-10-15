@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
@@ -15,11 +16,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -53,7 +54,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -129,13 +130,13 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
         {
             String databaseServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement().getUniqueName());
             try
             {
-                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseServerGUID);
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(databaseServerGUID, auditLog);
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 
@@ -162,7 +163,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         {
             super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
                                         requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
-                                        DeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+                                        PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
         }
@@ -357,8 +358,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
         ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
                                                                                       OpenMetadataProperty.USE_TYPE.name,
-                                                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME);
+                                                                                      ServerAssetUseType.getOpenTypeName(),
+                                                                                      ServerAssetUseType.OWNS.getName());
         {
             if (catalogTemplateName != null)
             {
@@ -428,9 +429,9 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                         DeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
+                                                                         PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
 
-                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(DeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
                                                                                           ElementStatus.ACTIVE,
                                                                                           null,
                                                                                           databaseServerGUID,
@@ -455,10 +456,10 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                          databaseUserId);
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.CLEAR_PASSWORD.name,
                                                                          databasePassword);
 
-                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION_TYPE_NAME,
+                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION.typeName,
                                                                                             ElementStatus.ACTIVE,
                                                                                             null,
                                                                                             databaseGUID,
@@ -467,7 +468,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                             null,
                                                                                             elementProperties,
                                                                                             databaseGUID,
-                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                             null,
                                                                                             false);
 
@@ -498,7 +499,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                     null,
                                                                     elementProperties,
                                                                     connectionGUID,
-                                                                    OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                    OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                     null,
                                                                     false);
                 }
@@ -513,7 +514,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public  void disconnect() throws ConnectorCheckedException
     {
         /*
          * This disconnects any embedded connections such as secrets connectors.

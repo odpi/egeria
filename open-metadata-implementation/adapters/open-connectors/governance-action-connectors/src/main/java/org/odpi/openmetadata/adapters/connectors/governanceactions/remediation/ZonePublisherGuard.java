@@ -18,9 +18,7 @@ public enum ZonePublisherGuard
 {
     ZONE_ASSIGNED("zones-assigned", CompletionStatus.ACTIONED,  "The requested published zones have been added to the AssetZoneMembership classification for the asset."),
     NO_ZONES_DETECTED("no-zones-detected", CompletionStatus.ACTIONED, "The requested published zones are null so any AssetZoneMembership classification attached to the asset has been removed so the asset is now visible to all."),
-    NO_TARGETS_DETECTED("no-targets-detected", CompletionStatus.INVALID, "There is no supplied action target and so the governance service does not know which asset to work on."),
     ZONE_PUBLISHING_FAILED("zone-publishing-failed", CompletionStatus.FAILED, "An unexpected exception occurred while assigning zones to the action target asset(s)."),
-
     ;
 
 

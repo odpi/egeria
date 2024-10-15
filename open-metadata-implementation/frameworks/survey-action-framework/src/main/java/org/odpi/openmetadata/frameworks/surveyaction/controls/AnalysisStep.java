@@ -13,13 +13,16 @@ import java.util.List;
 public enum AnalysisStep
 {
     CHECK_ASSET("Check Asset",  "The survey action service is checking that the asset is of the correct type and the connection defines the correct type of connector."),
+    CHECK_ACTION_TARGETS("Check Action Targets",  "The survey action service is checking that additional information passed by the action targets is available."),
+    CHECK_REQUEST_PARAMETERS("Check Request Parameters",  "The survey action service is checking that additional information passed by the request parameters is available."),
     MEASURE_RESOURCE("Measure Resource", "The survey action service is taking measurements from the resource."),
     SCHEMA_EXTRACTION(  "Schema Extraction", "The survey action service is extracting the schema from the resource."),
     PROFILE_DATA(  "Profile Data", "The survey action service is profiling the data associated with the resource."),
     PROFILING_ASSOCIATED_RESOURCES(  "Profiling Associated Resources", "The survey action service is profiling other resources associated with the surveyed resource."),
     PRODUCE_INVENTORY("Produce Inventory", "The survey action service is writing an inventory of the contents of the surveyed resource."),
     PRODUCE_ACTIONS("Produce Exceptions", "The survey action service is writing out information about issues that is discovered during its analysis."),
-
+    SCHEMA_VALIDATION("Schema Validation", "The survey action service is validating that the schema attached to the asset matches the structure of the data stored in the asset."),
+    DATA_VALIDATION("Data Validation", "The survey action service is validating that the data stored in the resource matches the specification."),
     ;
 
     public final String           name;

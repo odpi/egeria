@@ -23,9 +23,9 @@ ext {
     // TODO: version 4 under new package name
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
-    avroVersion = '1.11.3'
+    avroVersion = '1.12.0'
     xtdbVersion = '1.24.4'
-    clojureVersion = '1.11.1'
+    clojureVersion = '1.12.0'
     classgraphVersion = '4.8.172'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
@@ -46,7 +46,7 @@ ext {
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
     guavaVersion = '33.2.1-jre'
-    hamcrestVersion = '2.2'
+    hamcrestVersion = '3.0'
     hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.1.Final'
     jacksonVersion = '2.15.0'
@@ -62,7 +62,7 @@ ext {
     jodatimeVersion = '2.12.7'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
-    junitjupiterVersion = '5.10.2'
+    junitjupiterVersion = '5.11.2'
     junitplatformVersion = '1.9.2'
     jwtVersion = '9.40'
     jwtApiVersion = '0.11.5'
@@ -98,11 +98,11 @@ ext {
     testngVersion = '7.10.2'
     swaggerVersion = '2.2.22'
     springwebVersion = '6.0.6'
-    tinkVersion = '1.13.0'
+    tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.11.0'
-    antVersion = '1.10.14'
+    antVersion = '1.10.15'
     jnrVersion = '3.1.19'
     cassandraVersion = '4.1.5'
     protobufVersion = '3.25.3'
@@ -110,7 +110,7 @@ ext {
     jacksonjdk8Version = '2.17.1'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
-    snakeYamlVersion = '2.2'
+    snakeYamlVersion = '2.3'
 }
 
 dependencies {

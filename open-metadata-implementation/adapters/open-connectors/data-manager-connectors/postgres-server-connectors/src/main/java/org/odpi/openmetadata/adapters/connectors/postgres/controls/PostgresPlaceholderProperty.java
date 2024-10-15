@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,11 +159,31 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getJDBCEndpointPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
 
 
     /**
