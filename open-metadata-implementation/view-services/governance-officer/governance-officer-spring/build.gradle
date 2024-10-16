@@ -1,0 +1,20 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:user-security:token-controller')
+    implementation project(':open-metadata-implementation:view-services:governance-officer:governance-officer-server')
+    implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation 'org.springframework:spring-web'
+    implementation 'io.swagger.core.v3:swagger-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+java {
+    withJavadocJar()
+}

@@ -247,7 +247,7 @@ public enum ViewServiceDescription
                                       "DevOps Pipeline",
                                       "DevOps Pipeline OMVS",
                                       "devops-pipeline",
-                                      "Maintain the metadata about the assets managed by a DevOps pipeline.",
+                                      "Maintain the metadata about the assets managed by a devops pipeline.",
                                       "https://egeria-project.org/services/omvs/devops-pipeline/overview/",
                                       AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName()),
 
@@ -297,7 +297,7 @@ public enum ViewServiceDescription
                   "People Organizer",
                   "People Organizer OMVS",
                   "people-organizer",
-                  "Describe teams and organizational structure.",
+                  "Describe teams, roles and organizational structure.",
                   "https://egeria-project.org/services/omvs/people-organizer/overview/",
                   AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
 
@@ -313,6 +313,56 @@ public enum ViewServiceDescription
                       "Retrieve configuration and status from platforms and servers.",
                       "https://egeria-project.org/services/omvs/runtime-manager/overview/",
                       AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Maintain governance definitions used in all governance domains.
+     */
+    GOVERNANCE_OFFICER (825,
+                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     "Governance Officer",
+                     "Governance Officer OMVS",
+                     "governance-officer",
+                     "Maintain governance definitions used to define any governance domain.",
+                     "https://egeria-project.org/services/omvs/governance-officer/overview/",
+                     AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Create schema definitions to describe the structure of data.
+     */
+    DATA_DESIGNER (826,
+                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                        "Data Designer",
+                        "Data Designer OMVS",
+                        "data-designer",
+                        "Create schema definitions to describe the structure of data.",
+                        "https://egeria-project.org/services/omvs/data-designer/overview/",
+                        AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Provides generic search, query and retrieval operations for open metadata.
+     */
+    METADATA_EXPLORER (827,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Metadata Explorer",
+                   "Metadata Explorer OMVS",
+                   "metadata-explorer",
+                   "Provides generic search, query and retrieval operations for open metadata.",
+                   "https://egeria-project.org/services/omvs/metadata-explorer/overview/",
+                   AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Manages the definitions of notifications.  This includes the definition of the trigger for the notification, the style of notification and the recipient.
+     */
+    NOTIFICATION_MANAGER (828,
+                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                       "Notification Manager",
+                       "Notification Manager OMVS",
+                       "notification-manager",
+                       "Manages the definitions of notifications.  This includes the definition of the trigger for the notification, the style of notification and the recipient.",
+                       "https://egeria-project.org/services/omvs/notification-manager/overview/",
+                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName()),
 
     ;
 
