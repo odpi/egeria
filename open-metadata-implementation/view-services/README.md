@@ -28,21 +28,25 @@ The view services are as follows:
 
   The Collection Manager OMVS provides the REST APIs to create collections of asset and other elements such as glossary terms or policies.  The collections can be nested (like folders in a file system) and they can be classified to describe the type of collection.  For example, one type of classification for a collection is a *DigitalProduct* that allows the collections of assets and other related material to describe data and or services for a specific consumer or purpose.
 
-* **[Data Discovery](data-discovery)** - define data specification.
+* **[Data Designer](data-designer)** - create schema definitions to describe the structure of data.
 
-  The Data Discovery OMVS is a REST API designed to support user interfaces (UIs) for documenting specifications that describe the data needed for a project.  These are known as DataSpecs and they can be used to specify schemas for data pipelines as well as saved searches.
+  The Data Designer OMVS is a REST API designed to support user interfaces (UIs) for building schemas for new data assets.
+
+* **[Data Discovery](data-discovery)** - define and search for new data resources.
+
+  The Data Discovery OMVS is a REST API designed to support user interfaces (UIs) for locating the data needed for a project.
+
+* **[Data Officer](data-officer)** - manage the governance of data.
+
+  The Data Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Data Officer as they lead the data governance program.  This builds on the capabilities of the Governance Officer OMVS.
+
+* **[Devops Pipeline](devops-pipeline)** - maintain the metadata about the assets managed by a devops pipeline
+
+  The Devops Pipeline OMVS is a REST API designed to support user interfaces (UIs) for supporting a devops engineer to maintain the metadata about the changing digital resources being deployed through devops pipelines.
 
 * **[Feedback Manager](feedback-manager)** - add comments and other feedback to elements.
 
   The Feedback Manager OMVS is for user interfaces supporting feedback from users.  A registered user is able to add comments, informal tags, notes, reviews and likes to elements such as assets or glossary terms.
-  
-* **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
-
-  The My Profile OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about themselves and their network as well as set up and use personalized collections of metadata elements.
-
-* **[Project Manager](project-manager)** - manage projects and related elements.
-
-  The Project Manager OMVS provides the REST APIs to create projects and related elements such as project manager roles.  The projects can be nested and they can be classified to describe the type of project.  For example, one type of classification for a project is *Campaign*, another is *Task*.
 
 * **[Glossary Browser](glossary-browser)** - search and view the contents of specific glossaries and their links to governance definitions and assets.
 
@@ -52,9 +56,41 @@ The view services are as follows:
 
   The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
 
+* **[Governance Officer](governance-officer)** - maintain governance definitions used to define any governance domain.
+
+  The Governance Officer OMVS is for user interfaces supporting the creation and editing of a new governance domain.
+
+* **[Metadata Explorer](metadata-explorer)** - provides generic search, query and retrieval operations for open metadata.
+
+  The Metadata Explorer OMVS is for user interfaces supporting the search, query and retrieval of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).
+
+* **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
+
+  The My Profile OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about themselves and their network as well as set up and use personalized collections of metadata elements.
+
+* **[Notification Manager](notification-manager)** - manages the definitions of notifications.
+
+  The Notification Manager OMVS is for user interfaces supporting a personalized notification service.  This includes the definition of the trigger for the notification, the style of notification and the recipient.
+
+* **[People Organizer](people-organizer)** - describe teams, roles and organizational structure.
+
+  The People Organizer OMVS provides the REST APIs used to maintain information about an organization.  This includes the definitions of teams, roles and organization structures.
+
+* **[Project Manager](project-manager)** - manage projects and related elements.
+
+  The Project Manager OMVS provides the REST APIs to create projects and related elements such as project manager roles.  The projects can be nested and they can be classified to describe the type of project.  For example, one type of classification for a project is *Campaign*, another is *Task*.
+
+* **[Privacy Officer](data-officer)** - manage the governance of privacy.
+
+  The Privacy Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Privacy Officer as they lead the data privacy governance program.  This builds on the capabilities of the Governance Officer OMVS.
+
 * **[Reference Data](reference-data)** - manage reference data.
 
   The Reference Data OMVS is a REST API designed to support user interfaces (UIs) that maintain reference data values and their mappings.
+
+* **[Security Officer](security-officer)** - manage the governance of security.
+
+  The Security Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.
 
 * **[Template Manager](template-manager)** - locate and maintain templates.
 

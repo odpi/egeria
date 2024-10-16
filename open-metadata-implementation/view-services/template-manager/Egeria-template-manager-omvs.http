@@ -77,7 +77,16 @@ Content-Type: application/json
   "isOwnAnchor" : false,
   "effectiveFrom" : "{{$isoTimestamp}}",
   "effectiveTo": "{{$isoTimestamp}}",
-  "replacementProperties" : { },
+  "replacementProperties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "propertyName" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "value of property"
+      }
+    }
+  },
   "placeholderProperties" : {
      "placeholderName1" : "placeholderValue1",
      "placeholderName2" : "placeholderValue2"
@@ -106,7 +115,18 @@ Content-Type: application/json
   "externalSourceName" : "",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "properties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "replaceProperties" : false
 }
 
 
@@ -125,7 +145,8 @@ Content-Type: application/json
   "externalSourceName" : "",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "newStatus" : "ACTIVE"
 }
 
 
