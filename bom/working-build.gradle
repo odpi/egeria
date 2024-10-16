@@ -26,7 +26,7 @@ ext {
     avroVersion = '1.12.0'
     xtdbVersion = '1.24.4'
     clojureVersion = '1.12.0'
-    classgraphVersion = '4.8.177'
+    classgraphVersion = '4.8.172'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
     // Version 1.17.0 breaks XTDB because of a change in lucene's library names
@@ -45,12 +45,12 @@ ext {
     gremlinVersion = '3.5.6'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
-    guavaVersion = '33.3.1-jre'
+    guavaVersion = '33.2.1-jre'
     hamcrestVersion = '3.0'
     hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.1.Final'
     jacksonVersion = '2.15.0'
-    jacksonDatabindVersion = '2.18.0'
+    jacksonDatabindVersion = '2.17.1'
     jacksonaslVersion = '1.9.14-atlassian-6'
     jakartaannotationVersion = '2.1.1'
     jakartapersistenceVersion = '3.2.0'
@@ -59,38 +59,36 @@ ext {
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '5.0.0'
-    jodatimeVersion = '2.13.0'
+    jodatimeVersion = '2.12.7'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.11.2'
     junitplatformVersion = '1.9.2'
-    jwtVersion = '9.41.2'
+    jwtVersion = '9.40'
     jwtApiVersion = '0.11.5'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
     kafkaVersion = '3.7.0'
     lang3Version = '3.14.0'
-    //logbackVersion = '1.5.8'
     logbackVersion = '1.5.6'
-
     lettuceVersion = '6.3.2.RELEASE'
     // TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
     luceneVersion = '8.11.3'
-    openlineageVersion = '1.23.0'
+    openlineageVersion = '1.16.0'
     ossVersion = '4.16.0'
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
-    plexusVersion = '4.0.2'
-    postgresVersion = '42.7.4'
-    nettyVersion = '4.1.114.Final'
-    prometheusVersion = '1.13.6'
+    plexusVersion = '4.0.1'
+    postgresVersion = '42.7.3'
+    nettyVersion = '4.1.111.Final'
+    prometheusVersion = '1.13.1'
     quartzVersion = '2.3.2'
     // TODO: May be able to remove as moving to jakarta servlet
     servletVersion = '4.0.1'
     jakartaServletVersion = '6.0.0'
     sleepycatVersion = '18.3.12'
     slf4jVersion = '2.0.6'
-    snappyVersion = '1.1.10.7'
+    snappyVersion = '1.1.10.5'
     springbootVersion = '3.1.4'
     spotbugsVersion = '4.8.5'
     springdataVersion = '3.0.3'
@@ -98,7 +96,7 @@ ext {
     springsecurityVersion = '6.1.4'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     testngVersion = '7.10.2'
-    swaggerVersion = '2.2.25'
+    swaggerVersion = '2.2.22'
     springwebVersion = '6.0.6'
     tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
@@ -106,11 +104,10 @@ ext {
     gsonVersion = '2.11.0'
     antVersion = '1.10.15'
     jnrVersion = '3.1.19'
-    //cassandraVersion 5.0.1 doesn't work
     cassandraVersion = '4.1.5'
-    protobufVersion = '3.25.5'
-    log4jVersion = '2.24.1'
-    jacksonjdk8Version = '2.18.0'
+    protobufVersion = '3.25.3'
+    log4jVersion = '2.23.1'
+    jacksonjdk8Version = '2.17.1'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
     snakeYamlVersion = '2.3'
@@ -119,7 +116,7 @@ ext {
 dependencies {
     // Only use this to bring in platforms, which are *constraints*
     dependencies {
-        api(platform('net.openhft:chronicle-bom:2.26ea50'))
+        api(platform('net.openhft:chronicle-bom:2.26ea10'))
     }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
@@ -373,7 +370,7 @@ publishing {
                 }
 
             }
-            // Override the project name & description for the pom based on properties set in the child working-build.gradle (hard to default & required for maven central)
+            // Override the project name & description for the pom based on properties set in the child build.gradle (hard to default & required for maven central)
             pom.withXml {
                 // NOTE - this subproject is similar to the root project in maven, in that it defines the BOM
                 asNode().appendNode('description', "${project.description}")
