@@ -51,31 +51,34 @@ public class MetadataElementSummaryConverter<B> extends OpenMetadataConverterBas
                         OpenMetadataElement openMetadataElement,
                         String              methodName) throws PropertyServerException
     {
-        try
+        if (openMetadataElement != null)
         {
-            /*
-             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
-             */
-            B returnBean = beanClass.getDeclaredConstructor().newInstance();
-
-            if (returnBean instanceof MetadataElementSummary elementSummary)
+            try
             {
-                ElementHeader          elementHeader  = new ElementHeader(openMetadataElement);
+                /*
+                 * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+                 */
+                B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-                elementHeader.setGUID(openMetadataElement.getElementGUID());
-                elementHeader.setClassifications(this.getElementClassifications(openMetadataElement.getClassifications()));
-
-                elementSummary.setElementHeader(elementHeader);
-                if (openMetadataElement.getElementProperties() != null)
+                if (returnBean instanceof MetadataElementSummary elementSummary)
                 {
-                    elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
+                    ElementHeader          elementHeader  = new ElementHeader(openMetadataElement);
+
+                    elementHeader.setGUID(openMetadataElement.getElementGUID());
+                    elementHeader.setClassifications(this.getElementClassifications(openMetadataElement.getClassifications()));
+
+                    elementSummary.setElementHeader(elementHeader);
+                    if (openMetadataElement.getElementProperties() != null)
+                    {
+                        elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
+                    }
                 }
+                return returnBean;
             }
-            return returnBean;
-        }
-        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+            catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
+            {
+                super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+            }
         }
 
         return null;

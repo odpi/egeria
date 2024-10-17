@@ -5,7 +5,7 @@
 
 # Data Discovery OMVS 
 
-The Data Designer OMVS enables the caller to define and search for new data resources.
+The Data Discovery OMVS enables the caller to define and search for new data resources.
 
 Link to documentation: [https://egeria-project.org/services/omvs/data-discovery/overview/](https://egeria-project.org/services/omvs/data-discovery/overview/)
 
