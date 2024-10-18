@@ -4,23 +4,24 @@
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * AssetGraph is used to return an asset along with all of its anchored elements and the relationships
  * that they have between one another and to other elements.
  */
-public class AssetGraph extends AssetElement
+public class AssetLineageGraph extends AssetElement
 {
-    private List<MetadataElementSummary> anchoredElements = null;
-    private List<MetadataRelationship>   relationships    = null;
-    private String                       mermaidGraph     = null;
+    private Map<String, AssetLineageGraphNode> linkedAssets         = null;
+    private Map<String, String>                lineageRelationships = null;
+    private String                             mermaidGraph         = null;
+
 
     /**
      * Default constructor
      */
-    public AssetGraph()
+    public AssetLineageGraph()
     {
     }
 
@@ -30,7 +31,7 @@ public class AssetGraph extends AssetElement
      *
      * @param template template values for asset
      */
-    public AssetGraph(AssetElement template)
+    public AssetLineageGraph(AssetElement template)
     {
         super(template);
     }
@@ -41,62 +42,60 @@ public class AssetGraph extends AssetElement
      *
      * @param template template values for asset graph
      */
-    public AssetGraph(AssetGraph template)
+    public AssetLineageGraph(AssetLineageGraph template)
     {
         super(template);
 
         if (template != null)
         {
-            anchoredElements = template.getAnchoredElements();
-            relationships = template.getRelationships();
-            mermaidGraph = getMermaidGraph();
+            linkedAssets         = template.getLinkedAssets();
+            lineageRelationships = template.getLineageRelationships();
+            mermaidGraph         = template.getMermaidGraph();
         }
     }
 
 
     /**
-     * Return the list of elements that are anchored to the asset.
+     * Return the list of elements that are linked to the asset by lineage relationships.
      *
-     * @return anchored elements
+     * @return linked elements
      */
-    public List<MetadataElementSummary> getAnchoredElements()
+    public Map<String, AssetLineageGraphNode> getLinkedAssets()
     {
-        return anchoredElements;
+        return linkedAssets;
     }
 
 
     /**
-     * Set up the list of elements that are anchored to the asset.
+     * Set up the list of elements that are linked to the asset by lineage relationships.
      *
-     * @param anchoredElements  anchored elements
+     * @param linkedAssets  linked elements
      */
-    public void setAnchoredElements(List<MetadataElementSummary> anchoredElements)
+    public void setLinkedAssets(Map<String, AssetLineageGraphNode> linkedAssets)
     {
-        this.anchoredElements = anchoredElements;
+        this.linkedAssets = linkedAssets;
     }
 
 
     /**
-     * Return the relationships that connect the anchored elements to the asset, to each other,
-     * and to other open metadata elements.
+     * Return the relationships that connect the assets together in the lineage graph.
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getRelationships()
+    public Map<String, String> getLineageRelationships()
     {
-        return relationships;
+        return lineageRelationships;
     }
 
 
     /**
-     * Set up the relationships that connect the anchored elements to the asset, to each other,
-     * and to other open metadata elements.
+     * Set up the relationships that connect the assets together in the lineage graph.
      *
-     * @param relationships relationships
+     * @param lineageRelationships relationships
      */
-    public void setRelationships(List<MetadataRelationship> relationships)
+    public void setLineageRelationships(Map<String, String> lineageRelationships)
     {
-        this.relationships = relationships;
+        this.lineageRelationships = lineageRelationships;
     }
 
 
@@ -130,10 +129,10 @@ public class AssetGraph extends AssetElement
     @Override
     public String toString()
     {
-        return "AssetGraph{" +
-                "anchoredElements=" + anchoredElements +
-                ", relationships=" + relationships +
-                ", mermaidGraph=" + mermaidGraph +
+        return "AssetLineageGraph{" +
+                "linkedAssets=" + linkedAssets +
+                ", lineageRelationships=" + lineageRelationships +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -150,9 +149,9 @@ public class AssetGraph extends AssetElement
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
-        AssetGraph that = (AssetGraph) objectToCompare;
-        return Objects.equals(anchoredElements, that.anchoredElements) &&
-                Objects.equals(relationships, that.relationships) &&
+        AssetLineageGraph that = (AssetLineageGraph) objectToCompare;
+        return Objects.equals(linkedAssets, that.linkedAssets) &&
+                Objects.equals(lineageRelationships, that.lineageRelationships) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
@@ -165,6 +164,6 @@ public class AssetGraph extends AssetElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchoredElements, relationships);
+        return Objects.hash(super.hashCode(), linkedAssets, lineageRelationships, mermaidGraph);
     }
 }

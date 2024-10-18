@@ -312,6 +312,7 @@ public class AssetConsumerRESTServices
                     assetGraph.setRelationships(metadataRelationships);
                 }
 
+                assetGraph.setMermaidGraph(this.getMermaidGraph(assetGraph));
                 response.setAssetGraph(assetGraph);
             }
         }
@@ -322,6 +323,121 @@ public class AssetConsumerRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * constructing the mermaid graph for the retrieved asset.
+     *
+     * @param assetGraph retrieved asset graph
+     * @return mermaid string
+     */
+    private String getMermaidGraph(AssetGraph assetGraph)
+    {
+        StringBuilder mermaidGraph = new StringBuilder();
+
+        mermaidGraph.append("---\n");
+        mermaidGraph.append("title: Asset - ");
+        mermaidGraph.append(assetGraph.getProperties().getDisplayName());
+        mermaidGraph.append(" [");
+        mermaidGraph.append(assetGraph.getElementHeader().getGUID());
+        mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+
+        List<String> usedQualifiedNames = new ArrayList<>();
+
+        String       currentQualifiedName = assetGraph.getProperties().getQualifiedName();
+        String       currentDisplayName   = assetGraph.getProperties().getDisplayName();
+
+        appendMermaidNode(mermaidGraph,
+                          currentQualifiedName,
+                          currentDisplayName,
+                          assetGraph.getElementHeader().getType().getTypeName());
+
+        usedQualifiedNames.add(currentQualifiedName);
+
+        if (assetGraph.getAnchoredElements() != null)
+        {
+            for (MetadataElementSummary node : assetGraph.getAnchoredElements())
+            {
+                if (node != null)
+                {
+                    currentQualifiedName = node.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
+                    currentDisplayName   = node.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                    if (currentDisplayName == null)
+                    {
+                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.NAME.name);
+                    }
+                    if (currentDisplayName == null)
+                    {
+                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.RESOURCE_PROPERTIES.name);
+                    }
+                    if (currentDisplayName == null)
+                    {
+                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
+                    }
+
+                    if (!usedQualifiedNames.contains(currentQualifiedName))
+                    {
+                        appendMermaidNode(mermaidGraph,
+                                          currentQualifiedName,
+                                          currentDisplayName,
+                                          node.getElementHeader().getType().getTypeName());
+
+                        usedQualifiedNames.add(currentQualifiedName);
+                    }
+                }
+            }
+
+            for (MetadataRelationship line : assetGraph.getRelationships())
+            {
+                if (line != null)
+                {
+                    mermaidGraph.append(this.removeSpaces(line.getEnd1().getUniqueName()));
+                    mermaidGraph.append("-->|");
+                    mermaidGraph.append(line.getType().getTypeName());
+                    mermaidGraph.append("|");
+                    mermaidGraph.append(this.removeSpaces(line.getEnd2().getUniqueName()));
+                    mermaidGraph.append("\n");
+                }
+            }
+        }
+
+        return mermaidGraph.toString();
+    }
+
+
+    /**
+     * Create a node in the mermaid graph.
+     *
+     * @param mermaidGraph current state of the graph
+     * @param currentQualifiedName unique name
+     * @param currentDisplayName display name
+     * @param currentType type of element
+     */
+    private void appendMermaidNode(StringBuilder mermaidGraph,
+                                   String        currentQualifiedName,
+                                   String        currentDisplayName,
+                                   String        currentType)
+    {
+        mermaidGraph.append(this.removeSpaces(currentQualifiedName));
+        mermaidGraph.append("(\"`*");
+        mermaidGraph.append(currentType);
+        mermaidGraph.append("*\n**");
+        mermaidGraph.append(currentDisplayName);
+        mermaidGraph.append("**`\")\n");
+    }
+
+
+    /**
+     * Remove all the spaces from the qualifiedName along with the curly braces - found in the templates.
+     *
+     * @param currentQualifiedName qualifiedName
+     * @return qualified name without spaces
+     */
+    private String removeSpaces(String currentQualifiedName)
+    {
+        String noSpaces = currentQualifiedName.replaceAll("\\s+","");
+        return noSpaces.replaceAll("[\\[\\](){}]", "");
     }
 
 
