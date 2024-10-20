@@ -323,7 +323,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         requestBody.setNew_name(newName);
         requestBody.setComment(comment);
-        requestBody.setProperties(properties);
 
         if ((newName == null) || (newName.equals(name)))
         {
@@ -481,7 +480,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         requestBody.setNew_name(newName);
         requestBody.setComment(comment);
-        requestBody.setProperties(properties);
 
         if ((newName == null) || (newName.equals(oldName)))
         {
@@ -718,8 +716,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                  String              tableType,
                                  String              dataSourceFormat,
                                  List<ColumnInfo>    columns,
-                                 String              storageLocation,
-                                 Map<String, String> properties) throws PropertyServerException
+                                 String              storageLocation) throws PropertyServerException
     {
         TableProperties tableProperties = new TableProperties();
 
@@ -731,7 +728,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         tableProperties.setData_source_format(dataSourceFormat);
         tableProperties.setColumns(columns);
         tableProperties.setStorage_location(storageLocation);
-       // tableProperties.setProperties(properties);
 
         return createTable(tableProperties);
     }
@@ -824,8 +820,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     }
 
 
-
-
     /*
      *===========================================================================
      * Specialized methods - Functions
@@ -915,6 +909,299 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         }
 
         return null;
+    }
+
+
+    /*
+     *===========================================================================
+     * Specialized methods - Registered Models and versions
+     */
+
+
+    /**
+     * Create model.
+     *
+     * @param name name of the model
+     * @param catalogName name of catalog
+     * @param schemaName name of the schema
+     * @param comment description of the model
+     * @param storageLocation directory name eg file:///Users/me/Code/uc/unitycatalog/etc/data/external/unity/default/models/
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public RegisteredModelInfo createRegisteredModel(String name,
+                                                     String catalogName,
+                                                     String schemaName,
+                                                     String comment,
+                                                     String storageLocation) throws PropertyServerException
+    {
+        RegisteredModelProperties properties = new RegisteredModelProperties();
+
+        properties.setName(name);
+        properties.setCatalog_name(catalogName);
+        properties.setSchema_name(schemaName);
+        properties.setComment(comment);
+        properties.setStorage_location(storageLocation);
+
+        return createRegisteredModel(properties);
+    }
+
+
+    /**
+     * Create registered model.
+     *
+     * @param registeredModelProperties properties
+     *
+     * @return resulting registered info
+     * @throws PropertyServerException problem with the call
+     */
+    public RegisteredModelInfo createRegisteredModel(RegisteredModelProperties registeredModelProperties) throws PropertyServerException
+    {
+        final String methodName = "createRegisteredModel";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models";
+
+        return callPostRESTCallNoParams(methodName,
+                                        RegisteredModelInfo.class,
+                                        urlTemplate,
+                                        registeredModelProperties);
+    }
+
+
+    /**
+     * Delete model.
+     *
+     * @param fullName fullName of the model
+     * @throws PropertyServerException problem with the call
+     */
+    public void deleteRegisteredModel(String  fullName) throws PropertyServerException
+    {
+        final String methodName = "deleteRegisteredModel";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}";
+
+        callDeleteRESTCall(methodName,
+                           Object.class,
+                           urlTemplate,
+                           fullName);
+    }
+
+
+    /**
+     * Get registered model.
+     *
+     * @param fullName fullName of the model
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public RegisteredModelInfo getRegisteredModel(String fullName) throws PropertyServerException
+    {
+        final String methodName = "getVolume";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}";
+
+        return callGetRESTCall(methodName,
+                               RegisteredModelInfo.class,
+                               urlTemplate,
+                               fullName);
+    }
+
+
+    /**
+     * Get all registered models.
+     *
+     * @param catalogName name of the catalog
+     * @param schemaName name of the schema
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public List<RegisteredModelInfo> listRegisteredModels(String catalogName,
+                                                          String schemaName) throws PropertyServerException
+    {
+        final String methodName = "listRegisteredModel";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models?catalog_name={1}&schema_name={2}";
+
+        ListRegisteredModelsResponse response = callGetRESTCall(methodName,
+                                                                ListRegisteredModelsResponse.class,
+                                                                urlTemplate,
+                                                                catalogName,
+                                                                schemaName);
+
+        if (response != null)
+        {
+            return response.getRegistered_models();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update registered model.
+     *
+     * @param fullName name of the model
+     * @param newName optional new name of the model
+     * @param comment description of the model
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public RegisteredModelInfo updateRegisteredModel(String              fullName,
+                                                     String              newName,
+                                                     String              comment) throws PropertyServerException
+    {
+        final String methodName  = "updateRegisteredModel";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}";
+
+        String oldName = this.getNameFromFullName(fullName);
+
+        UpdateElementRequestBody requestBody = new UpdateElementRequestBody();
+
+        requestBody.setComment(comment);
+
+        if ((newName == null) || (newName.equals(oldName)))
+        {
+            /*
+             * new_name must not be null.
+             */
+            requestBody.setNew_name(oldName + "TemporaryWorkaroundName");
+            callPatchRESTCall(methodName,
+                              RegisteredModelInfo.class,
+                              urlTemplate,
+                              requestBody,
+                              fullName);
+
+            requestBody.setNew_name(oldName);
+            return callPatchRESTCall(methodName,
+                                     RegisteredModelInfo.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     fullName);
+        }
+        else
+        {
+            requestBody.setNew_name(newName);
+            return callPatchRESTCall(methodName,
+                                     RegisteredModelInfo.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     fullName);
+        }
+    }
+
+
+
+    /**
+     * Create registered model version.
+     *
+     * @param modelVersionProperties properties
+     *
+     * @return resulting registered info
+     * @throws PropertyServerException problem with the call
+     */
+    public ModelVersionInfo createModelVersion(ModelVersionProperties modelVersionProperties) throws PropertyServerException
+    {
+        final String methodName = "createModelVersion";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/versions";
+
+        return callPostRESTCallNoParams(methodName,
+                                        ModelVersionInfo.class,
+                                        urlTemplate,
+                                        modelVersionProperties);
+    }
+
+
+    /**
+     * Get registered model version.
+     *
+     * @param fullName fullName of the model
+     * @param version version to work with
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public ModelVersionInfo getModelVersion(String fullName,
+                                            long   version) throws PropertyServerException
+    {
+        final String methodName = "getVolume";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions/{1}";
+
+        return callGetRESTCall(methodName,
+                               ModelVersionInfo.class,
+                               urlTemplate,
+                               fullName,
+                               version);
+    }
+
+
+    /**
+     * Get all versions of model.
+     *
+     * @param fullName name of the model
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public List<ModelVersionInfo> listModelVersions(String fullName) throws PropertyServerException
+    {
+        final String methodName = "listModelVersions";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions";
+
+        ListModelVersionsResponse response = callGetRESTCall(methodName,
+                                                             ListModelVersionsResponse.class,
+                                                             urlTemplate,
+                                                             fullName);
+
+        if (response != null)
+        {
+            return response.getModel_versions();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update registered model version.
+     *
+     * @param fullName name of the model
+     * @param version version to work with
+     * @param comment description of the model
+     * @return resulting model info
+     * @throws PropertyServerException problem with the call
+     */
+    public ModelVersionInfo updateModelVersion(String              fullName,
+                                               long                version,
+                                               String              comment) throws PropertyServerException
+    {
+        final String methodName  = "updateModelVersion";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions/{1}";
+
+        UpdateElementRequestBody requestBody = new UpdateElementRequestBody();
+
+        requestBody.setComment(comment);
+
+        return callPatchRESTCall(methodName,
+                                 ModelVersionInfo.class,
+                                 urlTemplate,
+                                 requestBody,
+                                 fullName,
+                                 version);
+    }
+
+
+    /**
+     * Delete model version.
+     *
+     * @param fullName fullName of the model
+     * @param version version to work with
+     * @throws PropertyServerException problem with the call
+     */
+    public void deleteModelVersion(String  fullName,
+                                   long    version) throws PropertyServerException
+    {
+        final String methodName = "deleteModelVersion";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/models/{0}/versions/{1}";
+
+        callDeleteRESTCall(methodName,
+                           Object.class,
+                           urlTemplate,
+                           fullName,
+                           version);
     }
 
 

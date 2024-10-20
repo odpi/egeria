@@ -3,10 +3,12 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -118,6 +120,8 @@ public class OpenMetadataTypesArchive
              */
             this.getOriginalTypes();
 
+            this.add0265AnalyticsAssets();
+
             /*
              * The completed archive is ready to be packaged up and returned
              */
@@ -151,6 +155,44 @@ public class OpenMetadataTypesArchive
 
 
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void add0265AnalyticsAssets()
+    {
+        this.archiveBuilder.addEntityDef(getDeployedAnalyticsModelEntity());
+        this.archiveBuilder.addEntityDef(getAnalyticsModelRunEntity());
+    }
+
+
+    /**
+     * A packaged and deployed analytics model.
+     *
+     * @return EntityDef
+     */
+    private EntityDef getDeployedAnalyticsModelEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_ANALYTICS_MODEL,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName));
+    }
+
+
+
+    /**
+     * An execution (run) of a deployed analytics model.
+     *
+     * @return  EntityDef
+     */
+    private EntityDef getAnalyticsModelRunEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ANALYTICS_MODEL_RUN,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
+    }
+
 
 
     /*

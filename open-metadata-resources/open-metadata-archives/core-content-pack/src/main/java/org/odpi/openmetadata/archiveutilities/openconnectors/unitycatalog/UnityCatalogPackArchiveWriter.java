@@ -84,6 +84,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addUCVolumeCatalogTemplate();
         this.addUCTableCatalogTemplate();
         this.addUCFunctionCatalogTemplate();
+        this.addUCRegisteredModelCatalogTemplate();
+        this.addUCModelVersionCatalogTemplate();
 
         /*
          * Create the default integration group.
@@ -527,6 +529,101 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                OpenMetadataType.ASSET.typeName,
                                                UnityCatalogPlaceholderProperty.getFunctionPlaceholderPropertyTypes());
     }
+
+
+    private void addUCRegisteredModelCatalogTemplate()
+    {
+        final String methodName = "addUCRegisteredModelCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getDefaultTemplateGUID();
+
+        DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL;
+        String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+                + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getTemplateDescription(),
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        archiveHelper.setGUID(qualifiedName, guid);
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getRegisteredModelPlaceholderPropertyTypes());
+    }
+
+
+    private void addUCModelVersionCatalogTemplate()
+    {
+        final String methodName = "addUCModelVersionCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getDefaultTemplateGUID();
+
+        DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL_VERSION;
+        String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+                + fullName + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder();
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getTemplateDescription(),
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        archiveHelper.setGUID(qualifiedName, guid);
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getModelVersionPlaceholderPropertyTypes());
+    }
+
 
 
     /**

@@ -3,8 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.rest;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -13,14 +11,12 @@ import java.util.Objects;
 public class UpdateElementRequestBody
 {
     private String              comment    = null;
-    private Map<String, String> properties = new HashMap<>();
     private String              new_name   = null;
 
 
     public UpdateElementRequestBody()
     {
     }
-
 
 
     /**
@@ -67,27 +63,6 @@ public class UpdateElementRequestBody
     }
 
 
-    /**
-     * Return arbitrary name-value property pairs.
-     *
-     * @return property string map
-     */
-    public Map<String, String> getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up arbitrary name-value property pairs.
-     *
-     * @param properties property string map
-     */
-    public void setProperties(Map<String, String> properties)
-    {
-        this.properties = properties;
-    }
-
 
     /**
      * Standard toString method.
@@ -100,7 +75,6 @@ public class UpdateElementRequestBody
         return "UpdateElementRequestBody{" +
                 "name='" + new_name + '\'' +
                 ", comment='" + comment + '\'' +
-                ", properties=" + properties +
                 '}';
     }
 
@@ -117,7 +91,7 @@ public class UpdateElementRequestBody
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         UpdateElementRequestBody that = (UpdateElementRequestBody) objectToCompare;
-        return Objects.equals(new_name, that.new_name) && Objects.equals(comment, that.comment) && Objects.equals(properties, that.properties);
+        return Objects.equals(new_name, that.new_name) && Objects.equals(comment, that.comment);
     }
 
 
@@ -129,6 +103,6 @@ public class UpdateElementRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(new_name, comment, properties);
+        return Objects.hash(new_name, comment);
     }
 }

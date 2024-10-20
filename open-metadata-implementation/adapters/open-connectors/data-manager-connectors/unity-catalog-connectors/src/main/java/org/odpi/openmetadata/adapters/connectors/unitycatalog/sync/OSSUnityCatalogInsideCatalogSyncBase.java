@@ -447,9 +447,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param memberElement element from Egeria
      * @return properties for UC
      */
-    protected Map<String, String> getUCPropertiesFomMember(MemberElement memberElement)
+    protected Map<String, String> getUCPropertiesFromMember(MemberElement memberElement)
     {
-        final String methodName = "getUCPropertiesFomMember";
+        final String methodName = "getUCPropertiesFromMember";
 
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 

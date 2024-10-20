@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ListFunctionsResponse
 {
-    private List<FunctionInfo> functions = new ArrayList<>();
-    private String            nextPageToken = null;
+    private List<FunctionInfo> functions       = new ArrayList<>();
+    private String             next_page_token = null;
 
 
     /**
@@ -62,20 +62,20 @@ public class ListFunctionsResponse
      *
      * @return token
      */
-    public String getNextPageToken()
+    public String getNext_page_token()
     {
-        return nextPageToken;
+        return next_page_token;
     }
 
 
     /**
      * Set up the opaque token to retrieve the next page of results. Absent if there are no more pages. page_token should be set to this value for the next request (for the next page of results).
      *
-     * @param nextPageToken token
+     * @param next_page_token token
      */
-    public void setNextPageToken(String nextPageToken)
+    public void setNext_page_token(String next_page_token)
     {
-        this.nextPageToken = nextPageToken;
+        this.next_page_token = next_page_token;
     }
 
 
@@ -89,7 +89,7 @@ public class ListFunctionsResponse
     {
         return "ListFunctionsResponse{" +
                 "functions=" + functions +
-                ", nextPageToken='" + nextPageToken + '\'' +
+                ", nextPageToken='" + next_page_token + '\'' +
                 '}';
     }
 
@@ -106,7 +106,7 @@ public class ListFunctionsResponse
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         ListFunctionsResponse that = (ListFunctionsResponse) objectToCompare;
-        return Objects.equals(functions, that.functions) && Objects.equals(nextPageToken, that.nextPageToken);
+        return Objects.equals(functions, that.functions) && Objects.equals(next_page_token, that.next_page_token);
     }
 
 
@@ -118,6 +118,6 @@ public class ListFunctionsResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(functions, nextPageToken);
+        return Objects.hash(functions, next_page_token);
     }
 }

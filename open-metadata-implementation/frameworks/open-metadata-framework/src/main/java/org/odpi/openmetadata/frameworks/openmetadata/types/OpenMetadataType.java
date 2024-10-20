@@ -2032,6 +2032,24 @@ public enum OpenMetadataType
 
 
     /**
+     * A packaged and deployed analytics model.
+     */
+    DEPLOYED_ANALYTICS_MODEL("ddace5d7-3f4d-4ff8-a23e-d4992b2e874f",
+                                "DeployedAnalyticsModel",
+                                OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
+                                "0172e405-3500-42de-9d0b-cf9f851628e7",
+                                "A packaged and deployed analytics model."),
+
+    /**
+     * An execution (run) of a deployed analytics model.
+     */
+    ANALYTICS_MODEL_RUN("8178e11b-abad-49c1-b24a-a868d760d603",
+                        "AnalyticsModelRun",
+                        OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
+                        "52e73acc-fa40-4def-9df5-b5911ba0418b",
+                        "An execution (run) of a deployed analytics model."),
+
+    /**
      * A text file containing a program written in a language that needs to be complied into an executable form before it can run.
      */
     SOURCE_CODE_FILE("5b26a2d2-3159-4e8e-bf28-e71904113fc8",

@@ -399,8 +399,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                       this.getUCTableTypeFromMember(memberElement),
                                                       this.getUCDataSourceFormatFromMember(memberElement),
                                                       this.getUCColumnsForTable(memberElement),
-                                                      super.getUCStorageLocationFromMember(memberElement),
-                                                      super.getUCPropertiesFomMember(memberElement));
+                                                      super.getUCStorageLocationFromMember(memberElement));
 
         if (memberElement.getExternalIdentifier() == null)
         {
