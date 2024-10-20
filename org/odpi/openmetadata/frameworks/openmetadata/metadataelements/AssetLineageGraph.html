@@ -73,7 +73,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement</a>
+<div class="inheritance"><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph</div>
+</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
@@ -83,9 +85,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetLineageGraph</span>
-<span class="extends-implements">extends <a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></span></div>
-<div class="block">AssetGraph is used to return an asset along with all of its anchored elements and the relationships
- that they have between one another and to other elements.</div>
+<span class="extends-implements">extends <a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></span></div>
+<div class="block">AssetLineageGraph is used to return an asset along with all of its lineage relationships.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -101,11 +102,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement)" class="member-name-link">AssetLineageGraph</a><wbr>(<a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph)" class="member-name-link">AssetLineageGraph</a><wbr>(<a href="AssetLineageGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraph</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraph)" class="member-name-link">AssetLineageGraph</a><wbr>(<a href="AssetLineageGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraph</a>&nbsp;template)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode)" class="member-name-link">AssetLineageGraph</a><wbr>(<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&nbsp;template)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
@@ -128,12 +129,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphRelationship</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageRelationships()" class="member-name-link">getLineageRelationships</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the relationships that connect the assets together in the lineage graph.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedAssets()" class="member-name-link">getLinkedAssets</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of elements that are linked to the asset by lineage relationships.</div>
@@ -149,12 +150,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineageRelationships(java.util.Map)" class="member-name-link">setLineageRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;lineageRelationships)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineageRelationships(java.util.List)" class="member-name-link">setLineageRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphRelationship</a>&gt;&nbsp;lineageRelationships)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the relationships that connect the assets together in the lineage graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLinkedAssets(java.util.Map)" class="member-name-link">setLinkedAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;&nbsp;linkedAssets)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLinkedAssets(java.util.List)" class="member-name-link">setLinkedAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;&nbsp;linkedAssets)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of elements that are linked to the asset by lineage relationships.</div>
 </div>
@@ -171,6 +172,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></h3>
+<code><a href="AssetLineageGraphNode.html#getDownstreamRelationships()">getDownstreamRelationships</a>, <a href="AssetLineageGraphNode.html#getInternalRelationships()">getInternalRelationships</a>, <a href="AssetLineageGraphNode.html#getUpstreamRelationships()">getUpstreamRelationships</a>, <a href="AssetLineageGraphNode.html#setDownstreamRelationships(java.util.List)">setDownstreamRelationships</a>, <a href="AssetLineageGraphNode.html#setInternalRelationships(java.util.List)">setInternalRelationships</a>, <a href="AssetLineageGraphNode.html#setUpstreamRelationships(java.util.List)">setUpstreamRelationships</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.metadataelements.<a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></h3>
 <code><a href="AssetElement.html#getElementHeader()">getElementHeader</a>, <a href="AssetElement.html#getProperties()">getProperties</a>, <a href="AssetElement.html#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setElementHeader</a>, <a href="AssetElement.html#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties)">setProperties</a></code></div>
@@ -196,9 +200,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetLineageGraphNode)">
 <h3>AssetLineageGraph</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetLineageGraph</span><wbr><span class="parameters">(<a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetLineageGraph</span><wbr><span class="parameters">(<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor.  Note, this is a deep copy</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -228,7 +232,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getLinkedAssets()">
 <h3>getLinkedAssets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;</span>&nbsp;<span class="element-name">getLinkedAssets</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;</span>&nbsp;<span class="element-name">getLinkedAssets</span>()</div>
 <div class="block">Return the list of elements that are linked to the asset by lineage relationships.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -237,9 +241,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setLinkedAssets(java.util.Map)">
+<section class="detail" id="setLinkedAssets(java.util.List)">
 <h3>setLinkedAssets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLinkedAssets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;&nbsp;linkedAssets)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLinkedAssets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a>&gt;&nbsp;linkedAssets)</span></div>
 <div class="block">Set up the list of elements that are linked to the asset by lineage relationships.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -250,7 +254,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getLineageRelationships()">
 <h3>getLineageRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getLineageRelationships</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphRelationship</a>&gt;</span>&nbsp;<span class="element-name">getLineageRelationships</span>()</div>
 <div class="block">Return the relationships that connect the assets together in the lineage graph.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -259,9 +263,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setLineageRelationships(java.util.Map)">
+<section class="detail" id="setLineageRelationships(java.util.List)">
 <h3>setLineageRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLineageRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;lineageRelationships)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLineageRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AssetLineageGraphRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphRelationship</a>&gt;&nbsp;lineageRelationships)</span></div>
 <div class="block">Set up the relationships that connect the assets together in the lineage graph.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -298,7 +302,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="AssetElement.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></code></dd>
+<dd><code><a href="AssetLineageGraphNode.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -311,7 +315,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="AssetElement.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></code></dd>
+<dd><code><a href="AssetLineageGraphNode.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -326,7 +330,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="AssetElement.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></code></dd>
+<dd><code><a href="AssetLineageGraphNode.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

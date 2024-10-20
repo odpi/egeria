@@ -117,29 +117,37 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Provide a comma-separated list of function names that should not be catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_MODEL_NAMES" class="member-name-link">EXCLUDE_MODEL_NAMES</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of model names that should not be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Provide a comma-separated list of schema names that should not be catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#EXCLUDE_TABLE_NAMES" class="member-name-link">EXCLUDE_TABLE_NAMES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_TABLE_NAMES" class="member-name-link">EXCLUDE_TABLE_NAMES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provide a comma-separated list of table names that should not be catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#EXCLUDE_VOLUME_NAMES" class="member-name-link">EXCLUDE_VOLUME_NAMES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#EXCLUDE_VOLUME_NAMES" class="member-name-link">EXCLUDE_VOLUME_NAMES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Provide a comma-separated list of volume names that should not be catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INCLUDE_CATALOG_NAMES" class="member-name-link">INCLUDE_CATALOG_NAMES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INCLUDE_CATALOG_NAMES" class="member-name-link">INCLUDE_CATALOG_NAMES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Provide a comma-separated list of catalog names that should be catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INCLUDE_FUNCTION_NAMES" class="member-name-link">INCLUDE_FUNCTION_NAMES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_FUNCTION_NAMES" class="member-name-link">INCLUDE_FUNCTION_NAMES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Provide a comma-separated list of function names that should be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INCLUDE_MODEL_NAMES" class="member-name-link">INCLUDE_MODEL_NAMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provide a comma-separated list of model names that should be catalogued.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
 <div class="col-last odd-row-color">
@@ -384,6 +392,20 @@ the order they are declared.</div>
 <h3>EXCLUDE_VOLUME_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_VOLUME_NAMES</span></div>
 <div class="block">Provide a comma-separated list of volume names that should not be catalogued.  Only volumes not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_MODEL_NAMES">
+<h3>INCLUDE_MODEL_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_MODEL_NAMES</span></div>
+<div class="block">Provide a comma-separated list of model names that should be catalogued.  Other models will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_MODEL_NAMES">
+<h3>EXCLUDE_MODEL_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_MODEL_NAMES</span></div>
+<div class="block">Provide a comma-separated list of model names that should not be catalogued.  Only models not in this list will be catalogued.</div>
 </section>
 </li>
 <li>

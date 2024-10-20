@@ -81,6 +81,10 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="AssetLineageGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraph</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetLineageGraphNode</span>
 <span class="extends-implements">extends <a href="AssetElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetElement</a></span></div>
@@ -129,10 +133,22 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships()" class="member-name-link">getRelationships</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDownstreamRelationships()" class="member-name-link">getDownstreamRelationships</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the relationships that connector the anchored elements to the asset, to each other,
- and to other open metadata elements.</div>
+<div class="block">Return the downstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInternalRelationships()" class="member-name-link">getInternalRelationships</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the internal relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUpstreamRelationships()" class="member-name-link">getUpstreamRelationships</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the upstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -140,10 +156,22 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationships(java.util.List)" class="member-name-link">setRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;relationships)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDownstreamRelationships(java.util.List)" class="member-name-link">setDownstreamRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;downstreamRelationships)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the relationships that connector the anchored elements to the asset, to each other,
- and to other open metadata elements.</div>
+<div class="block">Set up the downstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInternalRelationships(java.util.List)" class="member-name-link">setInternalRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;internalRelationships)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the internal relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpstreamRelationships(java.util.List)" class="member-name-link">setUpstreamRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;upstreamRelationships)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the upstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -208,11 +236,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getRelationships()">
-<h3>getRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getRelationships</span>()</div>
-<div class="block">Return the relationships that connector the anchored elements to the asset, to each other,
- and to other open metadata elements.</div>
+<section class="detail" id="getUpstreamRelationships()">
+<h3>getUpstreamRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getUpstreamRelationships</span>()</div>
+<div class="block">Return the upstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (An upstream relationship is one where an anchored element is at end 2 only.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>relationships</dd>
@@ -220,14 +248,62 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setRelationships(java.util.List)">
-<h3>setRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;relationships)</span></div>
-<div class="block">Set up the relationships that connector the anchored elements to the asset, to each other,
- and to other open metadata elements.</div>
+<section class="detail" id="setUpstreamRelationships(java.util.List)">
+<h3>setUpstreamRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpstreamRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;upstreamRelationships)</span></div>
+<div class="block">Set up the upstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (An upstream relationship is one where an anchored element is at end 2 only.)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>relationships</code> - relationships</dd>
+<dd><code>upstreamRelationships</code> - relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDownstreamRelationships()">
+<h3>getDownstreamRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getDownstreamRelationships</span>()</div>
+<div class="block">Return the downstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (A downstream relationship is one where an anchored element is at end 1 only.)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setDownstreamRelationships(java.util.List)">
+<h3>setDownstreamRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDownstreamRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;downstreamRelationships)</span></div>
+<div class="block">Set up the downstream relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (A downstream relationship is one where an anchored element is at end 1 only.)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>downstreamRelationships</code> - relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getInternalRelationships()">
+<h3>getInternalRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getInternalRelationships</span>()</div>
+<div class="block">Return the internal relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (An internal relationship is one where an anchored element is at both ends.)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>relationships</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setInternalRelationships(java.util.List)">
+<h3>setInternalRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInternalRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataRelationship</a>&gt;&nbsp;internalRelationships)</span></div>
+<div class="block">Set up the internal relationships that provide the evidence that this asset is part of the resulting
+ lineage graph.  (An internal relationship is one where an anchored element is at both ends.)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>internalRelationships</code> - relationships</dd>
 </dl>
 </section>
 </li>
