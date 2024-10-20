@@ -1877,7 +1877,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                String                       glossaryGUID,
                                                ExternalIdentifierProperties externalIdentifierProperties,
                                                GlossaryTermProperties       glossaryTermProperties,
-                                               GlossaryTermStatus initialStatus,
+                                               GlossaryTermStatus           initialStatus,
                                                Date                         effectiveTime,
                                                boolean                      forLineage,
                                                boolean                      forDuplicateProcessing) throws InvalidParameterException, 

@@ -107,9 +107,27 @@ public enum UnityCatalogConfigurationProperty
      * Provide a comma-separated list of volume names that should not be catalogued.  Only volumes not in this list will be catalogued.
      */
     EXCLUDE_VOLUME_NAMES ("excludeVolumeNames",
-                          "Provide a comma-separated list of volume names that should not be catalogued.  Only volume not in this list will be catalogued.",
+                          "Provide a comma-separated list of volume names that should not be catalogued.  Only volumes not in this list will be catalogued.",
                           "array<string>",
                           "volume1,volume2",
+                          false),
+
+    /**
+     * Provide a comma-separated list of model names that should be catalogued.  Other models will be ignored.
+     */
+    INCLUDE_MODEL_NAMES ("includeModelNames",
+                          "Provide a comma-separated list of model names that should be catalogued.  Other models will be ignored.",
+                          "array<string>",
+                          "model1,model2",
+                          false),
+
+    /**
+     * Provide a comma-separated list of model names that should not be catalogued.  Only models not in this list will be catalogued.
+     */
+    EXCLUDE_MODEL_NAMES ("excludeModelNames",
+                          "Provide a comma-separated list of model names that should not be catalogued.  Only models not in this list will be catalogued.",
+                          "array<string>",
+                          "model1,model2",
                           false),
 
     /**

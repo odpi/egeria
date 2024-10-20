@@ -405,7 +405,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         CatalogInfo catalogInfo = ucConnector.createCatalog(this.getUCNameFromMember(memberElement),
                                                             this.getUCCommentFomMember(memberElement),
-                                                            this.getUCPropertiesFomMember(memberElement));
+                                                            this.getUCPropertiesFromMember(memberElement));
 
         if (memberElement.getExternalIdentifier() == null)
         {

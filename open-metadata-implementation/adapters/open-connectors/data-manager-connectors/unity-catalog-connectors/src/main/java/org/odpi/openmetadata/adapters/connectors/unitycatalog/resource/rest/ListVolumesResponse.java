@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ListVolumesResponse
 {
-    private List<VolumeInfo> volumes = new ArrayList<>();
-    private String            nextPageToken = null;
+    private List<VolumeInfo> volumes         = new ArrayList<>();
+    private String           next_page_token = null;
 
 
     /**
@@ -62,20 +62,20 @@ public class ListVolumesResponse
      *
      * @return token
      */
-    public String getNextPageToken()
+    public String getNext_page_token()
     {
-        return nextPageToken;
+        return next_page_token;
     }
 
 
     /**
      * Set up the opaque token to retrieve the next page of results. Absent if there are no more pages. page_token should be set to this value for the next request (for the next page of results).
      *
-     * @param nextPageToken token
+     * @param next_page_token token
      */
-    public void setNextPageToken(String nextPageToken)
+    public void setNext_page_token(String next_page_token)
     {
-        this.nextPageToken = nextPageToken;
+        this.next_page_token = next_page_token;
     }
 
 
@@ -89,7 +89,7 @@ public class ListVolumesResponse
     {
         return "ListVolumesResponse{" +
                 "volumes=" + volumes +
-                ", nextPageToken='" + nextPageToken + '\'' +
+                ", nextPageToken='" + next_page_token + '\'' +
                 '}';
     }
 
@@ -106,7 +106,7 @@ public class ListVolumesResponse
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         ListVolumesResponse that = (ListVolumesResponse) objectToCompare;
-        return Objects.equals(volumes, that.volumes) && Objects.equals(nextPageToken, that.nextPageToken);
+        return Objects.equals(volumes, that.volumes) && Objects.equals(next_page_token, that.next_page_token);
     }
 
 
@@ -118,6 +118,6 @@ public class ListVolumesResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(volumes, nextPageToken);
+        return Objects.hash(volumes, next_page_token);
     }
 }

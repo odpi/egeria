@@ -13,7 +13,9 @@ import java.util.Objects;
  */
 public class AssetLineageGraphNode extends AssetElement
 {
-    private List<MetadataRelationship>   relationships    = null;
+    private List<MetadataRelationship> upstreamRelationships   = null;
+    private List<MetadataRelationship> downstreamRelationships = null;
+    private List<MetadataRelationship> internalRelationships   = null;
 
     /**
      * Default constructor
@@ -45,32 +47,82 @@ public class AssetLineageGraphNode extends AssetElement
 
         if (template != null)
         {
-            relationships = template.getRelationships();
+            upstreamRelationships = template.getUpstreamRelationships();
+            downstreamRelationships = template.getDownstreamRelationships();
+            internalRelationships = template.getInternalRelationships();
         }
     }
 
 
     /**
-     * Return the relationships that connector the anchored elements to the asset, to each other,
-     * and to other open metadata elements.
+     * Return the upstream relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (An upstream relationship is one where an anchored element is at end 2 only.)
      *
      * @return relationships
      */
-    public List<MetadataRelationship> getRelationships()
+    public List<MetadataRelationship> getUpstreamRelationships()
     {
-        return relationships;
+        return upstreamRelationships;
     }
 
 
     /**
-     * Set up the relationships that connector the anchored elements to the asset, to each other,
-     * and to other open metadata elements.
+     * Set up the upstream relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (An upstream relationship is one where an anchored element is at end 2 only.)
      *
-     * @param relationships relationships
+     * @param upstreamRelationships relationships
      */
-    public void setRelationships(List<MetadataRelationship> relationships)
+    public void setUpstreamRelationships(List<MetadataRelationship> upstreamRelationships)
     {
-        this.relationships = relationships;
+        this.upstreamRelationships = upstreamRelationships;
+    }
+
+
+    /**
+     * Return the downstream relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (A downstream relationship is one where an anchored element is at end 1 only.)
+     *
+     * @return relationships
+     */
+    public List<MetadataRelationship> getDownstreamRelationships()
+    {
+        return downstreamRelationships;
+    }
+
+
+    /**
+     * Set up the downstream relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (A downstream relationship is one where an anchored element is at end 1 only.)
+     *
+     * @param downstreamRelationships relationships
+     */
+    public void setDownstreamRelationships(List<MetadataRelationship> downstreamRelationships)
+    {
+        this.downstreamRelationships = downstreamRelationships;
+    }
+
+
+    /**
+     * Return the internal relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (An internal relationship is one where an anchored element is at both ends.)
+     *
+     * @return relationships
+     */
+    public List<MetadataRelationship> getInternalRelationships()
+    {
+        return internalRelationships;
+    }
+
+
+    /**
+     * Set up the internal relationships that provide the evidence that this asset is part of the resulting
+     * lineage graph.  (An internal relationship is one where an anchored element is at both ends.)
+     *
+     * @param internalRelationships relationships
+     */
+    public void setInternalRelationships(List<MetadataRelationship> internalRelationships)
+    {
+        this.internalRelationships = internalRelationships;
     }
 
 
@@ -82,8 +134,10 @@ public class AssetLineageGraphNode extends AssetElement
     @Override
     public String toString()
     {
-        return "AssetGraph{" +
-                "relationships=" + relationships +
+        return "AssetLineageGraphNode{" +
+                "upstreamRelationships=" + upstreamRelationships +
+                ", downstreamRelationships=" + downstreamRelationships +
+                ", internalRelationships=" + internalRelationships +
                 "} " + super.toString();
     }
 
@@ -101,7 +155,9 @@ public class AssetLineageGraphNode extends AssetElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AssetLineageGraphNode that = (AssetLineageGraphNode) objectToCompare;
-        return Objects.equals(relationships, that.relationships);
+        return Objects.equals(upstreamRelationships, that.upstreamRelationships) &&
+                Objects.equals(downstreamRelationships, that.downstreamRelationships) &&
+                Objects.equals(internalRelationships, that.internalRelationships);
     }
 
 
@@ -113,6 +169,6 @@ public class AssetLineageGraphNode extends AssetElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationships);
+        return Objects.hash(super.hashCode(), upstreamRelationships, downstreamRelationships, internalRelationships);
     }
 }

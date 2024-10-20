@@ -358,7 +358,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         SchemaInfo schemaInfo = ucConnector.createSchema(super.getUCNameFromMember(memberElement),
                                                          catalogName,
                                                          super.getUCCommentFomMember(memberElement),
-                                                         super.getUCPropertiesFomMember(memberElement));
+                                                         super.getUCPropertiesFromMember(memberElement));
 
         if (memberElement.getExternalIdentifier() == null)
         {

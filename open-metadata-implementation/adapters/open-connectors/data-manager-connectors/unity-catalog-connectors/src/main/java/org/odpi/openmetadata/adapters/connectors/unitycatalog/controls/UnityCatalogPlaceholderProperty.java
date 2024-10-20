@@ -102,6 +102,31 @@ public enum UnityCatalogPlaceholderProperty
      */
     FUNCTION_NAME ("ucFunctionName", "The name of a function within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_function"),
 
+    /**
+     * The name of a function within a schema and catalog in Unity Catalog (UC).
+     */
+    MODEL_NAME ("ucModelName", "The name of a deployed model within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", DataType.STRING.getName(), "my_model"),
+
+    /**
+     * The number of a version of a deployed model within a schema and catalog in Unity Catalog (UC).
+     */
+    MODEL_VERSION ("ucModelVersion", "The number of a version of a deployed model within a schema and catalog in Unity Catalog (UC).", DataType.LONG.getName(), "1"),
+
+    /**
+     * The status of a version of a deployed model within a schema and catalog in Unity Catalog (UC).
+     */
+    MODEL_VERSION_STATUS ("ucModelVersionStatus", "The status of a version of a deployed model within a schema and catalog in Unity Catalog (UC).", DataType.STRING.getName(), "READY"),
+
+    /**
+     * The source of a version of a deployed model within a schema and catalog in Unity Catalog (UC).
+     */
+    MODEL_VERSION_SOURCE ("ucModelVersionSource", "The source of a version of a deployed model within a schema and catalog in Unity Catalog (UC).", DataType.STRING.getName(), null),
+
+    /**
+     * The run identifier associated with a version of a deployed model within a schema and catalog in Unity Catalog (UC).
+     */
+    MODEL_VERSION_RUN_ID ("ucModelVersionRunId", "The run identifier associated with a version of a deployed model within a schema and catalog in Unity Catalog (UC).", DataType.STRING.getName(), null),
+
 
     ;
 
@@ -328,6 +353,55 @@ public enum UnityCatalogPlaceholderProperty
 
         return placeholderPropertyTypes;
     }
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getRegisteredModelPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getModelVersionPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholderType());
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_VERSION.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_VERSION_RUN_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_VERSION_SOURCE.getPlaceholderType());
+        placeholderPropertyTypes.add(MODEL_VERSION_STATUS.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.ROOT_SCHEMA_TYPE_QUALIFIED_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
 
 
     /**

@@ -4,18 +4,17 @@
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * AssetGraph is used to return an asset along with all of its anchored elements and the relationships
- * that they have between one another and to other elements.
+ * AssetLineageGraph is used to return an asset along with all of its lineage relationships.
  */
-public class AssetLineageGraph extends AssetElement
+public class AssetLineageGraph extends AssetLineageGraphNode
 {
-    private Map<String, AssetLineageGraphNode> linkedAssets         = null;
-    private Map<String, String>                lineageRelationships = null;
-    private String                             mermaidGraph         = null;
+    private List<AssetLineageGraphNode>         linkedAssets         = null;
+    private List<AssetLineageGraphRelationship> lineageRelationships = null;
+    private String                              mermaidGraph         = null;
 
 
     /**
@@ -31,7 +30,7 @@ public class AssetLineageGraph extends AssetElement
      *
      * @param template template values for asset
      */
-    public AssetLineageGraph(AssetElement template)
+    public AssetLineageGraph(AssetLineageGraphNode template)
     {
         super(template);
     }
@@ -60,7 +59,7 @@ public class AssetLineageGraph extends AssetElement
      *
      * @return linked elements
      */
-    public Map<String, AssetLineageGraphNode> getLinkedAssets()
+    public List<AssetLineageGraphNode> getLinkedAssets()
     {
         return linkedAssets;
     }
@@ -71,7 +70,7 @@ public class AssetLineageGraph extends AssetElement
      *
      * @param linkedAssets  linked elements
      */
-    public void setLinkedAssets(Map<String, AssetLineageGraphNode> linkedAssets)
+    public void setLinkedAssets(List<AssetLineageGraphNode> linkedAssets)
     {
         this.linkedAssets = linkedAssets;
     }
@@ -82,7 +81,7 @@ public class AssetLineageGraph extends AssetElement
      *
      * @return relationships
      */
-    public Map<String, String> getLineageRelationships()
+    public List<AssetLineageGraphRelationship> getLineageRelationships()
     {
         return lineageRelationships;
     }
@@ -93,7 +92,7 @@ public class AssetLineageGraph extends AssetElement
      *
      * @param lineageRelationships relationships
      */
-    public void setLineageRelationships(Map<String, String> lineageRelationships)
+    public void setLineageRelationships(List<AssetLineageGraphRelationship> lineageRelationships)
     {
         this.lineageRelationships = lineageRelationships;
     }
