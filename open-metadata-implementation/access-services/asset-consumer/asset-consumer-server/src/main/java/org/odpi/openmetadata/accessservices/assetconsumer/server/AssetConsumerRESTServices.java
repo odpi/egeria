@@ -409,16 +409,16 @@ public class AssetConsumerRESTServices
      * Create a node in the mermaid graph.
      *
      * @param mermaidGraph current state of the graph
-     * @param currentQualifiedName unique name
+     * @param currentNodeName unique name/identifier
      * @param currentDisplayName display name
      * @param currentType type of element
      */
     private void appendMermaidNode(StringBuilder mermaidGraph,
-                                   String        currentQualifiedName,
+                                   String        currentNodeName,
                                    String        currentDisplayName,
                                    String        currentType)
     {
-        mermaidGraph.append(this.removeSpaces(currentQualifiedName));
+        mermaidGraph.append(this.removeSpaces(currentNodeName));
         mermaidGraph.append("(\"`*");
         mermaidGraph.append(currentType);
         mermaidGraph.append("*\n**");
@@ -457,21 +457,17 @@ public class AssetConsumerRESTServices
         mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
         mermaidGraph.append("]\n---\nflowchart TB\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-        List<String> usedQualifiedNames = new ArrayList<>();
+        List<String> usedNodeNames = new ArrayList<>();
 
-        String       currentQualifiedName = assetLineageGraph.getProperties().getQualifiedName();
-        String       currentDisplayName   = assetLineageGraph.getProperties().getDisplayName();
+        String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
+        String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
 
         appendMermaidNode(mermaidGraph,
-                          currentQualifiedName,
+                          currentNodeName,
                           currentDisplayName,
                           assetLineageGraph.getElementHeader().getType().getTypeName());
 
-        usedQualifiedNames.add(currentQualifiedName);
-
-        Map<String, String> guidMap = new HashMap<>();
-
-        guidMap.put(assetLineageGraph.getElementHeader().getGUID(), this.removeSpaces(currentQualifiedName));
+        usedNodeNames.add(currentNodeName);
 
         if (assetLineageGraph.getLinkedAssets() != null)
         {
@@ -479,9 +475,7 @@ public class AssetConsumerRESTServices
             {
                 if (node != null)
                 {
-                    guidMap.put(node.getElementHeader().getGUID(), this.removeSpaces(node.getProperties().getQualifiedName()));
-
-                    currentQualifiedName = node.getProperties().getQualifiedName();
+                    currentNodeName = node.getElementHeader().getGUID();
                     currentDisplayName   = node.getProperties().getDisplayName();
                     if (currentDisplayName == null)
                     {
@@ -496,14 +490,14 @@ public class AssetConsumerRESTServices
                         currentDisplayName = node.getProperties().getQualifiedName();
                     }
 
-                    if (!usedQualifiedNames.contains(currentQualifiedName))
+                    if (!usedNodeNames.contains(currentNodeName))
                     {
                         appendMermaidNode(mermaidGraph,
-                                          currentQualifiedName,
+                                          currentNodeName,
                                           currentDisplayName,
                                           node.getElementHeader().getType().getTypeName());
 
-                        usedQualifiedNames.add(currentQualifiedName);
+                        usedNodeNames.add(currentNodeName);
                     }
                 }
             }
@@ -512,28 +506,11 @@ public class AssetConsumerRESTServices
             {
                 if (line != null)
                 {
-                    String endQualifiedName = guidMap.get(line.getEnd1AssetGUID());
-
-                    if (endQualifiedName == null)
-                    {
-                        mermaidGraph.append(line.getEnd1AssetGUID());
-                    }
-                    else
-                    {
-                        mermaidGraph.append(endQualifiedName);
-                    }
+                    mermaidGraph.append(line.getEnd1AssetGUID());
                     mermaidGraph.append("-->|");
                     mermaidGraph.append(this.getListLabel(line.getRelationshipTypes()));
                     mermaidGraph.append("|");
-                    endQualifiedName = guidMap.get(line.getEnd2AssetGUID());
-                    if (endQualifiedName == null)
-                    {
-                        mermaidGraph.append(line.getEnd2AssetGUID());
-                    }
-                    else
-                    {
-                        mermaidGraph.append(endQualifiedName);
-                    }
+                    mermaidGraph.append(line.getEnd2AssetGUID());
                     mermaidGraph.append("\n");
                 }
             }
@@ -633,7 +610,7 @@ public class AssetConsumerRESTServices
 
                 if (linkedAssets.size() > 1)
                 {
-                    assetLineageGraph.setLinkedAssets(new ArrayList<>(linkedAssets.subList(1, linkedAssets.size()-1)));
+                    assetLineageGraph.setLinkedAssets(new ArrayList<>(linkedAssets.subList(1, linkedAssets.size())));
                 }
 
                 assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
