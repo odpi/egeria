@@ -3652,6 +3652,41 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+
+    /**
+     * Create a lineage relationship between the two elements
+     *
+     * @param sourceGUID unique identifier of the element at end 1
+     * @param destinationGUID unique identifier of the element at end 2
+     * @param relationshipType type name of lineage relationship
+     * @param description description of the relationship
+     */
+    public void addLineageRelationship(String sourceGUID,
+                                       String destinationGUID,
+                                       String relationshipType,
+                                       String description)
+    {
+        final String methodName = "addLineageRelationship";
+
+        EntityDetail end1Entity = archiveBuilder.getEntity(sourceGUID);
+        EntityDetail end2Entity = archiveBuilder.getEntity(destinationGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(relationshipType,
+                                                                     idToGUIDMap.getGUID(sourceGUID + "_to_" + destinationGUID + "_" + relationshipType + "_" + description + "_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
     /**
      * Create a DataStoreEncoding classification containing the supplied properties.
      *
