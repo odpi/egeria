@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -57,6 +58,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         addHosts();
         addSystems();
+        addSystemLineage();
     }
 
 
@@ -100,7 +102,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
             extendedProperties.put(OpenMetadataProperty.USER_ID.name, systemDefinition.getUserId());
 
-
+            archiveHelper.setGUID(systemDefinition.getQualifiedName(), systemDefinition.getSystemGUID());
             String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                        systemDefinition.getQualifiedName(),
                                                        systemDefinition.getSystemId(),
@@ -109,7 +111,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                        systemDefinition.getZones(),
                                                        null,
                                                        extendedProperties);
-
+            assert(serverGUID.equals(systemDefinition.getSystemGUID()));
 
 
             if (systemDefinition.getSystemType().getServerPurpose() != null)
@@ -170,5 +172,24 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             }
         }
     }
+
+
+
+    /**
+     * The systems define the hosts.
+     */
+    private void addSystemLineage()
+    {
+        for (SystemLevelLineage systemLevelLineage : SystemLevelLineage.values())
+        {
+            archiveHelper.addLineageRelationship(systemLevelLineage.getSourceSystem().getSystemGUID(),
+                                                 systemLevelLineage.getDestinationSystem().getSystemGUID(),
+                                                 systemLevelLineage.getRelationshipName(),
+                                                 systemLevelLineage.getRelationshipDescription());
+
+
+        }
+    }
+
 }
 
