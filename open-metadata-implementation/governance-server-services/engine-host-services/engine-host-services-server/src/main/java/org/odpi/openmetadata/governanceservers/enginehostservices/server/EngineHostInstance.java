@@ -83,15 +83,21 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         if (governanceEngineName == null)
         {
-            for (GovernanceEngineHandler governanceEngineHandler : governanceEngineHandlers.getGovernanceEngineHandlers())
+            List<String> governanceEngineNames = new ArrayList<>(governanceEngineHandlers.getGovernanceEngineNames());
+            for (String engineName : governanceEngineNames)
             {
                 auditLog.logMessage(serviceOperationName,
-                                    EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineHandler.getGovernanceEngineName()));
+                                    EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(engineName));
 
-                governanceEngineHandler.refreshConfig();
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineName);
+
+                if (governanceEngineHandler != null)
+                {
+                    governanceEngineHandler.refreshConfig();
+                }
 
                 auditLog.logMessage(serviceOperationName,
-                                    EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineHandler.getGovernanceEngineName()));
+                                    EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(engineName));
             }
         }
         else
@@ -107,12 +113,12 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
             }
 
             auditLog.logMessage(serviceOperationName,
-                                EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineHandler.getGovernanceEngineName()));
+                                EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
 
             governanceEngineHandler.refreshConfig();
 
             auditLog.logMessage(serviceOperationName,
-                                EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineHandler.getGovernanceEngineName()));
+                                EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
 
         }
     }

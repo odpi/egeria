@@ -298,6 +298,16 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/engine-hosts/{{serverGUID}}/governance-engines/{{governanceEngineName}}/refresh-config
 Authorization: Bearer {{token}}
 
+
+###
+# @name refreshConfig
+# Request that all governance engines refresh their configuration by calling the metadata server.
+# This request is useful if the metadata server has an outage, particularly while the
+# governance server is initializing.  This request just ensures that the latest configuration
+# is in use. See https://egeria-project.org/concepts/governance-engine-definition/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/engine-hosts/{{serverGUID}}/governance-engines/refresh-config
+Authorization: Bearer {{token}}
+
 ###
 # ========================================================================================
 # Metadata Access Servers
