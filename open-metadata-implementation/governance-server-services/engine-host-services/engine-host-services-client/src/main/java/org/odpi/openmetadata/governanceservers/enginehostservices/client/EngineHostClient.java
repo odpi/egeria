@@ -198,4 +198,32 @@ public class EngineHostClient
                                        userId,
                                        governanceEngineName);
     }
+
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param userId identifier of calling user
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance engine.
+     */
+    public  void refreshConfig(String userId) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        final String   methodName = "refreshConfig";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/refresh-config";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidGetRESTCall(methodName,
+                                       serverPlatformRootURL + urlTemplate,
+                                       serverName,
+                                       userId);
+    }
 }
