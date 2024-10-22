@@ -473,6 +473,26 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                "Add the qualified name for at least one engine to the engine service in this server's configuration document."),
 
     /**
+     * ENGINE-HOST-SERVICES-0153 - Refreshing governance engine {0}
+     */
+    CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG("ENGINE-HOST-SERVICES-0153",
+                                           AuditLogRecordSeverityLevel.INFO,
+                                           "Refreshing governance engine {0}",
+                                           "The engine host services will call the Governance Engine OMAS in the metadata server to " +
+                                                   "retrieve details of this governance engine.",
+                                           "Monitor the engine host services for errors."),
+
+    /**
+     * ENGINE-HOST-SERVICES-0154 - Refreshing of governance engine {0} is complete
+     */
+    FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG("ENGINE-HOST-SERVICES-0154",
+                                           AuditLogRecordSeverityLevel.INFO,
+                                           "Refreshing of governance engine {0} is complete",
+                                           "This governance engine is ready to receive governance requests for all successfully loaded " +
+                                                   "governance services.",
+                                           "No action is required as long as there are no errors reported."),
+
+    /**
      * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
      */
     ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
@@ -500,6 +520,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                              "{0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}",
                              "The server is not able to complete the restart processing.",
                              "Follow the instructions for the message associated with the exception to resolve the error.  You may need to restart the engine host."),
+
 
     ;
 

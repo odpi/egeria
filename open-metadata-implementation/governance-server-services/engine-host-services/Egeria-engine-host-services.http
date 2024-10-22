@@ -34,4 +34,13 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/engine-host/users/{{user}}/engi
 # Further Information: https://egeria-project.org/concepts/governance-engine-definition/
 GET {{baseURL}}/servers/{{server}}/open-metadata/engine-host/users/{{user}}/governance-engines/{{governanceEngineName}}/refresh-config
 
+
+###
+# @name refreshConfig (ALL)
+# Request that all governance engines refresh their configuration by calling the metadata server.
+# This request is useful if the metadata server has an outage, particularly while the
+# governance server is initializing.  This request just ensures that the latest configuration is in use.
+# Further Information: https://egeria-project.org/concepts/governance-engine-definition/
+GET {{baseURL}}/servers/{{server}}/open-metadata/engine-host/users/{{user}}/governance-engines/refresh-config
+
 ###

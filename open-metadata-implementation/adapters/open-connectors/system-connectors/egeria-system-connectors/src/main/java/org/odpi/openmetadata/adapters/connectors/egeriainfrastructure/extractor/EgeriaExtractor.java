@@ -1296,6 +1296,28 @@ public class EgeriaExtractor
         engineHostClient.refreshConfig(clientUserId, governanceEngineName);
     }
 
+
+
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance engine.
+     */
+    public  void refreshEngineConfig() throws InvalidParameterException,
+                                              UserNotAuthorizedException,
+                                              PropertyServerException
+    {
+        assert engineHostClient != null;
+        engineHostClient.refreshConfig(clientUserId);
+    }
+
+
     /*
      * ========================================================================================
      * Metadata Access Server specific services
