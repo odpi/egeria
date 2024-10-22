@@ -127,20 +127,43 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     String softwareCapabilityQName = softwareCapabilityTypeName + " for " + systemDefinition.getQualifiedName();
 
-                    archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
-                                                        softwareCapabilityQName,
-                                                        softwareCapabilityQName,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        (Classification)null,
-                                                        serverGUID,
-                                                        OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                        OpenMetadataType.ASSET.typeName);
+                    if (softwareCapabilityTypeName.endsWith(OpenMetadataType.ENGINE.typeName))
+                    {
+                        Classification engineClassification = archiveHelper.getEngineClassification(softwareCapabilityTypeName);
+
+                        archiveHelper.addSoftwareCapability(OpenMetadataType.ENGINE.typeName,
+                                                            softwareCapabilityQName,
+                                                            softwareCapabilityQName,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            engineClassification,
+                                                            serverGUID,
+                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                            OpenMetadataType.ASSET.typeName);
+                    }
+                    else
+                    {
+                        archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
+                                                            softwareCapabilityQName,
+                                                            softwareCapabilityQName,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            (Classification)null,
+                                                            serverGUID,
+                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                            OpenMetadataType.ASSET.typeName);
+                    }
+
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),
                                                                              null,

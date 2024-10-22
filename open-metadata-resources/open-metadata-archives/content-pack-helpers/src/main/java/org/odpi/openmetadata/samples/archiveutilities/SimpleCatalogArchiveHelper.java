@@ -6724,6 +6724,19 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+    /**
+     * Create a classification for an Engine software server capability.
+     *
+     * @param classificationName name of the classification
+     * @return classification
+     */
+    public Classification getEngineClassification(String classificationName)
+    {
+        return this.archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
+    }
+
+
     /**
      * Add a ServerPurpose classification to an IT Infrastructure element.
      *
