@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../../../../script-dir/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="../../../../../../../../script-dir/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="../../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -216,9 +216,11 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 <div class="block">Add the supplied property to an instance properties object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addEnumPropertyToInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addEnumPropertyToInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeTypeName,
  int&nbsp;ordinal,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;symbolicName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
@@ -1619,11 +1621,13 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
 </section>
 </li>
 <li>
-<section class="detail" id="addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)">
 <h3>addEnumPropertyToInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">addEnumPropertyToInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
  <a href="../properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeTypeGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeTypeName,
  int&nbsp;ordinal,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;symbolicName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
@@ -1632,15 +1636,17 @@ implements <a href="OMRSRepositoryPropertiesHelper.html" title="interface in org
  supplied is null, a new instance properties object is created.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="OMRSRepositoryPropertiesHelper.html#addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)">addEnumPropertyToInstance</a></code>&nbsp;in interface&nbsp;<code><a href="OMRSRepositoryPropertiesHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities">OMRSRepositoryPropertiesHelper</a></code></dd>
+<dd><code><a href="OMRSRepositoryPropertiesHelper.html#addEnumPropertyToInstance(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String)">addEnumPropertyToInstance</a></code>&nbsp;in interface&nbsp;<code><a href="OMRSRepositoryPropertiesHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities">OMRSRepositoryPropertiesHelper</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>sourceName</code> - name of caller</dd>
 <dd><code>properties</code> - properties object to add property to, may be null.</dd>
 <dd><code>propertyName</code> - name of property</dd>
-<dd><code>ordinal</code> - numeric value of property</dd>
+<dd><code>attributeTypeGUID</code> - unique identifier of the enum type</dd>
+<dd><code>attributeTypeName</code> - unique name of the enum type  * @param ordinal numeric value of property</dd>
 <dd><code>symbolicName</code> - String value of property</dd>
 <dd><code>description</code> - String description of property value</dd>
 <dd><code>methodName</code> - calling method name</dd>
+<dd><code>ordinal</code> - numeric value of property</dd>
 <dt>Returns:</dt>
 <dd>instance properties object.</dd>
 </dl>

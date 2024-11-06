@@ -337,7 +337,9 @@ org.odpi.openmetadata.adapters.connectors.reports
 org.odpi.openmetadata.adapters.connectors.reports.ffdc
 org.odpi.openmetadata.adapters.connectors.reports.surveyreport
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties
 org.odpi.openmetadata.adapters.connectors.restclients
 org.odpi.openmetadata.adapters.connectors.restclients.factory
@@ -380,6 +382,12 @@ org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc
 org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector
 org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers
+org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema
 org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector
 org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector
 org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector
