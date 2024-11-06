@@ -455,7 +455,7 @@ public class AssetConsumerRESTServices
         mermaidGraph.append(assetLineageGraph.getProperties().getDisplayName());
         mermaidGraph.append(" [");
         mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart TB\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
         List<String> usedNodeNames = new ArrayList<>();
 

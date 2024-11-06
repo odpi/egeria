@@ -5,22 +5,21 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -474,6 +473,45 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             if (configurationProperties.get(propertyName) != null)
             {
                 return configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is a string formatted date or null if not set.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return string value of property or null if not supplied
+     */
+    protected Date getDateConfigurationProperty(String              propertyName,
+                                                Map<String, Object> configurationProperties) throws InvalidParameterException
+    {
+        final String methodName = "getDateConfigurationProperty";
+
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(propertyName) != null)
+            {
+                String dateInString = configurationProperties.get(propertyName).toString();
+
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+                try
+                {
+                    return formatter.parse(dateInString);
+                }
+                catch (ParseException error)
+                {
+                    throw new InvalidParameterException(OCFErrorCode.MALFORMED_DATE_CONFIGURATION_PROPERTY.getMessageDefinition(propertyName, dateInString),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        error,
+                                                        propertyName);
+                }
             }
         }
 

@@ -4396,6 +4396,29 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                                                                             localMetadataCollectionId));
             }
         }
+
+        if (instance instanceof EntitySummary)
+        {
+            if (instance.getType().getTypeDefCategory() != TypeDefCategory.ENTITY_DEF)
+            {
+                throw new InvalidParameterException(OMRSErrorCode.WRONG_TYPEDEF_CATEGORY.getMessageDefinition(instance.getGUID(),
+                        "entity", instance.getType().getTypeDefName(), instance.getType().getTypeDefCategory().getName()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    instanceParameterName);
+            }
+        }
+        else if (instance instanceof Relationship)
+        {
+            if (instance.getType().getTypeDefCategory() != TypeDefCategory.RELATIONSHIP_DEF)
+            {
+                throw new InvalidParameterException(OMRSErrorCode.WRONG_TYPEDEF_CATEGORY.getMessageDefinition(instance.getGUID(),
+                                                                                                              "relationship", instance.getType().getTypeDefName(), instance.getType().getTypeDefCategory().getName()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    instanceParameterName);
+            }
+        }
     }
 
 

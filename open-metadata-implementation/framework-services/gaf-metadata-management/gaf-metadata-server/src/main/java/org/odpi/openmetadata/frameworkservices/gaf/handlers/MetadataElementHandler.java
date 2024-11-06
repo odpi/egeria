@@ -939,10 +939,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private ArrayPropertyValue
-    getArrayPropertyValue(AttributeTypeDef     typeDef,
-                          int                  arrayCount,
-                          Map<String, Object>  arrayValues) throws InvalidParameterException
+    private ArrayPropertyValue getArrayPropertyValue(AttributeTypeDef     typeDef,
+                                                     int                  arrayCount,
+                                                     Map<String, Object>  arrayValues) throws InvalidParameterException
     {
         final String methodName = "getArrayPropertyValue";
 
@@ -978,9 +977,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private EnumPropertyValue
-    getEnumPropertyValue(AttributeTypeDef typeDef,
-                         String           symbolicName) throws InvalidParameterException
+    private EnumPropertyValue getEnumPropertyValue(AttributeTypeDef typeDef,
+                                                   String           symbolicName) throws InvalidParameterException
     {
         final String methodName                = "getEnumPropertyValue";
         final String symbolicNameParameterName = "symbolicName";
@@ -1028,14 +1026,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private MapPropertyValue
-    getMapPropertyValue(AttributeTypeDef    typeDef,
-                        Map<String, Object> mapValues) throws InvalidParameterException
+    private MapPropertyValue getMapPropertyValue(AttributeTypeDef    typeDef,
+                                                 Map<String, Object> mapValues) throws InvalidParameterException
     {
         final String methodName = "getMapPropertyValue";
 
-        MapPropertyValue
-                omrsPropertyValue = new MapPropertyValue();
+        MapPropertyValue omrsPropertyValue = new MapPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.MAP);
@@ -1066,10 +1062,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private PrimitivePropertyValue
-    getPrimitivePropertyValue(AttributeTypeDef     typeDef,
-                              PrimitiveTypeCategory primitiveTypeCategory,
-                              Object               primitiveValue) throws InvalidParameterException
+    private PrimitivePropertyValue getPrimitivePropertyValue(AttributeTypeDef      typeDef,
+                                                             PrimitiveTypeCategory primitiveTypeCategory,
+                                                             Object                primitiveValue) throws InvalidParameterException
     {
         final String methodName = "getPrimitivePropertyValue";
         final String valueParameterName = "primitiveValue";
@@ -1146,9 +1141,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private StructPropertyValue
-    getStructPropertyValue(AttributeTypeDef    typeDef,
-                           Map<String, Object> attributes) throws InvalidParameterException
+    private StructPropertyValue getStructPropertyValue(AttributeTypeDef    typeDef,
+                                                       Map<String, Object> attributes) throws InvalidParameterException
     {
         final String methodName = "getStructPropertyValue";
 

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.frameworkservices.gaf.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -101,12 +101,9 @@ public class HistoryRequestBody extends EffectiveTimeQueryRequestBody
     public String toString()
     {
         return "HistoryRequestBody{" +
-                       "fromTime=" + fromTime +
-                       ", toTime=" + toTime +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerName() + '\'' +
-                       '}';
+                "fromTime=" + fromTime +
+                ", toTime=" + toTime +
+                "} " + super.toString();
     }
 
 

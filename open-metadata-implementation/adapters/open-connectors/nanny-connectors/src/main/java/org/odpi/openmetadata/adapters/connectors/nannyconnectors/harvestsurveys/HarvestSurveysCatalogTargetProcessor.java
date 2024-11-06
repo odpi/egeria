@@ -723,7 +723,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                            relatedAsset,
                                                                                            relatedEngineAction);
 
-            databaseClient.insertRowIntoTable(databaseConnection, surveyReportDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(surveyReportDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -845,7 +845,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                relatedActionTarget,
                                                                                                relatedAnnotationSubject);
 
-            databaseClient.insertRowIntoTable(databaseConnection, requestForActionDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(requestForActionDatabaseTable, openMetadataRecord);
 
             if (relatedActionTarget != null)
             {
@@ -993,8 +993,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         try
         {
-            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                        missingFileClassifiersDatabaseTable,
+            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(missingFileClassifiersDatabaseTable,
                                                                                         columnNamePathname,
                                                                                         null,
                                                                                         columnNameSyncTime,
@@ -1011,7 +1010,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
             if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
             {
-                databaseClient.insertRowIntoTable(databaseConnection, missingFileClassifiersDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(missingFileClassifiersDatabaseTable, openMetadataRecord);
             }
         }
         catch (Exception error)
@@ -1186,7 +1185,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                    valueCountName,
                                                                                                    measurementValue);
 
-                    databaseClient.insertRowIntoTable(databaseConnection, profileMeasuresDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(profileMeasuresDatabaseTable, openMetadataRecord);
                 }
             }
         }
@@ -1263,7 +1262,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                       valueCountName,
                                                                                                       measurementValue);
 
-                    databaseClient.insertRowIntoTable(databaseConnection, profileMeasuresDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(profileMeasuresDatabaseTable, openMetadataRecord);
                 }
             }
         }
@@ -1418,7 +1417,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                            dataSourceMeasurementsAnnotation.getOrigin().getHomeMetadataCollectionId(),
                                                                                                            fileMeasurement);
 
-                        databaseClient.insertRowIntoTable(databaseConnection, fileMeasurementsDatabaseTable, openMetadataRecord);
+                        databaseClient.insertRowIntoTable(fileMeasurementsDatabaseTable, openMetadataRecord);
                     }
                     catch (Exception error)
                     {
@@ -1452,7 +1451,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                     dataSourceMeasurementsAnnotation.getOrigin().getHomeMetadataCollectionId(),
                                                                                                                     fileDirectoryMeasurement);
 
-                        databaseClient.insertRowIntoTable(databaseConnection, folderMeasurementsDatabaseTable, openMetadataRecord);
+                        databaseClient.insertRowIntoTable(folderMeasurementsDatabaseTable, openMetadataRecord);
                     }
                     catch (Exception error)
                     {
@@ -1526,7 +1525,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                              resourceUpdateTime,
                                                                                                              resourceSize);
 
-                    databaseClient.insertRowIntoTable(databaseConnection, resourceMeasurementDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(resourceMeasurementDatabaseTable, openMetadataRecord);
                 }
             }
         }

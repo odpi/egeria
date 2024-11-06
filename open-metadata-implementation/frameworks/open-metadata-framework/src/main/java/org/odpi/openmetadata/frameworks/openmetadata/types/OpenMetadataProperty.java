@@ -10,7 +10,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 public enum OpenMetadataProperty
 {
     /* ======================================================
-     * These values are from the repository element header
+     * These values are from the repository element header.
+     * They are used for searching properties and ordering results.
+     * Using them when adding attributes to elements will result in an error.
      */
 
     /**
@@ -27,6 +29,47 @@ public enum OpenMetadataProperty
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
     METADATA_COLLECTION_NAME("metadataCollectionName", DataType.STRING.getName(), "The unique name for the metadata collection that is the home for a metadata element.", "MyDataManagerForDatabase1", "25b43665-87e9-4637-9e6d-d0658ba26261"),
+
+    /**
+     * Category of metadata collection.
+     */
+    INSTANCE_PROVENANCE_TYPE("instanceProvenanceType", DataType.STRING.getName(), "Category of metadata collection.", "Local Cohort", "f12562a3-52b2-42d2-9126-011207d4af55"),
+
+    /**
+     * UserId that created this instance.
+     */
+    CREATED_BY("createdBy", DataType.STRING.getName(), "UserId that created this instance.", "peterprofile", "5c9c9c94-b738-4203-b592-527801877f07"),
+
+    /**
+     * UserId that updated this instance.
+     */
+    UPDATED_BY("updatedBy", DataType.STRING.getName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b"),
+
+    /**
+     * The date/time that this instance should start to be used (null means it can be used from creationTime).
+     */
+    EFFECTIVE_FROM_TIME("effectiveFromTime", DataType.DATE.getName(), "The date/time that this instance should start to be used (null means it can be used from creationTime).", null, "dfffede5-d593-4f53-a7a1-bf7ddf095ee3"),
+
+    /**
+     * The date/time that this instance should no longer be used.
+     */
+    EFFECTIVE_TO_TIME("effectiveToTime", DataType.DATE.getName(), "The date/time that this instance should no longer be used.", null, "c1de164e-b9bf-4d13-bac5-573a5078ef10"),
+
+    /**
+     * Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.
+     */
+    VERSION("version", DataType.LONG.getName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414"),
+
+    /**
+     * Status of this instance. Values from the Instance Status enum. (use only for ordering results),
+     */
+    CURRENT_STATUS("currentStatus", DataType.STRING.getName(), "Status of this instance. Values from the Instance Status enum.", "Active", "de25c3fb-5061-4f3e-bd7d-29c1cd2c112f"),
+
+    /**
+     * Name of an open metadata type. (Use only for ordering results).
+     */
+    OPEN_METADATA_TYPE_NAME("openMetadataTypeName", DataType.STRING.getName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712"),
+
 
     /* ======================================================
      * These values are attributes defined in the type system.
@@ -297,6 +340,17 @@ public enum OpenMetadataProperty
      * The fully qualified physical location of the data store.
      */
     PATH_NAME("pathName", DataType.STRING.getName(), "The fully qualified physical location of the data store.", null, "34d24b66-12f1-437c-afd3-1f1ab3377472"),
+
+
+    /**
+     * The url path segments that identify this API operation.
+     */
+    PATH("path", DataType.STRING.getName(), "The url path segments that identify this API operation.", "/assets", "7f8c1ed7-90ac-404d-a1ab-08934e423ac5"),
+
+    /**
+     * The url path segments that identify this API operation.
+     */
+    COMMAND("command", DataType.STRING.getName(), "The REST command for this API operation.", "POST", "cc4a83dd-4a11-4873-8a16-e7c9232ad4cf"),
 
     /**
      * File type descriptor (or logical file type) typically extracted from the file name.
@@ -1325,7 +1379,7 @@ public enum OpenMetadataProperty
     /**
      * Name of the organization that this external source is from.
      */
-    SOURCE_ORGANIZATION("sourceOrganization", DataType.STRING.getName(), "Name of the organization that this external source is from.", null, ""),
+    ORGANIZATION("organization", DataType.STRING.getName(), "Name of the organization that this external source is from.", null, "a837b6b5-ca30-4662-a643-5477d793bd29"),
 
     /**
      * Network address used to connect to the endpoint.

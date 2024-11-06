@@ -14,7 +14,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * ApacheKafkaPackArchiveWriter creates an open metadata archive that includes the connector type
@@ -30,7 +29,6 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }

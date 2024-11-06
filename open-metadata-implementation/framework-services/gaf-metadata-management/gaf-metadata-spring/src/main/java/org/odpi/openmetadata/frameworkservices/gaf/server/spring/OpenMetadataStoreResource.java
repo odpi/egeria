@@ -447,6 +447,47 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve all the versions of an element.
+     *
+     * @param serverName name of the server to route the request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param elementGUID unique identifier of object to retrieve
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param requestBody the time window required
+     * @return list of beans or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/history")
+
+    public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
+                                                                  @PathVariable String                 serviceURLMarker,
+                                                                  @PathVariable String                 userId,
+                                                                  @PathVariable String                 elementGUID,
+                                                                  @RequestParam int                    startFrom,
+                                                                  @RequestParam int                    pageSize,
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                oldestFirst,
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                forLineage,
+                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                  boolean                forDuplicateProcessing,
+                                                                  @RequestBody(required = false)
+                                                                  HistoryRequestBody     requestBody)
+    {
+        return restAPI.getMetadataElementHistory(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, oldestFirst, requestBody);
+    }
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to

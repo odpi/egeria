@@ -157,6 +157,17 @@ Content-Type: application/json
 
 []
 
+
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add JDBC audit log destination
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_"{{server}}
+Content-Type: application/json
+
+["Error", "Exception", "Activity", "Action"]
+
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
 # @name Add SLF4J audit log destination
@@ -282,6 +293,20 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{se
 # @name Enable the read-only repository
 # Set up the local repository to use the in-memory implementation.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/read-only-repository
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Enable the PostgreSQL Repository
+# Set up the local repository to use the PostgreSQL Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/postgres-repository
+Content-Type: application/json
+
+{
+    "databaseURL": "{{postgreSQLDatabaseURL}}",
+    "databaseSchema": "repository_{{server}}",
+    "secretsStore": "{{secretsStore}}",
+    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers

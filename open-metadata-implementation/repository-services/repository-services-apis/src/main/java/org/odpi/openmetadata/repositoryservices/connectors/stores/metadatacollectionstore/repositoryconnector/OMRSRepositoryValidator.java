@@ -1458,13 +1458,13 @@ public interface OMRSRepositoryValidator
      * @throws RepositoryErrorException  problem with repository
      * @throws InvalidParameterException  the instance is null or linked to local metadata repository
      */
-    void validateReferenceInstanceHeader(String         sourceName,
-                                         String         localMetadataCollectionId,
-                                         String         instanceParameterName,
-                                         InstanceHeader instance,
-                                         AuditLog       auditLog,
-                                         String         methodName) throws InvalidParameterException,
-                                                                           RepositoryErrorException;
+    void validateReferenceInstanceHeader(String          sourceName,
+                                         String          localMetadataCollectionId,
+                                         String          instanceParameterName,
+                                         InstanceHeader  instance,
+                                         AuditLog        auditLog,
+                                         String          methodName) throws InvalidParameterException,
+                                                                            RepositoryErrorException;
 
 
     /**

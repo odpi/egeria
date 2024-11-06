@@ -35,6 +35,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveGUID        = "74a786b2-d6d7-401d-b8c1-7d798f752c55";
     private static final String                  archiveName        = "Coco Pharmaceuticals Clinical Trials Templates";
     private static final String                  archiveDescription = "Templates for new assets relating to a clinical trial.";
+    private static final Date                    creationDate       = new Date(1639984840038L);
 
     private static final String clinicalTrialsSubjectArea = "SubjectArea:ClinicalTrial:TeddyBearDropFoot";
 
@@ -46,7 +47,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         super(archiveGUID,
               archiveName,
               archiveDescription,
-              new Date(),
+              creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive()});

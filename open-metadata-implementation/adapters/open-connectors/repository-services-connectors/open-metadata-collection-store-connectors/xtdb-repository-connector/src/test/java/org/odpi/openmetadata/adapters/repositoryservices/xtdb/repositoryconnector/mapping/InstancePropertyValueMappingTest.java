@@ -78,6 +78,8 @@ public class InstancePropertyValueMappingTest {
             InstanceProperties properties = helper.addEnumPropertyToInstance(MockConnection.SOURCE_NAME,
                     null,
                     propertyName,
+                    null,
+                    null,
                     value,
                     "Video",
                     "The media is a video recording.",

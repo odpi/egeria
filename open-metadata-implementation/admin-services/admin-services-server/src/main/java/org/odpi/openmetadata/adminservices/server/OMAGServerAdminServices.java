@@ -1714,6 +1714,63 @@ public class OMAGServerAdminServices
     }
 
 
+
+    /**
+     * Set up a PostgreSQL Database Schema as the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse setPostgresLocalRepository(String              userId,
+                                                   String              serverName,
+                                                   Map<String, Object> storageProperties)
+    {
+        final String methodName = "setPostgresLocalRepository";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+
+            this.setLocalRepositoryConfig(userId,
+                                          serverName,
+                                          configurationFactory.getPostgresLocalRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                                serverConfig.getLocalServerURL(),
+                                                                                                storageProperties));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
     /**
      * Set up an XTDB store as the local repository.  This store uses XTDB to provide a historical metadata repository that operates in memory.
      * This version of the XTDB repository is designed for testing.

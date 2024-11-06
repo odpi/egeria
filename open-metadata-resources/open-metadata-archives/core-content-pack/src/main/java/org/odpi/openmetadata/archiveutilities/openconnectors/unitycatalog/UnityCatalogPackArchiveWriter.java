@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
@@ -41,7 +40,6 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }

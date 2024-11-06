@@ -141,7 +141,9 @@ public class TypesAccumulator extends QueryAccumulatorBase
      */
     public synchronized TypeDefGallery  getResults()
     {
-        if (accumulatedAttributeTypeDefs.isEmpty() && (accumulatedTypeDefs.isEmpty()))
+
+        if (((accumulatedAttributeTypeDefs == null) || (accumulatedAttributeTypeDefs.isEmpty())) &&
+            ((accumulatedTypeDefs == null) || (accumulatedTypeDefs.isEmpty())))
         {
             return null;
         }

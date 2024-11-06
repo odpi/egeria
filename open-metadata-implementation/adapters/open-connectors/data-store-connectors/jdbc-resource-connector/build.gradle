@@ -16,6 +16,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.slf4j:slf4j-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')

@@ -637,7 +637,7 @@ public class OpenMetadataTypesArchive1_2
         properties.add(property);
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE_ORGANIZATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ORGANIZATION));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -11120,60 +11120,28 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getBusinessCapabilityTypeEnum()
     {
-        final String guid            = "fb7c40cf-8d95-48ff-ba8b-e22bff6f5a91";
-        final String name            = "BusinessCapabilityType";
-        final String description     = "Defines the type or category of business capability.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(BusinessCapabilityType.getOpenTypeGUID(),
+                                                        BusinessCapabilityType.getOpenTypeName(),
+                                                        BusinessCapabilityType.getOpenTypeDescription(),
+                                                        BusinessCapabilityType.getOpenTypeDescriptionGUID());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "The business capability has not been classified.";
-        final String element1DescriptionGUID = null;
+        for (BusinessCapabilityType enumValue : BusinessCapabilityType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "BusinessService";
-        final String element2Description     = "A functional business capability.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "BusinessArea";
-        final String element3Description     = "A collection of related business services.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another governance definition status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -16282,60 +16250,28 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getConceptModelDecorationEnum()
     {
-        final String guid            = "a97d9167-7dd6-4dea-a8cf-c73c57a0f470";
-        final String name            = "ConceptModelDecoration";
-        final String description     = "Describes the type of relationship end.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ConceptModelDecoration.getOpenTypeGUID(),
+                                                        ConceptModelDecoration.getOpenTypeName(),
+                                                        ConceptModelDecoration.getOpenTypeDescription(),
+                                                        ConceptModelDecoration.getOpenTypeDescriptionGUID());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "None";
-        final String element1Description     = "The relationship links two concept beads together.";
-        final String element1DescriptionGUID = null;
+        for (ConceptModelDecoration enumValue : ConceptModelDecoration.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Aggregation";
-        final String element2Description     = "The relationship links an independent concept bead to a collection concept bead.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Composition";
-        final String element3Description     = "The relationship links a sub-part to a composite.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Extension";
-        final String element4Description     = "The relationship links an extension to a base concept bead.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 

@@ -94,7 +94,6 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
      private String                connectorName      = null;
      private String                connectionURL      = null;
      private JDBCResourceConnector databaseClient     = null;
-     private java.sql.Connection   databaseConnection = null;
 
 
 
@@ -152,7 +151,6 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
             {
                 this.databaseClient = jdbcResourceConnector;
                 this.databaseClient.start();
-                this.databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
             }
         }
         catch (Exception error)
@@ -356,7 +354,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                       serviceName,
                                                                                       callTime);
 
-            databaseClient.insertRowIntoTable(databaseConnection, apiCallsDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(apiCallsDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -432,7 +430,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                             serviceName,
                                                                                             userName);
 
-            databaseClient.insertRowIntoTable(databaseConnection, assetActivityDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(assetActivityDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -547,7 +545,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                          logRecordId,
                                                                                          threadId);
 
-            databaseClient.insertRowIntoTable(databaseConnection, auditEventsDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(auditEventsDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -642,7 +640,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                               component.getComponentDescription(),
                                                                                               component.getComponentWikiURL());
 
-            databaseClient.insertRowIntoTable(databaseConnection, egeriaComponentsDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(egeriaComponentsDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -708,7 +706,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                               systemAction,
                                                                                               userAction);
 
-            databaseClient.insertRowIntoTable(databaseConnection, egeriaExceptionsDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(egeriaExceptionsDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -771,7 +769,7 @@ public class JDBCAuditLogDestinationConnector extends OMRSAuditLogStoreConnector
                                                                                          organization,
                                                                                          metadataCollectionId);
 
-            databaseClient.insertRowIntoTable(databaseConnection, omagServersDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(omagServersDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {

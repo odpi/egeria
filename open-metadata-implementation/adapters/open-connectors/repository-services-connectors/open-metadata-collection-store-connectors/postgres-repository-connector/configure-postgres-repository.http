@@ -1,0 +1,155 @@
+#
+# These commands rebuild the sample configuration documents for postgres-metadata-server
+# They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+@localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
+
+###
+# ---------------------------------------------
+# Metadata Assess Store: postgres-metadata-store
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/server-user-id?id=postgresenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that uses a postgreSQL-backed repository
+
+
+###
+# group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
+# @name Add JDBC audit log destination
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_postgres_metadata_store"
+Content-Type: application/json
+
+["Error", "Exception", "Activity", "Action"]
+
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Enable the PostgreSQL Repository
+# Set up the local repository to use the PostgreSQL Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/local-repository/mode/postgres-repository
+Content-Type: application/json
+
+{
+    "databaseURL": "{{postgreSQLDatabaseURL}}?currentSchema=repository_postgres_metadata_store",
+    "databaseSchema": "repository_postgres_metadata_store",
+    "secretsStore": "{{secretsStore}}",
+    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+}
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Set local metadata collection id
+# Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/local-repository/metadata-collection-id
+Content-Type: text/plain
+
+{{localMatadataCollectionId}}
+
+
+###
+# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
+}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/access-services
+Content-Type: application/json
+
+{
+  "KarmaPointIncrement" : "1"
+}
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/SimpleCatalogV1.omarchive
+
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CoreContentPack.omarchive
+
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+
+###
+# @name start server
+# Restart the postgres-metadata-store server on the OMAG Server Platform.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/postgres-metadata-store/instance
+
+
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/SimpleCatalogV2.omarchive
+
+
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/SimpleCatalogV3.omarchive
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/postgres-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CoreContentPack.omarchive
+
+
+###
+

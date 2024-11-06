@@ -33,6 +33,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  */
 public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWriter
 {
+    private static final Date creationDate = new Date(1639984840038L);
     protected final Map<String, String> deployedImplementationTypeQNAMEs = new HashMap<>();
     private final Map<String, String> parentValidValueQNameToGUIDMap  = new HashMap<>();
 
@@ -43,14 +44,12 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param archiveGUID unique identifier of the archive
      * @param archiveName name of the archive
      * @param archiveDescription description of archive
-     * @param creationDate date/time this archive writer ran
      * @param archiveFileName name of file to write archive to
      * @param additionalDependencies archive that this archive is dependent on
      */
     public ContentPackBaseArchiveWriter(String                archiveGUID,
                                         String                archiveName,
                                         String                archiveDescription,
-                                        Date                  creationDate,
                                         String                archiveFileName,
                                         OpenMetadataArchive[] additionalDependencies)
     {

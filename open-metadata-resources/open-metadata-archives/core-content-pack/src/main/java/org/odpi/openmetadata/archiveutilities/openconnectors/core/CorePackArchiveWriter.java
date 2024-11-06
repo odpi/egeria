@@ -82,7 +82,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.CORE_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveFileName(),
               null);
     }

@@ -267,6 +267,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
         propertyValue.setPrimitiveDefCategory(propertyType.getPrimitiveDefCategory());
+        propertyValue.setTypeGUID(propertyType.getGUID());
+        propertyValue.setTypeName(propertyType.getName());
 
         switch (propertyType.getPrimitiveDefCategory())
         {
@@ -333,7 +335,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
         propertyValue.setPrimitiveDefCategory(propertyType.getPrimitiveDefCategory());
-
+        propertyValue.setTypeGUID(propertyType.getGUID());
+        propertyValue.setTypeName(propertyType.getName());
 
        boolean distinct = attrUnique || (instanceCount%2)!=0;
 
@@ -602,9 +605,10 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeCardinality     attributeCardinality = typeDefAttribute.getAttributeCardinality();
 
                 if (attributeCardinality == AttributeCardinality.AT_LEAST_ONE_ORDERED    ||
-                    attributeCardinality == AttributeCardinality.AT_LEAST_ONE_UNORDERED) {
-
-                    if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                    attributeCardinality == AttributeCardinality.AT_LEAST_ONE_UNORDERED)
+                {
+                    if (category == AttributeTypeDefCategory.PRIMITIVE)
+                    {
                         PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
                         propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                     }

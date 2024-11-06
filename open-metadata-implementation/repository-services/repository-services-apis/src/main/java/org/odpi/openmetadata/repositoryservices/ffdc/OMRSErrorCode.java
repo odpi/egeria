@@ -1532,6 +1532,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Trace the caller of the request to determine where the type information was specified.  If the error is in the Egeria code, or you need help from the community, raise a Github issue so this can be addressed."),
 
     /**
+     * OMRS-CONTENT-MANAGER-500-006 - The repository content manager has received an instance {0} of class {1} with an open metadata type name of {2}, which is from category {3}
+     */
+    WRONG_TYPEDEF_CATEGORY(500, "OMRS-CONTENT-MANAGER-500-006",
+                    "The repository content manager has received an instance {0} of class {1} with an open metadata type name of {2}, which is from category {3}",
+                    "The local repository has received an instance either from an Open Metadata Archive, or another member of one of its Open Metadata Repository Cohorts, that is using a type from a different category of instance.",
+                    "Trace the caller of the request to determine where the came from and correct the source."),
+
+    /**
      * OMRS-OPEN-METADATA-ARCHIVE-500-001 - The archive builder failed to initialize
      */
     ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-ARCHIVE-500-001",

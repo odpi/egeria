@@ -9,7 +9,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiv
 import org.odpi.openmetadata.archiveutilities.openconnectors.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * NannyPackArchiveWriter creates an open metadata archive that includes the connector type
@@ -25,7 +24,6 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.NANNY_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.NANNY_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.NANNY_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.NANNY_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive(), new PostgresPackArchiveWriter().getOpenMetadataArchive()});
     }

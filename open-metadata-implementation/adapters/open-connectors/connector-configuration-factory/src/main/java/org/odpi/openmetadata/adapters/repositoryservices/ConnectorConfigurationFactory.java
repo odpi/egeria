@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
@@ -60,6 +61,9 @@ public class ConnectorConfigurationFactory
     private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
     private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
     private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String POSTGRES_OMRS_REPOSITORY_CONNECTOR_PROVIDER                = "org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.PostgresOMRSRepositoryConnectorProvider";
+    private static final String YAML_SECRETS_STORE_CONNECTOR_PROVIDER                      = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
+    private static final String JDBC_RESOURCE_CONNECTOR_PROVIDER                           = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
     private static final String XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
     private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
     private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
@@ -429,6 +433,73 @@ public class ConnectorConfigurationFactory
         connection.setConfigurationProperties(storageProperties);
 
         return connection;
+    }
+
+
+    /**
+     * Return the postgres repository's connection.  This is using the PostgresOMRSRepositoryConnector.
+     *
+     * @param localServerName name of local server
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     *
+     * @return Connection object
+     */
+    public Connection getPostgresRepositoryLocalConnection(String              localServerName,
+                                                           Map<String, Object> storageProperties)
+    {
+        Connection secretsStoreConnection = new Connection();
+        Endpoint   endpoint               = new Endpoint();
+
+        if (storageProperties.containsKey(PostgresConfigurationProperty.SECRETS_STORE.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.SECRETS_STORE.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(PostgresConfigurationProperty.SECRETS_STORE.getExample());
+        }
+
+        secretsStoreConnection.setEndpoint(endpoint);
+        secretsStoreConnection.setConnectorType(getConnectorType(YAML_SECRETS_STORE_CONNECTOR_PROVIDER));
+        secretsStoreConnection.setConfigurationProperties(storageProperties);
+
+        List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+        EmbeddedConnection       embeddedConnection  = new EmbeddedConnection();
+
+        embeddedConnection.setEmbeddedConnection(secretsStoreConnection);
+        embeddedConnections.add(embeddedConnection);
+
+        VirtualConnection jdbcResourceConnection = new VirtualConnection();
+
+        jdbcResourceConnection.setEmbeddedConnections(embeddedConnections);
+        jdbcResourceConnection.setConnectorType(getConnectorType(JDBC_RESOURCE_CONNECTOR_PROVIDER));
+        jdbcResourceConnection.setConfigurationProperties(storageProperties);
+
+        endpoint = new Endpoint();
+
+        if (storageProperties.containsKey(PostgresConfigurationProperty.DATABASE_URL.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.DATABASE_URL.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(PostgresConfigurationProperty.DATABASE_URL.getExample());
+        }
+        jdbcResourceConnection.setEndpoint(endpoint);
+
+        embeddedConnections = new ArrayList<>();
+        embeddedConnection = new EmbeddedConnection();
+        embeddedConnection.setEmbeddedConnection(jdbcResourceConnection);
+        embeddedConnections.add(embeddedConnection);
+
+        VirtualConnection postgresConnection = new VirtualConnection();
+
+        postgresConnection.setDisplayName("PostgreSQL Database Schema Repository for " + localServerName);
+        postgresConnection.setConnectorType(getConnectorType(POSTGRES_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
+        postgresConnection.setConfigurationProperties(storageProperties);
+        postgresConnection.setEmbeddedConnections(embeddedConnections);
+
+        return postgresConnection;
     }
 
 

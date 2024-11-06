@@ -1750,7 +1750,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataProperty.SOURCE_ORGANIZATION.name,
+                                                       OpenMetadataProperty.ORGANIZATION.name,
                                                        elementProperties,
                                                        methodName);
         }
