@@ -30,7 +30,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService;
 import org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService;
 
-import java.sql.Connection;
 import java.sql.Types;
 import java.util.*;
 
@@ -209,9 +208,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
     private JDBCResourceConnector    databaseClient     = null;
-    private Connection               databaseConnection = null;
 
-    private final PropertyHelper       propertyHelper                    = new PropertyHelper();
+    private final PropertyHelper     propertyHelper                    = new PropertyHelper();
 
     /*
      * These maps contain the details of the columns in the tables that produce
@@ -549,8 +547,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            this.databaseConnection = databaseClient.getDataSource().getConnection();
-
             /*
              * Step through the catalogued metadata elements for each interesting type.  Start with data assets.
              */
@@ -766,9 +762,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                      startFrom,
                                                                                                      openMetadataAccess.getMaxPagingSize());
             }
-
-            databaseConnection.close();
-            databaseConnection = null;
         }
         catch (Exception error)
         {
@@ -781,33 +774,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                           error.getMessage()),
                                       error);
             }
-
-            if (databaseConnection != null)
-            {
-                try
-                {
-                    databaseConnection.close();
-                }
-                catch (Exception  closeError)
-                {
-                    auditLog.logException(methodName,
-                                          HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              closeError.getClass().getName(),
-                                                                                                              methodName,
-                                                                                                              closeError.getMessage()),
-                                          error);
-                }
-                databaseConnection = null;
-            }
-
-            throw new ConnectorCheckedException(HarvestOpenMetadataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                                       error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
-
         }
     }
 
@@ -2315,8 +2281,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                        assetDatabaseTable,
+            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(assetDatabaseTable,
                                                                                         columnNameAssetGUID,
                                                                                         dataAssetElement.getElementHeader().getGUID(),
                                                                                         columnNameSyncTime,
@@ -2330,7 +2295,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
             {
-                databaseClient.insertRowIntoTable(databaseConnection, assetDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(assetDatabaseTable, openMetadataRecord);
             }
         }
         catch (Exception error)
@@ -2629,7 +2594,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             Map<String, JDBCDataValue> openMetadataRecord = this.getCorrelationPropertiesDataValues(elementHeader, metadataCorrelationHeader);
 
-            databaseClient.insertRowIntoTable(databaseConnection, correlationPropertiesDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(correlationPropertiesDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -2715,7 +2680,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                      elementOrigin.getOriginCategory(),
                                                                                                      deployedImplementationType);
 
-                databaseClient.insertRowIntoTable(databaseConnection, metadataCollectionDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(metadataCollectionDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -2780,7 +2745,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 Map<String, JDBCDataValue> openMetadataRecord = this.getAssetTypesDataValues(elementType);
 
-                databaseClient.insertRowIntoTable(databaseConnection, assetTypesDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(assetTypesDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -2837,7 +2802,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                             methodName),
                                                                                            location.getType().getTypeName());
 
-                databaseClient.insertRowIntoTable(databaseConnection, locationDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(locationDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -2897,7 +2862,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                             license.getElementProperties(),
                                                                                                                             methodName));
 
-                databaseClient.insertRowIntoTable(databaseConnection, licenseDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(licenseDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -2957,8 +2922,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            collaborationActivityDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(collaborationActivityDatabaseTable,
                                                                                             columnNameElementGUID,
                                                                                             elementGUID,
                                                                                             columnNameSyncTime,
@@ -2973,7 +2937,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, collaborationActivityDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(collaborationActivityDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3131,7 +3095,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                null,
                                                                                                null);
 
-                databaseClient.insertRowIntoTable(databaseConnection, externalUserDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(externalUserDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -3202,8 +3166,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                  */
                 syncCertificationType(certification.getElement());
 
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            certificationsDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(certificationsDatabaseTable,
                                                                                             columnNameCertificationGUID,
                                                                                             elementGUID,
                                                                                             columnNameSyncTime,
@@ -3223,7 +3186,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, certificationsDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(certificationsDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3298,7 +3261,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                                      certificationType.getElementProperties(),
                                                                                                                                      methodName));
 
-                databaseClient.insertRowIntoTable(databaseConnection, certificationTypeDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(certificationTypeDatabaseTable, openMetadataRecord);
             }
             catch (Exception error)
             {
@@ -3350,8 +3313,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            contributionsDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(contributionsDatabaseTable,
                                                                                             columnNameUserGUID,
                                                                                             userGUID,
                                                                                             columnNameSnapshotTimestamp,
@@ -3365,7 +3327,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSnapshotTimestamp))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, contributionsDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(contributionsDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3423,8 +3385,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            dataFieldsDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(dataFieldsDatabaseTable,
                                                                                             columnNameDataFieldGUID,
                                                                                             schemaAttributeElement.getElementHeader().getGUID(),
                                                                                             columnNameSyncTime,
@@ -3438,7 +3399,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, dataFieldsDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(dataFieldsDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3515,8 +3476,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            departmentDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(departmentDatabaseTable,
                                                                                             columnNameDepGUID,
                                                                                             department.getElementGUID(),
                                                                                             columnNameSyncTime,
@@ -3526,7 +3486,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, departmentDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(departmentDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3599,8 +3559,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 licenseGUID = license.getElementGUID();
             }
 
-            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                        glossaryDatabaseTable,
+            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(glossaryDatabaseTable,
                                                                                         columnNameGlossaryGUID,
                                                                                         glossaryElement.getElementHeader().getGUID(),
                                                                                         columnNameSyncTime,
@@ -3614,7 +3573,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
             {
-                databaseClient.insertRowIntoTable(databaseConnection, glossaryDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(glossaryDatabaseTable, openMetadataRecord);
             }
         }
         catch (Exception error)
@@ -3737,8 +3696,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                        termActivityDatabaseTable,
+            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(termActivityDatabaseTable,
                                                                                         columnNameTermGUID,
                                                                                         glossaryTermElement.getElementHeader().getGUID(),
                                                                                         columnNameSyncTime,
@@ -3752,7 +3710,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
             {
-                databaseClient.insertRowIntoTable(databaseConnection, termActivityDatabaseTable, openMetadataRecord);
+                databaseClient.insertRowIntoTable(termActivityDatabaseTable, openMetadataRecord);
             }
         }
         catch (Exception error)
@@ -3868,8 +3826,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            relatedAssetDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(relatedAssetDatabaseTable,
                                                                                             columnNameRelationshipGUID,
                                                                                             relatedAsset.getRelationshipGUID(),
                                                                                             columnNameSyncTime,
@@ -3879,7 +3836,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, relatedAssetDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(relatedAssetDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -3930,8 +3887,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            roleDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(roleDatabaseTable,
                                                                                             columnNameRoleGUID,
                                                                                             role.getElementGUID(),
                                                                                             columnNameSyncTime,
@@ -3941,7 +3897,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, roleDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(roleDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -4003,8 +3959,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            roleToUserDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(roleToUserDatabaseTable,
                                                                                             columnNameRelationshipGUID,
                                                                                             personRoleAppointment.getRelationshipGUID(),
                                                                                             columnNameSyncTime,
@@ -4014,7 +3969,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, roleToUserDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(roleToUserDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -4080,8 +4035,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            toDoDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(toDoDatabaseTable,
                                                                                             columnNameToDoGUID,
                                                                                             toDoElement.getElementGUID(),
                                                                                             columnNameSyncTime,
@@ -4093,7 +4047,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, toDoDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(toDoDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -4220,8 +4174,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             try
             {
-                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
-                                                                                            userIdentityDatabaseTable,
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(userIdentityDatabaseTable,
                                                                                             columnNameUserIdGUID,
                                                                                             userIdentifyElement.getElementGUID(),
                                                                                             columnNameSyncTime,
@@ -4235,7 +4188,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, columnNameSyncTime))
                 {
-                    databaseClient.insertRowIntoTable(databaseConnection, userIdentityDatabaseTable, openMetadataRecord);
+                    databaseClient.insertRowIntoTable(userIdentityDatabaseTable, openMetadataRecord);
                 }
             }
             catch (Exception error)
@@ -4336,7 +4289,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             Map<String, JDBCDataValue> openMetadataRecord = this.getReferenceLevelDataValues(identifier, classificationName, displayName, text);
 
-            databaseClient.insertRowIntoTable(databaseConnection, referenceLevelsDatabaseTable, openMetadataRecord);
+            databaseClient.insertRowIntoTable(referenceLevelsDatabaseTable, openMetadataRecord);
         }
         catch (Exception error)
         {

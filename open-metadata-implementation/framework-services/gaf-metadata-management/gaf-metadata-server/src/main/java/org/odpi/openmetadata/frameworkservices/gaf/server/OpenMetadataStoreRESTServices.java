@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsCon
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -811,6 +812,102 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Retrieve all the versions of an element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param requestBody the time window required
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
+                                                                  String             serviceURLMarker,
+                                                                  String             userId,
+                                                                  String             elementGUID,
+                                                                  boolean            forLineage,
+                                                                  boolean            forDuplicateProcessing,
+                                                                  int                startFrom,
+                                                                  int                pageSize,
+                                                                  boolean            oldestFirst,
+                                                                  HistoryRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementHistory";
+        final String guidParameterName  = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        OpenMetadataElementsResponse response = new OpenMetadataElementsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            HistorySequencingOrder sequencingOrder = HistorySequencingOrder.BACKWARDS;
+
+            if (oldestFirst)
+            {
+                sequencingOrder = HistorySequencingOrder.FORWARDS;
+            }
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getBeanHistory(userId,
+                                                               elementGUID,
+                                                               guidParameterName,
+                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                               requestBody.getFromTime(),
+                                                               requestBody.getToTime(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               sequencingOrder,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getBeanHistory(userId,
+                                                               elementGUID,
+                                                               guidParameterName,
+                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                               null,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               sequencingOrder,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                               null,
+                                                               methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to
@@ -875,6 +972,7 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
 
 
     /**

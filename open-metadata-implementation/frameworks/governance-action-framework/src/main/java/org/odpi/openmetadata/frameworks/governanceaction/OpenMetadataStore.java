@@ -593,6 +593,36 @@ public class OpenMetadataStore
 
 
     /**
+     * Return each of the versions of a metadata element.
+     *
+     * @param elementGUID            unique identifier for the metadata element
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public  List<OpenMetadataElement> getMetadataElementHistory(String  elementGUID,
+                                                                Date    fromTime,
+                                                                Date    toTime,
+                                                                boolean oldestFirst,
+                                                                Date    effectiveTime,
+                                                                int     startFrom,
+                                                                int     pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return openMetadataClient.getMetadataElementHistory(userId, elementGUID, fromTime, toTime, oldestFirst, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship

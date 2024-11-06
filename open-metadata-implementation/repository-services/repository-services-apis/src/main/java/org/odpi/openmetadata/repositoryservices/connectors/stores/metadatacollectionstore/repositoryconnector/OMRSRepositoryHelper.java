@@ -95,6 +95,17 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Determine the list of attribute names that contain a unique value.  An empty list is returned if none have.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @return list of attribute names
+     */
+    List<String> getUniqueAttributesList(String sourceName,
+                                         String typeName);
+
+
+    /**
      * Return an instance properties that only contains the properties that uniquely identify the entity.
      * This is used when creating entity proxies.
      *
@@ -862,8 +873,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * Remove a classification from an entity.
      *
      * @param sourceName             source of the request (used for logging)
      * @param entity                 entity to update
@@ -879,8 +889,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName             source of the request (used for logging)
      * @param entityProxy                 entity to update

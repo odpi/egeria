@@ -25,7 +25,6 @@ public class APIPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.APIS_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.APIS_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.APIS_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.APIS_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }

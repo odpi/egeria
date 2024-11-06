@@ -32,6 +32,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveGUID        = "ac202586-4042-407b-ae51-8096dfda223e";
     private static final String                  archiveName        = "Coco Pharmaceuticals Business Systems";
     private static final String                  archiveDescription = "The data flows from Coco Pharmaceuticals business systems to the data lake.";
+    private static final Date                    creationDate       = new Date(1639984840038L);
 
 
     /**
@@ -42,7 +43,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
         super(archiveGUID,
               archiveName,
               archiveDescription,
-              new Date(),
+              creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),

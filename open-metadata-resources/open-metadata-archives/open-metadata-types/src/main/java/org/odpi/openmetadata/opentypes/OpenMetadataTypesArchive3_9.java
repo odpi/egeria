@@ -330,9 +330,9 @@ public class OpenMetadataTypesArchive3_9
                                                            OpenMetadataProperty.PAGE_RANGE.description,
                                                            OpenMetadataProperty.PAGE_RANGE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE_ORGANIZATION.name,
-                                                           OpenMetadataProperty.SOURCE_ORGANIZATION.description,
-                                                           OpenMetadataProperty.SOURCE_ORGANIZATION.descriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ORGANIZATION.name,
+                                                           OpenMetadataProperty.ORGANIZATION.description,
+                                                           OpenMetadataProperty.ORGANIZATION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES.name,
                                                            OpenMetadataProperty.PUBLICATION_SERIES.description,

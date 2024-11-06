@@ -29,7 +29,6 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }

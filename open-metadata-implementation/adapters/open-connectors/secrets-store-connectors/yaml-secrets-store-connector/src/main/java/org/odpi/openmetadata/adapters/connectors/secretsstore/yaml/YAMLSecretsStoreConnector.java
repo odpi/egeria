@@ -102,7 +102,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     {
         super.checkSecretsStillValid();
 
-        if (secretsStore != null)
+        if ((secretsStore != null) && (secretsCollectionName != null))
         {
             SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
 

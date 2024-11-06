@@ -33,7 +33,6 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.POSTGRES_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.POSTGRES_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.POSTGRES_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.POSTGRES_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }

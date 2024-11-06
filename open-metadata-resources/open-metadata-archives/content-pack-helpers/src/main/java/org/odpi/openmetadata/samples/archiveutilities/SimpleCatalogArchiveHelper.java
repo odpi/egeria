@@ -38,7 +38,6 @@ public class SimpleCatalogArchiveHelper
     protected String             archiveRootName;
     protected String             originatorName;
     protected String             versionName;
-    protected EnumElementDef     activeStatus;
 
 
     /**
@@ -180,8 +179,6 @@ public class SimpleCatalogArchiveHelper
         this.archiveRootName = archiveName;
         this.originatorName = originatorName;
         this.versionName = versionName;
-
-        this.activeStatus = archiveHelper.getEnumElement(OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME, 1);
     }
 
 
@@ -330,7 +327,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NUMBER_OF_PAGES.name, numberOfPages, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PAGE_RANGE.name, pageRange, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORGANIZATION.name, authorOrganization, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionNumber, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_SERIES.name, publicationSeries, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.name, publicationSeriesVolume, methodName);
@@ -505,15 +502,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORGANIZATION.name, authorOrganization, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionNumber, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, referenceURL, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LICENSE.name, license, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COPYRIGHT.name, copyright, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ATTRIBUTION.name, attribution, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, MediaType.getOpenTypeName(), typeEnumElement.getOrdinal(), typeEnumElement.getValue(), typeEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_TYPE.name, MediaType.getOpenTypeGUID(), MediaType.getOpenTypeName(), typeEnumElement.getOrdinal(), typeEnumElement.getValue(), typeEnumElement.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.name, mediaTypeOtherId, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name, usageEnumElement.getOrdinal(), usageEnumElement.getValue(), usageEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name, MediaUsage.getOpenTypeGUID(), MediaUsage.getOpenTypeName(), usageEnumElement.getOrdinal(), usageEnumElement.getValue(), usageEnumElement.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.name, defaultMediaUsageOtherId, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
@@ -601,7 +598,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEDIA_ID.name, mediaId, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_USAGE.name, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_USAGE.name, MediaUsage.getOpenTypeGUID(), MediaUsage.getOpenTypeName(), enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.name, mediaUsageOtherId, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
@@ -640,13 +637,13 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
         EntityProxy end2    = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
 
-        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME, deploymentStatus);
+        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OperationalStatus.getOpenTypeName(), deploymentStatus);
 
         InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_TIME.name, deploymentTime, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_TYPE_NAME.name, deployerTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name, deployerPropertyName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER.name, deployer, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, OperationalStatus.getOpenTypeGUID(), OperationalStatus.getOpenTypeName(), statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
 
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.DEPLOYED_ON.typeName, this.idToGUIDMap.getGUID(deployedElementId + "_to_" + deployedOnId + "_deployed_on_relationship"), properties, InstanceStatus.ACTIVE, end1, end2));
     }
@@ -1162,7 +1159,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTACT_TYPE.name, contactType, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTACT_METHOD_TYPE.name, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTACT_METHOD_TYPE.name, ContactMethodType.getOpenTypeGUID(), ContactMethodType.getOpenTypeName(), enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTACT_METHOD_SERVICE.name, contactMethodService, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONTACT_METHOD_VALUE.name, contactMethodValue, methodName);
 
@@ -1973,7 +1970,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_TYPE.name, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_TYPE.name, CommunityMembershipType.getOpenTypeGUID(), CommunityMembershipType.getOpenTypeName(), enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_community_membership_relationship"),
@@ -2681,13 +2678,11 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addBusinessArea";
 
-        EnumElementDef businessCapabilityTypeEnum = archiveHelper.getEnumElement(OpenMetadataType.BUSINESS_CAPABILITY_TYPE_ENUM_TYPE_NAME, OpenMetadataType.BUSINESS_CAPABILITY_TYPE_BUSINESS_AREA);
-
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.BUSINESS_CAPABILITY_TYPE_PROPERTY_NAME, businessCapabilityTypeEnum.getOrdinal(), businessCapabilityTypeEnum.getValue(), businessCapabilityTypeEnum.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.BUSINESS_CAPABILITY_TYPE_PROPERTY_NAME, BusinessCapabilityType.getOpenTypeGUID(), BusinessCapabilityType.getOpenTypeName(), BusinessCapabilityType.BUSINESS_AREA.getOrdinal(), BusinessCapabilityType.BUSINESS_AREA.getName(), BusinessCapabilityType.BUSINESS_AREA.getDescription(), methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         List<Classification> classifications = new ArrayList<>();
@@ -2952,7 +2947,7 @@ public class SimpleCatalogArchiveHelper
 
         EntityDetail   entityOne                  = archiveBuilder.getEntity(conceptBeadLinkGUID);
         EntityDetail   entityTwo                  = archiveBuilder.getEntity(conceptBeadGUID);
-        EnumElementDef conceptModelDecorationEnum = archiveHelper.getEnumElement(OpenMetadataType.CONCEPT_MODEL_DECORATION_ENUM_NAME, conceptModelDecoration);
+        EnumElementDef conceptModelDecorationEnum = archiveHelper.getEnumElement(ConceptModelDecoration.getOpenTypeName(), conceptModelDecoration);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(entityOne);
         EntityProxy end2 = archiveHelper.getEntityProxy(entityTwo);
@@ -2961,7 +2956,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.POSITION.name, position, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.MIN_CARDINALITY_PROPERTY_NAME, minCardinality, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.MAX_CARDINALITY_PROPERTY_NAME, maxCardinality, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.DECORATION_PROPERTY_NAME, conceptModelDecorationEnum.getOrdinal(), conceptModelDecorationEnum.getValue(), conceptModelDecorationEnum.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.DECORATION_PROPERTY_NAME, ConceptModelDecoration.getOpenTypeGUID(), ConceptModelDecoration.getOpenTypeName(), conceptModelDecorationEnum.getOrdinal(), conceptModelDecorationEnum.getValue(), conceptModelDecorationEnum.getDescription(), methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.UNIQUE_VALUES_PROPERTY_NAME, uniqueValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.ORDERED_VALUES_PROPERTY_NAME, orderedValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.NAVIGABLE_PROPERTY_NAME, navigable, methodName);
@@ -5179,7 +5174,7 @@ public class SimpleCatalogArchiveHelper
             String externalLinkQualifiedName = qualifiedName + "_external_link";
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, externalLinkQualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, externalLink, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, originatorName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORGANIZATION.name, originatorName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionName, methodName);
 
             classifications = new ArrayList<>();
@@ -5466,7 +5461,7 @@ public class SimpleCatalogArchiveHelper
 
         if (categoryIds != null)
         {
-            InstanceProperties categorizationProperties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, activeStatus.getOrdinal(), activeStatus.getValue(), activeStatus.getDescription(), methodName);
+            InstanceProperties categorizationProperties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(), GlossaryTermRelationshipStatus.ACTIVE.getName(), GlossaryTermRelationshipStatus.ACTIVE.getDescription(), methodName);
 
             for (String  categoryId : categoryIds)
             {
@@ -5561,7 +5556,7 @@ public class SimpleCatalogArchiveHelper
 
         EnumElementDef termStatus = archiveHelper.getEnumElement(GlossaryTermRelationshipStatus.getOpenTypeName(), status);
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP_NAME,
@@ -5599,7 +5594,7 @@ public class SimpleCatalogArchiveHelper
 
         EnumElementDef termStatus = archiveHelper.getEnumElement(GlossaryTermRelationshipStatus.getOpenTypeName(), status);
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.EXPRESSION.name, expression, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
@@ -5647,7 +5642,7 @@ public class SimpleCatalogArchiveHelper
 
         EnumElementDef termStatus = archiveHelper.getEnumElement(GlossaryTermRelationshipStatus.getOpenTypeName(), status);
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
@@ -6676,7 +6671,6 @@ public class SimpleCatalogArchiveHelper
                                                            int    serverCapabilityStatus)
     {
         final String methodName = "addSupportedSoftwareCapabilityRelationship";
-        final String operationStatus = OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME;
 
         String deployedElementId = this.idToGUIDMap.getGUID(deployedElementQName);
         String deployedOnId = this.idToGUIDMap.getGUID(deployedOnQName);
@@ -6684,13 +6678,13 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedOnId));
         EntityProxy end2 = this.archiveHelper.getEntityProxy(this.archiveBuilder.getEntity(deployedElementId));
 
-        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(operationStatus, serverCapabilityStatus);
+        EnumElementDef statusEnumElement = archiveHelper.getEnumElement(OperationalStatus.getOpenTypeName(), serverCapabilityStatus);
 
         InstanceProperties properties = archiveHelper.addDatePropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPLOYMENT_TIME.name, deploymentTime, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_TYPE_NAME.name, deployerTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name, deployerPropertyName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYER.name, deployer, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.OPERATIONAL_STATUS.name, OperationalStatus.getOpenTypeGUID(), OperationalStatus.getOpenTypeName(), statusEnumElement.getOrdinal(), statusEnumElement.getValue(), statusEnumElement.getDescription(), methodName);
 
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
                                                                                this.idToGUIDMap.getGUID(deployedOnId + "_to_" + deployedElementId + "_supported_software_capability_relationship"),

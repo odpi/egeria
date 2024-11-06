@@ -145,6 +145,56 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Determine the list of attribute names that contain a unique value.  An empty list is returned if none have.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @return list of attribute names
+     */
+    public List<String> getUniqueAttributesList(String sourceName,
+                                                String typeName)
+    {
+        List<String> uniqueAttributes = new ArrayList<>();
+
+        TypeDef typeDef = this.getTypeDefByName(sourceName, typeName);
+
+        if (typeDef != null)
+        {
+            /*
+             * Determine the list of names of unique properties
+             */
+            this.getUniquePropertiesList(typeDef.getPropertiesDefinition(), uniqueAttributes);
+
+            /*
+             * Navigate to the super types.
+             */
+            TypeDef superType = null;
+
+            if (typeDef.getSuperType() != null)
+            {
+                superType = this.getTypeDefByName(sourceName, typeDef.getSuperType().getName());
+            }
+
+            while (superType != null)
+            {
+                this.getUniquePropertiesList(superType.getPropertiesDefinition(), uniqueAttributes);
+
+                if (superType.getSuperType() != null)
+                {
+                    superType = this.getTypeDefByName(sourceName, superType.getSuperType().getName());
+                }
+                else
+                {
+                    superType = null;
+                }
+            }
+        }
+
+        return uniqueAttributes;
+    }
+
+
+    /**
      * Return an instance properties that only contains the properties that uniquely identify the entity.
      * This is used when creating entity proxies.
      *
@@ -1857,8 +1907,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the setup of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update
@@ -1932,8 +1981,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the setup of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update

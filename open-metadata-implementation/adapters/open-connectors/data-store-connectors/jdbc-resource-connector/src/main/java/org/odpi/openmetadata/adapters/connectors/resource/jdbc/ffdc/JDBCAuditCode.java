@@ -40,7 +40,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
                                     "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
 
     /**
-     * JDBC-RESOURCE-CONNECTOR-0002 - The JDBC resource connector has connected to database {0}
+     * JDBC-RESOURCE-CONNECTOR-0003 - The JDBC resource connector for database {0} has received {1} results from query {2}
      */
     UNEXPECTED_ROW_COUNT_FROM_DATABASE("JDBC-RESOURCE-CONNECTOR-0003",
                                        AuditLogRecordSeverityLevel.INFO,

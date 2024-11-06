@@ -3642,7 +3642,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        repositoryStore.updateEntityInStore(entity);
+        repositoryStore.updateEntityInStore(updatedEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.

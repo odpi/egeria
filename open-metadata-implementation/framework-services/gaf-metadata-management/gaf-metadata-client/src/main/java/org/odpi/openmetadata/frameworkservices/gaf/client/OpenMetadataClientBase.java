@@ -1021,6 +1021,66 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Return each of the versions of a metadata element.
+     *
+     * @param userId caller's userId
+     * @param elementGUID            unique identifier for the metadata element
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public  List<OpenMetadataElement> getMetadataElementHistory(String  userId,
+                                                                String  elementGUID,
+                                                                Date    fromTime,
+                                                                Date    toTime,
+                                                                boolean oldestFirst,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing,
+                                                                Date    effectiveTime,
+                                                                int     startFrom,
+                                                                int     pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName = "getMetadataElementHistory";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}//metadata-elements/{3}/history?forLineage={4}&forDuplicateProcessing={5}&oldestFirst={6}&startFrom={7}&pageSize={8}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        HistoryRequestBody requestBody = new HistoryRequestBody();
+
+        requestBody.setFromTime(fromTime);
+        requestBody.setToTime(toTime);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
+                                                                                                  urlTemplate,
+                                                                                                  requestBody,
+                                                                                                  serverName,
+                                                                                                  serviceURLMarker,
+                                                                                                  userId,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
+                                                                                                  oldestFirst,
+                                                                                                  startFrom,
+                                                                                                  pageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param userId caller's userId

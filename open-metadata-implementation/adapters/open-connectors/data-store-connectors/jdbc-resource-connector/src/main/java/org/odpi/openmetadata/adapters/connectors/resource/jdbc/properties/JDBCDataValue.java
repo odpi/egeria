@@ -9,9 +9,9 @@ import java.util.Objects;
  */
 public class JDBCDataValue
 {
-    private final Object dataValue;
-    private final int    targetSQLType;
-    private       int    scaleOrLength = 0;
+    private Object dataValue     = null;
+    private int    targetSQLType = 0;
+    private int    scaleOrLength = 0;
 
 
     /**
@@ -41,6 +41,22 @@ public class JDBCDataValue
         this.dataValue = dataValue;
         this.targetSQLType = targetSQLType;
         this.scaleOrLength = scaleOrLength;
+    }
+
+
+    /**
+     * Copy/clone Constructor.
+     *
+     * @param template object ot copy
+     */
+    public JDBCDataValue(JDBCDataValue template)
+    {
+        if (template != null)
+        {
+            this.dataValue     = template.getDataValue();
+            this.targetSQLType = template.getTargetSQLType();
+            this.scaleOrLength = template.getScaleOrLength();
+        }
     }
 
 

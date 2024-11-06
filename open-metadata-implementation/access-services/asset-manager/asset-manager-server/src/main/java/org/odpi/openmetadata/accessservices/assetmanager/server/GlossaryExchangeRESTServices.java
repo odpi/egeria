@@ -15,6 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -4886,8 +4887,8 @@ public class GlossaryExchangeRESTServices
             if (requestBody != null)
             {
                 response.setElementList(handler.getGlossaryTermHistory(userId,
-                                                                       requestBody.getAssetManagerGUID(),
-                                                                       requestBody.getAssetManagerName(),
+                                                                       requestBody.getExternalScopeGUID(),
+                                                                       requestBody.getExternalScopeName(),
                                                                        guid,
                                                                        requestBody.getFromTime(),
                                                                        requestBody.getToTime(),

@@ -235,6 +235,39 @@ public interface MetadataElementInterface
 
 
     /**
+     * Return each of the versions of a metadata element.
+     *
+     * @param userId caller's userId
+     * @param elementGUID            unique identifier for the metadata element
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+   List<OpenMetadataElement> getMetadataElementHistory(String  userId,
+                                                       String  elementGUID,
+                                                       Date    fromTime,
+                                                       Date    toTime,
+                                                       boolean oldestFirst,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       int     startFrom,
+                                                       int     pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param userId caller's userId

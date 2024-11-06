@@ -100,6 +100,11 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "The system is unable to initialize the requested connector because the endpoint information in the connection is not formatted correctly for this type of connection.",
             "Correct the endpoint information into the connection object and retry the request."),
 
+    MALFORMED_DATE_CONFIGURATION_PROPERTY(400, "OCF-CONNECTION-400-011",
+                       "The {0} configuration property of {1} is set to an invalid date format.  Use dd/MM/yyyy/hh:mm:ss",
+                       "The system is unable to initialize the requested connector because the configuration property in the connection is not formatted correctly.",
+                       "Correct the configuration property into the connection object and retry the request."),
+
     /**
      * OCF-PROPERTIES-400-011 - Null property name passed to entity {0} of type {1}
      */

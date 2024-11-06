@@ -1827,7 +1827,14 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
     {
         instanceAuditHeader.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         instanceAuditHeader.setCreatedBy(originatorName);
-        instanceAuditHeader.setCreateTime(creationDate);
+        if (creationDate == null)
+        {
+            instanceAuditHeader.setCreateTime(new Date());
+        }
+        else
+        {
+            instanceAuditHeader.setCreateTime(creationDate);
+        }
         instanceAuditHeader.setInstanceLicense(license);
         instanceAuditHeader.setInstanceProvenanceType(instanceProvenanceType);
         instanceAuditHeader.setMaintainedBy(null);
@@ -1837,16 +1844,18 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         instanceAuditHeader.setStatus(InstanceStatus.ACTIVE);
         instanceAuditHeader.setStatusOnDelete(null);
         instanceAuditHeader.setType(type);
-        instanceAuditHeader.setUpdatedBy(null);
-        instanceAuditHeader.setUpdateTime(null);
-        if (creationDate == null)
+        instanceAuditHeader.setVersion(versionNumber);
+        if (versionNumber == 1L)
         {
-            instanceAuditHeader.setVersion(1L);
+            instanceAuditHeader.setUpdatedBy(null);
+            instanceAuditHeader.setUpdateTime(null);
         }
         else
         {
-            instanceAuditHeader.setVersion(creationDate.getTime());
+            instanceAuditHeader.setUpdatedBy(originatorName);
+            instanceAuditHeader.setUpdateTime(new Date());
         }
+
         instanceAuditHeader.setStatus(status);
     }
 

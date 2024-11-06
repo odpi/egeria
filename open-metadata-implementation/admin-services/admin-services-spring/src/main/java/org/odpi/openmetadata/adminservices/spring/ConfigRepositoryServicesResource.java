@@ -386,6 +386,32 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Set up a PostgreSQL database schema as the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param storageProperties  properties used to configure access to postgres
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/local-repository/mode/postgres-repository")
+
+    @Operation(summary="setPostgresLocalRepository",
+            description="Set up a PostgreSQL Database schema as the local repository.  Each repository is stored in its own database schema.  The storage properties should include databaseURL, databaseSchema, secretsStore and secretsCollectionName",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/connectors/repository/postgres/overview/"))
+
+    public VoidResponse setPostgresLocalRepository(@PathVariable                  String              userId,
+                                                   @PathVariable                  String              serverName,
+                                                   @RequestBody                   Map<String, Object> storageProperties)
+    {
+        return adminAPI.setPostgresLocalRepository(userId, serverName, storageProperties);
+    }
+
+
+    /**
      * Set up an XTDB store as the local repository.  This store uses XTDB to provide a historical metadata repository that operates in memory.
      * This version of the XTDB repository is designed for testing.
      *

@@ -1,128 +1,156 @@
 # Egeria-open-metadata-conformance-suite
 
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+
+@ctsServer=ctsServer
+@ctsUserId=cts
+@ctsPassword=secret
+
+@tutServer=postgres-metadata-store
+@tutPlatformURLroot=https://localhost:9443
+
+@cohort=ctsCohort
+
 ###
 # group: Configuration
 # @name Query cSuite server's configuration
 # Query the current configuration of the conformance suite server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/configuration
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/configuration
 
 ###
 # group: Configuration
 # @name Set cSuite server's user Id
 # Set up the user Id that this server should use on open metadata requests.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-id?
-    id={{user}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/server-user-id?
+    id={{ctsUserId}}
 
 ###
 # group: Configuration
 # @name Set cSuite server's password
 # Set up the password that the conformance suite server should use on open metadata requests.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/server-user-password?
-    password={{password}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/server-user-password?
+    password={{ctsPassword}}
 
 ###
 # group: Configuration
 # @name Set up event bus to connect to cohort topics
 # Set up the common properties needed to call your event bus.  These properties are passed in the request body.
 # This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/event-bus
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/event-bus
 Content-Type: application/json
 
+
 {
-    "producer": {
-        "bootstrap.servers": "{{kafkaep}}"
-    },
-    "consumer":{
-        "bootstrap.servers": "{{kafkaep}}"
-    }
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
 }
 
 ###
 # group: Configuration
-# @name Enable access to the cohort
+# @name Enable access to the cohort (CTS Server)
 # Request registration to a cohort.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/cohorts/{{cohort}}
 
 ###
 # group: Configuration
-# @name Disable access to the cohort
-# Unregister from a cohort.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
+# @name Enable access to the cohort (TUT Server)
+# Request registration to a cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/cohorts/{{cohort}}
 
 ###
 # group: Configuration
 # @name Configure the test of an open metadata repository
 # Activate the repository workbench tests to validate the behaviour of a specific repository.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/repository-workbench/repositories/{{tutServer}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/repository-workbench/repositories
+Content-Type: application/json
+
+{
+  "class": "RepositoryConformanceWorkbenchConfig",
+  "tutRepositoryServerName": "{{tutServer}}"
+}
+
 
 ###
 # group: Configuration
 # @name Configure the test of an open metadata server platform
 # Activate the repository workbench tests to validate the behaviour of a specific server platform.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/platform-workbench/platforms/{{tutPlatformURLroot}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/platform-workbench/platforms
+Content-Type: application/json
+
+{
+  "urlRoot": "{{tutPlatformURLroot}}"
+}
+
 
 ###
 # group: Configuration
 # @name Delete the repository workbench configuration
 # Remove all of the configuration for the open metadata conformance suite.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/repository-workbench
+DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/repository-workbench
 
 ###
 # group: Configuration
 # @name Delete the platform workbench configuration
 # Remove the configuration for the platform workbench of the open metadata conformance suite.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches/platform-workbench
+DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/platform-workbench
 
 ###
 # group: Configuration
 # @name Delete the conformance suite configuration
 # Remove all of the configuration for the open metadata conformance suite.
-DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/conformance-suite-workbenches
+DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches
 
 ###
 # group: Starting/Stopping CTS server
 # @name Activate conformance suite using config
 # Activate open metadata conformance suite services.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ctsServer}}/instance
 
 ###
 # group: Starting/Stopping CTS server
 # @name Deactivate conformance suite server
 # Deactivate open metadata conformance suite services for this server.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance
+DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ctsServer}}/instance
 
 ###
 # group: Getting Results
 # @name Retrieve platform workbench results
 # Retrieve the results from the platform workbench tests.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/platform-workbench
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/platform-workbench
 
 ###
 # group: Getting Results
 # @name Retrieve repository workbench results
 # Retrieve the results from the repository workbench tests.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/repository-workbench
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/repository-workbench
 
 ###
 # group: Getting Results
 # @name Retrieve full report of results
 # Retrieve all of the results of the conformance suite testing.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report
 
 ###
 # group: Getting Results
 # @name Retrieve summary report of results
 # Retrieve all of the results of the conformance suite testing.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/summary
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/summary
 
 ###
 # group: Getting Results
 # @name Retrieve report of failed test cases
 # Retrieve the results of all failed test cases.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/failed
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/failed
 
 ###
 # group: Getting Results
 # @name Retrieve report of a specific test case
 # Retrieve the results of all failed test cases.
-GET {{baseURL}}/servers/{{server}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/repository-metadata-collection
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/repository-entity-reference-copy-lifecycle-ConceptModelElement
