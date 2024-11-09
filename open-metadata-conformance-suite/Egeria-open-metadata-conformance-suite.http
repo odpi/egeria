@@ -14,12 +14,6 @@
 
 ###
 # group: Configuration
-# @name Query cSuite server's configuration
-# Query the current configuration of the conformance suite server.
-GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/configuration
-
-###
-# group: Configuration
 # @name Set cSuite server's user Id
 # Set up the user Id that this server should use on open metadata requests.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/server-user-id?
@@ -73,7 +67,9 @@ Content-Type: application/json
 
 {
   "class": "RepositoryConformanceWorkbenchConfig",
-  "tutRepositoryServerName": "{{tutServer}}"
+  "tutRepositoryServerName": "{{tutServer}}",
+  "maxSearchResults": 20,
+  "testEntityTypes": ["Asset"]
 }
 
 
@@ -107,11 +103,16 @@ DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{
 # Remove all of the configuration for the open metadata conformance suite.
 DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches
 
+
+
 ###
 # group: Starting/Stopping CTS server
-# @name Activate conformance suite using config
+# @name Start conformance suite using config
 # Activate open metadata conformance suite services.
 POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ctsServer}}/instance
+
+
+
 
 ###
 # group: Starting/Stopping CTS server
@@ -154,3 +155,12 @@ GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{ad
 # @name Retrieve report of a specific test case
 # Retrieve the results of all failed test cases.
 GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/repository-entity-reference-copy-lifecycle-ConceptModelElement
+
+
+###
+# group: Configuration
+# @name Query cSuite server's configuration
+# Query the current configuration of the conformance suite server.
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/configuration
+
+###

@@ -2538,12 +2538,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
             {
                 // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
-                        one.getProperties(),
-                        two.getProperties(),
-                        sequencingProperty,
-                        sequencingOrder
-                ));
+                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
+                                                                      two.getProperties(),
+                                                                      sequencingProperty,
+                                                                      sequencingOrder));
             }
             else
             {
@@ -2610,12 +2608,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
             {
                 // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
-                        one.getProperties(),
-                        two.getProperties(),
-                        sequencingProperty,
-                        sequencingOrder
-                ));
+                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
+                                                                      two.getProperties(),
+                                                                      sequencingProperty,
+                                                                      sequencingOrder));
             }
             else
             {
@@ -2765,10 +2761,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sequencingOrder ascending or descending order
      * @return sort result
      */
-    private static int  compareProperties(InstanceProperties     instance1Properties,
-                                          InstanceProperties     instance2Properties,
-                                          String                 propertyName,
-                                          SequencingOrder        sequencingOrder)
+    public int  compareProperties(InstanceProperties     instance1Properties,
+                                  InstanceProperties     instance2Properties,
+                                  String                 propertyName,
+                                  SequencingOrder        sequencingOrder)
     {
 
         // todo need to add support for properties in the instance header eg createdBy
@@ -2865,51 +2861,26 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     private static int typeSpecificCompare(String typeName, Object v1, Object v2)
     {
-        int sortOrder;
-        switch (typeName)
+        return switch (typeName)
         {
-            case "boolean":
-                sortOrder = ((Boolean) v1).compareTo((Boolean) v2);
-                break;
-            case "byte":
-                sortOrder = ((Byte) v1).compareTo((Byte) v2);
-                break;
-            case "char":
-                sortOrder = ((Character) v1).compareTo((Character) v2);
-                break;
-            case "short":
-                sortOrder = ((Short) v1).compareTo((Short) v2);
-                break;
-            case "integer":
-                sortOrder = ((Integer) v1).compareTo((Integer) v2);
-                break;
-            case "long":
-                sortOrder = ((Long) v1).compareTo((Long) v2);
-                break;
-            case "float":
-                sortOrder = ((Float) v1).compareTo((Float) v2);
-                break;
-            case "double":
-                sortOrder = ((Double) v1).compareTo((Double) v2);
-                break;
-            case "biginteger":
-                sortOrder = ((BigInteger) v1).compareTo((BigInteger) v2);
-                break;
-            case "bigdecimal":
-                sortOrder = ((BigDecimal) v1).compareTo((BigDecimal) v2);
-                break;
-            case "string":
-                sortOrder = ((String) v1).compareTo((String) v2);
-                break;
-            case "date":
-                sortOrder = ((Date) v1).compareTo((Date) v2);
-                break;
-            default:
+            case "boolean" -> ((Boolean) v1).compareTo((Boolean) v2);
+            case "byte" -> ((Byte) v1).compareTo((Byte) v2);
+            case "char" -> ((Character) v1).compareTo((Character) v2);
+            case "short" -> ((Short) v1).compareTo((Short) v2);
+            case "integer" -> ((Integer) v1).compareTo((Integer) v2);
+            case "long" -> ((Long) v1).compareTo((Long) v2);
+            case "float" -> ((Float) v1).compareTo((Float) v2);
+            case "double" -> ((Double) v1).compareTo((Double) v2);
+            case "biginteger" -> ((BigInteger) v1).compareTo((BigInteger) v2);
+            case "bigdecimal" -> ((BigDecimal) v1).compareTo((BigDecimal) v2);
+            case "string" -> ((String) v1).compareTo((String) v2);
+            case "date" -> ((Date) v1).compareTo((Date) v2);
+            default ->
+            {
                 log.debug("Property type not catered for in compare function");
-                sortOrder = 0;
-        }
-
-        return sortOrder;
+                yield 0;
+            }
+        };
     }
 
 

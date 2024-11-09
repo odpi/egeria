@@ -29,7 +29,7 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{use
 
 ###
 
-@entityGUID=108b85fe-d7b8-45c3-9fb8-742ac4e4fb14
+@entityGUID=84e3f4d7-bd2b-4f34-9a34-7f018a7570fd
 
 
 ###

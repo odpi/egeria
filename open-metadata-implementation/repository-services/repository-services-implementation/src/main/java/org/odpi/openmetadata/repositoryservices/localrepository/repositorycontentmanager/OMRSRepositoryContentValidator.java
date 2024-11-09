@@ -61,7 +61,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     /**
      * Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
      * all known typedefs.
-     *
      * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
      * If a new TypeDef is present, it is added to the enterprise list.
      *
@@ -83,7 +82,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     /**
      * Return a boolean flag indicating whether the list of TypeDefs passed are compatible with the
      * all known typedefs.
-     *
      * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
      * If a new TypeDef is present, it is added to the enterprise list.
      *
@@ -445,9 +443,56 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String methodName = "validEntity";
 
-        return validInstance(sourceName, entity, methodName, false);
+        return validInstance(sourceName, entity, methodName, false) &&
+                validClassifications(sourceName, entity);
     }
 
+
+    /**
+     * Check that the classifications for an entity are valid.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param entity entity to test
+     * @return boolean result
+     */
+    private boolean validClassifications(String        sourceName,
+                                         EntitySummary entity)
+    {
+        final String methodName = "validClassifications";
+
+        if (entity.getClassifications() != null)
+        {
+            for (Classification classification : entity.getClassifications())
+            {
+                if (classification == null)
+                {
+                    return false;
+                }
+
+                if (classification.getName() == null)
+                {
+                    repositoryContentManager.logNullInstance(sourceName, methodName);
+                    return false;
+                }
+
+                if (! this.validInstanceAuditHeader(sourceName,
+                                                    entity.getGUID() + ":" + classification.getName(),
+                                                    classification,
+                                                    methodName,
+                                                    false))
+                {
+                    return false;
+                }
+
+                if (! classification.getName().equals(classification.getType().getTypeDefName()))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Test that the supplied entity is valid.
@@ -554,6 +599,67 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                                      instanceType.getTypeDefName(),
                                                                      instanceType.getTypeDefCategory().getName(),
                                                                      instance.getGUID(),
+                                                                     methodName);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Test that the supplied instance is valid.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param identifier identifier of the instance (typically guid - but may include classification name)
+     * @param instance instance to test
+     * @param methodName calling method
+     * @param fromStore is the entity from the store?
+     * @return boolean result
+     */
+    private boolean validInstanceAuditHeader(String              sourceName,
+                                             String              identifier,
+                                             InstanceAuditHeader instance,
+                                             String              methodName,
+                                             boolean             fromStore)
+    {
+        if (instance == null)
+        {
+            repositoryContentManager.logNullInstance(sourceName, methodName);
+            return false;
+        }
+
+        InstanceType instanceType = instance.getType();
+
+        if (instanceType == null)
+        {
+            repositoryContentManager.logNullType(sourceName, methodName);
+            return false;
+        }
+
+        if (! validTypeDefId(sourceName,
+                             instanceType.getTypeDefGUID(),
+                             instanceType.getTypeDefName(),
+                             instanceType.getTypeDefCategory()))
+        {
+            /*
+             * Error already logged
+             */
+            return false;
+        }
+
+        if (! fromStore)
+        {
+            String homeMetadataCollectionId = instance.getMetadataCollectionId();
+
+            if (homeMetadataCollectionId == null)
+            {
+                repositoryContentManager.logNullMetadataCollectionId(sourceName,
+                                                                     instanceType.getTypeDefGUID(),
+                                                                     instanceType.getTypeDefName(),
+                                                                     instanceType.getTypeDefCategory().getName(),
+                                                                     identifier,
                                                                      methodName);
                 return false;
             }
@@ -1923,7 +2029,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                         String searchCriteria,
                                         String methodName) throws InvalidParameterException
     {
-        if ((searchCriteria == null) || (searchCriteria.length() == 0))
+        if ((searchCriteria == null) || (searchCriteria.isEmpty()))
         {
             throw new InvalidParameterException(OMRSErrorCode.NO_SEARCH_CRITERIA.getMessageDefinition(parameterName,
                                                                                                       methodName,
@@ -1936,13 +2042,19 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * {@inheritDoc}
+     * Validate the property-based search conditions.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName  name of the parameter that passed the property-based conditions
+     * @param matchProperties  property-based conditions
+     * @param methodName  method receiving the call
+     * @throws InvalidParameterException  property-based conditions are invalid
      */
     @Override
-    public void validateSearchProperties(String sourceName,
-                                         String parameterName,
+    public void validateSearchProperties(String           sourceName,
+                                         String           parameterName,
                                          SearchProperties matchProperties,
-                                         String methodName) throws InvalidParameterException
+                                         String           methodName) throws InvalidParameterException
     {
         if (matchProperties == null)
         {
@@ -1992,9 +2104,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                             break;
                         case LIKE:
                             // For the LIKE operator, only a PrimitiveTypePropertyValue of type string is allowed
-                            if (value instanceof PrimitivePropertyValue)
+                            if (value instanceof PrimitivePropertyValue ppv)
                             {
-                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
                                 if (!ppv.getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING))
                                 {
                                     throw new InvalidParameterException(OMRSErrorCode.INVALID_LIKE_CONDITION.getMessageDefinition(),
@@ -2016,9 +2127,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         case GT:
                         case GTE:
                             // For the <, <=, >=, > operators, only numeric or date types are allowed
-                            if (value instanceof PrimitivePropertyValue)
+                            if (value instanceof PrimitivePropertyValue ppv)
                             {
-                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
                                 PrimitiveDefCategory pdc = ppv.getPrimitiveDefCategory();
                                 if (! (pdc.equals(OM_PRIMITIVE_TYPE_DATE)
                                         || pdc.equals(OM_PRIMITIVE_TYPE_SHORT)
@@ -2079,7 +2189,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         for (ClassificationCondition condition : matchClassifications.getConditions())
         {
             String classificationName = condition.getName();
-            if (classificationName == null || classificationName.equals(""))
+            if (classificationName == null || classificationName.isBlank())
             {
                 throw new InvalidParameterException(OMRSErrorCode.INVALID_CLASSIFICATION_SEARCH.getMessageDefinition(),
                                                     this.getClass().getName(),

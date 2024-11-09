@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,9 +203,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * Issue the supplied DDL statements.
      *
      * @param ddlStatements statements to execute
-     * @throws SQLException problem communicating with the database
+     * @throws PropertyServerException problem communicating with the database
      */
-    public void addDatabaseDefinitions(List<String>  ddlStatements) throws SQLException
+    public void addDatabaseDefinitions(List<String>  ddlStatements) throws PropertyServerException
     {
         if ((ddlStatements != null) && (!ddlStatements.isEmpty()))
         {
@@ -223,22 +224,37 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * Issue a SQL command that expects no results.
      *
      * @param sqlCommand command to issue
-     * @throws SQLException something went wrong
+     * @throws PropertyServerException something went wrong
      */
-    public void issueSQLCommand(String     sqlCommand) throws SQLException
+    public void issueSQLCommand(String sqlCommand) throws PropertyServerException
     {
-        if (jdbcConnection.isClosed())
+        final String methodName = "issueSQLCommand";
+
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            preparedStatement.execute();
+
+            preparedStatement.close();
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        preparedStatement.execute();
-
-        preparedStatement.close();
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -251,40 +267,55 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @param timestampColumnName name of the column with the timestamp
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return Map of column names to data values that represent the requested row
-     * @throws SQLException there was a problem calling the database
+     * @throws PropertyServerException there was a problem calling the database
      */
     public Map<String, JDBCDataValue> getLatestRow(String               tableName,
                                                    String               identifierColumnName,
                                                    String               identifierColumnValue,
                                                    String               timestampColumnName,
-                                                   Map<String, Integer> columnNameTypeMap) throws SQLException
+                                                   Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
+        final String methodName = "getLatestRow";
+
         String sqlCommand = "SELECT * FROM " +
                                     tableName +
                                     " WHERE " + identifierColumnName + " = ? AND " +
                                     timestampColumnName +
                                     " = (SELECT MAX(" + timestampColumnName + ") FROM " + tableName + " WHERE " + identifierColumnName + " = ?)";
 
-        if (jdbcConnection.isClosed())
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            preparedStatement.setString(1, identifierColumnValue);
+            preparedStatement.setString(2, identifierColumnValue);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Map<String, JDBCDataValue> results = this.getRowFromResultSet(resultSet, columnNameTypeMap);
+
+            resultSet.close();
+            preparedStatement.close();
+
+            return results;
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        preparedStatement.setString(1, identifierColumnValue);
-        preparedStatement.setString(2, identifierColumnValue);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        Map<String, JDBCDataValue> results = this.getRowFromResultSet(resultSet, columnNameTypeMap);
-
-        resultSet.close();
-        preparedStatement.close();
-
-        return results;
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -295,31 +326,46 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @param whereClause condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return row consisting of column names to data values that represent the requested row
-     * @throws SQLException there was a problem calling the database
+     * @throws PropertyServerException there was a problem calling the database
      */
     public Map<String, JDBCDataValue> getMatchingRow(String               tableName,
                                                      String               whereClause,
-                                                     Map<String, Integer> columnNameTypeMap) throws SQLException
+                                                     Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
+        final String methodName = "getMatchingRow";
+
         String sqlCommand = "SELECT * FROM " + tableName + " WHERE " + whereClause;
 
-        if (jdbcConnection.isClosed())
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Map<String, JDBCDataValue> results = this.getRowFromResultSet(resultSet, columnNameTypeMap);
+
+            resultSet.close();
+            preparedStatement.close();
+
+            return results;
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        Map<String, JDBCDataValue> results = this.getRowFromResultSet(resultSet, columnNameTypeMap);
-
-        resultSet.close();
-        preparedStatement.close();
-
-        return results;
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -330,31 +376,46 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @param whereClause condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
-     * @throws SQLException there was a problem calling the database
+     * @throws PropertyServerException there was a problem calling the database
      */
     public List<Map<String, JDBCDataValue>> getMatchingRows(String               tableName,
                                                             String               whereClause,
-                                                            Map<String, Integer> columnNameTypeMap) throws SQLException
+                                                            Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
+        final String methodName = "getMatchingRows";
+
         String sqlCommand = "SELECT * FROM " + tableName + " WHERE " + whereClause;
 
-        if (jdbcConnection.isClosed())
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
+
+            resultSet.close();
+            preparedStatement.close();
+
+            return results;
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
-
-        resultSet.close();
-        preparedStatement.close();
-
-        return results;
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -364,28 +425,43 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @param sqlCommand condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
-     * @throws SQLException there was a problem calling the database
+     * @throws PropertyServerException there was a problem calling the database
      */
     public List<Map<String, JDBCDataValue>> getMatchingRows(String               sqlCommand,
-                                                            Map<String, Integer> columnNameTypeMap) throws SQLException
+                                                            Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
-        if (jdbcConnection.isClosed())
+        final String methodName = "getMatchingRows";
+
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
+
+            resultSet.close();
+            preparedStatement.close();
+
+            return results;
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
-
-        resultSet.close();
-        preparedStatement.close();
-
-        return results;
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -395,30 +471,45 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @param tableName name of the table to query
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
-     * @throws SQLException there was a problem calling the database
+     * @throws PropertyServerException there was a problem calling the database
      */
     public List<Map<String, JDBCDataValue>> getRows(String               tableName,
-                                                    Map<String, Integer> columnNameTypeMap) throws SQLException
+                                                    Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
+        final String methodName = "geRows";
+
         String sqlCommand = "SELECT * FROM " + tableName;
 
-        if (jdbcConnection.isClosed())
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            if (jdbcConnection.isClosed())
+            {
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+            }
+
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
+
+            resultSet.close();
+            preparedStatement.close();
+
+            return results;
         }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        List<Map<String, JDBCDataValue>> results = this.getRowsFromResultSet(resultSet, columnNameTypeMap);
-
-        resultSet.close();
-        preparedStatement.close();
-
-        return results;
+        catch (SQLException sqlException)
+        {
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
+        }
     }
 
 
@@ -528,57 +619,70 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      *
      * @param tableName name of the table where the row is to be added
      * @param columnNameValueMap column names, values and types
-     * @throws SQLException problem executing the command
+     * @throws PropertyServerException problem executing the command
      */
     public void insertRowIntoTable(String                     tableName,
-                                   Map<String, JDBCDataValue> columnNameValueMap) throws SQLException
+                                   Map<String, JDBCDataValue> columnNameValueMap) throws PropertyServerException
     {
         final String methodName = "insertRowIntoTable";
 
         String sqlCommand = "INSERT INTO " + tableName + this.getInsertColumnList(columnNameValueMap) + " ON CONFLICT DO NOTHING";
 
-        if (jdbcConnection.isClosed())
+        try
         {
-            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-        }
-
-        log.debug(sqlCommand);
-
-        PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
-
-        int parameterIndex = 1;
-        for (String columnName : columnNameValueMap.keySet())
-        {
-            JDBCDataValue jdbcDataValue = columnNameValueMap.get(columnName);
-
-            if (jdbcDataValue.getScaleOrLength() == 0)
+            if (jdbcConnection.isClosed())
             {
-                preparedStatement.setObject(parameterIndex,
-                                            jdbcDataValue.getDataValue(),
-                                            jdbcDataValue.getTargetSQLType());
-            }
-            else
-            {
-                preparedStatement.setObject(parameterIndex,
-                                            jdbcDataValue.getDataValue(),
-                                            jdbcDataValue.getTargetSQLType(),
-                                            jdbcDataValue.getScaleOrLength());
+                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
             }
 
-            parameterIndex++;
+            log.debug(sqlCommand);
+
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
+
+            int parameterIndex = 1;
+            for (String columnName : columnNameValueMap.keySet())
+            {
+                JDBCDataValue jdbcDataValue = columnNameValueMap.get(columnName);
+
+                if (jdbcDataValue.getScaleOrLength() == 0)
+                {
+                    preparedStatement.setObject(parameterIndex,
+                                                jdbcDataValue.getDataValue(),
+                                                jdbcDataValue.getTargetSQLType());
+                }
+                else
+                {
+                    preparedStatement.setObject(parameterIndex,
+                                                jdbcDataValue.getDataValue(),
+                                                jdbcDataValue.getTargetSQLType(),
+                                                jdbcDataValue.getScaleOrLength());
+                }
+
+                parameterIndex++;
+            }
+
+            int rowsInserted = preparedStatement.executeUpdate();
+
+            if ((rowsInserted > 1) && (auditLog != null))
+            {
+                auditLog.logMessage(methodName,
+                                    JDBCAuditCode.UNEXPECTED_ROW_COUNT_FROM_DATABASE.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          Integer.toString(rowsInserted),
+                                                                                                          sqlCommand));
+            }
+
+            preparedStatement.close();
         }
-
-        int rowsInserted = preparedStatement.executeUpdate();
-
-        if ((rowsInserted > 1) && (auditLog != null))
+        catch (SQLException sqlException)
         {
-            auditLog.logMessage(methodName,
-                                JDBCAuditCode.UNEXPECTED_ROW_COUNT_FROM_DATABASE.getMessageDefinition(jdbcDatabaseName,
-                                                                                                      Integer.toString(rowsInserted),
-                                                                                                      sqlCommand));
+            throw new PropertyServerException(JDBCErrorCode.UNEXPECTED_SQL_EXCEPTION.getMessageDefinition(jdbcDatabaseName,
+                                                                                                          sqlCommand,
+                                                                                                          methodName,
+                                                                                                          sqlException.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              sqlException);
         }
-
-        preparedStatement.close();
     }
 
 
@@ -587,10 +691,10 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      *
      * @param tableName name of the table where the row is to be added
      * @param rows list of column names, values and types
-     * @throws SQLException problem executing the command
+     * @throws PropertyServerException problem executing the command
      */
     public void insertRowsIntoTable(String                           tableName,
-                                    List<Map<String, JDBCDataValue>> rows) throws SQLException
+                                    List<Map<String, JDBCDataValue>> rows) throws PropertyServerException
     {
         if (rows != null)
         {

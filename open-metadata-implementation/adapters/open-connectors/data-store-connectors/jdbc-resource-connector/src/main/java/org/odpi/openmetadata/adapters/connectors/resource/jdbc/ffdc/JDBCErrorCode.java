@@ -56,7 +56,17 @@ public enum JDBCErrorCode implements ExceptionMessageSet
                            "The JDBC resource connector detected a missing value for column {0} during method {1} in mapper {2}",
                            "The connector is unable to process the current request because of a missing value in the database.",
                            "Investigate the contents of the database and the SQL requests used to populate it."),
-    ; ;
+
+
+    /**
+     * JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {4}
+     */
+    UNEXPECTED_SQL_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-003",
+                         "The JDBC resource connector for database {0} received an unexpected SQL exception from request '{1}' during method {2}; the error message was: {4}",
+                         "The connector is unable to process the current request because the database returned an unexpected error.",
+                         "Use the details from the SQL error message and the SQL request to determine the cause of the error and retry the request once it is resolved."),
+
+    ;
 
     private final int    httpErrorCode;
     private final String errorMessageId;

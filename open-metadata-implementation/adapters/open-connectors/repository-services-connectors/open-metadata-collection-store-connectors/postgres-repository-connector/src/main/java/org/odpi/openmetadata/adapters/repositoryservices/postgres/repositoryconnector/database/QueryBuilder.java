@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -22,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Translates open metadata query requests into SQL fragments that can be assembled before issuing
@@ -148,10 +148,11 @@ public class QueryBuilder
      */
     private String getMatchPropertiesClause() throws RepositoryErrorException
     {
-        if (matchProperties != null)
+        if ((matchProperties != null) && (matchProperties.getPropertyCount() > 0 || matchProperties.getEffectiveFromTime() != null || (matchProperties.getEffectiveToTime() != null)))
         {
             String matchOperand = "' and ";
-            PropertyComparisonOperator operator = PropertyComparisonOperator.LIKE;
+            PropertyComparisonOperator stringPropertyOperator = PropertyComparisonOperator.LIKE;
+            PropertyComparisonOperator numericPropertyOperator = PropertyComparisonOperator.EQ;
 
             if (matchCriteria == MatchCriteria.ANY)
             {
@@ -159,7 +160,8 @@ public class QueryBuilder
             }
             else if (matchCriteria == MatchCriteria.NONE)
             {
-                operator = PropertyComparisonOperator.NEQ;
+                stringPropertyOperator = PropertyComparisonOperator.NOT_LIKE;
+                numericPropertyOperator = PropertyComparisonOperator.NEQ;
             }
 
             StringBuilder stringBuilder = new StringBuilder(" and (");
@@ -170,7 +172,7 @@ public class QueryBuilder
                 stringBuilder.append(this.getNestedPropertyComparisonClause(null,
                                                                             null,
                                                                             OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
-                                                                            operator,
+                                                                            numericPropertyOperator,
                                                                             matchProperties.getEffectiveFromTime()));
                 firstProperty = false;
             }
@@ -189,7 +191,7 @@ public class QueryBuilder
                 stringBuilder.append(this.getNestedPropertyComparisonClause(null,
                                                                             null,
                                                                             OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
-                                                                            operator,
+                                                                            numericPropertyOperator,
                                                                             matchProperties.getEffectiveToTime()));
 
             }
@@ -204,7 +206,8 @@ public class QueryBuilder
                 stringBuilder.append(getPropertyComparisonFromInstanceProperties(matchProperties,
                                                                                  null,
                                                                                  null,
-                                                                                 operator,
+                                                                                 stringPropertyOperator,
+                                                                                 numericPropertyOperator,
                                                                                  matchOperand));
             }
 
@@ -223,14 +226,16 @@ public class QueryBuilder
      * @param instanceProperties collection of properties to work on (most will be primitives)
      * @param propertyTableName name of table holding the properties
      * @param topLevelPropertyName parent attribute name - not null when dealing with nested properties
-     * @param operator how to compare the property value stored with the property value supplied.
+     * @param stringPropertyOperator how to compare the property value stored with the property value supplied.
+     * @param numericPropertyOperator how to compare the property value stored with the property value supplied.
      * @param matchOperand how to combine the results from different properties
      * @return sql fragment wrapped in parentheses.  Forms part of a where clause
      */
     private String getPropertyComparisonFromInstanceProperties(InstanceProperties         instanceProperties,
                                                                String                     propertyTableName,
                                                                String                     topLevelPropertyName,
-                                                               PropertyComparisonOperator operator,
+                                                               PropertyComparisonOperator stringPropertyOperator,
+                                                               PropertyComparisonOperator numericPropertyOperator,
                                                                String                     matchOperand) throws RepositoryErrorException
     {
         if ((instanceProperties != null) && (instanceProperties.getPropertyCount() > 0))
@@ -260,18 +265,29 @@ public class QueryBuilder
 
                 if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
                 {
-                   stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
-                                                                               topLevelPropertyName,
-                                                                               leafPropertyName,
-                                                                               operator,
-                                                                               primitivePropertyValue.getPrimitiveValue()));
+                    if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                    {
+                        stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
+                                                                                    topLevelPropertyName,
+                                                                                    leafPropertyName,
+                                                                                    stringPropertyOperator,
+                                                                                    primitivePropertyValue.getPrimitiveValue()));
+                    }
+                    else
+                    {
+                        stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
+                                                                                    topLevelPropertyName,
+                                                                                    leafPropertyName,
+                                                                                    numericPropertyOperator,
+                                                                                    primitivePropertyValue.getPrimitiveValue()));
+                    }
                 }
                 else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
                     stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
                                                                                 topLevelPropertyName,
                                                                                 leafPropertyName,
-                                                                                operator,
+                                                                                stringPropertyOperator,
                                                                                 enumPropertyValue.getSymbolicName()));
                 }
                 else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
@@ -279,7 +295,8 @@ public class QueryBuilder
                     stringBuilder.append(getPropertyComparisonFromInstanceProperties(mapPropertyValue.getMapValues(),
                                                                                      propertyTableName,
                                                                                      leafPropertyName,
-                                                                                     operator,
+                                                                                     stringPropertyOperator,
+                                                                                     numericPropertyOperator,
                                                                                      matchOperand));
                 }
                 else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
@@ -287,7 +304,8 @@ public class QueryBuilder
                     stringBuilder.append(getPropertyComparisonFromInstanceProperties(arrayPropertyValue.getArrayValues(),
                                                                                      propertyTableName,
                                                                                      leafPropertyName,
-                                                                                     operator,
+                                                                                     stringPropertyOperator,
+                                                                                     numericPropertyOperator,
                                                                                      matchOperand));
                 }
                 else if (instancePropertyValue instanceof StructPropertyValue structPropertyValue)
@@ -295,7 +313,8 @@ public class QueryBuilder
                     stringBuilder.append(getPropertyComparisonFromInstanceProperties(structPropertyValue.getAttributes(),
                                                                                      propertyTableName,
                                                                                      leafPropertyName,
-                                                                                     operator,
+                                                                                     stringPropertyOperator,
+                                                                                     numericPropertyOperator,
                                                                                      matchOperand));
                 }
             }
@@ -390,6 +409,10 @@ public class QueryBuilder
                     {
                         return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + propertyValue + "') ";
                     }
+                    case NOT_LIKE ->
+                    {
+                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " not like '" + propertyValue + "') ";
+                    }
                     case NOT_NULL ->
                     {
                         return sqlClause;
@@ -436,6 +459,10 @@ public class QueryBuilder
                 case LIKE ->
                 {
                     return " (" + propertyColumn + " like '" + propertyValue + "') ";
+                }
+                case NOT_LIKE ->
+                {
+                    return " (" + propertyColumn + " not like '" + propertyValue + "') ";
                 }
             }
         }
@@ -488,25 +515,20 @@ public class QueryBuilder
      * @param topLevelPropertyName parent attribute name - not null when dealing with nested properties
      * @return sql fragment wrapped in parentheses.  Forms part of a where clause
      */
-    private String getPropertyComparisonFromPropertyConditions(SearchProperties           searchProperties,
-                                                               String                     propertyTableName,
-                                                               String                     topLevelPropertyName) throws RepositoryErrorException
+    private String getPropertyComparisonFromPropertyConditions(SearchProperties searchProperties,
+                                                               String           propertyTableName,
+                                                               String           topLevelPropertyName) throws RepositoryErrorException
     {
         if ((searchProperties != null) && (searchProperties.getConditions() != null) && (! searchProperties.getConditions().isEmpty()))
         {
-            String matchOperand = "' and ";
-            PropertyComparisonOperator operator = PropertyComparisonOperator.EQ;
+            String matchOperand = " and ";
 
             if (searchProperties.getMatchCriteria() == MatchCriteria.ANY)
             {
-                matchOperand = "' or ";
-            }
-            else if (searchProperties.getMatchCriteria() == MatchCriteria.NONE)
-            {
-                operator = PropertyComparisonOperator.NEQ;
+                matchOperand = " or ";
             }
 
-            StringBuilder stringBuilder = new StringBuilder(" (");
+            StringBuilder stringBuilder = new StringBuilder(" and (");
             boolean       firstProperty = true;
 
             for (PropertyCondition propertyCondition : searchProperties.getConditions())
@@ -538,17 +560,17 @@ public class QueryBuilder
                     if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
                     {
                         stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
-                                                                                    topLevelPropertyName,
-                                                                                    leafPropertyName,
-                                                                                    operator,
-                                                                                    primitivePropertyValue.getPrimitiveValue()));
+                                                                                        topLevelPropertyName,
+                                                                                        leafPropertyName,
+                                                                                        propertyCondition.getOperator(),
+                                                                                        primitivePropertyValue.getPrimitiveValue()));
                     }
                     else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                     {
                         stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
                                                                                     topLevelPropertyName,
                                                                                     leafPropertyName,
-                                                                                    operator,
+                                                                                    propertyCondition.getOperator(),
                                                                                     enumPropertyValue.getSymbolicName()));
                     }
                     else if (instancePropertyValue instanceof MapPropertyValue mapPropertyValue)
@@ -556,7 +578,8 @@ public class QueryBuilder
                         stringBuilder.append(getPropertyComparisonFromInstanceProperties(mapPropertyValue.getMapValues(),
                                                                                          propertyTableName,
                                                                                          leafPropertyName,
-                                                                                         operator,
+                                                                                         propertyCondition.getOperator(),
+                                                                                         propertyCondition.getOperator(),
                                                                                          matchOperand));
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
@@ -564,7 +587,8 @@ public class QueryBuilder
                         stringBuilder.append(getPropertyComparisonFromInstanceProperties(arrayPropertyValue.getArrayValues(),
                                                                                          propertyTableName,
                                                                                          leafPropertyName,
-                                                                                         operator,
+                                                                                         propertyCondition.getOperator(),
+                                                                                         propertyCondition.getOperator(),
                                                                                          matchOperand));
                     }
                     else if (instancePropertyValue instanceof StructPropertyValue structPropertyValue)
@@ -572,7 +596,8 @@ public class QueryBuilder
                         stringBuilder.append(getPropertyComparisonFromInstanceProperties(structPropertyValue.getAttributes(),
                                                                                          propertyTableName,
                                                                                          leafPropertyName,
-                                                                                         operator,
+                                                                                         propertyCondition.getOperator(),
+                                                                                         propertyCondition.getOperator(),
                                                                                          matchOperand));
                     }
                 }
@@ -1148,7 +1173,7 @@ public class QueryBuilder
 
             if (classificationName != null)
             {
-                sqlFragment = sqlFragment + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() +  " = '" + classificationName + "'";
+                sqlFragment = sqlFragment + " and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() +  " = '" + classificationName + "' ";
             }
 
             return sqlFragment + ")";
@@ -1168,54 +1193,12 @@ public class QueryBuilder
     public String getPropertyJoinQuery(String principleTableName,
                                        String propertiesTableName)
     {
-        return "select distinct " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) +
-                " from " + principleTableName +
-                " left outer join " + propertiesTableName +
-                " on " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName) +
-                " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertiesTableName);
+        return "select * from " + principleTableName +
+                    " left outer join " + propertiesTableName +
+                    " on " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName) +
+                    " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertiesTableName);
     }
 
-
-    /**
-     * Return a starch string for properties of an entity or relationship.
-     *
-     * @param guidVersionMap map
-     * @return sql fragment
-     */
-    public String getGUIDListPropertiesQueryWhereClause(Map<String, Long> guidVersionMap)
-    {
-        if (guidVersionMap != null)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            boolean       firstGUID     = true;
-
-            for (String instanceGUID : guidVersionMap.keySet())
-            {
-                if (firstGUID)
-                {
-                    firstGUID = false;
-                }
-                else
-                {
-                    stringBuilder.append(" or ");
-                }
-
-                stringBuilder.append("(");
-                stringBuilder.append(RepositoryColumn.INSTANCE_GUID.getColumnName());
-                stringBuilder.append(" = '");
-                stringBuilder.append(instanceGUID);
-                stringBuilder.append("' and ");
-                stringBuilder.append(RepositoryColumn.VERSION.getColumnName());
-                stringBuilder.append(" = ");
-                stringBuilder.append(guidVersionMap.get(instanceGUID));
-                stringBuilder.append(")");
-            }
-
-            return stringBuilder.toString();
-        }
-
-        return " ";
-    }
 
     /**
      * Return the where clause built up from the query parameters supplied.
@@ -1234,9 +1217,7 @@ public class QueryBuilder
                 getSearchClassificationsClause() +
                 getTypeClause() +
                 getLimitResultsByClassificationClaus() +
-                getLimitResultsByStatusClause() +
-                getSequencingOrder() +
-                getPaging();
+                getLimitResultsByStatusClause();
 
         if (log.isDebugEnabled())
         {
@@ -1247,6 +1228,25 @@ public class QueryBuilder
         return whereClause;
     }
 
+
+    /**
+     * The sequencing (order by) and paging (limit/offset) can only be added at the end and may only include
+     *
+     * @return sql fragment
+     */
+    public String getSequenceAndPaging()
+    {
+        String clause = getSequencingOrder() +
+                        getPaging();
+
+        if (log.isDebugEnabled())
+        {
+            log.debug(this.toString());
+            log.debug(clause);
+        }
+
+        return clause + ";";
+    }
 
 
     /**
