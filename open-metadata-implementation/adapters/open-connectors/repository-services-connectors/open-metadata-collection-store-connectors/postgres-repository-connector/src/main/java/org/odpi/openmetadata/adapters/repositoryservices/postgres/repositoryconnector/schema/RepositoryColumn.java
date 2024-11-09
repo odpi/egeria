@@ -22,7 +22,7 @@ public enum RepositoryColumn implements PostgreSQLColumn
 
 
     METADATA_COLLECTION_GUID("metadata_collection_guid", ColumnType.STRING, "Unique identifier of a metadata collection.", true),
-    METADATA_COLLECTION_NAME("metadata_collection_name", ColumnType.STRING, "Unique name of a metadata collection.", true),
+    METADATA_COLLECTION_NAME("metadata_collection_name", ColumnType.STRING, "Unique name of a metadata collection.", false),
     INSTANCE_PROVENANCE_TYPE("instance_provenance_type", ColumnType.STRING, "Category of metadata collection.", true),
     REPLICATED_BY("replicated_by", ColumnType.STRING, "Metadata collection guid responsible for propagating updates about this instance.", false),
 

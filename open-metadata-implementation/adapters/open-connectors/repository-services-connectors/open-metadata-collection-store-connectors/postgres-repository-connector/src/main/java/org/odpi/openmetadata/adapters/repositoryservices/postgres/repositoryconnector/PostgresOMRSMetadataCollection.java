@@ -144,7 +144,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        EntitySummary entity = repositoryStore.getEntitySummary(guid, null);
+        EntitySummary entity = repositoryStore.getEntitySummary(guid);
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
@@ -325,25 +325,14 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
-        List<Relationship> entityRelationships = repositoryStore.getRelationshipsForEntity(entityGUID,
-                                                                                           relationshipTypeGUID,
-                                                                                           fromRelationshipElement,
-                                                                                           limitResultsByStatus,
-                                                                                           asOfTime,
-                                                                                           sequencingProperty,
-                                                                                           sequencingOrder,
-                                                                                           pageSize);
-
-        if ((entityRelationships == null) || (entityRelationships.isEmpty()))
-        {
-            return null;
-        }
-
-        return repositoryHelper.formatRelationshipResults(entityRelationships,
-                                                          fromRelationshipElement,
-                                                          sequencingProperty,
-                                                          sequencingOrder,
-                                                          pageSize);
+        return repositoryStore.getRelationshipsForEntity(entityGUID,
+                                                         relationshipTypeGUID,
+                                                         fromRelationshipElement,
+                                                         limitResultsByStatus,
+                                                         asOfTime,
+                                                         sequencingProperty,
+                                                         sequencingOrder,
+                                                         pageSize);
     }
 
 
@@ -418,9 +407,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        List<EntityDetail> foundEntities =  repositoryStore.findEntitiesByProperty(entityTypeGUID, matchProperties, matchCriteria, fromEntityElement, limitResultsByStatus, limitResultsByClassification, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findEntitiesByProperty(entityTypeGUID, matchProperties, matchCriteria, fromEntityElement, limitResultsByStatus, limitResultsByClassification, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -493,9 +480,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        List<EntityDetail> foundEntities = repositoryStore.findEntities(entityTypeGUID, entitySubtypeGUIDs, matchProperties, fromEntityElement, limitResultsByStatus, matchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findEntities(entityTypeGUID, entitySubtypeGUIDs, matchProperties, fromEntityElement, limitResultsByStatus, matchClassifications, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -573,9 +558,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        List<EntityDetail> foundEntities = repositoryStore.findEntitiesByClassification(entityTypeGUID, classificationName, matchClassificationProperties, matchCriteria, fromEntityElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findEntitiesByClassification(entityTypeGUID, classificationName, matchClassificationProperties, matchCriteria, fromEntityElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -648,13 +631,8 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         /*
          * Process operation
-         *
-         * This is a brute force implementation of locating in entity since it iterates through all
-         * the stored entities.
          */
-        List<EntityDetail>   foundEntities =  repositoryStore.findEntitiesByPropertyValue(entityTypeGUID, searchCriteria, fromEntityElement, limitResultsByStatus, limitResultsByClassification, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryStore.findEntitiesByPropertyValue(entityTypeGUID, searchCriteria, fromEntityElement, limitResultsByStatus, limitResultsByClassification, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -917,13 +895,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Perform operation
          */
-        List<Relationship> foundRelationships = repositoryStore.findRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, matchProperties, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatRelationshipResults(foundRelationships,
-                                                          fromRelationshipElement,
-                                                          sequencingProperty,
-                                                          sequencingOrder,
-                                                          pageSize);
+        return repositoryStore.findRelationships(relationshipTypeGUID, relationshipSubtypeGUIDs, matchProperties, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -998,17 +970,8 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         /*
          * Perform operation
-         *
-         * This is a brute force implementation of locating a relationship since it iterates through all
-         * the stored entities.
          */
-        List<Relationship>  foundRelationships = repositoryStore.findRelationshipsByProperty(relationshipTypeGUID, matchProperties, matchCriteria, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatRelationshipResults(foundRelationships,
-                                                          fromRelationshipElement,
-                                                          sequencingProperty,
-                                                          sequencingOrder,
-                                                          pageSize);
+        return repositoryStore.findRelationshipsByProperty(relationshipTypeGUID, matchProperties, matchCriteria, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -1077,17 +1040,8 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         /*
          * Perform operation
-         *
-         * This is a brute force implementation of locating a relationship since it iterates through all
-         * the stored relationships.
          */
-        List<Relationship> foundRelationships =  repositoryStore.findRelationshipsByPropertyValue(relationshipTypeGUID, searchCriteria, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
-
-        return repositoryHelper.formatRelationshipResults(foundRelationships,
-                                                          fromRelationshipElement,
-                                                          sequencingProperty,
-                                                          sequencingOrder,
-                                                          pageSize);
+        return repositoryStore.findRelationshipsByPropertyValue(relationshipTypeGUID, searchCriteria, fromRelationshipElement, limitResultsByStatus, asOfTime, sequencingProperty, sequencingOrder, pageSize);
     }
 
 

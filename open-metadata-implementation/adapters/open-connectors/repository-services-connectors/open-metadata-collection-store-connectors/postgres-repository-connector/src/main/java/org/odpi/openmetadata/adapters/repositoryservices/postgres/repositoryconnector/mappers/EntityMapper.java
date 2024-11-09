@@ -270,7 +270,7 @@ public class EntityMapper extends RepositoryMapper
                                                           null,
                                                           null,
                                                           null,
-                                                          entityDetail);
+                                                          entityProxy);
                 }
 
                 super.setUpBooleanValueInRow(newEntityTableRow, true, RepositoryColumn.IS_PROXY.getColumnName());
@@ -367,7 +367,7 @@ public class EntityMapper extends RepositoryMapper
                                                methodName);
         }
 
-        if (! uniquePropertiesTableRows.isEmpty())
+        if ((uniquePropertiesTableRows != null) && (! uniquePropertiesTableRows.isEmpty()))
         {
             return uniquePropertiesTableRows;
         }

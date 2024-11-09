@@ -84,6 +84,7 @@ public class ClassificationMapper extends RepositoryMapper
                 Classification newClassification = new Classification();
 
                 super.fillInstanceAuditHeader(newClassification, classificationTableRow);
+                newClassification.setName(super.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationTableRow, true));
                 newClassification.setProperties(super.getInstanceProperties(classificationTableRow, classificationPropertiesTableRows));
 
                 classification = newClassification;

@@ -140,10 +140,10 @@ class PostgresOMRSMetadataStore
      * @return entity object
      * @throws RepositoryErrorException problem forming entity proxy
      */
-    synchronized EntitySummary  getEntitySummary(String guid, Date asOfTime) throws RepositoryErrorException
+    EntitySummary  getEntitySummary(String guid) throws RepositoryErrorException
     {
         DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
-        EntityMapper storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(asOfTime));
+        EntityMapper storedEntity = databaseStore.getEntityFromStore(guid, getAsOfTime(null));
 
         if (storedEntity != null)
         {
@@ -566,7 +566,7 @@ class PostgresOMRSMetadataStore
 
         DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
 
-        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationships(queryBuilder.getAsOfTimeWhereClause(), getAsOfTime(asOfTime));
+        List<RelationshipMapper> storedRelationships = databaseStore.retrieveRelationships(queryBuilder, getAsOfTime(asOfTime));
 
         return getRelationshipsFromMappers(storedRelationships);
     }

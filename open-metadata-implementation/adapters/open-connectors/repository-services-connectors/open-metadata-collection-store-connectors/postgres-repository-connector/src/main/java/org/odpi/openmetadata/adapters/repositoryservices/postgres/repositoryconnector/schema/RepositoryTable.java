@@ -328,22 +328,6 @@ public enum RepositoryTable implements PostgreSQLTable
 
 
     /**
-     * Return the name to type map for the supplied column.
-     *
-     * @param column column to set up
-     * @return map
-     */
-    public static Map<String, Integer> getSingleColumnNameTypeMap(RepositoryColumn column)
-    {
-        Map<String, Integer> columnNameTypeMap = new HashMap<>();
-
-        columnNameTypeMap.put(column.getColumnName(), column.getColumnType().getJdbcType());
-
-        return columnNameTypeMap;
-    }
-
-
-    /**
      * Return the list of foreign keys for this table.
      *
      * @return list

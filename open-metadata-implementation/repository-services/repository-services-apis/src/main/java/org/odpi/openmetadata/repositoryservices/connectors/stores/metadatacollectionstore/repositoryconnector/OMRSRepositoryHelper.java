@@ -1080,6 +1080,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Compare the properties of two instances and determine the sort order based on the nominated property value and
+     * sort order.
+     *
+     * @param instance1Properties properties from first instance
+     * @param instance2Properties properties from second instance
+     * @param propertyName name of property to compare
+     * @param sequencingOrder ascending or descending order
+     * @return sort result
+     */
+    int  compareProperties(InstanceProperties     instance1Properties,
+                           InstanceProperties     instance2Properties,
+                           String                 propertyName,
+                           SequencingOrder        sequencingOrder);
+
+    /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
      * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
      * used to find an exact match of the string, irrespective of whether it contains characters that may have special

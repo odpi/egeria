@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.*;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
@@ -70,7 +71,7 @@ public class DatabaseStore
 
             return new ControlMapper(repositoryName, controlTable);
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -99,7 +100,7 @@ public class DatabaseStore
              jdbcResourceConnector.insertRowIntoTable(RepositoryTable.CONTROL.getTableName(),
                                                       controlMapper.getControlTableRow());
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -127,347 +128,6 @@ public class DatabaseStore
 
 
     /**
-     * Retrieve the version of an entity from the database that was active at the requested time.
-     * Null is returned if there were no active instance.
-     *
-     * @param guid unique identifier of the entity
-     * @param asOfTime requested time for the version
-     * @return entity mapper
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    public EntityMapper getEntityFromStore(String guid,
-                                           Date   asOfTime) throws RepositoryErrorException
-    {
-        final String methodName = "getEntityFromStore";
-
-        try
-        {
-            Map<String, JDBCDataValue> entityRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.ENTITY.getTableName(),
-                                                                                        RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
-                                                                                        RepositoryTable.ENTITY.getColumnNameTypeMap());
-
-            return this.getCompleteEntityFromStore(guid, entityRow);
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-    }
-
-
-    /**
-     * Retrieve the related information for an entity.
-     * Null is returned if there were no active instance.
-     *
-     * @param guid unique identifier of the entity
-     * @param entityRow appropriate row from table
-     * @return entity mapper
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    public EntityMapper getCompleteEntityFromStore(String                     guid,
-                                                   Map<String, JDBCDataValue> entityRow) throws RepositoryErrorException
-    {
-        final String methodName = "getCompleteEntityFromStore";
-
-        try
-        {
-            if (entityRow != null)
-            {
-                Object versionObject = entityRow.get(RepositoryColumn.VERSION.getColumnName()).getDataValue();
-
-                if (versionObject != null)
-                {
-                    String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + versionObject;
-
-                    List<Map<String, JDBCDataValue>> entityProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                              whereClause,
-                                                                                                              RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                    List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                                                             whereClause,
-                                                                                                             RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
-
-                    Map<String, MapperResultRows> classificationRowsMap = new HashMap<>();
-                    if (classifications != null)
-                    {
-                        for (Map<String, JDBCDataValue> classificationRow : classifications)
-                        {
-                            String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationRow, true);
-
-                            MapperResultRows classificationMapperRow = new MapperResultRows();
-
-                            classificationMapperRow.principleTableRow = classificationRow;
-
-                            classificationRowsMap.put(classificationName, classificationMapperRow);
-                        }
-
-                        List<Map<String, JDBCDataValue>> classificationAttributes = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                                          whereClause,
-                                                                                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                        if (classificationAttributes != null)
-                        {
-                            for (Map<String, JDBCDataValue> classificationAttributeRow : classificationAttributes)
-                            {
-                                String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationAttributeRow, true);
-
-                                MapperResultRows mapperResultRows = classificationRowsMap.get(classificationName);
-
-                                if (mapperResultRows.propertyTableRows == null)
-                                {
-                                    mapperResultRows.propertyTableRows = new ArrayList<>();
-                                }
-
-                                mapperResultRows.propertyTableRows.add(classificationAttributeRow);
-                            }
-                        }
-                    }
-
-                    List<ClassificationMapper> classificationMappers = null;
-
-                    if (classifications != null)
-                    {
-                        classificationMappers = new ArrayList<>();
-
-                        for (String classificationName : classificationRowsMap.keySet())
-                        {
-                            MapperResultRows classificationRow = classificationRowsMap.get(classificationName);
-
-                            if (classificationRow != null)
-                            {
-                                ClassificationMapper classificationMapper = new ClassificationMapper(classificationRow.principleTableRow,
-                                                                                                     classificationRow.propertyTableRows,
-                                                                                                     repositoryHelper,
-                                                                                                     repositoryName);
-
-                                classificationMappers.add(classificationMapper);
-                            }
-                        }
-                    }
-
-                    return new EntityMapper(entityRow, entityProperties, classificationMappers, repositoryHelper, repositoryName);
-                }
-            }
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the related information for a list of entities that were identified in a query.
-     * Null is returned if there were no instances returned from the query.
-     *
-     * @param entityGUIDs list of unique identifiers for the matching entities
-     * @param asOfTime time for the database query
-     * @return list of entity mappers
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    private List<EntityMapper> getCompleteEntitiesFromStore(List<String> entityGUIDs,
-                                                            Date         asOfTime) throws RepositoryErrorException
-    {
-        final String methodName = "getCompleteEntitiesFromStore";
-
-        if ((entityGUIDs != null) && (!entityGUIDs.isEmpty()))
-        {
-            try
-            {
-                Map<String, MapperResultRows> mapperResultRowsMap = new HashMap<>();
-
-                QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
-
-                queryBuilder.setGUIDList(entityGUIDs);
-                queryBuilder.setAsOfTime(asOfTime);
-
-                String whereClause = queryBuilder.getAsOfTimeWhereClause();
-
-                List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
-                                                                                                    whereClause,
-                                                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
-
-                if (entityRows != null)
-                {
-                    StringBuilder entityWhereClause = new StringBuilder();
-                    boolean       firstEntity       = true;
-
-                    for (Map<String, JDBCDataValue> entityRow : entityRows)
-                    {
-                        String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), entityRow, true);
-                        long version        = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), entityRow, true);
-
-                        if (firstEntity)
-                        {
-                            firstEntity = false;
-                        }
-                        else
-                        {
-                            entityWhereClause.append(" or ");
-                        }
-
-                        entityWhereClause.append(queryBuilder.getPrimaryKeysClause(instanceGUID, version, null));
-
-                        MapperResultRows mapperResultRows = new MapperResultRows();
-                        mapperResultRows.principleTableRow = entityRow;
-
-                        mapperResultRowsMap.put(instanceGUID, mapperResultRows);
-                    }
-
-                    List<Map<String, JDBCDataValue>> entityAttributeRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                                 entityWhereClause.toString(),
-                                                                                                                 RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                    if (entityAttributeRows != null)
-                    {
-                        for (Map<String, JDBCDataValue> entityAttributeRow : entityAttributeRows)
-                        {
-                            String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), entityAttributeRow, true);
-
-                            MapperResultRows mapperResultRows = mapperResultRowsMap.get(instanceGUID);
-
-                            if (mapperResultRows.propertyTableRows == null)
-                            {
-                                mapperResultRows.propertyTableRows = new ArrayList<>();
-                            }
-
-                            mapperResultRows.propertyTableRows.add(entityAttributeRow);
-                        }
-                    }
-
-                    List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                                                             whereClause,
-                                                                                                             RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
-
-                    if (classifications != null)
-                    {
-                        StringBuilder classificationWhereClause = new StringBuilder();
-                        boolean       firstClassification       = true;
-
-                        for (Map<String, JDBCDataValue> classificationRow : classifications)
-                        {
-                            String instanceGUID       = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), classificationRow, true);
-                            String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationRow, true);
-                            long   version            = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), classificationRow, true);
-
-                            if (firstClassification)
-                            {
-                                firstClassification = false;
-                            }
-                            else
-                            {
-                                classificationWhereClause.append(" or ");
-                            }
-
-                            classificationWhereClause.append(queryBuilder.getPrimaryKeysClause(instanceGUID, version, classificationName));
-
-                            MapperResultRows mapperResultRows = mapperResultRowsMap.get(instanceGUID);
-
-                            if (mapperResultRows.propertyTableRows == null)
-                            {
-                                mapperResultRows.propertyTableRows = new ArrayList<>();
-                            }
-
-                            MapperResultRows classificationMapperRow = mapperResultRows.classifications.get(classificationName);
-
-                            if (classificationMapperRow == null)
-                            {
-                                classificationMapperRow = new MapperResultRows();
-                            }
-
-                            classificationMapperRow.principleTableRow = classificationRow;
-
-                            mapperResultRows.classifications.put(classificationName, classificationMapperRow);
-                        }
-
-                        List<Map<String, JDBCDataValue>> classificationAttributes = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                                          classificationWhereClause.toString(),
-                                                                                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                        if (classificationAttributes != null)
-                        {
-                            for (Map<String, JDBCDataValue> classificationAttributeRow : classificationAttributes)
-                            {
-                                String instanceGUID       = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), classificationAttributeRow, true);
-                                String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationAttributeRow, true);
-
-                                MapperResultRows mapperResultRows = mapperResultRowsMap.get(instanceGUID);
-
-                                MapperResultRows classificationAttributesMapperResults = mapperResultRows.classifications.get(classificationName);
-
-                                if (classificationAttributesMapperResults.propertyTableRows == null)
-                                {
-                                    classificationAttributesMapperResults.propertyTableRows = new ArrayList<>();
-                                }
-
-                                classificationAttributesMapperResults.propertyTableRows.add(classificationAttributeRow);
-                            }
-                        }
-                    }
-
-                    if (!mapperResultRowsMap.isEmpty())
-                    {
-                        List<EntityMapper> entityMappers = new ArrayList<>();
-
-                        for (MapperResultRows mapperResultRows : mapperResultRowsMap.values())
-                        {
-                            List<ClassificationMapper> classificationMappers = null;
-
-                            if (mapperResultRows.classifications != null)
-                            {
-                                classificationMappers = new ArrayList<>();
-
-                                for (String classificationName : mapperResultRows.classifications.keySet())
-                                {
-                                    MapperResultRows classificationMapperResults = mapperResultRows.classifications.get(classificationName);
-                                    ClassificationMapper classificationMapper = new ClassificationMapper(classificationMapperResults.principleTableRow,
-                                                                                                         classificationMapperResults.propertyTableRows,
-                                                                                                         repositoryHelper,
-                                                                                                         repositoryName);
-
-                                    classificationMappers.add(classificationMapper);
-                                }
-                            }
-
-                            entityMappers.add(new EntityMapper(mapperResultRows.principleTableRow, mapperResultRows.propertyTableRows, classificationMappers, repositoryHelper, repositoryName));
-                        }
-
-                        return entityMappers;
-                    }
-                }
-            }
-            catch (SQLException sqlException)
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                               sqlException.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               sqlException.getMessage()),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   sqlException);
-            }
-        }
-
-        return null;
-    }
-
-
-
-    /**
      * Retrieve a relationship from the database.
      *
      * @param guid unique identifier of the relationship
@@ -477,387 +137,6 @@ public class DatabaseStore
     public RelationshipMapper getRelationshipForUpdate(String guid) throws RepositoryErrorException
     {
         return getRelationshipFromStore(guid, null);
-    }
-
-
-    /**
-     * Retrieve the version of a relationship from the database that was active at the requested time.
-     * Null is returned if there were no active instance.
-     *
-     * @param guid unique identifier of the relationship
-     * @param asOfTime requested time for the version
-     * @return relationship mapper
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    public RelationshipMapper getRelationshipFromStore(String guid,
-                                                       Date   asOfTime) throws RepositoryErrorException
-    {
-        final String methodName = "getRelationshipFromStore";
-
-        try
-        {
-            Map<String, JDBCDataValue> relationshipRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                              RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
-                                                                                              RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
-
-            return this.getCompleteRelationshipFromStore(guid, relationshipRow, asOfTime);
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-    }
-
-
-    /**
-     * Retrieve the related information for a relationship.
-     * Null is returned if there was no active instance.
-     *
-     * @param guid unique identifier of the relationship
-     * @param relationshipRow appropriate row from table
-     * @param asOfTime time for the database query
-     * @return relationship mapper
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    public RelationshipMapper getCompleteRelationshipFromStore(String                     guid,
-                                                               Map<String, JDBCDataValue> relationshipRow,
-                                                               Date                       asOfTime) throws RepositoryErrorException
-    {
-        final String methodName = "getCompleteRelationshipFromStore";
-
-        try
-        {
-            if (relationshipRow != null)
-            {
-                long version = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), relationshipRow, true);
-                String end1GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_1_GUID.getColumnName(), relationshipRow, true);
-                String end2GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_2_GUID.getColumnName(), relationshipRow, true);
-
-                String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version;
-
-                List<Map<String, JDBCDataValue>> relationshipProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                                whereClause,
-                                                                                                                RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                EntityMapper end1Mapper = this.getEntityFromStore(end1GUID, asOfTime);
-                EntityMapper end2Mapper = this.getEntityFromStore(end2GUID, asOfTime);
-
-                return new RelationshipMapper(relationshipRow, relationshipProperties, end1Mapper, end2Mapper, repositoryHelper, repositoryName);
-            }
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the related information for a list of relationships that were identified in a query.
-     * Null is returned if there were no instances returned from the query.
-     *
-     * @param relationshipGUIDs list of unique identifiers for the matching relationships
-     * @param asOfTime time for the database query
-     * @return list of relationship mappers
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    private List<RelationshipMapper> getCompleteRelationshipsFromStore(List<String> relationshipGUIDs,
-                                                                       Date         asOfTime) throws RepositoryErrorException
-    {
-        final String methodName = "getCompleteRelationshipsFromStore";
-
-        if ((relationshipGUIDs != null) && (!relationshipGUIDs.isEmpty()))
-        {
-            try
-            {
-                Map<String, MapperResultRows> mapperResultRowsMap = new HashMap<>();
-
-                QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
-
-                queryBuilder.setGUIDList(relationshipGUIDs);
-                queryBuilder.setAsOfTime(asOfTime);
-
-                String whereClause = queryBuilder.getAsOfTimeWhereClause();
-
-                List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                          whereClause,
-                                                                                                          RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
-
-                if (relationshipRows != null)
-                {
-                    Map<String, Long> guidVersionMap = new HashMap<>();
-
-                    for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
-                    {
-                        String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), relationshipRow, true);
-                        Long version = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), relationshipRow, true);
-
-                        guidVersionMap.put(instanceGUID, version);
-
-                        MapperResultRows mapperResultRows = new MapperResultRows();
-                        mapperResultRows.principleTableRow = relationshipRow;
-
-                        mapperResultRowsMap.put(instanceGUID, mapperResultRows);
-                    }
-
-                    List<Map<String, JDBCDataValue>> relationshipAttributeRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
-                                                                                                                       queryBuilder.getGUIDListPropertiesQueryWhereClause(guidVersionMap),
-                                                                                                                       RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getColumnNameTypeMap());
-
-                    if (relationshipAttributeRows != null)
-                    {
-                        for (Map<String, JDBCDataValue> relationshipAttributeRow : relationshipAttributeRows)
-                        {
-                            String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), relationshipAttributeRow, true);
-
-                            MapperResultRows mapperResultRows = mapperResultRowsMap.get(instanceGUID);
-
-                            if (mapperResultRows.propertyTableRows == null)
-                            {
-                                mapperResultRows.propertyTableRows = new ArrayList<>();
-                            }
-
-                            mapperResultRows.propertyTableRows.add(relationshipAttributeRow);
-                        }
-                    }
-
-                    if (!mapperResultRowsMap.isEmpty())
-                    {
-                        List<RelationshipMapper> relationshipMappers = new ArrayList<>();
-
-                        for (MapperResultRows mapperResultRows : mapperResultRowsMap.values())
-                        {
-                            String end1GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_1_GUID.getColumnName(), mapperResultRows.principleTableRow, true);
-                            String end2GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_2_GUID.getColumnName(), mapperResultRows.principleTableRow, true);
-
-                            EntityMapper end1Mapper = this.getEntityFromStore(end1GUID, asOfTime);
-                            EntityMapper end2Mapper = this.getEntityFromStore(end2GUID, asOfTime);
-
-                            relationshipMappers.add(new RelationshipMapper(mapperResultRows.principleTableRow, mapperResultRows.propertyTableRows, end1Mapper, end2Mapper, repositoryHelper, repositoryName));
-                        }
-
-                        return relationshipMappers;
-                    }
-                }
-            }
-            catch (SQLException sqlException)
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                               sqlException.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               sqlException.getMessage()),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   sqlException);
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Gather information from a database retrieval that can be used to build a mapper
-     * (entity or relationship).
-     */
-    static class MapperResultRows
-    {
-        Map<String, JDBCDataValue>       principleTableRow = null;
-        List<Map<String, JDBCDataValue>> propertyTableRows = null;
-
-        Map<String, MapperResultRows>    classifications   = null;
-    }
-
-
-    /**
-     * Create the part of the where clause that ensures that the correct version is returned.
-     *
-     * @param asOfTime database time to issue the query for - null means the latest version
-     * @return fragment of SQL
-     */
-    private String getAsOfTimeClause(Date asOfTime)
-    {
-        if (asOfTime == null)
-        {
-            return " and " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null";
-        }
-        else
-        {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
-        }
-    }
-
-
-    /**
-     * Return the list of versions for an entity.
-     *
-     * @param guid unique identifier of the instance
-     * @param fromTime starting time
-     * @param toTime ending time
-     * @param oldestFirst ordering
-     * @return list of instance versions
-     * @throws RepositoryErrorException problem communicating with the database
-     */
-    public List<EntityMapper> getEntityHistoryFromStore(String  guid,
-                                                        Date    fromTime,
-                                                        Date    toTime,
-                                                        boolean oldestFirst) throws RepositoryErrorException
-    {
-        final String methodName = "getEntityHistoryFromStore";
-
-        List<EntityMapper> entityMappers = new ArrayList<>();
-
-        try
-        {
-            List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
-                                                                                                RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
-                                                                                                        getDateRangeClause(fromTime, toTime, oldestFirst),
-                                                                                                RepositoryTable.ENTITY.getColumnNameTypeMap());
-
-            if (entityRows != null)
-            {
-                for (Map<String, JDBCDataValue> entityRow : entityRows)
-                {
-                    entityMappers.add(this.getCompleteEntityFromStore(guid, entityRow));
-                }
-            }
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-
-        if (! entityMappers.isEmpty())
-        {
-            return entityMappers;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the list of versions for a relationship.
-     *
-     * @param guid unique identifier of the relationship
-     * @param fromTime starting time
-     * @param toTime ending time
-     * @param oldestFirst ordering
-     * @return list of instance versions
-     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
-     */
-    public List<RelationshipMapper> getRelationshipHistoryFromStore(String  guid,
-                                                                    Date    fromTime,
-                                                                    Date    toTime,
-                                                                    boolean oldestFirst) throws RepositoryErrorException
-    {
-        final String methodName = "getRelationshipHistoryFromStore";
-
-        List<RelationshipMapper> relationshipMappers = new ArrayList<>();
-
-        try
-        {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                      RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
-                                                                                                              getDateRangeClause(fromTime, toTime, oldestFirst),
-                                                                                                      RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
-
-            if (relationshipRows != null)
-            {
-                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
-                {
-                    Date asOfTime = baseMapper.getDatePropertyFromColumn(RepositoryColumn.VERSION_START_TIME.getColumnName(), relationshipRow, true);
-                    relationshipMappers.add(this.getCompleteRelationshipFromStore(guid, relationshipRow, asOfTime));
-                }
-            }
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           sqlException.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               sqlException);
-        }
-
-        if (! relationshipMappers.isEmpty())
-        {
-            return relationshipMappers;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Create the part of the where clause that ensures that the correct version is returned.
-     *
-     * @param fromTime starting time
-     * @param toTime ending time
-     * @param oldestFirst ordering
-     * @return fragment of SQL
-     */
-    private String getDateRangeClause(Date    fromTime,
-                                      Date    toTime,
-                                      boolean oldestFirst)
-    {
-        if ((fromTime == null) && (toTime == null))
-        {
-            return getOrderByDateClause(oldestFirst);
-        }
-        else if (fromTime == null)
-        {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "')" + getOrderByDateClause(oldestFirst);
-        }
-        else if (toTime == null)
-        {
-            return " and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "')" + getOrderByDateClause(oldestFirst);
-        }
-        else
-        {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "'))" + getOrderByDateClause(oldestFirst);
-        }
-    }
-
-
-    /**
-     * Create an order by statement.
-     *
-     * @param oldestFirst ordering
-     * @return fragment of sql
-     */
-    private String getOrderByDateClause(boolean oldestFirst)
-    {
-        if (oldestFirst)
-        {
-            return " order by " + RepositoryColumn.VERSION_START_TIME.getColumnName() + " asc";
-        }
-        else
-        {
-            return " order by " + RepositoryColumn.VERSION_START_TIME.getColumnName() + " desc";
-        }
     }
 
 
@@ -878,10 +157,10 @@ public class DatabaseStore
         try
         {
             Map<String, JDBCDataValue> classificationRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                                        RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityGUID +
-                                                                                                "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "'" +
-                                                                                                getAsOfTimeClause(null),
-                                                                                        RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
+                                                                                                RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityGUID +
+                                                                                                        "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "'" +
+                                                                                                        getAsOfTimeClause(null),
+                                                                                                RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
 
             if (classificationRow != null)
             {
@@ -904,7 +183,7 @@ public class DatabaseStore
                 return null;
             }
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -970,7 +249,77 @@ public class DatabaseStore
 
             return classificationMappers;
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Retrieve the version of an entity from the database that was active at the requested time.
+     * Null is returned if there were no active instance.
+     *
+     * @param guid unique identifier of the entity
+     * @param asOfTime requested time for the version
+     * @return entity mapper
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public EntityMapper getEntityFromStore(String guid,
+                                           Date   asOfTime) throws RepositoryErrorException
+    {
+        final String methodName = "getEntityFromStore";
+
+        try
+        {
+            Map<String, JDBCDataValue> entityRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.ENTITY.getTableName(),
+                                                                                        RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
+                                                                                        RepositoryTable.ENTITY.getColumnNameTypeMap());
+
+            return this.getCompleteEntityFromStore(guid, entityRow);
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Retrieve the version of a relationship from the database that was active at the requested time.
+     * Null is returned if there were no active instance.
+     *
+     * @param guid unique identifier of the relationship
+     * @param asOfTime requested time for the version
+     * @return relationship mapper
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public RelationshipMapper getRelationshipFromStore(String guid,
+                                                       Date   asOfTime) throws RepositoryErrorException
+    {
+        final String methodName = "getRelationshipFromStore";
+
+        try
+        {
+            Map<String, JDBCDataValue> relationshipRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                                                              RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
+                                                                                              RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
+
+            return this.getCompleteRelationshipFromStore(guid, relationshipRow, asOfTime);
+        }
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -999,7 +348,7 @@ public class DatabaseStore
         final String methodName = "retrieveEntitiesByProperties";
 
         String sqlEntityQuery = entityQueryBuilder.getPropertyJoinQuery(RepositoryTable.ENTITY.getTableName(),
-                                                            RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName()) +
+                                                                        RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName()) +
                 " where " + entityQueryBuilder.getAsOfTimeWhereClause();
 
         try
@@ -1008,7 +357,8 @@ public class DatabaseStore
 
             if (classificationQueryBuilder == null)
             {
-                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery, RepositoryTable.getSingleColumnNameTypeMap(RepositoryColumn.INSTANCE_GUID));
+                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + entityQueryBuilder.getSequenceAndPaging(),
+                                                                   RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
             else
             {
@@ -1016,25 +366,20 @@ public class DatabaseStore
                                                                                                 RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName()) +
                         " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
 
-                entityRows = jdbcResourceConnector.getMatchingRows("(" + sqlClassificationQuery + ") union (" + sqlEntityQuery + ")",
-                                                                   RepositoryTable.getSingleColumnNameTypeMap(RepositoryColumn.INSTANCE_GUID));
+                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + " and " +
+                                                                           RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName()) +
+                                                                           " in (" + sqlClassificationQuery + ")" +
+                                                                           entityQueryBuilder.getSequenceAndPaging(),
+                                                                   RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
 
             if (entityRows != null)
             {
-                List<String> entityGUIDs = new ArrayList<>();
-
-                for (Map<String, JDBCDataValue> entityRow : entityRows)
-                {
-                    String guid = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), entityRow, true);
-
-                    entityGUIDs.add(guid);
-                }
-
-                return this.getCompleteEntitiesFromStore(entityGUIDs, asOfTime);
+                Map<String, EntityMapper> entityMappers = this.getCompleteEntitiesFromStore(entityRows, asOfTime);
+                return new ArrayList<>(entityMappers.values());
             }
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1052,37 +397,28 @@ public class DatabaseStore
     /**
      * This query is issued against the relationship table.
      *
-     * @param whereClause where clause for the SQL query
+     * @param queryBuilder where clause for the SQL query
      * @param asOfTime database time
      * @return list of matching relationship mappers or null if nothing matches
      * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
      */
-    public List<RelationshipMapper> retrieveRelationships(String whereClause,
-                                                          Date   asOfTime) throws RepositoryErrorException
+    public List<RelationshipMapper> retrieveRelationships(QueryBuilder queryBuilder,
+                                                          Date         asOfTime) throws RepositoryErrorException
     {
         final String methodName = "retrieveRelationships";
 
         try
         {
             List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                      whereClause,
+                                                                                                      queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
             {
-                List<String> relationshipGUIDs = new ArrayList<>();
-
-                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
-                {
-                    String guid = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), relationshipRow, true);
-
-                    relationshipGUIDs.add(guid);
-                }
-
-                return this.getCompleteRelationshipsFromStore(relationshipGUIDs, asOfTime);
+                return this.getCompleteRelationshipsFromStore(relationshipRows, asOfTime);
             }
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1112,28 +448,19 @@ public class DatabaseStore
 
         String sqlQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
                                                             RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName()) +
-                " where " + queryBuilder.getAsOfTimeWhereClause();
+                " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging();
 
 
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqlQuery, RepositoryTable.getSingleColumnNameTypeMap(RepositoryColumn.INSTANCE_GUID));
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqlQuery, RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
             {
-                List<String> relationshipGUIDs = new ArrayList<>();
-
-                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
-                {
-                    String guid = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), relationshipRow, true);
-
-                    relationshipGUIDs.add(guid);
-                }
-
-                return this.getCompleteRelationshipsFromStore(relationshipGUIDs, asOfTime);
+                return this.getCompleteRelationshipsFromStore(relationshipRows, asOfTime);
             }
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1147,6 +474,735 @@ public class DatabaseStore
         return null;
     }
 
+
+    /**
+     * Retrieve the related information for an entity.
+     * Null is returned if there were no active instance.
+     *
+     * @param guid unique identifier of the entity
+     * @param entityRow appropriate row from table
+     * @return entity mapper
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public EntityMapper getCompleteEntityFromStore(String                     guid,
+                                                   Map<String, JDBCDataValue> entityRow) throws RepositoryErrorException
+    {
+        final String methodName = "getCompleteEntityFromStore";
+
+        try
+        {
+            if (entityRow != null)
+            {
+                Object versionObject = entityRow.get(RepositoryColumn.VERSION.getColumnName()).getDataValue();
+
+                if (versionObject != null)
+                {
+                    String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + versionObject;
+
+                    List<Map<String, JDBCDataValue>> entityProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                                                                              whereClause,
+                                                                                                              RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getColumnNameTypeMap());
+
+                    Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(whereClause);
+
+
+                    return new EntityMapper(entityRow,
+                                            entityProperties,
+                                            classificationMappersForEntityGUIDs.get(guid),
+                                            repositoryHelper,
+                                            repositoryName);
+                }
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the related information for a relationship.
+     * Null is returned if there was no active instance.
+     *
+     * @param guid unique identifier of the relationship
+     * @param relationshipRow appropriate row from table
+     * @param asOfTime time for the database query
+     * @return relationship mapper
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public RelationshipMapper getCompleteRelationshipFromStore(String                     guid,
+                                                               Map<String, JDBCDataValue> relationshipRow,
+                                                               Date                       asOfTime) throws RepositoryErrorException
+    {
+        final String methodName = "getCompleteRelationshipFromStore";
+
+        try
+        {
+            if (relationshipRow != null)
+            {
+                long   version = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), relationshipRow, true);
+                String end1GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_1_GUID.getColumnName(), relationshipRow, true);
+                String end2GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_2_GUID.getColumnName(), relationshipRow, true);
+
+                String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version;
+
+                List<Map<String, JDBCDataValue>> relationshipProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                                                                                whereClause,
+                                                                                                                RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getColumnNameTypeMap());
+
+                EntityMapper end1Mapper = this.getEntityFromStore(end1GUID, asOfTime);
+                EntityMapper end2Mapper = this.getEntityFromStore(end2GUID, asOfTime);
+
+                return new RelationshipMapper(relationshipRow, relationshipProperties, end1Mapper, end2Mapper, repositoryHelper, repositoryName);
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the entities requested.
+     *
+     * @param entityGUIDs list of GUIDs to retrieve
+     * @param asOfTime time required
+     * @return map of guids and the corresponding entity mapper
+     * @throws RepositoryErrorException problem retrieving values from the database
+     */
+    private Map<String, EntityMapper> getCompleteEntitiesFromGUIDs(List<String> entityGUIDs,
+                                                                   Date         asOfTime) throws RepositoryErrorException
+    {
+        final String methodName = "getCompleteEntitiesFromGUIDs";
+
+        Map<String, EntityMapper> entities = new HashMap<>();
+
+        if ((entityGUIDs != null) && (!entityGUIDs.isEmpty()))
+        {
+            try
+            {
+                QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+
+                queryBuilder.setGUIDList(entityGUIDs);
+                queryBuilder.setAsOfTime(asOfTime);
+
+                List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
+                                                                                                    queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(),
+                                                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
+
+                return this.getCompleteEntitiesFromStore(entityRows, asOfTime);
+            }
+            catch (PropertyServerException sqlException)
+            {
+                throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                               sqlException.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               sqlException.getMessage()),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   sqlException);
+            }
+        }
+
+        return entities;
+    }
+
+
+    /**
+     * Retrieve the related information for a list of entities that were identified in a query.
+     * Null is returned if there were no instances returned from the query.
+     *
+     * @param entityRows list of database rows for the matching entities
+     * @param asOfTime time for the database query
+     * @return map of guids to entity mappers
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    private Map<String, EntityMapper> getCompleteEntitiesFromStore(List<Map<String, JDBCDataValue>> entityRows,
+                                                                   Date                             asOfTime) throws RepositoryErrorException
+    {
+        if ((entityRows != null) && (! entityRows.isEmpty()))
+        {
+            /*
+             * Get the attributes for each of the entities returned
+             */
+            Map<String, DatabaseResultRows> databaseResultRowsMap = this.getAttributesDatabaseResults(entityRows,
+                                                                                                      RepositoryTable.ENTITY_ATTRIBUTE_VALUE);
+
+            /*
+             * Entities have an additional complication in that they have classifications.  These are matched by
+             * asOfTime because their versions are independent of the entity versions.
+             */
+            QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+
+            queryBuilder.setGUIDList(new ArrayList<>(databaseResultRowsMap.keySet()));
+            queryBuilder.setAsOfTime(asOfTime);
+
+            Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging());
+
+            /*
+             * All of the information is assembled to build the entity mappers.
+             */
+            if (! databaseResultRowsMap.isEmpty())
+            {
+                Map<String, EntityMapper> entityMappers = new HashMap<>();
+
+                for (String instanceGUID : databaseResultRowsMap.keySet())
+                {
+                    DatabaseResultRows databaseResultRows = databaseResultRowsMap.get(instanceGUID);
+
+                    entityMappers.put(instanceGUID, new EntityMapper(databaseResultRows.principleTableRow,
+                                                                     databaseResultRows.propertyTableRows,
+                                                                     classificationMappersForEntityGUIDs.get(instanceGUID),
+                                                                     repositoryHelper,
+                                                                     repositoryName));
+                }
+
+                return entityMappers;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the related information for a list of relationships that were identified in a query.
+     * Null is returned if there were no instances returned from the query.
+     *
+     * @param relationshipRows list of the matching relationships
+     * @param asOfTime time for the database query
+     * @return list of relationship mappers
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    private List<RelationshipMapper> getCompleteRelationshipsFromStore(List<Map<String, JDBCDataValue>> relationshipRows,
+                                                                       Date                             asOfTime) throws RepositoryErrorException
+    {
+        if ((relationshipRows != null) && (! relationshipRows.isEmpty()))
+        {
+            Map<String, DatabaseResultRows> mapperResultRowsMap = this.getAttributesDatabaseResults(relationshipRows,
+                                                                                                    RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE);
+
+            if (! mapperResultRowsMap.isEmpty())
+            {
+                /*
+                 * Relationships each link to two entities.  Retrieve details about the linked ends
+                 */
+                List<String> entityGUIDs = new ArrayList<>();
+                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
+                {
+                    String entityGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_1_GUID.getColumnName(), relationshipRow, true);
+
+                    if (! entityGUIDs.contains(entityGUID))
+                    {
+                        entityGUIDs.add(entityGUID);
+                    }
+
+                    entityGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_2_GUID.getColumnName(), relationshipRow, true);
+
+                    if (! entityGUIDs.contains(entityGUID))
+                    {
+                        entityGUIDs.add(entityGUID);
+                    }
+                }
+
+                Map<String, EntityMapper> entityEnds = getCompleteEntitiesFromGUIDs(entityGUIDs, asOfTime);
+
+                /*
+                 * All of the information is available to create the relationships
+                 */
+                List<RelationshipMapper> relationshipMappers = new ArrayList<>();
+
+                for (DatabaseResultRows databaseResultRows : mapperResultRowsMap.values())
+                {
+                    String end1GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_1_GUID.getColumnName(), databaseResultRows.principleTableRow, true);
+                    String end2GUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.END_2_GUID.getColumnName(), databaseResultRows.principleTableRow, true);
+
+                    EntityMapper end1Mapper = entityEnds.get(end1GUID);
+                    EntityMapper end2Mapper = entityEnds.get(end2GUID);
+
+                    relationshipMappers.add(new RelationshipMapper(databaseResultRows.principleTableRow, databaseResultRows.propertyTableRows, end1Mapper, end2Mapper, repositoryHelper, repositoryName));
+                }
+
+                return relationshipMappers;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the attribute rows that match the instance rows returned.
+     *
+     * @param instanceRows rows from principle instance table (entity or relationship)
+     * @param attributesTable the attributes table to retrieve from
+     * @return organised database results
+     * @throws RepositoryErrorException unexpected exception retrieving values from the database
+     */
+    private Map<String, DatabaseResultRows> getAttributesDatabaseResults(List<Map<String, JDBCDataValue>> instanceRows,
+                                                                         RepositoryTable                  attributesTable) throws RepositoryErrorException
+    {
+        final String methodName = "getAttributesDatabaseResults";
+
+        try
+        {
+            Map<String, DatabaseResultRows> databaseResultRowsMap = new HashMap<>();
+
+            QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            List<String> instanceGUIDs  = new ArrayList<>();
+
+            StringBuilder instanceWhereClause = new StringBuilder();
+            boolean       firstInstance       = true;
+
+            /*
+             * Step through the results and use the first row returned for each instance GUID.
+             * Build up a composite query that returns all of the attributes for all of
+             * the instances.
+             */
+            for (Map<String, JDBCDataValue> instanceRow : instanceRows)
+            {
+                String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), instanceRow, true);
+
+                if (! instanceGUIDs.contains(instanceGUID))
+                {
+                    /*
+                     * New instance.
+                     */
+                    instanceGUIDs.add(instanceGUID);
+
+                    /*
+                     * The retrieve of the properties is by version for speed.
+                     */
+                    long version = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), instanceRow, true);
+
+                    if (firstInstance)
+                    {
+                        firstInstance = false;
+                    }
+                    else
+                    {
+                        instanceWhereClause.append(" or ");
+                    }
+
+                    instanceWhereClause.append(queryBuilder.getPrimaryKeysClause(instanceGUID, version, null));
+
+                    DatabaseResultRows databaseResultRows = new DatabaseResultRows();
+                    databaseResultRows.principleTableRow = instanceRow;
+
+                    databaseResultRowsMap.put(instanceGUID, databaseResultRows);
+                }
+            }
+
+            /*
+             * Retrieve the attribute rows and organize them by instance GUID.
+             */
+            List<Map<String, JDBCDataValue>> attributeRows = jdbcResourceConnector.getMatchingRows(attributesTable.getTableName(),
+                                                                                                   instanceWhereClause.toString(),
+                                                                                                   attributesTable.getColumnNameTypeMap());
+
+            if (attributeRows != null)
+            {
+                for (Map<String, JDBCDataValue> attributeRow : attributeRows)
+                {
+                    String instanceGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), attributeRow, true);
+
+                    DatabaseResultRows databaseResultRows = databaseResultRowsMap.get(instanceGUID);
+
+                    if (databaseResultRows.propertyTableRows == null)
+                    {
+                        databaseResultRows.propertyTableRows = new ArrayList<>();
+                    }
+
+                    databaseResultRows.propertyTableRows.add(attributeRow);
+                }
+            }
+
+            return databaseResultRowsMap;
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+    }
+
+
+    /**
+     * Return the list of classifications for each of the requested entityGUIDs.
+     *
+     * @param whereClause the lists the required guids and the asOfTime.
+     * @return map of guids to lists of associated classification mappers (maybe empty but not null)
+     * @throws RepositoryErrorException unexpected problem retrieving related information from the database.
+     */
+    private Map<String, List<ClassificationMapper>> getClassificationMappersForEntityGUIDs(String whereClause) throws RepositoryErrorException
+    {
+        final String methodName = "getClassificationMappersForEntityGUIDs";
+
+        Map<String, List<ClassificationMapper>> classificationMappersForEntity = new HashMap<>();
+
+        try
+        {
+            /*
+             * Retrieve the rows of classifications for the requested entities at the requested time.
+             */
+            List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                                                     whereClause,
+                                                                                                     RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
+
+            if (classifications != null)
+            {
+                /*
+                 * Since one or more of the entities has at least one classification, then we need to match the version
+                 * of these classifications with the entity GUID, in order to retrieve the correct version of the
+                 * classification for the desired time.  (This is because the version of the classification is
+                 * independent of the version of the entity).
+                 */
+                Map<String, DatabaseResultRows> mapperResultRowsMap = new HashMap<>();
+                QueryBuilder                    queryBuilder        = new QueryBuilder(repositoryHelper, repositoryName);
+
+                StringBuilder classificationWhereClause = new StringBuilder();
+
+                boolean       firstClassification       = true;
+
+                for (Map<String, JDBCDataValue> classificationRow : classifications)
+                {
+                    String instanceGUID       = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), classificationRow, true);
+                    String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationRow, true);
+                    long   version            = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), classificationRow, true);
+
+                    if (firstClassification)
+                    {
+                        firstClassification = false;
+                    }
+                    else
+                    {
+                        classificationWhereClause.append(" or ");
+                    }
+
+                    classificationWhereClause.append(queryBuilder.getPrimaryKeysClause(instanceGUID, version, classificationName));
+
+                    DatabaseResultRows databaseResultRows = mapperResultRowsMap.get(instanceGUID);
+
+                    if (databaseResultRows == null)
+                    {
+                        databaseResultRows = new DatabaseResultRows();
+                    }
+
+                    if (databaseResultRows.propertyTableRows == null)
+                    {
+                        databaseResultRows.propertyTableRows = new ArrayList<>();
+                    }
+
+                    if (databaseResultRows.classifications == null)
+                    {
+                        databaseResultRows.classifications = new HashMap<>();
+                    }
+
+                    DatabaseResultRows classificationMapperRow = databaseResultRows.classifications.get(classificationName);
+
+                    if (classificationMapperRow == null)
+                    {
+                        classificationMapperRow = new DatabaseResultRows();
+                    }
+
+                    classificationMapperRow.principleTableRow = classificationRow;
+
+                    databaseResultRows.classifications.put(classificationName, classificationMapperRow);
+                    mapperResultRowsMap.put(instanceGUID, databaseResultRows);
+                }
+
+                /*
+                 * Now we know which versions of each classification we need for each entity, we can retrieve all of the attributes for all of these entities.
+                 * The returned rows are then organizes with their classification into mapperResultRowsMap.
+                 */
+                List<Map<String, JDBCDataValue>> classificationAttributes = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                                                                  classificationWhereClause.toString(),
+                                                                                                                  RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
+
+                if (classificationAttributes != null)
+                {
+                    for (Map<String, JDBCDataValue> classificationAttributeRow : classificationAttributes)
+                    {
+                        String instanceGUID       = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), classificationAttributeRow, true);
+                        String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationAttributeRow, true);
+
+                        DatabaseResultRows databaseResultRows = mapperResultRowsMap.get(instanceGUID);
+
+                        DatabaseResultRows classificationAttributesMapperResults = databaseResultRows.classifications.get(classificationName);
+
+                        if (classificationAttributesMapperResults.propertyTableRows == null)
+                        {
+                            classificationAttributesMapperResults.propertyTableRows = new ArrayList<>();
+                        }
+
+                        classificationAttributesMapperResults.propertyTableRows.add(classificationAttributeRow);
+                    }
+                }
+
+                /*
+                 * All of the results are retrieved and organized.  What remains is to build the classification
+                 * mappers for each entity.
+                 */
+                if (! mapperResultRowsMap.isEmpty())
+                {
+                    for (String instanceGUID : mapperResultRowsMap.keySet())
+                    {
+                        DatabaseResultRows databaseResultRows = mapperResultRowsMap.get(instanceGUID);
+
+
+                        if ((databaseResultRows != null) && (databaseResultRows.classifications != null))
+                        {
+                            List<ClassificationMapper> classificationMappers = new ArrayList<>();
+
+                            for (String classificationName : databaseResultRows.classifications.keySet())
+                            {
+                                DatabaseResultRows classificationMapperResults = databaseResultRows.classifications.get(classificationName);
+                                ClassificationMapper classificationMapper = new ClassificationMapper(classificationMapperResults.principleTableRow,
+                                                                                                     classificationMapperResults.propertyTableRows,
+                                                                                                     repositoryHelper,
+                                                                                                     repositoryName);
+
+                                classificationMappers.add(classificationMapper);
+                            }
+
+                            if (! classificationMappers.isEmpty())
+                            {
+                                classificationMappersForEntity.put(instanceGUID, classificationMappers);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        return classificationMappersForEntity;
+    }
+
+
+    /**
+     * Gather information from a database retrieval that can be used to build a mapper
+     * (entity or relationship).
+     */
+    static class DatabaseResultRows
+    {
+        Map<String, JDBCDataValue>       principleTableRow = null;
+        List<Map<String, JDBCDataValue>> propertyTableRows = null;
+
+        Map<String, DatabaseResultRows> classifications = null;
+    }
+
+
+
+    /**
+     * Return the list of versions for an entity.
+     *
+     * @param guid unique identifier of the instance
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public List<EntityMapper> getEntityHistoryFromStore(String  guid,
+                                                        Date    fromTime,
+                                                        Date    toTime,
+                                                        boolean oldestFirst) throws RepositoryErrorException
+    {
+        final String methodName = "getEntityHistoryFromStore";
+
+        List<EntityMapper> entityMappers = new ArrayList<>();
+
+        try
+        {
+            List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
+                                                                                                RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
+                                                                                                        getDateRangeClause(fromTime, toTime, oldestFirst),
+                                                                                                RepositoryTable.ENTITY.getColumnNameTypeMap());
+
+            if (entityRows != null)
+            {
+                for (Map<String, JDBCDataValue> entityRow : entityRows)
+                {
+                    entityMappers.add(this.getCompleteEntityFromStore(guid, entityRow));
+                }
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        if (! entityMappers.isEmpty())
+        {
+            return entityMappers;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of versions for a relationship.
+     *
+     * @param guid unique identifier of the relationship
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public List<RelationshipMapper> getRelationshipHistoryFromStore(String  guid,
+                                                                    Date    fromTime,
+                                                                    Date    toTime,
+                                                                    boolean oldestFirst) throws RepositoryErrorException
+    {
+        final String methodName = "getRelationshipHistoryFromStore";
+
+        List<RelationshipMapper> relationshipMappers = new ArrayList<>();
+
+        try
+        {
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                                                                      RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
+                                                                                                              getDateRangeClause(fromTime, toTime, oldestFirst),
+                                                                                                      RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
+
+            if (relationshipRows != null)
+            {
+                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
+                {
+                    Date asOfTime = baseMapper.getDatePropertyFromColumn(RepositoryColumn.VERSION_START_TIME.getColumnName(), relationshipRow, true);
+                    relationshipMappers.add(this.getCompleteRelationshipFromStore(guid, relationshipRow, asOfTime));
+                }
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        if (! relationshipMappers.isEmpty())
+        {
+            return relationshipMappers;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create the part of the where clause that ensures that the correct version is returned.
+     *
+     * @param asOfTime database time to issue the query for - null means the latest version
+     * @return fragment of SQL
+     */
+    private String getAsOfTimeClause(Date asOfTime)
+    {
+        if (asOfTime == null)
+        {
+            return " and " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null";
+        }
+        else
+        {
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
+        }
+    }
+
+
+    /**
+     * Create the part of the where clause that ensures that the correct version is returned.
+     *
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return fragment of SQL
+     */
+    private String getDateRangeClause(Date    fromTime,
+                                      Date    toTime,
+                                      boolean oldestFirst)
+    {
+        if ((fromTime == null) && (toTime == null))
+        {
+            return getOrderByDateClause(oldestFirst);
+        }
+        else if (fromTime == null)
+        {
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "')" + getOrderByDateClause(oldestFirst);
+        }
+        else if (toTime == null)
+        {
+            return " and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "')" + getOrderByDateClause(oldestFirst);
+        }
+        else
+        {
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + toTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + fromTime + "'))" + getOrderByDateClause(oldestFirst);
+        }
+    }
+
+
+    /**
+     * Create an order by statement.
+     *
+     * @param oldestFirst ordering
+     * @return fragment of sql
+     */
+    private String getOrderByDateClause(boolean oldestFirst)
+    {
+        if (oldestFirst)
+        {
+            return " order by " + RepositoryColumn.VERSION_START_TIME.getColumnName() + " asc";
+        }
+        else
+        {
+            return " order by " + RepositoryColumn.VERSION_START_TIME.getColumnName() + " desc";
+        }
+    }
 
 
     /**
@@ -1170,7 +1226,7 @@ public class DatabaseStore
 
             saveClassifications(entityMapper.getClassificationMappers());
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1212,7 +1268,7 @@ public class DatabaseStore
                 saveClassifications(entityMapper.getClassificationMappers());
             }
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1263,7 +1319,7 @@ public class DatabaseStore
                 jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                           classificationMapper.getClassificationPropertiesTableRows());
             }
-            catch (SQLException sqlException)
+            catch (PropertyServerException sqlException)
             {
                 throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                                sqlException.getClass().getName(),
@@ -1302,7 +1358,7 @@ public class DatabaseStore
             jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
                                                       relationshipMapper.getRelationshipPropertiesTableRows());
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1333,7 +1389,7 @@ public class DatabaseStore
                                                           " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityMapper.getEntityDetail().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + entityMapper.getEntityDetail().getVersion() + ";");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1366,7 +1422,7 @@ public class DatabaseStore
                                                           "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationMapper.getClassification().getName() +
                                                           "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + classificationMapper.getClassification().getVersion() + ";");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1397,7 +1453,7 @@ public class DatabaseStore
                                                           " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + relationshipMapper.getRelationship().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + relationshipMapper.getRelationship().getVersion() + ";");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1427,7 +1483,7 @@ public class DatabaseStore
             jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityGUID + "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "';");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1452,12 +1508,34 @@ public class DatabaseStore
     {
         final String methodName = "purgeEntity";
 
+
         try
         {
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                                                                      "(" + RepositoryColumn.END_1_GUID.getColumnName() + " = '" + guid +
+                                                                                                      "' or " + RepositoryColumn.END_2_GUID.getColumnName() + " = '" + guid + "')",
+                                                                                                      RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
+
+            if (relationshipRows != null)
+            {
+                for (Map<String, JDBCDataValue> relationshipRow : relationshipRows)
+                {
+                    String relationshipGUID = baseMapper.getStringPropertyFromColumn(RepositoryColumn.INSTANCE_GUID.getColumnName(), relationshipRow, true);
+
+                    this.purgeRelationship(relationshipGUID);
+                }
+            }
+
             jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.ENTITY.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
+            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName() +
+                                                          " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
+            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
+                                                          " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
+            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName() +
+                                                          " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),
@@ -1486,8 +1564,10 @@ public class DatabaseStore
         {
             jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.RELATIONSHIP.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
+            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName() +
+                                                          " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
         }
-        catch (SQLException sqlException)
+        catch (PropertyServerException sqlException)
         {
             throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
                                                                                                            sqlException.getClass().getName(),

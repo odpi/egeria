@@ -858,6 +858,7 @@ public class RepositoryMapper extends BaseMapper
      * Add the values from the header into a table row.
      *
      * @param instanceTableRow row
+     * @param instanceGUID unique identifier of the instance
      * @param classificationName optional classification name
      * @param effectiveFromTime effective from (optional)
      * @param effectiveToTime effective to (optional)
@@ -872,17 +873,31 @@ public class RepositoryMapper extends BaseMapper
                                                    Date                       versionEndTime,
                                                    InstanceHeader             instanceHeader) throws RepositoryErrorException
     {
-        extractValuesFromInstanceAuditHeader(instanceTableRow,
-                                             instanceHeader.getGUID(),
-                                             classificationName,
-                                             effectiveFromTime,
-                                             effectiveToTime,
-                                             versionEndTime,
-                                             instanceHeader);
+        final String methodName = "extractValuesFromInstanceHeader";
+        final String parameterName = "instanceTableRow";
 
-        super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceURL(), RepositoryColumn.INSTANCE_URL.getColumnName(), false);
-        super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceLicense(), RepositoryColumn.INSTANCE_LICENCE.getColumnName(), false);
-        super.setUpStringValueInRow(instanceTableRow, instanceHeader.getReIdentifiedFromGUID(), RepositoryColumn.REIDENTIFIED_FROM_GUID.getColumnName(), false);
+        if (instanceTableRow != null)
+        {
+            extractValuesFromInstanceAuditHeader(instanceTableRow,
+                                                 instanceHeader.getGUID(),
+                                                 classificationName,
+                                                 effectiveFromTime,
+                                                 effectiveToTime,
+                                                 versionEndTime,
+                                                 instanceHeader);
+
+            super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceURL(), RepositoryColumn.INSTANCE_URL.getColumnName(), false);
+            super.setUpStringValueInRow(instanceTableRow, instanceHeader.getInstanceLicense(), RepositoryColumn.INSTANCE_LICENCE.getColumnName(), false);
+            super.setUpStringValueInRow(instanceTableRow, instanceHeader.getReIdentifiedFromGUID(), RepositoryColumn.REIDENTIFIED_FROM_GUID.getColumnName(), false);
+        }
+        else
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.MISSING_MAPPING_VALUE.getMessageDefinition(parameterName,
+                                                                                                            methodName,
+                                                                                                            this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
     }
 
 
