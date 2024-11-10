@@ -443,7 +443,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         final String methodName = "validEntity";
 
-        return validInstance(sourceName, entity, methodName, false) &&
+        return validInstance(sourceName, entity, methodName, true) &&
                 validClassifications(sourceName, entity);
     }
 
@@ -479,7 +479,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                     entity.getGUID() + ":" + classification.getName(),
                                                     classification,
                                                     methodName,
-                                                    false))
+                                                    true))
                 {
                     return false;
                 }

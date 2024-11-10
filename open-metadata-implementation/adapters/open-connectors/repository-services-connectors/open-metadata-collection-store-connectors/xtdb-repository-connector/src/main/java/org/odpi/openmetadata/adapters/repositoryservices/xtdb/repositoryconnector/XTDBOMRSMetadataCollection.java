@@ -856,6 +856,7 @@ public class XTDBOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectio
         EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
                 metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
+                null,
                 userId,
                 typeDef.getName(),
                 initialProperties,
@@ -895,12 +896,12 @@ public class XTDBOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectio
         EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
                 externalSourceGUID,
                 InstanceProvenanceType.EXTERNAL_SOURCE,
+                metadataCollectionId,
                 userId,
                 typeDef.getName(),
                 initialProperties,
                 initialClassifications);
         newEntity.setMetadataCollectionName(externalSourceName);
-        newEntity.setReplicatedBy(metadataCollectionId);
 
         if (initialStatus != null) {
             newEntity.setStatus(initialStatus);

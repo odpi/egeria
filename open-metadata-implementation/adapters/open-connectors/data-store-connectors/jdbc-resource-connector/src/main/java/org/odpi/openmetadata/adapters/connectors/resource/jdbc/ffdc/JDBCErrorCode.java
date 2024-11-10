@@ -59,10 +59,10 @@ public enum JDBCErrorCode implements ExceptionMessageSet
 
 
     /**
-     * JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {4}
+     * JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {3}
      */
     UNEXPECTED_SQL_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-003",
-                         "The JDBC resource connector for database {0} received an unexpected SQL exception from request '{1}' during method {2}; the error message was: {4}",
+                         "The JDBC resource connector for database {0} received an unexpected SQL exception from request \"{1}\" during method {2}; the error message was: {3}",
                          "The connector is unable to process the current request because the database returned an unexpected error.",
                          "Use the details from the SQL error message and the SQL request to determine the cause of the error and retry the request once it is resolved."),
 
