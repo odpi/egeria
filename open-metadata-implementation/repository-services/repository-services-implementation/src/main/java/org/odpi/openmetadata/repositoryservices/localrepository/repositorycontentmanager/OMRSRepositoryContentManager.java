@@ -1448,10 +1448,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         AttributeTypeDef attributeTypeDef = this.getAttributeTypeDef(sourceName, enumTypeGUID, enumTypeName, methodName);
 
-        if (attributeTypeDef instanceof EnumDef)
+        if (attributeTypeDef instanceof EnumDef enumDef)
         {
-            EnumDef enumDef = (EnumDef)attributeTypeDef;
-
             List<EnumElementDef> enumDefValues = enumDef.getElementDefs();
 
             if (enumDefValues != null)
@@ -1467,6 +1465,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                             enumPropertyValue.setOrdinal(ordinal);
                             enumPropertyValue.setSymbolicName(enumElementDef.getValue());
                             enumPropertyValue.setDescription(enumElementDef.getDescription());
+                            enumPropertyValue.setTypeGUID(enumTypeGUID);
+                            enumPropertyValue.setTypeName(enumTypeName);
 
                             resultingProperties.setProperty(propertyName, enumPropertyValue);
 

@@ -21,12 +21,11 @@ import java.util.List;
  * RepositoryFindEntitiesIterator is an iterator class for iteratively retrieving entities based on a search criteria.
  * It is used where the caller needs to filter the results coming from the repository and may need to
  * make more than one call to the repository in order to accumulate the number of requested results.
- *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
 public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private final List<String>         entitySubtypeGUIDs;
+    private final List<String>          entitySubtypeGUIDs;
     private final SearchProperties      searchProperties;
     private final SearchClassifications searchClassifications;
     private final Date                  asOfTime;

@@ -543,6 +543,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param sourceName            source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
      * @param provenanceType        origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName              name of the creator
      * @param typeName              name of the type
      * @param properties            properties for the entity
@@ -553,6 +554,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     EntityDetail getNewEntity(String                 sourceName,
                               String                 metadataCollectionId,
                               InstanceProvenanceType provenanceType,
+                              String                 replicatedBy,
                               String                 userName,
                               String                 typeName,
                               InstanceProperties     properties,
@@ -566,6 +568,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName               name of the creator
      * @param typeName               name of the type
      * @param properties             properties for the entity
@@ -577,6 +580,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                               String                 metadataCollectionId,
                               String                 metadataCollectionName,
                               InstanceProvenanceType provenanceType,
+                              String                 replicatedBy,
                               String                 userName,
                               String                 typeName,
                               InstanceProperties     properties,

@@ -5,7 +5,7 @@
 @baseURL=https://localhost:9443
 @adminUserId=garygeeke
 @auditLogTopic=logging
-@localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
+@localMetadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
 
 ###
 # ---------------------------------------------
@@ -55,7 +55,7 @@ Content-Type: application/json
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/local-repository/metadata-collection-id
 Content-Type: text/plain
 
-{{localMatadataCollectionId}}
+{{localMetadataCollectionId}}
 
 
 ###

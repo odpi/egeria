@@ -1107,6 +1107,7 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                  metadataCollectionId,
                                                                  metadataCollectionName,
                                                                  InstanceProvenanceType.LOCAL_COHORT,
+                                                                 null,
                                                                  userId,
                                                                  typeDef.getName(),
                                                                  initialProperties,
@@ -1186,13 +1187,11 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                 metadataCollectionId,
                                                                  userId,
                                                                  typeDef.getName(),
                                                                  initialProperties,
                                                                  initialClassifications);
-
-        newEntity.setMetadataCollectionName(externalSourceName);
-        newEntity.setReplicatedBy(metadataCollectionId);
 
         /*
          * If an initial status is supplied then override the default value.

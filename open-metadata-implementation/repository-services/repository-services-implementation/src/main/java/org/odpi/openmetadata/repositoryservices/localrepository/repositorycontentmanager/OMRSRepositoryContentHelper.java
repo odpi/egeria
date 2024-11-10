@@ -1172,6 +1172,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sourceName           source of the request (used for logging)
      * @param metadataCollectionId unique identifier for the home metadata collection
      * @param provenanceType       origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName             name of the creator
      * @param typeName             name of the type
      * @param properties           properties for the entity
@@ -1183,12 +1184,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     public EntityDetail getNewEntity(String                 sourceName,
                                      String                 metadataCollectionId,
                                      InstanceProvenanceType provenanceType,
+                                     String                 replicatedBy,
                                      String                 userName,
                                      String                 typeName,
                                      InstanceProperties     properties,
                                      List<Classification>   classifications) throws TypeErrorException
     {
-        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, userName, typeName, properties, classifications);
+        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, replicatedBy, userName, typeName, properties, classifications);
     }
 
 
@@ -1199,6 +1201,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName               name of the creator
      * @param typeName               name of the type
      * @param properties             properties for the entity
@@ -1211,6 +1214,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                      String                 metadataCollectionId,
                                      String                 metadataCollectionName,
                                      InstanceProvenanceType provenanceType,
+                                     String                 replicatedBy,
                                      String                 userName,
                                      String                 typeName,
                                      InstanceProperties     properties,
@@ -1223,8 +1227,30 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                      userName,
                                                      typeName);
 
+        entity.setReplicatedBy(replicatedBy);
         entity.setProperties(properties);
-        entity.setClassifications(classifications);
+
+        if (classifications != null)
+        {
+            /*
+             * Make sure the classifications have the same metadata collection id as their entity.
+             */
+            List<Classification> homedClassifications = new ArrayList<>();
+
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    classification.setMetadataCollectionId(metadataCollectionId);
+                    classification.setMetadataCollectionName(metadataCollectionName);
+                    classification.setReplicatedBy(replicatedBy);
+
+                    homedClassifications.add(classification);
+                }
+            }
+
+            entity.setClassifications(homedClassifications);
+        }
 
         return entity;
     }

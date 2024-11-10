@@ -188,6 +188,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
                 metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
+                null,
                 userId,
                 typeDef.getName(),
                 initialProperties,
@@ -243,6 +244,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
                                                                externalSourceGUID,
                                                                InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                               metadataCollectionId,
                                                                userId,
                                                                typeDef.getName(),
                                                                initialProperties,
@@ -252,8 +254,6 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Ensure metadataCollectionName also set
          */
         newEntity.setMetadataCollectionName(externalSourceName);
-        newEntity.setReplicatedBy(metadataCollectionId);
-
 
         /*
          * If an initial status is supplied then override the default value.

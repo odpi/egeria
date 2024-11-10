@@ -20,9 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Translates open metadata query requests into SQL fragments that can be assembled before issuing
@@ -36,8 +34,6 @@ public class QueryBuilder
 
     private String                relationshipEndGUID          = null;
     private String                searchString                 = null;
-    private InstanceProperties    matchProperties              = null;
-    private MatchCriteria         matchCriteria                = null;
     private SearchProperties      searchProperties             = null;
     private String                propertyTableName            = null;
     private SearchClassifications matchClassifications         = null;
@@ -119,6 +115,11 @@ public class QueryBuilder
     {
         if (searchString != null)
         {
+            if (searchString.startsWith("\\Q") && (searchString.endsWith("\\E")))
+            {
+                return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " = '" + searchString.substring(2, searchString.length()-2) + "') ";
+            }
+
             return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " like '" + searchString + "') ";
         }
 
@@ -132,92 +133,152 @@ public class QueryBuilder
      * @param matchProperties Optional list of entity properties to match (where any String property's value should
      *                        be defined as a Java regular expression, even if it should be an exact match).
      * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
+     * @param propertyTableName name of table holding the properties
      */
     public void setMatchProperties(InstanceProperties matchProperties,
-                                   MatchCriteria      matchCriteria)
+                                   MatchCriteria      matchCriteria,
+                                   String             propertyTableName)
     {
-        this.matchProperties = matchProperties;
-        this.matchCriteria = matchCriteria;
-    }
-
-
-    /**
-     * Derive the SQL fragment to describe the match properties.
-     *
-     * @return fragment of SQL
-     */
-    private String getMatchPropertiesClause() throws RepositoryErrorException
-    {
-        if ((matchProperties != null) && (matchProperties.getPropertyCount() > 0 || matchProperties.getEffectiveFromTime() != null || (matchProperties.getEffectiveToTime() != null)))
+        if ((matchProperties != null) &&
+                (matchProperties.getPropertyCount() > 0 ||
+                        matchProperties.getEffectiveFromTime() != null ||
+                        matchProperties.getEffectiveToTime() != null))
         {
-            String matchOperand = "' and ";
-            PropertyComparisonOperator stringPropertyOperator = PropertyComparisonOperator.LIKE;
-            PropertyComparisonOperator numericPropertyOperator = PropertyComparisonOperator.EQ;
-
-            if (matchCriteria == MatchCriteria.ANY)
-            {
-                matchOperand = "' or ";
-            }
-            else if (matchCriteria == MatchCriteria.NONE)
-            {
-                stringPropertyOperator = PropertyComparisonOperator.NOT_LIKE;
-                numericPropertyOperator = PropertyComparisonOperator.NEQ;
-            }
-
-            StringBuilder stringBuilder = new StringBuilder(" and (");
-            boolean       firstProperty = true;
+            SearchProperties        searchProperties = new SearchProperties();
+            List<PropertyCondition> propertyConditions = new ArrayList<>();
 
             if (matchProperties.getEffectiveFromTime() != null)
             {
-                stringBuilder.append(this.getNestedPropertyComparisonClause(null,
-                                                                            null,
-                                                                            OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
-                                                                            numericPropertyOperator,
-                                                                            matchProperties.getEffectiveFromTime()));
-                firstProperty = false;
+                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(matchCriteria,
+                                                                                             OpenMetadataProperty.EFFECTIVE_FROM_TIME.name,
+                                                                                             matchProperties.getEffectiveFromTime());
+                propertyConditions.add(propertyCondition);
+
             }
 
-            if (matchProperties.getEffectiveFromTime() != null)
+            if (matchProperties.getEffectiveToTime() != null)
             {
-                if (firstProperty)
-                {
-                    firstProperty = false;
-                }
-                else
-                {
-                    stringBuilder.append(matchOperand);
-                }
-
-                stringBuilder.append(this.getNestedPropertyComparisonClause(null,
-                                                                            null,
-                                                                            OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
-                                                                            numericPropertyOperator,
-                                                                            matchProperties.getEffectiveToTime()));
-
+                PropertyCondition propertyCondition = this.getEffectiveTimePropertyCondition(matchCriteria,
+                                                                                             OpenMetadataProperty.EFFECTIVE_TO_TIME.name,
+                                                                                             matchProperties.getEffectiveToTime());
+                propertyConditions.add(propertyCondition);
             }
 
             if (matchProperties.getPropertyCount() > 0)
             {
-                if (! firstProperty)
-                {
-                    stringBuilder.append(matchOperand);
-                }
+                Map<String, InstancePropertyValue> properties = matchProperties.getInstanceProperties();
 
-                stringBuilder.append(getPropertyComparisonFromInstanceProperties(matchProperties,
-                                                                                 null,
-                                                                                 null,
-                                                                                 stringPropertyOperator,
-                                                                                 numericPropertyOperator,
-                                                                                 matchOperand));
+                for (String propertyName : properties.keySet())
+                {
+                    InstancePropertyValue instancePropertyValue = properties.get(propertyName);
+                    PropertyCondition     propertyCondition     = new PropertyCondition();
+
+                    propertyCondition.setProperty(propertyName);
+
+                    if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+                    {
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        {
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                String stringValue = primitivePropertyValue.getPrimitiveValue().toString();
+
+                                if (stringValue.startsWith("\\Q"))
+                                {
+                                    /*
+                                     * PostgreSQL does not like the use of the literal control characters
+                                     */
+                                    primitivePropertyValue.setPrimitiveValue(stringValue.substring(2, stringValue.length()-2));
+
+                                    if (matchCriteria == MatchCriteria.NONE)
+                                    {
+                                        propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
+                                    }
+                                    else
+                                    {
+                                        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                                    }
+                                }
+                                else
+                                {
+                                    if (matchCriteria == MatchCriteria.NONE)
+                                    {
+                                        propertyCondition.setOperator(PropertyComparisonOperator.NOT_LIKE);
+                                    }
+                                    else
+                                    {
+                                        propertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                                    }
+
+                                }
+                            }
+
+                            propertyCondition.setValue(instancePropertyValue);
+                        }
+                        else
+                        {
+                            if (matchCriteria == MatchCriteria.NONE)
+                            {
+                                propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
+                            }
+                            else
+                            {
+                                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                            }
+
+                            propertyCondition.setValue(instancePropertyValue);
+                        }
+                    }
+
+                    propertyConditions.add(propertyCondition);
+                }
             }
 
-            stringBuilder.append(") ");
+            searchProperties.setConditions(propertyConditions);
+            searchProperties.setMatchCriteria(matchCriteria);
 
-            return stringBuilder.toString();
+            this.setSearchProperties(searchProperties, propertyTableName);
+        }
+    }
+
+
+    /**
+     * Return an encoding of an effective time - this stores the value as a data rather than the usual long for
+     * date attributes.
+     *
+     * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
+     * @param propertyName name of property
+     * @param dateValue value to use
+     * @return property condition
+     */
+    private PropertyCondition getEffectiveTimePropertyCondition(MatchCriteria matchCriteria,
+                                                                String        propertyName,
+                                                                Date          dateValue)
+    {
+        PropertyCondition propertyCondition = new PropertyCondition();
+
+        propertyCondition.setProperty(propertyName);
+
+        if (matchCriteria == MatchCriteria.NONE)
+        {
+            propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
+        }
+        else
+        {
+            propertyCondition.setOperator(PropertyComparisonOperator.EQ);
         }
 
-        return " ";
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+        primitivePropertyValue.setPrimitiveValue(dateValue);
+
+        return propertyCondition;
     }
+
 
 
     /**
@@ -560,10 +621,10 @@ public class QueryBuilder
                     if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
                     {
                         stringBuilder.append(this.getNestedPropertyComparisonClause(propertyTableName,
-                                                                                        topLevelPropertyName,
-                                                                                        leafPropertyName,
-                                                                                        propertyCondition.getOperator(),
-                                                                                        primitivePropertyValue.getPrimitiveValue()));
+                                                                                    topLevelPropertyName,
+                                                                                    leafPropertyName,
+                                                                                    propertyCondition.getOperator(),
+                                                                                    primitivePropertyValue.getPrimitiveValue()));
                     }
                     else if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                     {
@@ -960,7 +1021,7 @@ public class QueryBuilder
      *
      * @return sequencing
      */
-    private String getSequencingOrder()
+    private String getSequencingOrder(String principleTableName)
     {
         if (sequencingOrder != null)
         {
@@ -968,23 +1029,23 @@ public class QueryBuilder
             {
                 case ANY, CREATION_DATE_RECENT ->
                 {
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName() + " desc ";
+                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " desc ";
                 }
                 case CREATION_DATE_OLDEST ->
                 {
-                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName() + " asc ";
+                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " asc ";
                 }
                 case LAST_UPDATE_RECENT ->
                 {
-                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName() + " desc ";
+                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName) + " desc ";
                 }
                 case LAST_UPDATE_OLDEST ->
                 {
-                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName() + " asc ";
+                    return " order by " + RepositoryColumn.UPDATE_TIME.getColumnName(principleTableName) + " asc ";
                 }
                 case GUID ->
                 {
-                    return " order by " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " asc ";
+                    return " order by " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " asc ";
                 }
                 case PROPERTY_DESCENDING ->
                 {
@@ -1080,9 +1141,10 @@ public class QueryBuilder
     /**
      * Return the paging requirements for the query.
      *
+     * @param principleTableName main table for ordering
      * @return paging
      */
-    private String getPaging()
+    private String getPaging(String principleTableName)
     {
         if (pageSize == 0)
         {
@@ -1098,7 +1160,7 @@ public class QueryBuilder
             if (sequencingOrder == null)
             {
                 sequencingOrder = SequencingOrder.CREATION_DATE_RECENT;
-                sqlClause = this.getSequencingOrder();
+                sqlClause = this.getSequencingOrder(principleTableName);
             }
 
             return sqlClause + " limit " + pageSize +  " offset " + fromElement;
@@ -1188,12 +1250,14 @@ public class QueryBuilder
      *
      * @param principleTableName name of main table
      * @param propertiesTableName name of attributes table
+     * @param columnSelection name of a specific column to select
      * @return the join part of the SQL query
      */
     public String getPropertyJoinQuery(String principleTableName,
-                                       String propertiesTableName)
+                                       String propertiesTableName,
+                                       String columnSelection)
     {
-        return "select * from " + principleTableName +
+        return "select " + columnSelection + " from " + principleTableName +
                     " left outer join " + propertiesTableName +
                     " on " + RepositoryColumn.INSTANCE_GUID.getColumnName(principleTableName) + " = " + RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName) +
                     " and " + RepositoryColumn.VERSION.getColumnName(principleTableName) + " = " + RepositoryColumn.VERSION.getColumnName(propertiesTableName);
@@ -1213,7 +1277,6 @@ public class QueryBuilder
                 getGUIDListClause() +
                 getSearchStringClause() +
                 getSearchPropertiesClause() +
-                getMatchPropertiesClause() +
                 getSearchClassificationsClause() +
                 getTypeClause() +
                 getLimitResultsByClassificationClaus() +
@@ -1232,12 +1295,13 @@ public class QueryBuilder
     /**
      * The sequencing (order by) and paging (limit/offset) can only be added at the end and may only include
      *
+     * @param principleTableName main table that the ordering will occur on
      * @return sql fragment
      */
-    public String getSequenceAndPaging()
+    public String getSequenceAndPaging(String principleTableName)
     {
-        String clause = getSequencingOrder() +
-                        getPaging();
+        String clause = getSequencingOrder(principleTableName) +
+                        getPaging(principleTableName);
 
         if (log.isDebugEnabled())
         {
@@ -1260,8 +1324,6 @@ public class QueryBuilder
         return "QueryBuilder{" +
                 "relationshipEndGUID='" + relationshipEndGUID + '\'' +
                 ", searchString='" + searchString + '\'' +
-                ", matchProperties=" + matchProperties +
-                ", matchCriteria=" + matchCriteria +
                 ", searchProperties=" + searchProperties +
                 ", matchClassifications=" + matchClassifications +
                 ", limitResultsByClassification=" + limitResultsByClassification +

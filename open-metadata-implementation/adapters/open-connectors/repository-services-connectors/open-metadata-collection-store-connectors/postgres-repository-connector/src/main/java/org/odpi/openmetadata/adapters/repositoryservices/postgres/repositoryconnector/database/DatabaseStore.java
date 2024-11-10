@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -213,7 +212,7 @@ public class DatabaseStore
 
         try
         {
-            String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.METADATA_COLLECTION_GUID.getColumnName() + " = '" + localMetadataCollectionId + "' and " + this.getAsOfTimeClause(asOfTime) + ";";
+            String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.METADATA_COLLECTION_GUID.getColumnName() + " = '" + localMetadataCollectionId + "' " + this.getAsOfTimeClause(asOfTime) + ";";
 
             List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
                                                                                                      whereClause,
@@ -229,9 +228,10 @@ public class DatabaseStore
                 {
                     if (classificationRow != null)
                     {
-                        Object classificationName = classificationRow.get(RepositoryColumn.CLASSIFICATION_NAME.getColumnName()).getDataValue();
+                        String classificationName = baseMapper.getStringPropertyFromColumn(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(), classificationRow, true);
+                        long   version            = baseMapper.getLongPropertyFromColumn(RepositoryColumn.VERSION.getColumnName(), classificationRow, true);
 
-                        String classificationWhereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + " and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "' and " + this.getAsOfTimeClause(asOfTime);
+                        String classificationWhereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version + " and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "';";
 
                         List<Map<String, JDBCDataValue>> classificationProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                                                           classificationWhereClause,
@@ -348,7 +348,8 @@ public class DatabaseStore
         final String methodName = "retrieveEntitiesByProperties";
 
         String sqlEntityQuery = entityQueryBuilder.getPropertyJoinQuery(RepositoryTable.ENTITY.getTableName(),
-                                                                        RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName()) +
+                                                                        RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                                        "*") +
                 " where " + entityQueryBuilder.getAsOfTimeWhereClause();
 
         try
@@ -357,19 +358,20 @@ public class DatabaseStore
 
             if (classificationQueryBuilder == null)
             {
-                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + entityQueryBuilder.getSequenceAndPaging(),
+                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
             else
             {
                 String sqlClassificationQuery = classificationQueryBuilder.getPropertyJoinQuery(RepositoryTable.CLASSIFICATION.getTableName(),
-                                                                                                RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName()) +
+                                                                                                RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                                                RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName())) +
                         " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
 
                 entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + " and " +
                                                                            RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName()) +
                                                                            " in (" + sqlClassificationQuery + ")" +
-                                                                           entityQueryBuilder.getSequenceAndPaging(),
+                                                                           entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
 
@@ -410,7 +412,7 @@ public class DatabaseStore
         try
         {
             List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                      queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(),
+                                                                                                      queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
@@ -447,8 +449,9 @@ public class DatabaseStore
         final String methodName = "retrieveRelationships";
 
         String sqlQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                            RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName()) +
-                " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging();
+                                                            RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                            "*") +
+                " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
 
 
         try
@@ -605,7 +608,7 @@ public class DatabaseStore
                 queryBuilder.setAsOfTime(asOfTime);
 
                 List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
-                                                                                                    queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(),
+                                                                                                    queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                                                     RepositoryTable.ENTITY.getColumnNameTypeMap());
 
                 return this.getCompleteEntitiesFromStore(entityRows, asOfTime);
@@ -655,7 +658,7 @@ public class DatabaseStore
             queryBuilder.setGUIDList(new ArrayList<>(databaseResultRowsMap.keySet()));
             queryBuilder.setAsOfTime(asOfTime);
 
-            Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging());
+            Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.CLASSIFICATION.getTableName()));
 
             /*
              * All of the information is assembled to build the entity mappers.

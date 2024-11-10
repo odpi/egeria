@@ -55,6 +55,33 @@ A metadata store that supports Open Metadata Access Services (OMASs) with event 
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/xtdb-local-kv-repository
 
 ###
+# @name Enable the PostgreSQL Repository
+# Set up the local repository to use the PostgreSQL Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/postgres-repository
+Content-Type: application/json
+
+{
+    "databaseURL": "{{postgreSQLDatabaseURL}}?currentSchema=repository_active_metadata_store",
+    "databaseSchema": "repository_active_metadata_store",
+    "secretsStore": "{{secretsStore}}",
+    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+}
+
+###
+
+@activeMetadataStoreMetadataCollectionId=61400a70-8c49-4635-b221-a8b11872ae16
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Set local metadata collection id
+# Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/metadata-collection-id
+Content-Type: text/plain
+
+{{activeMetadataStoreMetadataCollectionId}}
+
+
+###
 # Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
 # application.properties file using the `platform.placeholder.variables` property.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/event-bus
