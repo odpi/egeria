@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1503,11 +1504,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     @Override
     public Classification checkEntityNotClassifiedEntity(String             sourceName,
-                                                  EntitySummary      entity,
-                                                  String             classificationName,
-                                                  InstanceProperties classificationProperties,
-                                                  AuditLog           auditLog,
-                                                  String             methodName) throws ClassificationErrorException
+                                                         EntitySummary      entity,
+                                                         String             classificationName,
+                                                         InstanceProperties classificationProperties,
+                                                         AuditLog           auditLog,
+                                                         String             methodName) throws ClassificationErrorException
     {
         final String thisMethodName = "checkEntityNotClassifiedEntity";
 

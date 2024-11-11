@@ -282,7 +282,7 @@ public class DatabaseStore
                                                                                         RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
                                                                                         RepositoryTable.ENTITY.getColumnNameTypeMap());
 
-            return this.getCompleteEntityFromStore(guid, entityRow);
+            return this.getCompleteEntityFromStore(guid, entityRow, asOfTime);
         }
         catch (PropertyServerException sqlException)
         {
@@ -484,11 +484,13 @@ public class DatabaseStore
      *
      * @param guid unique identifier of the entity
      * @param entityRow appropriate row from table
+     * @param asOfTime database time
      * @return entity mapper
      * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
      */
     public EntityMapper getCompleteEntityFromStore(String                     guid,
-                                                   Map<String, JDBCDataValue> entityRow) throws RepositoryErrorException
+                                                   Map<String, JDBCDataValue> entityRow,
+                                                   Date                       asOfTime) throws RepositoryErrorException
     {
         final String methodName = "getCompleteEntityFromStore";
 
@@ -506,8 +508,7 @@ public class DatabaseStore
                                                                                                               whereClause,
                                                                                                               RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getColumnNameTypeMap());
 
-                    Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(whereClause);
-
+                    Map<String, List<ClassificationMapper>> classificationMappersForEntityGUIDs = getClassificationMappersForEntityGUIDs(RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime));
 
                     return new EntityMapper(entityRow,
                                             entityProperties,
@@ -1060,7 +1061,9 @@ public class DatabaseStore
             {
                 for (Map<String, JDBCDataValue> entityRow : entityRows)
                 {
-                    entityMappers.add(this.getCompleteEntityFromStore(guid, entityRow));
+                    Date versionEndTime = baseMapper.getDatePropertyFromColumn(RepositoryColumn.VERSION_END_TIME.getColumnName(), entityRow, false);
+
+                    entityMappers.add(this.getCompleteEntityFromStore(guid, entityRow, versionEndTime));
                 }
             }
         }

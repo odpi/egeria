@@ -411,11 +411,11 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Correct the caller's code and attempt the request again."),
 
     /**
-     * OMRS-REPOSITORY-400-048 - A {0} request has been made to repository {1} to remove a non-existent classification {2} from entity {3}
+     * OMRS-REPOSITORY-400-048 - A {0} request has been made to repository {1} to access a non-existent classification {2} from entity {3}
      */
     ENTITY_NOT_CLASSIFIED(400, "OMRS-REPOSITORY-400-048",
-            "A {0} request has been made to repository {1} to remove a non-existent classification {2} from entity {3}",
-            "The system is unable to perform the request as the instance has invalid values.",
+            "A {0} request has been made to repository {1} to access a non-existent classification {2} from entity {3}",
+            "The system is unable to perform the request as the instance has a missing classification.",
             "Correct the caller's code and reattempt the request."),
 
     /**

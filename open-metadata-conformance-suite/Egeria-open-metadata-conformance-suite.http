@@ -38,11 +38,11 @@ Content-Type: application/json
 {
 "producer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 },
 "consumer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 }
 }
 

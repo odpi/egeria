@@ -170,8 +170,8 @@ public enum OpenMetadataType
     SEARCH_KEYWORD("0134c9ae-0fe6-4224-bb3b-e18b78a90b1e",
                    "SearchKeyword",
                    OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
-                   "A shareable keyword to help locating relevant assets.",
-                   "26707bea-f65c-43bc-9576-5991d9bafc24"),
+                   "26707bea-f65c-43bc-9576-5991d9bafc24",
+                   "A shareable keyword to help locating relevant assets."),
 
     /**
      * Provides a link to a keyword that helps to identify specific elements in a search.
@@ -1091,8 +1091,8 @@ public enum OpenMetadataType
     PROJECT("0799569f-0c16-4a1f-86d9-e2e89568f7fd",
             "Project",
             OpenMetadataWikiPages.MODEL_0130_PROJECTS,
-            "An organized activity, typically to achieve a well defined goal.",
-            "1d8eed39-17e2-400c-adac-4d0c8f3063ad"),
+            "1d8eed39-17e2-400c-adac-4d0c8f3063ad",
+            "An organized activity, typically to achieve a well-defined goal."),
 
     /**
      * An person with overall responsibility for one or more project.

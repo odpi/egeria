@@ -302,10 +302,10 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{se
 Content-Type: application/json
 
 {
-    "databaseURL": "{{postgreSQLDatabaseURL}}",
+    "databaseURL": "~{postgreSQLDatabaseURL}~",
     "databaseSchema": "repository_{{server}}",
-    "secretsStore": "{{secretsStore}}",
-    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+    "secretsStore": "~{secretsStore}~",
+    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
 
 ###
