@@ -61,10 +61,10 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/acti
 Content-Type: application/json
 
 {
-    "databaseURL": "{{postgreSQLDatabaseURL}}?currentSchema=repository_active_metadata_store",
+    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_active_metadata_store",
     "databaseSchema": "repository_active_metadata_store",
-    "secretsStore": "{{secretsStore}}",
-    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+    "secretsStore": "~{secretsStore}~",
+    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
 
 ###
@@ -82,7 +82,7 @@ Content-Type: text/plain
 
 
 ###
-# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
 # application.properties file using the `platform.placeholder.variables` property.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/event-bus
 Content-Type: application/json
@@ -90,11 +90,11 @@ Content-Type: application/json
 {
 "producer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 },
 "consumer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 }
 }
 
@@ -140,7 +140,7 @@ Content-Type: application/json
 {
   "class": "ViewServiceRequestBody",
   "omagserverName": "active-metadata-store",
-  "omagserverPlatformRootURL": "{{egeriaEndpoint}}"
+  "omagserverPlatformRootURL": "~{egeriaEndpoint}~"
 }
 
 ###
@@ -252,7 +252,7 @@ Content-Type: application/json
       "engineUserId": "generalnpa"
     }
   ],
-  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+  "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
   "omagserverName": "active-metadata-store"
 }
 
@@ -280,43 +280,43 @@ Content-Type: application/json
 [
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:Default"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheAtlas"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:ApacheKafka"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenAPIs"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataObservability"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:PostgreSQL"
     },
     {
         "class": "IntegrationGroupConfig",
-        "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
     }

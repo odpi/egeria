@@ -42,10 +42,10 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/post
 Content-Type: application/json
 
 {
-    "databaseURL": "{{postgreSQLDatabaseURL}}?currentSchema=repository_postgres_metadata_store",
+    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_postgres_metadata_store",
     "databaseSchema": "repository_postgres_metadata_store",
-    "secretsStore": "{{secretsStore}}",
-    "secretsCollectionName": "{{postgreSQLServerCollectionName}}"
+    "secretsStore": "~{secretsStore}~",
+    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
 
 ###
@@ -59,7 +59,7 @@ Content-Type: text/plain
 
 
 ###
-# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
 # application.properties file using the `platform.placeholder.variables` property.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/postgres-metadata-store/event-bus
 Content-Type: application/json
@@ -67,11 +67,11 @@ Content-Type: application/json
 {
 "producer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 },
 "consumer":
 {
-"bootstrap.servers":"{{kafkaEndpoint}}"
+"bootstrap.servers":"~{kafkaEndpoint}~"
 }
 }
 

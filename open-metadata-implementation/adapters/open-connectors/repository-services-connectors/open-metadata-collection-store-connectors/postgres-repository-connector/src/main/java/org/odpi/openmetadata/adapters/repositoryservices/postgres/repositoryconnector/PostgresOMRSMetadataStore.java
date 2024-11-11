@@ -136,7 +136,6 @@ class PostgresOMRSMetadataStore
      * Return the entity identified by the guid.
      *
      * @param guid - unique identifier for the entity
-     * @param asOfTime value from caller
      * @return entity object
      * @throws RepositoryErrorException problem forming entity proxy
      */
