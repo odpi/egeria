@@ -262,9 +262,10 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 <div class="block">Create a lineage mapping relationship between a source and target element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createLineageRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createLineageRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formula,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetElementGUID)</code></div>
@@ -2648,11 +2649,12 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
 </section>
 </li>
 <li>
-<section class="detail" id="createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>createLineageRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createLineageRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;label,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;formula,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetElementGUID)</span>
@@ -2663,11 +2665,12 @@ implements <a href="GovernanceContext.html" title="interface in org.odpi.openmet
  two schema elements.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ProvisioningGovernanceContext.html#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createLineageRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
+<dd><code><a href="ProvisioningGovernanceContext.html#createLineageRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createLineageRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="ProvisioningGovernanceContext.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction">ProvisioningGovernanceContext</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>relationshipName</code> - either LineageMapping, ProcessCall, DataFlow, ControlFlow.</dd>
 <dd><code>sourceElementGUID</code> - unique identifier of the element that describes the source of the data.</dd>
 <dd><code>qualifiedName</code> - qualifiedName of the information supply chain</dd>
+<dd><code>label</code> - label for when the lineage relationship is visualized</dd>
 <dd><code>targetElementGUID</code> - unique identifier of the element that describes the destination of the data.</dd>
 <dd><code>description</code> - description of the lineage activity</dd>
 <dd><code>formula</code> - expression summa</dd>

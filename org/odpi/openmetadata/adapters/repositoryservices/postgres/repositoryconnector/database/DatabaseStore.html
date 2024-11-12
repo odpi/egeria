@@ -132,8 +132,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve details about an entity from the store.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompleteEntityFromStore(java.lang.String,java.util.Map)" class="member-name-link">getCompleteEntityFromStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;entityRow)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompleteEntityFromStore(java.lang.String,java.util.Map,java.util.Date)" class="member-name-link">getCompleteEntityFromStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;entityRow,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the related information for an entity.</div>
 </div>
@@ -218,7 +219,7 @@ loadScripts(document, 'script');</script>
 <div class="block">This query is issued against a join of the entity table and the entity attribute table.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(java.lang.String,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against the relationship table.</div>
@@ -344,6 +345,61 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getRelationshipForUpdate(java.lang.String)">
+<h3>getRelationshipForUpdate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a></span>&nbsp;<span class="element-name">getRelationshipForUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
+                                            throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Retrieve a relationship from the database.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of the relationship</dd>
+<dt>Returns:</dt>
+<dd>Relationship mapper</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClassificationForUpdate(java.lang.String,java.lang.String)">
+<h3>getClassificationForUpdate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a></span>&nbsp;<span class="element-name">getClassificationForUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</span>
+                                                throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Retrieve details about an entity from the store.  The entity mapper is returned to allow the caller to choose
+ what style of entity to return.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>entityGUID</code> - unique identifier of the entity</dd>
+<dd><code>classificationName</code> - name of classification</dd>
+<dt>Returns:</dt>
+<dd>classification mapper containing all that is known about the latest version of the classification</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - either a problem accessing the database or a mapping problem with the contents retrieved</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHomeClassifications(java.lang.String,java.lang.String,java.util.Date)">
+<h3>getHomeClassifications</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&gt;</span>&nbsp;<span class="element-name">getHomeClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
+                                                  throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Return the list of home classifications for an entity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of the entity</dd>
+<dd><code>localMetadataCollectionId</code> - unique identifier of the local metadata collection</dd>
+<dd><code>asOfTime</code> - database time</dd>
+<dt>Returns:</dt>
+<dd>list of classifications or null</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getEntityFromStore(java.lang.String,java.util.Date)">
 <h3>getEntityFromStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></span>&nbsp;<span class="element-name">getEntityFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
@@ -363,41 +419,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCompleteEntityFromStore(java.lang.String,java.util.Map)">
-<h3>getCompleteEntityFromStore</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></span>&nbsp;<span class="element-name">getCompleteEntityFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;entityRow)</span>
-                                        throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Retrieve the related information for an entity.
- Null is returned if there were no active instance.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>guid</code> - unique identifier of the entity</dd>
-<dd><code>entityRow</code> - appropriate row from table</dd>
-<dt>Returns:</dt>
-<dd>entity mapper</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getRelationshipForUpdate(java.lang.String)">
-<h3>getRelationshipForUpdate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a></span>&nbsp;<span class="element-name">getRelationshipForUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span>
-                                            throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Retrieve a relationship from the database.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>guid</code> - unique identifier of the relationship</dd>
-<dt>Returns:</dt>
-<dd>Relationship mapper</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getRelationshipFromStore(java.lang.String,java.util.Date)">
 <h3>getRelationshipFromStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a></span>&nbsp;<span class="element-name">getRelationshipFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
@@ -411,6 +432,83 @@ loadScripts(document, 'script');</script>
 <dd><code>asOfTime</code> - requested time for the version</dd>
 <dt>Returns:</dt>
 <dd>relationship mapper</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)">
+<h3>retrieveEntitiesByProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveEntitiesByProperties</span><wbr><span class="parameters">(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
+ <a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;classificationQueryBuilder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
+                                                throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">This query is issued against a join of the entity table and the entity attribute table.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>classificationQueryBuilder</code> - filled with conditions for the where clause for the SQL query</dd>
+<dd><code>entityQueryBuilder</code> - filled with conditions for the where clause for the SQL query</dd>
+<dd><code>asOfTime</code> - database time</dd>
+<dt>Returns:</dt>
+<dd>list of matching entity mappers or null if nothing matches</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)">
+<h3>retrieveRelationships</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveRelationships</span><wbr><span class="parameters">(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
+                                               throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">This query is issued against the relationship table.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>queryBuilder</code> - where clause for the SQL query</dd>
+<dd><code>asOfTime</code> - database time</dd>
+<dt>Returns:</dt>
+<dd>list of matching relationship mappers or null if nothing matches</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)">
+<h3>retrieveRelationshipsByProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveRelationshipsByProperties</span><wbr><span class="parameters">(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
+                                                           throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">This query is issued against a join of the relationship table and the relationship attribute table.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>queryBuilder</code> - populated with details of the where clause for the SQL query</dd>
+<dd><code>asOfTime</code> - database time</dd>
+<dt>Returns:</dt>
+<dd>list of matching relationship mappers or null if nothing matches</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCompleteEntityFromStore(java.lang.String,java.util.Map,java.util.Date)">
+<h3>getCompleteEntityFromStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></span>&nbsp;<span class="element-name">getCompleteEntityFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;entityRow,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
+                                        throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Retrieve the related information for an entity.
+ Null is returned if there were no active instance.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of the entity</dd>
+<dd><code>entityRow</code> - appropriate row from table</dd>
+<dd><code>asOfTime</code> - database time</dd>
+<dt>Returns:</dt>
+<dd>entity mapper</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
 </dl>
@@ -476,101 +574,6 @@ loadScripts(document, 'script');</script>
 <dd><code>oldestFirst</code> - ordering</dd>
 <dt>Returns:</dt>
 <dd>list of instance versions</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getClassificationForUpdate(java.lang.String,java.lang.String)">
-<h3>getClassificationForUpdate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a></span>&nbsp;<span class="element-name">getClassificationForUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</span>
-                                                throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Retrieve details about an entity from the store.  The entity mapper is returned to allow the caller to choose
- what style of entity to return.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>entityGUID</code> - unique identifier of the entity</dd>
-<dd><code>classificationName</code> - name of classification</dd>
-<dt>Returns:</dt>
-<dd>classification mapper containing all that is known about the latest version of the classification</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - either a problem accessing the database or a mapping problem with the contents retrieved</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getHomeClassifications(java.lang.String,java.lang.String,java.util.Date)">
-<h3>getHomeClassifications</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&gt;</span>&nbsp;<span class="element-name">getHomeClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localMetadataCollectionId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
-                                                  throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">Return the list of home classifications for an entity.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>guid</code> - unique identifier of the entity</dd>
-<dd><code>localMetadataCollectionId</code> - unique identifier of the local metadata collection</dd>
-<dd><code>asOfTime</code> - database time</dd>
-<dt>Returns:</dt>
-<dd>list of classifications or null</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)">
-<h3>retrieveEntitiesByProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveEntitiesByProperties</span><wbr><span class="parameters">(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
- <a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;classificationQueryBuilder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
-                                                throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">This query is issued against a join of the entity table and the entity attribute table.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>classificationQueryBuilder</code> - filled with conditions for the where clause for the SQL query</dd>
-<dd><code>entityQueryBuilder</code> - filled with conditions for the where clause for the SQL query</dd>
-<dd><code>asOfTime</code> - database time</dd>
-<dt>Returns:</dt>
-<dd>list of matching entity mappers or null if nothing matches</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="retrieveRelationships(java.lang.String,java.util.Date)">
-<h3>retrieveRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
-                                               throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">This query is issued against the relationship table.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>whereClause</code> - where clause for the SQL query</dd>
-<dd><code>asOfTime</code> - database time</dd>
-<dt>Returns:</dt>
-<dd>list of matching relationship mappers or null if nothing matches</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)">
-<h3>retrieveRelationshipsByProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</span>&nbsp;<span class="element-name">retrieveRelationshipsByProperties</span><wbr><span class="parameters">(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</span>
-                                                           throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
-<div class="block">This query is issued against a join of the relationship table and the relationship attribute table.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>queryBuilder</code> - populated with details of the where clause for the SQL query</dd>
-<dd><code>asOfTime</code> - database time</dd>
-<dt>Returns:</dt>
-<dd>list of matching relationship mappers or null if nothing matches</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
 </dl>

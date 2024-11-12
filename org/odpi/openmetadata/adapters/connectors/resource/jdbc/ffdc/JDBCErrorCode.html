@@ -137,6 +137,10 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-500-001 - The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_SQL_EXCEPTION" class="member-name-link">UNEXPECTED_SQL_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {3}</div>
+</div>
 </div>
 </section>
 </li>
@@ -223,6 +227,13 @@ the order they are declared.</div>
 <h3>MISSING_DATABASE_VALUE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCErrorCode</a></span>&nbsp;<span class="element-name">MISSING_DATABASE_VALUE</span></div>
 <div class="block">JDBC-RESOURCE-CONNECTOR-500-002 - The JDBC resource connector detected a missing value for column {0} during method {1} in mapper {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_SQL_EXCEPTION">
+<h3>UNEXPECTED_SQL_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_SQL_EXCEPTION</span></div>
+<div class="block">JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {3}</div>
 </section>
 </li>
 </ul>
