@@ -3655,12 +3655,12 @@ public class SimpleCatalogArchiveHelper
      * @param sourceGUID unique identifier of the element at end 1
      * @param destinationGUID unique identifier of the element at end 2
      * @param relationshipType type name of lineage relationship
-     * @param description description of the relationship
+     * @param label label of the relationship
      */
     public void addLineageRelationship(String sourceGUID,
                                        String destinationGUID,
                                        String relationshipType,
-                                       String description)
+                                       String label)
     {
         final String methodName = "addLineageRelationship";
 
@@ -3670,10 +3670,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
         EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.LABEL.name, label, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(relationshipType,
-                                                                     idToGUIDMap.getGUID(sourceGUID + "_to_" + destinationGUID + "_" + relationshipType + "_" + description + "_relationship"),
+                                                                     idToGUIDMap.getGUID(sourceGUID + "_to_" + destinationGUID + "_" + relationshipType + "_" + label + "_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -6558,7 +6558,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.PROPERTY_TYPE.name, propertyType, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + validValueGUID + "_specification_property_type_relationship"),
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + validValueGUID + "_specification_property_type_relationship_for_" + propertyType),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

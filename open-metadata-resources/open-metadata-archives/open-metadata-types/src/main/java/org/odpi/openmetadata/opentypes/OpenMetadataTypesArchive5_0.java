@@ -2993,16 +2993,8 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getUltimateSourceRelationship()
     {
-        final String guid            = "e5649e7a-4d97-4a41-a91d-20f521f961aa";
-        final String name            = "UltimateSource";
-        final String description     = "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_SOURCE,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         relationshipDef.setMultiLink(true);
@@ -3041,20 +3033,9 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "distance";
-        final String attribute2Description     = "The number of hops along the lineage graph to the ultimate source organized by type of element.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringIntTypeDefAttribute(attribute2Name,
-                                                                 attribute2Description,
-                                                                 attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -3064,17 +3045,8 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getUltimateDestinationRelationship()
     {
-        final String guid            = "27d48f4a-a5bd-4320-a4ba-55f03adbb27b";
-        final String name            = "UltimateDestination";
-        final String description     = "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.";
-        final String descriptionGUID = null;
-
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ULTIMATE_DESTINATION,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         relationshipDef.setMultiLink(true);
@@ -3113,20 +3085,9 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "distance";
-        final String attribute2Description     = "The number of hops along the lineage graph to the ultimate destination organized by type of element.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringIntTypeDefAttribute(attribute2Name,
-                                                                 attribute2Description,
-                                                                 attribute2DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);
 

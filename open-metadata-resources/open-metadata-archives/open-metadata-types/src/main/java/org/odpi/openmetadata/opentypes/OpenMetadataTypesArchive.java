@@ -3,16 +3,19 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all the standard open metadata types.
@@ -121,6 +124,8 @@ public class OpenMetadataTypesArchive
             this.getOriginalTypes();
 
             this.add0265AnalyticsAssets();
+            this.add0118ActorRoles();
+            this.addLabelToLineage();
 
             /*
              * The completed archive is ready to be packaged up and returned
@@ -154,6 +159,199 @@ public class OpenMetadataTypesArchive
         previousTypes.getOriginalTypes();
 
 
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0118 Actor Roles.
+     */
+    private void add0118ActorRoles()
+    {
+        this.archiveBuilder.addEntityDef(getActorRoleEntity());
+        this.archiveBuilder.addTypeDefPatch(updatePersonRole());
+        this.archiveBuilder.addEntityDef(getTeamRoleEntity());
+        this.archiveBuilder.addEntityDef(getITProfileRoleEntity());
+
+        this.archiveBuilder.addTypeDefPatch(updatePersonRoleAppointmentRelationship());
+        this.archiveBuilder.addRelationshipDef(getTeamRoleAppointmentRelationship());
+        this.archiveBuilder.addRelationshipDef(getITProfileRoleRelationship());
+    }
+
+
+    private EntityDef getActorRoleEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTOR_ROLE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private TypeDefPatch updatePersonRole()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_ROLE.typeName));
+
+        return typeDefPatch;
+    }
+
+    private EntityDef getTeamRoleEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.TEAM_ROLE,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_ROLE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HEAD_COUNT));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private EntityDef getITProfileRoleEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.IT_PROFILE_ROLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_ROLE.typeName));
+    }
+
+    private TypeDefPatch updatePersonRoleAppointmentRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    private RelationshipDef getTeamRoleAppointmentRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "rolePerformers";
+        final String                     end1AttributeDescription     = "The teams performing this role.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "performsRoles";
+        final String                     end2AttributeDescription     = "Roles performed by this team.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM_ROLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_TIME_ALLOCATION_PERCENT));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+    private RelationshipDef getITProfileRoleRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "rolePerformers";
+        final String                     end1AttributeDescription     = "The automated software executables performing this role.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_PROFILE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "performsRoles";
+        final String                     end2AttributeDescription     = "Roles performed by this software executable.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_PROFILE_ROLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
 
 
@@ -199,6 +397,161 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+
+    private void addLabelToLineage()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateProcessCall());
+        this.archiveBuilder.addTypeDefPatch(updateDataFlow());
+        this.archiveBuilder.addTypeDefPatch(updateControlFlow());
+        this.archiveBuilder.addTypeDefPatch(updateUltimateSource());
+        this.archiveBuilder.addTypeDefPatch(updateUltimateDestination());
+        this.archiveBuilder.addTypeDefPatch(updateLineageMapping());
+    }
+
+
+    private TypeDefPatch updateProcessCall()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDataFlow()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateControlFlow()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    private TypeDefPatch updateUltimateSource()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_SOURCE.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    private TypeDefPatch updateUltimateDestination()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_DESTINATION.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    private TypeDefPatch updateLineageMapping()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
 }
 

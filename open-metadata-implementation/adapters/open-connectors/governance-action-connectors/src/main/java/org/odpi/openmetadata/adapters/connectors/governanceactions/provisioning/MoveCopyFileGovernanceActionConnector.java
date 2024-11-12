@@ -919,10 +919,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_TYPE_NAME, sourceFileGUID, null, null, null, processGUID);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, sourceFileGUID, null, null,null, null, processGUID);
         }
 
-        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_TYPE_NAME, processGUID, null, null, null, newFileGUID);
+        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW.typeName, processGUID, null, null, null, null, newFileGUID);
 
         metadataStore.setForLineage(false);
 

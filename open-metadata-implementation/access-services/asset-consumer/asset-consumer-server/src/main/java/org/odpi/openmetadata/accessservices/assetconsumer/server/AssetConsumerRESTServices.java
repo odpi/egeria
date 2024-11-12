@@ -663,10 +663,10 @@ public class AssetConsumerRESTServices
         {
             lineageRelationshipTypeNames = new ArrayList<>();
 
-            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_FLOW_TYPE_NAME);
-            lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW_TYPE_NAME);
-            lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME);
-            lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL_TYPE_NAME);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_FLOW.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME);
             lineageRelationshipTypeNames.add(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
         }

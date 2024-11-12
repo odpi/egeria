@@ -1583,6 +1583,11 @@ public enum OpenMetadataProperty
     HEAD_COUNT("headCount", DataType.INT.getName(), "Number of people that can be appointed to the role.", null, "58e9c9c4-d5e3-4576-a2a7-9f459bcdd439"),
 
     /**
+     * What percentage of time is the appointee expected to devote to this role.
+     */
+    EXPECTED_TIME_ALLOCATION_PERCENT("expectedTimeAllocationPercent", DataType.INT.getName(), "What percentage of time is the appointee expected to devote to this role.", "50", "027c580d-c5c9-4dda-a7d3-79a9951a85ad"),
+
+    /**
      * Type of team, such as department.
      */
     TEAM_TYPE("teamType", DataType.STRING.getName(), "Type of team, such as division, or department.", null, "109d24af-b694-4f1e-90d2-ad3945596f2f"),
@@ -1796,6 +1801,28 @@ public enum OpenMetadataProperty
      * Level of encryption used on the filesystem (if any).
      */
     ENCRYPTION("encryption", DataType.STRING.getName(), "Level of encryption used on the filesystem (if any).", null, "011e4f70-b914-4dc8-9dc0-f259014e6f63"),
+
+    /**
+     * Display label to use when displaying this lineage relationship in a lineage graph.
+     */
+    LABEL("label", DataType.STRING.getName(), "Display label to use when displaying this lineage relationship in a lineage graph.", "provision data", "767aead2-5b37-4607-ba09-77d805e17d35"),
+
+    /**
+     * Location of the call in the implementation.
+     */
+    LINE_NUMBER("lineNumber", DataType.STRING.getName(), "Location of the call in the implementation.", "21", "942f07c9-54ba-44c4-8b9b-78753bc4fef2"),
+
+    /**
+     * Function that must be true to travel down this control flow.
+     */
+    GUARD( "guard", DataType.STRING.getName(), "Function, or value that must be true to travel down this control flow.", "x>4", "ca2d3fd9-3c6a-4771-9e9c-7bb623f62ba2"),
+
+    /**
+     * The number of hops along the lineage graph to the ultimate source organized by type of element.
+     */
+    HOPS("hops", DataType.MAP_STRING_INT.getName(), "The number of hops along the lineage graph to the ultimate source organized by type of element.", null, "4bcc1f8e-ebef-4a6e-adbe-65d3932104e7"),
+
+
     ;
 
 
