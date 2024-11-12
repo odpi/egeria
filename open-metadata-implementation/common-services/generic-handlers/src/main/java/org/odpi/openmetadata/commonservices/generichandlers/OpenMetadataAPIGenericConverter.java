@@ -3838,7 +3838,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                      OpenMetadataProperty.GUARD.name,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the label property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getLabel(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getLabel";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataProperty.LABEL.name,
                                                       instanceProperties,
                                                       methodName);
         }

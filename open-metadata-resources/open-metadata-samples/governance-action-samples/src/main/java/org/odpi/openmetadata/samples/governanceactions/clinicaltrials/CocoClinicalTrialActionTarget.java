@@ -10,7 +10,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ActionTarget provides some standard action type names to use in the implementation of governance services.
@@ -340,23 +342,34 @@ public enum CocoClinicalTrialActionTarget
      */
     public static List<ActionTargetType> getHospitalOnboardingActionTargetTypes()
     {
-        List<ActionTargetType> actionTargetTypes = getCertifyWeeklyMeasurementsActionTargetTypes();
+        Map<String, ActionTargetType> actionTargetTypes = new HashMap<>();
+
+        for (ActionTargetType actionTargetType : getCertifyWeeklyMeasurementsActionTargetTypes())
+        {
+            actionTargetTypes.put(actionTargetType.getName(), actionTargetType);
+        }
 
         /*
          * Predefined by ClinicalTrialSetUp
          */
-        actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
-        actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
-        actionTargetTypes.add(GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
-        actionTargetTypes.add(STEWARD.getActionTargetType());
+        actionTargetTypes.put(PROJECT.getActionTargetType().getName(),
+                              PROJECT.getActionTargetType());
+        actionTargetTypes.put(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType().getName(),
+                              HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
+        actionTargetTypes.put(LANDING_AREA_CONNECTOR.getActionTargetType().getName(),
+                              LANDING_AREA_CONNECTOR.getActionTargetType());
+        actionTargetTypes.put(GENERIC_ONBOARDING_PIPELINE.getActionTargetType().getName(),
+                              GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
+        actionTargetTypes.put(STEWARD.getActionTargetType().getName(),
+                              STEWARD.getActionTargetType());
 
         /*
          * Supplied by the caller
          */
-        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+        actionTargetTypes.put(HOSPITAL.getActionTargetType().getName(),
+                              HOSPITAL.getActionTargetType());
 
-        return actionTargetTypes;
+        return new ArrayList<>(actionTargetTypes.values());
     }
 
 

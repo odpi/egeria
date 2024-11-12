@@ -497,9 +497,9 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.IDENTIFIER.name,
-                                                           OpenMetadataProperty.IDENTIFIER.description,
-                                                           OpenMetadataProperty.IDENTIFIER.descriptionGUID);
+        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.HEAD_COUNT.name,
+                                                        OpenMetadataProperty.HEAD_COUNT.description,
+                                                        OpenMetadataProperty.HEAD_COUNT.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

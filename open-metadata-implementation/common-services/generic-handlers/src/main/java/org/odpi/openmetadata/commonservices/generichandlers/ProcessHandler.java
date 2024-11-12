@@ -1451,7 +1451,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                portGUIDParameterName,
                                forLineage,
                                forDuplicateProcessing,
-                               effectiveTime, methodName);
+                               effectiveTime,
+                               methodName);
     }
 
 
@@ -1718,7 +1719,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
      * @param forLineage return elements marked with the Memento classification?
@@ -1742,6 +1744,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 Date    effectiveFrom,
                                 Date    effectiveTo,
                                 String  qualifiedName,
+                                String  label,
                                 String  description,
                                 String  formula,
                                 boolean forLineage,
@@ -1760,6 +1763,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataProperty.LABEL.name,
+                                                                              label,
+                                                                              methodName);
+
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
                                                                               OpenMetadataProperty.DESCRIPTION.name,
@@ -1784,8 +1793,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.DATA_FLOW_TYPE_GUID,
-                                               OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                               OpenMetadataType.DATA_FLOW.typeGUID,
+                                               OpenMetadataType.DATA_FLOW.typeName,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -1802,7 +1811,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime time when the relationship is effective
@@ -1835,8 +1844,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     dataSupplierGUID,
                                                                     dataSupplierGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FLOW.typeGUID,
+                                                                    OpenMetadataType.DATA_FLOW.typeName,
                                                                     dataConsumerGUID,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -1868,7 +1877,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     {
                         return dataFlowConverter.getNewRelationshipBean(dataFlowBeanClass, relationship, methodName);
                     }
-
                 }
             }
         }
@@ -1887,7 +1895,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataFlowGUIDParameterName parameter supplying dataFlowGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
      * @param forLineage return elements marked with the Memento classification?
@@ -1907,6 +1916,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                Date    effectiveFrom,
                                Date    effectiveTo,
                                String  qualifiedName,
+                               String  label,
                                String  description,
                                String  formula,
                                boolean forLineage,
@@ -1926,6 +1936,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.LABEL.name,
+                                                                  label,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
@@ -1941,7 +1957,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            dataFlowGUID,
                                            dataFlowGUIDParameterName,
-                                           OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                           OpenMetadataType.DATA_FLOW.typeName,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -1988,7 +2004,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  dataFlowGUID,
                                  dataFlowGUIDParameterName,
-                                 OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                 OpenMetadataType.DATA_FLOW.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2034,8 +2050,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     dataSupplierGUID,
                                                                     dataSupplierGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FLOW.typeGUID,
+                                                                    OpenMetadataType.DATA_FLOW.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -2107,8 +2123,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     dataConsumerGUID,
                                                                     dataConsumerGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.DATA_FLOW.typeGUID,
+                                                                    OpenMetadataType.DATA_FLOW.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
@@ -2154,7 +2170,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nextStepGUIDParameterName parameter supplying nextStepGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
      * @param forLineage return elements marked with the Memento classification?
@@ -2178,6 +2195,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    Date    effectiveFrom,
                                    Date    effectiveTo,
                                    String  qualifiedName,
+                                   String  label,
                                    String  description,
                                    String  guard,
                                    boolean forLineage,
@@ -2196,6 +2214,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataProperty.LABEL.name,
+                                                                              label,
+                                                                              methodName);
+
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
                                                                               OpenMetadataProperty.DESCRIPTION.name,
@@ -2220,8 +2244,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
-                                               OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                               OpenMetadataType.CONTROL_FLOW.typeGUID,
+                                               OpenMetadataType.CONTROL_FLOW.typeName,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -2238,7 +2262,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param nextStepGUID unique identifier of the next step
      * @param nextStepGUIDParameterName parameter supplying nextStepGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2271,8 +2295,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeGUID,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeName,
                                                                     nextStepGUID,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -2324,7 +2348,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param controlFlowGUIDParameterName parameter supplying controlFlowGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
      * @param forLineage return elements marked with the Memento classification?
@@ -2344,6 +2369,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                   Date    effectiveFrom,
                                   Date    effectiveTo,
                                   String  qualifiedName,
+                                  String  label,
                                   String  description,
                                   String  guard,
                                   boolean forLineage,
@@ -2363,13 +2389,19 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.LABEL.name,
+                                                                  label,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.GUARD.name,
                                                                   guard,
                                                                   methodName);
 
@@ -2378,7 +2410,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            controlFlowGUID,
                                            controlFlowGUIDParameterName,
-                                           OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                           OpenMetadataType.CONTROL_FLOW.typeName,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -2425,7 +2457,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  controlFlowGUID,
                                  controlFlowGUIDParameterName,
-                                 OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                 OpenMetadataType.CONTROL_FLOW.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2471,8 +2503,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeGUID,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -2544,8 +2576,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeGUID,
+                                                                    OpenMetadataType.CONTROL_FLOW.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
@@ -2589,7 +2621,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the process call
      * @param formula function that determines the subset of the data that flows
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2615,6 +2648,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    Date    effectiveFrom,
                                    Date    effectiveTo,
                                    String  qualifiedName,
+                                   String  label,
                                    String  description,
                                    String  formula,
                                    boolean forLineage,
@@ -2633,6 +2667,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataProperty.LABEL.name,
+                                                                              label,
+                                                                              methodName);
+
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
                                                                               OpenMetadataProperty.DESCRIPTION.name,
@@ -2657,8 +2697,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.PROCESS_CALL_TYPE_GUID,
-                                               OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                               OpenMetadataType.PROCESS_CALL.typeGUID,
+                                               OpenMetadataType.PROCESS_CALL.typeName,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -2675,7 +2715,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param callerGUIDParameterName parameter supplying callerGUID
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2708,8 +2748,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     callerGUID,
                                                                     callerGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.PROCESS_CALL.typeGUID,
+                                                                    OpenMetadataType.PROCESS_CALL.typeName,
                                                                     calledGUID,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -2761,7 +2801,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processCallGUIDParameterName parameter supplying processCallGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the process call
      * @param formula function that determines the subset of the data that flows
      * @param forLineage return elements marked with the Memento classification?
@@ -2781,6 +2822,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                   Date    effectiveFrom,
                                   Date    effectiveTo,
                                   String  qualifiedName,
+                                  String  label,
                                   String  description,
                                   String  formula,
                                   boolean forLineage,
@@ -2800,6 +2842,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.LABEL.name,
+                                                                  label,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
@@ -2815,7 +2863,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            processCallGUID,
                                            processCallGUIDParameterName,
-                                           OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                           OpenMetadataType.PROCESS_CALL.typeName,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -2862,7 +2910,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  processCallGUID,
                                  processCallGUIDParameterName,
-                                 OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                 OpenMetadataType.PROCESS_CALL.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2908,8 +2956,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     callerGUID,
                                                                     callerGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.PROCESS_CALL.typeGUID,
+                                                                    OpenMetadataType.PROCESS_CALL.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -2981,8 +3029,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     calledGUID,
                                                                     calledGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.PROCESS_CALL.typeGUID,
+                                                                    OpenMetadataType.PROCESS_CALL.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
@@ -3026,7 +3074,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the mapping
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -3047,6 +3096,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                       String  destinationElementGUID,
                                       String  destinationElementGUIDParameterName,
                                       String  qualifiedName,
+                                      String  label,
                                       String  description,
                                       Date    effectiveFrom,
                                       Date    effectiveTo,
@@ -3068,6 +3118,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.LABEL.name,
+                                                                  label,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
@@ -3084,8 +3140,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
-                                               OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                               OpenMetadataType.LINEAGE_MAPPING.typeGUID,
+                                               OpenMetadataType.LINEAGE_MAPPING.typeName,
                                                this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -3102,7 +3158,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3135,8 +3191,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     sourceElementGUID,
                                                                     sourceElementGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeGUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeName,
                                                                     destinationElementGUID,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -3186,7 +3242,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param lineageMappingGUIDParameterName parameter supplying lineageMappingGUID
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the mapping
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -3201,6 +3258,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                      String  lineageMappingGUID,
                                      String  lineageMappingGUIDParameterName,
                                      String  qualifiedName,
+                                     String  label,
                                      String  description,
                                      Date    effectiveFrom,
                                      Date    effectiveTo,
@@ -3221,6 +3279,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.LABEL.name,
+                                                                  label,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
@@ -3230,7 +3294,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            null,
                                            lineageMappingGUID,
                                            lineageMappingGUIDParameterName,
-                                           OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                           OpenMetadataType.LINEAGE_MAPPING.typeName,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -3273,7 +3337,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  null,
                                  lineageMappingGUID,
                                  lineageMappingGUIDParameterName,
-                                 OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                 OpenMetadataType.LINEAGE_MAPPING.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -3319,8 +3383,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     sourceElementGUID,
                                                                     sourceElementGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeGUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
@@ -3392,8 +3456,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                     destinationElementGUID,
                                                                     destinationElementGUIDParameterName,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeGUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING.typeName,
                                                                     null,
                                                                     OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,

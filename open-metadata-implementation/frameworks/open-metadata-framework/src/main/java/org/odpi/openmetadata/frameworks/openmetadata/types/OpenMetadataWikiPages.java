@@ -155,6 +155,16 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0117_IT_PROFILES                  = "https://egeria-project.org/types/1/0117-IT-Profiles/";
 
     /**
+     * <a href="https://egeria-project.org/types/1/0118-Actor_Roles/">...</a>
+     */
+    public static final String MODEL_0118_ACTOR_ROLES                       = "https://egeria-project.org/types/1/0118-Actor-Roles/";
+
+    /**
+     * <a href="https://egeria-project.org/types/1/0119-Team-Roles/">...</a>
+     */
+    public static final String MODEL_0119_TEAM_ROLES                        = "https://egeria-project.org/types/1/0119-Team-Roles/";
+
+    /**
      * <a href="https://egeria-project.org/types/1/0120-Assignment-Scopes/">...</a>
      */
     public static final String MODEL_0120_ASSIGNMENT_SCOPES            = "https://egeria-project.org/types/1/0120-Assignment-Scopes/";

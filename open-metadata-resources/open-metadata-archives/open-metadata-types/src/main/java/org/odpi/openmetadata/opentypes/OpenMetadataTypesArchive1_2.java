@@ -2869,22 +2869,8 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getPersonRoleEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.PERSON_ROLE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HEAD_COUNT));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PERSON_ROLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
     private RelationshipDef getPersonRoleAppointmentRelationship()
@@ -2899,7 +2885,7 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 1.
          */
         final String                     end1AttributeName            = "rolePerformers";
-        final String                     end1AttributeDescription     = "A person performing this role.";
+        final String                     end1AttributeDescription     = "The people performing this role.";
         final String                     end1AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON.typeName),
@@ -2914,7 +2900,7 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 2.
          */
         final String                     end2AttributeName            = "performsRoles";
-        final String                     end2AttributeDescription     = "A role performed by this person.";
+        final String                     end2AttributeDescription     = "Roles performed by this person.";
         final String                     end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
@@ -16770,7 +16756,8 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private void add0598LineageRelationships() {
+    private void add0598LineageRelationships()
+    {
 
         this.archiveBuilder.addRelationshipDef(getPortSchemaRelationship());
         this.archiveBuilder.addRelationshipDef(getLineageMappingRelationship());
@@ -16780,7 +16767,8 @@ public class OpenMetadataTypesArchive1_2
      * The PortSchema relationship describes the link between a Port and the SchemaType linked to the Port
      * @return PortSchema RelationshipDef
      */
-    private RelationshipDef getPortSchemaRelationship() {
+    private RelationshipDef getPortSchemaRelationship()
+    {
         /*
          * Build the relationship
          */
@@ -16841,16 +16829,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the relationship
          */
-        final String guid            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
-        final String name            = "LineageMapping";
-        final String description     = "A link between two schema attributes.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.LINEAGE_MAPPING,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -209,7 +208,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addLineageRelationship(systemLevelLineage.getSourceSystem().getSystemGUID(),
                                                  systemLevelLineage.getDestinationSystem().getSystemGUID(),
                                                  systemLevelLineage.getRelationshipName(),
-                                                 systemLevelLineage.getRelationshipDescription());
+                                                 systemLevelLineage.getRelationshipLabel());
 
 
         }

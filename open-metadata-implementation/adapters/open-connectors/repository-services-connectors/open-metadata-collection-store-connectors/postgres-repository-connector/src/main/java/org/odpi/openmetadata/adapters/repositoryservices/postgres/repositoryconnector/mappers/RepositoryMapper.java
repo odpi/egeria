@@ -858,7 +858,6 @@ public class RepositoryMapper extends BaseMapper
      * Add the values from the header into a table row.
      *
      * @param instanceTableRow row
-     * @param instanceGUID unique identifier of the instance
      * @param classificationName optional classification name
      * @param effectiveFromTime effective from (optional)
      * @param effectiveToTime effective to (optional)

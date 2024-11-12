@@ -2606,16 +2606,8 @@ public class OpenMetadataTypesArchive1_7
 
     private RelationshipDef getProcessCallRelationship()
     {
-        final String guid            = "af904501-6347-4f52-8378-da50e8d74828";
-        final String name            = "ProcessCall";
-        final String description     = "Shows a call between 2 assets.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROCESS_CALL,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -2653,12 +2645,8 @@ public class OpenMetadataTypesArchive1_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

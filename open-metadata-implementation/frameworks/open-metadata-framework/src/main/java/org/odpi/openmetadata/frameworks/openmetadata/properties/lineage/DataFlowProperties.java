@@ -20,10 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFlowProperties extends RelationshipProperties
 {
-    private String               qualifiedName = null;
-    private String               description   = null;
-    private String               formula       = null;
-    private String               formulaType   = null;
+    private String qualifiedName = null;
+    private String label         = null;
+    private String description   = null;
+    private String formula       = null;
+    private String formulaType   = null;
 
 
     /**
@@ -45,6 +46,7 @@ public class DataFlowProperties extends RelationshipProperties
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
+            label         = template.getLabel();
             description   = template.getDescription();
             formula       = template.getFormula();
             formulaType   = template.getFormulaType();
@@ -72,6 +74,28 @@ public class DataFlowProperties extends RelationshipProperties
     public String getQualifiedName()
     {
         return qualifiedName;
+    }
+
+
+    /**
+     * Return the label used when displaying this relationship.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the label used when displaying this relationship.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
     }
 
 
@@ -151,6 +175,7 @@ public class DataFlowProperties extends RelationshipProperties
     {
         return "DataFlowProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
+                       ", label='" + label + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
                        ", formulaType='" + formulaType + '\'' +
@@ -179,9 +204,10 @@ public class DataFlowProperties extends RelationshipProperties
         }
         DataFlowProperties that = (DataFlowProperties) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getFormula(), that.getFormula()) &&
-                       Objects.equals(getFormulaType(), that.getFormulaType());
+                Objects.equals(getLabel(), that.getLabel()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getFormula(), that.getFormula()) &&
+                Objects.equals(getFormulaType(), that.getFormulaType());
     }
 
 
@@ -193,6 +219,6 @@ public class DataFlowProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, formula, formulaType);
+        return Objects.hash(qualifiedName, label, description, formula, formulaType);
     }
 }

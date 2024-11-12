@@ -343,6 +343,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @param relationshipName either LineageMapping, ProcessCall, DataFlow, ControlFlow.
      * @param sourceElementGUID unique identifier of the element that describes the source of the data.
      * @param qualifiedName qualifiedName of the information supply chain
+     * @param label label for when the lineage relationship is visualized
      * @param description description of the lineage activity
      * @param formula expression summa
      * @param targetElementGUID unique identifier of the element that describes the destination of the data.
@@ -356,6 +357,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
     String createLineageRelationship(String relationshipName,
                                      String sourceElementGUID,
                                      String qualifiedName,
+                                     String label,
                                      String description,
                                      String formula,
                                      String targetElementGUID) throws InvalidParameterException,
