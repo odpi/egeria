@@ -174,15 +174,15 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetSearchMatchesListResponse findAssetsInDomain(String            serverName,
-                                                             FilterRequestBody requestBody,
-                                                             boolean           startsWith,
-                                                             boolean           endsWith,
-                                                             boolean           ignoreCase,
-                                                             int               startFrom,
-                                                             int               pageSize)
+    public AssetSearchMatchesListResponse findInAssetDomain(String            serverName,
+                                                            FilterRequestBody requestBody,
+                                                            boolean           startsWith,
+                                                            boolean           endsWith,
+                                                            boolean           ignoreCase,
+                                                            int               startFrom,
+                                                            int               pageSize)
     {
-        final String methodName = "findAssetsInDomain";
+        final String methodName = "findInAssetDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 

@@ -9,8 +9,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetListResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -151,13 +153,13 @@ public class AssetCatalogResource
      */
     @PostMapping(path = "/assets/in-domain/by-search-string")
 
-    @Operation(summary="findAssetsInDomain",
+    @Operation(summary="findInAssetDomain",
             description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String            serverName,
-                                                             @RequestParam (required = false, defaultValue = "true")
+    public AssetSearchMatchesListResponse findInAssetDomain(@PathVariable String            serverName,
+                                                            @RequestParam (required = false, defaultValue = "true")
                                                                            boolean           startsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                                            boolean           endsWith,
@@ -169,7 +171,7 @@ public class AssetCatalogResource
                                                                            int               pageSize,
                                                              @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.findAssetsInDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
+        return restAPI.findInAssetDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
     }
 
 
