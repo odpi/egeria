@@ -123,10 +123,6 @@ public class OpenMetadataTypesArchive
              */
             this.getOriginalTypes();
 
-            this.add0265AnalyticsAssets();
-            this.add0118ActorRoles();
-            this.addLabelToLineage();
-
             /*
              * The completed archive is ready to be packaged up and returned
              */
@@ -158,7 +154,9 @@ public class OpenMetadataTypesArchive
          */
         previousTypes.getOriginalTypes();
 
-
+        this.add0265AnalyticsAssets();
+        this.add0118ActorRoles();
+        this.addLabelToLineage();
     }
 
 
@@ -364,6 +362,7 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(getDeployedAnalyticsModelEntity());
         this.archiveBuilder.addEntityDef(getAnalyticsModelRunEntity());
+        this.archiveBuilder.addTypeDefPatch(updateTransientEmbeddedProcess());
     }
 
 
@@ -391,6 +390,28 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
     }
 
+
+    private TypeDefPatch updateTransientEmbeddedProcess()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
 
     /*
