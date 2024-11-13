@@ -91,7 +91,7 @@ loadScripts(document, 'script');</script>
  Connectors are uses to access the underlying assets.
  <br><br>
  The properties for VirtualConnectionProperties are those for ConnectionProperties plus a list of
- connections for the</div>
+ connections for the embedded connectors.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -295,12 +295,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a formatted string with the connection name.  It is used in formatting error messages for the
  exceptions thrown by consuming components.  It is extremely cautious because most of the exceptions
  are reporting a malformed connection object so who knows what else is wrong with it.
-
  Within the connection are 2 possible properties that could
  contain the connection name:
    ** qualifiedName - this is a uniqueName and should be there
    ** displayName - shorter simpler name but may not be unique - so may not identify the connection in error
-
  This method inspects these properties and builds up a string to represent the connection name</div>
 <dl class="notes">
 <dt>Overrides:</dt>
