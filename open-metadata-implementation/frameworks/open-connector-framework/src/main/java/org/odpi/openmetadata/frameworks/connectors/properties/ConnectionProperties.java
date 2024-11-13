@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
 import java.util.Map;
 import java.util.Objects;
@@ -101,6 +102,10 @@ public class ConnectionProperties extends AssetReferenceable
         {
             this.connectionBean = new Connection();
         }
+        else if (templateConnection instanceof VirtualConnectionProperties virtualConnectionProperties)
+        {
+            this.connectionBean = new VirtualConnection(virtualConnectionProperties.getConnectionBean());
+        }
         else
         {
             this.connectionBean = new Connection(templateConnection.getConnectionBean());
@@ -122,6 +127,10 @@ public class ConnectionProperties extends AssetReferenceable
         if (templateConnection == null)
         {
             this.connectionBean = new Connection();
+        }
+        else if (templateConnection instanceof VirtualConnectionProperties virtualConnectionProperties)
+        {
+            this.connectionBean = new VirtualConnection(virtualConnectionProperties.getConnectionBean());
         }
         else
         {
@@ -175,14 +184,14 @@ public class ConnectionProperties extends AssetReferenceable
         /*
          * The qualifiedName is preferred because it is unique.
          */
-        if (qualifiedName != null && (!qualifiedName.equals("")))
+        if (qualifiedName != null && (!qualifiedName.isEmpty()))
         {
             /*
              * Use qualified name.
              */
             connectionName = qualifiedName;
         }
-        else if (displayName != null && (!displayName.equals("")))
+        else if (displayName != null && (!displayName.isEmpty()))
         {
             /*
              * The qualifiedName is not set but the displayName is available so use it.

@@ -214,42 +214,60 @@ public class ConnectorBroker
      */
     private ConnectionProperties   getConnection(EmbeddedConnectionProperties   embeddedConnection)
     {
-        ConnectionProperties connection = null;
-
         if (embeddedConnection != null)
         {
-            AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
-            Connection           connectionBean       = accessibleConnection.getConnectionBean();
-
-            Map<String, Object>  arguments            = embeddedConnection.getArguments();
-
-            if (arguments != null)
+            if (embeddedConnection.getConnectionProperties() instanceof VirtualConnectionProperties virtualConnectionProperties)
             {
-                Map<String, Object>  configurationProperties = connectionBean.getConfigurationProperties();
-                if (configurationProperties == null)
-                {
-                    configurationProperties = new HashMap<>();
-                }
-
-                for (String argumentName : arguments.keySet())
-                {
-                    configurationProperties.put(argumentName, arguments.get(argumentName).toString());
-                }
-
-                if (configurationProperties.isEmpty())
-                {
-                    configurationProperties = null;
-                }
-
-                connectionBean.setConfigurationProperties(configurationProperties);
+                AccessibleVirtualConnection accessibleConnection = new AccessibleVirtualConnection(virtualConnectionProperties);
+                VirtualConnection connectionBean = accessibleConnection.getConnectionBean();
+                connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
+                                                                                                     connectionBean.getConfigurationProperties()));
+                return new VirtualConnectionProperties(connectionBean);
             }
-
-            connection = new ConnectionProperties(connectionBean);
+            else
+            {
+                AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
+                Connection connectionBean = accessibleConnection.getConnectionBean();
+                connectionBean.setConfigurationProperties(this.addArgumentsToConfigurationProperties(embeddedConnection.getArguments(),
+                                                                                                     connectionBean.getConfigurationProperties()));
+                return new ConnectionProperties(connectionBean);
+            }
         }
 
-        return connection;
+        return null;
     }
 
+
+    /**
+     * Combine arguments from the embedded connection with the embedded configuration properties
+     *
+     * @param arguments arguments
+     * @param configurationProperties configuration properties
+     * @return combination
+     */
+    private Map<String, Object> addArgumentsToConfigurationProperties(Map<String, Object>  arguments,
+                                                                      Map<String, Object>  configurationProperties)
+    {
+        if (configurationProperties == null)
+        {
+            configurationProperties = new HashMap<>();
+        }
+
+        if (arguments != null)
+        {
+            for (String argumentName : arguments.keySet())
+            {
+                configurationProperties.put(argumentName, arguments.get(argumentName).toString());
+            }
+        }
+
+        if (configurationProperties.isEmpty())
+        {
+            configurationProperties = null;
+        }
+
+        return configurationProperties;
+    }
 
     /**
      * Validate that the connection has sufficient properties to attempt to create a connector.
@@ -567,6 +585,29 @@ public class ConnectorBroker
          * @return Connection bean
          */
         protected Connection getConnectionBean()
+        {
+            return super.getConnectionBean();
+        }
+    }
+
+
+    /**
+     * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
+     * connection in order to supply them to the Connector implementation.
+     */
+    private static class AccessibleVirtualConnection extends VirtualConnectionProperties
+    {
+        AccessibleVirtualConnection(VirtualConnectionProperties templateConnection)
+        {
+            super(templateConnection);
+        }
+
+        /**
+         * Return a copy of the ConnectionBean.
+         *
+         * @return Connection bean
+         */
+        protected VirtualConnection getConnectionBean()
         {
             return super.getConnectionBean();
         }

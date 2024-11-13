@@ -4007,6 +4007,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                         // Ignore exception, possibly a race condition - the entity is already classified
                     }
                 }
+                catch (PropertyServerException e)
+                {
+                    // Ignore exception, possibly a race condition - the entity is already classified
+                }
                 catch (InvalidParameterException | TypeErrorException error)
                 {
                     throw new PropertyServerException(error);
