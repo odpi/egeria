@@ -706,35 +706,30 @@ public class QueryBuilder
             }
 
             StringBuilder stringBuilder  = new StringBuilder();
-            boolean       firstCondition = true;
-
 
             for (ClassificationCondition classificationCondition : matchClassifications.getConditions())
             {
                 if (classificationCondition != null)
                 {
-                    if (firstCondition)
+                    stringBuilder.append(matchOperand);
+                    stringBuilder.append(" (");
+                    stringBuilder.append(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
+                    if (operator == PropertyComparisonOperator.EQ)
                     {
-                        firstCondition = false;
+                        stringBuilder.append(" = '");
                     }
                     else
                     {
-                        stringBuilder.append(matchOperand);
+                        stringBuilder.append(" != '");
                     }
-                    stringBuilder.append(" (");
-                    stringBuilder.append(RepositoryColumn.CLASSIFICATION_NAME.getColumnName());
-                    stringBuilder.append(operator);
-                    stringBuilder.append(" '");
                     stringBuilder.append(classificationCondition.getName());
                     stringBuilder.append("' ");
 
                     if (classificationCondition.getMatchProperties() != null)
                     {
-                        stringBuilder.append(" and (");
                         stringBuilder.append(this.getPropertyComparisonFromPropertyConditions(classificationCondition.getMatchProperties(),
                                                                                               RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                               null));
-                        stringBuilder.append(") ");
                     }
 
                     stringBuilder.append(") ");
