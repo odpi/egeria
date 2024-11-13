@@ -42,6 +42,14 @@ public enum PostgresErrorCode implements ExceptionMessageSet
                    "Correct the values supplied on the search so that single values are supplied with single value operators such as 'Equal' and multiple values are supplied on multi-value operators such as 'In'."),
 
     /**
+     * POSTGRES-REPOSITORY-CONNECTOR-400-003 - The search string {0} is taking over 500 ms to run against a simple string
+     */
+    BAD_REGEX(400,"POSTGRES-REPOSITORY-CONNECTOR-400-003",
+              "The search string {0} is taking over 500 ms to run against a simple string",
+              "An invalid parameter exception is returned to the caller since the server does not accept the request.",
+              "Simplify the search expression and retry the request."),
+
+    /**
      * POSTGRES-REPOSITORY-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-REPOSITORY-CONNECTOR-500-001",
