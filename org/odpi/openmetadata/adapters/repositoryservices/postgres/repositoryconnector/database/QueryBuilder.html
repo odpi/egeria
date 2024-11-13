@@ -280,7 +280,8 @@ loadScripts(document, 'script');</script>
 <h3>setMatchProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchProperties</span><wbr><span class="parameters">(<a href="../../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;matchProperties,
  <a href="../../../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/MatchCriteria.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">MatchCriteria</a>&nbsp;matchCriteria,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyTableName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyTableName)</span>
+                        throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
 <div class="block">Set up the properties that should be matched during the query.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -288,6 +289,8 @@ loadScripts(document, 'script');</script>
                         be defined as a Java regular expression, even if it should be an exact match).</dd>
 <dd><code>matchCriteria</code> - Enum defining how the match properties should be matched to the entities in the repository.</dd>
 <dd><code>propertyTableName</code> - name of table holding the properties</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - error in one of the supplied RegEx</dd>
 </dl>
 </section>
 </li>

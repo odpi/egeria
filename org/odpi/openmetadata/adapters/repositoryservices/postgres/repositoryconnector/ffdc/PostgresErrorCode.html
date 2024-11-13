@@ -121,40 +121,44 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#BAD_SEARCH_PROPERTY" class="member-name-link">BAD_SEARCH_PROPERTY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#BAD_REGEX" class="member-name-link">BAD_REGEX</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-003 - The search string {0} is taking over 500 ms to run against a simple string</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#BAD_SEARCH_PROPERTY" class="member-name-link">BAD_SEARCH_PROPERTY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-002 - The {0} postgreSQL repository connector has detected an incompatible search property with operator {1}: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONTROL_MC_ID_MISMATCH" class="member-name-link">CONTROL_MC_ID_MISMATCH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONTROL_MC_ID_MISMATCH" class="member-name-link">CONTROL_MC_ID_MISMATCH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-006 - The {0} postgreSQL repository connector is not able to use the contents of database schema {1} because this repository is for server {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONTROL_SCHEMA_VERSION_MISMATCH" class="member-name-link">CONTROL_SCHEMA_VERSION_MISMATCH</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CONTROL_SCHEMA_VERSION_MISMATCH" class="member-name-link">CONTROL_SCHEMA_VERSION_MISMATCH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-007 - The {0} postgreSQL repository connector is not able to use the contents of database schema {1} because it does not support schema version {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CONTROL_SERVER_MISMATCH" class="member-name-link">CONTROL_SERVER_MISMATCH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CONTROL_SERVER_MISMATCH" class="member-name-link">CONTROL_SERVER_MISMATCH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-005 - The {0} postgreSQL repository connector is not able to use the contents of database schema {1} because this repository is for server {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_REPOSITORY_VALUE" class="member-name-link">INVALID_REPOSITORY_VALUE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#INVALID_REPOSITORY_VALUE" class="member-name-link">INVALID_REPOSITORY_VALUE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-004 - The {0} postgreSQL repository connector detected an invalid value for column {1} during method {2} in mapper {3}; row values are: {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MISSING_MAPPING_VALUE" class="member-name-link">MISSING_MAPPING_VALUE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MISSING_MAPPING_VALUE" class="member-name-link">MISSING_MAPPING_VALUE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-002 - The  postgreSQL connector is missing {0} value during method {1} in mapper {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_REPOSITORY_VALUE" class="member-name-link">MISSING_REPOSITORY_VALUE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#MISSING_REPOSITORY_VALUE" class="member-name-link">MISSING_REPOSITORY_VALUE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-003 - The {0} postgreSQL repository connector detected a missing value for column {1} during method {2} in mapper {3}; row values are: {4}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#READ_ONLY_MODE" class="member-name-link">READ_ONLY_MODE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#READ_ONLY_MODE" class="member-name-link">READ_ONLY_MODE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-001 - The {0} postgreSQL repository connector is running in read-only mode; updates are not allowed</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -229,6 +233,13 @@ the order they are declared.</div>
 <h3>BAD_SEARCH_PROPERTY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">BAD_SEARCH_PROPERTY</span></div>
 <div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-002 - The {0} postgreSQL repository connector has detected an incompatible search property with operator {1}: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="BAD_REGEX">
+<h3>BAD_REGEX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.ffdc">PostgresErrorCode</a></span>&nbsp;<span class="element-name">BAD_REGEX</span></div>
+<div class="block">POSTGRES-REPOSITORY-CONNECTOR-400-003 - The search string {0} is taking over 500 ms to run against a simple string</div>
 </section>
 </li>
 <li>
