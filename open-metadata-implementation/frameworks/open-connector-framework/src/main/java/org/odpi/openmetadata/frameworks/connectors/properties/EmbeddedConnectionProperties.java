@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
 import java.util.Map;
 import java.util.Objects;
@@ -100,6 +101,10 @@ public class EmbeddedConnectionProperties extends AssetPropertyElementBase
         {
             return null;
         }
+        else if (embeddedConnection instanceof VirtualConnection virtualConnection)
+        {
+            return new VirtualConnectionProperties(virtualConnection);
+        }
         else
         {
             return new ConnectionProperties(embeddedConnection);
@@ -143,7 +148,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyElementBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof EmbeddedConnectionProperties))
+        if (!(objectToCompare instanceof EmbeddedConnectionProperties that))
         {
             return false;
         }
@@ -151,7 +156,6 @@ public class EmbeddedConnectionProperties extends AssetPropertyElementBase
         {
             return false;
         }
-        EmbeddedConnectionProperties that = (EmbeddedConnectionProperties) objectToCompare;
         return Objects.equals(getEmbeddedConnectionBean(), that.getEmbeddedConnectionBean());
     }
 
