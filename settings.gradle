@@ -16,7 +16,7 @@ pluginManagement {
     }
     plugins {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
-        id "io.freefair.lombok" version "8.6"
+        id "io.freefair.lombok" version "8.10.2"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.32.0"
         // helps resolve log implementation clashes
