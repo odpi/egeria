@@ -337,6 +337,7 @@ org.odpi.openmetadata.adapters.connectors.reports
 org.odpi.openmetadata.adapters.connectors.reports.ffdc
 org.odpi.openmetadata.adapters.connectors.reports.surveyreport
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
+org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.mappers
@@ -375,8 +376,10 @@ org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.eventdisplay
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc
-org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.ffdc
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.controls
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.ffdc
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.schema
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc
@@ -726,6 +729,7 @@ org.odpi.openmetadata.opentypes
 org.odpi.openmetadata.opentypes.utility
 org.odpi.openmetadata.platformchassis.springboot
 org.odpi.openmetadata.platformservices.client
+org.odpi.openmetadata.platformservices.properties
 org.odpi.openmetadata.platformservices.rest
 org.odpi.openmetadata.platformservices.server
 org.odpi.openmetadata.platformservices.server.spring

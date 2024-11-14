@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li>Method</li>
 </ul>
@@ -90,27 +90,6 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#JDBC_CONNECTION_TIMEOUT" class="member-name-link">JDBC_CONNECTION_TIMEOUT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#JDBC_DATABASE_NAME" class="member-name-link">JDBC_DATABASE_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Provides a name to use in messages about the database.</div>
-</div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#JDBC_DRIVER_MANAGER_CLASS_NAME" class="member-name-link">JDBC_DRIVER_MANAGER_CLASS_NAME</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">An optional configuration property that causes the named class to be loaded and registered as a driver.</div>
-</div>
-</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -153,62 +132,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="JDBC_DRIVER_MANAGER_CLASS_NAME">
-<h3>JDBC_DRIVER_MANAGER_CLASS_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">JDBC_DRIVER_MANAGER_CLASS_NAME</span></div>
-<div class="block">An optional configuration property that causes the named class to be loaded and registered as a driver.
- This property only needs to be defined if the connector is experiencing exceptions related to a missing DriverManager class for
- the database URL.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider.JDBC_DRIVER_MANAGER_CLASS_NAME">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="JDBC_CONNECTION_TIMEOUT">
-<h3>JDBC_CONNECTION_TIMEOUT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">JDBC_CONNECTION_TIMEOUT</span></div>
-<div class="block">Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.
- The default value is 0 which means use the system default timeout, if any; otherwise it means no timeout.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider.JDBC_CONNECTION_TIMEOUT">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="JDBC_DATABASE_NAME">
-<h3>JDBC_DATABASE_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">JDBC_DATABASE_NAME</span></div>
-<div class="block">Provides a name to use in messages about the database.  If it is not set then the connection URL string is used.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider.JDBC_DATABASE_NAME">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
