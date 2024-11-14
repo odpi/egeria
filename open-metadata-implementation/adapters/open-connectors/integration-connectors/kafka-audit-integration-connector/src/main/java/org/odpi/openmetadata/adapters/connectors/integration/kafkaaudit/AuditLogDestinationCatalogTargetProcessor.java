@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.Dis
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.JDBCAuditLogDestinationProvider;
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.PostgreSQLAuditLogDestinationProvider;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -48,7 +48,7 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
         if (connectorToTarget instanceof JDBCResourceConnector)
         {
             auditLogConnection = getAuditLogConnection(connectorToTarget,
-                                                       new JDBCAuditLogDestinationProvider().getConnectorType());
+                                                       new PostgreSQLAuditLogDestinationProvider().getConnectorType());
         }
         else if (connectorToTarget instanceof BasicFolderConnector)
         {

@@ -125,6 +125,10 @@ bootJar {
     }
 }
 
+springBoot {
+    buildInfo()
+}
+
 java {
     withJavadocJar()
 }

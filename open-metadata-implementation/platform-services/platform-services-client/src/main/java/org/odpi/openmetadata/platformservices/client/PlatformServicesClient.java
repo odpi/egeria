@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.platformservices.properties.BuildProperties;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
@@ -140,6 +141,27 @@ public class PlatformServicesClient
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/start-time";
 
         return restClient.callDateGetRESTCall(methodName, urlTemplate, userId);
+    }
+
+
+    /**
+     * Return details of then the platform was built.
+     *
+     * @param userId calling user
+     * @return start date/time
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public BuildProperties getPlatformBuildProperties(String userId) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "getPlatformBuildTime";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        final String urlTemplate = platformRootURL + "/api/about";
+
+        return restClient.callBuildPropertiesGetRESTCall(methodName, urlTemplate, userId);
     }
 
 

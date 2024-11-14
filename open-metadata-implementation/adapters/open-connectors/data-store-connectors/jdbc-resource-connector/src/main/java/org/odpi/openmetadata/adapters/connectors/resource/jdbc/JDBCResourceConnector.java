@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc;
 
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCErrorCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDataValue;
@@ -106,9 +107,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         if (configurationProperties != null)
         {
-            if (configurationProperties.get(JDBCResourceConnectorProvider.JDBC_DATABASE_NAME) != null)
+            if (configurationProperties.get(JDBCConfigurationProperty.DATABASE_NAME.getName()) != null)
             {
-                jdbcDatabaseName = configurationProperties.get(JDBCResourceConnectorProvider.JDBC_DATABASE_NAME).toString();
+                jdbcDatabaseName = configurationProperties.get(JDBCConfigurationProperty.DATABASE_NAME.getName()).toString();
             }
         }
 
@@ -122,9 +123,9 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         if (configurationProperties != null)
         {
-            if (configurationProperties.get(JDBCResourceConnectorProvider.JDBC_CONNECTION_TIMEOUT) != null)
+            if (configurationProperties.get(JDBCConfigurationProperty.JDBC_CONNECTION_TIMEOUT.getName()) != null)
             {
-                Object connectionTimeoutOption = configurationProperties.get(JDBCResourceConnectorProvider.JDBC_CONNECTION_TIMEOUT);
+                Object connectionTimeoutOption = configurationProperties.get(JDBCConfigurationProperty.JDBC_CONNECTION_TIMEOUT.getName());
 
                 if (connectionTimeoutOption != null)
                 {
@@ -137,7 +138,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 }
             }
 
-            Object driverManagerClassName = configurationProperties.get(JDBCResourceConnectorProvider.JDBC_DRIVER_MANAGER_CLASS_NAME);
+            Object driverManagerClassName = configurationProperties.get(JDBCConfigurationProperty.JDBC_DRIVER_MANAGER_CLASS_NAME.getName());
 
             if (driverManagerClassName != null)
             {

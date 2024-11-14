@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.platformservices.properties.BuildProperties;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
@@ -148,6 +149,25 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a BuildProperties object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    BuildProperties callBuildPropertiesGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, BuildProperties.class, urlTemplate, params);
+    }
+
 
 
     /**

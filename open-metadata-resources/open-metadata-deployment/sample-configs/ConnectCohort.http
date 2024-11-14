@@ -7,7 +7,7 @@
 @cohort=sampleCohort
 
 # ---------------------------------------------
-# Metadata Assess Store: simple-metadata-store
+# Metadata Access Store: simple-metadata-store
 #
 ###
 # The Cohort uses Apache Kafka and so simple-metadata-store need information about your kafka.
@@ -30,7 +30,7 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simp
 
 ###
 # ---------------------------------------------
-# Metadata Assess Store: active-metadata-store
+# Metadata Access Store: active-metadata-store
 #
 ##
 # Add the server to the cohort.

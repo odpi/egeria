@@ -150,29 +150,27 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Add an audit log destination that creates log records as rows in a JDBC Database.
+     * Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connectionString name of directory
-     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @param storageProperties  properties used to configure access to the database
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     * OMAGInvalidParameterException invalid serverName.
      */
-    @PostMapping(path = "/audit-log-destinations/jdbc")
+    @PostMapping(path = "/audit-log-destinations/postgres")
 
-    @Operation(summary="addJDBCDatabaseAuditLogDestination",
-            description="Add an audit log destination that creates log records as rows in a JDBC Database.",
+    @Operation(summary="addPostgreSQLDatabaseAuditLogDestination",
+            description="Add an audit log destination that creates log records as rows in a PostgreSQL Database Schema.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/audit-log-destination-connector/"))
 
-    public VoidResponse addJDBCAuditLogDestination(@PathVariable String       userId,
-                                                   @PathVariable String       serverName,
-                                                   @RequestParam String       connectionString,
-                                                   @RequestBody  List<String> supportedSeverities)
+    public VoidResponse addPostgreSQLDatabaseAuditLogDestination(@PathVariable String              userId,
+                                                                 @PathVariable String              serverName,
+                                                                 @RequestBody  Map<String, Object> storageProperties)
     {
-        return adminAPI.addJDBCAuditLogDestination(userId, serverName, connectionString, supportedSeverities);
+        return adminAPI.addPostgreSQLAuditLogDestination(userId, serverName, storageProperties);
     }
 
 

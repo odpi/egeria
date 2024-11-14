@@ -7,7 +7,7 @@
 @auditLogTopic=logging
 
 # ---------------------------------------------
-# Metadata Assess Store: simple-metadata-store
+# Metadata Access Store: simple-metadata-store
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
@@ -37,7 +37,7 @@ content-packs/SimpleCatalog.omarchive
 
 ###
 # ---------------------------------------------
-# Metadata Assess Store: active-metadata-store
+# Metadata Access Store: active-metadata-store
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
@@ -53,19 +53,6 @@ A metadata store that supports Open Metadata Access Services (OMASs) with event 
 ###
 # Set up the local repository to use the XTDB KV implementation.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/xtdb-local-kv-repository
-
-###
-# @name Enable the PostgreSQL Repository
-# Set up the local repository to use the PostgreSQL Repository implementation.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/postgres-repository
-Content-Type: application/json
-
-{
-    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_active_metadata_store",
-    "databaseSchema": "repository_active_metadata_store",
-    "secretsStore": "~{secretsStore}~",
-    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
-}
 
 ###
 
