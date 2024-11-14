@@ -13,6 +13,7 @@ public enum ColumnType
     STRING(Types.VARCHAR, "text"),
     DATE(Types.TIMESTAMP, "timestamp(6) without time zone"),
     LONG(Types.BIGINT, "bigint"),
+    INT(Types.INTEGER, "integer"),
     BOOLEAN(Types.BOOLEAN, "boolean")
     ;
 

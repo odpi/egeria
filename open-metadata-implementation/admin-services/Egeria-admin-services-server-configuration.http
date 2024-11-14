@@ -160,13 +160,20 @@ Content-Type: application/json
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers
-# @name Add JDBC audit log destination
-# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# @name Add PostgreSQL audit log destination
+# Add the database audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
 # The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/jdbc?connectionString="\{\{postgreSQLDatabaseURL\}\}?currentSchema=audit_log_"{{server}}
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/audit-log-destinations/postgres
 Content-Type: application/json
 
-["Error", "Exception", "Activity", "Action"]
+{
+  "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
+  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=auditlog_active_metadata_store",
+  "databaseSchema": "auditlog_active_metadata_store",
+  "secretsStore": "~{secretsStore}~",
+  "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+}
+
 
 ###
 # group: Configuring OMAG Servers / Basic configuration for all types of OMAG Servers

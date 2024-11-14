@@ -1048,7 +1048,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * OMRS-AUDIT-LOG-400-002 - An Audit Log destination for server {0} is not correctly configured
      */
     NULL_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-002",
-            "An Audit Log destination for server {0} is not correctly configured",
+            "An Audit Log destination for server {0} is not correctly configured and a {1} exception occurred with message {2}",
             "The system is unable to send diagnostic and audit information to one of the configured audit log destinations because the supplied " +
                                  "connector failed to initialize.",
             "Correct the configuration for the audit log store connection in the server configuration. " +

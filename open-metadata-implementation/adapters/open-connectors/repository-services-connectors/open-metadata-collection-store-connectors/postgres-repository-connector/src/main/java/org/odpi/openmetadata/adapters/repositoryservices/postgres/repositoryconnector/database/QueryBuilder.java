@@ -145,7 +145,7 @@ public class QueryBuilder
 
         if (suppliedSearchString != null)
         {
-            String strippedSearchString = suppliedSearchString.toString().replaceAll("(\\Q|\\E)", "");
+            String strippedSearchString = repositoryHelper.getUnqualifiedLiteralString(suppliedSearchString.toString());
 
             /*
              * Do not care about the result - just the time it takes
@@ -218,30 +218,13 @@ public class QueryBuilder
                     propertyCondition.setProperty(propertyName);
                     propertyCondition.setValue(instancePropertyValue);
 
-                    if (instancePropertyValue instanceof PrimitivePropertyValue primitivePropertyValue)
+                    if (matchCriteria == MatchCriteria.NONE)
                     {
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
-                        {
-                            if (matchCriteria == MatchCriteria.NONE)
-                            {
-                                propertyCondition.setOperator(PropertyComparisonOperator.NOT_LIKE);
-                            }
-                            else
-                            {
-                                propertyCondition.setOperator(PropertyComparisonOperator.LIKE);
-                            }
-                        }
-                        else
-                        {
-                            if (matchCriteria == MatchCriteria.NONE)
-                            {
-                                propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
-                            }
-                            else
-                            {
-                                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
-                            }
-                        }
+                        propertyCondition.setOperator(PropertyComparisonOperator.NEQ);
+                    }
+                    else
+                    {
+                        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
                     }
 
                     propertyConditions.add(propertyCondition);
@@ -479,6 +462,7 @@ public class QueryBuilder
                     }
                     case LIKE ->
                     {
+
                         return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
                     }
                     case NOT_LIKE ->
