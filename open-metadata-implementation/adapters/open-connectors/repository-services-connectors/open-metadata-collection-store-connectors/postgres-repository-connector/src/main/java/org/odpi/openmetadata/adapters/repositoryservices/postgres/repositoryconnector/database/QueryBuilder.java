@@ -141,7 +141,7 @@ public class QueryBuilder
     private String getSafeRegex(Object suppliedSearchString) throws RepositoryErrorException
     {
         final String methodName = "getSafeRegex";
-        final String tester     = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\\E\\Q1234567890";
+        final String tester     = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
         if (suppliedSearchString != null)
         {
@@ -152,7 +152,17 @@ public class QueryBuilder
              */
             Date currentTime      = new Date();
             Date maxExecutionTime = new Date(currentTime.getTime() + 500);
-            tester.matches(strippedSearchString);
+            try
+            {
+                tester.matches(strippedSearchString);
+            }
+            catch (Exception badRegex)
+            {
+                // This is not a problem as we are not necessarily expecting it to be a regex.
+                // If it is supposed to be a regex, and it is ill-formed, PostgreSQL will throw it out.
+                // This test is just to catch valid RegEx's that take a long time to execute.
+            }
+
             Date completionTime = new Date();
 
             if (completionTime.after(maxExecutionTime))
