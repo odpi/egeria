@@ -116,13 +116,6 @@ public class QueryBuilder
     {
         if (searchString != null)
         {
-            /*
-            if (searchString.startsWith("\\Q") && (searchString.endsWith("\\E")))
-            {
-                return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " = '" + searchString.substring(2, searchString.length()-2) + "') ";
-            }
-             */
-
             return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(searchString) + "') ";
         }
 
@@ -131,38 +124,18 @@ public class QueryBuilder
 
 
     /**
-     * Check that a search string, which might contain a regEx expression, is safe to execute.
+     * This function is a placeholder for any additional RegEx checking we need to do.
      * Dangerous RegEx can be used in a denial of service attack.  This simple time test ensures that the regEx is safe.
      *
      * @param suppliedSearchString the string to escape to avoid being interpreted as a regular expression
-     * @return string  that is a safe regular expression
-     * @throws RepositoryErrorException the RegEx takes to long to execute
+     * @return string that is a safe regular expression
+     * @throws RepositoryErrorException the RegEx is in error
      */
     private String getSafeRegex(Object suppliedSearchString) throws RepositoryErrorException
     {
-        final String methodName = "getSafeRegex";
-        final String tester     = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\\E\\Q1234567890";
-
         if (suppliedSearchString != null)
         {
-            String strippedSearchString = repositoryHelper.getUnqualifiedLiteralString(suppliedSearchString.toString());
-
-            /*
-             * Do not care about the result - just the time it takes
-             */
-            Date currentTime      = new Date();
-            Date maxExecutionTime = new Date(currentTime.getTime() + 500);
-            tester.matches(strippedSearchString);
-            Date completionTime = new Date();
-
-            if (completionTime.after(maxExecutionTime))
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.BAD_REGEX.getMessageDefinition(searchString),
-                                                    this.getClass().getName(),
-                                                    methodName);
-            }
-
-            return strippedSearchString;
+            return repositoryHelper.getUnqualifiedLiteralString(suppliedSearchString.toString());
         }
 
         return null;

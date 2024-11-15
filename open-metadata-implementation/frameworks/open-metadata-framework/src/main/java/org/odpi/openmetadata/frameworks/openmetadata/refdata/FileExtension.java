@@ -127,6 +127,11 @@ public enum FileExtension
     MD_FILE("md",        new FileType[]{FileType.MARKDOWN_FILE}),
 
     /**
+     * A formal diagram in Mermaid Markdown format.
+     */
+    MMD_FILE("mmd",        new FileType[]{FileType.MERMAID_FILE}),
+
+    /**
      * A free-form text document.
      */
     TXT_FILE("txt",        new FileType[]{FileType.TEXT_FILE}),

@@ -168,8 +168,8 @@ Content-Type: application/json
 
 {
   "supportedSeverities" : ["Error", "Exception", "Activity", "Action", "Decision"],
-  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=auditlog_active_metadata_store",
-  "databaseSchema": "auditlog_active_metadata_store",
+  "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=audit_logs",
+  "databaseSchema": "audit_logs",
   "secretsStore": "~{secretsStore}~",
   "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
 }
