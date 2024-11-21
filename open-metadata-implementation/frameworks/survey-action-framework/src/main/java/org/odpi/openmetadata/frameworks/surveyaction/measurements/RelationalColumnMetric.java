@@ -14,7 +14,6 @@ public enum RelationalColumnMetric implements SurveyMetric
     COLUMN_QNAME ("columnQualifiedName", "string", "Column qualified name", "Qualified name of the column showing the database name, schema name and table name."),
     COLUMN_NAME ("columnName", "string", "Column name", "Name of the column."),
     COLUMN_SIZE ("columnSize", "long", "Column size", "Number of stored bytes in the column."),
-    COLUMN_COUNT ("columnCount", "long", "Number of columns", "Count of columns in the database table/view."),
     COLUMN_TYPE ("columnDataType", "string","Column data type", "Data type of column."),
 
     ;
@@ -97,7 +96,7 @@ public enum RelationalColumnMetric implements SurveyMetric
      */
     public static List<SurveyMetric> getMetrics()
     {
-        return new ArrayList<>(List.of(FileMetric.values()));
+        return new ArrayList<>(List.of(RelationalColumnMetric.values()));
     }
 
 

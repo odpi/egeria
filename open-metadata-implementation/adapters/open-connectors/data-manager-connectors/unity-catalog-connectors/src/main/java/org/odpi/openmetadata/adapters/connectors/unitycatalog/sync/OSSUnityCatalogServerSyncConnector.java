@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -387,7 +386,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
             {
                 if ((lastUpdateTime.after(lastRefreshCompleteTime)) &&
                     (! lastUpdateUser.equals(super.getContext().getMyUserId())) &&
-                    (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.CATALOG.typeName)))
+                    (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DATA_ACCESS_MANAGER.typeName)))
                 {
                     /*
                      * This is a new catalog object.  Is it connected to one of the server that are catalog targets?

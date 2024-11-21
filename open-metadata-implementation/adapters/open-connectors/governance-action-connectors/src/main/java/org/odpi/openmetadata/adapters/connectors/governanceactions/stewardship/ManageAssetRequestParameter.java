@@ -14,9 +14,9 @@ import java.util.List;
  * to governance actions when they run.  Using standard names for request parameters wherever necessary
  * helps to simplify the integration of governance services.
  */
-public enum CreateServerRequestParameter
+public enum ManageAssetRequestParameter
 {
-    TEMPLATE_GUID ("templateGUID", "The unique identifier of the template to use to catalog the server.", "string", "542134e6-b9ce-4dce-8aef-22e8daf34fdb"),
+    TEMPLATE_GUID ("templateGUID", "The unique identifier of the template to use to catalog the asset.", "string", "542134e6-b9ce-4dce-8aef-22e8daf34fdb"),
 
     ;
 
@@ -34,10 +34,10 @@ public enum CreateServerRequestParameter
      * @param dataType type of value of the request parameter
      * @param example example of the request parameter
      */
-    CreateServerRequestParameter(String name,
-                                 String description,
-                                 String dataType,
-                                 String example)
+    ManageAssetRequestParameter(String name,
+                                String description,
+                                String dataType,
+                                String example)
     {
         this.name        = name;
         this.description = description;
@@ -99,7 +99,7 @@ public enum CreateServerRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        for (CreateServerRequestParameter requestParameter : CreateServerRequestParameter.values())
+        for (ManageAssetRequestParameter requestParameter : ManageAssetRequestParameter.values())
         {
             requestParameterTypes.add(requestParameter.getRequestParameterType());
         }

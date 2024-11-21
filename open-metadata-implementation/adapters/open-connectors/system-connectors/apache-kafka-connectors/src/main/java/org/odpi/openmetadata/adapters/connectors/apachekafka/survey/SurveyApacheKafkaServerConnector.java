@@ -10,7 +10,6 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSu
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
@@ -41,9 +40,6 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
 
         try
         {
-            String           assetGUID  = surveyContext.getAssetGUID();
-            SurveyAssetStore assetStore = surveyContext.getAssetStore();
-
             surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
             connector = super.performCheckAssetAnalysisStep(ApacheKafkaAdminConnector.class,

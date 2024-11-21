@@ -95,6 +95,7 @@ public enum AuditLogTable implements PostgreSQLTable
                       new AuditLogColumn[]{
                               AuditLogColumn.EXCEPTION_CLASS_NAME,
                               AuditLogColumn.EXCEPTION_MESSAGE,
+                              AuditLogColumn.EXCEPTION_STACK_TRACE,
                               AuditLogColumn.SYSTEM_ACTION,
                               AuditLogColumn.USER_ACTION,
                               AuditLogColumn.MESSAGE_TIMESTAMP}),

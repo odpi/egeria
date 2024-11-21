@@ -13,8 +13,9 @@ import java.util.List;
 public enum RelationalSchemaMetric implements SurveyMetric
 {
     TOTAL_TABLE_SIZE ("totalTableSize", "long", "Total size of tables", "Sum of the sizes (in bytes) of the tables in the schema."),
-    TABLE_COUNT ("tableCount", "long", "Number of tables", "Count of tables in the database/schema."),
-    VIEW_COUNT ("viewCount","long", "Number of views", "Count of views in the database/schema."),
+    TABLE_COUNT ("tableCount", "long", "Number of tables", "Count of tables in the schema."),
+    VIEW_COUNT ("viewCount","long", "Number of views", "Count of views in the schema."),
+    COLUMN_COUNT ("columnCount", "long","Number of columns", "Count of all columns in the table/views."),
     MAT_VIEW_COUNT ("materializedViewCount", "long", "Number of materialized views", "Count of materialized views in the database/schema."),
     ;
 

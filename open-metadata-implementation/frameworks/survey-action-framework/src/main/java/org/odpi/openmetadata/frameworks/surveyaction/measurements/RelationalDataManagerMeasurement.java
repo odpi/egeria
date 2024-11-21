@@ -13,14 +13,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationalDatabaseMeasurement captures statistics about a single database.
+ * RelationalDataManagerMeasurement captures statistics about a single database/catalog.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationalDatabaseMeasurement
+public class RelationalDataManagerMeasurement
 {
-    private String databaseName = null;
+    private String resourceName = null;
+    private long   schemaCount  = 0L;
+    private long   tableCount   = 0L;
+    private long   columnCount  = 0L;
     private long   size         = 0L;
     private long   rowsFetched  = 0L;
     private long   rowsInserted = 0L;
@@ -34,19 +37,49 @@ public class RelationalDatabaseMeasurement
     /**
      * Default Constructor
      */
-    public RelationalDatabaseMeasurement()
+    public RelationalDataManagerMeasurement()
     {
     }
 
 
-    public String getDatabaseName()
+    public String getResourceName()
     {
-        return databaseName;
+        return resourceName;
     }
 
-    public void setDatabaseName(String databaseName)
+    public void setResourceName(String resourceName)
     {
-        this.databaseName = databaseName;
+        this.resourceName = resourceName;
+    }
+
+    public long getSchemaCount()
+    {
+        return schemaCount;
+    }
+
+    public void setSchemaCount(long schemaCount)
+    {
+        this.schemaCount = schemaCount;
+    }
+
+    public long getTableCount()
+    {
+        return tableCount;
+    }
+
+    public void setTableCount(long tableCount)
+    {
+        this.tableCount = tableCount;
+    }
+
+    public long getColumnCount()
+    {
+        return columnCount;
+    }
+
+    public void setColumnCount(long columnCount)
+    {
+        this.columnCount = columnCount;
     }
 
     public long getSize()

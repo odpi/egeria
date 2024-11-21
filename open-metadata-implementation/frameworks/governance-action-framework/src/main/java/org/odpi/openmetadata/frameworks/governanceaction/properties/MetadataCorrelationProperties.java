@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -23,8 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 {
-    private String externalScopeGUID = null;
-    private String externalScopeName = null;
+    private String externalScopeGUID     = null;
+    private String externalScopeName     = null;
+    private String externalScopeTypeName = OpenMetadataType.INVENTORY_CATALOG.typeName;
 
 
     /**
@@ -46,8 +48,9 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
         super(template);
         if (template != null)
         {
-            externalScopeGUID = template.getExternalScopeGUID();
-            externalScopeName = template.getExternalScopeName();
+            externalScopeGUID     = template.getExternalScopeGUID();
+            externalScopeName     = template.getExternalScopeName();
+            externalScopeTypeName = template.getExternalScopeTypeName();
         }
     }
 
@@ -64,7 +67,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 
 
     /**
-     * Return the unique identifier of the software server capability that represents the asset manager.
+     * Return the unique identifier of the software server capability that represents the manager for the external identifier.
      *
      * @return string guid
      */
@@ -75,7 +78,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 
 
     /**
-     * Set up the unique identifier of the software server capability that represents the asset manager.
+     * Set up the unique identifier of the software server capability that represents the manager for the external identifier.
      *
      * @param externalScopeGUID string guid
      */
@@ -86,7 +89,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 
 
     /**
-     * Return the qualified name of the software server capability that represents the asset manager.
+     * Return the qualified name of the software server capability that represents the manager for the external identifier.
      *
      * @return string name
      */
@@ -97,7 +100,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 
 
     /**
-     * Set up the qualified name of the software server capability that represents the asset manager.
+     * Set up the qualified name of the software server capability that represents the manager for the external identifier.
      *
      * @param externalScopeName string name
      */
@@ -105,6 +108,29 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
     {
         this.externalScopeName = externalScopeName;
     }
+
+
+    /**
+     * Return the type of the manager for the external identifier.  The default is InventoryCatalog.
+     *
+     * @return type name
+     */
+    public String getExternalScopeTypeName()
+    {
+        return externalScopeTypeName;
+    }
+
+
+    /**
+     * Set up the type of the manager for the external identifier.  The default is InventoryCatalog.
+     *
+     * @param externalScopeTypeName type name
+     */
+    public void setExternalScopeTypeName(String externalScopeTypeName)
+    {
+        this.externalScopeTypeName = externalScopeTypeName;
+    }
+
 
     /**
      * Standard toString method.
@@ -117,6 +143,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
         return "MetadataCorrelationProperties{" +
                        "externalScopeGUID='" + externalScopeGUID + '\'' +
                        ", externalScopeName='" + externalScopeName + '\'' +
+                       ", externalScopeTypeName='" + externalScopeTypeName + '\'' +
                        ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
                        ", externalIdentifier='" + getExternalIdentifier() + '\'' +
@@ -156,7 +183,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
             return false;
         }
         MetadataCorrelationProperties that = (MetadataCorrelationProperties) objectToCompare;
-        return Objects.equals(externalScopeGUID, that.externalScopeGUID) && Objects.equals(externalScopeName, that.externalScopeName);
+        return Objects.equals(externalScopeGUID, that.externalScopeGUID) && Objects.equals(externalScopeName, that.externalScopeName)  && Objects.equals(externalScopeTypeName, that.externalScopeTypeName);
     }
 
 
@@ -168,6 +195,6 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalScopeGUID, externalScopeName);
+        return Objects.hash(super.hashCode(), externalScopeGUID, externalScopeName, externalScopeTypeName);
     }
 }

@@ -328,6 +328,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         context.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
+                                      catalogTypeName,
                                       ucModelGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(modelInfo,
@@ -393,6 +394,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
         {
             context.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
+                                          catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
                                           deployedImplementationType.getAssociatedTypeName(),
                                           this.getExternalIdentifierProperties(modelInfo,

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres;
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLSchemaDDL;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDataValue;
@@ -12,10 +11,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.schema.AuditLogTable;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
@@ -52,7 +48,6 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
 
      private String                connectorName      = null;
-     private String                connectionURL      = null;
      private JDBCResourceConnector databaseClient     = null;
 
 
@@ -175,43 +170,15 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                 {
                     additionalInformation = logRecord.getAdditionalInformation().toString();
                 }
-                syncAuditEvent(logRecord.getTimeStamp(),
-                               logRecord.getOriginatorProperties().get("serverName"),
-                               logRecord.getActionDescription(),
-                               Integer.toString(logRecord.getSeverityCode()),
-                               logRecord.getSeverity(),
-                               logRecord.getMessageId(),
-                               logRecord.getMessageText(),
-                               messageParameters,
-                               logRecord.getSystemAction(),
-                               logRecord.getUserAction(),
-                               logRecord.getExceptionClassName(),
-                               logRecord.getExceptionMessage(),
-                               logRecord.getExceptionStackTrace(),
-                               logRecord.getOriginatorProperties().get("organizationName"),
-                               logRecord.getOriginatorComponent().getComponentName(),
-                               additionalInformation,
-                               logRecord.getGUID(),
-                               logRecord.getThreadId());
-
-
 
                 syncEgeriaComponent(logRecord.getOriginatorComponent());
+
                 syncOMAGServer(logRecord.getOriginatorProperties().get("serverName"),
                                logRecord.getOriginatorProperties().get("serverType"),
                                logRecord.getOriginatorProperties().get("organizationName"),
                                logRecord.getOriginatorProperties().get("metadataCollectionId"));
 
-                if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.EXCEPTION.getOrdinal())
-                {
-                    syncEgeriaException(logRecord.getGUID(),
-                                        logRecord.getTimeStamp(),
-                                        logRecord.getExceptionClassName(),
-                                        logRecord.getExceptionMessage(),
-                                        logRecord.getSystemAction(),
-                                        logRecord.getUserAction());
-                }
-                else if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.ACTIVITY.getOrdinal())
+                if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.ACTIVITY.getOrdinal())
                 {
                     switch (logRecord.getMessageId())
                     {
@@ -293,6 +260,38 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                   logRecord.getMessageParameters()[1],
                                                                   logRecord.getMessageParameters()[2],
                                                                   logRecord.getTimeStamp());
+                    }
+                }
+                else
+                {
+                    syncAuditEvent(logRecord.getTimeStamp(),
+                                   logRecord.getOriginatorProperties().get("serverName"),
+                                   logRecord.getActionDescription(),
+                                   Integer.toString(logRecord.getSeverityCode()),
+                                   logRecord.getSeverity(),
+                                   logRecord.getMessageId(),
+                                   logRecord.getMessageText(),
+                                   messageParameters,
+                                   logRecord.getSystemAction(),
+                                   logRecord.getUserAction(),
+                                   logRecord.getExceptionClassName(),
+                                   logRecord.getExceptionMessage(),
+                                   logRecord.getExceptionStackTrace(),
+                                   logRecord.getOriginatorProperties().get("organizationName"),
+                                   logRecord.getOriginatorComponent().getComponentName(),
+                                   additionalInformation,
+                                   logRecord.getGUID(),
+                                   logRecord.getThreadId());
+
+                    if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.EXCEPTION.getOrdinal())
+                    {
+                        syncEgeriaException(logRecord.getGUID(),
+                                            logRecord.getTimeStamp(),
+                                            logRecord.getExceptionClassName(),
+                                            logRecord.getExceptionMessage(),
+                                            logRecord.getExceptionStackTrace(),
+                                            logRecord.getSystemAction(),
+                                            logRecord.getUserAction());
                     }
                 }
             }
@@ -666,6 +665,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param messageTimestamp timestamp of the audit log record
      * @param exceptionClassName name of the server
      * @param exceptionMessage type of the server
+     * @param exceptionStacktrace stack trace
      * @param systemAction running organization
      * @param userAction unique identifier of owned metadata collection (optional)
      */
@@ -673,6 +673,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                      Date   messageTimestamp,
                                      String exceptionClassName,
                                      String exceptionMessage,
+                                     String exceptionStacktrace,
                                      String systemAction,
                                      String userAction)
     {
@@ -684,6 +685,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                               messageTimestamp,
                                                                                               exceptionClassName,
                                                                                               exceptionMessage,
+                                                                                              exceptionStacktrace,
                                                                                               systemAction,
                                                                                               userAction);
 
@@ -703,6 +705,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param messageTimestamp timestamp of the audit log record
      * @param exceptionClassName name of the server
      * @param exceptionMessage type of the server
+     * @param exceptionStackTrace stack trace
      * @param systemAction running organization
      * @param userAction unique identifier of owned metadata collection (optional)
      * @return columns
@@ -711,6 +714,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                     Date   messageTimestamp,
                                                                     String exceptionClassName,
                                                                     String exceptionMessage,
+                                                                    String exceptionStackTrace,
                                                                     String systemAction,
                                                                     String userAction)
     {
@@ -720,6 +724,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
         openMetadataRecord.put(AuditLogColumn.MESSAGE_TIMESTAMP.getColumnName(), new JDBCDataValue(new java.sql.Timestamp(messageTimestamp.getTime()), AuditLogColumn.MESSAGE_TIMESTAMP.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.EXCEPTION_CLASS_NAME.getColumnName(), new JDBCDataValue(exceptionClassName, AuditLogColumn.EXCEPTION_CLASS_NAME.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.EXCEPTION_MESSAGE.getColumnName(), new JDBCDataValue(exceptionMessage, AuditLogColumn.EXCEPTION_MESSAGE.getColumnType().getJdbcType()));
+        openMetadataRecord.put(AuditLogColumn.EXCEPTION_STACK_TRACE.getColumnName(), new JDBCDataValue(exceptionStackTrace, AuditLogColumn.EXCEPTION_STACK_TRACE.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.SYSTEM_ACTION.getColumnName(), new JDBCDataValue(systemAction, AuditLogColumn.SYSTEM_ACTION.getColumnType().getJdbcType()));
         openMetadataRecord.put(AuditLogColumn.USER_ACTION.getColumnName(), new JDBCDataValue(userAction, AuditLogColumn.USER_ACTION.getColumnType().getJdbcType()));
 

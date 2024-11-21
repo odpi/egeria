@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.postgres;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
 import java.util.Date;
@@ -68,8 +70,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
-        this.addPostgresDatabaseCatalogTemplate();
-        this.addPostgresDatabaseSchemaCatalogTemplate();
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
 
         /*
          * Create the default integration group.
@@ -110,68 +111,35 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            RequestTypeDefinition.CATALOG_POSTGRES_SERVER,
                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
 
+        this.createAndCatalogAssetGovernanceActionProcess("PostgreSQLDatabase",
+                                                          OpenMetadataType.DATABASE.typeName,
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_POSTGRES_DB,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                                                          RequestTypeDefinition.CATALOG_POSTGRES_DATABASE,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
+
+        this.createAndSurveyServerGovernanceActionProcess("PostgreSQLDatabase",
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_POSTGRES_DB,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                                                          RequestTypeDefinition.SURVEY_POSTGRES_DATABASE,
+                                                          GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE);
+
+        this.createAndCatalogAssetGovernanceActionProcess("PostgreSQLDatabaseSchema",
+                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                                                          RequestTypeDefinition.CATALOG_POSTGRES_SCHEMA,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
+
+
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();
-    }
-
-
-    /**
-     * Create a catalog template for a PostgreSQL database
-     */
-    private void addPostgresDatabaseCatalogTemplate()
-    {
-        final String                  guid     = "3d398b3f-7ae6-4713-952a-409f3dea8520";
-        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresDatabasePlaceholderPropertyTypes();
-
-        this.createDataAssetCatalogTemplate(guid,
-                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
-                                            PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                            PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
-                                            PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                            PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
-                                            PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
-                                            provider.getConnectorType().getGUID(),
-                                            "jdbc:postgresql://" +
-                                                    PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                    PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                            null,
-                                            null,
-                                            placeholderPropertyTypes);
-    }
-
-
-    /**
-     * Create a catalog template for a PostgreSQL database schema
-     */
-    private void addPostgresDatabaseSchemaCatalogTemplate()
-    {
-        final String guid = "82a5417c-d882-4271-8444-4c6a996a8bfc";
-
-        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
-
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes();
-
-        this.createDataAssetCatalogTemplate(guid,
-                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
-                                            PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                            PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
-                                            PlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                                            PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
-                                            PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
-                                            provider.getConnectorType().getGUID(),
-                                            "jdbc:postgresql://" +
-                                                    PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                    PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
-                                                    PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
-                                                    PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                                            null,
-                                            null,
-                                            placeholderPropertyTypes);
     }
 
 

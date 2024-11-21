@@ -5152,6 +5152,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param userId calling user
      * @param externalScopeGUID unique identifier of software server capability representing the caller
      * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -5164,6 +5165,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     public void addExternalIdentifier(String                       userId,
                                       String                       externalScopeGUID,
                                       String                       externalScopeName,
+                                      String                       externalScopeTypeName,
                                       String                       openMetadataElementGUID,
                                       String                       openMetadataElementTypeName,
                                       ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,

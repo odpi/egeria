@@ -26,10 +26,12 @@ public class AnnotationTypeType
      */
     private String name = null;
 
+
     /**
      * The analysis step that produces this annotation.
      */
     public String analysisStepName = null;
+
 
     /**
      * The open metadata type used for this annotation type.

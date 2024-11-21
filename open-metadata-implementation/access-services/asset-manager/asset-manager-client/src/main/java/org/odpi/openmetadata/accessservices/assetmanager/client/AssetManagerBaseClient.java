@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.List;
@@ -686,6 +687,36 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
+        this.addExternalIdentifier(userId, assetManagerGUID, assetManagerName, OpenMetadataType.INVENTORY_CATALOG.typeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties);
+    }
+
+
+    /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerTypeName type name of the software capability describing the asset manager
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    @Override
+    public void addExternalIdentifier(String                       userId,
+                                      String                       assetManagerGUID,
+                                      String                       assetManagerName,
+                                      String                       assetManagerTypeName,
+                                      String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
         final String methodName                      = "addExternalIdentifier";
         final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
         final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
@@ -706,6 +737,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         requestBody.setExternalScopeGUID(assetManagerGUID);
         requestBody.setExternalScopeName(assetManagerName);
+        requestBody.setExternalScopeTypeName(assetManagerTypeName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

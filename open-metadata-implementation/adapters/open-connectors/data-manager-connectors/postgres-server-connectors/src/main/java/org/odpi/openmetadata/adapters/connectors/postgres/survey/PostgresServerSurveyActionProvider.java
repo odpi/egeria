@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
@@ -87,6 +87,6 @@ public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvi
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{PostgresDeployedImplementationType.POSTGRESQL_SERVER});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresServerActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
-        super.producedAnnotationTypes    = PostgresAnnotationType.getPostgresServerAnnotationTypeTypes();
+        super.producedAnnotationTypes    = SurveyDatabaseAnnotationType.getPostgresServerAnnotationTypeTypes();
     }
 }

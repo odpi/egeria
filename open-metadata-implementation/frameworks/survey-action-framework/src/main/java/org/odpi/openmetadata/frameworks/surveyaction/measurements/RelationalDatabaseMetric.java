@@ -12,13 +12,16 @@ import java.util.List;
  */
 public enum RelationalDatabaseMetric implements SurveyMetric
 {
-    DATABASE_SIZE ( "databaseSize", "long", "Database size", "Number of stored bytes in the database."),
-    ROWS_FETCHED ( "rowsFetched", "long", "Rows Fetched", "Number of rows retrieved from any table in the database."),
+    SCHEMA_COUNT  ("schemaCount", "long", "Number of schemas", "Number of schemas found in the surveyed resource."),
+    TABLE_COUNT   ("tableCount", "long", "Number of tables", "Number of tables found in the surveyed resource."),
+    COLUMN_COUNT  ("columnCount", "long","Number of columns", "Count of all columns in the table/views."),
+    DATA_SIZE     ("dataSize", "long", "Data size", "Number of stored bytes of data in the surveyed resource."),
+    ROWS_FETCHED  ( "rowsFetched", "long", "Rows Fetched", "Number of rows retrieved from any table in the database."),
     ROWS_INSERTED ( "rowsInserted", "long", "Rows Inserted", "Number of rows inserted from any table in the database."),
-    ROWS_UPDATED ( "rowsUpdated", "long", "Rows Updated", "Number of rows updated from any table in the database."),
-    ROWS_DELETED ( "rowsDeleted", "long", "Rows Deleted", "Number of rows deleted from any table in the database.."),
-    SESSION_TIME ( "totalSessionTime", "double", "Session Time", "The length of time (milliseconds) that the database had at least one open session from an external client."),
-    ACTIVE_TIME ( "totalActiveTime", "double", "Active Time", "The length of time (milliseconds) that the database was being actively queried."),
+    ROWS_UPDATED  ( "rowsUpdated", "long", "Rows Updated", "Number of rows updated from any table in the database."),
+    ROWS_DELETED  ( "rowsDeleted", "long", "Rows Deleted", "Number of rows deleted from any table in the database.."),
+    SESSION_TIME  ( "totalSessionTime", "double", "Session Time", "The length of time (milliseconds) that the database had at least one open session from an external client."),
+    ACTIVE_TIME   ( "totalActiveTime", "double", "Active Time", "The length of time (milliseconds) that the database was being actively queried."),
     LAST_STATISTICS_RESET ( "lastStatisticsReset", "date", "Last statistics reset", "Last time that the statistics were reset in the database."),
 
     ;

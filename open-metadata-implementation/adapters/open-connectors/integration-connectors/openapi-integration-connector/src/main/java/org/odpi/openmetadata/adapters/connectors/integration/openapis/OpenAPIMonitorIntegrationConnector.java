@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
+import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIP
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
-import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIPathDescription;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPISpecification;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPITag;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorContext;
 
@@ -132,12 +133,10 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
         /*
          * Only interested in Endpoint events.
          */
-        final String elementType = "Endpoint";
         final String methodName = "processEvent";
 
-        if (elementType.equals(event.getPrincipleElement().getType().getTypeName()) ||
-            ((event.getPrincipleElement().getType().getSuperTypeNames() != null)) &&
-             (event.getPrincipleElement().getType().getSuperTypeNames().contains(elementType)))
+        if ((event.getEventType() == DataManagerOutboundEventType.NEW_ELEMENT_CREATED) &&
+                (propertyHelper.isTypeOf(event.getPrincipleElement(), OpenMetadataType.ENDPOINT.typeName)))
         {
             try
             {
@@ -147,7 +146,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                 {
                     registerEndpoint(endpointElement, methodName);
                 }
-
             }
             catch (Exception error)
             {
@@ -279,8 +277,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * This method ...
-     *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
@@ -346,116 +342,74 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                              */
                             String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
 
-                            /*
-                             * Each API/Operation discovered is added to the map as it is added to the catalog.
-                             * This is used to create the summary audit log message - and as
-                             * lookup for the apiGUID/apiOperationGUID when adding detail elements.
-                             */
-                            Map<String, String> apiGUIDMap = new HashMap<>(); /* map from API (Tag) name to GUID */
-                            Map<String, String> apiOperationGUIDMap = new HashMap<>(); /* map from API (Path/Operation) name to GUID */
-
-                            if (openAPISpecification.getTags() != null)
+                            if (endpointGUID != null)
                             {
-                                for (OpenAPITag tag : openAPISpecification.getTags())
+                                /*
+                                 * Each API/Operation discovered is added to the map as it is added to the catalog.
+                                 * This is used to create the summary audit log message - and as
+                                 * lookup for the apiGUID/apiOperationGUID when adding detail elements.
+                                 */
+                                Map<String, String> apiGUIDMap          = new HashMap<>(); /* map from API (Tag) name to GUID */
+                                Map<String, String> apiOperationGUIDMap = new HashMap<>(); /* map from API (Path/Operation) name to GUID */
+
+                                if (openAPISpecification.getTags() != null)
                                 {
-                                    String apiGUID = getAPIGUID(url, endpointGUID, tag);
-
-                                    if (apiGUID != null)
+                                    for (OpenAPITag tag : openAPISpecification.getTags())
                                     {
-                                        apiGUIDMap.put(tag.getName(), apiGUID);
-                                    }
-                                }
-                            }
+                                        String apiGUID = getAPIGUID(url, endpointGUID, tag);
 
-
-                            if (openAPISpecification.getPaths() != null)
-                            {
-                                Map<String, OpenAPIPathDescription> paths = openAPISpecification.getPaths();
-
-                                for (String pathName : paths.keySet())
-                                {
-                                    String apiOperationGUID;
-                                    String apiOperationQualifiedName;
-
-                                    OpenAPIPathDescription pathDescription = paths.get(pathName);
-
-                                    if (pathDescription.getGet() != null)
-                                    {
-                                        apiOperationQualifiedName = "GET " + pathName;
-
-                                        apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.getGet());
-
-                                        if (apiOperationGUID != null)
+                                        if (apiGUID != null)
                                         {
-                                            apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
-                                        }
-                                    }
-
-                                    if (pathDescription.getPost() != null)
-                                    {
-                                        apiOperationQualifiedName = "POST " + pathName;
-
-                                        apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.getPost());
-
-                                        if (apiOperationGUID != null)
-                                        {
-                                            apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
-                                        }
-                                    }
-
-
-                                    if (pathDescription.getPut() != null)
-                                    {
-                                        apiOperationQualifiedName = "PUT " + pathName;
-
-                                        apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.getPut());
-
-                                        if (apiOperationGUID != null)
-                                        {
-                                            apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
-                                        }
-                                    }
-
-
-                                    if (pathDescription.getDelete() != null)
-                                    {
-                                        apiOperationQualifiedName = "DELETE " + pathName;
-
-                                        apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.getDelete());
-
-                                        if (apiOperationGUID != null)
-                                        {
-                                            apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
+                                            apiGUIDMap.put(tag.getName(), apiGUID);
                                         }
                                     }
                                 }
-                            }
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    OpenAPIIntegrationConnectorAuditCode.CATALOGUED_OPEN_API_SPEC.getMessageDefinition(connectorName,
-                                                                                                                                       url,
-                                                                                                                                       title,
-                                                                                                                                       endpointGUID,
-                                                                                                                                       Integer.toString(apiGUIDMap.size()),
-                                                                                                                                       Integer.toString(apiOperationGUIDMap.size())));
+                                if (openAPISpecification.getPaths() != null)
+                                {
+                                    Map<String, Map<String, OpenAPIOperation>> paths = openAPISpecification.getPaths();
+
+                                    for (String pathName : paths.keySet())
+                                    {
+                                        Map<String, OpenAPIOperation> pathDescription = paths.get(pathName);
+
+                                        if (pathDescription != null)
+                                        {
+                                            for (String command : pathDescription.keySet())
+                                            {
+                                                String apiOperationGUID;
+                                                String apiOperationQualifiedName = command.toUpperCase() + " " + pathName;
+                                                apiOperationGUID = getAPIOperationGUID(apiGUIDMap, apiOperationQualifiedName, pathDescription.get(command));
+
+                                                if (apiOperationGUID != null)
+                                                {
+                                                    apiOperationGUIDMap.put(apiOperationQualifiedName, apiOperationGUID);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                super.logRecord(methodName,
+                                                OpenAPIIntegrationConnectorAuditCode.CATALOGUED_OPEN_API_SPEC.getMessageDefinition(connectorName,
+                                                                                                                                   url,
+                                                                                                                                   title,
+                                                                                                                                   endpointGUID,
+                                                                                                                                   Integer.toString(apiGUIDMap.size()),
+                                                                                                                                   Integer.toString(apiOperationGUIDMap.size())));
                             }
                         }
                     }
                 }
                 catch (Exception error)
                 {
-                    if (auditLog != null)
-                    {
-                        auditLog.logMessage(methodName,
-                                            OpenAPIIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_OPEN_API_SPEC.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                       connectorName,
-                                                                                                                                       methodName,
-                                                                                                                                       url,
-                                                                                                                                       error.getMessage()));
+                    super.logRecord(methodName,
+                                    OpenAPIIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_OPEN_API_SPEC.getMessageDefinition(error.getClass().getName(),
+                                                                                                                               connectorName,
+                                                                                                                               methodName,
+                                                                                                                               url,
+                                                                                                                               error.getMessage()));
 
-                    }
 
                     throw new ConnectorCheckedException(OpenAPIIntegrationConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                                        error.getClass().getName(),
@@ -487,7 +441,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
         List<EndpointElement> endpointElements = myContext.findEndpoints(".*.", 0, 0);
         String                endpointGUID = null;
         String                endpointQualifiedName = "ServerEndpoint:" + url;
-
 
         if (endpointElements != null)
         {

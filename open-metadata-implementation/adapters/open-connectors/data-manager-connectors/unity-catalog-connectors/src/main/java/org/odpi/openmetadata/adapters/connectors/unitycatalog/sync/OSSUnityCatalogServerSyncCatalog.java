@@ -134,10 +134,10 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
             if ((nextElement != null) &&
                     (nextElement.getElement() != null) &&
-                    (propertyHelper.isTypeOf(nextElement.getElement(), OpenMetadataType.CATALOG.typeName)))
+                    (propertyHelper.isTypeOf(nextElement.getElement(), OpenMetadataType.DATA_ACCESS_MANAGER.typeName)))
             {
                 /*
-                 * Check that this is a UC Table.
+                 * Check that this is a UC Catalog.
                  */
                 String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
@@ -341,8 +341,9 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
         context.addExternalIdentifier(ucCatalogGUID,
                                       qualifiedName,
+                                      catalogTypeName,
                                       ucCatalogGUID,
-                                      OpenMetadataType.CATALOG.typeName,
+                                      OpenMetadataType.DATA_ACCESS_MANAGER.typeName,
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
@@ -411,8 +412,9 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         {
             context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
                                           catalogQualifiedName,
+                                          catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
-                                          OpenMetadataType.CATALOG.typeName,
+                                          deployedImplementationType.getAssociatedTypeName(),
                                           this.getExternalIdentifierProperties(catalogInfo,
                                                                                null,
                                                                                UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),

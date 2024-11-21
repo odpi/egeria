@@ -145,11 +145,26 @@ Content-Type: application/json
 ###
 # @name Find Entities By Property Value
 POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entities/by-property-value?
-    searchCriteria=.*cust.*
+    searchCriteria=PostgreSQL
 Content-Type: application/json
 
 {
-    "class" : "EntityPropertyFindRequest",
-    "offset" : 0,
-    "pageSize" : 100
+  "class" : "EntityPropertyFindRequest",
+  "offset" : 0,
+  "pageSize" : 100
 }
+
+
+###
+# @name Find Entities By Property Value (case insensitive)
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entities/by-property-value?
+    searchCriteria=(?i)PostgreSQL
+Content-Type: application/json
+
+{
+  "class" : "EntityPropertyFindRequest",
+  "offset" : 0,
+  "pageSize" : 100
+}
+
+

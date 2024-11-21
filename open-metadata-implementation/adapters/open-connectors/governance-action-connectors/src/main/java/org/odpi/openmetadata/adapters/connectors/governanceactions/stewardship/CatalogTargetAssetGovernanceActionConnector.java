@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceAction
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -23,15 +22,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * CatalogServerGovernanceActionConnector creates a server and attaches it to an appropriate integration
- * connector (passed as an action target).
+ * CatalogTargetAssetGovernanceActionConnector creates a catalog target between the supplied integration connector
+ * and the supplied asset.
  */
-public class CatalogServerGovernanceActionConnector extends GeneralGovernanceActionService
+public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Default constructor
      */
-    public CatalogServerGovernanceActionConnector()
+    public CatalogTargetAssetGovernanceActionConnector()
     {
     }
 
@@ -53,7 +52,6 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
         try
         {
             List<String>              outputGuards        = new ArrayList<>();
-            List<NewActionTarget>     outputActionTargets = new ArrayList<>();
             CompletionStatus          completionStatus;
             AuditLogMessageDefinition messageDefinition;
 
@@ -81,14 +79,14 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
             if (integrationConnector == null)
             {
                 messageDefinition = GovernanceActionConnectorsAuditCode.NO_CONNECTOR.getMessageDefinition(governanceServiceName);
-                outputGuards.add(CatalogServerGuard.MISSING_CONNECTOR.getName());
-                completionStatus = CatalogServerGuard.MISSING_CONNECTOR.getCompletionStatus();
+                outputGuards.add(CatalogTargetAssetGuard.MISSING_CONNECTOR.getName());
+                completionStatus = CatalogTargetAssetGuard.MISSING_CONNECTOR.getCompletionStatus();
             }
             else if (newAssetGUID == null)
             {
                 messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET.getMessageDefinition(governanceServiceName, ActionTarget.NEW_ASSET.getName());
-                outputGuards.add(CatalogServerGuard.MISSING_ASSET.getName());
-                completionStatus = CatalogServerGuard.MISSING_ASSET.getCompletionStatus();
+                outputGuards.add(CatalogTargetAssetGuard.MISSING_ASSET.getName());
+                completionStatus = CatalogTargetAssetGuard.MISSING_ASSET.getCompletionStatus();
             }
             else
             {
@@ -124,18 +122,13 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
                                                                                                                   serverType,
                                                                                                                   serverName);
 
-                completionStatus = CatalogServerGuard.SET_UP_COMPLETE.getCompletionStatus();
-                outputGuards.add(CatalogServerGuard.SET_UP_COMPLETE.getName());
+                completionStatus = CatalogTargetAssetGuard.SET_UP_COMPLETE.getCompletionStatus();
+                outputGuards.add(CatalogTargetAssetGuard.SET_UP_COMPLETE.getName());
             }
 
             auditLog.logMessage(methodName, messageDefinition);
 
-            if (outputActionTargets.isEmpty())
-            {
-                outputActionTargets = null;
-            }
-
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
         catch (Exception error)
         {

@@ -154,11 +154,28 @@ public class OpenMetadataTypesArchive
          */
         previousTypes.getOriginalTypes();
 
+        this.update0050ApplicationsAndProcesses();
         this.add0265AnalyticsAssets();
         this.add0118ActorRoles();
         this.addLabelToLineage();
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0050ApplicationsAndProcesses()
+    {
+        this.archiveBuilder.addEntityDef(addDataAccessManagerEntity());
+    }
+
+
+    private EntityDef addDataAccessManagerEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_ACCESS_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+    }
 
 
     /*
