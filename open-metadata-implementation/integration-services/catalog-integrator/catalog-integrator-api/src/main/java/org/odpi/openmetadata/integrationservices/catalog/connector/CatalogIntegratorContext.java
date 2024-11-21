@@ -541,9 +541,9 @@ public class CatalogIntegratorContext extends IntegrationContext
         openMetadataStoreClient.addExternalIdentifier(userId,
                                                       externalScopeGUID,
                                                       externalScopeName,
+                                                      externalScopeTypeName,
                                                       openMetadataElementGUID,
                                                       openMetadataElementTypeName,
-                                                      externalScopeTypeName,
                                                       externalIdentifierProperties);
     }
 
