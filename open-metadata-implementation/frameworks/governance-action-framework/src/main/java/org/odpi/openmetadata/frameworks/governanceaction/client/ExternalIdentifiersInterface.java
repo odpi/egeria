@@ -21,8 +21,9 @@ public interface ExternalIdentifiersInterface
      * Add a new external identifier to an existing open metadata element.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
+     * @param externalScopeGUID unique identifier of software capability representing the caller
+     * @param externalScopeName unique name of software capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -32,8 +33,9 @@ public interface ExternalIdentifiersInterface
      * @throws PropertyServerException    problem accessing the property server
      */
     void addExternalIdentifier(String                       userId,
-                               String                       assetManagerGUID,
-                               String                       assetManagerName,
+                               String                       externalScopeGUID,
+                               String                       externalScopeName,
+                               String                       externalScopeTypeName,
                                String                       openMetadataElementGUID,
                                String                       openMetadataElementTypeName,
                                ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
@@ -45,8 +47,8 @@ public interface ExternalIdentifiersInterface
      * Update the description of a specific external identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
+     * @param externalScopeGUID unique identifier of software capability representing the caller
+     * @param externalScopeName unique name of software capability representing the caller
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
@@ -56,8 +58,8 @@ public interface ExternalIdentifiersInterface
      * @throws PropertyServerException    problem accessing the property server
      */
     void updateExternalIdentifier(String                       userId,
-                                  String                       assetManagerGUID,
-                                  String                       assetManagerName,
+                                  String                       externalScopeGUID,
+                                  String                       externalScopeName,
                                   String                       openMetadataElementGUID,
                                   String                       openMetadataElementTypeName,
                                   ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
@@ -70,19 +72,19 @@ public interface ExternalIdentifiersInterface
      * affected.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
+     * @param externalScopeGUID unique identifier of software capability representing the caller
+     * @param externalScopeName unique name of software capability representing the caller
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the third party asset manager
+     * @param externalIdentifier unique identifier of this element in the third party external scope
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     void removeExternalIdentifier(String                   userId,
-                                  String                   assetManagerGUID,
-                                  String                   assetManagerName,
+                                  String                   externalScopeGUID,
+                                  String                   externalScopeName,
                                   String                   openMetadataElementGUID,
                                   String                   openMetadataElementTypeName,
                                   String                   externalIdentifier) throws InvalidParameterException,
@@ -95,19 +97,19 @@ public interface ExternalIdentifiersInterface
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
+     * @param externalScopeGUID unique identifier of software capability representing the caller
+     * @param externalScopeName unique name of software capability representing the caller
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
-     * @param externalIdentifier unique identifier of this element in the external asset manager
+     * @param externalIdentifier unique identifier of this element in the external external scope
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     void confirmSynchronization(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
+                                String externalScopeGUID,
+                                String externalScopeName,
                                 String openMetadataElementGUID,
                                 String openMetadataElementTypeName,
                                 String externalIdentifier) throws InvalidParameterException,
@@ -120,9 +122,9 @@ public interface ExternalIdentifiersInterface
      * external identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software capability representing the caller
-     * @param assetManagerName unique name of software capability representing the caller
-     * @param externalIdentifier unique identifier of this element in the external asset manager
+     * @param externalScopeGUID unique identifier of software capability representing the caller
+     * @param externalScopeName unique name of software capability representing the caller
+     * @param externalIdentifier unique identifier of this element in the external external scope
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -133,8 +135,8 @@ public interface ExternalIdentifiersInterface
      * @throws PropertyServerException    problem accessing the property server
      */
     List<ElementHeader> getElementsForExternalIdentifier(String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
+                                                         String externalScopeGUID,
+                                                         String externalScopeName,
                                                          String externalIdentifier,
                                                          int    startFrom,
                                                          int    pageSize) throws InvalidParameterException,
@@ -176,7 +178,7 @@ public interface ExternalIdentifiersInterface
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
      *
-     * @return list of correlation headers (note if asset manager identifiers are present, only the matching correlation header is returned)
+     * @return list of correlation headers (note if external scope identifiers are present, only the matching correlation header is returned)
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.

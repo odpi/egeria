@@ -2568,6 +2568,7 @@ public class OpenMetadataStore
      *
      * @param externalScopeGUID unique identifier of software server capability representing the caller
      * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -2578,13 +2579,14 @@ public class OpenMetadataStore
      */
     public void addExternalIdentifier(String                       externalScopeGUID,
                                       String                       externalScopeName,
+                                      String                       externalScopeTypeName,
                                       String                       openMetadataElementGUID,
                                       String                       openMetadataElementTypeName,
                                       ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        openMetadataClient.addExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties);
+        openMetadataClient.addExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties);
     }
 
 

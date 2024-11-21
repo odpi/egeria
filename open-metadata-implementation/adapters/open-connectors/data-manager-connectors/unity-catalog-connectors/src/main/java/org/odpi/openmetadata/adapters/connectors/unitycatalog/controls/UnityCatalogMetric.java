@@ -3,10 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalColumnMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalSchemaMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalTableMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +15,9 @@ import java.util.List;
 public enum UnityCatalogMetric implements SurveyMetric
 {
     NO_OF_CATALOGS ( "numberOfCatalogs", "long", "Number of Catalogs", "Number of catalogs defined in this server."),
-    NO_OF_SCHEMAS ( "numberOfSchemas", "long", "Number of Schemas", "Number of schemas found in the survey target (server or catalog)."),
-    NO_OF_TABLES ( "numberOfTables", "long", "Number of Tables", "Number of tables found in the survey target (server, catalog or schema)."),
-    NO_OF_FUNCTIONS ( "numberOfFunctions", "long", "Number of Functions", "Number of functions found in the survey target (server, catalog or schema)."),
-    NO_OF_VOLUMES ( "numberOfVolumes", "long", "Number of Volumes", "Number of volumes found in the survey target (server, catalog or schema)."),
+    NO_OF_FUNCTIONS ( "numberOfFunctions", "long", "Number of Functions", "Number of functions found in the surveyed resource."),
+    NO_OF_VOLUMES ( "numberOfVolumes", "long", "Number of Volumes", "Number of volumes found in the surveyed resource."),
+    NO_OF_MODELS ( "numberOfModels", "long", "Number of Models", "Number of models found in the surveyed resource."),
 
     ;
 
@@ -116,12 +112,15 @@ public enum UnityCatalogMetric implements SurveyMetric
     {
         List<SurveyMetric> metrics = new ArrayList<>();
 
-        metrics.add(UnityCatalogMetric.NO_OF_SCHEMAS);
+        metrics.add(RelationalDatabaseMetric.SCHEMA_COUNT);
         metrics.add(UnityCatalogMetric.NO_OF_FUNCTIONS);
-        metrics.add(UnityCatalogMetric.NO_OF_TABLES);
+        metrics.add(RelationalDatabaseMetric.TABLE_COUNT);
+        metrics.add(RelationalDatabaseMetric.COLUMN_COUNT);
         metrics.add(UnityCatalogMetric.NO_OF_VOLUMES);
+        metrics.add(UnityCatalogMetric.NO_OF_MODELS);
 
-        return metrics;    }
+        return metrics;
+    }
 
 
     /**
@@ -135,6 +134,7 @@ public enum UnityCatalogMetric implements SurveyMetric
 
         metrics.add(RelationalSchemaMetric.TOTAL_TABLE_SIZE);
         metrics.add(RelationalSchemaMetric.TABLE_COUNT);
+        metrics.add(RelationalSchemaMetric.COLUMN_COUNT);
 
         return metrics;
     }

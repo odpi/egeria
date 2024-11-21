@@ -14,30 +14,30 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import java.util.Arrays;
 
 /**
- * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+ * DeleteAssetGovernanceActionProvider is the OCF connector provider for the "Delete Asset"
  * Governance Action Service.
  */
-public class CreateServerGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class DeleteAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "e3067653-363b-4851-a839-0bf0b421cac7";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Stewardship:CreateServer";
-    private static final String  connectorTypeDisplayName = "Create Server Governance Action Service";
-    private static final String  connectorTypeDescription = "Governance Action Service that creates an asset that represents a server.";
+    private static final String  connectorTypeGUID = "ab56c5ad-ee01-4486-9940-8409065df5e3";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Stewardship:DeleteAsset";
+    private static final String  connectorTypeDisplayName = "Delete Asset Governance Action Service";
+    private static final String  connectorTypeDescription = "Governance Action Service that deletes an asset that was created by a template, and passes its GUID as a deleted asset action target.";
 
-    private static final String connectorClassName = CreateServerGovernanceActionConnector.class.getName();
+    private static final String connectorClassName = DeleteAssetGovernanceActionConnector.class.getName();
 
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      */
-    public CreateServerGovernanceActionProvider()
+    public DeleteAssetGovernanceActionProvider()
     {
         super();
 
-        super.supportedRequestParameters = CreateServerRequestParameter.getRequestParameterTypes();
-        super.producedGuards = CreateServerGuard.getGuardTypes();
-        super.producedActionTargetTypes = Arrays.asList(new ActionTargetType[]{ActionTarget.NEW_ASSET.getActionTargetType()});
+        super.supportedRequestParameters = ManageAssetRequestParameter.getRequestParameterTypes();
+        super.producedGuards = ManageAssetGuard.getGuardTypes();
+        super.producedActionTargetTypes = Arrays.asList(new ActionTargetType[]{ActionTarget.DELETED_ASSET.getActionTargetType()});
 
         super.setConnectorClassName(connectorClassName);
 
@@ -53,7 +53,9 @@ public class CreateServerGovernanceActionProvider extends GovernanceActionServic
 
         super.connectorTypeBean = connectorType;
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.SOFTWARE_SERVER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{
+                DeployedImplementationType.SOFTWARE_SERVER,
+                DeployedImplementationType.DATA_ASSET});
 
     }
 }

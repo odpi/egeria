@@ -1,12 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.surveyaction.controls;
+package org.odpi.openmetadata.frameworks.surveyaction.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMetric;
 
 import java.util.ArrayList;
@@ -242,6 +239,6 @@ public enum SurveyFolderAnnotationType implements AnnotationType
     @Override
     public String toString()
     {
-        return "AnnotationType{ name='" + name + "}";
+        return "SurveyFolderAnnotationType{ name='" + name + "}";
     }
 }

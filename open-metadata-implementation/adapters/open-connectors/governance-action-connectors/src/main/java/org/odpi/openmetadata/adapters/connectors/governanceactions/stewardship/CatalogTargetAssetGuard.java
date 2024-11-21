@@ -14,9 +14,9 @@ import java.util.List;
  * Using the common guard names where possible saves time when coding the provider class and improves the
  * ability of the service to be incorporated into governance action processes.
  */
-public enum CatalogServerGuard
+public enum CatalogTargetAssetGuard
 {
-    SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The integration connector has been configured with the server information as a catalog target."),
+    SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The integration connector has been configured with the asset information as a catalog target."),
     MISSING_ASSET("missing-asset", CompletionStatus.INVALID, "The 'newAsset' asset has not been supplied."),
     MISSING_CONNECTOR("missing-connector", CompletionStatus.INVALID, "The integrationConnector has not been supplied."),
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
@@ -35,7 +35,7 @@ public enum CatalogServerGuard
      * @param completionStatus associated completion status
      * @param description description of the guard
      */
-    CatalogServerGuard(String name, CompletionStatus completionStatus, String description)
+    CatalogTargetAssetGuard(String name, CompletionStatus completionStatus, String description)
     {
         this.name             = name;
         this.completionStatus = completionStatus;
@@ -85,7 +85,7 @@ public enum CatalogServerGuard
     {
         List<GuardType> guardTypes = new ArrayList<>();
 
-        for (CatalogServerGuard guard : CatalogServerGuard.values())
+        for (CatalogTargetAssetGuard guard : CatalogTargetAssetGuard.values())
         {
             GuardType guardType = new GuardType();
 

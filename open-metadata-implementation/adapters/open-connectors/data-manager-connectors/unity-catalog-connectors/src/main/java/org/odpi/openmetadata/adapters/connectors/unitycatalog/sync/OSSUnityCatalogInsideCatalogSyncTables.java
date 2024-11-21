@@ -333,6 +333,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         context.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
+                                      catalogTypeName,
                                       ucTableGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(tableInfo,
@@ -405,6 +406,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         {
             context.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
+                                          catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
                                           deployedImplementationType.getAssociatedTypeName(),
                                           this.getExternalIdentifierProperties(tableInfo,

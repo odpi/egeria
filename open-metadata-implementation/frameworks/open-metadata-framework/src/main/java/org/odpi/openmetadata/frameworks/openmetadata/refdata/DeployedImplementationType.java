@@ -454,7 +454,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
-                  OpenMetadataType.CATALOG.typeName,
+                  OpenMetadataType.INVENTORY_CATALOG.typeName,
                   OpenMetadataType.ASSET_MANAGER.typeName,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),

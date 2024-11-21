@@ -9,29 +9,23 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * CatalogServerGovernanceActionConnector creates a server and attaches it to an appropriate integration
- * connector (passed as an action target).
+ * CreateAssetGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
  */
-public class CreateServerGovernanceActionConnector extends GeneralGovernanceActionService
+public class CreateAssetGovernanceActionConnector extends GeneralGovernanceActionService
 {
     /**
      * Default constructor
      */
-    public CreateServerGovernanceActionConnector()
+    public CreateAssetGovernanceActionConnector()
     {
     }
 
@@ -58,17 +52,17 @@ public class CreateServerGovernanceActionConnector extends GeneralGovernanceActi
             AuditLogMessageDefinition messageDefinition;
             String                    templateGUID;
 
-            templateGUID = getProperty(CreateServerRequestParameter.TEMPLATE_GUID.getName(), null);
+            templateGUID = getProperty(ManageAssetRequestParameter.TEMPLATE_GUID.getName(), null);
 
             if (templateGUID == null)
             {
                 messageDefinition = GovernanceActionConnectorsAuditCode.NO_TEMPLATE_GUID.getMessageDefinition(governanceServiceName);
-                outputGuards.add(CreateServerGuard.MISSING_TEMPLATE.getName());
-                completionStatus = CreateServerGuard.MISSING_TEMPLATE.getCompletionStatus();
+                outputGuards.add(ManageAssetGuard.MISSING_TEMPLATE.getName());
+                completionStatus = ManageAssetGuard.MISSING_TEMPLATE.getCompletionStatus();
             }
             else
             {
-                String serverGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(null,
+                String assetGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(null,
                                                                                                             null,
                                                                                                             true,
                                                                                                             null,
@@ -81,24 +75,24 @@ public class CreateServerGovernanceActionConnector extends GeneralGovernanceActi
                                                                                                             null,
                                                                                                             true);
 
-                OpenMetadataElement serverElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(serverGUID);
+                OpenMetadataElement assetElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(assetGUID);
 
                 messageDefinition = GovernanceActionConnectorsAuditCode.NEW_ASSET_CREATED.getMessageDefinition(governanceServiceName,
-                                                                                                               serverElement.getType().getTypeName(),
+                                                                                                               assetElement.getType().getTypeName(),
                                                                                                                propertyHelper.getStringProperty(governanceServiceName,
                                                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                                                serverElement.getElementProperties(),
+                                                                                                                                                assetElement.getElementProperties(),
                                                                                                                                                 methodName),
-                                                                                                               serverGUID);
+                                                                                                               assetGUID);
                 NewActionTarget newActionTarget = new NewActionTarget();
 
-                newActionTarget.setActionTargetGUID(serverGUID);
+                newActionTarget.setActionTargetGUID(assetGUID);
                 newActionTarget.setActionTargetName(ActionTarget.NEW_ASSET.name);
 
                 outputActionTargets.add(newActionTarget);
 
-                completionStatus = CatalogServerGuard.SET_UP_COMPLETE.getCompletionStatus();
-                outputGuards.add(CatalogServerGuard.SET_UP_COMPLETE.getName());
+                completionStatus = ManageAssetGuard.SET_UP_COMPLETE.getCompletionStatus();
+                outputGuards.add(ManageAssetGuard.SET_UP_COMPLETE.getName());
             }
 
             auditLog.logMessage(methodName, messageDefinition);

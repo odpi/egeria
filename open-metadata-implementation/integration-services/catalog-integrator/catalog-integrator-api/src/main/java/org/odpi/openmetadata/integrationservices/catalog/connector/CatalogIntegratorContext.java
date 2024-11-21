@@ -27,6 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
@@ -507,6 +508,7 @@ public class CatalogIntegratorContext extends IntegrationContext
         openMetadataStoreClient.addExternalIdentifier(userId,
                                                       externalSourceGUID,
                                                       externalSourceName,
+                                                      OpenMetadataType.INVENTORY_CATALOG.typeName,
                                                       openMetadataElementGUID,
                                                       openMetadataElementTypeName,
                                                       externalIdentifierProperties);
@@ -518,6 +520,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      *
      * @param externalScopeGUID      unique identifier of the software capability that owns this collection
      * @param externalScopeName      unique name of the software capability that owns this collection
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
@@ -528,6 +531,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      */
     public void addExternalIdentifier(String                       externalScopeGUID,
                                       String                       externalScopeName,
+                                      String                       externalScopeTypeName,
                                       String                       openMetadataElementGUID,
                                       String                       openMetadataElementTypeName,
                                       ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
@@ -539,6 +543,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                       externalScopeName,
                                                       openMetadataElementGUID,
                                                       openMetadataElementTypeName,
+                                                      externalScopeTypeName,
                                                       externalIdentifierProperties);
     }
 

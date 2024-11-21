@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtla
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 public enum SoftwareServerTemplateDefinition implements TemplateDefinition
 {
-    POSTGRES_SERVER_TEMPLATE("542134e6-b9ce-4dce-8aef-22e8daf34fdb",
+    POSTGRES_SERVER_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SERVER_TEMPLATE.getDefaultTemplateGUID(),
                              PostgresDeployedImplementationType.POSTGRESQL_SERVER,
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
                              "Database Management System (DBMS)",

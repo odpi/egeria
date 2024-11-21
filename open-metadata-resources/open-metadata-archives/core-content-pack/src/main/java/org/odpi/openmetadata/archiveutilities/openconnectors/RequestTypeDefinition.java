@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
@@ -395,8 +395,21 @@ public enum RequestTypeDefinition
                            null,
                            null,
                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
-                           GovernanceServiceDefinition.CREATE_SERVER,
+                           GovernanceServiceDefinition.CREATE_ASSET,
                            "2be30523-5c6a-4c5d-a9ca-595ea491a047",
+                           null,
+                           ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * delete-software-server
+     */
+    DELETE_SOFTWARE_SERVER("delete-software-server",
+                           null,
+                           null,
+                           null,
+                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                           GovernanceServiceDefinition.DELETE_ASSET,
+                           "b45aa1ba-690e-4a6d-aaf7-1f6498ea0ea9",
                            null,
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -408,7 +421,7 @@ public enum RequestTypeDefinition
                             null,
                             null,
                             GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
-                            GovernanceServiceDefinition.CATALOG_SERVER,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "134d6840-9f9d-42bb-bd84-a936b6401541",
                             null,
                             ContentPackDefinition.CORE_CONTENT_PACK),
@@ -419,11 +432,24 @@ public enum RequestTypeDefinition
      */
     CREATE_UC_SERVER("create-unity-catalog-server",
                      null,
-                     getCreateServerRequestParameters(SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE.getTemplateGUID()),
+                     getManageAssetRequestParameters(SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE.getTemplateGUID()),
                      null,
                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
-                     GovernanceServiceDefinition.CREATE_SERVER,
+                     GovernanceServiceDefinition.CREATE_ASSET,
                      "78e47705-a159-4e3d-9199-3a2c9400dcee",
+                     null,
+                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
+     * delete-unity-catalog-server
+     */
+    DELETE_UC_SERVER("delete-unity-catalog-server",
+                     null,
+                     getManageAssetRequestParameters(SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE.getTemplateGUID()),
+                     null,
+                     GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                     GovernanceServiceDefinition.DELETE_ASSET,
+                     "986d550a-c5d8-4c44-9f94-601a15fc25f1",
                      null,
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
@@ -431,14 +457,27 @@ public enum RequestTypeDefinition
      * create-databricks-unity-catalog-server
      */
     CREATE_DB_UC_SERVER("create-databricks-unity-catalog-server",
-                     null,
-                     getCreateServerRequestParameters(SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE.getTemplateGUID()),
-                     null,
-                     GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
-                     GovernanceServiceDefinition.CREATE_SERVER,
-                     "323d8a5c-4f79-4bc0-a35a-0c39d1990a9e",
-                     null,
-                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CREATE_ASSET,
+                        "323d8a5c-4f79-4bc0-a35a-0c39d1990a9e",
+                        null,
+                        ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+
+    /**
+     * delete-databricks-unity-catalog-server
+     */
+    DELETE_DB_UC_SERVER("delete-databricks-unity-catalog-server",
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.DELETE_ASSET,
+                        "cfeafd56-a6dd-41e5-bf0e-33b65639085d",
+                        null,
+                        ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * catalog-unity-catalog-server
@@ -446,9 +485,9 @@ public enum RequestTypeDefinition
     CATALOG_UC_SERVER("catalog-unity-catalog-server",
                       null,
                       null,
-                      getCatalogServerActionTargets(IntegrationConnectorDefinition.UC_SERVER_CATALOGUER.getGUID()),
+                      getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.UC_SERVER_CATALOGUER.getGUID()),
                       GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
-                      GovernanceServiceDefinition.CATALOG_SERVER,
+                      GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                       "1b2d71c8-b7f9-4b9b-a466-f20e529391ef",
                       null,
                       ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
@@ -457,39 +496,64 @@ public enum RequestTypeDefinition
      * create-apache-atlas-server
      */
     CREATE_ATLAS_SERVER("create-apache-atlas-server",
-                     null,
-                     getCreateServerRequestParameters(SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE.getTemplateGUID()),
-                     null,
-                     GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
-                     GovernanceServiceDefinition.CREATE_SERVER,
-                     "c4ea5182-1707-4e43-9151-ad3c42107b00",
-                     null,
-                     ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CREATE_ASSET,
+                        "c4ea5182-1707-4e43-9151-ad3c42107b00",
+                        null,
+                        ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
+
+    /**
+     * delete-apache-atlas-server
+     */
+    DELETE_ATLAS_SERVER("delete-apache-atlas-server",
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.DELETE_ASSET,
+                        "7bed9078-085f-40fd-9f72-168196d7b277",
+                        null,
+                        ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
      * catalog-apache-atlas-server
      */
     CATALOG_ATLAS_SERVER("catalog-apache-atlas-server",
-                      null,
-                      null,
-                      getCatalogServerActionTargets(IntegrationConnectorDefinition.APACHE_ATLAS_EXCHANGE.getGUID()),
-                      GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
-                      GovernanceServiceDefinition.CATALOG_SERVER,
-                      "95a89892-e66f-4ad7-913a-9b10ce7c64ac",
-                      null,
-                      ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
-
+                         null,
+                         null,
+                         getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.APACHE_ATLAS_EXCHANGE.getGUID()),
+                         GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
+                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                         "95a89892-e66f-4ad7-913a-9b10ce7c64ac",
+                         null,
+                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
      * create-apache-kafka-server
      */
     CREATE_KAFKA_SERVER("create-apache-kafka-server",
                         null,
-                        getCreateServerRequestParameters(SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE.getTemplateGUID()),
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE.getTemplateGUID()),
                         null,
                         GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
-                        GovernanceServiceDefinition.CREATE_SERVER,
+                        GovernanceServiceDefinition.CREATE_ASSET,
                         "8f735dbc-7bc3-442f-8b16-699ef43a15f3",
+                        null,
+                        ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
+
+    /**
+     * delete-apache-kafka-server
+     */
+    DELETE_KAFKA_SERVER("delete-apache-kafka-server",
+                        null,
+                        getManageAssetRequestParameters(SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE.getTemplateGUID()),
+                        null,
+                        GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.DELETE_ASSET,
+                        "9eace0dd-bcd6-41df-86f7-4b5799774411",
                         null,
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
@@ -499,9 +563,9 @@ public enum RequestTypeDefinition
     CATALOG_KAFKA_SERVER("catalog-apache-kafka-server",
                          null,
                          null,
-                         getCatalogServerActionTargets(IntegrationConnectorDefinition.KAFKA_SERVER_CATALOGUER.getGUID()),
+                         getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.KAFKA_SERVER_CATALOGUER.getGUID()),
                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
-                         GovernanceServiceDefinition.CATALOG_SERVER,
+                         GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                          "81f0fad0-84eb-4926-865f-c518df876cab",
                          null,
                          ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
@@ -511,27 +575,40 @@ public enum RequestTypeDefinition
      * create-omag-server-platform
      */
     CREATE_OMAG_SERVER_PLATFORM("create-omag-server-platform",
-                        null,
-                        getCreateServerRequestParameters(EgeriaSoftwareServerTemplateDefinition.OMAG_SERVER_PLATFORM_TEMPLATE.getTemplateGUID()),
-                        null,
-                        GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                        GovernanceServiceDefinition.CREATE_SERVER,
-                        "2cb0bfc6-7bd9-4144-b0ad-4cd3a7acb502",
-                        null,
-                        ContentPackDefinition.NANNY_CONTENT_PACK),
+                                null,
+                                getManageAssetRequestParameters(EgeriaSoftwareServerTemplateDefinition.OMAG_SERVER_PLATFORM_TEMPLATE.getTemplateGUID()),
+                                null,
+                                GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                GovernanceServiceDefinition.CREATE_ASSET,
+                                "2cb0bfc6-7bd9-4144-b0ad-4cd3a7acb502",
+                                null,
+                                ContentPackDefinition.NANNY_CONTENT_PACK),
+
+    /**
+     * delete-omag-server-platform
+     */
+    DELETE_OMAG_SERVER_PLATFORM("delete-omag-server-platform",
+                                null,
+                                getManageAssetRequestParameters(EgeriaSoftwareServerTemplateDefinition.OMAG_SERVER_PLATFORM_TEMPLATE.getTemplateGUID()),
+                                null,
+                                GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                GovernanceServiceDefinition.DELETE_ASSET,
+                                "f24a52a9-553f-4eb2-b62e-faaf4a17c662",
+                                null,
+                                ContentPackDefinition.NANNY_CONTENT_PACK),
 
     /**
      * catalog-omag-server-platform
      */
     CATALOG_OMAG_SERVER_PLATFORM("catalog-omag-server-platform",
-                         null,
-                         null,
-                         getCatalogServerActionTargets(IntegrationConnectorDefinition.OMAG_SERVER_PLATFORM_CATALOGUER.getGUID()),
-                         GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                         GovernanceServiceDefinition.CATALOG_SERVER,
-                         "e22b0fbb-f63e-4aa2-9436-6b34dc0246c7",
-                         null,
-                         ContentPackDefinition.NANNY_CONTENT_PACK),
+                                 null,
+                                 null,
+                                 getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.OMAG_SERVER_PLATFORM_CATALOGUER.getGUID()),
+                                 GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                 GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                                 "e22b0fbb-f63e-4aa2-9436-6b34dc0246c7",
+                                 null,
+                                 ContentPackDefinition.NANNY_CONTENT_PACK),
 
 
     /**
@@ -539,11 +616,24 @@ public enum RequestTypeDefinition
      */
     CREATE_POSTGRES_SERVER("create-postgres-server",
                            null,
-                           getCreateServerRequestParameters(SoftwareServerTemplateDefinition.POSTGRES_SERVER_TEMPLATE.getTemplateGUID()),
+                           getManageAssetRequestParameters(SoftwareServerTemplateDefinition.POSTGRES_SERVER_TEMPLATE.getTemplateGUID()),
                            null,
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
-                           GovernanceServiceDefinition.CREATE_SERVER,
+                           GovernanceServiceDefinition.CREATE_ASSET,
                            "3facbdba-43c6-44b8-a222-ad0ad2c3c3d5",
+                           null,
+                           ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * delete-postgres-server
+     */
+    DELETE_POSTGRES_SERVER("delete-postgres-server",
+                           null,
+                           getManageAssetRequestParameters(SoftwareServerTemplateDefinition.POSTGRES_SERVER_TEMPLATE.getTemplateGUID()),
+                           null,
+                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                           GovernanceServiceDefinition.DELETE_ASSET,
+                           "5c49625e-8935-44fa-9076-5e099cf392ca",
                            null,
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
@@ -553,14 +643,116 @@ public enum RequestTypeDefinition
     CATALOG_POSTGRES_SERVER("catalog-postgres-server",
                             null,
                             null,
-                            getCatalogServerActionTargets(IntegrationConnectorDefinition.POSTGRES_SERVER_CATALOGUER.getGUID()),
+                            getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.POSTGRES_SERVER_CATALOGUER.getGUID()),
                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
-                            GovernanceServiceDefinition.CATALOG_SERVER,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "dab2303b-7bac-4985-b8eb-4a706e77d036",
                             null,
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
+    /**
+     * create-postgres-database
+     */
+    CREATE_POSTGRES_DB("create-postgres-database",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.CREATE_ASSET,
+                       "47353b59-b1cd-453a-841f-3873130703b7",
+                       null,
+                       ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
+    /**
+     * delete-postgres-database
+     */
+    DELETE_POSTGRES_DB("delete-postgres-database",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.DELETE_ASSET,
+                       "610d8562-7e48-4ba8-b596-d66b7888e268",
+                       null,
+                       ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * catalog-postgres-database
+     */
+    CATALOG_POSTGRES_DATABASE("catalog-postgres-database",
+                            null,
+                            null,
+                            getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                            GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                            "32ca425d-6aeb-40f0-bc7c-508a9689d24e",
+                            null,
+                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * create-postgres-schema
+     */
+    CREATE_POSTGRES_SCHEMA("create-postgres-schema",
+                       null,
+                       getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID()),
+                       null,
+                       GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                       GovernanceServiceDefinition.CREATE_ASSET,
+                       "b0c07a56-2d4b-4665-93a3-e33cbb1aba61",
+                       null,
+                       ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * delete-postgres-schema
+     */
+    DELETE_POSTGRES_SCHEMA("delete-postgres-schema",
+                           null,
+                           getManageAssetRequestParameters(DataAssetTemplateDefinition.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID()),
+                           null,
+                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                           GovernanceServiceDefinition.DELETE_ASSET,
+                           "08fa65f0-8925-46bd-8c19-806d47ce2da1",
+                           null,
+                           ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * catalog-postgres-schema
+     */
+    CATALOG_POSTGRES_SCHEMA("catalog-postgres-schema",
+                              null,
+                              null,
+                              getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.JDBC_CATALOGUER.getGUID()),
+                              GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                              GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                              "c4702cb9-9787-4756-889d-b7d8efd3d240",
+                              null,
+                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
+
+    /**
+     * harvest-surveys
+     */
+    HARVEST_SURVEYS("harvest-surveys",
+                              null,
+                              null,
+                              getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_SURVEYS.getGUID()),
+                              GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                              GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                              "e3ea80ac-728f-4b33-8557-f92d17a6ad49",
+                              null,
+                              ContentPackDefinition.NANNY_CONTENT_PACK),
+
+    /**
+     * harvest-open-metadata
+     */
+    HARVEST_OPEN_METADATA("harvest-open-metadata",
+                    null,
+                    null,
+                    getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_OPEN_METADATA.getGUID()),
+                    GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                    GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                    "2f3b500f-b918-400d-bacb-dcff50772d9b",
+                    null,
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
     ;
 
     private final String                      governanceRequestType;
@@ -636,11 +828,11 @@ public enum RequestTypeDefinition
      *
      * @return map
      */
-    static Map<String, String> getCreateServerRequestParameters(String templateGUID)
+    static Map<String, String> getManageAssetRequestParameters(String templateGUID)
     {
         Map<String,String> requestParameters = new HashMap<>();
 
-        requestParameters.put(CreateServerRequestParameter.TEMPLATE_GUID.getName(), templateGUID);
+        requestParameters.put(ManageAssetRequestParameter.TEMPLATE_GUID.getName(), templateGUID);
 
         return requestParameters;
     }
@@ -651,7 +843,7 @@ public enum RequestTypeDefinition
      *
      * @return list of action targets
      */
-    static List<NewActionTarget> getCatalogServerActionTargets(String integrationConnectorGUID)
+    static List<NewActionTarget> getCatalogTargetAssetActionTargets(String integrationConnectorGUID)
     {
         List<NewActionTarget> actionTargets = new ArrayList<>();
 

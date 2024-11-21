@@ -15,8 +15,8 @@ public enum RelationalTableMetric implements SurveyMetric
     TABLE_SIZE ("tableSize", "long", "Table size", "Number of stored bytes in the table."),
     TABLE_NAME ("tableName", "string","Table name", "Name of table."),
     TABLE_QNAME ("tableQualifiedName", "string","Table qualified name", "Qualified name of table showing the database name and schema name."),
-    TABLE_TYPE ("tableDataType", "string","Table type", "Is this a standard table, view or materialized view?"),
-    COLUMN_COUNT ("columnCount", "long","Number of columns", "Count of columns in the database table/view."),
+    TABLE_TYPE ("tableType", "string","Table type", "Is this a standard table, view or materialized view?"),
+    COLUMN_COUNT ("columnCount", "long","Number of columns", "Count of columns in the table/view."),
 
     ;
 
@@ -98,7 +98,7 @@ public enum RelationalTableMetric implements SurveyMetric
      */
     public static List<SurveyMetric> getMetrics()
     {
-        return new ArrayList<>(Arrays.asList(RelationalDatabaseMetric.values()));
+        return new ArrayList<>(Arrays.asList(RelationalTableMetric.values()));
     }
 
 

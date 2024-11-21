@@ -80,12 +80,12 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
                   "https://github.com/unitycatalog/unitycatalog"),
 
     /**
-     * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     * An operational data platform manager within the Unity Catalog (UC) 'catalog of catalogs'.
      */
     OSS_UC_CATALOG("Unity Catalog Catalog",
-                   DeployedImplementationType.ASSET_CATALOG,
-                   OpenMetadataType.CATALOG.typeName,
-                   OpenMetadataType.ASSET_MANAGER.typeName,
+                   DeployedImplementationType.SOFTWARE_CAPABILITY,
+                   OpenMetadataType.DATA_ACCESS_MANAGER.typeName,
+                   null,
                    "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
                    "https://github.com/unitycatalog/unitycatalog"),
 

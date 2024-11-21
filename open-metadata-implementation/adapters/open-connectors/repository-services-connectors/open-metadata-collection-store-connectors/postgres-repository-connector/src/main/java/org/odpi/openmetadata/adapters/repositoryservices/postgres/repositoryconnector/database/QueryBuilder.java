@@ -116,14 +116,14 @@ public class QueryBuilder
     {
         if (searchString != null)
         {
-            /*
-            if (searchString.startsWith("\\Q") && (searchString.endsWith("\\E")))
+            if (repositoryHelper.isCaseInsensitiveRegex(searchString))
             {
-                return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " = '" + searchString.substring(2, searchString.length()-2) + "') ";
+                return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~* '" + this.getSafeRegex(searchString) + "') ";
             }
-             */
-
-            return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(searchString) + "') ";
+            else
+            {
+                return " and (" + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(searchString) + "') ";
+            }
         }
 
         return " ";
@@ -138,6 +138,7 @@ public class QueryBuilder
      * @return string  that is a safe regular expression
      * @throws RepositoryErrorException the RegEx takes to long to execute
      */
+    @SuppressWarnings(value="all")
     private String getSafeRegex(Object suppliedSearchString) throws RepositoryErrorException
     {
         final String methodName = "getSafeRegex";
@@ -154,7 +155,7 @@ public class QueryBuilder
             Date maxExecutionTime = new Date(currentTime.getTime() + 500);
             try
             {
-                tester.matches(strippedSearchString);
+                boolean matchString = tester.matches(strippedSearchString);
             }
             catch (Exception badRegex)
             {
@@ -186,11 +187,10 @@ public class QueryBuilder
      *                        be defined as a Java regular expression, even if it should be an exact match).
      * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
      * @param propertyTableName name of table holding the properties
-     * @throws RepositoryErrorException error in one of the supplied RegEx
      */
     public void setMatchProperties(InstanceProperties matchProperties,
                                    MatchCriteria      matchCriteria,
-                                   String             propertyTableName) throws RepositoryErrorException
+                                   String             propertyTableName)
     {
         if ((matchProperties != null) &&
                 (matchProperties.getPropertyCount() > 0 ||
@@ -472,12 +472,25 @@ public class QueryBuilder
                     }
                     case LIKE ->
                     {
-
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
+                        {
+                            return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~* '" + this.getSafeRegex(propertyValue) + "') ";
+                        }
+                        else
+                        {
+                            return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        }
                     }
                     case NOT_LIKE ->
                     {
-                        return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " !~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
+                        {
+                            return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " !~* '" + this.getSafeRegex(propertyValue) + "') ";
+                        }
+                        else
+                        {
+                            return sqlClause + " and " + RepositoryColumn.PROPERTY_VALUE.getColumnName() + " !~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        }
                     }
                     case NOT_NULL ->
                     {
@@ -524,11 +537,25 @@ public class QueryBuilder
                 }
                 case LIKE ->
                 {
-                    return " (" + propertyColumn + " like '" + this.getSafeRegex(propertyValue) + "') ";
+                    if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
+                    {
+                        return " (" + propertyColumn + " ~* '" + this.getSafeRegex(propertyValue) + "') ";
+                    }
+                    else
+                    {
+                        return " (" + propertyColumn + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
+                    }
                 }
                 case NOT_LIKE ->
                 {
-                    return " (" + propertyColumn + " not like '" + this.getSafeRegex(propertyValue) + "') ";
+                    if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
+                    {
+                        return " (" + propertyColumn + " !~* '" + this.getSafeRegex(propertyValue) + "') ";
+                    }
+                    else
+                    {
+                        return " (" + propertyColumn + " !~ '" + this.getSafeRegex(propertyValue) + "') ";
+                    }
                 }
             }
         }

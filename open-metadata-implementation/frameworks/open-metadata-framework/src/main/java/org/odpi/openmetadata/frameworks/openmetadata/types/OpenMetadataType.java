@@ -779,31 +779,40 @@ public enum OpenMetadataType
                           "A capability that supports event-based services, typically around topics."),
 
     /**
-     * A capability that manages collections of data.
+     * A capability that manages collections of stored data.
      */
     DATA_MANAGER("82efa1fa-501f-4ac7-942c-6536c4a1cd61",
                  "DataManager",
                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                  "b2151b29-e115-417f-a711-521a9d66f99b",
-                 "A capability that manages collections of data."),
+                 "A capability that manages collections of stored data.  It typically maintains a schema to describe how data is formatted and that schema is used in the query and maintenance APIs by the caller to work with the data they desire."),
 
     /**
      * Defines a capability that manages data organized as relational schemas.
      */
     DATABASE_MANAGER("68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9",
-                 "DatabaseManager",
-                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                 "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
-                 "Defines a capability that manages data organized as relational schemas."),
+                     "DatabaseManager",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                     "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
+                     "Defines a capability that manages data organized as relational schemas.  It is also responsible for managing the data including maintaining query indexes, statistics and backups."),
+
+    /**
+     * Defines a capability that manages data organized as relational schemas.
+     */
+    DATA_ACCESS_MANAGER("c7e4008e-779e-4586-85f1-ab6264eb54e9",
+                        "DataAccessManager",
+                        OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                        "d54ad0a0-5254-4bf6-903c-82c1337eb209",
+                        "Defines a capability that manages data organized as structured schemas (typically relational tables and columns).  It does this by linking the schemas to data sources that are external to its own storage."),
 
     /**
      * A capability that manages collections of descriptions about people, places, digital assets, things, ...
      */
-    CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
-            "Catalog",
-            OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-            "df539ee4-fb5a-4555-8697-c391e244557d",
-            "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
+    INVENTORY_CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
+                      "InventoryCatalog",
+                      OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                      "df539ee4-fb5a-4555-8697-c391e244557d",
+                      "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
 
     /**
      * A programmable engine for running automated processes.

@@ -5,9 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.*;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 
 import java.util.ArrayList;
@@ -36,38 +34,6 @@ public enum UnityCatalogAnnotationType implements AnnotationType
                  AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
                  getProfilePropertiesPropertyName(),
                  null),
-
-    SCHEMA_LIST("Capture List of Unity Catalog (UC) Schemas",
-                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                "Extract the list of visible schema in the surveyed Unity Catalog (UC) resource (server or catalog).",
-                "Schemas listed include their catalog name and schema name.  If schemas are missing, check the security permissions of the survey service's userId.",
-                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
-                getProfilePropertiesPropertyName(),
-                null),
-
-    TABLE_LIST("Capture List of Unity Catalog (UC) Tables",
-               OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-               "Extract the list of visible tables in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
-               "Tables listed include their catalog name, schema name and table name.  If tables are missing, check the security permissions of the survey service's userId.",
-               AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
-               getProfilePropertiesPropertyName(),
-               null),
-
-    FUNCTION_LIST("Capture List of Unity Catalog (UC) Functions",
-                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                  "Extract the list of visible functions in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
-                  "Functions listed include their catalog name, schema name and function name.  If functions are missing, check the security permissions of the survey service's userId.",
-                  AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
-                  getProfilePropertiesPropertyName(),
-                  null),
-
-    VOLUME_LIST("Capture List of Unity Catalog (UC) Volumes",
-                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                "Extract the list of visible volumes in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
-                "Volumes listed include their catalog name, schema name and volume name.  If volumes are missing, check the security permissions of the survey service's userId.",
-                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
-                getProfilePropertiesPropertyName(),
-                null),
 
     CATALOG_TABLE_SIZES("Capture Unity Catalog (UC) Catalog Table Sizes",
                          OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
@@ -179,10 +145,12 @@ public enum UnityCatalogAnnotationType implements AnnotationType
         annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
         annotationTypeTypes.add(SERVER_METRICS.getAnnotationTypeType());
         annotationTypeTypes.add(CATALOG_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(SCHEMA_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.SCHEMA_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.COLUMN_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.MODEL_LIST.getAnnotationTypeType());
 
         return annotationTypeTypes;
     }
@@ -200,10 +168,12 @@ public enum UnityCatalogAnnotationType implements AnnotationType
 
         annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
         annotationTypeTypes.add(CATALOG_METRICS.getAnnotationTypeType());
-        annotationTypeTypes.add(SCHEMA_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.SCHEMA_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.COLUMN_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.MODEL_LIST.getAnnotationTypeType());
 
         return annotationTypeTypes;
     }
@@ -221,31 +191,15 @@ public enum UnityCatalogAnnotationType implements AnnotationType
 
         annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
         annotationTypeTypes.add(SCHEMA_METRICS.getAnnotationTypeType());
-        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
-        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyDatabaseAnnotationType.COLUMN_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.VOLUME_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SurveyResourceManagerAnnotationType.MODEL_LIST.getAnnotationTypeType());
 
         return annotationTypeTypes;
     }
 
-
-    /**
-     * Return the defined annotation types for the UC Server
-     * survey action service as a list of annotation type types.
-     *
-     * @return list
-     */
-    public static List<AnnotationTypeType> getAnnotationTypeTypes()
-    {
-        List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
-
-        for (UnityCatalogAnnotationType annotationType : UnityCatalogAnnotationType.values())
-        {
-            annotationTypeTypes.add(annotationType.getAnnotationTypeType());
-        }
-
-        return annotationTypeTypes;
-    }
 
     private static List<String> getProfilePropertiesPropertyName()
     {
@@ -255,6 +209,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
 
         return propertyNames;
     }
+
 
     /**
      * Return the name of the annotation type.

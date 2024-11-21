@@ -14,9 +14,9 @@ import java.util.List;
  * Using the common guard names where possible saves time when coding the provider class and improves the
  * ability of the service to be incorporated into governance action processes.
  */
-public enum CreateServerGuard
+public enum ManageAssetGuard
 {
-    SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The new asset representing the server has been created.  Its unique identifier (guid) is published in the 'newAsset' action target"),
+    SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The new asset representing the resource has been created.  Its unique identifier (guid) is published in the 'newAsset' action target"),
     MISSING_TEMPLATE("missing-template", CompletionStatus.INVALID, "The templateGUID request parameter has not been supplied."),
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
     ;
@@ -34,7 +34,7 @@ public enum CreateServerGuard
      * @param completionStatus associated completion status
      * @param description description of the guard
      */
-    CreateServerGuard(String name, CompletionStatus completionStatus, String description)
+    ManageAssetGuard(String name, CompletionStatus completionStatus, String description)
     {
         this.name             = name;
         this.completionStatus = completionStatus;
@@ -84,7 +84,7 @@ public enum CreateServerGuard
     {
         List<GuardType> guardTypes = new ArrayList<>();
 
-        for (CreateServerGuard guard : CreateServerGuard.values())
+        for (ManageAssetGuard guard : ManageAssetGuard.values())
         {
             GuardType guardType = new GuardType();
 

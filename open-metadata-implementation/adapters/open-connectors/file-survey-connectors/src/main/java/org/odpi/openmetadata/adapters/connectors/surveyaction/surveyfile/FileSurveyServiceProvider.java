@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
-import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;

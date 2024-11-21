@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -83,6 +84,7 @@ public class OSSUnityCatalogServerSurveyProvider extends SurveyActionServiceProv
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER});
         super.supportedActionTargetTypes = UnityCatalogTarget.getServerActionTargetTypes();
+        super.supportedRequestParameters = UnityCatalogSurveyRequestParameter.getServerSurveyRequestParameterTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_INVENTORY});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getServerAnnotationTypeTypes();

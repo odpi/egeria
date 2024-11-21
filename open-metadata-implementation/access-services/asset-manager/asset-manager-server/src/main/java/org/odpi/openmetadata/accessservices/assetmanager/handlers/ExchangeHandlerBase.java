@@ -319,7 +319,7 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getExternalScopeGUID(),
                                                                   assetManagerGUIDParameterName,
                                                                   correlationProperties.getExternalScopeName(),
-                                                                  OpenMetadataType.CATALOG.typeName,
+                                                                  OpenMetadataType.INVENTORY_CATALOG.typeName,
                                                                   OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
