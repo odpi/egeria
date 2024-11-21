@@ -343,7 +343,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                       qualifiedName,
                                       catalogTypeName,
                                       ucCatalogGUID,
-                                      OpenMetadataType.DATA_ACCESS_MANAGER.typeName,
+                                      catalogTypeName,
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),

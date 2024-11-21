@@ -5194,6 +5194,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setExternalScopeGUID(externalScopeGUID);
         requestBody.setExternalScopeName(externalScopeName);
+        requestBody.setExternalScopeTypeName(externalScopeTypeName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
