@@ -107,8 +107,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#FINAL_ANALYSIS_STEP" class="member-name-link">FINAL_ANALYSIS_STEP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Property name to control how much profiling the survey action service does.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a list of analysis steps to ignore.</div>
+</div>
 </div>
 </section>
 </li>
@@ -214,9 +220,17 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="FINAL_ANALYSIS_STEP">
+<h3>FINAL_ANALYSIS_STEP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">FINAL_ANALYSIS_STEP</span></div>
+<div class="block">Property name to control how much profiling the survey action service does.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="IGNORE_ANALYSIS_STEPS">
 <h3>IGNORE_ANALYSIS_STEPS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyRequestParameter</a></span>&nbsp;<span class="element-name">IGNORE_ANALYSIS_STEPS</span></div>
+<div class="block">Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.</div>
 </section>
 </li>
 </ul>

@@ -73,38 +73,28 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CatalogServerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogServerGovernanceActionConnector</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CatalogTargetAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogTargetAssetGovernanceActionConnector</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">CatalogServerGovernanceActionConnector creates a server and attaches it to an appropriate integration
- connector (passed as an action target).</div>
+<div class="block">CatalogTargetAssetGovernanceActionConnector creates a catalog target between the supplied integration connector
+ and the supplied asset.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CatalogServerGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogServerGovernanceActionProvider</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CatalogTargetAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogTargetAssetGovernanceActionProvider</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CatalogServerGovernanceActionProvider is the OCF connector provider for the "catalog-server"
+<div class="block">CatalogTargetAssetGovernanceActionProvider is the OCF connector provider for the "catalog-asset"
  Governance Action Service.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="CatalogServerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogServerGuard</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="CatalogTargetAssetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CatalogTargetAssetGuard</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CreateServerGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateServerGovernanceActionConnector</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CreateAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionConnector</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CatalogServerGovernanceActionConnector creates a server and attaches it to an appropriate integration
- connector (passed as an action target).</div>
+<div class="block">CreateAssetGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CreateServerGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateServerGovernanceActionProvider</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CreateAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateAssetGovernanceActionProvider</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
+<div class="block">CreateAssetGovernanceActionProvider is the OCF connector provider for the "Create Asset"
  Governance Action Service.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="CreateServerGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateServerGuard</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
-<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="CreateServerRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">CreateServerRequestParameter</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
-<div class="block">RequestParameter provides some standard definitions for request parameters used to pass properties
- to governance actions when they run.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DaysOfWeekGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGovernanceActionConnector</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -117,6 +107,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color class-summary class-summary-tab3"><a href="DaysOfWeekGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DaysOfWeekGuard</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DeleteAssetGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionConnector</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DeleteAssetGovernanceActionConnector deleted an asset and passes its GUID as an action target for follow on work.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DeleteAssetGovernanceActionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">DeleteAssetGovernanceActionProvider</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DeleteAssetGovernanceActionProvider is the OCF connector provider for the "Delete Asset"
+ Governance Action Service.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="EvaluateAnnotationsGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGovernanceActionConnector</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -132,6 +131,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab3"><a href="EvaluateAnnotationsGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">EvaluateAnnotationsGuard</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ManageAssetGuard.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">ManageAssetGuard</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="block">The Guard enum describes some common guards that can be used when implementing governance services.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ManageAssetRequestParameter.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">ManageAssetRequestParameter</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">RequestParameter provides some standard definitions for request parameters used to pass properties
+ to governance actions when they run.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="WaitForStewardGovernanceActionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship">WaitForStewardGovernanceActionConnector</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">

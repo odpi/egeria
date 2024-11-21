@@ -2406,10 +2406,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
  used to find an exact match of the string, irrespective of whether it contains characters that may have special
  meanings to regular expressions).
-
  Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
  using the getUnqualifiedLiteralString helper method.
-
  Finally, note that this enforces a case-sensitive search.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2438,7 +2436,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
  used to find an exact match of the string, irrespective of whether it contains characters that may have special
  meanings to regular expressions).
-
  Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
  using the getUnqualifiedLiteralString helper method.</div>
 <dl class="notes">
@@ -2465,19 +2462,17 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isExactMatchRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
 <div class="block">Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
  (false).
-
  Note that this method relies on the use of the getExactMatchRegex helper method having been used to
  qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
  escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
  general to arbitrarily detect whether they might be a regular expression or not.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
- should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
+ should be possible to just directly use the string as-is, and it will be correctly interpreted).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html#isExactMatchRegex(java.lang.String)">isExactMatchRegex</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>searchString</code> - the string to check whether it should be interpreted literally or as as a regular expression</dd>
+<dd><code>searchString</code> - the string to check whether it should be interpreted literally or as a regular expression</dd>
 <dt>Returns:</dt>
 <dd>true if the provided string should be interpreted literally, false if it should be interpreted as a regex</dd>
 <dt>See Also:</dt>
@@ -2497,19 +2492,17 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  boolean&nbsp;insensitive)</span></div>
 <div class="block">Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
  (false).
-
  Note that this method relies on the use of the getExactMatchRegex helper method having been used to
  qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
  escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
  general to arbitrarily detect whether they might be a regular expression or not.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
- should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
+ should be possible to just directly use the string as-is, and it will be correctly interpreted).</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html#isExactMatchRegex(java.lang.String,boolean)">isExactMatchRegex</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>searchString</code> - the string to check whether it should be interpreted literally or as as a regular expression</dd>
+<dd><code>searchString</code> - the string to check whether it should be interpreted literally or as a regular expression</dd>
 <dd><code>insensitive</code> - when true, only return true if the string is a case-insensitive exact match regex; when
                     false, only return true if the string is a case-sensitive exact match regex</dd>
 <dt>Returns:</dt>
@@ -2533,10 +2526,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.
-
  Finally, note that this enforces a case-sensitive search.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2565,7 +2556,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.</div>
 <dl class="notes">
@@ -2592,10 +2582,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isContainsRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getContainsRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2622,10 +2610,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  boolean&nbsp;insensitive)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getContainsRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2655,10 +2641,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.
-
  Finally, note that this enforces a case-sensitive search.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2687,7 +2671,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.</div>
 <dl class="notes">
@@ -2714,10 +2697,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isStartsWithRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getStartsWithRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2744,10 +2725,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  boolean&nbsp;insensitive)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getStartsWithRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2777,10 +2756,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.
-
  Finally, note that this enforces a case-sensitive search.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2809,7 +2786,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
  if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
  own regular expression directly (not with this helper method).
-
  Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
  the returned string using the getUnqualifiedLiteralString helper method.</div>
 <dl class="notes">
@@ -2836,10 +2812,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isEndsWithRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getEndsWithRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2866,10 +2840,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  boolean&nbsp;insensitive)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
  other regular expression (false).
-
  Note that this method relies on the use of the getEndsWithRegex helper method having been used to
  qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
-
  Primarily a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">
@@ -2899,7 +2871,6 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
  Primarily a helper method for methods that do not directly leverage regular expressions: so that they have a string
  they can treat as a literal without needing to un-escape the regex-meaningful characters injected by the various
  getXYZRegex helper methods.
-
  For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -2926,10 +2897,8 @@ implements <a href="../../connectors/stores/metadatacollectionstore/repositoryco
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCaseInsensitiveRegex</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
 <div class="block">Indicates whether the provided string should be treated as a case-insensitive regular expression (true) or as a
  case-sensitive regular expression (false).
-
  Note that this method relies on the use of the getXYZRegex helper methods having been used to qualify a string
  with case-insensitivity.
-
  Primarily this is a helper method for methods that do not directly handle regular expressions (for those it
  should be possible to just directly use the string as-is and it will be correctly interpreted).</div>
 <dl class="notes">

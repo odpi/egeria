@@ -328,6 +328,7 @@ org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc

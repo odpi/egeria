@@ -148,9 +148,15 @@ implements <a href="CatalogIntegratorOMISConnector.html" title="interface in org
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the context for this connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext)" class="member-name-link">setContext</a><wbr>(<a href="CatalogIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogIntegratorContext</a>&nbsp;context)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#passEventToCatalogTargets(org.odpi.openmetadata.integrationservices.catalog.connector.CatalogTargetEventProcessor,org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)" class="member-name-link">passEventToCatalogTargets</a><wbr>(<a href="CatalogTargetEventProcessor.html" title="interface in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogTargetEventProcessor</a>&nbsp;catalogTargetEventProcessor,
+ <a href="../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of requested catalog targets for the connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext)" class="member-name-link">setContext</a><wbr>(<a href="CatalogIntegratorContext.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogIntegratorContext</a>&nbsp;context)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the context for this connector.</div>
 </div>
 </div>
@@ -221,6 +227,22 @@ implements <a href="CatalogIntegratorOMISConnector.html" title="interface in org
 <dd>context for this connector's private use.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal issue setting up context</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="passEventToCatalogTargets(org.odpi.openmetadata.integrationservices.catalog.connector.CatalogTargetEventProcessor,org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent)">
+<h3>passEventToCatalogTargets</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">passEventToCatalogTargets</span><wbr><span class="parameters">(<a href="CatalogTargetEventProcessor.html" title="interface in org.odpi.openmetadata.integrationservices.catalog.connector">CatalogTargetEventProcessor</a>&nbsp;catalogTargetEventProcessor,
+ <a href="../../../accessservices/assetmanager/events/AssetManagerOutTopicEvent.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.events">AssetManagerOutTopicEvent</a>&nbsp;event)</span>
+                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>catalogTargetEventProcessor</code> - the integration component that will process each catalog target</dd>
+<dd><code>event</code> - event to process</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
 </dl>
 </section>
 </li>
