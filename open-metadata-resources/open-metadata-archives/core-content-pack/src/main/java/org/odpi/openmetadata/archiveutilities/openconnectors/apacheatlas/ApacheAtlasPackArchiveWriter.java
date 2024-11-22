@@ -13,7 +13,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * ApacheAtlasPackArchiveWriter creates an open metadata archive that includes the connector type
@@ -103,6 +102,12 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                            RequestTypeDefinition.CATALOG_ATLAS_SERVER,
+                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE);
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("ApacheAtlasServer",
+                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName(),
+                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
+                                                           RequestTypeDefinition.DELETE_ATLAS_SERVER,
                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE);
 
         /*

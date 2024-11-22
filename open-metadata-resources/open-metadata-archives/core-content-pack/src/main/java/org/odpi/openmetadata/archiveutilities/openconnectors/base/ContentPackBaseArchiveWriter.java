@@ -1881,7 +1881,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
 
     /**
-     * Create a two-step governance action process that creates a metadata element for a particular type of server
+     * Create a two-step governance action process that creates a metadata element for a particular type of asset
      * and then adds it as a catalog target for an appropriate integration connector.
      *
      * @param assetType name for the server type (no spaces)
@@ -1965,6 +1965,63 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             addStepExecutor(step2GUID, catalogRequestType, catalogEngineDefinition);
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, ManageAssetGuard.SET_UP_COMPLETE.getName(), false, step2GUID);
+        }
+    }
+
+
+
+    /**
+     * Create a one-step governance action process that deletes a metadata element for a particular type of asset
+     * which then removes it, any anchored content and relationships - like the catalog target for an appropriate integration connector.
+     *
+     * @param assetType name for the server type (no spaces)
+     * @param technologyType value for deployed implementation type
+     * @param deleteRequestType request type used to delete the server's metadata element
+     * @param deleteEngineDefinition governance action engine
+     */
+    protected void deleteAsCatalogTargetGovernanceActionProcess(String                     assetType,
+                                                                String                     openMetadataType,
+                                                                String                     technologyType,
+                                                                RequestTypeDefinition      deleteRequestType,
+                                                                GovernanceEngineDefinition deleteEngineDefinition)
+    {
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      assetType + ":DeleteAssetWithTemplateGovernanceActionProcess",
+                                                                      assetType + ":DeleteAsset",
+                                                                      null,
+                                                                      "Delete the asset for " + technologyType + " using the same template properties that were used to create it.  This will delete all of the metadata anchored to the asset and relationships to other entities such as the catalog target relationships.",
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        assetType + ":Delete Asset:Step1",
+                                                                        "Delete the " + openMetadataType + " entity",
+                                                                        "Delete asset for " + technologyType + " using the same template properties as was used to create it.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            addStepExecutor(step1GUID, deleteRequestType, deleteEngineDefinition);
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
     }
 

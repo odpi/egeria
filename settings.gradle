@@ -345,6 +345,7 @@ include(':open-metadata-resources:open-metadata-samples:admin-services-samples:c
 include(':open-metadata-resources:open-metadata-samples:governance-action-samples')
 include(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:simple-catalogs')
+include(':open-metadata-resources:open-metadata-samples:sample-metadata:cloud-information-model')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
 include(':open-metadata-resources:open-metadata-samples:sample-metadata:coco-metadata-archives')
 include(':open-metadata-resources:open-metadata-dev-utilities:egeria-config-utility')

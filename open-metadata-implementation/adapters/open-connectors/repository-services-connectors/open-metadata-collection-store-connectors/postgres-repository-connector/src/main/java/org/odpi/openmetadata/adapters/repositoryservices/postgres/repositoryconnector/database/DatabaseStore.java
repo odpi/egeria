@@ -1230,7 +1230,29 @@ public class DatabaseStore
             jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
                                                       entityMapper.getEntityPropertiesTableRows());
 
-            saveClassifications(entityMapper.getClassificationMappers());
+            /*
+             * Classifications are updated independently of entities.  Therefore, we only update them if the version of
+             * the classification supplied by the caller is new or has a version later than the stored value.
+             */
+            List<ClassificationMapper> classificationMappers = entityMapper.getClassificationMappers();
+
+            if (classificationMappers != null)
+            {
+                for (ClassificationMapper classificationMapper : classificationMappers)
+                {
+                    ClassificationMapper storedClassification = this.getClassificationForUpdate(classificationMapper.getEntityGUID(), classificationMapper.getClassification().getName());
+
+                    if (storedClassification == null)
+                    {
+                        this.saveClassification(classificationMapper);
+                    }
+                    else if (classificationMapper.getClassification().getVersion() > storedClassification.getClassification().getVersion())
+                    {
+                        this.updatePreviousClassificationVersionEndTime(storedClassification, this.getVersionEndDate(classificationMapper.getClassification().getUpdateTime()));
+                        this.saveClassification(classificationMapper);
+                    }
+                }
+            }
         }
         catch (PropertyServerException sqlException)
         {
@@ -1242,6 +1264,32 @@ public class DatabaseStore
                                                methodName,
                                                sqlException);
         }
+    }
+
+
+    /**
+     * Determine the end time for the previous version of an entity, relationship or classification.
+     *
+     * @param updateTime update time from next version
+     * @return date - 1 millisecond earlier than that the update time
+     * @throws RepositoryErrorException no update time in next version
+     */
+    public Date getVersionEndDate(Date updateTime) throws RepositoryErrorException
+    {
+        final String methodName = "getVersionEndDate";
+
+        if (updateTime != null)
+        {
+            long versionEndDate = updateTime.getTime() - 1;
+
+            return new Date(versionEndDate);
+        }
+
+        throw new RepositoryErrorException(PostgresErrorCode.MISSING_MAPPING_VALUE.getMessageDefinition("updateTime",
+                                                                                                        methodName,
+                                                                                                        this.getClass().getName()),
+                                           this.getClass().getName(),
+                                           methodName);
     }
 
 

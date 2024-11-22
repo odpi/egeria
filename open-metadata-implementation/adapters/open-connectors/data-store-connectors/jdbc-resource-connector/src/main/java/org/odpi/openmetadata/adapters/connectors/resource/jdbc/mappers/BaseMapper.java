@@ -74,6 +74,15 @@ public class BaseMapper
     {
         final String methodName = "getStringPropertyFromColumn";
 
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
         String        newValue = null;
 
@@ -109,6 +118,15 @@ public class BaseMapper
                                                          boolean                    isRequired) throws RepositoryErrorException
     {
         final String methodName = "getStringArrayPropertyFromColumn";
+
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
 
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
         String        newValue = null;
@@ -150,6 +168,15 @@ public class BaseMapper
                                                                           boolean                    isRequired) throws RepositoryErrorException
     {
         final String methodName = "getSerializableMapPropertyFromColumn";
+
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
 
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
         String        newValue = null;
@@ -210,6 +237,15 @@ public class BaseMapper
     {
         final String methodName = "getDatePropertyFromColumn";
 
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
         Date          newValue = null;
 
@@ -251,6 +287,15 @@ public class BaseMapper
     {
         final String methodName = "getLongPropertyFromColumn";
 
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
 
         if ((jdbcDataValue != null) && (jdbcDataValue.getDataValue() instanceof Long longValue))
@@ -290,6 +335,15 @@ public class BaseMapper
                                                 boolean                    isRequired) throws RepositoryErrorException
     {
         final String methodName = "getBooleanPropertyFromColumn";
+
+        if (instanceTableRow == null)
+        {
+            throw new RepositoryErrorException(JDBCErrorCode.MISSING_DATABASE_VALUE.getMessageDefinition(columnName,
+                                                                                                         methodName,
+                                                                                                         this.getClass().getName()),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
 
         JDBCDataValue jdbcDataValue = instanceTableRow.get(columnName);
 

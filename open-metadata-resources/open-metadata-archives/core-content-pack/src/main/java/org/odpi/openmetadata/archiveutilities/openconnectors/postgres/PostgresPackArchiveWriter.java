@@ -111,12 +111,10 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            RequestTypeDefinition.CATALOG_POSTGRES_SERVER,
                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
 
-        this.createAndCatalogAssetGovernanceActionProcess("PostgreSQLDatabase",
-                                                          OpenMetadataType.DATABASE.typeName,
-                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
-                                                          RequestTypeDefinition.CREATE_POSTGRES_DB,
-                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
-                                                          RequestTypeDefinition.CATALOG_POSTGRES_DATABASE,
+        this.deleteAsCatalogTargetGovernanceActionProcess("PostgreSQLServer",
+                                                          PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
+                                                          PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_POSTGRES_SERVER,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
 
         this.createAndSurveyServerGovernanceActionProcess("PostgreSQLDatabase",
@@ -126,14 +124,33 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.SURVEY_POSTGRES_DATABASE,
                                                           GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE);
 
+        this.createAndCatalogAssetGovernanceActionProcess("PostgreSQLDatabase",
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.CREATE_POSTGRES_DB,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                                                          RequestTypeDefinition.CATALOG_POSTGRES_DATABASE,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("PostgreSQLDatabase",
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_POSTGRES_DB,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
+
         this.createAndCatalogAssetGovernanceActionProcess("PostgreSQLDatabaseSchema",
-                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.CATALOG_POSTGRES_SCHEMA,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
 
+        this.deleteAsCatalogTargetGovernanceActionProcess("PostgreSQLDatabaseSchema",
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
+                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_POSTGRES_SCHEMA,
+                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE);
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
