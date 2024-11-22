@@ -195,67 +195,72 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of versions for a relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeClassification(java.lang.String,java.lang.String)" class="member-name-link">purgeClassification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionEndDate(java.util.Date)" class="member-name-link">getVersionEndDate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;updateTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Determine the end time for the previous version of an entity, relationship or classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeClassification(java.lang.String,java.lang.String)" class="member-name-link">purgeClassification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Purge a classification from the database</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeEntity(java.lang.String)" class="member-name-link">purgeEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeEntity(java.lang.String)" class="member-name-link">purgeEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove (purge) an entity from the repository.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeRelationship(java.lang.String)" class="member-name-link">purgeRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#purgeRelationship(java.lang.String)" class="member-name-link">purgeRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove (purge) a relationship from the repository.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveEntitiesByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveEntitiesByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveEntitiesByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;entityQueryBuilder,
  <a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;classificationQueryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against a join of the entity table and the entity attribute table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationships(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationships</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against the relationship table.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationshipsByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveRelationshipsByProperties(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database.QueryBuilder,java.util.Date)" class="member-name-link">retrieveRelationshipsByProperties</a><wbr>(<a href="QueryBuilder.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.database">QueryBuilder</a>&nbsp;queryBuilder,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This query is issued against a join of the relationship table and the relationship attribute table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveClassification(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper)" class="member-name-link">saveClassification</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveClassification(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper)" class="member-name-link">saveClassification</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Maintain a classification within the entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveControlTable(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper)" class="member-name-link">saveControlTable</a><wbr>(<a href="../mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a>&nbsp;controlMapper)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveControlTable(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper)" class="member-name-link">saveControlTable</a><wbr>(<a href="../mappers/ControlMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ControlMapper</a>&nbsp;controlMapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save the control table row to the database.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousClassificationVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper,java.util.Date)" class="member-name-link">updatePreviousClassificationVersionEndTime</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the version end date in an entity's classification to the database.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousEntityVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.EntityMapper,java.util.Date)" class="member-name-link">updatePreviousEntityVersionEndTime</a><wbr>(<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&nbsp;entityMapper,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousClassificationVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ClassificationMapper,java.util.Date)" class="member-name-link">updatePreviousClassificationVersionEndTime</a><wbr>(<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&nbsp;classificationMapper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update the version end date in an entity to the database.</div>
+<div class="block">Update the version end date in an entity's classification to the database.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousRelationshipVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.RelationshipMapper,java.util.Date)" class="member-name-link">updatePreviousRelationshipVersionEndTime</a><wbr>(<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&nbsp;relationshipMapper,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousEntityVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.EntityMapper,java.util.Date)" class="member-name-link">updatePreviousEntityVersionEndTime</a><wbr>(<a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a>&nbsp;entityMapper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the version end date in an entity to the database.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePreviousRelationshipVersionEndTime(org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.RelationshipMapper,java.util.Date)" class="member-name-link">updatePreviousRelationshipVersionEndTime</a><wbr>(<a href="../mappers/RelationshipMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">RelationshipMapper</a>&nbsp;relationshipMapper,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;versionEndTime)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the version end date in a relationship to the database.</div>
 </div>
 </div>
@@ -591,6 +596,22 @@ loadScripts(document, 'script');</script>
 <dd><code>entityMapper</code> - details about the entity</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getVersionEndDate(java.util.Date)">
+<h3>getVersionEndDate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getVersionEndDate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;updateTime)</span>
+                       throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Determine the end time for the previous version of an entity, relationship or classification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>updateTime</code> - update time from next version</dd>
+<dt>Returns:</dt>
+<dd>date - 1 millisecond earlier than that the update time</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - no update time in next version</dd>
 </dl>
 </section>
 </li>

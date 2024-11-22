@@ -786,6 +786,8 @@ org.odpi.openmetadata.repositoryservices.rest.services
 org.odpi.openmetadata.samples.archiveutilities
 org.odpi.openmetadata.samples.archiveutilities.businesssystems
 org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates
+org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel
+org.odpi.openmetadata.samples.archiveutilities.cloudinformationmodel.properties
 org.odpi.openmetadata.samples.archiveutilities.combo
 org.odpi.openmetadata.samples.archiveutilities.governanceengines
 org.odpi.openmetadata.samples.archiveutilities.governanceprogram
