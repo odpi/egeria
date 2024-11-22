@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
@@ -121,6 +122,11 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.deleteAsCatalogTargetGovernanceActionProcess("UnityCatalogServer",
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
 
         this.createAndSurveyServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
@@ -134,6 +140,11 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+        this.deleteAsCatalogTargetGovernanceActionProcess("DatabricksUnityCatalogServer",
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
 
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogCatalog",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),

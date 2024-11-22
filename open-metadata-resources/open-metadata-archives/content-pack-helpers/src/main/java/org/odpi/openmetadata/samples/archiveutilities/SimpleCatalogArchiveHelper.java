@@ -2770,12 +2770,12 @@ public class SimpleCatalogArchiveHelper
             elementTypeName = typeName;
         }
 
-        List<Classification> entityClassifications = null;
+        List<Classification> entityClassifications = new ArrayList<>();
+
+        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.DESIGN_MODEL_TYPE_NAME, methodName));
 
         if (classificationName != null)
         {
-            entityClassifications = new ArrayList<>();
-
             Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
 
             entityClassifications.add(classification);

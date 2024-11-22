@@ -793,39 +793,13 @@ class PostgresOMRSMetadataStore
         }
         else if (entityDetail.getVersion() > storedEntity.getEntityDetail().getVersion())
         {
-            databaseStore.updatePreviousEntityVersionEndTime(storedEntity, this.getVersionEndDate(entityDetail.getUpdateTime()));
+            databaseStore.updatePreviousEntityVersionEndTime(storedEntity, databaseStore.getVersionEndDate(entityDetail.getUpdateTime()));
 
             databaseStore.addEntityToStore(new EntityMapper(entityDetail, repositoryHelper, repositoryName));
             return entityDetail;
         }
 
         return storedEntity.getEntityDetail();
-    }
-
-
-    /**
-     * Determine the end time for the previous version of an entity, relationship or classification.
-     *
-     * @param updateTime update time from next version
-     * @return date - 1 millisecond earlier than that the update time
-     * @throws RepositoryErrorException no update time in next version
-     */
-    private Date getVersionEndDate(Date updateTime) throws RepositoryErrorException
-    {
-        final String methodName = "getVersionEndDate";
-
-        if (updateTime != null)
-        {
-            long versionEndDate = updateTime.getTime() - 1;
-
-            return new Date(versionEndDate);
-        }
-
-        throw new RepositoryErrorException(PostgresErrorCode.MISSING_MAPPING_VALUE.getMessageDefinition("updateTime",
-                                                                                                        methodName,
-                                                                                                        this.getClass().getName()),
-                                           this.getClass().getName(),
-                                           methodName);
     }
 
 
@@ -877,7 +851,7 @@ class PostgresOMRSMetadataStore
         }
         else if (relationship.getVersion() > storedRelationship.getRelationship().getVersion())
         {
-            databaseStore.updatePreviousRelationshipVersionEndTime(storedRelationship, this.getVersionEndDate(relationship.getUpdateTime()));
+            databaseStore.updatePreviousRelationshipVersionEndTime(storedRelationship, databaseStore.getVersionEndDate(relationship.getUpdateTime()));
             databaseStore.addRelationshipToStore(new RelationshipMapper(relationship, repositoryHelper, repositoryName));
             return relationship;
         }
@@ -913,7 +887,7 @@ class PostgresOMRSMetadataStore
         }
         else if (classification.getVersion() > storedClassification.getClassification().getVersion())
         {
-            databaseStore.updatePreviousClassificationVersionEndTime(storedClassification, this.getVersionEndDate(classification.getUpdateTime()));
+            databaseStore.updatePreviousClassificationVersionEndTime(storedClassification, databaseStore.getVersionEndDate(classification.getUpdateTime()));
             databaseStore.saveClassification(new ClassificationMapper(entityGUID, classification, repositoryHelper, repositoryName));
         }
     }
