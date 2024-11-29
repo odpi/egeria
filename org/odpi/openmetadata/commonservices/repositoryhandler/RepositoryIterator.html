@@ -73,7 +73,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="RepositoryFindRelationshipsIterator.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryFindRelationshipsIterator</a></code>, <code><a href="RepositoryIteratorForEntities.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryIteratorForEntities</a></code>, <code><a href="RepositoryRelationshipsIterator.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryRelationshipsIterator</a></code></dd>
+<dd><code><a href="RepositoryIteratorForEntities.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryIteratorForEntities</a></code>, <code><a href="RepositoryRelationshipsIterator.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryRelationshipsIterator</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RepositoryIterator</span>
@@ -92,36 +92,48 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color"><code><a href="#effectiveTime" class="member-name-link">effectiveTime</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color"><code><a href="#asOfTime" class="member-name-link">asOfTime</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#forDuplicateProcessing" class="member-name-link">forDuplicateProcessing</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#effectiveTime" class="member-name-link">effectiveTime</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#forLineage" class="member-name-link">forLineage</a></code></div>
+<div class="col-first even-row-color"><code>protected final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#forDuplicateProcessing" class="member-name-link">forDuplicateProcessing</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a></code></div>
+<div class="col-first odd-row-color"><code>protected final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#forLineage" class="member-name-link">forLineage</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></div>
+<div class="col-second even-row-color"><code><a href="#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#limitResultsByStatus" class="member-name-link">limitResultsByStatus</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#MAX_PAGE_SIZE" class="member-name-link">MAX_PAGE_SIZE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Page size used when retrieving metadata.</div>
 </div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#methodName" class="member-name-link">methodName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected int</code></div>
 <div class="col-second even-row-color"><code><a href="#pageSize" class="member-name-link">pageSize</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#repositoryHandler" class="member-name-link">repositoryHandler</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></code></div>
+<div class="col-second even-row-color"><code><a href="#sequencingOrder" class="member-name-link">sequencingOrder</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#sequencingPropertyName" class="member-name-link">sequencingPropertyName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected int</code></div>
 <div class="col-second even-row-color"><code><a href="#startingFrom" class="member-name-link">startingFrom</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#userId" class="member-name-link">userId</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -135,11 +147,15 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">RepositoryIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,int,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">RepositoryIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startingFrom,
  int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -184,24 +200,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="repositoryHandler">
-<h3>repositoryHandler</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a></span>&nbsp;<span class="element-name">repositoryHandler</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="invalidParameterHandler">
-<h3>invalidParameterHandler</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></span>&nbsp;<span class="element-name">invalidParameterHandler</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="userId">
-<h3>userId</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userId</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="startingFrom">
 <h3>startingFrom</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">startingFrom</span></div>
@@ -214,27 +212,69 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="repositoryHandler">
+<h3>repositoryHandler</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a></span>&nbsp;<span class="element-name">repositoryHandler</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="invalidParameterHandler">
+<h3>invalidParameterHandler</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></span>&nbsp;<span class="element-name">invalidParameterHandler</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="userId">
+<h3>userId</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userId</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="methodName">
 <h3>methodName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">methodName</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">methodName</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="limitResultsByStatus">
+<h3>limitResultsByStatus</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;</span>&nbsp;<span class="element-name">limitResultsByStatus</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="asOfTime">
+<h3>asOfTime</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">asOfTime</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="sequencingOrder">
+<h3>sequencingOrder</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a></span>&nbsp;<span class="element-name">sequencingOrder</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="sequencingPropertyName">
+<h3>sequencingPropertyName</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">sequencingPropertyName</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="forLineage">
 <h3>forLineage</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">forLineage</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">forLineage</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="forDuplicateProcessing">
 <h3>forDuplicateProcessing</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">forDuplicateProcessing</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">forDuplicateProcessing</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="effectiveTime">
 <h3>effectiveTime</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">effectiveTime</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">effectiveTime</span></div>
 </section>
 </li>
 </ul>
@@ -246,13 +286,17 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,int,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>RepositoryIterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RepositoryIterator</span><wbr><span class="parameters">(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startingFrom,
  int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -266,6 +310,12 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - user making the request</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>
 <dd><code>pageSize</code> - maximum number of definitions to return on this call.</dd>
+<dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
+<dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
+<dd><code>sequencingPropertyName</code> - String name of the property that is to be used to sequence the results.
+                           Null means do not sequence on a property name (see SequencingOrder).</dd>
+<dd><code>sequencingOrder</code> - Enum defining how the results should be ordered.</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>

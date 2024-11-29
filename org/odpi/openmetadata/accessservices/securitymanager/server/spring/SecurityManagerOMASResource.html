@@ -216,12 +216,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Return information about a specific actor profile.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AppointeesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AppointeesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAppointees(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getAppointees</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAppointees(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAppointees</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personRoleGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of people appointed to a particular role.</div>
 </div>
@@ -967,7 +967,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAppointees(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getAppointees(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAppointees</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/person-roles/{personRoleGUID}/appointees")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AppointeesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AppointeesResponse</a></span>&nbsp;<span class="element-name">getAppointees</span><wbr><span class="parameters">(@PathVariable
@@ -981,7 +981,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the list of people appointed to a particular role.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

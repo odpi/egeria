@@ -204,16 +204,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of asset metadata elements that contain the search string.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetElementResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getAssetByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the asset metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetRelationshipsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetRelationshipsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getAssetRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
@@ -222,7 +222,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;startingEnd,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of relationships between assets.</div>
 </div>
@@ -247,14 +247,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of asset metadata elements with a matching qualified or display name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getAssetsForInfrastructureManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetsForInfrastructureManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of assets created by this caller.</div>
 </div>
@@ -268,22 +268,22 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the control flow relationship between two elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ControlFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ControlFlowElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowNextSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getControlFlowNextSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowNextSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getControlFlowNextSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ControlFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ControlFlowElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getControlFlowPreviousSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getControlFlowPreviousSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 </div>
@@ -297,32 +297,32 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the data flow relationship between two elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/DataFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DataFlowElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowConsumers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getDataFlowConsumers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowConsumers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getDataFlowConsumers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/DataFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DataFlowElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowSuppliers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getDataFlowSuppliers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowSuppliers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getDataFlowSuppliers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/LineageMappingElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">LineageMappingElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDestinationLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getDestinationLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDestinationLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getDestinationLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 </div>
@@ -345,27 +345,27 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the process call relationship between two elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ProcessCallElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ProcessCallElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCalled(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getProcessCalled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCalled(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getProcessCalled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ProcessCallElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ProcessCallElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCallers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getProcessCallers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCallers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getProcessCallers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationships linked from a specific element to its callers.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/RelatedAssetsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedAssetsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedAssets(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getRelatedAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedAssets(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getRelatedAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
@@ -374,17 +374,17 @@ loadScripts(document, 'script');</script>
  int&nbsp;startingEnd,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of assets linked by another asset.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/LineageMappingElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">LineageMappingElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSourceLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getSourceLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSourceLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getSourceLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the lineage mapping relationships linked from a specific destination element to its sources.</div>
 </div>
@@ -1099,7 +1099,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetsForInfrastructureManager</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/infrastructure-managers/{infrastructureManagerGUID}/{infrastructureManagerName}/assets/{assetTypeName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetElementsResponse</a></span>&nbsp;<span class="element-name">getAssetsForInfrastructureManager</span><wbr><span class="parameters">(@PathVariable
@@ -1117,7 +1117,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of assets created by this caller.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1139,7 +1139,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getAssetByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetByGUID</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetTypeName}/{assetGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetElementResponse</a></span>&nbsp;<span class="element-name">getAssetByGUID</span><wbr><span class="parameters">(@PathVariable
@@ -1151,7 +1151,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the asset metadata element with the supplied unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1170,7 +1170,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getAssetRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetRelationships</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetTypeName}/{assetGUID}/{relationshipTypeName}/{relatedAssetTypeName}/relationships")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetRelationshipsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetRelationshipsResponse</a></span>&nbsp;<span class="element-name">getAssetRelationships</span><wbr><span class="parameters">(@PathVariable
@@ -1192,7 +1192,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the list of relationships between assets.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1216,7 +1216,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelatedAssets(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getRelatedAssets(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getRelatedAssets</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/{assetTypeName}/{assetGUID}/{relationshipTypeName}/{relatedAssetTypeName}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/RelatedAssetsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelatedAssetsResponse</a></span>&nbsp;<span class="element-name">getRelatedAssets</span><wbr><span class="parameters">(@PathVariable
@@ -1238,7 +1238,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return the list of assets linked by another asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1381,7 +1381,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getDataFlowConsumers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getDataFlowConsumers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getDataFlowConsumers</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/data-flows/suppliers/{dataSupplierGUID}/consumers/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/DataFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DataFlowElementsResponse</a></span>&nbsp;<span class="element-name">getDataFlowConsumers</span><wbr><span class="parameters">(@PathVariable
@@ -1395,7 +1395,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1414,7 +1414,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getDataFlowSuppliers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getDataFlowSuppliers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getDataFlowSuppliers</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/data-flows/consumers/{dataConsumerGUID}/suppliers/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/DataFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DataFlowElementsResponse</a></span>&nbsp;<span class="element-name">getDataFlowSuppliers</span><wbr><span class="parameters">(@PathVariable
@@ -1428,7 +1428,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1566,7 +1566,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getControlFlowNextSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getControlFlowNextSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getControlFlowNextSteps</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/control-flows/current-steps/{currentStepGUID}/next-steps/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ControlFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ControlFlowElementsResponse</a></span>&nbsp;<span class="element-name">getControlFlowNextSteps</span><wbr><span class="parameters">(@PathVariable
@@ -1580,7 +1580,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1599,7 +1599,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getControlFlowPreviousSteps</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/control-flows/current-steps/{currentStepGUID}/previous-steps/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ControlFlowElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ControlFlowElementsResponse</a></span>&nbsp;<span class="element-name">getControlFlowPreviousSteps</span><wbr><span class="parameters">(@PathVariable
@@ -1613,7 +1613,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1751,7 +1751,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getProcessCalled(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getProcessCalled(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getProcessCalled</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/process-calls/callers/{callerGUID}/called/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ProcessCallElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ProcessCallElementsResponse</a></span>&nbsp;<span class="element-name">getProcessCalled</span><wbr><span class="parameters">(@PathVariable
@@ -1765,7 +1765,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1784,7 +1784,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getProcessCallers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getProcessCallers(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getProcessCallers</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/process-calls/called/{calledGUID}/callers/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ProcessCallElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ProcessCallElementsResponse</a></span>&nbsp;<span class="element-name">getProcessCallers</span><wbr><span class="parameters">(@PathVariable
@@ -1798,7 +1798,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the process call relationships linked from a specific element to its callers.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1908,7 +1908,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getDestinationLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getDestinationLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getDestinationLineageMappings</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/lineage-mappings/sources/{sourceElementGUID}/destinations/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/LineageMappingElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">LineageMappingElementsResponse</a></span>&nbsp;<span class="element-name">getDestinationLineageMappings</span><wbr><span class="parameters">(@PathVariable
@@ -1922,7 +1922,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1941,7 +1941,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getSourceLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getSourceLineageMappings(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getSourceLineageMappings</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/lineage-mappings/destinations/{destinationElementGUID}/sources/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/LineageMappingElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">LineageMappingElementsResponse</a></span>&nbsp;<span class="element-name">getSourceLineageMappings</span><wbr><span class="parameters">(@PathVariable
@@ -1955,7 +1955,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the lineage mapping relationships linked from a specific destination element to its sources.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

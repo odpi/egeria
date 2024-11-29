@@ -83,7 +83,6 @@ loadScripts(document, 'script');</script>
 <div class="block">RepositoryRelationshipsIterator is an iterator class for iteratively retrieving relationships for a starting entity (possibly restricting
  the type of relationships returned).  It is used where the caller needs to filter the results coming from the repository and may need to
  make more than one call to the repository in order to accumulate the number of requested results.
-
  Note this class is intended for a single request's use - it is not thread-safe.</div>
 </section>
 <section class="summary">
@@ -94,7 +93,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIterator">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.repositoryhandler.<a href="RepositoryIterator.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryIterator</a></h3>
-<code><a href="RepositoryIterator.html#effectiveTime">effectiveTime</a>, <a href="RepositoryIterator.html#forDuplicateProcessing">forDuplicateProcessing</a>, <a href="RepositoryIterator.html#forLineage">forLineage</a>, <a href="RepositoryIterator.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="RepositoryIterator.html#MAX_PAGE_SIZE">MAX_PAGE_SIZE</a>, <a href="RepositoryIterator.html#methodName">methodName</a>, <a href="RepositoryIterator.html#pageSize">pageSize</a>, <a href="RepositoryIterator.html#repositoryHandler">repositoryHandler</a>, <a href="RepositoryIterator.html#startingFrom">startingFrom</a>, <a href="RepositoryIterator.html#userId">userId</a></code></div>
+<code><a href="RepositoryIterator.html#asOfTime">asOfTime</a>, <a href="RepositoryIterator.html#effectiveTime">effectiveTime</a>, <a href="RepositoryIterator.html#forDuplicateProcessing">forDuplicateProcessing</a>, <a href="RepositoryIterator.html#forLineage">forLineage</a>, <a href="RepositoryIterator.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="RepositoryIterator.html#limitResultsByStatus">limitResultsByStatus</a>, <a href="RepositoryIterator.html#MAX_PAGE_SIZE">MAX_PAGE_SIZE</a>, <a href="RepositoryIterator.html#methodName">methodName</a>, <a href="RepositoryIterator.html#pageSize">pageSize</a>, <a href="RepositoryIterator.html#repositoryHandler">repositoryHandler</a>, <a href="RepositoryIterator.html#sequencingOrder">sequencingOrder</a>, <a href="RepositoryIterator.html#sequencingPropertyName">sequencingPropertyName</a>, <a href="RepositoryIterator.html#startingFrom">startingFrom</a>, <a href="RepositoryIterator.html#userId">userId</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -105,7 +104,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryRelationshipsIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryRelationshipsIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;startingEntityGUID,
@@ -113,6 +112,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;selectionEnd,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -122,7 +125,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Constructor takes the parameters used to call the repository handler.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryRelationshipsIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryRelationshipsIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;startingEntity,
@@ -130,6 +133,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;selectionEnd,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -181,7 +188,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,int,int,java.util.Date,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">
 <h3>RepositoryRelationshipsIterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RepositoryRelationshipsIterator</span><wbr><span class="parameters">(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
@@ -191,6 +198,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;selectionEnd,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -209,6 +220,12 @@ loadScripts(document, 'script');</script>
 <dd><code>relationshipTypeGUID</code> - identifier for the relationship to follow</dd>
 <dd><code>relationshipTypeName</code> - type name for the relationship to follow</dd>
 <dd><code>selectionEnd</code> - 0 means either end, 1 means only take from end 1, 2 means only take from end 2</dd>
+<dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
+<dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
+<dd><code>sequencingPropertyName</code> - String name of the property that is to be used to sequence the results.
+                           Null means do not sequence on a property name (see SequencingOrder).</dd>
+<dd><code>sequencingOrder</code> - Enum defining how the results should be ordered.</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - is this retrieve part of duplicate processing?</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>
@@ -221,7 +238,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,boolean,boolean,int,int,java.util.Date,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.List,java.util.Date,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">
 <h3>RepositoryRelationshipsIterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RepositoryRelationshipsIterator</span><wbr><span class="parameters">(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
@@ -231,6 +248,10 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;selectionEnd,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
+ <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/SequencingOrder.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties">SequencingOrder</a>&nbsp;sequencingOrder,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -249,6 +270,12 @@ loadScripts(document, 'script');</script>
 <dd><code>relationshipTypeGUID</code> - identifier for the relationship to follow</dd>
 <dd><code>relationshipTypeName</code> - type name for the relationship to follow</dd>
 <dd><code>selectionEnd</code> - 0 means either end, 1 means only take from end 1, 2 means only take from end 2</dd>
+<dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
+<dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
+<dd><code>sequencingPropertyName</code> - String name of the property that is to be used to sequence the results.
+                           Null means do not sequence on a property name (see SequencingOrder).</dd>
+<dd><code>sequencingOrder</code> - Enum defining how the results should be ordered.</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - is this retrieve part of duplicate processing?</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>

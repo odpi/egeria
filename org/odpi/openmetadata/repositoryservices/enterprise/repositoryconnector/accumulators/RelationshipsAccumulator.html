@@ -81,13 +81,16 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="RelationshipHistoryAccumulator.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators">RelationshipHistoryAccumulator</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RelationshipsAccumulator</span>
 <span class="extends-implements">extends <a href="QueryInstanceAccumulatorBase.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators">QueryInstanceAccumulatorBase</a></span></div>
 <div class="block">RelationshipsAccumulator accumulates and validates relationships received from a collection of open metadata
  repositories.  It removes duplicates from the list by choosing the latest version.
-
- This class may be called simultaneously from different threads so it must be thread-safe.</div>
+ This class may be called simultaneously from different threads, so it must be thread-safe.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

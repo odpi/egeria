@@ -883,6 +883,7 @@ org.odpi.openmetadata.viewservices.governanceofficer.server
 org.odpi.openmetadata.viewservices.governanceofficer.server.spring
 org.odpi.openmetadata.viewservices.metadataexplorer.admin
 org.odpi.openmetadata.viewservices.metadataexplorer.ffdc
+org.odpi.openmetadata.viewservices.metadataexplorer.handlers
 org.odpi.openmetadata.viewservices.metadataexplorer.server
 org.odpi.openmetadata.viewservices.metadataexplorer.server.spring
 org.odpi.openmetadata.viewservices.myprofile.admin

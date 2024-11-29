@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -49,7 +53,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -77,7 +81,7 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">MetadataExplorerResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">The MetadataExplorerResource provides part of the server-side implementation of the Metadata Explorer OMVS.
-=</div>
+ =</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -100,6 +104,180 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.frameworkservices.gaf.rest.FindRequestBody)" class="member-name-link">findMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../frameworkservices/gaf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of metadata elements that match the supplied criteria.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the metadata elements that contain the requested string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.frameworkservices.gaf.rest.FindRelationshipRequestBody)" class="member-name-link">findRelationshipsBetweenMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../frameworkservices/gaf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of relationships that match the requested conditions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAllMetadataElementRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the relationships linking the supplied elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAllRelatedMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startingAtEnd,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the metadata element using its unique identifier.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody)" class="member-name-link">getMetadataElementHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ boolean&nbsp;oldestFirst,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../frameworkservices/gaf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve all the versions of an element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getMetadataElementRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the relationships linking the supplied elements via a specific type of relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getRelatedMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ int&nbsp;startingAtEnd,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the metadata elements connected to the supplied element via a specific relationship type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getRelationshipByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the relationship using its unique identifier.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody)" class="member-name-link">getRelationshipHistory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ boolean&nbsp;oldestFirst,
+ boolean&nbsp;forLineage,
+ boolean&nbsp;forDuplicateProcessing,
+ <a href="../../../../frameworkservices/gaf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve all the versions of a relationship.</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -119,6 +297,549 @@ loadScripts(document, 'script');</script>
 <h3>MetadataExplorerResource</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MetadataExplorerResource</span>()</div>
 <div class="block">Default constructor</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<h3>getMetadataElementByGUID</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{elementGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByGUID</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the metadata element using its unique identifier.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>elementGUID</code> - unique identifier for the metadata element</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dt>Returns:</dt>
+<dd>metadata element properties or
+  InvalidParameterException the unique identifier is null or not known.
+  UserNotAuthorizedException the governance action service is not able to access the element
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<h3>getMetadataElementByUniqueName</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-unique-name")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementResponse</a></span>&nbsp;<span class="element-name">getMetadataElementByUniqueName</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody
+ <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - unique name for the metadata element</dd>
+<dt>Returns:</dt>
+<dd>metadata element properties or
+  InvalidParameterException the unique identifier is null or not known.
+  UserNotAuthorizedException the governance action service is not able to access the element
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<h3>getMetadataElementGUIDByUniqueName</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/guid-by-unique-name")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">getMetadataElementGUIDByUniqueName</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody
+ <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - unique name for the metadata element</dd>
+<dt>Returns:</dt>
+<dd>metadata element unique identifier (guid) or
+  InvalidParameterException the unique identifier is null or not known or
+  UserNotAuthorizedException the governance action service is not able to access the element or
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody)">
+<h3>getMetadataElementHistory</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{elementGUID}/history")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">getMetadataElementHistory</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;oldestFirst,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/gaf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve all the versions of an element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>elementGUID</code> - unique identifier of object to retrieve</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>startFrom</code> - the starting element number of the historical versions to return. This is used when retrieving
+                         versions beyond the first page of results. Zero means start from the first element.</dd>
+<dd><code>pageSize</code> - the maximum number of result versions that can be returned on this request. Zero means unrestricted
+                 return results size.</dd>
+<dd><code>oldestFirst</code> - defining how the results should be ordered.</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
+<dd><code>requestBody</code> - the time window required</dd>
+<dt>Returns:</dt>
+<dd>list of beans or
+  InvalidParameterException one of the parameters is null or invalid.
+  PropertyServerException there is a problem removing the properties from the repositories.
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<h3>findMetadataElementsWithString</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-string")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody
+ <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the metadata elements that contain the requested string.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>requestBody</code> - searchString  to retrieve</dd>
+<dt>Returns:</dt>
+<dd>list of matching metadata elements (or null if no elements match the name) or
+  InvalidParameterException the qualified name is null
+  UserNotAuthorizedException the governance action service is not able to access the element
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAllRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
+<h3>getAllRelatedMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/{elementGUID}/any-type")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementListResponse</a></span>&nbsp;<span class="element-name">getAllRelatedMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startingAtEnd,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the metadata elements connected to the supplied element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>elementGUID</code> - unique identifier for the starting metadata element</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dd><code>startingAtEnd</code> - indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt>Returns:</dt>
+<dd>list of related elements
+  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelatedMetadataElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
+<h3>getRelatedMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/{elementGUID}/type/{relationshipTypeName}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">RelatedMetadataElementListResponse</a></span>&nbsp;<span class="element-name">getRelatedMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startingAtEnd,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the metadata elements connected to the supplied element via a specific relationship type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>elementGUID</code> - unique identifier for the starting metadata element</dd>
+<dd><code>relationshipTypeName</code> - type name of relationships to follow (or null for all)</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dd><code>startingAtEnd</code> - indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt>Returns:</dt>
+<dd>list of related elements
+  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAllMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
+<h3>getAllMetadataElementRelationships</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></span>&nbsp;<span class="element-name">getAllMetadataElementRelationships</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the relationships linking the supplied elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementAtEnd1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
+<dd><code>metadataElementAtEnd2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt>Returns:</dt>
+<dd>list of related elements
+  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
+<h3>getMetadataElementRelationships</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></span>&nbsp;<span class="element-name">getMetadataElementRelationships</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the relationships linking the supplied elements via a specific type of relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementAtEnd1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
+<dd><code>metadataElementAtEnd2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
+<dd><code>relationshipTypeName</code> - type name of relationships to follow (or null for all)</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt>Returns:</dt>
+<dd>list of related elements
+  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="findMetadataElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.frameworkservices.gaf.rest.FindRequestBody)">
+<h3>findMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/by-search-specification")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">findMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/gaf/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>requestBody</code> - properties defining the search criteria</dd>
+<dt>Returns:</dt>
+<dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+  InvalidParameterException one of the search parameters are is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,org.odpi.openmetadata.frameworkservices.gaf.rest.FindRelationshipRequestBody)">
+<h3>findRelationshipsBetweenMetadataElements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-search-specification")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></span>&nbsp;<span class="element-name">findRelationshipsBetweenMetadataElements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/FindRelationshipRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">FindRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>requestBody</code> - properties defining the search criteria</dd>
+<dt>Returns:</dt>
+<dd>a list of relationships - null means no matching relationships - or
+  InvalidParameterException one of the search parameters are is invalid
+  UserNotAuthorizedException the governance action service is not able to access the elements
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelationshipByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<h3>getRelationshipByGUID</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/by-guid/{relationshipGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipResponse</a></span>&nbsp;<span class="element-name">getRelationshipByGUID</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve the relationship using its unique identifier.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>relationshipGUID</code> - unique identifier for the metadata element</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
+<dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
+<dd><code>requestBody</code> - only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dt>Returns:</dt>
+<dd>metadata element properties or
+  InvalidParameterException the unique identifier is null or not known.
+  UserNotAuthorizedException the governance action service is not able to access the element
+  PropertyServerException there is a problem accessing the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRelationshipHistory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody)">
+<h3>getRelationshipHistory</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/relationships/{relationshipGUID}/history")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataRelationshipListResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataRelationshipListResponse</a></span>&nbsp;<span class="element-name">getRelationshipHistory</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ @RequestParam(required=false,defaultValue="asset-manager")
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;oldestFirst,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forLineage,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;forDuplicateProcessing,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/gaf/rest/HistoryRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">HistoryRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Retrieve all the versions of a relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dd><code>relationshipGUID</code> - unique identifier of object to retrieve</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>startFrom</code> - the starting element number of the historical versions to return. This is used when retrieving
+                         versions beyond the first page of results. Zero means start from the first element.</dd>
+<dd><code>pageSize</code> - the maximum number of result versions that can be returned on this request. Zero means unrestricted
+                 return results size.</dd>
+<dd><code>oldestFirst</code> - defining how the results should be ordered.</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
+<dd><code>requestBody</code> - the time window required</dd>
+<dt>Returns:</dt>
+<dd>list of beans or
+  InvalidParameterException one of the parameters is null or invalid.
+  PropertyServerException there is a problem removing the properties from the repositories.
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
 </section>
 </li>
 </ul>

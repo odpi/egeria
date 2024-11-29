@@ -183,9 +183,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/GovernanceActionProcessGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessGraphResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
  along with the flow definition describing its implementation.</div>
@@ -713,7 +713,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getGovernanceActionProcessGraph(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getGovernanceActionProcessGraph</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/governance-action-processes/{processGUID}/graph")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/GovernanceActionProcessGraphResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessGraphResponse</a></span>&nbsp;<span class="element-name">getGovernanceActionProcessGraph</span><wbr><span class="parameters">(@PathVariable
@@ -721,7 +721,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
  along with the flow definition describing its implementation.</div>
 <dl class="notes">

@@ -72,14 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class UseTypeRequestBody" class="title">Class UseTypeRequestBody</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody</a>
+<div class="inheritance"><a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody</a>
 <div class="inheritance">org.odpi.openmetadata.commonservices.ffdc.rest.UseTypeRequestBody</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">UseTypeRequestBody</span>
-<span class="extends-implements">extends <a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></span></div>
+<span class="extends-implements">extends <a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></span></div>
 <div class="block">UseTypeRequestBody for passing the use type and effective time.</div>
 </section>
 <section class="summary">
@@ -143,8 +143,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></h3>
-<code><a href="EffectiveTimeRequestBody.html#getEffectiveTime()">getEffectiveTime</a>, <a href="EffectiveTimeRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></h3>
+<code><a href="ResultsRequestBody.html#getAsOfTime()">getAsOfTime</a>, <a href="ResultsRequestBody.html#getEffectiveTime()">getEffectiveTime</a>, <a href="ResultsRequestBody.html#getLimitResultsByStatus()">getLimitResultsByStatus</a>, <a href="ResultsRequestBody.html#getSequencingOrder()">getSequencingOrder</a>, <a href="ResultsRequestBody.html#getSequencingProperty()">getSequencingProperty</a>, <a href="ResultsRequestBody.html#setAsOfTime(java.util.Date)">setAsOfTime</a>, <a href="ResultsRequestBody.html#setEffectiveTime(java.util.Date)">setEffectiveTime</a>, <a href="ResultsRequestBody.html#setLimitResultsByStatus(java.util.List)">setLimitResultsByStatus</a>, <a href="ResultsRequestBody.html#setSequencingOrder(org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder)">setSequencingOrder</a>, <a href="ResultsRequestBody.html#setSequencingProperty(java.lang.String)">setSequencingProperty</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -214,7 +214,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
+<dd><code><a href="ResultsRequestBody.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -227,7 +227,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
+<dd><code><a href="ResultsRequestBody.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
@@ -242,7 +242,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="EffectiveTimeRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a></code></dd>
+<dd><code><a href="ResultsRequestBody.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a></code></dd>
 <dt>Returns:</dt>
 <dd>int hash code</dd>
 </dl>

@@ -374,13 +374,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of server asset use relationships associated with a software capability.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ServerAssetUsesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ServerAssetUsesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerAssetUsesForElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)" class="member-name-link">getServerAssetUsesForElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerAssetUsesForElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getServerAssetUsesForElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;capabilityGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of relationships between a specific software capability and a specific asset.</div>
 </div>
@@ -1875,7 +1875,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getServerAssetUsesForElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody)">
+<section class="detail" id="getServerAssetUsesForElements(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getServerAssetUsesForElements</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/server-asset-uses/software-capabilities/{capabilityGUID}/assets/{assetGUID}/by-elements")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ServerAssetUsesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ServerAssetUsesResponse</a></span>&nbsp;<span class="element-name">getServerAssetUsesForElements</span><wbr><span class="parameters">(@PathVariable
@@ -1891,7 +1891,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="../../../../commonservices/ffdc/rest/EffectiveTimeRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">EffectiveTimeRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of relationships between a specific software capability and a specific asset.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
