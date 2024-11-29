@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -859,9 +860,12 @@ public class GovernanceDomainRESTServices
             response.setElements(domainHandler.getBeansByType(userId,
                                                               OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
                                                               OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
-                                                              null,
                                                               startFrom,
                                                               pageSize,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -981,6 +985,10 @@ public class GovernanceDomainRESTServices
                                                                                 null,
                                                                                 null,
                                                                                 1,
+                                                                                null,
+                                                                                null,
+                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                null,
                                                                                 false,
                                                                                 false,
                                                                                 startFrom,

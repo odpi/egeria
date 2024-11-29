@@ -4,30 +4,29 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
@@ -109,14 +108,30 @@ public class AutomatedCurationRESTServices extends TokenController
             ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
 
             Date effectiveTime = new Date();
+            String searchString = null;
 
             if (requestBody != null)
             {
                 effectiveTime = requestBody.getEffectiveTime();
+
+                String searchValue = requestBody.getFilter();
+
+                if ((searchValue != null) && (!searchValue.isBlank()))
+                {
+                    if (startsWith)
+                    {
+                        searchValue = "(" + searchValue;
+                    }
+                    if (endsWith)
+                    {
+                        searchValue = searchValue + ")";
+                    }
+                }
+                searchString = instanceHandler.getSearchString(searchValue, false, false, ignoreCase);
             }
 
             List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                          "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
+                                                                          searchString,
                                                                           startFrom,
                                                                           pageSize,
                                                                           effectiveTime);
@@ -124,13 +139,14 @@ public class AutomatedCurationRESTServices extends TokenController
             if ((requestBody != null) && (requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()) && (validValues != null))
             {
                 List<ValidValueElement> filteredValidValues = new ArrayList<>();
-                String searchString = instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase);
+                String filterString = instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase);
 
                 for (ValidValueElement validValue : validValues)
                 {
                     if ((validValue != null) && (validValue.getValidValueProperties() != null) && (validValue.getValidValueProperties().getPreferredValue() != null))
                     {
-                        if (validValue.getValidValueProperties().getPreferredValue().matches(searchString))
+                        if ((validValue.getValidValueProperties().getQualifiedName().startsWith("Egeria:ValidMetadataValue:")) &&
+                                (validValue.getValidValueProperties().getPreferredValue().matches(filterString)))
                         {
                             filteredValidValues.add(validValue);
                         }
@@ -211,7 +227,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                    String                   typeName,
                                                                                    int                      startFrom,
                                                                                    int                      pageSize,
-                                                                                   EffectiveTimeRequestBody requestBody)
+                                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
         final String parameterName = "typeName";
@@ -1398,7 +1414,7 @@ public class AutomatedCurationRESTServices extends TokenController
      */
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
                                                                                 String                   processGUID,
-                                                                                EffectiveTimeRequestBody requestBody)
+                                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
 
@@ -1922,6 +1938,655 @@ public class AutomatedCurationRESTServices extends TokenController
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * Work with external identifiers
+     */
+
+    /**
+     * Add the description of a specific external identifier.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse addExternalIdentifier(String                               serverName,
+                                              String                               openMetadataElementGUID,
+                                              String                               openMetadataElementTypeName,
+                                              boolean                              forLineage,
+                                              boolean                              forDuplicateProcessing,
+                                              UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        final String methodName                      = "addExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                handler.addExternalIdentifier(userId,
+                                              requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                              requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                              requestBody.getMetadataCorrelationProperties().getExternalScopeTypeName(),
+                                              openMetadataElementGUID,
+                                              openMetadataElementTypeName,
+                                              requestBody.getMetadataCorrelationProperties(),
+                                              requestBody.getEffectiveFrom(),
+                                              requestBody.getEffectiveTo(),
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse updateExternalIdentifier(String                               serverName,
+                                                 String                               openMetadataElementGUID,
+                                                 String                               openMetadataElementTypeName,
+                                                 boolean                              forLineage,
+                                                 boolean                              forDuplicateProcessing,
+                                                 UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        final String methodName                      = "updateExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                handler.updateExternalIdentifier(userId,
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeTypeName(),
+                                                 openMetadataElementGUID,
+                                                 openMetadataElementTypeName,
+                                                 requestBody.getMetadataCorrelationProperties(),
+                                                 requestBody.getEffectiveFrom(),
+                                                 requestBody.getEffectiveTo(),
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * That the external identifier matches the open metadata GUID.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public BooleanResponse validateExternalIdentifier(String                               serverName,
+                                                      String                               openMetadataElementGUID,
+                                                      String                               openMetadataElementTypeName,
+                                                      boolean                              forLineage,
+                                                      boolean                              forDuplicateProcessing,
+                                                      UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        final String methodName = "validateExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                if ((requestBody.getMetadataCorrelationProperties().getExternalIdentifier() != null) &&
+                        (requestBody.getMetadataCorrelationProperties().getExternalScopeGUID() != null) &&
+                        (requestBody.getMetadataCorrelationProperties().getExternalScopeName() != null))
+                {
+                    response.setFlag(handler.validateExternalIdentifier(userId,
+                                                                        requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                        requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                                        openMetadataElementGUID,
+                                                                        openMetadataElementTypeName,
+                                                                        requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        requestBody.getEffectiveTime()));
+                }
+                else
+                {
+                    response.setFlag(true);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove an external identifier from an existing open metadata element.  The open metadata element is not
+     * affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse removeExternalIdentifier(String                               serverName,
+                                                 String                               openMetadataElementGUID,
+                                                 String                               openMetadataElementTypeName,
+                                                 boolean                              forLineage,
+                                                 boolean                              forDuplicateProcessing,
+                                                 UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        final String methodName = "removeExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                handler.removeExternalIdentifier(userId,
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                 openMetadataElementGUID,
+                                                 openMetadataElementTypeName,
+                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
+     * The linked open metadata elements are not affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse removeExternalScope(String                   serverName,
+                                            String                   externalScopeGUID,
+                                            boolean                  forLineage,
+                                            boolean                  forDuplicateProcessing,
+                                            EffectiveTimeRequestBody requestBody)
+    {
+        final String methodName                      = "removeExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                handler.removeExternalScope(userId,
+                                            externalScopeGUID,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param requestBody details of the external identifier and its scope
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse confirmSynchronization(String                        serverName,
+                                               String                        openMetadataElementGUID,
+                                               String                        openMetadataElementTypeName,
+                                               MetadataCorrelationProperties requestBody)
+    {
+        final String methodName = "confirmSynchronization";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                handler.confirmSynchronization(userId,
+                                               openMetadataElementGUID,
+                                               openMetadataElementTypeName,
+                                               requestBody.getExternalIdentifier(),
+                                               requestBody.getExternalScopeGUID(),
+                                               requestBody.getExternalScopeName());
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the external identifiers for a particular metadata element.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody details of the external identifier and its scope
+     *
+     * @return list of correlation header elements, null if null or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public MetadataCorrelationHeadersResponse getExternalIdentifiers(String                        serverName,
+                                                                     String                        openMetadataElementGUID,
+                                                                     String                        openMetadataElementTypeName,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getExternalIdentifiers";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataCorrelationHeadersResponse response = new MetadataCorrelationHeadersResponse();
+        AuditLog                           auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                response.setElementList(handler.getExternalIdentifiers(userId,
+                                                                       requestBody.getExternalScopeGUID(),
+                                                                       requestBody.getExternalScopeName(),
+                                                                       openMetadataElementGUID,
+                                                                       openMetadataElementTypeName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the unique identifier of the external asset manager from its qualified name.
+     * Typically, the qualified name comes from the integration connector configuration.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody details of the external identifier
+     *
+     * @return list of linked elements, null if null or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public ElementHeadersResponse getElementsForExternalIdentifier(String                               serverName,
+                                                                   int                                  startFrom,
+                                                                   int                                  pageSize,
+                                                                   boolean                              forLineage,
+                                                                   boolean                              forDuplicateProcessing,
+                                                                   UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        final String methodName = "getElementsForExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ElementHeadersResponse response = new ElementHeadersResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
+            {
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                response.setElementHeaders(handler.getElementsForExternalIdentifier(userId,
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
         return response;
     }
 }

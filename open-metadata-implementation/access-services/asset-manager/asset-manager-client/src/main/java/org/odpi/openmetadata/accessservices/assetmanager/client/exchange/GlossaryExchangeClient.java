@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody;
 
 import java.util.Date;
@@ -3856,7 +3857,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        HistoryRequestBody requestBody = new HistoryRequestBody();
+        HistoryExternalIdentifiersRequestBody requestBody = new HistoryExternalIdentifiersRequestBody();
         requestBody.setExternalScopeGUID(assetManagerGUID);
         requestBody.setExternalScopeName(assetManagerName);
         requestBody.setFromTime(fromTime);

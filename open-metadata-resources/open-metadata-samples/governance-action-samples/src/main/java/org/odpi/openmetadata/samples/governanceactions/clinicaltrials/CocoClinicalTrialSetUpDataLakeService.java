@@ -110,10 +110,12 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                                             methodName);
 
-                            List<MetadataCorrelationHeader> externalIdentifiers = governanceContext.getOpenMetadataStore().getMetadataCorrelationHeaders(dataLakeCatalogQualifiedGUID,
-                                                                                                                                                         dataLakeCatalogQualifiedName,
-                                                                                                                                                         actionTargetElement.getTargetElement().getElementGUID(),
-                                                                                                                                                         actionTargetElement.getTargetElement().getType().getTypeName());
+                            List<MetadataCorrelationHeader> externalIdentifiers = governanceContext.getOpenMetadataStore().getExternalIdentifiers(dataLakeCatalogQualifiedGUID,
+                                                                                                                                                  dataLakeCatalogQualifiedName,
+                                                                                                                                                  actionTargetElement.getTargetElement().getElementGUID(),
+                                                                                                                                                  actionTargetElement.getTargetElement().getType().getTypeName(),
+                                                                                                                                                  0,
+                                                                                                                                                  0);
                             if (externalIdentifiers != null)
                             {
                                 for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)

@@ -511,7 +511,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                       OpenMetadataType.INVENTORY_CATALOG.typeName,
                                                       openMetadataElementGUID,
                                                       openMetadataElementTypeName,
-                                                      externalIdentifierProperties);
+                                                      externalIdentifierProperties,
+                                                      null,
+                                                      null,
+                                                      false,
+                                                      false,
+                                                      null);
     }
 
 
@@ -544,7 +549,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                       externalScopeTypeName,
                                                       openMetadataElementGUID,
                                                       openMetadataElementTypeName,
-                                                      externalIdentifierProperties);
+                                                      externalIdentifierProperties,
+                                                      null,
+                                                      null,
+                                                      false,
+                                                      false,
+                                                      null);
     }
 
 
@@ -568,9 +578,15 @@ public class CatalogIntegratorContext extends IntegrationContext
         openMetadataStoreClient.updateExternalIdentifier(userId,
                                                          externalSourceGUID,
                                                          externalSourceName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                          openMetadataElementGUID,
                                                          openMetadataElementTypeName,
-                                                         externalIdentifierProperties);
+                                                         externalIdentifierProperties,
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         null);
     }
 
 
@@ -597,7 +613,10 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                          externalSourceName,
                                                          openMetadataElementGUID,
                                                          openMetadataElementTypeName,
-                                                         externalIdentifier);
+                                                         externalIdentifier,
+                                                         false,
+                                                         false,
+                                                         null);
     }
 
 

@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
@@ -127,7 +129,7 @@ public class AutomatedCurationResource
                                                                                    @RequestParam(required = false, defaultValue = "0")
                                                                                        int    pageSize,
                                                                                    @RequestBody(required = false)
-                                                                                       EffectiveTimeRequestBody requestBody)
+                                                                                       ResultsRequestBody requestBody)
     {
         return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName, startFrom, pageSize, requestBody);
     }
@@ -631,7 +633,7 @@ public class AutomatedCurationResource
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
                                                                                 @PathVariable String                   processGUID,
                                                                                 @RequestBody(required = false)
-                                                                                              EffectiveTimeRequestBody requestBody)
+                                                                                    ResultsRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessGraph(serverName, processGUID, requestBody);
     }
@@ -900,5 +902,295 @@ public class AutomatedCurationResource
     {
         return restAPI.getEngineActionsByName(serverName, startFrom, pageSize, requestBody);
     }
-}
 
+
+    /* =====================================================================================================================
+     * Work with External Identifiers
+     */
+
+
+    /**
+     * Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/add")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "addExternalIdentifier",
+            description = "Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope (specified in the request body).",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public VoidResponse addExternalIdentifier(@PathVariable String                               serverName,
+                                              @PathVariable String                               openMetadataElementGUID,
+                                              @PathVariable String                               openMetadataElementTypeName,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                              boolean                              forLineage,
+                                              @RequestParam (required = false, defaultValue = "false")
+                                              boolean                              forDuplicateProcessing,
+                                              @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        return restAPI.addExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "updateExternalIdentifier",
+            description = "Update the description of a specific external identifier.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public VoidResponse updateExternalIdentifier(@PathVariable String                               serverName,
+                                                 @PathVariable String                               openMetadataElementGUID,
+                                                 @PathVariable String                               openMetadataElementTypeName,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                              forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                              forDuplicateProcessing,
+                                                 @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        return restAPI.updateExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Validate that the external identifier is linked to the open metadata GUID.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/validate")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "validateExternalIdentifier",
+            description = "Validate that the external identifier is linked to the open metadata GUID.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public BooleanResponse validateExternalIdentifier(@PathVariable String                               serverName,
+                                                      @PathVariable String                               openMetadataElementGUID,
+                                                      @PathVariable String                               openMetadataElementTypeName,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                              forLineage,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                              forDuplicateProcessing,
+                                                      @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        return restAPI.validateExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "removeExternalIdentifier",
+            description = "Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public VoidResponse removeExternalIdentifier(@PathVariable String                               serverName,
+                                                 @PathVariable String                               openMetadataElementGUID,
+                                                 @PathVariable String                               openMetadataElementTypeName,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                              forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                              forDuplicateProcessing,
+                                                 @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        return restAPI.removeExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
+     * The linked open metadata elements are not affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/external-scope/{externalScopeGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "removeExternalScope",
+            description = "Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.  The linked open metadata elements are not affected.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public VoidResponse removeExternalScope(@PathVariable String                   serverName,
+                                            @PathVariable String                   externalScopeGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                  forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                            boolean                  forDuplicateProcessing,
+                                            @RequestBody  (required = false)
+                                            EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.removeExternalScope(serverName, externalScopeGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param requestBody details of the external identifier and its scope
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/synchronized")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "confirmSynchronization",
+            description = "Confirm that the values of a particular metadata element have been synchronized.  This is important from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public VoidResponse confirmSynchronization(@PathVariable String                        serverName,
+                                               @PathVariable String                        openMetadataElementGUID,
+                                               @PathVariable String                        openMetadataElementTypeName,
+                                               @RequestBody MetadataCorrelationProperties requestBody)
+    {
+        return restAPI.confirmSynchronization(serverName, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the metadata element associated with a particular external identifier.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody details of the external identifier
+     *
+     * @return list of linked elements, null if null or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    @PostMapping(path = "/external-identifiers/open-metadata-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "getElementsForExternalIdentifier",
+            description = "Retrieve the metadata element associated with a particular external identifier.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public ElementHeadersResponse getElementsForExternalIdentifier(@PathVariable String            serverName,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                   int               startFrom,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                   int               pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean           forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean           forDuplicateProcessing,
+                                                                   @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    {
+        return restAPI.getElementsForExternalIdentifier(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the external identifiers attached to the supplied element guid.
+     *
+     * @param serverName name of the server to route the request to
+     * @param openMetadataElementGUID unique identifier of the requested metadata element
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody correlation properties
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary = "getExternalIdentifiers",
+            description = "Retrieve the external identifiers attached to the supplied element guid.",
+            externalDocs = @ExternalDocumentation(description = "External Identifiers",
+                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
+
+    public MetadataCorrelationHeadersResponse getExternalIdentifiers(@PathVariable String                        serverName,
+                                                                     @PathVariable String                        openMetadataElementGUID,
+                                                                     @PathVariable String                        openMetadataElementTypeName,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int               startFrom,
+                                                                     @RequestParam (required = false, defaultValue = "0")
+                                                                     int               pageSize,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forLineage,
+                                                                     @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     @RequestBody  (required = false)
+                                                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getExternalIdentifiers(serverName, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+    }
+}

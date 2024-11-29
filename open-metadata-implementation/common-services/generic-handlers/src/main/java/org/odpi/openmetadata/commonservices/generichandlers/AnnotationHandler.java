@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -783,6 +784,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                     annotationEntity.getGUID(),
                                                                                     null,
                                                                                     OpenMetadataType.ANNOTATION.typeName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     false,
                                                                                     false,
                                                                                     effectiveTime,
@@ -834,6 +839,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          null,
                                                                          null,
                                                                          0,
+                                                                         null,
+                                                                         null,
+                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                         null,
                                                                          false,
                                                                          false,
                                                                          supportedZones,
@@ -910,6 +919,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                        relationshipTypeGUID,
                                                                                        relationshipTypeName,
                                                                                        2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        false,
                                                                                        false,
                                                                                        startingFrom,

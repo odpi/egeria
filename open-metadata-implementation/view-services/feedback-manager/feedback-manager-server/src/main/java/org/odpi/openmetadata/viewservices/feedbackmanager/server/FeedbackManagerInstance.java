@@ -66,7 +66,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
         collaborationManagerHandlerMap.put(AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceURLMarker(),
                                            collaborationManagerHandler);
 
-        collaborationManagerHandlerMap.put(ViewServiceDescription.FEEDBACK_MANAGER.getViewServiceURLMarker(),
+        collaborationManagerHandlerMap.put(myDescription.getViewServiceURLMarker(),
                                            collaborationManagerHandler);
 
     }

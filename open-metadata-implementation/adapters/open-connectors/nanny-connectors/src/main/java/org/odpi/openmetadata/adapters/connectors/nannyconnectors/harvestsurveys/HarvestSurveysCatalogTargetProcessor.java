@@ -1073,15 +1073,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_NAME.getColumnName(), new JDBCDataValue(fileName, HarvestSurveysColumn.FILE_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_EXTENSION.getColumnName(), new JDBCDataValue(fileExtension, HarvestSurveysColumn.FILE_EXTENSION.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.PATHNAME.getColumnName(), new JDBCDataValue(pathName, HarvestSurveysColumn.PATHNAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_TYPE.getColumnName(), new JDBCDataValue(fileType, HarvestSurveysColumn.FILE_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ASSET_TYPE_NAME.getColumnName(), new JDBCDataValue(assetType, HarvestSurveysColumn.ASSET_TYPE_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE.getColumnName(), new JDBCDataValue(deployedImplementationType, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ENCODING.getColumnName(), new JDBCDataValue(encoding, HarvestSurveysColumn.ENCODING.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SYNC_TIME.getColumnName(), new JDBCDataValue(new java.sql.Timestamp(new Date().getTime()), HarvestSurveysColumn.SYNC_TIME.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_NAME, fileName);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_EXTENSION, fileExtension);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.PATHNAME, pathName);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_TYPE, fileType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, assetType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE, deployedImplementationType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, encoding);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SYNC_TIME, new Date().getTime());
 
         return openMetadataRecord;
     }
@@ -1331,15 +1331,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnName(), new JDBCDataValue(metadataCollectionId, HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_NAME.getColumnName(), new JDBCDataValue(measurementName, HarvestSurveysColumn.MEASUREMENT_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnName(), new JDBCDataValue(measurementCategory, HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE.getColumnName(), new JDBCDataValue(measurementValue, HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, metadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE, measurementValue);
 
         return openMetadataRecord;
     }
@@ -1371,15 +1371,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnName(), new JDBCDataValue(subjectMetadataCollectionId, HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_NAME.getColumnName(), new JDBCDataValue(measurementName, HarvestSurveysColumn.MEASUREMENT_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnName(), new JDBCDataValue(measurementCategory, HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE.getColumnName(), new JDBCDataValue(measurementValue, HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE, measurementValue);
 
         return openMetadataRecord;
     }
@@ -1655,32 +1655,32 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_NAME.getColumnName(), new JDBCDataValue(measurementName, HarvestSurveysColumn.MEASUREMENT_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnName(), new JDBCDataValue(measurementCategory, HarvestSurveysColumn.MEASUREMENT_CATEGORY.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
         if (measurementValue != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_VALUE.getColumnName(), new JDBCDataValue(measurementValue, HarvestSurveysColumn.MEASUREMENT_VALUE.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_VALUE, measurementValue);
         }
-        openMetadataRecord.put(HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME.getColumnName(), new JDBCDataValue(measurementDisplayName, HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME, measurementDisplayName);
         if (resourceCreationTime != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.RESOURCE_CREATION_TIME.getColumnName(), new JDBCDataValue(resourceCreationTime, HarvestSurveysColumn.RESOURCE_CREATION_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_CREATION_TIME, resourceCreationTime);
         }
         if (resourceModificationTime != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_MODIFIED_TIME.getColumnName(), new JDBCDataValue(resourceModificationTime, HarvestSurveysColumn.LAST_MODIFIED_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, resourceModificationTime);
         }
         if (resourceLastAccessTime != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_ACCESSED_TIME.getColumnName(), new JDBCDataValue(resourceLastAccessTime, HarvestSurveysColumn.LAST_ACCESSED_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, resourceLastAccessTime);
         }
-        openMetadataRecord.put(HarvestSurveysColumn.RESOURCE_SIZE.getColumnName(), new JDBCDataValue(resourceSize, HarvestSurveysColumn.RESOURCE_SIZE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ENCODING.getColumnName(), new JDBCDataValue(encoding, HarvestSurveysColumn.ENCODING.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_SIZE, resourceSize);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, encoding);
 
         return openMetadataRecord;
     }
@@ -1709,40 +1709,40 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnName(), new JDBCDataValue(subjectMetadataCollectionId, HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_NAME.getColumnName(), new JDBCDataValue(fileMeasurement.getFileName(), HarvestSurveysColumn.FILE_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.PATHNAME.getColumnName(), new JDBCDataValue(fileMeasurement.getPathName(), HarvestSurveysColumn.PATHNAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_EXTENSION.getColumnName(), new JDBCDataValue(fileMeasurement.getFileExtension(), HarvestSurveysColumn.FILE_EXTENSION.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_TYPE.getColumnName(), new JDBCDataValue(fileMeasurement.getFileType(), HarvestSurveysColumn.FILE_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT.getColumnName(), new JDBCDataValue(fileMeasurement.getDeployedImplementationType(), HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ENCODING.getColumnName(), new JDBCDataValue(fileMeasurement.getEncoding(), HarvestSurveysColumn.ENCODING.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ASSET_TYPE_NAME.getColumnName(), new JDBCDataValue(fileMeasurement.getAssetTypeName(), HarvestSurveysColumn.ASSET_TYPE_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CAN_READ.getColumnName(), new JDBCDataValue(fileMeasurement.getCanRead(), HarvestSurveysColumn.CAN_READ.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CAN_WRITE.getColumnName(), new JDBCDataValue(fileMeasurement.getCanWrite(), HarvestSurveysColumn.CAN_WRITE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CAN_EXECUTE.getColumnName(), new JDBCDataValue(fileMeasurement.getCanExecute(), HarvestSurveysColumn.CAN_EXECUTE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.IS_SYM_LINK.getColumnName(), new JDBCDataValue(fileMeasurement.getSymLink(), HarvestSurveysColumn.IS_SYM_LINK.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.IS_HIDDEN.getColumnName(), new JDBCDataValue(fileMeasurement.getHidden(), HarvestSurveysColumn.IS_HIDDEN.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_NAME, fileMeasurement.getFileName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.PATHNAME, fileMeasurement.getPathName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_EXTENSION, fileMeasurement.getFileExtension());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_TYPE, fileMeasurement.getFileType());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT, fileMeasurement.getDeployedImplementationType());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, fileMeasurement.getEncoding());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, fileMeasurement.getAssetTypeName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CAN_READ, fileMeasurement.getCanRead());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CAN_WRITE, fileMeasurement.getCanWrite());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CAN_EXECUTE, fileMeasurement.getCanExecute());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_SYM_LINK, fileMeasurement.getSymLink());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_HIDDEN, fileMeasurement.getHidden());
 
         if (fileMeasurement.getCreationTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.FILE_CREATION_TIME.getColumnName(), new JDBCDataValue(fileMeasurement.getCreationTime(), HarvestSurveysColumn.FILE_CREATION_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_CREATION_TIME, fileMeasurement.getCreationTime());
         }
         if (fileMeasurement.getLastModifiedTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_MODIFIED_TIME.getColumnName(), new JDBCDataValue(fileMeasurement.getLastModifiedTime(), HarvestSurveysColumn.LAST_MODIFIED_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, fileMeasurement.getLastModifiedTime());
         }
         if (fileMeasurement.getLastAccessedTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_ACCESSED_TIME.getColumnName(), new JDBCDataValue(fileMeasurement.getLastAccessedTime(), HarvestSurveysColumn.LAST_ACCESSED_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, fileMeasurement.getLastAccessedTime());
         }
 
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_SIZE.getColumnName(), new JDBCDataValue(fileMeasurement.getFileSize(), HarvestSurveysColumn.FILE_SIZE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.RECORD_COUNT.getColumnName(), new JDBCDataValue(fileMeasurement.getRecordCount(), HarvestSurveysColumn.RECORD_COUNT.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_SIZE, fileMeasurement.getFileSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RECORD_COUNT, fileMeasurement.getRecordCount());
 
         return openMetadataRecord;
     }
@@ -1770,40 +1770,40 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnName(), new JDBCDataValue(subjectMetadataCollectionId, HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.DIRECTORY_NAME.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getDirectoryName(), HarvestSurveysColumn.DIRECTORY_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getFileCount(), HarvestSurveysColumn.FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.TOTAL_FILE_SIZE.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getTotalFileSize(), HarvestSurveysColumn.TOTAL_FILE_SIZE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUB_DIRECTORY_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getSubDirectoryCount(), HarvestSurveysColumn.SUB_DIRECTORY_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.READABLE_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getReadableFileCount(), HarvestSurveysColumn.READABLE_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.WRITEABLE_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getWriteableFileCount(), HarvestSurveysColumn.WRITEABLE_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.EXECUTABLE_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getExecutableFileCount(), HarvestSurveysColumn.EXECUTABLE_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SYM_LINK_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getSymLinkFileCount(), HarvestSurveysColumn.SYM_LINK_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.HIDDEN_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getHiddenFileCount(), HarvestSurveysColumn.HIDDEN_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_NAME_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getFileNameCount(), HarvestSurveysColumn.FILE_NAME_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_EXTENSION_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getFileExtensionCount(), HarvestSurveysColumn.FILE_EXTENSION_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.FILE_TYPE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getFileTypeCount(), HarvestSurveysColumn.FILE_TYPE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ASSET_TYPE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getAssetTypeCount(), HarvestSurveysColumn.ASSET_TYPE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getDeployedImplementationTypeCount(), HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.UNCLASSIFIED_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getUnclassifiedFileCount(), HarvestSurveysColumn.UNCLASSIFIED_FILE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.INACCESSIBLE_FILE_COUNT.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getInaccessibleFileCount(), HarvestSurveysColumn.INACCESSIBLE_FILE_COUNT.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DIRECTORY_NAME, fileDirectoryMeasurement.getDirectoryName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_COUNT, fileDirectoryMeasurement.getFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.TOTAL_FILE_SIZE, fileDirectoryMeasurement.getTotalFileSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUB_DIRECTORY_COUNT, fileDirectoryMeasurement.getSubDirectoryCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.READABLE_FILE_COUNT, fileDirectoryMeasurement.getReadableFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.WRITEABLE_FILE_COUNT, fileDirectoryMeasurement.getWriteableFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.EXECUTABLE_FILE_COUNT, fileDirectoryMeasurement.getExecutableFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SYM_LINK_FILE_COUNT, fileDirectoryMeasurement.getSymLinkFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.HIDDEN_FILE_COUNT, fileDirectoryMeasurement.getHiddenFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_NAME_COUNT, fileDirectoryMeasurement.getFileNameCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_EXTENSION_COUNT, fileDirectoryMeasurement.getFileExtensionCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_TYPE_COUNT, fileDirectoryMeasurement.getFileTypeCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_COUNT, fileDirectoryMeasurement.getAssetTypeCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE_COUNT, fileDirectoryMeasurement.getDeployedImplementationTypeCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.UNCLASSIFIED_FILE_COUNT, fileDirectoryMeasurement.getUnclassifiedFileCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.INACCESSIBLE_FILE_COUNT, fileDirectoryMeasurement.getInaccessibleFileCount());
 
         if (fileDirectoryMeasurement.getLastFileCreationTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_FILE_CREATION_TIME.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getLastFileCreationTime(), HarvestSurveysColumn.LAST_FILE_CREATION_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_CREATION_TIME, fileDirectoryMeasurement.getLastFileCreationTime());
         }
         if (fileDirectoryMeasurement.getLastFileModificationTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getLastFileModificationTime(), HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME, fileDirectoryMeasurement.getLastFileModificationTime());
         }
         if (fileDirectoryMeasurement.getLastFileAccessedTime() != null)
         {
-            openMetadataRecord.put(HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME.getColumnName(), new JDBCDataValue(fileDirectoryMeasurement.getLastFileAccessedTime(), HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME.getColumnType().getJdbcType()));
+            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME, fileDirectoryMeasurement.getLastFileAccessedTime());
         }
 
         return openMetadataRecord;
@@ -1833,24 +1833,24 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        openMetadataRecord.put(HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnName(), new JDBCDataValue(surveyReportGUID, HarvestSurveysColumn.SURVEY_REPORT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnName(), new JDBCDataValue(subjectMetadataCollectionId, HarvestSurveysColumn.METADATA_COLLECTION_ID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_GUID.getColumnName(), new JDBCDataValue(subjectGUID, HarvestSurveysColumn.SUBJECT_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SUBJECT_TYPE.getColumnName(), new JDBCDataValue(subjectType, HarvestSurveysColumn.SUBJECT_TYPE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.CREATION_TIME.getColumnName(), new JDBCDataValue(creationTime, HarvestSurveysColumn.CREATION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ANNOTATION_GUID.getColumnName(), new JDBCDataValue(annotationGUID, HarvestSurveysColumn.ANNOTATION_GUID.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.RESOURCE_NAME.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getResourceName(), HarvestSurveysColumn.RESOURCE_NAME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SCHEMA_COUNT.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getSchemaCount(), HarvestSurveysColumn.SCHEMA_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.TABLE_COUNT.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getTableCount(), HarvestSurveysColumn.TABLE_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.COLUMN_COUNT.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getColumnCount(), HarvestSurveysColumn.COLUMN_COUNT.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.RESOURCE_SIZE.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getSize(), HarvestSurveysColumn.RESOURCE_SIZE.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ROWS_FETCHED.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getRowsFetched(), HarvestSurveysColumn.ROWS_FETCHED.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ROWS_INSERTED.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getRowsInserted(), HarvestSurveysColumn.ROWS_INSERTED.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ROWS_UPDATED.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getRowsUpdated(), HarvestSurveysColumn.ROWS_UPDATED.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ROWS_DELETED.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getRowsDeleted(), HarvestSurveysColumn.ROWS_DELETED.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.SESSION_TIME.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getSessionTime(), HarvestSurveysColumn.SESSION_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.ACTIVE_TIME.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getActiveTime(), HarvestSurveysColumn.ACTIVE_TIME.getColumnType().getJdbcType()));
-        openMetadataRecord.put(HarvestSurveysColumn.LAST_STATS_RESET.getColumnName(), new JDBCDataValue(relationalDataManagerMeasurement.getStatsReset(), HarvestSurveysColumn.LAST_STATS_RESET.getColumnType().getJdbcType()));
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalDataManagerMeasurement.getResourceName());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SCHEMA_COUNT, relationalDataManagerMeasurement.getSchemaCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.TABLE_COUNT, relationalDataManagerMeasurement.getTableCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.COLUMN_COUNT, relationalDataManagerMeasurement.getColumnCount());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_SIZE, relationalDataManagerMeasurement.getSize());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_FETCHED, relationalDataManagerMeasurement.getRowsFetched());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_INSERTED, relationalDataManagerMeasurement.getRowsInserted());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_UPDATED, relationalDataManagerMeasurement.getRowsUpdated());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_DELETED, relationalDataManagerMeasurement.getRowsDeleted());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SESSION_TIME, relationalDataManagerMeasurement.getSessionTime());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTIVE_TIME, relationalDataManagerMeasurement.getActiveTime());
+        addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_STATS_RESET, relationalDataManagerMeasurement.getStatsReset());
 
         return openMetadataRecord;
     }

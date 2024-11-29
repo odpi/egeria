@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -386,6 +387,10 @@ public class StewardshipActionRESTServices
                                                                           null,
                                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                                           0,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           true,
                                                                           true,
                                                                           instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -766,6 +771,10 @@ public class StewardshipActionRESTServices
                                                                          null,
                                                                          null,
                                                                          1,
+                                                                         null,
+                                                                         null,
+                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                         null,
                                                                          true,
                                                                          true,
                                                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -826,6 +835,10 @@ public class StewardshipActionRESTServices
                                                                         null,
                                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                                         2,
+                                                                        null,
+                                                                        null,
+                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                        null,
                                                                         true,
                                                                         true,
                                                                         instanceHandler.getSupportedZones(userId, serverName, methodName),

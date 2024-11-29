@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -13,17 +10,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * AssetHandler manages B objects and optionally connections in the property server.  It runs server-side in
@@ -693,6 +689,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                       OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                                                                       OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                       1,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                      null,
                                                                                                       forLineage,
                                                                                                       forDuplicateProcessing,
                                                                                                       effectiveTime,
@@ -708,6 +708,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                              OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
                                                                                                              OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                                                              1,
+                                                                                                             null,
+                                                                                                             null,
+                                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                             null,
                                                                                                              forLineage,
                                                                                                              forDuplicateProcessing,
                                                                                                              effectiveTime,
@@ -1368,6 +1372,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                   1,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
                                                                                                   effectiveTime,
@@ -1443,6 +1451,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                                  OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                  relationshipProperties,
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                 null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
@@ -1716,9 +1728,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        InstanceProperties classificationMatchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                        null,
+                                                                                                        OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
+                                                                                                        organizationGUID,
+                                                                                                        methodName);
+        classificationMatchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     classificationMatchProperties,
+                                                                                     OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME,
+                                                                                     businessCapabilityGUID,
+                                                                                     methodName);
+
+        classificationMatchProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                        classificationMatchProperties,
+                                                                                        OpenMetadataType.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                                        otherOriginValues,
+                                                                                        methodName);
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.ASSET.typeName,
                                                                                          OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                         classificationMatchProperties,
+                                                                                         MatchCriteria.ALL,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1749,68 +1784,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                   effectiveTime,
                                                   methodName);
 
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            String orgGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
-                                                                                classification.getProperties(),
-                                                                                methodName);
-
-                            String bcGUID = repositoryHelper.getStringProperty(serviceName,
-                                                                               OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME,
-                                                                               classification.getProperties(),
-                                                                               methodName);
-
-                            if ((organizationGUID == null) || (organizationGUID.equals(orgGUID)))
-                            {
-                                if (((businessCapabilityGUID == null) || (businessCapabilityGUID.equals(bcGUID))))
-                                {
-                                    if ((otherOriginValues == null) || (otherOriginValues.isEmpty()))
-                                    {
-                                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                                    }
-                                    else
-                                    {
-                                        Map<String, String> retrievedOtherOriginValues = repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                                                   OpenMetadataType.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
-                                                                                                                                   classification.getProperties(),
-                                                                                                                                   methodName);
-
-                                        if ((retrievedOtherOriginValues != null) && (! retrievedOtherOriginValues.isEmpty()))
-                                        {
-                                            boolean match = true;
-
-                                            for (String otherOrgValuePropertyName : otherOriginValues.keySet())
-                                            {
-                                                if (otherOrgValuePropertyName != null)
-                                                {
-                                                    if (otherOriginValues.get(otherOrgValuePropertyName) != null)
-                                                    {
-                                                        if (! otherOriginValues.get(otherOrgValuePropertyName).equals(retrievedOtherOriginValues.get(otherOrgValuePropertyName)))
-                                                        {
-                                                            match = false;
-                                                        }
-                                                    }
-                                                    else if (retrievedOtherOriginValues.get(otherOrgValuePropertyName) != null)
-                                                    {
-                                                        match = false;
-                                                    }
-                                                }
-                                            }
-
-                                            if (match)
-                                            {
-                                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        beans.add(converter.getNewBean(beanClass, entity, methodName));
                     }
                     catch (Exception notVisible)
                     {
@@ -2032,6 +2006,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                            OpenMetadataType.ASSET.typeName,
                                            0,
+                                           null,
+                                           null,
+                                           SequencingOrder.CREATION_DATE_RECENT,
+                                           null,
                                            forLineage,
                                            forDuplicateProcessing,
                                            serviceSupportedZones,
@@ -2077,6 +2055,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
                                                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                                                        2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
@@ -2153,10 +2135,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                   true,
                                                                   null,
                                                                   null,
+                                                                  null,
+                                                                  null,
+                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                  null,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   serviceSupportedZones,
-                                                                  null,
                                                                   0,
                                                                   invalidParameterHandler.getMaxPagingSize(),
                                                                   effectiveTime,
@@ -2287,10 +2272,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              false,
                                                              null,
                                                              null,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             null,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              serviceSupportedZones,
-                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              effectiveTime,
@@ -2351,6 +2339,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              assetTypeGUID,
                                                              assetTypeName,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
@@ -2428,6 +2419,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                                                                   1,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
                                                                                                   forLineage,
                                                                                                   forDuplicateProcessing,
                                                                                                   effectiveTime,
@@ -2577,6 +2572,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            null,
                                                                                            null,
                                                                                            0,
+                                                                                           null,
+                                                                                           null,
+                                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                                           null,
                                                                                            forLineage,
                                                                                            forDuplicateProcessing,
                                                                                            0,
@@ -2803,68 +2802,38 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             resultTypeName = subTypeName;
         }
 
-        List<B>  results = new ArrayList<>();
-
-        if ((zoneName == null) || (suppliedSupportedZones == null) || (suppliedSupportedZones.contains(zoneName)))
+        InstanceProperties matchClassificationProperties = null;
+        if (zoneName != null)
         {
-            RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
-                                                                                 invalidParameterHandler,
-                                                                                 userId,
-                                                                                 resultTypeGUID,
-                                                                                 resultTypeName,
-                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                 null,
-                                                                                 null,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 startFrom,
-                                                                                 queryPageSize,
-                                                                                 effectiveTime,
-                                                                                 methodName);
-
-
-            while ((iterator.moreToReceive()) && ((queryPageSize == 0) || results.size() < queryPageSize))
-            {
-                EntityDetail entity = iterator.getNext();
-
-                if (entity != null)
-                {
-                    List<String> assetZones;
-
-                    try
-                    {
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                                                                     methodName);
-
-                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                             classification.getProperties(),
-                                                                             methodName);
-                    }
-                    catch (ClassificationErrorException notPresent)
-                    {
-                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                             entity.getProperties(),
-                                                                             methodName);
-                    }
-
-                    if ((assetZones != null) && (assetZones.contains(zoneName)))
-                    {
-                        results.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                }
-            }
-
-            if (! results.isEmpty())
-            {
-                return results;
-            }
+            matchClassificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                         null,
+                                                                                         OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                         zoneName,
+                                                                                         methodName);
         }
 
-        return null;
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesForClassificationType(userId,
+                                                                                                  resultTypeGUID,
+                                                                                                  OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                                                  matchClassificationProperties,
+                                                                                                  MatchCriteria.ANY,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
+                                                                                                  startFrom,
+                                                                                                  queryPageSize,
+                                                                                                  effectiveTime,
+                                                                                                  methodName);
+
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       methodName,
+                                       retrievedEntities);
     }
 
 
@@ -2983,10 +2952,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -3110,10 +3082,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           true,
                                           null,
                                           null,
+                                          null,
+                                          null,
+                                          SequencingOrder.CREATION_DATE_RECENT,
+                                          null,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          null,
                                           startFrom,
                                           pageSize,
                                           effectiveTime,
@@ -3237,10 +3212,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -3355,9 +3333,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             return this.getBeansByType(userId,
                                        resultTypeGUID,
                                        resultTypeName,
-                                       null,
                                        startFrom,
                                        pageSize,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        effectiveTime,
@@ -3377,10 +3358,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         true,
                                         null,
                                         null,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
-                                        null,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -3448,10 +3432,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -3562,10 +3549,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           false,
                                           null,
                                           null,
+                                          null,
+                                          null,
+                                          SequencingOrder.CREATION_DATE_RECENT,
+                                          null,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
-                                          null,
                                           startFrom,
                                           pageSize,
                                           effectiveTime,
@@ -3675,10 +3665,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               searchStringParameter,
                               resultTypeGUID,
                               resultTypeName,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               supportedZones,
-                              null,
                               startFrom,
                               pageSize,
                               effectiveTime,
@@ -3724,6 +3717,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeGUID,
                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                             OpenMetadataType.ASSET.typeName,
+                                            null,
+                                            null,
+                                            SequencingOrder.CREATION_DATE_RECENT,
+                                            null,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,

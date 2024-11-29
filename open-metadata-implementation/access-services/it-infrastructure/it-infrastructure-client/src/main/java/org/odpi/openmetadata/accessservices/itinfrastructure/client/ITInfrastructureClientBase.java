@@ -1074,7 +1074,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/infrastructure-managers/{2}/{3}/assets/" + assetTypeName + "?startFrom={4}&pageSize={5}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -1119,7 +1119,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -1175,7 +1175,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/{2}/" + relationshipTypeName + "/" + relatedAssetTypeName + "/relationships?startingEnd={3}&startFrom={4}&pageSize={5}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -1231,7 +1231,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/{2}/" + relationshipTypeName + "/" + relatedAssetTypeName + "?startingEnd={3}&startFrom={4}&pageSize={5}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 

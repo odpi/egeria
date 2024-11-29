@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -960,6 +961,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                           toAssetGUID,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           2,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
                                                                           effectiveTime,
@@ -1191,6 +1196,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                            null,
                                                                            OpenMetadataType.ASSET.typeName,
                                                                            2,
+                                                                           null,
+                                                                           null,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                           null,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            startFrom,
@@ -1268,6 +1277,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                            null,
                                                                            OpenMetadataType.ASSET.typeName,
                                                                            1,
+                                                                           null,
+                                                                           null,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                           null,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            startFrom,

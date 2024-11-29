@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifica
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.List;
@@ -487,6 +488,10 @@ public class OpenMetadataStore
     {
         return openMetadataClient.findMetadataElementsWithString(userId,
                                                                  searchString,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  getEffectiveTime(),
@@ -518,6 +523,10 @@ public class OpenMetadataStore
         return openMetadataClient.findMetadataElementsWithString(userId,
                                                                  searchString,
                                                                  typeName,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  getEffectiveTime(),
@@ -552,6 +561,10 @@ public class OpenMetadataStore
                                                              elementGUID,
                                                              startingAtEnd,
                                                              relationshipTypeName,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              getEffectiveTime(),
@@ -648,6 +661,10 @@ public class OpenMetadataStore
                                                                   metadataElementAtEnd1GUID,
                                                                   metadataElementAtEnd2GUID,
                                                                   relationshipTypeName,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   getEffectiveTime(),
@@ -2562,7 +2579,6 @@ public class OpenMetadataStore
      * Work with external identifiers.
      */
 
-
     /**
      * Add a new external identifier to an existing open metadata element.
      *
@@ -2586,7 +2602,38 @@ public class OpenMetadataStore
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        openMetadataClient.addExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties);
+        openMetadataClient.addExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, null, null, forLineage, forDuplicateProcessing, getEffectiveTime());
+    }
+
+
+    /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param externalScopeGUID unique identifier of software server capability representing the caller
+     * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void addExternalIdentifier(String                       externalScopeGUID,
+                                      String                       externalScopeName,
+                                      String                       externalScopeTypeName,
+                                      String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties,
+                                      Date                         effectiveFrom,
+                                      Date                         effectiveTo) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        openMetadataClient.addExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, effectiveFrom, effectiveTo, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2611,7 +2658,65 @@ public class OpenMetadataStore
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        openMetadataClient.updateExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties);
+        openMetadataClient.updateExternalIdentifier(userId, externalScopeGUID, externalScopeName, OpenMetadataType.INVENTORY_CATALOG.typeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, null, null, forLineage, forDuplicateProcessing, getEffectiveTime());
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param externalScopeGUID unique identifier of software server capability representing the caller
+     * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void updateExternalIdentifier(String                       externalScopeGUID,
+                                         String                       externalScopeName,
+                                         String                       externalScopeTypeName,
+                                         String                       openMetadataElementGUID,
+                                         String                       openMetadataElementTypeName,
+                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        openMetadataClient.updateExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, null, null, forLineage, forDuplicateProcessing, getEffectiveTime());
+    }
+
+
+    /**
+     * Update the description of a specific external identifier.
+     *
+     * @param externalScopeGUID unique identifier of software server capability representing the caller
+     * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void updateExternalIdentifier(String                       externalScopeGUID,
+                                         String                       externalScopeName,
+                                         String                       externalScopeTypeName,
+                                         String                       openMetadataElementGUID,
+                                         String                       openMetadataElementTypeName,
+                                         ExternalIdentifierProperties externalIdentifierProperties,
+                                         Date                         effectiveFrom,
+                                         Date                         effectiveTo) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        openMetadataClient.updateExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, effectiveFrom, effectiveTo, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2637,7 +2742,7 @@ public class OpenMetadataStore
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        openMetadataClient.removeExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier);
+        openMetadataClient.removeExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2691,7 +2796,7 @@ public class OpenMetadataStore
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        return openMetadataClient.getElementsForExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalIdentifier, startFrom, pageSize);
+        return openMetadataClient.getElementsForExternalIdentifier(userId, externalScopeGUID, externalScopeName, externalIdentifier, startFrom, pageSize, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2716,7 +2821,7 @@ public class OpenMetadataStore
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        openMetadataClient.validateExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, elementExternalIdentifier);
+        openMetadataClient.validateExternalIdentifier(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, elementExternalIdentifier, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2728,6 +2833,8 @@ public class OpenMetadataStore
      * @param externalScopeName unique name of software server capability representing the caller
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return list of correlation headers (note if asset manager identifiers are present, only the matching correlation header is returned)
      *
@@ -2735,14 +2842,16 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<MetadataCorrelationHeader> getMetadataCorrelationHeaders(String externalScopeGUID,
-                                                                         String externalScopeName,
-                                                                         String openMetadataElementGUID,
-                                                                         String openMetadataElementTypeName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public List<MetadataCorrelationHeader> getExternalIdentifiers(String externalScopeGUID,
+                                                                  String externalScopeName,
+                                                                  String openMetadataElementGUID,
+                                                                  String openMetadataElementTypeName,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return openMetadataClient.getMetadataCorrelationHeaders(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName);
+        return openMetadataClient.getExternalIdentifiers(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 
 
@@ -2762,6 +2871,6 @@ public class OpenMetadataStore
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return openMetadataClient.getVendorProperties(userId,  openMetadataElementGUID, openMetadataElementTypeName);
+        return openMetadataClient.getVendorProperties(userId,  openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, getEffectiveTime());
     }
 }

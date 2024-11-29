@@ -469,13 +469,13 @@ class ExchangeHandlerBase
                                                                         elementGUID,
                                                                         elementGUIDParameterName,
                                                                         elementTypeName,
+                                                                        supportedZones,
                                                                         assetManagerGUID,
                                                                         OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                        assetManagerName,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
                                                                         0,
                                                                         invalidParameterHandler.getMaxPagingSize(),
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
                                                                         effectiveTime,
                                                                         methodName);
     }

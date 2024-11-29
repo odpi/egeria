@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class UpdateMetadataCorrelatorsRequestBody
 {
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
+    private Date                          effectiveFrom                 = null;
+    private Date                          effectiveTo                   = null;
     private Date                          effectiveTime                 = null;
 
     /**
@@ -43,6 +45,8 @@ public class UpdateMetadataCorrelatorsRequestBody
         if (template != null)
         {
             metadataCorrelationProperties = template.getMetadataCorrelationProperties();
+            effectiveFrom = template.getEffectiveFrom();
+            effectiveTo = template.getEffectiveTo();
             effectiveTime = template.getEffectiveTime();
         }
     }
@@ -67,6 +71,50 @@ public class UpdateMetadataCorrelatorsRequestBody
     public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
     {
         this.metadataCorrelationProperties = metadataCorrelationProperties;
+    }
+
+
+    /**
+     * Return the date/time that this new classification becomes effective in the governance program (null means immediately).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this new classification becomes effective in the governance program (null means immediately).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time when the new classification is no longer effective in the  governance program (null means until deleted).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set up the date/time when the new classification is no longer effective in the  governance program (null means until deleted).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
     }
 
 
@@ -101,9 +149,11 @@ public class UpdateMetadataCorrelatorsRequestBody
     public String toString()
     {
         return "UpdateMetadataCorrelatorsRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       "effectiveTime=" + effectiveTime +
-                       '}';
+                "metadataCorrelationProperties=" + metadataCorrelationProperties +
+                ", effectiveTo=" + effectiveTo +
+                ", effectiveFrom=" + effectiveFrom +
+                ", effectiveTime=" + effectiveTime +
+                '}';
     }
 
 
@@ -126,6 +176,8 @@ public class UpdateMetadataCorrelatorsRequestBody
         }
         UpdateMetadataCorrelatorsRequestBody that = (UpdateMetadataCorrelatorsRequestBody) objectToCompare;
         return Objects.equals(metadataCorrelationProperties, that.metadataCorrelationProperties) &&
+                Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(effectiveTime, that.effectiveTime);
     }
 
@@ -138,6 +190,6 @@ public class UpdateMetadataCorrelatorsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, effectiveTime);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, effectiveFrom, effectiveTo, effectiveTime);
     }
 }

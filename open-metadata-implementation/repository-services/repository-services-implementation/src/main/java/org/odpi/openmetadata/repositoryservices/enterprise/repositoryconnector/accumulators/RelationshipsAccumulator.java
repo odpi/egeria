@@ -15,8 +15,7 @@ import java.util.Map;
 /**
  * RelationshipsAccumulator accumulates and validates relationships received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest version.
- *
- * This class may be called simultaneously from different threads so it must be thread-safe.
+ * This class may be called simultaneously from different threads, so it must be thread-safe.
  */
 public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 {
@@ -134,10 +133,8 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
      * The local repository may use this list to send out refresh requests on the OMRS Topic.  If the rules allow, and
      * the remote repository response with a refresh response, this instance could be replicated into the local
      * repository.
-     *
      * The value of this processing is that the instance is of interest to the local users so having a local copy could
      * reduce the access time for the instance.
-     *
      * This call should be made once all processing has stopped.
      *
      * @param repositoryConnector enterprise connector
@@ -152,18 +149,15 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
             return;
         }
 
-        /*
-         * Ignore all entities that came from the local repository
-         */
         for (Relationship accumulatedRelationship : accumulatedRelationships.values())
         {
             if (accumulatedRelationship != null)
             {
-                String  entityGUID = accumulatedRelationship.getGUID();
+                String  relationshipGUID = accumulatedRelationship.getGUID();
 
-                if (entityGUID != null)
+                if (relationshipGUID != null)
                 {
-                    if (super.notLocal(entityGUID))
+                    if (super.notLocal(relationshipGUID))
                     {
                         repositoryConnector.requestRefreshOfRelationship(accumulatedRelationship);
                     }

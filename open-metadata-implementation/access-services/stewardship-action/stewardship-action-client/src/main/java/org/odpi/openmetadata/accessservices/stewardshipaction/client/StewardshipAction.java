@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManagementInterface;
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.SurveyReportInterface;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.surveyaction.converters.SurveyReportConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DuplicateElement;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
@@ -260,6 +261,10 @@ public class StewardshipAction implements SurveyReportInterface,
                                                                                                          assetGUID,
                                                                                                          1,
                                                                                                          OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
                                                                                                          false,
                                                                                                          false,
                                                                                                          new Date(),
@@ -278,6 +283,10 @@ public class StewardshipAction implements SurveyReportInterface,
                                                                                                                            reportElement.getElement().getElementGUID(),
                                                                                                                            2,
                                                                                                                            OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                                           null,
+                                                                                                                           null,
+                                                                                                                           null,
+                                                                                                                           SequencingOrder.CREATION_DATE_RECENT,
                                                                                                                            false,
                                                                                                                            false,
                                                                                                                            new Date(),

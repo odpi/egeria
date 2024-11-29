@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -941,10 +942,13 @@ public class OpenGovernanceRESTServices
                                                                                  searchStringParameterName,
                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                 null,
+                                                                                 null,
+                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                 null,
                                                                                  false,
                                                                                  false,
                                                                                  supportedZones,
-                                                                                 null,
                                                                                  startFrom,
                                                                                  pageSize,
                                                                                  new Date(),
@@ -1168,7 +1172,7 @@ public class OpenGovernanceRESTServices
                                                                                 String                   serviceURLMarker,
                                                                                 String                   userId,
                                                                                 String                   processGUID,
-                                                                                EffectiveTimeRequestBody requestBody)
+                                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
         final String processGUIDParameterName = "processGUID";
@@ -1311,6 +1315,10 @@ public class OpenGovernanceRESTServices
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                                                    2,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                   null,
                                                                                                    false,
                                                                                                    false,
                                                                                                    startFrom,
@@ -1379,6 +1387,10 @@ public class OpenGovernanceRESTServices
                                                                                     OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
                                                                                     OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                                     2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     false,
                                                                                     false,
                                                                                     startFrom,
@@ -1425,6 +1437,10 @@ public class OpenGovernanceRESTServices
                                                                                                    OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
                                                                                                    OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
                                                                                                    2,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                   null,
                                                                                                    false,
                                                                                                    false,
                                                                                                    startFrom,
@@ -1493,6 +1509,10 @@ public class OpenGovernanceRESTServices
                                                                                     OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
                                                                                     OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
                                                                                     2,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     false,
                                                                                     false,
                                                                                     startFrom,
@@ -2193,6 +2213,10 @@ public class OpenGovernanceRESTServices
                                                                                   null,
                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                                   0,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   false,
                                                                                   false,
                                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -2258,6 +2282,10 @@ public class OpenGovernanceRESTServices
                                                                                   null,
                                                                                   OpenMetadataType.ENGINE_ACTION.typeName,
                                                                                   0,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   false,
                                                                                   false,
                                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),

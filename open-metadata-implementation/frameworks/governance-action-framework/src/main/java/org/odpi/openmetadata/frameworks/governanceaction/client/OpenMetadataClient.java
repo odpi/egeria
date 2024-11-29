@@ -353,9 +353,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -365,15 +371,19 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
-                                                                             String  searchString,
-                                                                             boolean forLineage,
-                                                                             boolean forDuplicateProcessing,
-                                                                             Date    effectiveTime,
-                                                                             int     startFrom,
-                                                                             int     pageSize) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
+    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
+                                                                             String              searchString,
+                                                                             List<ElementStatus> limitResultsByStatus,
+                                                                             Date                asOfTime,
+                                                                             String              sequencingProperty,
+                                                                             SequencingOrder     sequencingOrder,
+                                                                             boolean             forLineage,
+                                                                             boolean             forDuplicateProcessing,
+                                                                             Date                effectiveTime,
+                                                                             int                 startFrom,
+                                                                             int                 pageSize) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException;
 
 
     /**
@@ -382,9 +392,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param typeName name of the type to limit the results to
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -394,16 +410,20 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
-                                                                             String  searchString,
-                                                                             String  typeName,
-                                                                             boolean forLineage,
-                                                                             boolean forDuplicateProcessing,
-                                                                             Date    effectiveTime,
-                                                                             int     startFrom,
-                                                                             int     pageSize) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
+    public abstract List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
+                                                                             String              searchString,
+                                                                             String              typeName,
+                                                                             List<ElementStatus> limitResultsByStatus,
+                                                                             Date                asOfTime,
+                                                                             String              sequencingProperty,
+                                                                             SequencingOrder     sequencingOrder,
+                                                                             boolean             forLineage,
+                                                                             boolean             forDuplicateProcessing,
+                                                                             Date                effectiveTime,
+                                                                             int                 startFrom,
+                                                                             int                 pageSize) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException;
 
 
     /**
@@ -413,9 +433,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -425,17 +451,21 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String  userId,
-                                                                            String  elementGUID,
-                                                                            int     startingAtEnd,
-                                                                            String  relationshipTypeName,
-                                                                            boolean forLineage,
-                                                                            boolean forDuplicateProcessing,
-                                                                            Date    effectiveTime,
-                                                                            int     startFrom,
-                                                                            int     pageSize) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException;
+    public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+                                                                            String              elementGUID,
+                                                                            int                 startingAtEnd,
+                                                                            String              relationshipTypeName,
+                                                                            List<ElementStatus> limitResultsByStatus,
+                                                                            Date                asOfTime,
+                                                                            String              sequencingProperty,
+                                                                            SequencingOrder     sequencingOrder,
+                                                                            boolean             forLineage,
+                                                                            boolean             forDuplicateProcessing,
+                                                                            Date                effectiveTime,
+                                                                            int                 startFrom,
+                                                                            int                 pageSize) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException;
 
 
     /**
@@ -472,8 +502,8 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @param userId caller's userId
      * @param elementGUID            unique identifier for the metadata element
-     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
-     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the element (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the element (exclusive)
      * @param oldestFirst  defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
@@ -508,9 +538,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -520,17 +556,21 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataRelationship> getMetadataElementRelationships(String  userId,
-                                                                                   String  metadataElementAtEnd1GUID,
-                                                                                   String  metadataElementAtEnd2GUID,
-                                                                                   String  relationshipTypeName,
-                                                                                   boolean forLineage,
-                                                                                   boolean forDuplicateProcessing,
-                                                                                   Date    effectiveTime,
-                                                                                   int     startFrom,
-                                                                                   int     pageSize) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException;
+    public abstract List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+                                                                                   String              metadataElementAtEnd1GUID,
+                                                                                   String              metadataElementAtEnd2GUID,
+                                                                                   String              relationshipTypeName,
+                                                                                   List<ElementStatus> limitResultsByStatus,
+                                                                                   Date                asOfTime,
+                                                                                   String              sequencingProperty,
+                                                                                   SequencingOrder     sequencingOrder,
+                                                                                   boolean             forLineage,
+                                                                                   boolean             forDuplicateProcessing,
+                                                                                   Date                effectiveTime,
+                                                                                   int                 startFrom,
+                                                                                   int                 pageSize) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException;
 
 
     /**
@@ -544,7 +584,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-    * @param matchClassifications Optional list of classifications to match.
+     * @param matchClassifications Optional list of classifications to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -638,8 +678,42 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                     boolean forLineage,
                                                                     boolean forDuplicateProcessing,
                                                                     Date    effectiveTime) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
+
+
+    /**
+     * Return each of the versions of a relationship.
+     *
+     * @param userId caller's userId
+     * @param relationshipGUID            unique identifier for the relationship
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the relationship (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the relationship (exclusive)
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public  abstract List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
+                                                                           String  relationshipGUID,
+                                                                           Date    fromTime,
+                                                                           Date    toTime,
+                                                                           boolean oldestFirst,
+                                                                           boolean forLineage,
+                                                                           boolean forDuplicateProcessing,
+                                                                           Date    effectiveTime,
+                                                                           int     startFrom,
+                                                                           int     pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -1187,6 +1261,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -1199,9 +1278,14 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                String                       externalScopeTypeName,
                                                String                       openMetadataElementGUID,
                                                String                       openMetadataElementTypeName,
-                                               ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException;
+                                               ExternalIdentifierProperties externalIdentifierProperties,
+                                               Date                         effectiveFrom,
+                                               Date                         effectiveTo,
+                                               boolean                      forLineage,
+                                               boolean                      forDuplicateProcessing,
+                                               Date                         effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
 
     /**
@@ -1210,9 +1294,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param userId calling user
      * @param externalScopeGUID unique identifier of software server capability representing the caller
      * @param externalScopeName unique name of software server capability representing the caller
+     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifierProperties optional properties used to define an external identifier
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -1222,11 +1312,17 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
     public abstract void updateExternalIdentifier(String                       userId,
                                                   String                       externalScopeGUID,
                                                   String                       externalScopeName,
+                                                  String                       externalScopeTypeName,
                                                   String                       openMetadataElementGUID,
                                                   String                       openMetadataElementTypeName,
-                                                  ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException;
+                                                  ExternalIdentifierProperties externalIdentifierProperties,
+                                                  Date                         effectiveFrom,
+                                                  Date                         effectiveTo,
+                                                  boolean                      forLineage,
+                                                  boolean                      forDuplicateProcessing,
+                                                  Date                         effectiveTime) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException;
 
 
 
@@ -1240,20 +1336,26 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifier unique identifier of this element in the third party asset manager
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public abstract void removeExternalIdentifier(String                   userId,
-                                                  String                   externalScopeGUID,
-                                                  String                   externalScopeName,
-                                                  String                   openMetadataElementGUID,
-                                                  String                   openMetadataElementTypeName,
-                                                  String                   externalIdentifier) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
+    public abstract void removeExternalIdentifier(String  userId,
+                                                  String  externalScopeGUID,
+                                                  String  externalScopeName,
+                                                  String  openMetadataElementGUID,
+                                                  String  openMetadataElementTypeName,
+                                                  String  externalIdentifier,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
 
@@ -1294,6 +1396,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param externalIdentifier unique identifier of this element in the external asset manager
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of element headers
      *
@@ -1302,14 +1407,17 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public abstract List<ElementHeader> getElementsForExternalIdentifier(String userId,
-                                                                         String externalScopeGUID,
-                                                                         String externalScopeName,
-                                                                         String externalIdentifier,
-                                                                         int    startFrom,
-                                                                         int    pageSize) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+    public abstract List<ElementHeader> getElementsForExternalIdentifier(String  userId,
+                                                                         String  externalScopeGUID,
+                                                                         String  externalScopeName,
+                                                                         String  externalIdentifier,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException;
 
 
     /**
@@ -1321,20 +1429,27 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param openMetadataElementGUID element guid used for the lookup
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param elementExternalIdentifier external identifier value
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
+     * @return boolean
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public abstract void validateExternalIdentifier(String  userId,
-                                                    String  externalScopeGUID,
-                                                    String  externalScopeName,
-                                                    String  openMetadataElementGUID,
-                                                    String  openMetadataElementTypeName,
-                                                    String  elementExternalIdentifier) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+    public abstract boolean validateExternalIdentifier(String  userId,
+                                                       String  externalScopeGUID,
+                                                       String  externalScopeName,
+                                                       String  openMetadataElementGUID,
+                                                       String  openMetadataElementTypeName,
+                                                       String  elementExternalIdentifier,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
 
@@ -1347,6 +1462,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param externalScopeName unique name of software server capability representing the caller
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @return list of correlation headers (note if asset manager identifiers are present, only the matching correlation header is returned)
      *
@@ -1355,13 +1475,20 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public abstract List<MetadataCorrelationHeader> getMetadataCorrelationHeaders(String userId,
-                                                                                  String externalScopeGUID,
-                                                                                  String externalScopeName,
-                                                                                  String openMetadataElementGUID,
-                                                                                  String openMetadataElementTypeName) throws InvalidParameterException,
-                                                                                                                             UserNotAuthorizedException,
-                                                                                                                             PropertyServerException;
+    public abstract List<MetadataCorrelationHeader> getExternalIdentifiers(String  userId,
+                                                                           String  externalScopeGUID,
+                                                                           String  externalScopeName,
+                                                                           String  openMetadataElementGUID,
+                                                                           String  openMetadataElementTypeName,
+                                                                           int     startFrom,
+                                                                           int     pageSize,
+                                                                           boolean forLineage,
+                                                                           boolean forDuplicateProcessing,
+                                                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
+
+
     /**
      * Return the vendor properties associated with an element.  The inner map holds the specific properties for each
      * vendor.  The outer maps the vendor identifier to the properties.
@@ -1369,17 +1496,23 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @return map of vendor properties
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public abstract Map<String, Map<String, String>> getVendorProperties(String userId,
-                                                                         String openMetadataElementGUID,
-                                                                         String openMetadataElementTypeName) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException;
+    public abstract Map<String, Map<String, String>> getVendorProperties(String  userId,
+                                                                         String  openMetadataElementGUID,
+                                                                         String  openMetadataElementTypeName,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException;
 
     /**
      * Standard toString method.

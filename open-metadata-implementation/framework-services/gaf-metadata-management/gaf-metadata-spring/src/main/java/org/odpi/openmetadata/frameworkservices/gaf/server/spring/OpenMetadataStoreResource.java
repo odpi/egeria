@@ -5,16 +5,14 @@ package org.odpi.openmetadata.frameworkservices.gaf.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenMetadataStoreRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+
 
 /**
  * OpenMetadataStoreResource supports the REST APIs for running Open Metadata Store Service
@@ -377,6 +378,44 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}")
+
+    @Operation(summary="getMetadataElementByGUID",
+            description="Retrieve the metadata element using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
+                                                                @PathVariable String  serviceURLMarker,
+                                                                @PathVariable String  userId,
+                                                                @PathVariable String  elementGUID,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                boolean forLineage,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                boolean forDuplicateProcessing,
+                                                                @RequestBody (required = false)
+                                                                    EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
      * Retrieve the metadata element using its unique name (typically the qualified name).
      *
      * @param serverName     name of server instance to route request to
@@ -467,6 +506,11 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/history")
+
+    @Operation(summary="getMetadataElementHistory",
+            description="Retrieve all the versions of an element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
                                                                   @PathVariable String                 serviceURLMarker,
@@ -607,6 +651,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
 
+    @Operation(summary="getRelatedMetadataElements",
+            description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String  serverName,
                                                                          @PathVariable String  serviceURLMarker,
                                                                          @PathVariable String  userId,
@@ -641,6 +690,122 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve the metadata elements connected to the supplied element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the starting metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/any-type")
+
+    @Operation(summary="getAllRelatedMetadataElements",
+            description="Retrieve the metadata elements connected to the supplied element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
+                                                                            @PathVariable String  serviceURLMarker,
+                                                                            @PathVariable String  userId,
+                                                                            @PathVariable String  elementGUID,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean forLineage,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean forDuplicateProcessing,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                            int     startingAtEnd,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                            int     startFrom,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                            int     pageSize,
+                                                                            @RequestBody (required = false)
+                                                                            ResultsRequestBody requestBody)
+    {
+        return restAPI.getRelatedMetadataElements(serverName,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  elementGUID,
+                                                  null,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  startingAtEnd,
+                                                  startFrom,
+                                                  pageSize,
+                                                  requestBody);
+    }
+
+
+    /**
+     * Retrieve the metadata elements connected to the supplied element via a specific relationship type.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the starting metadata element
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
+
+    @Operation(summary="getRelatedMetadataElements",
+            description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(@PathVariable String  serverName,
+                                                                         @PathVariable String  serviceURLMarker,
+                                                                         @PathVariable String  userId,
+                                                                         @PathVariable String  elementGUID,
+                                                                         @PathVariable String  relationshipTypeName,
+                                                                         @RequestParam(required = false, defaultValue = "false")
+                                                                         boolean forLineage,
+                                                                         @RequestParam(required = false, defaultValue = "false")
+                                                                         boolean forDuplicateProcessing,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                         int     startingAtEnd,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                         int     startFrom,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                         int     pageSize,
+                                                                         @RequestBody (required = false)
+                                                                         ResultsRequestBody requestBody)
+    {
+        return restAPI.getRelatedMetadataElements(serverName,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  elementGUID,
+                                                  relationshipTypeName,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  startingAtEnd,
+                                                  startFrom,
+                                                  pageSize,
+                                                  requestBody);
+    }
+
+
+    /**
      * Retrieve the relationships linking the supplied elements.
      *
      * @param serverName     name of server instance to route request to
@@ -661,20 +826,25 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
 
-    public RelatedMetadataElementsListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
-                                                                                  @PathVariable String  serviceURLMarker,
-                                                                                  @PathVariable String  userId,
-                                                                                  @PathVariable String  metadataElementAtEnd1GUID,
-                                                                                  @PathVariable String  metadataElementAtEnd2GUID,
-                                                                                  @RequestParam(required = false, defaultValue = "false")
+    @Operation(summary="getAllMetadataElementRelationships",
+            description="Retrieve the relationships linking the supplied elements.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
+                                                                                   @PathVariable String  serviceURLMarker,
+                                                                                   @PathVariable String  userId,
+                                                                                   @PathVariable String  metadataElementAtEnd1GUID,
+                                                                                   @PathVariable String  metadataElementAtEnd2GUID,
+                                                                                   @RequestParam(required = false, defaultValue = "false")
                                                                                                 boolean forLineage,
-                                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                                   @RequestParam(required = false, defaultValue = "false")
                                                                                                 boolean forDuplicateProcessing,
-                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                   @RequestParam (required = false, defaultValue = "0")
                                                                                                 long    effectiveTime,
-                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                   @RequestParam (required = false, defaultValue = "0")
                                                                                                 int     startFrom,
-                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                   @RequestParam (required = false, defaultValue = "0")
                                                                                                 int     pageSize)
     {
         return restAPI.getMetadataElementRelationships(serverName,
@@ -713,21 +883,26 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
 
-    public RelatedMetadataElementsListResponse getMetadataElementRelationships(@PathVariable String  serverName,
-                                                                               @PathVariable String  serviceURLMarker,
-                                                                               @PathVariable String  userId,
-                                                                               @PathVariable String  metadataElementAtEnd1GUID,
-                                                                               @PathVariable String  relationshipTypeName,
-                                                                               @PathVariable String  metadataElementAtEnd2GUID,
-                                                                               @RequestParam(required = false, defaultValue = "false")
+    @Operation(summary="getMetadataElementRelationships",
+            description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse getMetadataElementRelationships(@PathVariable String  serverName,
+                                                                                @PathVariable String  serviceURLMarker,
+                                                                                @PathVariable String  userId,
+                                                                                @PathVariable String  metadataElementAtEnd1GUID,
+                                                                                @PathVariable String  relationshipTypeName,
+                                                                                @PathVariable String  metadataElementAtEnd2GUID,
+                                                                                @RequestParam(required = false, defaultValue = "false")
                                                                                              boolean forLineage,
-                                                                               @RequestParam(required = false, defaultValue = "false")
+                                                                                @RequestParam(required = false, defaultValue = "false")
                                                                                              boolean forDuplicateProcessing,
-                                                                               @RequestParam (required = false, defaultValue = "0")
+                                                                                @RequestParam (required = false, defaultValue = "0")
                                                                                              long    effectiveTime,
-                                                                               @RequestParam  (required = false, defaultValue = "0")
+                                                                                @RequestParam  (required = false, defaultValue = "0")
                                                                                              int     startFrom,
-                                                                               @RequestParam  (required = false, defaultValue = "0")
+                                                                                @RequestParam  (required = false, defaultValue = "0")
                                                                                              int     pageSize)
     {
         return restAPI.getMetadataElementRelationships(serverName,
@@ -744,6 +919,122 @@ public class OpenMetadataStoreResource
     }
 
 
+
+
+    /**
+     * Retrieve the relationships linking the supplied elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
+
+    @Operation(summary="getAllMetadataElementRelationships",
+            description="Retrieve the relationships linking the supplied elements.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse getAllMetadataElementRelationships(@PathVariable String  serverName,
+                                                                                   @PathVariable String  serviceURLMarker,
+                                                                                   @PathVariable String  userId,
+                                                                                   @PathVariable String  metadataElementAtEnd1GUID,
+                                                                                   @PathVariable String  metadataElementAtEnd2GUID,
+                                                                                   @RequestParam(required = false, defaultValue = "false")
+                                                                                   boolean forLineage,
+                                                                                   @RequestParam(required = false, defaultValue = "false")
+                                                                                   boolean forDuplicateProcessing,
+                                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                   int     startFrom,
+                                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                   int     pageSize,
+                                                                                   @RequestBody(required = false)
+                                                                                   ResultsRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementRelationships(serverName,
+                                                       serviceURLMarker,
+                                                       userId,
+                                                       metadataElementAtEnd1GUID,
+                                                       null,
+                                                       metadataElementAtEnd2GUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       startFrom,
+                                                       pageSize,
+                                                       requestBody);
+    }
+
+
+    /**
+     * Retrieve the relationships linking the supplied elements via a specific type of relationship.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
+
+    @Operation(summary="getMetadataElementRelationships",
+            description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse getMetadataElementRelationships(@PathVariable String  serverName,
+                                                                                @PathVariable String  serviceURLMarker,
+                                                                                @PathVariable String  userId,
+                                                                                @PathVariable String  metadataElementAtEnd1GUID,
+                                                                                @PathVariable String  relationshipTypeName,
+                                                                                @PathVariable String  metadataElementAtEnd2GUID,
+                                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                                boolean forLineage,
+                                                                                @RequestParam(required = false, defaultValue = "false")
+                                                                                boolean forDuplicateProcessing,
+                                                                                @RequestParam  (required = false, defaultValue = "0")
+                                                                                int     startFrom,
+                                                                                @RequestParam  (required = false, defaultValue = "0")
+                                                                                int     pageSize,
+                                                                                @RequestBody (required = false)
+                                                                                ResultsRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementRelationships(serverName,
+                                                       serviceURLMarker,
+                                                       userId,
+                                                       metadataElementAtEnd1GUID,
+                                                       relationshipTypeName,
+                                                       metadataElementAtEnd2GUID,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       startFrom,
+                                                       pageSize,
+                                                       requestBody);
+    }
+
+
     /**
      * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
      *
@@ -752,7 +1043,6 @@ public class OpenMetadataStoreResource
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -764,6 +1054,11 @@ public class OpenMetadataStoreResource
      */
     @PostMapping(path = "/metadata-elements/by-search-specification")
 
+    @Operation(summary="findMetadataElements",
+            description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public OpenMetadataElementsResponse findMetadataElements(@PathVariable String          serverName,
                                                              @PathVariable String          serviceURLMarker,
                                                              @PathVariable String          userId,
@@ -772,15 +1067,13 @@ public class OpenMetadataStoreResource
                                                              @RequestParam(required = false, defaultValue = "false")
                                                                            boolean         forDuplicateProcessing,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                                           long            effectiveTime,
-                                                             @RequestParam(required = false, defaultValue = "0")
                                                                            int             startFrom,
                                                              @RequestParam(required = false, defaultValue = "0")
                                                                            int             pageSize,
                                                              @RequestBody (required = false)
                                                                            FindRequestBody requestBody)
     {
-        return restAPI.findMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
     }
 
 
@@ -792,7 +1085,6 @@ public class OpenMetadataStoreResource
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -804,22 +1096,25 @@ public class OpenMetadataStoreResource
      */
     @PostMapping(path = "/relationships/by-search-specification")
 
-    public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
-                                                                                        @PathVariable String          serviceURLMarker,
-                                                                                        @PathVariable String          userId,
-                                                                                        @RequestParam(required = false, defaultValue = "false")
+    @Operation(summary="findRelationshipsBetweenMetadataElements",
+            description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
+                                                                                         @PathVariable String          serviceURLMarker,
+                                                                                         @PathVariable String          userId,
+                                                                                         @RequestParam(required = false, defaultValue = "false")
                                                                                                       boolean         forLineage,
-                                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                                         @RequestParam(required = false, defaultValue = "false")
                                                                                                       boolean         forDuplicateProcessing,
-                                                                                        @RequestParam (required = false, defaultValue = "0")
-                                                                                                      long            effectiveTime,
-                                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                                         @RequestParam (required = false, defaultValue = "0")
                                                                                                       int             startFrom,
-                                                                                        @RequestParam  (required = false, defaultValue = "0")
+                                                                                         @RequestParam  (required = false, defaultValue = "0")
                                                                                                       int             pageSize,
-                                                                                        @RequestBody  FindRelationshipRequestBody requestBody)
+                                                                                         @RequestBody  FindRelationshipRequestBody requestBody)
     {
-        return restAPI.findRelationshipsBetweenMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
+        return restAPI.findRelationshipsBetweenMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
     }
 
 
@@ -841,18 +1136,120 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/relationships/by-guid/{relationshipGUID}")
 
-    public RelatedMetadataElementsResponse getRelationshipByGUID(@PathVariable String  serverName,
-                                                                 @PathVariable String  serviceURLMarker,
-                                                                 @PathVariable String  userId,
-                                                                 @PathVariable String  relationshipGUID,
-                                                                 @RequestParam(required = false, defaultValue = "false")
+    @Operation(summary="getRelationshipByGUID",
+            description="Retrieve the relationship using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
+                                                                  @PathVariable String  serviceURLMarker,
+                                                                  @PathVariable String  userId,
+                                                                  @PathVariable String  relationshipGUID,
+                                                                  @RequestParam(required = false, defaultValue = "false")
                                                                                boolean forLineage,
-                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                  @RequestParam(required = false, defaultValue = "false")
                                                                                boolean forDuplicateProcessing,
-                                                                 @RequestParam (required = false, defaultValue = "0")
+                                                                  @RequestParam (required = false, defaultValue = "0")
                                                                                long    effectiveTime)
     {
-        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
+        if (effectiveTime != 0)
+        {
+            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            requestBody.setEffectiveTime(new Date(effectiveTime));
+
+            return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
+        }
+        else
+        {
+            return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, null);
+        }
+    }
+
+
+
+
+    /**
+     * Retrieve the relationship using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/relationships/by-guid/{relationshipGUID}")
+
+    @Operation(summary="getRelationshipByGUID",
+            description="Retrieve the relationship using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    @Deprecated
+    public OpenMetadataRelationshipResponse getRelationshipByGUID(@PathVariable String  serverName,
+                                                                  @PathVariable String  serviceURLMarker,
+                                                                  @PathVariable String  userId,
+                                                                  @PathVariable String  relationshipGUID,
+                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean forLineage,
+                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                 boolean forDuplicateProcessing,
+                                                                  @RequestBody (required = false)
+                                                                 EffectiveTimeRequestBody    requestBody)
+    {
+        return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve all the versions of a relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of object to retrieve
+     * @param startFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param requestBody the time window required
+     * @return list of beans or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/relationships/{relationshipGUID}/history")
+
+    @Operation(summary="getRelationshipHistory",
+            description="Retrieve all the versions of a relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public OpenMetadataRelationshipListResponse getRelationshipHistory(@PathVariable String                 serverName,
+                                                                       @PathVariable String                 serviceURLMarker,
+                                                                       @PathVariable String                 userId,
+                                                                       @PathVariable String                 relationshipGUID,
+                                                                       @RequestParam int                    startFrom,
+                                                                       @RequestParam int                    pageSize,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                oldestFirst,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                forLineage,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                      boolean                forDuplicateProcessing,
+                                                                       @RequestBody(required = false)
+                                                                      HistoryRequestBody     requestBody)
+    {
+        return restAPI.getRelationshipHistory(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, oldestFirst, requestBody);
     }
 
 

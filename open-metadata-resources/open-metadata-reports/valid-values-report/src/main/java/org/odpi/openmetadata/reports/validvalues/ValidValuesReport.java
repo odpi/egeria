@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.client.Reference
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -124,6 +125,10 @@ public class ValidValuesReport
                                                                                                                       validValueInformation.element.getElementHeader().getGUID(),
                                                                                                                       0,
                                                                                                                       null,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      null,
+                                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
                                                                                                                       false,
                                                                                                                       false,
                                                                                                                       new Date(),
@@ -168,6 +173,10 @@ public class ValidValuesReport
                                                                                                                                          relatedElement.getElement().getElementGUID(),
                                                                                                                                          0,
                                                                                                                                          OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                                                         null,
+                                                                                                                                         null,
+                                                                                                                                         null,
+                                                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
                                                                                                                                          false,
                                                                                                                                          false,
                                                                                                                                          new Date(),
@@ -202,6 +211,10 @@ public class ValidValuesReport
                                                                                                                 validValueInformation.element.getElementHeader().getGUID(),
                                                                                                                 0,
                                                                                                                 OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                SequencingOrder.CREATION_DATE_RECENT,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -217,6 +230,10 @@ public class ValidValuesReport
                                                                                              validValueInformation.element.getElementHeader().getGUID(),
                                                                                              0,
                                                                                              null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                                                              false,
                                                                                              false,
                                                                                              new Date(),

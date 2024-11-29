@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -114,6 +115,10 @@ public class AppointmentHandler
                                                                                                   null,
                                                                                                   OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                                   1,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
                                                                                                   false,
                                                                                                   false,
                                                                                                   0,
@@ -214,6 +219,10 @@ public class AppointmentHandler
                                                                                           null,
                                                                                           OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                           1,
+                                                                                          null,
+                                                                                          null,
+                                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                                          null,
                                                                                           false,
                                                                                           false,
                                                                                           0,

@@ -1328,7 +1328,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionProcessGraphResponse restResult = restClient.callGovernanceActionProcessGraphPostRESTCall(methodName,

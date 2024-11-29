@@ -123,9 +123,15 @@ public interface MetadataElementInterface
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -134,15 +140,19 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
-                                                             String  searchString,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing,
-                                                             Date    effectiveTime,
-                                                             int     startFrom,
-                                                             int     pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
+                                                             String              searchString,
+                                                             List<ElementStatus> limitResultsByStatus,
+                                                             Date                asOfTime,
+                                                             String              sequencingProperty,
+                                                             SequencingOrder     sequencingOrder,
+                                                             boolean             forLineage,
+                                                             boolean             forDuplicateProcessing,
+                                                             Date                effectiveTime,
+                                                             int                 startFrom,
+                                                             int                 pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
 
     /**
@@ -151,9 +161,15 @@ public interface MetadataElementInterface
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param typeName name of the type to limit the results to
-     * @param forLineage the retrieved elements are for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -162,16 +178,20 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
-                                                             String  searchString,
-                                                             String  typeName,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing,
-                                                             Date    effectiveTime,
-                                                             int     startFrom,
-                                                             int     pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    List<OpenMetadataElement> findMetadataElementsWithString(String              userId,
+                                                             String              searchString,
+                                                             String              typeName,
+                                                             List<ElementStatus> limitResultsByStatus,
+                                                             Date                asOfTime,
+                                                             String              sequencingProperty,
+                                                             SequencingOrder     sequencingOrder,
+                                                             boolean             forLineage,
+                                                             boolean             forDuplicateProcessing,
+                                                             Date                effectiveTime,
+                                                             int                 startFrom,
+                                                             int                 pageSize) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
 
     /**
@@ -181,9 +201,15 @@ public interface MetadataElementInterface
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -192,17 +218,21 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> getRelatedMetadataElements(String  userId,
-                                                            String  elementGUID,
-                                                            int     startingAtEnd,
-                                                            String  relationshipTypeName,
-                                                            boolean forLineage,
-                                                            boolean forDuplicateProcessing,
-                                                            Date    effectiveTime,
-                                                            int     startFrom,
-                                                            int     pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
+    List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+                                                            String              elementGUID,
+                                                            int                 startingAtEnd,
+                                                            String              relationshipTypeName,
+                                                            List<ElementStatus> limitResultsByStatus,
+                                                            Date                asOfTime,
+                                                            String              sequencingProperty,
+                                                            SequencingOrder     sequencingOrder,
+                                                            boolean             forLineage,
+                                                            boolean             forDuplicateProcessing,
+                                                            Date                effectiveTime,
+                                                            int                 startFrom,
+                                                            int                 pageSize) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**
@@ -274,9 +304,15 @@ public interface MetadataElementInterface
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
-     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -285,17 +321,21 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataRelationship> getMetadataElementRelationships(String  userId,
-                                                                   String  metadataElementAtEnd1GUID,
-                                                                   String  metadataElementAtEnd2GUID,
-                                                                   String  relationshipTypeName,
-                                                                   boolean forLineage,
-                                                                   boolean forDuplicateProcessing,
-                                                                   Date    effectiveTime,
-                                                                   int     startFrom,
-                                                                   int     pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
+    List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+                                                                   String              metadataElementAtEnd1GUID,
+                                                                   String              metadataElementAtEnd2GUID,
+                                                                   String              relationshipTypeName,
+                                                                   List<ElementStatus> limitResultsByStatus,
+                                                                   Date                asOfTime,
+                                                                   String              sequencingProperty,
+                                                                   SequencingOrder     sequencingOrder,
+                                                                   boolean             forLineage,
+                                                                   boolean             forDuplicateProcessing,
+                                                                   Date                effectiveTime,
+                                                                   int                 startFrom,
+                                                                   int                 pageSize) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException;
 
 
     /**
@@ -405,6 +445,37 @@ public interface MetadataElementInterface
                                                                                 PropertyServerException;
 
 
+    /**
+     * Return each of the versions of a relationship.
+     *
+     * @param userId caller's userId
+     * @param relationshipGUID            unique identifier for the relationship
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the relationship (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the relationship (exclusive)
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
+                                                          String  relationshipGUID,
+                                                          Date    fromTime,
+                                                          Date    toTime,
+                                                          boolean oldestFirst,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          int     startFrom,
+                                                          int     pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 
 
     /**
