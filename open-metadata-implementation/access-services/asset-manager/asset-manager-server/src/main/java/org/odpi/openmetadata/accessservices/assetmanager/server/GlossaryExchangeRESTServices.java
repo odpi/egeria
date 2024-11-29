@@ -15,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -4861,15 +4861,15 @@ public class GlossaryExchangeRESTServices
      *  PropertyServerException there is a problem removing the properties from the repositories.
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermElementsResponse getGlossaryTermHistory(String                 serverName,
-                                                               String                 userId,
-                                                               String                 guid,
-                                                               int                    startFrom,
-                                                               int                    pageSize,
-                                                               boolean                oldestFirst,
-                                                               boolean                forLineage,
-                                                               boolean                forDuplicateProcessing,
-                                                               HistoryRequestBody     requestBody)
+    public GlossaryTermElementsResponse getGlossaryTermHistory(String                                serverName,
+                                                               String                                userId,
+                                                               String                                guid,
+                                                               int                                   startFrom,
+                                                               int                                   pageSize,
+                                                               boolean                               oldestFirst,
+                                                               boolean                               forLineage,
+                                                               boolean                               forDuplicateProcessing,
+                                                               HistoryExternalIdentifiersRequestBody requestBody)
     {
         final String methodName = "getGlossaryTermHistory";
 

@@ -8,31 +8,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * RelatedMetadataElementsResponse is the response structure used on the OMAS REST API calls that return the GAF
- * definition of the relationship (OpenMetadataRelationship).
+ * OpenMetadataRelationshipListResponse is a response object for passing back a list of GAF OpenMetadataRelationship
+ * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
+public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
 {
-   private OpenMetadataRelationship element = null;
+    private List<OpenMetadataRelationship> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public RelatedMetadataElementsResponse()
+    public OpenMetadataRelationshipListResponse()
     {
-        super();
     }
 
 
@@ -41,36 +41,47 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
      *
      * @param template object to copy
      */
-    public RelatedMetadataElementsResponse(RelatedMetadataElementsResponse template)
+    public OpenMetadataRelationshipListResponse(OpenMetadataRelationshipListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.element = template.getElement();
+            elementList = template.getElementList();
         }
     }
 
 
     /**
-     * Return the element result.
+     * Return the list of metadata elements.
      *
-     * @return bean
+     * @return result object
      */
-    public OpenMetadataRelationship getElement()
+    public List<OpenMetadataRelationship> getElementList()
     {
-        return element;
+        if (elementList == null)
+        {
+            return null;
+        }
+        else if (elementList.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(elementList);
+        }
     }
 
 
     /**
-     * Set up the element result.
+     * Set up the metadata element to return.
      *
-     * @param element  bean
+     * @param elementList result object
      */
-    public void setElement(OpenMetadataRelationship element)
+    public void setElementList(List<OpenMetadataRelationship> elementList)
     {
-        this.element = element;
+        this.elementList = elementList;
     }
 
 
@@ -82,8 +93,8 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "RelatedMetadataElementResponses{" +
-                "element=" + element +
+        return "OpenMetadataElementsResponse{" +
+                "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -111,7 +122,7 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof RelatedMetadataElementsResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -119,8 +130,8 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        RelatedMetadataElementsResponse that = (RelatedMetadataElementsResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        OpenMetadataRelationshipListResponse that = (OpenMetadataRelationshipListResponse) objectToCompare;
+        return Objects.equals(elementList, that.elementList);
     }
 
 
@@ -132,6 +143,6 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(element);
+        return Objects.hash(super.hashCode(), elementList);
     }
 }

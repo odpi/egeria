@@ -6,7 +6,6 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 
 import java.util.Objects;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementStatusRequestBody extends EffectiveTimeRequestBody
+public class ElementStatusRequestBody extends ResultsRequestBody
 {
     private String        externalSourceGUID = null;
     private String        externalSourceName = null;

@@ -538,7 +538,7 @@ public class ITAssetResource
                                                                    @PathVariable String                   assetTypeName,
                                                                    @RequestParam int                      startFrom,
                                                                    @RequestParam int                      pageSize,
-                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                                   @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getAssetsForInfrastructureManager(serverName, userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, startFrom, pageSize, requestBody);
     }
@@ -565,7 +565,7 @@ public class ITAssetResource
                                                @PathVariable String                   userId,
                                                @PathVariable String                   assetTypeName,
                                                @PathVariable String                   assetGUID,
-                                               @RequestBody  EffectiveTimeRequestBody requestBody)
+                                               @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getAssetByGUID(serverName, userId, assetTypeName, assetGUID, requestBody);
     }
@@ -602,7 +602,7 @@ public class ITAssetResource
                                                             @RequestParam int                      startingEnd,
                                                             @RequestParam int                      startFrom,
                                                             @RequestParam int                      pageSize,
-                                                            @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                            @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getAssetRelationships(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
     }
@@ -639,7 +639,7 @@ public class ITAssetResource
                                                   @RequestParam int                      startingEnd,
                                                   @RequestParam int                      startFrom,
                                                   @RequestParam int                      pageSize,
-                                                  @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                  @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getRelatedAssets(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
     }
@@ -776,7 +776,7 @@ public class ITAssetResource
                                                          @PathVariable String                   dataSupplierGUID,
                                                          @RequestParam int                      startFrom,
                                                          @RequestParam int                      pageSize,
-                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                         @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, startFrom, pageSize, requestBody);
     }
@@ -804,7 +804,7 @@ public class ITAssetResource
                                                          @PathVariable String                   dataConsumerGUID,
                                                          @RequestParam int                      startFrom,
                                                          @RequestParam int                      pageSize,
-                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                         @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, startFrom, pageSize, requestBody);
     }
@@ -936,7 +936,7 @@ public class ITAssetResource
                                                                @PathVariable String                   currentStepGUID,
                                                                @RequestParam int                      startFrom,
                                                                @RequestParam int                      pageSize,
-                                                               @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                               @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID, startFrom, pageSize, requestBody);
     }
@@ -964,7 +964,7 @@ public class ITAssetResource
                                                                    @PathVariable String                   currentStepGUID,
                                                                    @RequestParam int                      startFrom,
                                                                    @RequestParam int                      pageSize,
-                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                                   @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID, startFrom, pageSize, requestBody);
     }
@@ -1096,7 +1096,7 @@ public class ITAssetResource
                                                         @PathVariable String                   callerGUID,
                                                         @RequestParam int                      startFrom,
                                                         @RequestParam int                      pageSize,
-                                                        @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                        @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getProcessCalled(serverName, userId, callerGUID, startFrom, pageSize, requestBody);
     }
@@ -1124,7 +1124,7 @@ public class ITAssetResource
                                                          @PathVariable String                   calledGUID,
                                                          @RequestParam int                      startFrom,
                                                          @RequestParam int                      pageSize,
-                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                         @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getProcessCallers(serverName, userId, calledGUID, startFrom, pageSize, requestBody);
     }
@@ -1232,7 +1232,7 @@ public class ITAssetResource
                                                                         @PathVariable String                   sourceElementGUID,
                                                                         @RequestParam int                      startFrom,
                                                                         @RequestParam int                      pageSize,
-                                                                        @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                                        @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID, startFrom, pageSize, requestBody);
     }
@@ -1260,7 +1260,7 @@ public class ITAssetResource
                                                                    @PathVariable String                   destinationElementGUID,
                                                                    @RequestParam int                      startFrom,
                                                                    @RequestParam int                      pageSize,
-                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                                   @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, startFrom, pageSize, requestBody);
     }

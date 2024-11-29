@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -200,6 +201,10 @@ public class AssetConsumerRESTServices
                                                                                                       asset.getElementHeader().getGUID(),
                                                                                                       parameterName,
                                                                                                       OpenMetadataType.ASSET.typeName,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                      null,
                                                                                                       false,
                                                                                                       false,
                                                                                                       new Date(),
@@ -249,7 +254,7 @@ public class AssetConsumerRESTServices
                                                                                                  searchClassifications,
                                                                                                  null,
                                                                                                  null,
-                                                                                                 null,
+                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
                                                                                                  false,
                                                                                                  false,
                                                                                                  startFrom,
@@ -272,6 +277,10 @@ public class AssetConsumerRESTServices
                                                                                               metadataElement.getElementHeader().getGUID(),
                                                                                               anchoredElementParameterName,
                                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                              null,
+                                                                                              null,
+                                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                                              null,
                                                                                               false,
                                                                                               false,
                                                                                               new Date(),
@@ -1137,6 +1146,10 @@ public class AssetConsumerRESTServices
                                                                               elementGUID,
                                                                               elementGUIDParameterName,
                                                                               elementTypeName,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               true,
                                                                               false,
                                                                               new Date(),
@@ -2337,6 +2350,10 @@ public class AssetConsumerRESTServices
                                                                               null,
                                                                               null,
                                                                               1,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               false,
                                                                               false,
                                                                               startFrom,

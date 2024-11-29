@@ -36,6 +36,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -2201,6 +2202,10 @@ public class ITInfrastructureRESTServices
                                                                           null,
                                                                           null,
                                                                           0,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           startFrom,
@@ -2883,9 +2888,12 @@ public class ITInfrastructureRESTServices
                                                                                  searchStringParameterName,
                                                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
                                                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                 null,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 null,
+                                                                                 null,
+                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                 null,
                                                                                  false,
                                                                                  false,
                                                                                  new Date(),
@@ -2955,6 +2963,10 @@ public class ITInfrastructureRESTServices
                                                                                        specificMatchPropertyNames,
                                                                                        true,
                                                                                        null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
                                                                                        null,
                                                                                        false,
                                                                                        false,
@@ -3458,6 +3470,10 @@ public class ITInfrastructureRESTServices
                                                                           null,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           0,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           startFrom,
@@ -3531,6 +3547,10 @@ public class ITInfrastructureRESTServices
                                                                           null,
                                                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                           0,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           startFrom,
@@ -3580,7 +3600,7 @@ public class ITInfrastructureRESTServices
                                                                  String                   assetGUID,
                                                                  int                      startFrom,
                                                                  int                      pageSize,
-                                                                 EffectiveTimeRequestBody requestBody)
+                                                                 ResultsRequestBody requestBody)
     {
         final String methodName                  = "getServerAssetUsesForElements";
         final String capabilityGUIDParameterName = "capabilityGUID";
@@ -3606,6 +3626,10 @@ public class ITInfrastructureRESTServices
                                                                           assetGUID,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           0,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           startFrom,

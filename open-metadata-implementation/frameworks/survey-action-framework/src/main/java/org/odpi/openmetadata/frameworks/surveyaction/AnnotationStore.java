@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -551,6 +552,10 @@ public class AnnotationStore
                                                                                                             elementGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
                                                                                                             forLineage,
                                                                                                             forDuplicateProcessing,
                                                                                                             getEffectiveTime(),
@@ -583,6 +588,10 @@ public class AnnotationStore
                                                                                                             surveyReportGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
                                                                                                             forLineage,
                                                                                                             forDuplicateProcessing,
                                                                                                             getEffectiveTime(),
@@ -618,6 +627,10 @@ public class AnnotationStore
                                                                                                             annotationGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            null,
+                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
                                                                                                             forLineage,
                                                                                                             forDuplicateProcessing,
                                                                                                             getEffectiveTime(),
@@ -1060,6 +1073,10 @@ public class AnnotationStore
                                                                                                       annotationElement.getElementGUID(),
                                                                                                       0,
                                                                                                       null,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
                                                                                                       forLineage,
                                                                                                       forDuplicateProcessing,
                                                                                                       this.getEffectiveTime(),

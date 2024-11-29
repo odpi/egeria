@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -140,111 +141,6 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                          methodName);
 
         return schemaTypeGUID;
-    }
-
-
-
-    /**
-     * Create a schema type.
-     *
-     * @param userId calling userId
-     * @param externalSourceGUID unique identifier of software capability representing the caller - null for local cohort
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param qualifiedName unique name of schema type itself
-     * @param displayName new value for the display name.
-     * @param description description of the schema type.
-     * @param versionNumber version of the schema type.
-     * @param isDeprecated is the schema type deprecated
-     * @param author name of the author
-     * @param usage guidance on how the schema should be used.
-     * @param encodingStandard format of the schema.
-     * @param namespace namespace where the schema is defined.
-     * @param additionalProperties additional properties
-     * @param suppliedTypeName unique name of schema sub type
-     * @param extendedProperties  properties from the subtype.
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifier of the schemaType in the repository.
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String addSchemaType(String              userId,
-                                String              externalSourceGUID,
-                                String              externalSourceName,
-                                String              qualifiedName,
-                                String              displayName,
-                                String              description,
-                                String              versionNumber,
-                                boolean             isDeprecated,
-                                String              author,
-                                String              usage,
-                                String              encodingStandard,
-                                String              namespace,
-                                Map<String, String> additionalProperties,
-                                String              suppliedTypeName,
-                                Map<String, Object> extendedProperties,
-                                Date                effectiveFrom,
-                                Date                effectiveTo,
-                                boolean             forLineage,
-                                boolean             forDuplicateProcessing,
-                                Date                effectiveTime,
-                                String              methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
-
-        if (suppliedTypeName != null)
-        {
-            typeName = suppliedTypeName;
-        }
-
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
-        SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
-                                                          displayName,
-                                                          description,
-                                                          versionNumber,
-                                                          isDeprecated,
-                                                          author,
-                                                          usage,
-                                                          encodingStandard,
-                                                          namespace,
-                                                          additionalProperties,
-                                                          typeGUID,
-                                                          typeName,
-                                                          extendedProperties,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        builder.setEffectivityDates(effectiveFrom, effectiveTo);
-
-        return addSchemaType(userId,
-                             externalSourceGUID,
-                             externalSourceName,
-                             builder,
-                             effectiveFrom,
-                             effectiveTo,
-                             forLineage,
-                             forDuplicateProcessing,
-                             effectiveTime,
-                             methodName);
     }
 
 
@@ -1513,121 +1409,6 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
     }
 
-    /**
-     * Return the list of schema types nested in the parent schema type - this is typically schema type options or APIOperations in a APISchemaType.
-     *
-     * @param userId     calling user
-     * @param parentGUID identifier for the entity that the object is attached to
-     * @param parentGUIDParameterName parameter supplying parentGUID
-     * @param parentTypeName type name of anchor
-     * @param serviceSupportedZones supported zones for calling service
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param startingFrom              paging start point
-     * @param pageSize                  maximum results that can be returned
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of schemaType objects or null
-     *
-     * @throws InvalidParameterException  the schemaType bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public List<B> getNestedSchemaTypesForParent(String       userId,
-                                                 String       parentGUID,
-                                                 String       parentGUIDParameterName,
-                                                 String       parentTypeName,
-                                                 List<String> serviceSupportedZones,
-                                                 boolean      forLineage,
-                                                 boolean      forDuplicateProcessing,
-                                                 int          startingFrom,
-                                                 int          pageSize,
-                                                 Date         effectiveTime,
-                                                 String       methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
-    {
-        EntityDetail parentEntity = this.getEntityFromRepository(userId,
-                                                                 parentGUID,
-                                                                 parentGUIDParameterName,
-                                                                 parentTypeName,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 serviceSupportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
-
-        if (parentEntity != null)
-        {
-            List<EntityDetail> schemaTypeEntities;
-
-            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME))
-            {
-                schemaTypeEntities = this.getAttachedEntities(userId,
-                                                              parentEntity,
-                                                              parentGUIDParameterName,
-                                                              parentTypeName,
-                                                              OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                                              OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
-                                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                              null,
-                                                              null,
-                                                              2,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              startingFrom,
-                                                              pageSize,
-                                                              effectiveTime,
-                                                              methodName);
-            }
-            else
-            {
-                schemaTypeEntities = this.getAttachedEntities(userId,
-                                                              parentEntity,
-                                                              parentGUIDParameterName,
-                                                              parentTypeName,
-                                                              OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                                              OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                              null,
-                                                              null,
-                                                              2,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              startingFrom,
-                                                              pageSize,
-                                                              effectiveTime,
-                                                              methodName);
-            }
-
-            if (schemaTypeEntities != null)
-            {
-                List<B> results = new ArrayList<>();
-
-                for (EntityDetail schemaTypeEntity : schemaTypeEntities)
-                {
-                    B schemaTypeBean = getSchemaTypeFromEntity(userId,
-                                                               schemaTypeEntity,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               effectiveTime,
-                                                               methodName);
-
-                    results.add(schemaTypeBean);
-                }
-
-                return results;
-            }
-        }
-
-        return null;
-    }
-
 
     /**
      * Retrieve a specific schema type based on its unique identifier (GUID).  This is used to do updates
@@ -1731,9 +1512,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         typeName,
                                                         null,
                                                         null,
-                                                        null,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -1810,10 +1594,13 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               false,
                                                               null,
                                                               null,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               supportedZones,
-                                                              null,
                                                               startFrom,
                                                               pageSize,
                                                               effectiveTime,
@@ -1858,21 +1645,25 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         final String schemaTypeGUIDParameterName = "schemaTypeEnd.getGUID";
 
         List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                      parentElementGUID,
-                                                                      parentElementGUIDParameterName,
-                                                                      parentElementTypeName,
-                                                                      null,
-                                                                      null,
-                                                                      null,
-                                                                      null,
-                                                                      0,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      supportedZones,
-                                                                      0,
-                                                                      0,
-                                                                      effectiveTime,
-                                                                      methodName);
+                                                                   parentElementGUID,
+                                                                   parentElementGUIDParameterName,
+                                                                   parentElementTypeName,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   0,
+                                                                   0,
+                                                                   effectiveTime,
+                                                                   methodName);
 
         if (relationships != null)
         {
@@ -2191,6 +1982,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                null,
                                                                                null,
                                                                                2,
+                                                                               null,
+                                                                               null,
+                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                               null,
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                supportedZones,
@@ -2229,6 +2024,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                   null,
                                                                   OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   2,
+                                                                  null,
+                                                                  null,
+                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                  null,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   supportedZones,

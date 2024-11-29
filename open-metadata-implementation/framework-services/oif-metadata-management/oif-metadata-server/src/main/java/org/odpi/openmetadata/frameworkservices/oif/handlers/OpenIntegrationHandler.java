@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.oif.builder.IntegrationReportBuilder;
 import org.odpi.openmetadata.frameworkservices.oif.converters.IntegrationReportConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -257,6 +258,10 @@ public class OpenIntegrationHandler
                                                                                                   null,
                                                                                                   null,
                                                                                                   2,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
                                                                                                   true,
                                                                                                   true,
                                                                                                   integrationReportHandler.getSupportedZones(),
@@ -304,12 +309,15 @@ public class OpenIntegrationHandler
         List<IntegrationReport> integrationReports = integrationReportHandler.getBeansByType(userId,
                                                                                              OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
                                                                                              OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
-                                                                                             OpenMetadataType.CONNECTOR_ID_PROPERTY_NAME,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             null,
                                                                                              false,
                                                                                              false,
                                                                                              integrationReportHandler.getSupportedZones(),
                                                                                              startingFrom,
-                                                                                             0,
+                                                                                             pageSize,
                                                                                              null,
                                                                                              methodName);
 

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyName
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.EffectiveTimeQueryRequestBody;
@@ -137,7 +136,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                       String                    elementGUID,
                                                       boolean                   forLineage,
                                                       boolean                   forDuplicateProcessing,
-                                                      EffectiveTimeRequestBody  requestBody)
+                                                      ResultsRequestBody requestBody)
     {
         final String   methodName = "clearConfidenceClassification";
 
@@ -270,7 +269,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                        String                    elementGUID,
                                                        boolean                   forLineage,
                                                        boolean                   forDuplicateProcessing,
-                                                       EffectiveTimeRequestBody  requestBody)
+                                                       ResultsRequestBody requestBody)
     {
         final String   methodName = "clearCriticalityClassification";
 
@@ -402,7 +401,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                            String                   elementGUID,
                                                            boolean                  forLineage,
                                                            boolean                  forDuplicateProcessing,
-                                                           EffectiveTimeRequestBody requestBody)
+                                                           ResultsRequestBody requestBody)
     {
         final String   methodName = "clearConfidentialityClassification";
 
@@ -537,7 +536,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                      String                   elementGUID,
                                                      boolean                  forLineage,
                                                      boolean                  forDuplicateProcessing,
-                                                     EffectiveTimeRequestBody requestBody)
+                                                     ResultsRequestBody requestBody)
     {
         final String   methodName = "clearRetentionClassification";
 
@@ -2188,7 +2187,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                          String                   guid,
                                                          boolean                  forLineage,
                                                          boolean                  forDuplicateProcessing,
-                                                         EffectiveTimeRequestBody requestBody)
+                                                         ResultsRequestBody requestBody)
     {
         final String methodName = "retrieveInstanceForGUID";
 

@@ -45,9 +45,7 @@ import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermActiv
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.InformalTagUpdateRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.ReferenceableUpdateRequestBody;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.RelationshipRequestBody;
+
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;

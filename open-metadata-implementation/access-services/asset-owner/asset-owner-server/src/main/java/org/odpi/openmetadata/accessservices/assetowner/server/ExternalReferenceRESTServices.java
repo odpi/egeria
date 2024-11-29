@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
@@ -548,9 +549,12 @@ public class ExternalReferenceRESTServices
                                                        resourceIdParameterName,
                                                        OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
                                                        OpenMetadataType.EXTERNAL_REFERENCE.typeName,
-                                                       null,
                                                        startFrom,
                                                        pageSize,
+                                                       null,
+                                                       null,
+                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                       null,
                                                        false,
                                                        false,
                                                        new Date(),
@@ -674,6 +678,10 @@ public class ExternalReferenceRESTServices
                                                              null,
                                                              null,
                                                              2,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             null,
                                                              false,
                                                              false,
                                                              startFrom,
@@ -734,6 +742,10 @@ public class ExternalReferenceRESTServices
                                                              null,
                                                              null,
                                                              1,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                             null,
                                                              false,
                                                              false,
                                                              startFrom,

@@ -603,7 +603,7 @@ public class SecurityManagerOMASResource
                                             @PathVariable String                   personRoleGUID,
                                             @RequestParam int                      startFrom,
                                             @RequestParam int                      pageSize,
-                                            @RequestBody  EffectiveTimeRequestBody requestBody)
+                                            @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getAppointees(serverName, userId, personRoleGUID, startFrom, pageSize, requestBody);
     }

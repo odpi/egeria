@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -799,10 +800,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.GLOSSARY_TYPE_GUID,
                               OpenMetadataType.GLOSSARY_TYPE_NAME,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               supportedZones,
-                              null,
                               startFrom,
                               pageSize,
                               effectiveTime,
@@ -855,10 +859,13 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -940,6 +947,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
                                        1,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,
@@ -983,6 +994,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
                                        1,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,

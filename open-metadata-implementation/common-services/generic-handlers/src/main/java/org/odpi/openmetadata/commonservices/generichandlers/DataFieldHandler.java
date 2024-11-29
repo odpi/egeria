@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -159,6 +160,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               null,
                                                                               OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName,
                                                                               0,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
                                                                               supportedZones,
@@ -185,6 +190,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                                                                  OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                                                                  OpenMetadataType.DATA_FIELD.typeName,
+                                                                                 null,
+                                                                                 null,
+                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                 null,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startingFrom,
@@ -249,6 +258,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                  OpenMetadataType.NESTED_DATA_FIELD_TYPE_GUID,
                                                                  OpenMetadataType.NESTED_DATA_FIELD_TYPE_NAME,
                                                                  OpenMetadataType.DATA_FIELD.typeName,
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                 null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  startingFrom,
@@ -309,6 +322,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     null,
                                                                     OpenMetadataType.DATA_FIELD.typeName,
                                                                     0,
+                                                                    null,
+                                                                    null,
+                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                    null,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     startingFrom,
@@ -463,6 +480,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                        dataFieldGUID,
                                                                        dataFieldGUIDParameterName,
                                                                        OpenMetadataType.DATA_FIELD.typeName,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
                                                                        effectiveTime,

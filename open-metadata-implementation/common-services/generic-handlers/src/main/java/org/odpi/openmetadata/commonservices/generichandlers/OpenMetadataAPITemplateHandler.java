@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -491,6 +492,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                entityTypeGUID,
                                                                entityTypeName,
+                                                               null,
+                                                               null,
+                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                               null,
                                                                forLineage,
                                                                forDuplicateProcessing,
                                                                serviceSupportedZones,
@@ -686,6 +691,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                        null,
                                                                                        null,
                                                                                        0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
@@ -742,6 +751,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                               null,
                                                                               entityProxy.getType().getTypeDefName(),
                                                                               2,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
                                                                               serviceSupportedZones,

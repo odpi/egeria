@@ -730,7 +730,7 @@ public class QueryBuilder
 
             if (matchClassifications.getMatchCriteria() == MatchCriteria.ANY)
             {
-                matchOperand = "' or ";
+                matchOperand = " or ";
             }
             else if (matchClassifications.getMatchCriteria() == MatchCriteria.NONE)
             {

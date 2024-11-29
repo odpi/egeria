@@ -903,7 +903,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/deployed-on-it-assets/{2}?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -959,7 +959,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/infrastructure-managers/{2}/{3}/software-capabilities" + "?startFrom={4}&pageSize={5}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -1308,7 +1308,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 

@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedMetadataElementsListResponse is a response object for passing back a list of GAF OpenMetadataRelationship
+ * OpenMetadataRelationshipListResponse is a response object for passing back a list of GAF OpenMetadataRelationship
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

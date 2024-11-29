@@ -8,11 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +44,10 @@ public class DuplicateEntityIterator
     private final String                  userId;
     private final String                  entityTypeName;
     private final String                  methodName;
+    private final List<InstanceStatus>    limitResultsByStatus;
+    private final Date                    asOfTime;
+    private final SequencingOrder         sequencingOrder;
+    private final String                  sequencingProperty;
     private final boolean                 forLineage;
     private final boolean                 forDuplicateProcessing;
     private final Date                    effectiveTime;
@@ -66,6 +67,12 @@ public class DuplicateEntityIterator
      * @param userId calling user
      * @param startingEntity entity to start processing on
      * @param entityTypeName type of entities that the iterator is working with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this a duplicate processing request
      * @param effectiveTime what is the effective time needed by the caller
@@ -80,6 +87,10 @@ public class DuplicateEntityIterator
                                    String                  userId,
                                    EntityDetail            startingEntity,
                                    String                  entityTypeName,
+                                   List<InstanceStatus>    limitResultsByStatus,
+                                   Date                    asOfTime,
+                                   SequencingOrder         sequencingOrder,
+                                   String                  sequencingPropertyName,
                                    boolean                 forLineage,
                                    boolean                 forDuplicateProcessing,
                                    Date                    effectiveTime,
@@ -92,6 +103,17 @@ public class DuplicateEntityIterator
         this.invalidParameterHandler = invalidParameterHandler;
         this.userId = userId;
         this.entityTypeName = entityTypeName;
+        this.limitResultsByStatus = limitResultsByStatus;
+        this.asOfTime = asOfTime;
+        if (sequencingOrder == null)
+        {
+            this.sequencingOrder = SequencingOrder.CREATION_DATE_RECENT;
+        }
+        else
+        {
+            this.sequencingOrder = sequencingOrder;
+        }
+        this.sequencingProperty = sequencingPropertyName;
         this.forLineage = forLineage;
         this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime = effectiveTime;
@@ -195,6 +217,10 @@ public class DuplicateEntityIterator
                     EntityDetail consolidatedEntity = this.getConsolidatedEntity(userId,
                                                                                  processingEntity,
                                                                                  processingEntity.getType().getTypeDefName(),
+                                                                                 limitResultsByStatus,
+                                                                                 asOfTime,
+                                                                                 sequencingOrder,
+                                                                                 sequencingProperty,
                                                                                  forLineage,
                                                                                  effectiveTime,
                                                                                  methodName);
@@ -245,6 +271,10 @@ public class DuplicateEntityIterator
                                                                                                        peerDuplicateLinkGUID,
                                                                                                        peerDuplicateLink,
                                                                                                        0,
+                                                                                                       limitResultsByStatus,
+                                                                                                       asOfTime,
+                                                                                                       sequencingOrder,
+                                                                                                       sequencingProperty,
                                                                                                        true,
                                                                                                        true,
                                                                                                        0,
@@ -410,6 +440,12 @@ public class DuplicateEntityIterator
      * @param userId  user making the request
      * @param startingEntity starting entity
      * @param startingEntityTypeName  starting entity's type name
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
@@ -418,14 +454,18 @@ public class DuplicateEntityIterator
      * @throws PropertyServerException problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public EntityDetail getConsolidatedEntity(String       userId,
-                                              EntityDetail startingEntity,
-                                              String       startingEntityTypeName,
-                                              boolean      forLineage,
-                                              Date         effectiveTime,
-                                              String       methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public EntityDetail getConsolidatedEntity(String               userId,
+                                              EntityDetail         startingEntity,
+                                              String               startingEntityTypeName,
+                                              List<InstanceStatus> limitResultsByStatus,
+                                              Date                 asOfTime,
+                                              SequencingOrder      sequencingOrder,
+                                              String               sequencingPropertyName,
+                                              boolean              forLineage,
+                                              Date                 effectiveTime,
+                                              String               methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         return repositoryHandler.getEntityForRelationshipType(userId,
                                                               startingEntity,
@@ -436,6 +476,10 @@ public class DuplicateEntityIterator
                                                               0,
                                                               startingEntityTypeName,
                                                               2,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingOrder,
+                                                              sequencingPropertyName,
                                                               forLineage,
                                                               true,
                                                               effectiveTime,

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
@@ -75,29 +74,6 @@ public class RelatedMetadataElement extends ElementControlHeader
     public void setRelationshipGUID(String guid)
     {
         this.relationshipGUID = guid;
-    }
-
-
-    /**
-     * Return the element type properties for this relationship object.  These values are set up by the metadata repository
-     * and define details to the metadata relationship used to represent this element.
-     *
-     * @return element type properties
-     */
-    @Deprecated
-    public ElementType getRelationshipType() { return super.getType(); }
-
-
-    /**
-     * Set up the element type properties for this relationship object.  These values are set up by the metadata repository
-     * and define details to the metadata relationship used to represent this element.
-     *
-     * @param relationshipType element type properties
-     */
-    @Deprecated
-    public void setRelationshipType(ElementType relationshipType)
-    {
-        super.setType(relationshipType);
     }
 
 
@@ -192,19 +168,13 @@ public class RelatedMetadataElement extends ElementControlHeader
     public String toString()
     {
         return "RelatedMetadataElement{" +
-                       "relationshipGUID='" + relationshipGUID + '\'' +
-                       ", effectiveFromTime=" + effectiveFromTime +
-                       ", effectiveToTime=" + effectiveToTime +
-                       ", relationshipProperties=" + relationshipProperties +
-                       ", elementProperties=" + element +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "relationshipGUID='" + relationshipGUID + '\'' +
+                ", effectiveFromTime=" + effectiveFromTime +
+                ", effectiveToTime=" + effectiveToTime +
+                ", relationshipProperties=" + relationshipProperties +
+                ", element=" + element +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
@@ -36,9 +37,11 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the type of entity to retrieve
      * @param entityTypeName  name for the type of entity to retrieve
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
      * @param limitResultsByClassification only return elements that have the requested classification(s)
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -52,9 +55,11 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
                                          String                  userId,
                                          String                  entityTypeGUID,
                                          String                  entityTypeName,
-                                         String                  sequencingPropertyName,
                                          List<InstanceStatus>    limitResultsByStatus,
                                          List<String>            limitResultsByClassification,
+                                         Date                    asOfTime,
+                                         SequencingOrder         sequencingOrder,
+                                         String                  sequencingPropertyName,
                                          boolean                 forLineage,
                                          boolean                 forDuplicateProcessing,
                                          int                     startingFrom,
@@ -67,6 +72,10 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
               userId,
               startingFrom,
               pageSize,
+              limitResultsByStatus,
+              asOfTime,
+              sequencingOrder,
+              sequencingPropertyName,
               forLineage,
               forDuplicateProcessing,
               effectiveTime,

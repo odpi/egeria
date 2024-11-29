@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EffectiveTimeRequestBody carries the date/time for a query.
+ * ResultsRequestBody carries the date/time for a query.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -77,7 +77,7 @@ public class EffectiveTimeRequestBody
     @Override
     public String toString()
     {
-        return "EffectiveTimeRequestBody{" +
+        return "ResultsRequestBody{" +
                        "effectiveTime=" + effectiveTime +
                        '}';
     }

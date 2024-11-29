@@ -6,12 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -27,7 +22,11 @@ import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsCon
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -104,7 +103,7 @@ public class OpenMetadataStoreRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, assetGUID, false, false, new Date().getTime());
+            this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, assetGUID, false, false, null);
 
             auditLog.logMessage(methodName, OpenMetadataStoreAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, governanceService, message));
         }
@@ -115,25 +114,6 @@ public class OpenMetadataStoreRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * The effectiveTime is sent as a long and needs to be converted into a date.
-     *
-     * @param effectiveTime milliseconds since epoch or 0 to mean null (any time)
-     * @return date object or null
-     */
-    private Date getEffectiveTimeFromLong(long effectiveTime)
-    {
-        Date result = null;
-
-        if (effectiveTime != 0)
-        {
-            result = new Date(effectiveTime);
-        }
-
-        return result;
     }
 
 
@@ -654,6 +634,44 @@ public class OpenMetadataStoreRESTServices
                                                                 boolean forDuplicateProcessing,
                                                                 long    effectiveTime)
     {
+        if (effectiveTime != 0)
+        {
+            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            requestBody.setEffectiveTime(new Date(effectiveTime));
+
+            return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+        }
+        else
+        {
+            return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, null);
+        }
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementResponse getMetadataElementByGUID(String                   serverName,
+                                                                String                   serviceURLMarker,
+                                                                String                   userId,
+                                                                String                   elementGUID,
+                                                                boolean                  forLineage,
+                                                                boolean                  forDuplicateProcessing,
+                                                                EffectiveTimeRequestBody requestBody)
+    {
         final String methodName = "getMetadataElementByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -667,14 +685,26 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-
-            response.setElement(handler.getMetadataElementByGUID(userId,
-                                                                 elementGUID,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                 this.getEffectiveTimeFromLong(effectiveTime),
-                                                                 methodName));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                     elementGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
+            }
+            else
+            {
+                response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                     elementGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                     null,
+                                                                     methodName));
+            }
         }
         catch (Exception error)
         {
@@ -727,6 +757,10 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getName(),
                                                                            requestBody.getNameParameterName(),
                                                                            requestBody.getNamePropertyName(),
+                                                                           requestBody.getLimitResultsByStatus(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getSequencingOrder(),
+                                                                           requestBody.getSequencingProperty(),
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -789,6 +823,10 @@ public class OpenMetadataStoreRESTServices
                                                                             requestBody.getName(),
                                                                             requestBody.getNameParameterName(),
                                                                             requestBody.getNamePropertyName(),
+                                                                            requestBody.getLimitResultsByStatus(),
+                                                                            requestBody.getAsOfTime(),
+                                                                            requestBody.getSequencingOrder(),
+                                                                            requestBody.getSequencingProperty(),
                                                                             forLineage,
                                                                             forDuplicateProcessing,
                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -906,7 +944,6 @@ public class OpenMetadataStoreRESTServices
     }
 
 
-
     /**
      * Retrieve the metadata elements that contain the requested string.
      *
@@ -951,6 +988,10 @@ public class OpenMetadataStoreRESTServices
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
                                                                                requestBody.getTypeName(),
+                                                                               requestBody.getLimitResultsByStatus(),
+                                                                               requestBody.getAsOfTime(),
+                                                                               requestBody.getSequencingProperty(),
+                                                                               requestBody.getSequencingOrder(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -1007,6 +1048,72 @@ public class OpenMetadataStoreRESTServices
                                                                          int     startFrom,
                                                                          int     pageSize)
     {
+        if (effectiveTime != 0)
+        {
+            ResultsRequestBody requestBody = new ResultsRequestBody();
+
+            requestBody.setEffectiveTime(new Date(effectiveTime));
+            return getRelatedMetadataElements(serverName,
+                                              serviceURLMarker,
+                                              userId,
+                                              elementGUID,
+                                              relationshipTypeName,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              startingAtEnd,
+                                              startFrom,
+                                              pageSize,
+                                              requestBody);
+        }
+        else
+        {
+            return getRelatedMetadataElements(serverName,
+                                              serviceURLMarker,
+                                              userId,
+                                              elementGUID,
+                                              relationshipTypeName,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              startingAtEnd,
+                                              startFrom,
+                                              pageSize,
+                                              null);
+        }
+    }
+
+
+    /**
+     * Retrieve the metadata elements connected to the supplied element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the starting metadata element
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public RelatedMetadataElementListResponse getRelatedMetadataElements(String             serverName,
+                                                                         String             serviceURLMarker,
+                                                                         String             userId,
+                                                                         String             elementGUID,
+                                                                         String             relationshipTypeName,
+                                                                         boolean            forLineage,
+                                                                         boolean            forDuplicateProcessing,
+                                                                         int                startingAtEnd,
+                                                                         int                startFrom,
+                                                                         int                pageSize,
+                                                                         ResultsRequestBody requestBody)
+    {
         final String methodName = "getRelatedMetadataElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1020,17 +1127,42 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                       elementGUID,
-                                                                       startingAtEnd,
-                                                                       relationshipTypeName,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                       this.getEffectiveTimeFromLong(effectiveTime),
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                           elementGUID,
+                                                                           startingAtEnd,
+                                                                           relationshipTypeName,
+                                                                           requestBody.getLimitResultsByStatus(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getSequencingProperty(),
+                                                                           requestBody.getSequencingOrder(),
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                           elementGUID,
+                                                                           startingAtEnd,
+                                                                           relationshipTypeName,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           null,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           methodName));
+            }
         }
         catch (Exception error)
         {
@@ -1040,7 +1172,6 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
     /**
      * Retrieve the relationships linking to the supplied elements.
@@ -1062,24 +1193,90 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public RelatedMetadataElementsListResponse getMetadataElementRelationships(String  serverName,
-                                                                               String  serviceURLMarker,
-                                                                               String  userId,
-                                                                               String  metadataElementAtEnd1GUID,
-                                                                               String  relationshipTypeName,
-                                                                               String  metadataElementAtEnd2GUID,
-                                                                               boolean forLineage,
-                                                                               boolean forDuplicateProcessing,
-                                                                               long    effectiveTime,
-                                                                               int     startFrom,
-                                                                               int     pageSize)
+    public OpenMetadataRelationshipListResponse getMetadataElementRelationships(String  serverName,
+                                                                                String  serviceURLMarker,
+                                                                                String  userId,
+                                                                                String  metadataElementAtEnd1GUID,
+                                                                                String  relationshipTypeName,
+                                                                                String  metadataElementAtEnd2GUID,
+                                                                                boolean forLineage,
+                                                                                boolean forDuplicateProcessing,
+                                                                                long    effectiveTime,
+                                                                                int     startFrom,
+                                                                                int     pageSize)
+    {
+        if (effectiveTime != 0)
+        {
+            ResultsRequestBody requestBody = new ResultsRequestBody();
+            requestBody.setEffectiveTime(new Date(effectiveTime));
+
+            return this.getMetadataElementRelationships(serverName,
+                                                        serviceURLMarker,
+                                                        userId,
+                                                        metadataElementAtEnd1GUID,
+                                                        relationshipTypeName,
+                                                        metadataElementAtEnd2GUID,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        startFrom,
+                                                        pageSize,
+                                                        requestBody);
+        }
+        else
+        {
+            return this.getMetadataElementRelationships(serverName,
+                                                        serviceURLMarker,
+                                                        userId,
+                                                        metadataElementAtEnd1GUID,
+                                                        relationshipTypeName,
+                                                        metadataElementAtEnd2GUID,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        startFrom,
+                                                        pageSize,
+                                                        null);
+        }
+    }
+
+
+    /**
+     * Retrieve the relationships linking to the supplied elements.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related elements
+     *  InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
+     *  UserNotAuthorizedException the governance action service is not able to access the elements
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRelationshipListResponse getMetadataElementRelationships(String             serverName,
+                                                                                String             serviceURLMarker,
+                                                                                String             userId,
+                                                                                String             metadataElementAtEnd1GUID,
+                                                                                String             relationshipTypeName,
+                                                                                String             metadataElementAtEnd2GUID,
+                                                                                boolean            forLineage,
+                                                                                boolean            forDuplicateProcessing,
+                                                                                int                startFrom,
+                                                                                int                pageSize,
+                                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getMetadataElementRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AuditLog                            auditLog = null;
-        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+        AuditLog                             auditLog = null;
+        OpenMetadataRelationshipListResponse response = new OpenMetadataRelationshipListResponse();
 
         try
         {
@@ -1087,17 +1284,42 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                            metadataElementAtEnd1GUID,
-                                                                            relationshipTypeName,
-                                                                            metadataElementAtEnd2GUID,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
-                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                            this.getEffectiveTimeFromLong(effectiveTime),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            methodName));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getMetadataElementRelationships(userId,
+                                                                                metadataElementAtEnd1GUID,
+                                                                                relationshipTypeName,
+                                                                                metadataElementAtEnd2GUID,
+                                                                                requestBody.getLimitResultsByStatus(),
+                                                                                requestBody.getAsOfTime(),
+                                                                                requestBody.getSequencingProperty(),
+                                                                                requestBody.getSequencingOrder(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                requestBody.getEffectiveTime(),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                methodName));
+            }
+            else
+            {
+                response.setElementList(handler.getMetadataElementRelationships(userId,
+                                                                                metadataElementAtEnd1GUID,
+                                                                                relationshipTypeName,
+                                                                                metadataElementAtEnd2GUID,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                null,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                methodName));
+            }
         }
         catch (Exception error)
         {
@@ -1117,7 +1339,6 @@ public class OpenMetadataStoreRESTServices
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -1132,7 +1353,6 @@ public class OpenMetadataStoreRESTServices
                                                              String          userId,
                                                              boolean         forLineage,
                                                              boolean         forDuplicateProcessing,
-                                                             long            effectiveTime,
                                                              int             startFrom,
                                                              int             pageSize,
                                                              FindRequestBody requestBody)
@@ -1166,7 +1386,7 @@ public class OpenMetadataStoreRESTServices
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                         this.getEffectiveTimeFromLong(effectiveTime),
+                                                                         requestBody.getEffectiveTime(),
                                                                          startFrom,
                                                                          pageSize,
                                                                          methodName));
@@ -1182,7 +1402,7 @@ public class OpenMetadataStoreRESTServices
                                                                               requestBody.getSequencingProperty(),
                                                                               requestBody.getSequencingOrder(),
                                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                              this.getEffectiveTimeFromLong(effectiveTime),
+                                                                              requestBody.getEffectiveTime(),
                                                                               startFrom,
                                                                               pageSize,
                                                                               methodName));
@@ -1211,7 +1431,6 @@ public class OpenMetadataStoreRESTServices
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody properties defining the search criteria
@@ -1221,22 +1440,21 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(String          serverName,
-                                                                                        String          serviceURLMarker,
-                                                                                        String          userId,
-                                                                                        boolean         forLineage,
-                                                                                        boolean         forDuplicateProcessing,
-                                                                                        long            effectiveTime,
-                                                                                        int             startFrom,
-                                                                                        int             pageSize,
-                                                                                        FindRelationshipRequestBody requestBody)
+    public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
+                                                                                         String                      serviceURLMarker,
+                                                                                         String                      userId,
+                                                                                         boolean                     forLineage,
+                                                                                         boolean                     forDuplicateProcessing,
+                                                                                         int                         startFrom,
+                                                                                         int                         pageSize,
+                                                                                         FindRelationshipRequestBody requestBody)
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AuditLog                            auditLog = null;
-        RelatedMetadataElementsListResponse response = new RelatedMetadataElementsListResponse();
+        AuditLog                             auditLog = null;
+        OpenMetadataRelationshipListResponse response = new OpenMetadataRelationshipListResponse();
 
         try
         {
@@ -1258,7 +1476,7 @@ public class OpenMetadataStoreRESTServices
                                                                                              forLineage,
                                                                                              forDuplicateProcessing,
                                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                             this.getEffectiveTimeFromLong(effectiveTime),
+                                                                                             requestBody.getEffectiveTime(),
                                                                                              startFrom,
                                                                                              pageSize,
                                                                                              methodName));
@@ -1274,7 +1492,7 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getSequencingProperty(),
                                                                            requestBody.getSequencingOrder(),
                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                           this.getEffectiveTimeFromLong(effectiveTime),
+                                                                           null,
                                                                            startFrom,
                                                                            pageSize,
                                                                            methodName));
@@ -1305,7 +1523,7 @@ public class OpenMetadataStoreRESTServices
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
      *  InvalidParameterException the unique identifier is null or not known.
@@ -1313,21 +1531,21 @@ public class OpenMetadataStoreRESTServices
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
-    public RelatedMetadataElementsResponse getRelationshipByGUID(String  serverName,
-                                                                 String  serviceURLMarker,
-                                                                 String  userId,
-                                                                 String  relationshipGUID,
-                                                                 boolean forLineage,
-                                                                 boolean forDuplicateProcessing,
-                                                                 long    effectiveTime)
+    public OpenMetadataRelationshipResponse getRelationshipByGUID(String                   serverName,
+                                                                  String                   serviceURLMarker,
+                                                                  String                   userId,
+                                                                  String                   relationshipGUID,
+                                                                  boolean                  forLineage,
+                                                                  boolean                  forDuplicateProcessing,
+                                                                  EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
         final String guidParameterName = "relationshipGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AuditLog auditLog = null;
-        RelatedMetadataElementsResponse response = new RelatedMetadataElementsResponse();
+        AuditLog                         auditLog = null;
+        OpenMetadataRelationshipResponse response = new OpenMetadataRelationshipResponse();
 
         try
         {
@@ -1335,12 +1553,25 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-            Relationship relationship = handler.getAttachmentLink(userId,
-                                                                  relationshipGUID,
-                                                                  guidParameterName,
-                                                                  null,
-                                                                  this.getEffectiveTimeFromLong(effectiveTime),
-                                                                  methodName);
+            Relationship relationship;
+            if (requestBody != null)
+            {
+                relationship = handler.getAttachmentLink(userId,
+                                                         relationshipGUID,
+                                                         guidParameterName,
+                                                         null,
+                                                         requestBody.getEffectiveTime(),
+                                                         methodName);
+            }
+            else
+            {
+                relationship = handler.getAttachmentLink(userId,
+                                                         relationshipGUID,
+                                                         guidParameterName,
+                                                         null,
+                                                         new Date(),
+                                                         methodName);
+            }
 
             if (relationship != null)
             {
@@ -1351,6 +1582,103 @@ public class OpenMetadataStoreRESTServices
                                                                      relationship,
                                                                      methodName));
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve all the versions of an element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param relationshipGUID unique identifier for the metadata element
+     * @param forLineage the retrieved elements are for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param oldestFirst  defining how the results should be ordered.
+     * @param requestBody the time window required
+     *
+     * @return list of matching metadata elements (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
+                                                                       String             serviceURLMarker,
+                                                                       String             userId,
+                                                                       String             relationshipGUID,
+                                                                       boolean            forLineage,
+                                                                       boolean            forDuplicateProcessing,
+                                                                       int                startFrom,
+                                                                       int                pageSize,
+                                                                       boolean            oldestFirst,
+                                                                       HistoryRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementHistory";
+        final String guidParameterName  = "relationshipGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog                             auditLog = null;
+        OpenMetadataRelationshipListResponse response = new OpenMetadataRelationshipListResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            HistorySequencingOrder sequencingOrder = HistorySequencingOrder.BACKWARDS;
+
+            if (oldestFirst)
+            {
+                sequencingOrder = HistorySequencingOrder.FORWARDS;
+            }
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            List<Relationship> relationships;
+            if (requestBody != null)
+            {
+                relationships = handler.getRelationshipHistory(userId,
+                                                               relationshipGUID,
+                                                               guidParameterName,
+                                                               requestBody.getFromTime(),
+                                                               requestBody.getToTime(),
+                                                               startFrom,
+                                                               pageSize,
+                                                               sequencingOrder,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName);
+            }
+            else
+            {
+                 relationships = handler.getRelationshipHistory(userId,
+                                                               relationshipGUID,
+                                                               guidParameterName,
+                                                               null,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               sequencingOrder,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                               null,
+                                                               methodName);
+            }
+
+            response.setElementList(handler.convertOpenMetadataRelationships(relationships, methodName));
         }
         catch (Exception error)
         {
@@ -2524,6 +2852,10 @@ public class OpenMetadataStoreRESTServices
                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                           specificMatchPropertyNames,
+                                                          null,
+                                                          null,
+                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                          null,
                                                           true,
                                                           false,
                                                           null,
@@ -2612,30 +2944,38 @@ public class OpenMetadataStoreRESTServices
         String qualifiedName = constructValidValueQualifiedName(typeName, propertyName, mapName, preferredValue);
 
         EntityDetail element = handler.getEntityByValue(userId,
-                                               qualifiedName,
-                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
-                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                               specificMatchPropertyNames,
-                                               true,
-                                               false,
-                                               null,
-                                               methodName);
+                                                        qualifiedName,
+                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
+                                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                        specificMatchPropertyNames,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
+                                                        true,
+                                                        false,
+                                                        null,
+                                                        methodName);
 
         if (element == null)
         {
             qualifiedName = constructValidValueQualifiedName(null, propertyName, mapName, preferredValue);
 
             element = handler.getEntityByValue(userId,
-                                                   qualifiedName,
-                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
-                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                   specificMatchPropertyNames,
-                                                   true,
-                                                   false,
-                                                   null,
-                                                   methodName);
+                                               qualifiedName,
+                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
+                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                               specificMatchPropertyNames,
+                                               null,
+                                               null,
+                                               SequencingOrder.CREATION_DATE_RECENT,
+                                               null,
+                                               true,
+                                               false,
+                                               null,
+                                               methodName);
         }
 
         return element;

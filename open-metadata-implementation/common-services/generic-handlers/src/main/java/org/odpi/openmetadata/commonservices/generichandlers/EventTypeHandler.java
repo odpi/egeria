@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -546,9 +547,12 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.EVENT_TYPE_TYPE_GUID,
                               OpenMetadataType.EVENT_TYPE_TYPE_NAME,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               effectiveTime,
@@ -598,6 +602,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -655,10 +663,13 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -729,6 +740,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             2,
+                                            null,
+                                            null,
+                                            SequencingOrder.CREATION_DATE_RECENT,
+                                            null,
                                             forLineage,
                                             forDuplicateProcessing,
                                             startFrom,

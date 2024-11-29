@@ -112,7 +112,7 @@ public class ClassificationManagerResource
                                                       @RequestParam (required = false, defaultValue = "false")
                                                       boolean                   forDuplicateProcessing,
                                                       @RequestBody  (required = false)
-                                                      EffectiveTimeRequestBody requestBody)
+                                                          ResultsRequestBody requestBody)
     {
         return restAPI.clearConfidenceClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -182,7 +182,7 @@ public class ClassificationManagerResource
                                                        @RequestParam (required = false, defaultValue = "false")
                                                        boolean                   forDuplicateProcessing,
                                                        @RequestBody  (required = false)
-                                                       EffectiveTimeRequestBody requestBody)
+                                                           ResultsRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -254,7 +254,7 @@ public class ClassificationManagerResource
                                                            @RequestParam (required = false, defaultValue = "false")
                                                            boolean                   forDuplicateProcessing,
                                                            @RequestBody  (required = false)
-                                                           EffectiveTimeRequestBody requestBody)
+                                                               ResultsRequestBody requestBody)
     {
         return restAPI.clearConfidentialityClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -326,7 +326,7 @@ public class ClassificationManagerResource
                                                      @RequestParam (required = false, defaultValue = "false")
                                                      boolean                   forDuplicateProcessing,
                                                      @RequestBody  (required = false)
-                                                     EffectiveTimeRequestBody requestBody)
+                                                         ResultsRequestBody requestBody)
     {
         return restAPI.clearRetentionClassification(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1347,7 +1347,7 @@ public class ClassificationManagerResource
                                                          boolean                       forLineage,
                                                          @RequestParam (required = false, defaultValue = "false")
                                                          boolean                       forDuplicateProcessing,
-                                                         @RequestBody(required = false) EffectiveTimeRequestBody requestBody)
+                                                         @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.retrieveInstanceForGUID(serverName, guid, forLineage, forDuplicateProcessing, requestBody);
     }

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
@@ -53,6 +54,8 @@ public class ExternalIdentifierRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -60,12 +63,14 @@ public class ExternalIdentifierRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse addExternalIdentifier(String                        serverName,
-                                              String                        serviceURLMarker,
-                                              String                        userId,
-                                              String                        openMetadataElementGUID,
-                                              String                        openMetadataElementTypeName,
-                                              MetadataCorrelationProperties requestBody)
+    public VoidResponse addExternalIdentifier(String                               serverName,
+                                              String                               serviceURLMarker,
+                                              String                               userId,
+                                              String                               openMetadataElementGUID,
+                                              String                               openMetadataElementTypeName,
+                                              boolean                              forLineage,
+                                              boolean                              forDuplicateProcessing,
+                                              UpdateMetadataCorrelatorsRequestBody requestBody)
     {
         final String methodName                      = "addExternalIdentifier";
         final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
@@ -81,52 +86,52 @@ public class ExternalIdentifierRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
                 int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
-                if (requestBody.getSynchronizationDirection() != null)
+                if (requestBody.getMetadataCorrelationProperties().getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
-                if (requestBody.getKeyPattern() != null)
+                if (requestBody.getMetadataCorrelationProperties().getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getKeyPattern().getOrdinal();
+                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOrdinal();
                 }
 
                 handler.setUpExternalIdentifier(userId,
                                                 openMetadataElementGUID,
                                                 openMetadataGUIDParameterName,
                                                 openMetadataElementTypeName,
-                                                requestBody.getExternalIdentifier(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                 identifierParameterName,
                                                 keyPatternOrdinal,
-                                                requestBody.getExternalIdentifierName(),
-                                                requestBody.getExternalIdentifierUsage(),
-                                                requestBody.getExternalIdentifierSource(),
-                                                requestBody.getMappingProperties(),
-                                                requestBody.getExternalInstanceCreatedBy(),
-                                                requestBody.getExternalInstanceCreationTime(),
-                                                requestBody.getExternalInstanceLastUpdatedBy(),
-                                                requestBody.getExternalInstanceLastUpdateTime(),
-                                                requestBody.getExternalInstanceVersion(),
-                                                requestBody.getExternalScopeGUID(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierUsage(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierSource(),
+                                                requestBody.getMetadataCorrelationProperties().getMappingProperties(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceCreatedBy(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceCreationTime(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceLastUpdateTime(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceVersion(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                 externalScopeGUIDParameterName,
-                                                requestBody.getExternalScopeName(),
-                                                requestBody.getExternalScopeTypeName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeTypeName(),
                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                 permittedSynchronizationOrdinal,
-                                                requestBody.getSynchronizationDescription(),
+                                                requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                null,
-                                                null,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                requestBody.getEffectiveFrom(),
+                                                requestBody.getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
                                                 methodName);
             }
             else
@@ -165,6 +170,8 @@ public class ExternalIdentifierRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -172,12 +179,14 @@ public class ExternalIdentifierRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse updateExternalIdentifier(String                        serverName,
-                                                 String                        serviceURLMarker,
-                                                 String                        userId,
-                                                 String                        openMetadataElementGUID,
-                                                 String                        openMetadataElementTypeName,
-                                                 MetadataCorrelationProperties requestBody)
+    public VoidResponse updateExternalIdentifier(String                               serverName,
+                                                 String                               serviceURLMarker,
+                                                 String                               userId,
+                                                 String                               openMetadataElementGUID,
+                                                 String                               openMetadataElementTypeName,
+                                                 boolean                              forLineage,
+                                                 boolean                              forDuplicateProcessing,
+                                                 UpdateMetadataCorrelatorsRequestBody requestBody)
     {
         final String methodName                      = "updateExternalIdentifier";
         final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
@@ -193,52 +202,52 @@ public class ExternalIdentifierRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
                 int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
-                if (requestBody.getSynchronizationDirection() != null)
+                if (requestBody.getMetadataCorrelationProperties().getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
-                if (requestBody.getKeyPattern() != null)
+                if (requestBody.getMetadataCorrelationProperties().getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getKeyPattern().getOrdinal();
+                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOrdinal();
                 }
 
                 handler.setUpExternalIdentifier(userId,
                                                 openMetadataElementGUID,
                                                 openMetadataGUIDParameterName,
                                                 openMetadataElementTypeName,
-                                                requestBody.getExternalIdentifier(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                 identifierParameterName,
                                                 keyPatternOrdinal,
-                                                requestBody.getExternalIdentifierName(),
-                                                requestBody.getExternalIdentifierUsage(),
-                                                requestBody.getExternalIdentifierSource(),
-                                                requestBody.getMappingProperties(),
-                                                requestBody.getExternalInstanceCreatedBy(),
-                                                requestBody.getExternalInstanceCreationTime(),
-                                                requestBody.getExternalInstanceLastUpdatedBy(),
-                                                requestBody.getExternalInstanceLastUpdateTime(),
-                                                requestBody.getExternalInstanceVersion(),
-                                                requestBody.getExternalScopeGUID(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierUsage(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalIdentifierSource(),
+                                                requestBody.getMetadataCorrelationProperties().getMappingProperties(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceCreatedBy(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceCreationTime(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceLastUpdatedBy(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceLastUpdateTime(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalInstanceVersion(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                 externalScopeGUIDParameterName,
-                                                requestBody.getExternalScopeName(),
-                                                requestBody.getExternalScopeTypeName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeTypeName(),
                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                 permittedSynchronizationOrdinal,
-                                                requestBody.getSynchronizationDescription(),
+                                                requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                null,
-                                                null,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                requestBody.getEffectiveFrom(),
+                                                requestBody.getEffectiveTo(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
                                                 methodName);
             }
             else
@@ -277,6 +286,8 @@ public class ExternalIdentifierRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -284,16 +295,18 @@ public class ExternalIdentifierRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public BooleanResponse validateExternalIdentifier(String                        serverName,
-                                                      String                        serviceURLMarker,
-                                                      String                        userId,
-                                                      String                        openMetadataElementGUID,
-                                                      String                        openMetadataElementTypeName,
-                                                      MetadataCorrelationProperties requestBody)
+    public BooleanResponse validateExternalIdentifier(String                               serverName,
+                                                      String                               serviceURLMarker,
+                                                      String                               userId,
+                                                      String                               openMetadataElementGUID,
+                                                      String                               openMetadataElementTypeName,
+                                                      boolean                              forLineage,
+                                                      boolean                              forDuplicateProcessing,
+                                                      UpdateMetadataCorrelatorsRequestBody requestBody)
     {
         final String methodName                      = "validateExternalIdentifier";
         final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
-        final String externalScopeGUIDParameterName   = "externalScopeGUID";
+        final String externalScopeGUIDParameterName  = "externalScopeGUID";
         final String externalIdentifierParameterName = "requestBody.externalIdentifier";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -305,29 +318,29 @@ public class ExternalIdentifierRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler =
                         instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
 
-                if ((requestBody.getExternalIdentifier() != null) &&
-                    (requestBody.getExternalScopeGUID() != null) &&
-                    (requestBody.getExternalScopeName() != null))
+                if ((requestBody.getMetadataCorrelationProperties().getExternalIdentifier() != null) &&
+                    (requestBody.getMetadataCorrelationProperties().getExternalScopeGUID() != null) &&
+                    (requestBody.getMetadataCorrelationProperties().getExternalScopeName() != null))
                 {
                     response.setFlag(handler.confirmSynchronization(userId,
                                                                     openMetadataElementGUID,
                                                                     openMetadataGUIDParameterName,
                                                                     openMetadataElementTypeName,
-                                                                    requestBody.getExternalIdentifier(),
+                                                                    requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                                     externalIdentifierParameterName,
-                                                                    requestBody.getExternalScopeGUID(),
+                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                                     externalScopeGUIDParameterName,
-                                                                    requestBody.getExternalScopeName(),
+                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                    false,
-                                                                    false,
-                                                                    null,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName) != null);
                 }
                 else
@@ -409,17 +422,6 @@ public class ExternalIdentifierRESTServices
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-                int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
-                if (requestBody.getMetadataCorrelationProperties().getSynchronizationDirection() != null)
-                {
-                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOrdinal();
-                }
-
-                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
-                if (requestBody.getMetadataCorrelationProperties().getKeyPattern() != null)
-                {
-                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOrdinal();
-                }
 
                 handler.removeExternalIdentifier(userId,
                                                  openMetadataElementGUID,
@@ -427,22 +429,95 @@ public class ExternalIdentifierRESTServices
                                                  openMetadataElementTypeName,
                                                  requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                  identifierParameterName,
-                                                 keyPatternOrdinal,
-                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierName(),
-                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierUsage(),
-                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierSource(),
-                                                 requestBody.getMetadataCorrelationProperties().getMappingProperties(),
                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                  externalScopeGUIDParameterName,
                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                 permittedSynchronizationOrdinal,
-                                                 requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  requestBody.getEffectiveTime(),
                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
+     * The linked open metadata elements are not affected.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException user not authorized to issue this request
+     * PropertyServerException    problem accessing the property server
+     */
+    public VoidResponse removeExternalScope(String                   serverName,
+                                            String                   serviceURLMarker,
+                                            String                   userId,
+                                            String                   externalScopeGUID,
+                                            boolean                  forLineage,
+                                            boolean                  forDuplicateProcessing,
+                                            EffectiveTimeRequestBody requestBody)
+    {
+        final String methodName                      = "removeExternalIdentifier";
+        final String externalScopeGUIDParameterName  = "externalScopeGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
+                                                                                                                                           serverName,
+                                                                                                                                           methodName);
+
+                handler.removeExternalScope(userId,
+                                            externalScopeGUID,
+                                            externalScopeGUIDParameterName,
+                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            requestBody.getEffectiveTime(),
+                                            methodName);
             }
             else
             {
@@ -481,8 +556,6 @@ public class ExternalIdentifierRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier and its scope
      *
      * @return void or
@@ -495,8 +568,6 @@ public class ExternalIdentifierRESTServices
                                                String                        userId,
                                                String                        openMetadataElementGUID,
                                                String                        openMetadataElementTypeName,
-                                               boolean                       forLineage,
-                                               boolean                       forDuplicateProcessing,
                                                MetadataCorrelationProperties requestBody)
     {
         final String methodName                           = "confirmSynchronization";
@@ -515,6 +586,13 @@ public class ExternalIdentifierRESTServices
 
             if (requestBody != null)
             {
+                /*
+                 * Confirmation occurs using current active elements
+                 */
+                boolean forLineage = false;
+                boolean forDuplicateProcessing = false;
+                Date    effectiveTime          = new Date();
+
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
@@ -532,7 +610,7 @@ public class ExternalIdentifierRESTServices
                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                forLineage,
                                                forDuplicateProcessing,
-                                               null,
+                                               effectiveTime,
                                                methodName);
             }
             else
@@ -564,13 +642,15 @@ public class ExternalIdentifierRESTServices
 
 
     /**
-     * Retrieve the external identifiers for a particular metadata elements.
+     * Retrieve the external identifiers for a particular metadata element.
      *
      * @param serverName name of the service to route the request to.
      * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier and its scope
@@ -580,14 +660,16 @@ public class ExternalIdentifierRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public MetadataCorrelationHeadersResponse getMetadataCorrelationHeaders(String                        serverName,
-                                                                            String                        serviceURLMarker,
-                                                                            String                        userId,
-                                                                            String                        openMetadataElementGUID,
-                                                                            String                        openMetadataElementTypeName,
-                                                                            boolean                       forLineage,
-                                                                            boolean                       forDuplicateProcessing,
-                                                                            EffectiveTimeQueryRequestBody requestBody)
+    public MetadataCorrelationHeadersResponse getExternalIdentifiers(String                        serverName,
+                                                                     String                        serviceURLMarker,
+                                                                     String                        userId,
+                                                                     String                        openMetadataElementGUID,
+                                                                     String                        openMetadataElementTypeName,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName                    = "getMetadataCorrelationHeaders";
         final String openMetadataGUIDParameterName = "openMetadataElementGUID";
@@ -614,9 +696,8 @@ public class ExternalIdentifierRESTServices
                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                                requestBody.getExternalScopeGUID(),
                                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                               requestBody.getExternalScopeName(),
-                                                                               0,
-                                                                               0,
+                                                                               startFrom,
+                                                                               pageSize,
                                                                                forLineage,
                                                                                forDuplicateProcessing,
                                                                                requestBody.getEffectiveTime(),

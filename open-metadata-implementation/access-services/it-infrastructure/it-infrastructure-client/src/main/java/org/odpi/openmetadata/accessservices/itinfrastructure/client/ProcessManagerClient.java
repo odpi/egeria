@@ -944,7 +944,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
@@ -993,7 +993,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
@@ -1250,7 +1250,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
@@ -1299,7 +1299,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
@@ -1553,7 +1553,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
@@ -1601,7 +1601,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/called/{2}/callers/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
@@ -1842,7 +1842,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
@@ -1890,7 +1890,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,

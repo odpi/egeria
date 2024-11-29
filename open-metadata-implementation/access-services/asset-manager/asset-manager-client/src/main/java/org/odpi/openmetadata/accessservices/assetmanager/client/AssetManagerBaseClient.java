@@ -46,16 +46,13 @@ import java.util.Map;
  */
 public class AssetManagerBaseClient implements ExternalIdentifierManagerInterface
 {
-    protected final String assetManagerGUIDParameterName = "assetManagerGUID";
-    protected final String assetManagerNameParameterName = "assetManagerName";
-
     final protected String serverName;               /* Initialized in constructor */
     final protected String serverPlatformURLRoot;    /* Initialized in constructor */
 
     final protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     final protected PropertyHelper          propertyHelper          = new PropertyHelper();
     final protected AssetManagerRESTClient  restClient;               /* Initialized in constructor */
-    final protected OpenMetadataStoreClient openMetadataStoreClient;   /* Initialized in constructor */
+    final protected OpenMetadataStoreClient openMetadataStoreClient;  /* Initialized in constructor */
     final protected NullRequestBody nullRequestBody = new NullRequestBody();
 
     final protected String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}";
@@ -717,35 +714,18 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        final String methodName                      = "addExternalIdentifier";
-        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
-        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
-        final String externalIdentifierPropertiesParameterName = "externalIdentifierProperties";
-        final String externalIdentifierParameterName = "externalIdentifierProperties.externalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
-        invalidParameterHandler.validateObject(externalIdentifierProperties, externalIdentifierPropertiesParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalIdentifierProperties.getExternalIdentifier(), externalIdentifierParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/add";
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
-
-        requestBody.setExternalScopeGUID(assetManagerGUID);
-        requestBody.setExternalScopeName(assetManagerName);
-        requestBody.setExternalScopeTypeName(assetManagerTypeName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        openMetadataElementTypeName,
-                                        openMetadataElementGUID);
+        openMetadataStoreClient.addExternalIdentifier(userId,
+                                                      assetManagerGUID,
+                                                      assetManagerName,
+                                                      assetManagerTypeName,
+                                                      openMetadataElementGUID,
+                                                      openMetadataElementTypeName,
+                                                      externalIdentifierProperties,
+                                                      null,
+                                                      null,
+                                                      false,
+                                                      false,
+                                                      null);
     }
 
 
@@ -773,34 +753,18 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        final String methodName                      = "updateExternalIdentifier";
-        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
-        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
-        final String externalIdentifierPropertiesParameterName = "externalIdentifierProperties";
-        final String externalIdentifierParameterName = "externalIdentifierProperties.externalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
-        invalidParameterHandler.validateObject(externalIdentifierProperties, externalIdentifierPropertiesParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalIdentifierProperties.getExternalIdentifier(), externalIdentifierParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/update";
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
-
-        requestBody.setExternalScopeGUID(assetManagerGUID);
-        requestBody.setExternalScopeName(assetManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        openMetadataElementTypeName,
-                                        openMetadataElementGUID);
+        openMetadataStoreClient.updateExternalIdentifier(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                         openMetadataElementGUID,
+                                                         openMetadataElementTypeName,
+                                                         externalIdentifierProperties,
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         null);
     }
 
 
@@ -829,33 +793,15 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        final String methodName                      = "removeExternalIdentifier";
-        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
-        final String openMetadataTypeParameterName   = "openMetadataElementTypeName";
-        final String externalIdentifierParameterName = "externalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(openMetadataElementTypeName, openMetadataTypeParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/external-identifiers/remove";
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
-
-        requestBody.setExternalScopeGUID(assetManagerGUID);
-        requestBody.setExternalScopeName(assetManagerName);
-        requestBody.setExternalIdentifier(externalIdentifier);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        openMetadataElementTypeName,
-                                        openMetadataElementGUID);
+        openMetadataStoreClient.removeExternalIdentifier(userId,
+                                                         assetManagerGUID,
+                                                         assetManagerName,
+                                                         openMetadataElementGUID,
+                                                         openMetadataElementTypeName,
+                                                         externalIdentifier,
+                                                         false,
+                                                         false,
+                                                         null);
     }
 
 
@@ -884,31 +830,12 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        final String methodName                      = "confirmSynchronization";
-        final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
-        final String externalIdentifierParameterName = "externalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(openMetadataElementGUID, openMetadataGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/synchronized";
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
-
-        requestBody.setExternalScopeGUID(assetManagerGUID);
-        requestBody.setExternalScopeName(assetManagerName);
-        requestBody.setExternalIdentifier(externalIdentifier);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        openMetadataElementTypeName,
-                                        openMetadataElementGUID);
+        openMetadataStoreClient.confirmSynchronization(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       openMetadataElementGUID,
+                                                       openMetadataElementTypeName,
+                                                       externalIdentifier);
     }
 
 
@@ -939,32 +866,15 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        final String methodName                      = "getElementsForExternalIdentifier";
-        final String externalIdentifierParameterName = "externalIdentifier";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalIdentifier, externalIdentifierParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/external-identifiers/open-metadata-elements?startFrom={2}&pageSize={3}";
-
-        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
-
-        requestBody.setExternalScopeGUID(assetManagerGUID);
-        requestBody.setExternalScopeName(assetManagerName);
-        requestBody.setExternalIdentifier(externalIdentifier);
-
-        ElementHeadersResponse restResult = restClient.callElementHeadersPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize);
-
-        return restResult.getElementHeaders();
+        return openMetadataStoreClient.getElementsForExternalIdentifier(userId,
+                                                                        assetManagerGUID,
+                                                                        assetManagerName,
+                                                                        externalIdentifier,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        false,
+                                                                        false,
+                                                                        null);
     }
 
 
@@ -992,23 +902,16 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                                        UserNotAuthorizedException,
                                                                                                                        PropertyServerException
     {
-        final String methodName = "getMetadataCorrelationHeaders";
-        final String guidParameterName = "openMetadataElementGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(openMetadataElementGUID, guidParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/correlation-headers";
-
-        MetadataCorrelationHeadersResponse restResult = restClient.callMyCorrelationHeadersPostRESTCall(methodName,
-                                                                                                        urlTemplate,
-                                                                                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, null),
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        openMetadataElementTypeName,
-                                                                                                        openMetadataElementGUID);
-
-        return restResult.getElementList();
+        return openMetadataStoreClient.getExternalIdentifiers(userId,
+                                                              assetManagerGUID,
+                                                              assetManagerName,
+                                                              openMetadataElementGUID,
+                                                              openMetadataElementTypeName,
+                                                              0,
+                                                              0,
+                                                              false,
+                                                              false,
+                                                              null);
     }
 
 
@@ -2106,6 +2009,10 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                                   startingElementGUID,
                                                                                                                   startingAtEnd,
                                                                                                                   relationshipTypeName,
+                                                                                                                  null,
+                                                                                                                  null,
+                                                                                                                  null,
+                                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
                                                                                                                   forLineage,
                                                                                                                   forDuplicateProcessing,
                                                                                                                   effectiveTime,

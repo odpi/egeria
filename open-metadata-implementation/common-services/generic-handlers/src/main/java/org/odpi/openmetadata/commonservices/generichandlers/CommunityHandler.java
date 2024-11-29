@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -161,7 +162,6 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
     /**
      * Create a new metadata element to represent a community using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new community.
-     *
      * All categories and terms are linked to a single community.  They are owned by this community and if the
      * community is deleted, any linked terms and categories are deleted as well.
      *
@@ -545,9 +545,12 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.COMMUNITY.typeGUID,
                               OpenMetadataType.COMMUNITY.typeName,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               effectiveTime,
@@ -601,10 +604,13 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -643,6 +649,9 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataType.COMMUNITY.typeGUID,
                                    OpenMetadataType.COMMUNITY.typeName,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -295,9 +296,12 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
                               OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               false,
                               false,
                               new Date(),
@@ -344,10 +348,13 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     false,
                                     false,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     null,
@@ -399,6 +406,10 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -468,6 +479,10 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                         OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_GUID,
                                         OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         false,
                                         false,
                                         supportedZones,
