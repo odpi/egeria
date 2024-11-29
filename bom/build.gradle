@@ -107,7 +107,7 @@ ext {
     antVersion = '1.10.15'
     jnrVersion = '3.1.19'
     //cassandraVersion 5.0.1 doesn't work
-    cassandraVersion = '4.1.5'
+    cassandraVersion = '5.0.2'
     protobufVersion = '3.25.5'
     log4jVersion = '2.24.1'
     jacksonjdk8Version = '2.18.0'
