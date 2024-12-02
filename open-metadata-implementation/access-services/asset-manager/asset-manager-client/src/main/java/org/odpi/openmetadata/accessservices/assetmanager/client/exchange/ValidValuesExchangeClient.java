@@ -835,6 +835,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                    validValueGUID,
                                                                                                    forLineage,
                                                                                                    forDuplicateProcessing,
+                                                                                                   null,
                                                                                                    effectiveTime);
 
         return convertValidValue(userId, assetManagerGUID, assetManagerName, openMetadataElement, methodName);

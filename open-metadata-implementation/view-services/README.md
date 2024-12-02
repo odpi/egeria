@@ -44,10 +44,6 @@ The view services are as follows:
 
   The Devops Pipeline OMVS is a REST API designed to support user interfaces (UIs) for supporting a devops engineer to maintain the metadata about the changing digital resources being deployed through devops pipelines.
 
-* **[Feedback Manager](feedback-manager)** - add comments and other feedback to elements.
-
-  The Feedback Manager OMVS is for user interfaces supporting feedback from users.  A registered user is able to add comments, informal tags, notes, reviews and likes to elements such as assets or glossary terms.
-
 * **[Glossary Browser](glossary-browser)** - search and view the contents of specific glossaries and their links to governance definitions and assets.
 
   The Glossary Browser OMVS is for user interfaces that wish to provide search facilities within a single glossary (or glossaries) along with the ability to browse the structure of the glossary and view an element within a glossary along with connected governance classifications, governance definitions, user feedback and attached assets.
@@ -59,10 +55,6 @@ The view services are as follows:
 * **[Governance Officer](governance-officer)** - maintain governance definitions used to define any governance domain.
 
   The Governance Officer OMVS is for user interfaces supporting the creation and editing of a new governance domain.
-
-* **[Metadata Explorer](metadata-explorer)** - provides generic search, query and retrieval operations for open metadata.
-
-  The Metadata Explorer OMVS is for user interfaces supporting the search, query and retrieval of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).
 
 * **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
 

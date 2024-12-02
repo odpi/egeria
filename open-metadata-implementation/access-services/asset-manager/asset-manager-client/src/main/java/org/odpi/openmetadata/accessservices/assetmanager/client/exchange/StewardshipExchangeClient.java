@@ -8,8 +8,14 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataElementSummaryResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
@@ -22,22 +28,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -2101,6 +2101,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                    elementGUID,
                                                                                                    forLineage,
                                                                                                    forDuplicateProcessing,
+                                                                                                   null,
                                                                                                    effectiveTime);
 
         return metadataElementSummaryConverter.getNewBean(MetadataElementSummary.class,
@@ -2144,6 +2145,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                          uniquePropertyName,
                                                                                                          forLineage,
                                                                                                          forDuplicateProcessing,
+                                                                                                         null,
                                                                                                          effectiveTime);
 
         return metadataElementSummaryConverter.getNewBean(MetadataElementSummary.class,
@@ -2178,7 +2180,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId, uniqueName, uniquePropertyName, forLineage, forDuplicateProcessing, effectiveTime);
+        return openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId, uniqueName, uniquePropertyName, forLineage, forDuplicateProcessing, null, effectiveTime);
     }
 
 
@@ -3114,7 +3116,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         try
         {
-            OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDuplicateProcessing, effectiveTime);
+            OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDuplicateProcessing, null, effectiveTime);
 
             if (openMetadataElement != null)
             {
@@ -3128,7 +3130,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         }
         catch (InvalidParameterException notFound)
         {
-            OpenMetadataRelationship openMetadataRelationship = openMetadataStoreClient.getRelationshipByGUID(userId, guid, forLineage, forDuplicateProcessing, effectiveTime);
+            OpenMetadataRelationship openMetadataRelationship = openMetadataStoreClient.getRelationshipByGUID(userId, guid, forLineage, forDuplicateProcessing, null, effectiveTime);
 
             if (openMetadataRelationship != null)
             {

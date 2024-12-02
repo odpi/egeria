@@ -451,6 +451,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                    collectionGUID,
                                                                                                    false,
                                                                                                    false,
+                                                                                                   null,
                                                                                                    new Date());
 
         if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION.typeName)))
@@ -829,6 +830,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                           parentGUID,
                                                                                           false,
                                                                                           false,
+                                                                                          null,
                                                                                           new Date());
 
             if (parent != null)

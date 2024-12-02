@@ -33,6 +33,7 @@ public interface MetadataElementInterface
      * @param elementGUID unique identifier for the metadata element
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
@@ -44,6 +45,7 @@ public interface MetadataElementInterface
                                                  String  elementGUID,
                                                  boolean forLineage,
                                                  boolean forDuplicateProcessing,
+                                                 Date    asOfTime,
                                                  Date    effectiveTime) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
@@ -57,6 +59,7 @@ public interface MetadataElementInterface
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
@@ -69,6 +72,7 @@ public interface MetadataElementInterface
                                                        String  uniquePropertyName,
                                                        boolean forLineage,
                                                        boolean forDuplicateProcessing,
+                                                       Date    asOfTime,
                                                        Date    effectiveTime) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
@@ -101,6 +105,7 @@ public interface MetadataElementInterface
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
@@ -113,6 +118,7 @@ public interface MetadataElementInterface
                                               String  uniquePropertyName,
                                               boolean forLineage,
                                               boolean forDuplicateProcessing,
+                                              Date    asOfTime,
                                               Date    effectiveTime) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;
@@ -429,6 +435,7 @@ public interface MetadataElementInterface
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return relationship properties
@@ -440,6 +447,7 @@ public interface MetadataElementInterface
                                                    String  relationshipGUID,
                                                    boolean forLineage,
                                                    boolean forDuplicateProcessing,
+                                                   Date    asOfTime,
                                                    Date    effectiveTime) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;

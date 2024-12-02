@@ -5016,6 +5016,50 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
+     * Return a visible relationship retrieved by its GUID.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier
+     * @param relationshipGUIDParameterName parameter passing the unique identifier
+     * @param relationshipTypeName type of relationship to be retrieved
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime effective time for the retrieval
+     * @param methodName calling method
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public Relationship getAttachmentLink(String userId,
+                                          String relationshipGUID,
+                                          String relationshipGUIDParameterName,
+                                          String relationshipTypeName,
+                                          Date   asOfTime,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+
+    {
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            asOfTime,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+            return relationship;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the relationship between the requested elements - there should be only one.  Note that the entities are not checked.
      *
      * @param userId     calling user
@@ -8968,6 +9012,46 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.getEntityFromRepository(userId, requestedEntityGUID, requestedEntityGUIDParameterName, requestedEntityTypeName, requiredClassificationName, omittedClassificationName, forLineage, forDuplicateProcessing, serviceSupportedZones, null, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the entity for the supplied unique identifier (guid).  An exception is thrown if the entity does not exist.
+     *
+     * @param userId userId of the user making the request
+     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
+     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
+     * @param requestedEntityTypeName name of type of entity to retrieve
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return retrieved entity
+     * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityFromRepository(String       userId,
+                                                String       requestedEntityGUID,
+                                                String       requestedEntityGUIDParameterName,
+                                                String       requestedEntityTypeName,
+                                                String       requiredClassificationName,
+                                                String       omittedClassificationName,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                List<String> serviceSupportedZones,
+                                                Date         asOfTime,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(requestedEntityGUID, requestedEntityGUIDParameterName, methodName);
 
@@ -8977,6 +9061,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                           requestedEntityTypeName,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
+                                                                          asOfTime,
                                                                           effectiveTime,
                                                                           methodName);
 
@@ -9142,6 +9227,63 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                    boolean      forLineage,
                                    boolean      forDuplicateProcessing,
                                    List<String> serviceSupportedZones,
+                                   Date         effectiveTime,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           entityTypeName,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           serviceSupportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+        if (entity != null)
+        {
+            return converter.getNewBean(beanClass, entity, methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the bean for the supplied unique identifier (guid).  An exception occurs if the bean GUID is not known.
+     *
+     * @param userId userId of the user making the request
+     * @param guid unique identifier of the entity to retrieve from the repository
+     * @param guidParameterName name of the parameter supplying the GUID
+     * @param entityTypeName name of type of entity to retrieve
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return new bean
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B getBeanFromRepository(String       userId,
+                                   String       guid,
+                                   String       guidParameterName,
+                                   String       entityTypeName,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
+                                   List<String> serviceSupportedZones,
+                                   Date         asOfTime,
                                    Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,

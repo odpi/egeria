@@ -472,6 +472,7 @@ public class IntegrationContext
                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                        false,
                                                                                                        false,
+                                                                                                       null,
                                                                                                        new Date());
 
                 if (metadataSourceGUID != null)

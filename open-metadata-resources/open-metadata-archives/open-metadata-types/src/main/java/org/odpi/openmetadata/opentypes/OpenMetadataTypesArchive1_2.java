@@ -2922,7 +2922,7 @@ public class OpenMetadataTypesArchive1_2
         return relationshipDef;
     }
 
-    private RelationshipDef getPersonalContributionRelationship()
+    private RelationshipDef getPersonalContributionRelationship() // Deprecated in favour of ContributionRecord
     {
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP,
                                                                                 null,

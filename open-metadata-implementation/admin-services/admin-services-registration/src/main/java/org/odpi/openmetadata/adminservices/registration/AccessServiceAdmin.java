@@ -47,34 +47,9 @@ public abstract class AccessServiceAdmin
     protected final String   publishZonesPropertyName        = "PublishZones";            /* Common */
     protected final String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";       /* Community Profile OMAS */
     protected final String   karmaPointIncrementPropertyName = "KarmaPointIncrement";     /* Community Profile OMAS */
-    protected final String   supportedTypesForSearch         = "SupportedTypesForSearch"; /* Asset Catalog OMAS */
+    protected final String   supportedTypesForSearch         = "SupportedTypesForSearch"; /* Asset Consumer OMAS */
 
     private String     fullServiceName = null;
-
-
-    /**
-     * Initialize the access service.
-     *
-     * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector  connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector  connector for querying the cohort repositories
-     * @param auditLog  audit log component for logging messages.
-     * @param serverUserName  user id to use on OMRS calls where there is no end user.
-     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
-     */
-    @Deprecated
-    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
-                           OMRSTopicConnector      enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
-                           OMRSAuditLog            auditLog,
-                           String                  serverUserName) throws OMAGConfigurationErrorException
-    {
-        this.initialize(accessServiceConfigurationProperties,
-                        enterpriseOMRSTopicConnector,
-                        enterpriseOMRSRepositoryConnector,
-                        (AuditLog)auditLog,
-                        serverUserName);
-    }
 
 
     /**
