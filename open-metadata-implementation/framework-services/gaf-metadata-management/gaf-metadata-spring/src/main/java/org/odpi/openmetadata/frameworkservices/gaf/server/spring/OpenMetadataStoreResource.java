@@ -409,7 +409,7 @@ public class OpenMetadataStoreResource
                                                                 @RequestParam (required = false, defaultValue = "false")
                                                                 boolean forDuplicateProcessing,
                                                                 @RequestBody (required = false)
-                                                                    EffectiveTimeRequestBody requestBody)
+                                                                    AnyTimeRequestBody requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1154,7 +1154,7 @@ public class OpenMetadataStoreResource
     {
         if (effectiveTime != 0)
         {
-            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
             requestBody.setEffectiveTime(new Date(effectiveTime));
 
             return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
@@ -1201,7 +1201,7 @@ public class OpenMetadataStoreResource
                                                                   @RequestParam(required = false, defaultValue = "false")
                                                                  boolean forDuplicateProcessing,
                                                                   @RequestBody (required = false)
-                                                                 EffectiveTimeRequestBody    requestBody)
+                                                                 AnyTimeRequestBody    requestBody)
     {
         return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
     }

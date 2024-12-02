@@ -519,6 +519,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param elementGUID unique identifier for the metadata element
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
@@ -532,6 +533,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                         String  elementGUID,
                                                         boolean forLineage,
                                                         boolean forDuplicateProcessing,
+                                                        Date    asOfTime,
                                                         Date    effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -543,7 +545,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
                                                                                                urlTemplate,
@@ -567,6 +570,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or null if not found
@@ -581,6 +585,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                               String  uniquePropertyName,
                                                               boolean forLineage,
                                                               boolean forDuplicateProcessing,
+                                                              Date    asOfTime,
                                                               Date    effectiveTime) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -595,6 +600,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setNameParameterName(nameParameterName);
 
@@ -700,6 +706,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
@@ -714,6 +721,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                      String  uniquePropertyName,
                                                      boolean forLineage,
                                                      boolean forDuplicateProcessing,
+                                                     Date    asOfTime,
                                                      Date    effectiveTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -729,6 +737,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
 
         if (uniquePropertyName != null)
@@ -2185,6 +2194,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return relationship properties
@@ -2197,6 +2207,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           String  relationshipGUID,
                                                           boolean forLineage,
                                                           boolean forDuplicateProcessing,
+                                                          Date    asOfTime,
                                                           Date    effectiveTime) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -2208,7 +2219,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
 
         OpenMetadataRelationshipResponse restResult = restClient.callOpenMetadataRelationshipPostRESTCall(methodName,

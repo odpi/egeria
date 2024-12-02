@@ -183,7 +183,7 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * 0118 Actor Roles.
+     * 0118 Actor Roles and related updates
      */
     private void add0118ActorRoles()
     {
@@ -195,6 +195,9 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(updatePersonRoleAppointmentRelationship());
         this.archiveBuilder.addRelationshipDef(getTeamRoleAppointmentRelationship());
         this.archiveBuilder.addRelationshipDef(getITProfileRoleRelationship());
+
+        this.archiveBuilder.addTypeDefPatch(deprecatePersonalContribution());
+        this.archiveBuilder.addRelationshipDef(getContributionRelationship());
     }
 
 
@@ -364,6 +367,67 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * Deprecate the PersonalContribution - use Contribution - collect karma points for all types of actor profiles
+     * so can compare the percentage of effort automated.
+     *
+     * @return patch
+     */
+    private TypeDefPatch deprecatePersonalContribution()
+    {
+        final String typeName = OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private RelationshipDef getContributionRelationship()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTRIBUTION_RELATIONSHIP,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "contributorProfile";
+        final String                     end1AttributeDescription     = "The actor profile associated via userId to the contribution.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_PROFILE.typeName),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "profileContributionRecord";
+        final String                     end2AttributeDescription     = "The record of activity by this actor profile.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONTRIBUTION_RECORD.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;

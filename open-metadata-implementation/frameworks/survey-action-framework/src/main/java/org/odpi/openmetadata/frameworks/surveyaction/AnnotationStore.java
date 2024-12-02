@@ -660,6 +660,7 @@ public class AnnotationStore
                                                                                              annotationGUID,
                                                                                              forLineage,
                                                                                              forDuplicateProcessing,
+                                                                                             null,
                                                                                              this.getEffectiveTime());
         return getAnnotationBean(openMetadataElement, methodName);
     }

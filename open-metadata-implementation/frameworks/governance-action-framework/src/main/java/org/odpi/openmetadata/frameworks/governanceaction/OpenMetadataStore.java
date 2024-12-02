@@ -367,6 +367,7 @@ public class OpenMetadataStore
                                                            elementGUID,
                                                            forLineage,
                                                            forDuplicateProcessing,
+                                                           null,
                                                            getEffectiveTime());
     }
 
@@ -392,6 +393,7 @@ public class OpenMetadataStore
                                                                  uniquePropertyName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
+                                                                 null,
                                                                  getEffectiveTime());
     }
 
@@ -417,6 +419,7 @@ public class OpenMetadataStore
                                                                  uniquePropertyName,
                                                                  true,
                                                                  forDuplicateProcessing,
+                                                                 null,
                                                                  getEffectiveTime());
     }
 
@@ -464,6 +467,7 @@ public class OpenMetadataStore
                                                                      uniquePropertyName,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     null,
                                                                      getEffectiveTime());
     }
 
@@ -785,7 +789,7 @@ public class OpenMetadataStore
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, getEffectiveTime());
+        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, null, getEffectiveTime());
     }
 
 

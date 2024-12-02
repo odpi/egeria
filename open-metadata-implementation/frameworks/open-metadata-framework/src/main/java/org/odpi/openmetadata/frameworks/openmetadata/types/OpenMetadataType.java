@@ -1079,22 +1079,33 @@ public enum OpenMetadataType
 
 
     /**
-     * Relationship identifying a person's contribution record.
+     * Relationship identifying a person's contribution record (replaced by Contribution).
      */
    PERSONAL_CONTRIBUTION_RELATIONSHIP("4a316abe-eeee-4d11-ad5a-4bfb4079b80b",
                                       "PersonalContribution",
-                                      OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                                      OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
                                       "73d21888-20f0-485f-b88e-36617b51b0a8",
-                                      "Relationship identifying a person's contribution record."),
+                                      "Deprecated Relationship identifying a person's contribution record (replaced by Contribution)."),
+
 
     /**
-     * A record of the contribution of an individual.
+     * Relationship identifying an actor's contribution record.
      */
-    CONTRIBUTION_RECORD("ac406bf8-e53e-49f1-9088-2af28cccd285",
+    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
+                                       "Contribution",
+                                       OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                                       "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
+                                       "Relationship identifying an actor's contribution record."),
+
+
+    /**
+     * A record of the contribution of an actor profile.
+     */
+    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
                         "ContributionRecord",
-                        OpenMetadataWikiPages.MODEL_0112_PEOPLE,
-                        "43bc8cc3-4496-45ad-a40c-42bcf22b0111",
-                        "A record of the contribution of an individual."),
+                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
+                        "A record of the contribution of an actor profile."),
 
 
     /**

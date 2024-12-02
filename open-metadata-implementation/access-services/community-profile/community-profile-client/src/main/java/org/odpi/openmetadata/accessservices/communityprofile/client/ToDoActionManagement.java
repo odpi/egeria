@@ -455,6 +455,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                    toDoGUID,
                                                                                                    false,
                                                                                                    false,
+                                                                                                   null,
                                                                                                    new Date());
 
         if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO.typeName)))

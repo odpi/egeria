@@ -636,7 +636,7 @@ public class OpenMetadataStoreRESTServices
     {
         if (effectiveTime != 0)
         {
-            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
             requestBody.setEffectiveTime(new Date(effectiveTime));
 
             return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
@@ -664,13 +664,13 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public OpenMetadataElementResponse getMetadataElementByGUID(String                   serverName,
-                                                                String                   serviceURLMarker,
-                                                                String                   userId,
-                                                                String                   elementGUID,
-                                                                boolean                  forLineage,
-                                                                boolean                  forDuplicateProcessing,
-                                                                EffectiveTimeRequestBody requestBody)
+    public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
+                                                                String             serviceURLMarker,
+                                                                String             userId,
+                                                                String             elementGUID,
+                                                                boolean            forLineage,
+                                                                boolean            forDuplicateProcessing,
+                                                                AnyTimeRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -692,6 +692,7 @@ public class OpenMetadataStoreRESTServices
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                     requestBody.getAsOfTime(),
                                                                      requestBody.getEffectiveTime(),
                                                                      methodName));
             }
@@ -703,6 +704,7 @@ public class OpenMetadataStoreRESTServices
                                                                      forDuplicateProcessing,
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                      null,
+                                                                     new Date(),
                                                                      methodName));
             }
         }
@@ -1531,13 +1533,13 @@ public class OpenMetadataStoreRESTServices
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
-    public OpenMetadataRelationshipResponse getRelationshipByGUID(String                   serverName,
-                                                                  String                   serviceURLMarker,
-                                                                  String                   userId,
-                                                                  String                   relationshipGUID,
-                                                                  boolean                  forLineage,
-                                                                  boolean                  forDuplicateProcessing,
-                                                                  EffectiveTimeRequestBody requestBody)
+    public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
+                                                                  String             serviceURLMarker,
+                                                                  String             userId,
+                                                                  String             relationshipGUID,
+                                                                  boolean            forLineage,
+                                                                  boolean            forDuplicateProcessing,
+                                                                  AnyTimeRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
         final String guidParameterName = "relationshipGUID";
@@ -1560,6 +1562,7 @@ public class OpenMetadataStoreRESTServices
                                                          relationshipGUID,
                                                          guidParameterName,
                                                          null,
+                                                         requestBody.getAsOfTime(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -1568,6 +1571,7 @@ public class OpenMetadataStoreRESTServices
                 relationship = handler.getAttachmentLink(userId,
                                                          relationshipGUID,
                                                          guidParameterName,
+                                                         null,
                                                          null,
                                                          new Date(),
                                                          methodName);

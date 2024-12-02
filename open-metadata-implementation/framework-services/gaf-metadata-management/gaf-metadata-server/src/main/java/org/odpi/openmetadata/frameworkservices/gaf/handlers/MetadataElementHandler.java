@@ -125,6 +125,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param methodName calling method
      *
@@ -138,6 +139,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                       boolean      forLineage,
                                       boolean      forDuplicateProcessing,
                                       List<String> serviceSupportedZones,
+                                      Date         asOfTime,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
@@ -155,6 +157,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
+                                          asOfTime,
                                           effectiveTime,
                                           methodName);
     }

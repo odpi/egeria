@@ -177,7 +177,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false - second entity returned";
 
-        OpenMetadataElement deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null);
+        OpenMetadataElement deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
@@ -197,7 +197,7 @@ public class CreateDuplicatesTest
 
         try
         {
-            openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, false, true, null);
+            openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, false, true, null, null);
             throw new FVTUnexpectedCondition(testCaseName, "Memento metadata element returned by " + activityName);
         }
         catch (Exception exception)
@@ -205,13 +205,13 @@ public class CreateDuplicatesTest
             System.out.println(activityName + ": metadata element " + mementoAssetGUID + " hidden by memento classification");
         }
 
-        OpenMetadataElement mementoElement = openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, true, true, null);
+        OpenMetadataElement mementoElement = openMetadataStoreClient.getMetadataElementByGUID(userId, mementoAssetGUID, true, true, null , null);
 
         thisTest.validateMetadataElement(mementoElement, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false - second entity returned because not lineage";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, firstAssetDuplicateGUID, duplicatePrefix, firstAssetName, activityName, testCaseName);
 
@@ -221,7 +221,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true - memento entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false, null);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false, null, null);
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
@@ -239,7 +239,7 @@ public class CreateDuplicatesTest
 
         try
         {
-            openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, false, true, new Date());
+            openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, false, true, null, new Date());
             throw new FVTUnexpectedCondition(testCaseName, "Ineffective metadata element returned by " + activityName);
         }
         catch (Exception exception)
@@ -247,14 +247,14 @@ public class CreateDuplicatesTest
             System.out.println(activityName + ": metadata element " + ineffectiveAssetGUID + " hidden by effectivity date");
         }
 
-        OpenMetadataElement ineffectiveElement = openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, true, true, null);
+        OpenMetadataElement ineffectiveElement = openMetadataStoreClient.getMetadataElementByGUID(userId, ineffectiveAssetGUID, true, true, null, null);
 
         thisTest.validateMetadataElement(ineffectiveElement, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
         System.out.println("Effective Date: " + ineffectiveElement.getEffectiveToTime());
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=false; effectivity date now  - second entity returned because not lineage and NOW";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, new Date());
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, new Date());
 
         System.out.println(" firstAssetGUID: " + firstAssetGUID);
         System.out.println(" firstAssetDuplicateGUID: " + firstAssetDuplicateGUID);
@@ -269,7 +269,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true; effectivity date now - memento entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false, new Date());
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false,null,  new Date());
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, mementoAssetGUID, mementoPrefix, firstAssetName, activityName, testCaseName);
 
@@ -279,7 +279,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=false; no effectivity date - ineffective entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, false, false, null, null);
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
@@ -289,7 +289,7 @@ public class CreateDuplicatesTest
 
         activityName = "SimpleDuplicate - retrieve first entity - deDup=false; lineage=true; no effectivity date - ineffective entity returned";
 
-        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false, null);
+        deDuplicatedAsset = openMetadataStoreClient.getMetadataElementByGUID(userId, firstAssetGUID, true, false,null,  null);
 
         thisTest.validateMetadataElement(deDuplicatedAsset, assetTypeName, ineffectiveAssetGUID, ineffectivePrefix, firstAssetName, activityName, testCaseName);
 
@@ -414,7 +414,7 @@ public class CreateDuplicatesTest
 
         String keywordGUID = openMetadataStoreClient.createMetadataElementInStore(userId, keywordTypeName, ElementStatus.ACTIVE, effectiveFrom, effectiveTo, properties);
 
-        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, keywordGUID, false, false, null);
+        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, keywordGUID, false, false,null, null);
 
         if (! keywordGUID.equals(retrievedElement.getElementGUID()))
         {
@@ -474,7 +474,7 @@ public class CreateDuplicatesTest
                                                                                                       PropertyServerException,
                                                                                                       FVTUnexpectedCondition
     {
-        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDeduplication, effectiveDate);
+        OpenMetadataElement retrievedElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDeduplication, null, effectiveDate);
 
         validateMetadataElement(retrievedElement, typeName, retrievedGUID, retrievedPrefix, retrievedName, activityName, testCaseName);
 
