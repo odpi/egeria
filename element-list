@@ -326,6 +326,7 @@ org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema

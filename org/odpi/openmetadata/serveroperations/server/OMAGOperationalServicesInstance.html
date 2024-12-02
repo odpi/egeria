@@ -109,10 +109,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of services that are active in the server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ServerServicesStatus.html" title="class in org.odpi.openmetadata.serveroperations.properties">ServerServicesStatus</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerStatus()" class="member-name-link">getServerStatus</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/registration/ViewServerGenericServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">ViewServerGenericServiceAdmin</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOperationalViewServerGenericServiceAdminList()" class="member-name-link">getOperationalViewServerGenericServiceAdminList</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of references to the admin object for each active Open Metadata View Service (OMVS).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ServerServicesStatus.html" title="class in org.odpi.openmetadata.serveroperations.properties">ServerServicesStatus</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerStatus()" class="member-name-link">getServerStatus</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a summary of the status of this server and the services within it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOperationalViewServerGenericServiceAdminList(java.util.List)" class="member-name-link">setOperationalViewServerGenericServiceAdminList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/registration/ViewServerGenericServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">ViewServerGenericServiceAdmin</a>&gt;&nbsp;operationalViewServerGenericServiceAdminList)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of references to the admin object for each active Open Metadata View Service (OMVS).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServerActiveStatus(org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus)" class="member-name-link">setServerActiveStatus</a><wbr>(<a href="../properties/ServerActiveStatus.html" title="enum class in org.odpi.openmetadata.serveroperations.properties">ServerActiveStatus</a>&nbsp;serverActiveStatus)</code></div>
@@ -188,6 +198,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of services names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getOperationalViewServerGenericServiceAdminList()">
+<h3>getOperationalViewServerGenericServiceAdminList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/registration/ViewServerGenericServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">ViewServerGenericServiceAdmin</a>&gt;</span>&nbsp;<span class="element-name">getOperationalViewServerGenericServiceAdminList</span>()</div>
+<div class="block">Return the list of references to the admin object for each active Open Metadata View Service (OMVS).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of ViewServiceAdmin objects</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setOperationalViewServerGenericServiceAdminList(java.util.List)">
+<h3>setOperationalViewServerGenericServiceAdminList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOperationalViewServerGenericServiceAdminList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../adminservices/registration/ViewServerGenericServiceAdmin.html" title="class in org.odpi.openmetadata.adminservices.registration">ViewServerGenericServiceAdmin</a>&gt;&nbsp;operationalViewServerGenericServiceAdminList)</span></div>
+<div class="block">Set up the list of references to the admin object for each active Open Metadata View Service (OMVS).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>operationalViewServerGenericServiceAdminList</code> - list of ViewServiceAdmin objects</dd>
 </dl>
 </section>
 </li>
