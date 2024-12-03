@@ -385,7 +385,7 @@ public class MetadataExplorerResource
 
 
     /**
-     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     * Return all the elements that are anchored to an element plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
      * @param urlMarker      the identifier of the view service (for example runtime-manager for the Runtime Manager OMVS)
@@ -402,6 +402,11 @@ public class MetadataExplorerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+
+    @Operation(summary="getAnchoredElementsGraph",
+            description="Return all the elements that are anchored to an element plus relationships between these elements and to other elements.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
 
     public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
                                                               @PathVariable String          urlMarker,

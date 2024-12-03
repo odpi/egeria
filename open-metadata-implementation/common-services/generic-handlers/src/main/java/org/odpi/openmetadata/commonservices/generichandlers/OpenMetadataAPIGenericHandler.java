@@ -5724,7 +5724,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                         sequencingOrder,
                                                                                         forDuplicateProcessing,
                                                                                         startingFrom,
-                                                                                        pageSize,
+                                                                                        queryPageSize,
                                                                                         effectiveTime,
                                                                                         methodName);
 

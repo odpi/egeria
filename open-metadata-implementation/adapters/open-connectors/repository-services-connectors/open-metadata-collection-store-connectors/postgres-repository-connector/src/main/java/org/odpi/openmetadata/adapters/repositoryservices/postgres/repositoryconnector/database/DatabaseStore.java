@@ -449,7 +449,7 @@ public class DatabaseStore
     public List<RelationshipMapper> retrieveRelationshipsByProperties(QueryBuilder queryBuilder,
                                                                       Date         asOfTime) throws RepositoryErrorException
     {
-        final String methodName = "retrieveRelationships";
+        final String methodName = "retrieveRelationshipsByProperties";
 
         String sqlQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
                                                             RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
@@ -1159,7 +1159,7 @@ public class DatabaseStore
         }
         else
         {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " <= '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
         }
     }
 

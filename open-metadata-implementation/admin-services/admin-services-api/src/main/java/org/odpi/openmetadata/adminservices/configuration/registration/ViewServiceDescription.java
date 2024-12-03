@@ -152,7 +152,7 @@ public enum ViewServiceDescription
                          "feedback-manager",
                          "Work with note logs, comments, informal tags, ratings/reviews and likes.",
                          "https://egeria-project.org/services/omvs/feedback-manager/overview/",
-                         CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
+                         AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
 
     /**
      * Maintain definitions of governance actions such as governance action processes and governance action types.

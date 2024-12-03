@@ -98,6 +98,19 @@ Content-Type: application/json
 
 
 ###
+# @name getAnchoredElementsGraph
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{elementGUID}}/with-anchored-elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
 # @name getMetadataElementByUniqueName
 # Retrieve the metadata element using its unique name (typically the *qualifiedName* attribute but other attributes can be used if they are unique - such as *pathName* for a file).
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-unique-name
