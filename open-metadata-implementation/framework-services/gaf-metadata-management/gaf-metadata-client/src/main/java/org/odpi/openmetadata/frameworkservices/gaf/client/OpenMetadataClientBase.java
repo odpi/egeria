@@ -974,6 +974,62 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param userId name of the server instances for this request
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public OpenMetadataElementGraph getAnchoredElementsGraph(String             userId,
+                                                             String             elementGUID,
+                                                             boolean            forLineage,
+                                                             boolean            forDuplicateProcessing,
+                                                             int                startFrom,
+                                                             int                pageSize,
+                                                             Date               asOfTime,
+                                                             Date               effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName        = "getAnchoredElementsGraph";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/with-anchored-elements?forLineage={4}&forDuplicateProcessing={5}&startFrom={6}&pageSize={7}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setEffectiveTime(effectiveTime);
+        OpenMetadataGraphResponse restResult = restClient.callOpenMetadataGraphPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            serviceURLMarker,
+                                                                                            userId,
+                                                                                            elementGUID,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            startFrom,
+                                                                                            pageSize);
+
+        return restResult.getElementGraph();
+    }
+
+
+    /**
      * Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
      * relationship to be attached.
      *

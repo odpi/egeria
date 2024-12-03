@@ -475,6 +475,37 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param userId name of the server instances for this request
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract OpenMetadataElementGraph getAnchoredElementsGraph(String             userId,
+                                                                      String             elementGUID,
+                                                                      boolean            forLineage,
+                                                                      boolean            forDuplicateProcessing,
+                                                                      int                startFrom,
+                                                                      int                pageSize,
+                                                                      Date               asOfTime,
+                                                                      Date               effectiveTime) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
+
+
+    /**
      * Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
      * relationship to be attached.
      *

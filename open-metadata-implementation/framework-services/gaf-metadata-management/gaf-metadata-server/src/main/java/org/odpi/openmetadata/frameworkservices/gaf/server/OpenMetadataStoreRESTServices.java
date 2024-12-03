@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -26,17 +28,18 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -54,6 +57,8 @@ public class OpenMetadataStoreRESTServices
     private final        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OpenMetadataStoreRESTServices.class),
                                                                                         instanceHandler.getServiceName());
+
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final String propertyNameParameter   = "propertyName";
@@ -1423,6 +1428,398 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId the userId of the requesting user
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(String   serverName,
+                                                              String   serviceURLMarker,
+                                                              String   userId,
+                                                              String   elementGUID,
+                                                              boolean  forLineage,
+                                                              boolean  forDuplicateProcessing,
+                                                              int      startFrom,
+                                                              int      pageSize,
+                                                              AnyTimeRequestBody requestBody)
+    {
+        final String parameterName = "elementGUID";
+        final String methodName    = "getAnchoredElementsGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OpenMetadataGraphResponse response = new OpenMetadataGraphResponse();
+        AuditLog                  auditLog = null;
+
+        try
+        {
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataElement anchorElement = handler.getBeanFromRepository(userId,
+                                                                              elementGUID,
+                                                                              parameterName,
+                                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                              false,
+                                                                              false,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              methodName);
+
+            if (anchorElement != null)
+            {
+                OpenMetadataElementGraph elementGraph = new OpenMetadataElementGraph(anchorElement);
+
+                Map<String, Relationship> receivedRelationships = new HashMap<>();
+
+                List<Relationship>  relationships = handler.getAllAttachmentLinks(userId,
+                                                                                  anchorElement.getElementGUID(),
+                                                                                  parameterName,
+                                                                                  anchorElement.getType().getTypeName(),
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
+                                                                                  methodName);
+                if (relationships != null)
+                {
+                    for (Relationship relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            receivedRelationships.put(relationship.getGUID(), relationship);
+                        }
+                    }
+                }
+
+                SearchClassifications         searchClassifications    = new SearchClassifications();
+                List<ClassificationCondition> classificationConditions = new ArrayList<>();
+                ClassificationCondition       classificationCondition  = new ClassificationCondition();
+                SearchProperties              searchProperties         = new SearchProperties();
+                List<PropertyCondition>       propertyConditions       = new ArrayList<>();
+                PropertyCondition             propertyCondition        = new PropertyCondition();
+                PrimitivePropertyValue        primitivePropertyValue   = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(anchorElement.getElementGUID());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                propertyCondition.setValue(primitivePropertyValue);
+                propertyConditions.add(propertyCondition);
+                searchProperties.setMatchCriteria(MatchCriteria.ALL);
+                searchProperties.setConditions(propertyConditions);
+
+                classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+                classificationCondition.setMatchProperties(searchProperties);
+                classificationConditions.add(classificationCondition);
+                searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+                searchClassifications.setConditions(classificationConditions);
+
+                List<OpenMetadataElement> anchoredElements = handler.findBeans(userId,
+                                                                               null,
+                                                                               null,
+                                                                               null,
+                                                                               null,
+                                                                               searchClassifications,
+                                                                               null,
+                                                                               null,
+                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                               false,
+                                                                               false,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                               new Date(),
+                                                                               methodName);
+
+                elementGraph.setAnchoredElements(anchoredElements);
+
+                if (anchoredElements != null)
+                {
+                    final String anchoredElementParameterName = "anchoredElement.getGUID";
+
+                    for (OpenMetadataElement metadataElement : anchoredElements)
+                    {
+                        if (metadataElement != null)
+                        {
+                            relationships = handler.getAllAttachmentLinks(userId,
+                                                                          metadataElement.getElementGUID(),
+                                                                          anchoredElementParameterName,
+                                                                          metadataElement.getType().getTypeName(),
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName);
+                            if (relationships != null)
+                            {
+                                for (Relationship relationship : relationships)
+                                {
+                                    if (relationship != null)
+                                    {
+                                        receivedRelationships.put(relationship.getGUID(), relationship);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (! receivedRelationships.isEmpty())
+                {
+                    RelatedElementsConverter<OpenMetadataRelationship> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
+                                                                                                                  handler.getServiceName(),
+                                                                                                                  serverName);
+
+                    List<OpenMetadataRelationship> metadataRelationships = new ArrayList<>();
+
+                    for (Relationship relationship: receivedRelationships.values())
+                    {
+                        if (relationship != null)
+                        {
+                            OpenMetadataRelationship metadataRelationship = converter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                                             relationship,
+                                                                                                             methodName);
+
+                            metadataRelationships.add(metadataRelationship);
+                        }
+                    }
+
+                    elementGraph.setRelationships(metadataRelationships);
+                }
+
+                elementGraph.setMermaidGraph(this.getElementGraphMermaidGraph(elementGraph));
+                response.setElementGraph(elementGraph);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Constructing the mermaid graph for the retrieved element.
+     *
+     * @param elementGraph retrieved  graph
+     * @return mermaid string
+     */
+    private String getElementGraphMermaidGraph(OpenMetadataElementGraph elementGraph)
+    {
+        final String methodName = "getElementGraphMermaidGraph";
+
+        StringBuilder mermaidGraph = new StringBuilder();
+
+        mermaidGraph.append("---\n");
+        mermaidGraph.append("title: Asset - ");
+        mermaidGraph.append(this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName()));
+        mermaidGraph.append(" [");
+        mermaidGraph.append(elementGraph.getElementGUID());
+        mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+
+        List<String> usedQualifiedNames = new ArrayList<>();
+
+        String       currentQualifiedName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                             elementGraph.getElementProperties(),
+                                                                             methodName);
+        String       currentDisplayName   = this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName());
+
+        appendMermaidNode(mermaidGraph,
+                          currentQualifiedName,
+                          currentDisplayName,
+                          elementGraph.getType().getTypeName());
+
+        usedQualifiedNames.add(currentQualifiedName);
+
+        if (elementGraph.getAnchoredElements() != null)
+        {
+            for (OpenMetadataElement node : elementGraph.getAnchoredElements())
+            {
+                if (node != null)
+                {
+                    currentQualifiedName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            node.getElementProperties(),
+                                                                            methodName);;
+                    currentDisplayName   = this.getDisplayName(node.getElementProperties(), node.getType().getTypeName());
+
+
+                    if (!usedQualifiedNames.contains(currentQualifiedName))
+                    {
+                        appendMermaidNode(mermaidGraph,
+                                          currentQualifiedName,
+                                          currentDisplayName,
+                                          node.getType().getTypeName());
+
+                        usedQualifiedNames.add(currentQualifiedName);
+                    }
+                }
+            }
+
+            for (OpenMetadataRelationship line : elementGraph.getRelationships())
+            {
+                if (line != null)
+                {
+                    mermaidGraph.append(this.removeSpaces(line.getElementAtEnd1().getUniqueName()));
+                    mermaidGraph.append("-->|");
+                    mermaidGraph.append(line.getType().getTypeName());
+                    mermaidGraph.append("|");
+                    mermaidGraph.append(this.removeSpaces(line.getElementAtEnd2().getUniqueName()));
+                    mermaidGraph.append("\n");
+                }
+            }
+        }
+
+        return mermaidGraph.toString();
+    }
+
+
+    /**
+     * Extract a display name from a variety of properties.
+     *
+     * @param elementProperties properties from the element
+     * @param typeName type name as a last resource
+     * @return display name to use
+     */
+    private String getDisplayName(ElementProperties elementProperties,
+                                  String            typeName)
+    {
+        final String methodName = "getDisplayName";
+
+        String currentDisplayName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                     OpenMetadataProperty.NAME.name,
+                                                                     elementProperties,
+                                                                     methodName);
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                  OpenMetadataProperty.RESOURCE_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                  elementProperties,
+                                                                  methodName);
+        }
+
+        if (currentDisplayName == null)
+        {
+            currentDisplayName = typeName;
+        }
+
+        return currentDisplayName;
+    }
+
+
+    /**
+     * Create a node in the mermaid graph.
+     *
+     * @param mermaidGraph current state of the graph
+     * @param currentNodeName unique name/identifier
+     * @param currentDisplayName display name
+     * @param currentType type of element
+     */
+    private void appendMermaidNode(StringBuilder mermaidGraph,
+                                   String        currentNodeName,
+                                   String        currentDisplayName,
+                                   String        currentType)
+    {
+        mermaidGraph.append(this.removeSpaces(currentNodeName));
+        mermaidGraph.append("(\"`*");
+        mermaidGraph.append(currentType);
+        mermaidGraph.append("*\n**");
+        mermaidGraph.append(currentDisplayName);
+        mermaidGraph.append("**`\")\n");
+    }
+
+
+    /**
+     * Remove all the spaces from the qualifiedName along with the curly braces - found in the templates.
+     *
+     * @param currentQualifiedName qualifiedName
+     * @return qualified name without spaces
+     */
+    private String removeSpaces(String currentQualifiedName)
+    {
+        String noSpaces = currentQualifiedName.replaceAll("\\s+","");
+        return noSpaces.replaceAll("[\\[\\](){}]", "");
+    }
+
+
+
+    /**
+     * Convert an array into a comma separated string.
+     *
+     * @param labelValues array of labels
+     * @return string value without square brackets (Mermaid does not allow them)
+     */
+    private String getListLabel(List<String> labelValues)
+    {
+        if (labelValues != null)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            boolean firstValue = true;
+
+            for (String labelValue : labelValues)
+            {
+                if (! firstValue)
+                {
+                    stringBuilder.append(",");
+                }
+
+                firstValue = false;
+                stringBuilder.append(labelValue);
+            }
+
+            return stringBuilder.toString();
+        }
+
+        return "";
+    }
+
 
 
     /**

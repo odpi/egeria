@@ -621,6 +621,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
      *
      * @return list of columns
      */
+    @Override
     public List<PostgreSQLColumn> getPrimaryKeys()
     {
         if (primaryKeys != null)
@@ -702,6 +703,11 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
     @Override
     public String toString()
     {

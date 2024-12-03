@@ -335,7 +335,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * constructing the mermaid graph for the retrieved asset.
+     * Constructing the mermaid graph for the retrieved asset.
      *
      * @param assetGraph retrieved asset graph
      * @return mermaid string
@@ -450,7 +450,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * constructing the mermaid graph for the retrieved asset.
+     * Constructing the mermaid graph for the retrieved asset.
      *
      * @param assetLineageGraph retrieved asset graph
      * @return mermaid string
@@ -558,6 +558,7 @@ public class AssetConsumerRESTServices
 
         return "";
     }
+
 
     /**
      * Return all the elements that are linked to an asset using lineage relationships.  The relationships are

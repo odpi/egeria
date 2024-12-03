@@ -578,6 +578,29 @@ public class OpenMetadataStore
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param elementGUID  unique identifier for the element
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementGraph getAnchoredElementsGraph(String elementGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return openMetadataClient.getAnchoredElementsGraph(userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, null, getEffectiveTime());
+    }
+
+
+    /**
      * Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
      * relationship to be attached.
      *

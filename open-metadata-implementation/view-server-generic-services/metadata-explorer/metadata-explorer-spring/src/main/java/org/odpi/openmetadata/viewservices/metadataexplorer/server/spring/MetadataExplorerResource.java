@@ -374,14 +374,52 @@ public class MetadataExplorerResource
         return restAPI.getMetadataElementRelationships(serverName,
                                                        metadataElementAtEnd1GUID,
                                                        null,
-                                                       urlMarker,
                                                        metadataElementAtEnd2GUID,
+                                                       urlMarker,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        startFrom,
                                                        pageSize,
                                                        requestBody);
     }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker      the identifier of the view service (for example runtime-manager for the Runtime Manager OMVS)
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
+                                                              @PathVariable String          urlMarker,
+                                                              @PathVariable String          elementGUID,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forLineage,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forDuplicateProcessing,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             startFrom,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             pageSize,
+                                                              @RequestBody (required = false)
+                                                              AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getAnchoredElementsGraph(serverName, urlMarker, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+    }
+
 
 
     /**
