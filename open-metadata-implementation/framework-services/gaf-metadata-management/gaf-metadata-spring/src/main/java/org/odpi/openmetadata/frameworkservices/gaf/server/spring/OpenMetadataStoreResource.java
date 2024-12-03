@@ -1078,6 +1078,45 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId the userId of the requesting user
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
+                                                              @PathVariable String          serviceURLMarker,
+                                                              @PathVariable String          userId,
+                                                              @PathVariable String          elementGUID,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forLineage,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forDuplicateProcessing,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             startFrom,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             pageSize,
+                                                              @RequestBody (required = false)
+                                                              AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getAnchoredElementsGraph(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to

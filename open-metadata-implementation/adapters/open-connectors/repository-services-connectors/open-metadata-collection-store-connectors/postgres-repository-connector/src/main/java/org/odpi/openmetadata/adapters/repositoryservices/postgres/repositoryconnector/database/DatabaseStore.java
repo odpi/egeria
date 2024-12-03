@@ -409,10 +409,13 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationships";
 
+        String sqQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                           RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                           "*") +
+                " where " + queryBuilder.getAsOfTimeWhereClause();
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                      queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqQuery + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)

@@ -9301,6 +9301,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            serviceSupportedZones,
+                                                           asOfTime,
                                                            effectiveTime,
                                                            methodName);
 

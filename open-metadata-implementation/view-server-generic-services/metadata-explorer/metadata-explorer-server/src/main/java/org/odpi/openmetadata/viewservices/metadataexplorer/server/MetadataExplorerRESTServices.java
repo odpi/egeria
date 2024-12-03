@@ -6,7 +6,10 @@ package org.odpi.openmetadata.viewservices.metadataexplorer.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -473,6 +476,83 @@ public class MetadataExplorerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param viewServiceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
+                                                              String             viewServiceURLMarker,
+                                                              String             elementGUID,
+                                                              boolean            forLineage,
+                                                              boolean            forDuplicateProcessing,
+                                                              int                startFrom,
+                                                              int                pageSize,
+                                                              AnyTimeRequestBody requestBody)
+    {
+        final String methodName    = "getAnchoredElementsGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataGraphResponse response = new OpenMetadataGraphResponse();
+        AuditLog                  auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementGraph(handler.getAnchoredElementsGraph(userId,
+                                                                          elementGUID,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          requestBody.getAsOfTime(),
+                                                                          requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementGraph(handler.getAnchoredElementsGraph(userId,
+                                                                          elementGUID,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          null,
+                                                                          new Date()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Retrieve the relationships linking to the supplied elements.
      *
@@ -524,8 +604,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElementList(handler.getMetadataElementRelationships(userId,
                                                                                 metadataElementAtEnd1GUID,
-                                                                                relationshipTypeName,
                                                                                 metadataElementAtEnd2GUID,
+                                                                                relationshipTypeName,
                                                                                 requestBody.getLimitResultsByStatus(),
                                                                                 requestBody.getAsOfTime(),
                                                                                 requestBody.getSequencingProperty(),
@@ -540,8 +620,8 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 response.setElementList(handler.getMetadataElementRelationships(userId,
                                                                                 metadataElementAtEnd1GUID,
-                                                                                relationshipTypeName,
                                                                                 metadataElementAtEnd2GUID,
+                                                                                relationshipTypeName,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -751,21 +831,21 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.getRelationshipByGUID(userId,
-                                              relationshipGUID,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              requestBody.getAsOfTime(),
-                                              requestBody.getEffectiveTime());
+                response.setElement(handler.getRelationshipByGUID(userId,
+                                                                  relationshipGUID,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  requestBody.getAsOfTime(),
+                                                                  requestBody.getEffectiveTime()));
             }
             else
             {
-                handler.getRelationshipByGUID(userId,
-                                              relationshipGUID,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              null,
-                                              new Date());
+                response.setElement(handler.getRelationshipByGUID(userId,
+                                                                  relationshipGUID,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  null,
+                                                                  new Date()));
             }
         }
         catch (Exception error)
@@ -859,5 +939,4 @@ public class MetadataExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 }

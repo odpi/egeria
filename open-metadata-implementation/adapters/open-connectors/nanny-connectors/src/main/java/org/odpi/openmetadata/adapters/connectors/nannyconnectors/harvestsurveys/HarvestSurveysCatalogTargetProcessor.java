@@ -500,7 +500,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     {
                         Map<String, Integer> measurementValues = new HashMap<>();
 
-                        for (int recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
+                        for (long recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
                         {
                             List<String> recordValues = csvFileStoreConnector.readRecord(recordNumber);
 
@@ -964,7 +964,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (connector instanceof CSVFileStoreConnector csvFileStoreConnector)
         {
-            for (int recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
+            for (long recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
             {
                 List<String> recordValues = csvFileStoreConnector.readRecord(recordNumber);
 
