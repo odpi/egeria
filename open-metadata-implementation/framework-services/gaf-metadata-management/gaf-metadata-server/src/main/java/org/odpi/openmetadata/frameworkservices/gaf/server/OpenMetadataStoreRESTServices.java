@@ -2025,7 +2025,7 @@ public class OpenMetadataStoreRESTServices
                                                                        boolean            oldestFirst,
                                                                        HistoryRequestBody requestBody)
     {
-        final String methodName = "getMetadataElementHistory";
+        final String methodName = "getRelationshipHistory";
         final String guidParameterName  = "relationshipGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);

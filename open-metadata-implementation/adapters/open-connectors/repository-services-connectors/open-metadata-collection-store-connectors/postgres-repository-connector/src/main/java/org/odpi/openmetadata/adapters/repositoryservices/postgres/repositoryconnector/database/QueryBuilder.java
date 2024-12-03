@@ -591,9 +591,9 @@ public class QueryBuilder
     {
         if (searchProperties != null)
         {
-            return this.getPropertyComparisonFromPropertyConditions(searchProperties,
-                                                                    propertyTableName,
-                                                                    null);
+            return " and " + this.getPropertyComparisonFromPropertyConditions(searchProperties,
+                                                                              propertyTableName,
+                                                                              null);
         }
 
         return " ";
@@ -621,7 +621,7 @@ public class QueryBuilder
                 matchOperand = " or ";
             }
 
-            StringBuilder stringBuilder = new StringBuilder(" and (");
+            StringBuilder stringBuilder = new StringBuilder("(");
             boolean       firstProperty = true;
 
             for (PropertyCondition propertyCondition : searchProperties.getConditions())
@@ -759,6 +759,7 @@ public class QueryBuilder
 
                     if (classificationCondition.getMatchProperties() != null)
                     {
+                        stringBuilder.append(" and ");
                         stringBuilder.append(this.getPropertyComparisonFromPropertyConditions(classificationCondition.getMatchProperties(),
                                                                                               RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                               null));
