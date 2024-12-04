@@ -82,7 +82,7 @@ ext {
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.2'
     postgresVersion = '42.7.4'
-    nettyVersion = '4.1.114.Final'
+    nettyVersion = '4.1.115.Final'
     prometheusVersion = '1.13.6'
     quartzVersion = '2.3.2'
     // TODO: May be able to remove as moving to jakarta servlet
