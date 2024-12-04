@@ -109,7 +109,7 @@ ext {
     //cassandraVersion 5.0.1 doesn't work
     cassandraVersion = '4.1.5'
     protobufVersion = '3.25.5'
-    log4jVersion = '2.24.1'
+    log4jVersion = '2.24.2'
     jacksonjdk8Version = '2.18.0'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
