@@ -435,35 +435,35 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                           elementGUID,
-                                                                           startingAtEnd,
-                                                                           relationshipTypeName,
-                                                                           requestBody.getLimitResultsByStatus(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getSequencingProperty(),
-                                                                           requestBody.getSequencingOrder(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           requestBody.getEffectiveTime(),
-                                                                           startFrom,
-                                                                           pageSize));
+                response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
+                                                                                  elementGUID,
+                                                                                  startingAtEnd,
+                                                                                  relationshipTypeName,
+                                                                                  requestBody.getLimitResultsByStatus(),
+                                                                                  requestBody.getAsOfTime(),
+                                                                                  requestBody.getSequencingProperty(),
+                                                                                  requestBody.getSequencingOrder(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  startFrom,
+                                                                                  pageSize));
             }
             else
             {
-                response.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                           elementGUID,
-                                                                           startingAtEnd,
-                                                                           relationshipTypeName,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           null,
-                                                                           startFrom,
-                                                                           pageSize));
+                response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
+                                                                                  elementGUID,
+                                                                                  startingAtEnd,
+                                                                                  relationshipTypeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  null,
+                                                                                  startFrom,
+                                                                                  pageSize));
             }
         }
         catch (Exception error)
@@ -602,35 +602,35 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                metadataElementAtEnd1GUID,
-                                                                                metadataElementAtEnd2GUID,
-                                                                                relationshipTypeName,
-                                                                                requestBody.getLimitResultsByStatus(),
-                                                                                requestBody.getAsOfTime(),
-                                                                                requestBody.getSequencingProperty(),
-                                                                                requestBody.getSequencingOrder(),
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                requestBody.getEffectiveTime(),
-                                                                                startFrom,
-                                                                                pageSize));
+                response.setRelationshipList(handler.getMetadataElementRelationships(userId,
+                                                                                     metadataElementAtEnd1GUID,
+                                                                                     metadataElementAtEnd2GUID,
+                                                                                     relationshipTypeName,
+                                                                                     requestBody.getLimitResultsByStatus(),
+                                                                                     requestBody.getAsOfTime(),
+                                                                                     requestBody.getSequencingProperty(),
+                                                                                     requestBody.getSequencingOrder(),
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     requestBody.getEffectiveTime(),
+                                                                                     startFrom,
+                                                                                     pageSize));
             }
             else
             {
-                response.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                metadataElementAtEnd1GUID,
-                                                                                metadataElementAtEnd2GUID,
-                                                                                relationshipTypeName,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                null,
-                                                                                startFrom,
-                                                                                pageSize));
+                response.setRelationshipList(handler.getMetadataElementRelationships(userId,
+                                                                                     metadataElementAtEnd1GUID,
+                                                                                     metadataElementAtEnd2GUID,
+                                                                                     relationshipTypeName,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     null,
+                                                                                     startFrom,
+                                                                                     pageSize));
             }
         }
         catch (Exception error)
@@ -759,18 +759,18 @@ public class MetadataExplorerRESTServices extends TokenController
             {
                 OpenMetadataHandler handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
 
-                response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                         requestBody.getRelationshipTypeName(),
-                                                                                         requestBody.getSearchProperties(),
-                                                                                         requestBody.getLimitResultsByStatus(),
-                                                                                         requestBody.getAsOfTime(),
-                                                                                         requestBody.getSequencingProperty(),
-                                                                                         requestBody.getSequencingOrder(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         startFrom,
-                                                                                         pageSize));
+                response.setRelationshipList(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                              requestBody.getRelationshipTypeName(),
+                                                                                              requestBody.getSearchProperties(),
+                                                                                              requestBody.getLimitResultsByStatus(),
+                                                                                              requestBody.getAsOfTime(),
+                                                                                              requestBody.getSequencingProperty(),
+                                                                                              requestBody.getSequencingOrder(),
+                                                                                              forLineage,
+                                                                                              forDuplicateProcessing,
+                                                                                              requestBody.getEffectiveTime(),
+                                                                                              startFrom,
+                                                                                              pageSize));
             }
             else
             {
@@ -906,29 +906,29 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getRelationshipHistory(userId,
-                                                                       relationshipGUID,
-                                                                       requestBody.getFromTime(),
-                                                                       requestBody.getToTime(),
-                                                                       oldestFirst,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       requestBody.getEffectiveTime(),
-                                                                       startFrom,
-                                                                       pageSize));
+                response.setRelationshipList(handler.getRelationshipHistory(userId,
+                                                                            relationshipGUID,
+                                                                            requestBody.getFromTime(),
+                                                                            requestBody.getToTime(),
+                                                                            oldestFirst,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
+                                                                            startFrom,
+                                                                            pageSize));
             }
             else
             {
-                response.setElementList(handler.getRelationshipHistory(userId,
-                                                                       relationshipGUID,
-                                                                       null,
-                                                                       null,
-                                                                       oldestFirst,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       null,
-                                                                       startFrom,
-                                                                       pageSize));
+                response.setRelationshipList(handler.getRelationshipHistory(userId,
+                                                                            relationshipGUID,
+                                                                            null,
+                                                                            null,
+                                                                            oldestFirst,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            null,
+                                                                            startFrom,
+                                                                            pageSize));
             }
         }
         catch (Exception error)

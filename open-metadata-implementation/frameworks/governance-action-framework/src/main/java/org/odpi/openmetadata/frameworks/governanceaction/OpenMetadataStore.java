@@ -553,7 +553,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElement> getRelatedMetadataElements(String  elementGUID,
+    public RelatedMetadataElementList getRelatedMetadataElements(String  elementGUID,
                                                                    int     startingAtEnd,
                                                                    String  relationshipTypeName,
                                                                    int     startFrom,
@@ -676,7 +676,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
+    public OpenMetadataRelationshipList getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
                                                                           String  metadataElementAtEnd2GUID,
                                                                           String  relationshipTypeName,
                                                                           int     startFrom,
@@ -772,7 +772,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              relationshipTypeName,
+    public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              relationshipTypeName,
                                                                                    SearchProperties    searchProperties,
                                                                                    List<ElementStatus> limitResultsByStatus,
                                                                                    Date                asOfTime,

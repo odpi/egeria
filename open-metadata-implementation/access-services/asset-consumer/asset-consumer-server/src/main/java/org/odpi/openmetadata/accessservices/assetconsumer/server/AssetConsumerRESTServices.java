@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.commonservices.mermaid.AssetGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.AssetLineageGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -320,7 +322,9 @@ public class AssetConsumerRESTServices
                     assetGraph.setRelationships(metadataRelationships);
                 }
 
-                assetGraph.setMermaidGraph(this.getAssetMermaidGraph(assetGraph));
+                AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
+                assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
                 response.setAssetGraph(assetGraph);
             }
         }
@@ -331,232 +335,6 @@ public class AssetConsumerRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * Constructing the mermaid graph for the retrieved asset.
-     *
-     * @param assetGraph retrieved asset graph
-     * @return mermaid string
-     */
-    private String getAssetMermaidGraph(AssetGraph assetGraph)
-    {
-        StringBuilder mermaidGraph = new StringBuilder();
-
-        mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Asset - ");
-        mermaidGraph.append(assetGraph.getProperties().getDisplayName());
-        mermaidGraph.append(" [");
-        mermaidGraph.append(assetGraph.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
-
-        List<String> usedQualifiedNames = new ArrayList<>();
-
-        String       currentQualifiedName = assetGraph.getProperties().getQualifiedName();
-        String       currentDisplayName   = assetGraph.getProperties().getDisplayName();
-
-        appendMermaidNode(mermaidGraph,
-                          currentQualifiedName,
-                          currentDisplayName,
-                          assetGraph.getElementHeader().getType().getTypeName());
-
-        usedQualifiedNames.add(currentQualifiedName);
-
-        if (assetGraph.getAnchoredElements() != null)
-        {
-            for (MetadataElementSummary node : assetGraph.getAnchoredElements())
-            {
-                if (node != null)
-                {
-                    currentQualifiedName = node.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                    currentDisplayName   = node.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.RESOURCE_NAME.name);
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name);
-                    }
-
-                    if (!usedQualifiedNames.contains(currentQualifiedName))
-                    {
-                        appendMermaidNode(mermaidGraph,
-                                          currentQualifiedName,
-                                          currentDisplayName,
-                                          node.getElementHeader().getType().getTypeName());
-
-                        usedQualifiedNames.add(currentQualifiedName);
-                    }
-                }
-            }
-
-            for (MetadataRelationship line : assetGraph.getRelationships())
-            {
-                if (line != null)
-                {
-                    mermaidGraph.append(this.removeSpaces(line.getEnd1().getUniqueName()));
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(line.getType().getTypeName());
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(this.removeSpaces(line.getEnd2().getUniqueName()));
-                    mermaidGraph.append("\n");
-                }
-            }
-        }
-
-        return mermaidGraph.toString();
-    }
-
-
-    /**
-     * Create a node in the mermaid graph.
-     *
-     * @param mermaidGraph current state of the graph
-     * @param currentNodeName unique name/identifier
-     * @param currentDisplayName display name
-     * @param currentType type of element
-     */
-    private void appendMermaidNode(StringBuilder mermaidGraph,
-                                   String        currentNodeName,
-                                   String        currentDisplayName,
-                                   String        currentType)
-    {
-        mermaidGraph.append(this.removeSpaces(currentNodeName));
-        mermaidGraph.append("(\"`*");
-        mermaidGraph.append(currentType);
-        mermaidGraph.append("*\n**");
-        mermaidGraph.append(currentDisplayName);
-        mermaidGraph.append("**`\")\n");
-    }
-
-
-    /**
-     * Remove all the spaces from the qualifiedName along with the curly braces - found in the templates.
-     *
-     * @param currentQualifiedName qualifiedName
-     * @return qualified name without spaces
-     */
-    private String removeSpaces(String currentQualifiedName)
-    {
-        String noSpaces = currentQualifiedName.replaceAll("\\s+","");
-        return noSpaces.replaceAll("[\\[\\](){}]", "");
-    }
-
-
-    /**
-     * Constructing the mermaid graph for the retrieved asset.
-     *
-     * @param assetLineageGraph retrieved asset graph
-     * @return mermaid string
-     */
-    private String getAssetLineageMermaidGraph(AssetLineageGraph assetLineageGraph)
-    {
-        StringBuilder mermaidGraph = new StringBuilder();
-
-        mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Lineage Graph for Asset - ");
-        mermaidGraph.append(assetLineageGraph.getProperties().getDisplayName());
-        mermaidGraph.append(" [");
-        mermaidGraph.append(assetLineageGraph.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
-
-        List<String> usedNodeNames = new ArrayList<>();
-
-        String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
-        String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
-
-        appendMermaidNode(mermaidGraph,
-                          currentNodeName,
-                          currentDisplayName,
-                          assetLineageGraph.getElementHeader().getType().getTypeName());
-
-        usedNodeNames.add(currentNodeName);
-
-        if (assetLineageGraph.getLinkedAssets() != null)
-        {
-            for (AssetLineageGraphNode node : assetLineageGraph.getLinkedAssets())
-            {
-                if (node != null)
-                {
-                    currentNodeName = node.getElementHeader().getGUID();
-                    currentDisplayName   = node.getProperties().getDisplayName();
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getResourceName();
-                    }
-                    if (currentDisplayName == null)
-                    {
-                        currentDisplayName = node.getProperties().getQualifiedName();
-                    }
-
-                    if (!usedNodeNames.contains(currentNodeName))
-                    {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
-                                          currentDisplayName,
-                                          node.getElementHeader().getType().getTypeName());
-
-                        usedNodeNames.add(currentNodeName);
-                    }
-                }
-            }
-
-            for (AssetLineageGraphRelationship line : assetLineageGraph.getLineageRelationships())
-            {
-                if (line != null)
-                {
-                    mermaidGraph.append(line.getEnd1AssetGUID());
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(this.getListLabel(line.getRelationshipTypes()));
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(line.getEnd2AssetGUID());
-                    mermaidGraph.append("\n");
-                }
-            }
-        }
-
-        return mermaidGraph.toString();
-    }
-
-
-    /**
-     * Convert an array into a comma separated string.
-     *
-     * @param labelValues array of labels
-     * @return string value without square brackets (Mermaid does not allow them)
-     */
-    private String getListLabel(List<String> labelValues)
-    {
-        if (labelValues != null)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            boolean firstValue = true;
-
-            for (String labelValue : labelValues)
-            {
-                if (! firstValue)
-                {
-                    stringBuilder.append(",");
-                }
-
-                firstValue = false;
-                stringBuilder.append(labelValue);
-            }
-
-            return stringBuilder.toString();
-        }
-
-        return "";
     }
 
 
@@ -624,7 +402,9 @@ public class AssetConsumerRESTServices
                 }
 
                 assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
-                assetLineageGraph.setMermaidGraph(this.getAssetLineageMermaidGraph(assetLineageGraph));
+
+                AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph);
+                assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
 
                 response.setAssetLineageGraph(assetLineageGraph);
             }

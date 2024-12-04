@@ -85,6 +85,7 @@ include(':open-metadata-implementation:adapters:open-connectors:connector-config
 include(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 include(':open-metadata-implementation:common-services:ffdc-services')
 include(':open-metadata-implementation:common-services:generic-handlers')
+include(':open-metadata-implementation:common-services:mermaid-services')
 include(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
 include(':open-metadata-implementation:common-services:metadata-security:metadata-security-connectors')
 include(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')

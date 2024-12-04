@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
@@ -91,12 +92,19 @@ public class RelatedElementsIterator extends IntegrationIterator
     {
         if ((elementCache == null) || (elementCache.isEmpty()))
         {
-            List<RelatedMetadataElement> relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(parentGUID,
-                                                                                                                    parentAtEnd,
-                                                                                                                    parentRelationshipTypeName,
-                                                                                                                    startFrom,
-                                                                                                                    maxPageSize);
-            elementCache = this.getElementCache(relatedMetadataElementList);
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(parentGUID,
+                                                                                                                  parentAtEnd,
+                                                                                                                  parentRelationshipTypeName,
+                                                                                                                  startFrom,
+                                                                                                                  maxPageSize);
+            if (relatedMetadataElementList != null)
+            {
+                elementCache = this.getElementCache(relatedMetadataElementList.getElementList());
+            }
+            else
+            {
+                elementCache = null;
+            }
 
             startFrom = startFrom + maxPageSize;
         }

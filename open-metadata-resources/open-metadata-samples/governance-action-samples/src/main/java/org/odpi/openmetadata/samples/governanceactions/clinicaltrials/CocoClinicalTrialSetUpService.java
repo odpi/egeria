@@ -5,11 +5,7 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -439,15 +435,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                       governanceActionExecutorRelationship.getRelationshipProperties());
 
 
-                List<RelatedMetadataElement> actionTargets = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
-                                                                                                                                 1,
-                                                                                                                                 OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
-                                                                                                                                 0,
-                                                                                                                                 0);
+                RelatedMetadataElementList actionTargets = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
+                                                                                                                               1,
+                                                                                                                               OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                                                                               0,
+                                                                                                                               0);
 
                 if (actionTargets != null)
                 {
-                    for (RelatedMetadataElement actionTarget : actionTargets)
+                    for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
                     {
                         if (actionTarget != null)
                         {
@@ -462,7 +458,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 }
 
 
-                List<RelatedMetadataElement> specifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
+                RelatedMetadataElementList specifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
                                                                                                                                  1,
                                                                                                                                  OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                                                  0,
@@ -470,7 +466,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                 if (specifications != null)
                 {
-                    for (RelatedMetadataElement specification : specifications)
+                    for (RelatedMetadataElement specification : specifications.getElementList())
                     {
                         if (specification != null)
                         {

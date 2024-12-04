@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
@@ -190,14 +191,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
             OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
 
             int                          startFrom = 0;
-            List<RelatedMetadataElement> relatedCapabilities = openMetadataAccess.getRelatedMetadataElements(databaseServerGUID,
-                                                                                                             1,
-                                                                                                             OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                             startFrom,
-                                                                                                             getContext().getMaxPageSize());
+            RelatedMetadataElementList relatedCapabilities = openMetadataAccess.getRelatedMetadataElements(databaseServerGUID,
+                                                                                                           1,
+                                                                                                           OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                           startFrom,
+                                                                                                           getContext().getMaxPageSize());
             while (relatedCapabilities != null)
             {
-                for (RelatedMetadataElement relatedCapability : relatedCapabilities)
+                for (RelatedMetadataElement relatedCapability : relatedCapabilities.getElementList())
                 {
                     if (OpenMetadataType.DATABASE_MANAGER.typeName.equals(relatedCapability.getElement().getType().getTypeName()))
                     {

@@ -4,14 +4,13 @@ package org.odpi.openmetadata.frameworks.surveyaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
-
-import java.util.List;
 
 
 /**
@@ -47,7 +46,7 @@ public class SurveyReportConverter<B> extends OpenMetadataConverterBase<B>
      */
     public SurveyReport getSurveyReport(Class<B>                     beanClass,
                                         OpenMetadataElement          primaryElement,
-                                        List<RelatedMetadataElement> relationships,
+                                        RelatedMetadataElementList   relationships,
                                         String                       methodName) throws PropertyServerException
     {
         if (propertyHelper.isTypeOf(primaryElement, OpenMetadataType.SURVEY_REPORT.typeName))
@@ -79,7 +78,7 @@ public class SurveyReportConverter<B> extends OpenMetadataConverterBase<B>
 
             if (relationships != null)
             {
-                for (RelatedMetadataElement relationship : relationships)
+                for (RelatedMetadataElement relationship : relationships.getElementList())
                 {
                     if (relationship != null)
                     {

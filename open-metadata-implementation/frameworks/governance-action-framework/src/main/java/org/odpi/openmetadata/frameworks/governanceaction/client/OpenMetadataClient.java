@@ -457,7 +457,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+    public abstract RelatedMetadataElementList getRelatedMetadataElements(String              userId,
                                                                             String              elementGUID,
                                                                             int                 startingAtEnd,
                                                                             String              relationshipTypeName,
@@ -593,7 +593,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+    public abstract OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
                                                                                    String              metadataElementAtEnd1GUID,
                                                                                    String              metadataElementAtEnd2GUID,
                                                                                    String              relationshipTypeName,
@@ -680,7 +680,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
+    public  abstract OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              userId,
                                                                                              String              relationshipTypeName,
                                                                                              SearchProperties    searchProperties,
                                                                                              List<ElementStatus> limitResultsByStatus,
@@ -741,7 +741,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
+    public  abstract OpenMetadataRelationshipList getRelationshipHistory(String  userId,
                                                                            String  relationshipGUID,
                                                                            Date    fromTime,
                                                                            Date    toTime,

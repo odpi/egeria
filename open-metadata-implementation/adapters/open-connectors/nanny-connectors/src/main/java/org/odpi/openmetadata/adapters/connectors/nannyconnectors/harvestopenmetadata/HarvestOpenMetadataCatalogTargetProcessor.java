@@ -14,7 +14,6 @@ import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmeta
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.schema.HarvestOpenMetadataTable;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc.HarvestSurveysErrorCode;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema.HarvestSurveysColumn;
-import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema.HarvestSurveysTable;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLSchemaDDL;
@@ -462,7 +461,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             startFrom = 0;
 
-            List<OpenMetadataRelationship> personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
+            OpenMetadataRelationshipList personRoleAppointments = openMetadataAccess.findRelationshipsBetweenMetadataElements(OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                                                null,
                                                                                                                                null,
                                                                                                                                null,
@@ -473,7 +472,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             while (personRoleAppointments != null)
             {
-                for (OpenMetadataRelationship personRoleAppointment : personRoleAppointments)
+                for (OpenMetadataRelationship personRoleAppointment : personRoleAppointments.getElementList())
                 {
                     if (personRoleAppointment != null)
                     {
@@ -525,7 +524,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> profileIdentities = openMetadataAccess.getRelatedMetadataElements(profileGUID,
+            RelatedMetadataElementList profileIdentities = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                            1,
                                                                                                            OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
                                                                                                            0,
@@ -534,7 +533,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (profileIdentities != null)
             {
-                for (RelatedMetadataElement profileIdentity : profileIdentities)
+                for (RelatedMetadataElement profileIdentity : profileIdentities.getElementList())
                 {
                     if (profileIdentity != null)
                     {
@@ -671,7 +670,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
                                                                                                          2,
                                                                                                          OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
                                                                                                          0,
@@ -682,7 +681,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             if (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -719,7 +718,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                          1,
                                                                                                          OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
                                                                                                          0,
@@ -730,7 +729,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             if (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -767,7 +766,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
                                                                                                          1,
                                                                                                          OpenMetadataType.REFERENCEABLE_TO_LICENSE_TYPE_NAME,
                                                                                                          0,
@@ -778,7 +777,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             if (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -818,7 +817,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(assetGUID,
                                                                                                          1,
                                                                                                          OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                                                                                          startFrom,
@@ -829,7 +828,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             while (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -887,7 +886,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
                                                                                                          1,
                                                                                                          OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                                                                                          0,
@@ -898,7 +897,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             if (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -956,7 +955,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             int numberOfLikes = 0;
 
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(elementHeader.getGUID(),
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementHeader.getGUID(),
                                                                                                          1,
                                                                                                          null,
                                                                                                          startFrom,
@@ -964,7 +963,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             while (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     String relationshipType = relatedMetadataElement.getType().getTypeName();
 
@@ -1068,7 +1067,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
+            RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
                                                                                                          1,
                                                                                                          "AttachedComment",
                                                                                                          startFrom,
@@ -1079,7 +1078,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
              */
             while (relatedElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1185,7 +1184,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(teamGUID,
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(teamGUID,
                                                                                                                  2,
                                                                                                                  OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
                                                                                                                  0,
@@ -1193,18 +1192,18 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement personRoleElement : relatedMetadataElements)
+                for (RelatedMetadataElement personRoleElement : relatedMetadataElements.getElementList())
                 {
                     if (personRoleElement != null)
                     {
-                        List<RelatedMetadataElement> appointees = openMetadataAccess.getRelatedMetadataElements(teamGUID,
+                        RelatedMetadataElementList appointees = openMetadataAccess.getRelatedMetadataElements(teamGUID,
                                                                                                                   2,
                                                                                                                   OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                                   0,
                                                                                                                   openMetadataAccess.getMaxPagingSize());
                         if (appointees != null)
                         {
-                            for (RelatedMetadataElement appointee : appointees)
+                            for (RelatedMetadataElement appointee : appointees.getElementList())
                             {
                                 if (appointee != null)
                                 {
@@ -1277,7 +1276,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             String organizationName = null;
             RelatedMetadataElement profileElement = null;
 
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(userIdentityElement.getElementGUID(),
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(userIdentityElement.getElementGUID(),
                                                                                                                  2,
                                                                                                                  OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
                                                                                                                  0,
@@ -1285,7 +1284,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1368,7 +1367,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             RelatedMetadataElement toDoSourceElement = null;
             RelatedMetadataElement actionAssignmentElement = null;
 
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                                                  2,
                                                                                                                  OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP.typeName,
                                                                                                                  0,
@@ -1376,7 +1375,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1394,7 +1393,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1429,7 +1428,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> roleElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
+            RelatedMetadataElementList roleElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                       1,
                                                                                                       OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName,
                                                                                                       0,
@@ -1437,11 +1436,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (roleElements != null)
             {
-                for (RelatedMetadataElement roleElement : roleElements)
+                for (RelatedMetadataElement roleElement : roleElements.getElementList())
                 {
                     if (roleElement != null)
                     {
-                        List<RelatedMetadataElement> teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
+                        RelatedMetadataElementList teamElements = openMetadataAccess.getRelatedMetadataElements(profileGUID,
                                                                                                                   1,
                                                                                                                   OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                   0,
@@ -1458,7 +1457,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                         if (teamElements != null)
                         {
-                            for (RelatedMetadataElement team : teamElements)
+                            for (RelatedMetadataElement team : teamElements.getElementList())
                             {
                                 if (team != null)
                                 {
@@ -1497,7 +1496,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(departmentGUID,
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(departmentGUID,
                                                                                                                  2,
                                                                                                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
                                                                                                                  0,
@@ -1505,7 +1504,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1574,14 +1573,14 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             /*
              * Start by processing related schema types.
              */
-            List<RelatedMetadataElement> relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataAccess.getRelatedMetadataElements(schemaType.getElement().getElementGUID(),
                                                                                                                     1,
                                                                                                                     null,
                                                                                                                     startFrom,
                                                                                                                     openMetadataAccess.getMaxPagingSize());
             while (relatedMetadataElementList != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
                 {
                     if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SCHEMA_TYPE.typeName))
                     {
@@ -1756,7 +1755,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            List<RelatedMetadataElement> reports = openMetadataAccess.getRelatedMetadataElements(dataFieldGUID,
+            RelatedMetadataElementList reports = openMetadataAccess.getRelatedMetadataElements(dataFieldGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                                  0,
@@ -1940,7 +1939,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(glossaryTerm.getElementHeader().getGUID(),
                                                                                                                  0,
                                                                                                                  null,
                                                                                                                  startFrom,
@@ -1948,7 +1947,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             while (relatedMetadataElements != null)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     String relationshipName = relatedMetadataElement.getType().getTypeName();
 

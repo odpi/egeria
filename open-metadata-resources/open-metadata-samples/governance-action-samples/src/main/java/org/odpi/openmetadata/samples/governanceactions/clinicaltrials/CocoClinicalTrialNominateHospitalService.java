@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -205,11 +206,11 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                                                                                     UserNotAuthorizedException
     {
         int startFrom = 0;
-        List<OpenMetadataRelationship> existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
-                                                                                                                                         certificationTypeGUID,
-                                                                                                                                         OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                                                                                         startFrom,
-                                                                                                                                         governanceContext.getMaxPageSize());
+        OpenMetadataRelationshipList existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
+                                                                                                                                       certificationTypeGUID,
+                                                                                                                                       OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                                       startFrom,
+                                                                                                                                       governanceContext.getMaxPageSize());
 
         /*
          * All existing certifications are ended - assuming that the hospital contact people have changed - or
@@ -221,7 +222,7 @@ public class CocoClinicalTrialNominateHospitalService extends CocoClinicalTrialB
                                                                                  OpenMetadataType.END_PROPERTY_NAME,
                                                                                  new Date());
 
-            for (OpenMetadataRelationship certification : existingCertifications)
+            for (OpenMetadataRelationship certification : existingCertifications.getElementList())
             {
                 if (certification != null)
                 {

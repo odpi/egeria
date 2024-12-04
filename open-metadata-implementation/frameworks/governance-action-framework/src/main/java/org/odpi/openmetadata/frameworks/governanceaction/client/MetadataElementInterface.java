@@ -5,11 +5,8 @@ package org.odpi.openmetadata.frameworks.governanceaction.client;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElementGraph;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
@@ -225,21 +222,21 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
-                                                            String              elementGUID,
-                                                            int                 startingAtEnd,
-                                                            String              relationshipTypeName,
-                                                            List<ElementStatus> limitResultsByStatus,
-                                                            Date                asOfTime,
-                                                            String              sequencingProperty,
-                                                            SequencingOrder     sequencingOrder,
-                                                            boolean             forLineage,
-                                                            boolean             forDuplicateProcessing,
-                                                            Date                effectiveTime,
-                                                            int                 startFrom,
-                                                            int                 pageSize) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+    RelatedMetadataElementList getRelatedMetadataElements(String              userId,
+                                                          String              elementGUID,
+                                                          int                 startingAtEnd,
+                                                          String              relationshipTypeName,
+                                                          List<ElementStatus> limitResultsByStatus,
+                                                          Date                asOfTime,
+                                                          String              sequencingProperty,
+                                                          SequencingOrder     sequencingOrder,
+                                                          boolean             forLineage,
+                                                          boolean             forDuplicateProcessing,
+                                                          Date                effectiveTime,
+                                                          int                 startFrom,
+                                                          int                 pageSize) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException;
 
 
     /**
@@ -320,18 +317,18 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-   List<OpenMetadataElement> getMetadataElementHistory(String  userId,
-                                                       String  elementGUID,
-                                                       Date    fromTime,
-                                                       Date    toTime,
-                                                       boolean oldestFirst,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing,
-                                                       Date    effectiveTime,
-                                                       int     startFrom,
-                                                       int     pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+    List<OpenMetadataElement> getMetadataElementHistory(String  userId,
+                                                        String  elementGUID,
+                                                        Date    fromTime,
+                                                        Date    toTime,
+                                                        boolean oldestFirst,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**
@@ -358,21 +355,21 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
-                                                                   String              metadataElementAtEnd1GUID,
-                                                                   String              metadataElementAtEnd2GUID,
-                                                                   String              relationshipTypeName,
-                                                                   List<ElementStatus> limitResultsByStatus,
-                                                                   Date                asOfTime,
-                                                                   String              sequencingProperty,
-                                                                   SequencingOrder     sequencingOrder,
-                                                                   boolean             forLineage,
-                                                                   boolean             forDuplicateProcessing,
-                                                                   Date                effectiveTime,
-                                                                   int                 startFrom,
-                                                                   int                 pageSize) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException;
+    OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
+                                                                 String              metadataElementAtEnd1GUID,
+                                                                 String              metadataElementAtEnd2GUID,
+                                                                 String              relationshipTypeName,
+                                                                 List<ElementStatus> limitResultsByStatus,
+                                                                 Date                asOfTime,
+                                                                 String              sequencingProperty,
+                                                                 SequencingOrder     sequencingOrder,
+                                                                 boolean             forLineage,
+                                                                 boolean             forDuplicateProcessing,
+                                                                 Date                effectiveTime,
+                                                                 int                 startFrom,
+                                                                 int                 pageSize) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
 
 
     /**
@@ -443,20 +440,20 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
-                                                                            String              relationshipTypeName,
-                                                                            SearchProperties    searchProperties,
-                                                                            List<ElementStatus> limitResultsByStatus,
-                                                                            Date                asOfTime,
-                                                                            String              sequencingProperty,
-                                                                            SequencingOrder     sequencingOrder,
-                                                                            boolean             forLineage,
-                                                                            boolean             forDuplicateProcessing,
-                                                                            Date                effectiveTime,
-                                                                            int                 startFrom,
-                                                                            int                 pageSize) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException;
+    OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              userId,
+                                                                          String              relationshipTypeName,
+                                                                          SearchProperties    searchProperties,
+                                                                          List<ElementStatus> limitResultsByStatus,
+                                                                          Date                asOfTime,
+                                                                          String              sequencingProperty,
+                                                                          SequencingOrder     sequencingOrder,
+                                                                          boolean             forLineage,
+                                                                          boolean             forDuplicateProcessing,
+                                                                          Date                effectiveTime,
+                                                                          int                 startFrom,
+                                                                          int                 pageSize) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
 
 
     /**
@@ -480,8 +477,8 @@ public interface MetadataElementInterface
                                                    boolean forDuplicateProcessing,
                                                    Date    asOfTime,
                                                    Date    effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**
@@ -503,18 +500,18 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
-                                                          String  relationshipGUID,
-                                                          Date    fromTime,
-                                                          Date    toTime,
-                                                          boolean oldestFirst,
-                                                          boolean forLineage,
-                                                          boolean forDuplicateProcessing,
-                                                          Date    effectiveTime,
-                                                          int     startFrom,
-                                                          int     pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
+    OpenMetadataRelationshipList getRelationshipHistory(String  userId,
+                                                        String  relationshipGUID,
+                                                        Date    fromTime,
+                                                        Date    toTime,
+                                                        boolean oldestFirst,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing,
+                                                        Date    effectiveTime,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**

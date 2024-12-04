@@ -9,12 +9,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
@@ -170,25 +167,25 @@ public class CollaborationManagerHandler
                                                                                     UserNotAuthorizedException
     {
         int startFrom = 0;
-        List<RelatedMetadataElement> attachedFeedbacks = client.getRelatedMetadataElements(userId,
-                                                                                           elementGUID,
-                                                                                           1,
-                                                                                           relationshipTypeName,
-                                                                                           null,
-                                                                                           null,
-                                                                                           null,
-                                                                                           SequencingOrder.CREATION_DATE_RECENT,
-                                                                                           false,
-                                                                                           false,
-                                                                                           effectiveTime,
-                                                                                           startFrom,
-                                                                                           invalidParameterHandler.getMaxPagingSize());
+        RelatedMetadataElementList attachedFeedbacks = client.getRelatedMetadataElements(userId,
+                                                                                         elementGUID,
+                                                                                         1,
+                                                                                         relationshipTypeName,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         false,
+                                                                                         false,
+                                                                                         effectiveTime,
+                                                                                         startFrom,
+                                                                                         invalidParameterHandler.getMaxPagingSize());
 
         RelatedMetadataElement existingFeedback = null;
 
         while ((existingFeedback == null) && (attachedFeedbacks != null))
         {
-            for (RelatedMetadataElement attachedFeedback : attachedFeedbacks)
+            for (RelatedMetadataElement attachedFeedback : attachedFeedbacks.getElementList())
             {
                 if (attachedFeedback != null)
                 {
@@ -328,7 +325,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getAttachedRatings";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
@@ -353,14 +350,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<RatingElement> getRatingsFromRelatedMetadataElement(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                     String                       methodName) throws PropertyServerException
+    private List<RatingElement> getRatingsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
+                                                                     String                     methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<RatingElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -461,7 +458,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getAttachedLikes";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
@@ -486,14 +483,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<LikeElement> getLikesFromRelatedMetadataElement(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                 String                       methodName) throws PropertyServerException
+    private List<LikeElement> getLikesFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
+                                                                 String                      methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<LikeElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -706,7 +703,7 @@ public class CollaborationManagerHandler
                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                                                      isPublic);
 
-        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+        OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
                                                                                               parentGUID,
                                                                                               commentGUID,
                                                                                               OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
@@ -722,7 +719,7 @@ public class CollaborationManagerHandler
 
         if (relationships != null)
         {
-            for (OpenMetadataRelationship relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships.getElementList())
             {
                 if (relationship != null)
                 {
@@ -798,7 +795,7 @@ public class CollaborationManagerHandler
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+        OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
                                                                                               questionCommentGUID,
                                                                                               answerCommentGUID,
                                                                                               OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
@@ -814,7 +811,7 @@ public class CollaborationManagerHandler
 
         if (relationships != null)
         {
-            for (OpenMetadataRelationship relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships.getElementList())
             {
                 if (relationship != null)
                 {
@@ -912,7 +909,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getAttachedComments";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
@@ -937,14 +934,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<CommentElement> getCommentsFromRelatedMetadataElement(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                       String                       methodName) throws PropertyServerException
+    private List<CommentElement> getCommentsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
+                                                                       String                     methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<CommentElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -1403,7 +1400,7 @@ public class CollaborationManagerHandler
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+        OpenMetadataRelationshipList relationships = client.getMetadataElementRelationships(userId,
                                                                                               elementGUID,
                                                                                               tagGUID,
                                                                                               OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
@@ -1419,7 +1416,7 @@ public class CollaborationManagerHandler
 
         if (relationships != null)
         {
-            for (OpenMetadataRelationship relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships.getElementList())
             {
                 if (relationship != null)
                 {
@@ -1458,7 +1455,7 @@ public class CollaborationManagerHandler
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  tagGUID,
                                                                                                  2,
                                                                                                  OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
@@ -1476,7 +1473,7 @@ public class CollaborationManagerHandler
         {
             List<RelatedMetadataElementStub> stubs = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -1517,7 +1514,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getAttachedTags";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
@@ -1542,14 +1539,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<InformalTagElement> getTagsFromRelatedMetadataElement(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                       String                       methodName) throws PropertyServerException
+    private List<InformalTagElement> getTagsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
+                                                                       String                      methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<InformalTagElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -1792,14 +1789,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<NoteLogElement> getNoteLogsFromRelatedMetadataElements(List<RelatedMetadataElement> relatedMetadataElements,
+    private List<NoteLogElement> getNoteLogsFromRelatedMetadataElements(RelatedMetadataElementList   relatedMetadataElements,
                                                                         String                       methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<NoteLogElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -1897,7 +1894,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getNoteLogsForElement";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  elementGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
@@ -2173,14 +2170,14 @@ public class CollaborationManagerHandler
      * @return feedback beans
      * @throws PropertyServerException error formatting bean
      */
-    private List<NoteElement> getNotesFromRelatedMetadataElements(List<RelatedMetadataElement> relatedMetadataElements,
-                                                                  String                       methodName) throws PropertyServerException
+    private List<NoteElement> getNotesFromRelatedMetadataElements(RelatedMetadataElementList relatedMetadataElements,
+                                                                  String                     methodName) throws PropertyServerException
     {
         if (relatedMetadataElements != null)
         {
             List<NoteElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -2220,7 +2217,7 @@ public class CollaborationManagerHandler
     {
         final String methodName = "getNotesForNoteLog";
 
-        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  noteLogGUID,
                                                                                                  1,
                                                                                                  OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,

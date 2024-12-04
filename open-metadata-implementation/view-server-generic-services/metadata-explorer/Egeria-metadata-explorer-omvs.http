@@ -43,7 +43,7 @@ Content-Type: application/json
 ###
 # @name get the GUID for active-metadata-store
 # Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/guid-by-unique-name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -82,7 +82,7 @@ content-packs/CloudInformationModel.omarchive
 
 ###
 
-@elementGUID=e564900d-277f-425d-b008-885b1928eb2f
+@elementGUID=6204f340-d7fd-4cc8-922a-8851fb889dc2
 
 ###
 # @name getMetadataElementByGUID
@@ -264,8 +264,8 @@ Content-Type: application/json
 
 ###
 
-@metadataElementAtEnd1GUID=add guid here
-@metadataElementAtEnd2GUID=add guid here
+@metadataElementAtEnd1GUID=6204f340-d7fd-4cc8-922a-8851fb889dc2
+@metadataElementAtEnd2GUID=bd8de890-fa79-4c24-aab8-20b41b5893dd
 
 ###
 # @name getAllMetadataElementRelationships
