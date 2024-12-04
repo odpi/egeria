@@ -53,7 +53,7 @@ public class OpenMetadataElementGraph extends OpenMetadataElement
         {
             anchoredElements = template.getAnchoredElements();
             relationships = template.getRelationships();
-            mermaidGraph = getMermaidGraph();
+            mermaidGraph = template.getMermaidGraph();
         }
     }
 

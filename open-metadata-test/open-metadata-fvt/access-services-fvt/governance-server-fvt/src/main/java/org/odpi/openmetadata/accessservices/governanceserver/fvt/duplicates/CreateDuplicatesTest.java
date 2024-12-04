@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
@@ -307,7 +308,7 @@ public class CreateDuplicatesTest
         String firstAssetMementoKeywordGUID = thisTest.createSearchKeyword(openMetadataStoreClient, userId, mementoPrefix, mementoPrefix + "Keyword for firstAsset" , null, null, mementoAssetGUID, activityName, testCaseName);
         String firstAssetIneffectiveKeywordGUID = thisTest.createSearchKeyword(openMetadataStoreClient, userId, ineffectivePrefix, ineffectivePrefix + "Keyword for firstAsset" , null, null, ineffectiveAssetGUID, activityName, testCaseName);
 
-        List<RelatedMetadataElement> relatedMetadataElements;
+        RelatedMetadataElementList relatedMetadataElements;
 
         activityName = "Keyword test - all returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, null, 0, 0);
@@ -316,49 +317,49 @@ public class CreateDuplicatesTest
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
         }
-        else if (relatedMetadataElements.size() != 4)
+        else if (relatedMetadataElements.getElementList().size() != 4)
         {
-            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.size() + " keywords: " + relatedMetadataElements + " returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " keywords: " + relatedMetadataElements + " returned by " + activityName);
         }
 
         activityName = "Keyword test - memento not returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, null, 0, 0);
-        if (relatedMetadataElements == null)
+        if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
         }
-        else if (relatedMetadataElements.size() != 3)
+        else if (relatedMetadataElements.getElementList().size() != 3)
         {
-            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.size() + " keywords: " + relatedMetadataElements + " returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " keywords: " + relatedMetadataElements + " returned by " + activityName);
         }
 
         activityName = "Keyword test - none returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, true, new Date(), 0, 0);
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
-            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.size() + " unexpected keywords returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " unexpected keywords returned by " + activityName);
         }
 
         activityName = "Keyword test - ineffective not returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, new Date(), 0, 0);
-        if (relatedMetadataElements == null)
+        if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
         }
-        else if (relatedMetadataElements.size() != 2)
+        else if (relatedMetadataElements.getElementList().size() != 2)
         {
-            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.size() + " keywords returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " keywords returned by " + activityName);
         }
 
         activityName = "Keyword test - active returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, false, false, new Date(), 0, 0);
-        if (relatedMetadataElements == null)
+        if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
         }
-        else if (relatedMetadataElements.size() != 1)
+        else if (relatedMetadataElements.getElementList().size() != 1)
         {
-            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.size() + " keywords returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, relatedMetadataElements.getElementList().size() + " keywords returned by " + activityName);
         }
 
     }

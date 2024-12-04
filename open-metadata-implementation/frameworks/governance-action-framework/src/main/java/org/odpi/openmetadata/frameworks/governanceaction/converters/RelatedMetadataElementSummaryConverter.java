@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
@@ -104,7 +104,7 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     public List<B> getNewBeans(Class<B>                     beanClass,
-                               List<RelatedMetadataElement> relatedMetadataElements,
+                               RelatedMetadataElementList relatedMetadataElements,
                                String                       methodName) throws PropertyServerException
     {
         List<B> results = null;
@@ -113,7 +113,7 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
         {
             results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManagementInterface;
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.SurveyReportInterface;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.surveyaction.converters.SurveyReportConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DuplicateElement;
@@ -257,29 +258,29 @@ public class StewardshipAction implements SurveyReportInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, elementGUIDParameter, methodName);
 
-        List<RelatedMetadataElement> reportElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                         assetGUID,
-                                                                                                         1,
-                                                                                                         OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                         false,
-                                                                                                         false,
-                                                                                                         new Date(),
-                                                                                                         startFrom,
-                                                                                                         pageSize);
+        RelatedMetadataElementList reportElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                       assetGUID,
+                                                                                                       1,
+                                                                                                       OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                       false,
+                                                                                                       false,
+                                                                                                       new Date(),
+                                                                                                       startFrom,
+                                                                                                       pageSize);
 
         if (reportElements != null)
         {
             List<SurveyReport> surveyReports = new ArrayList<>();
 
-            for (RelatedMetadataElement reportElement : reportElements)
+            for (RelatedMetadataElement reportElement : reportElements.getElementList())
             {
                 if (reportElement != null)
                 {
-                    List<RelatedMetadataElement> engineActionElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                    RelatedMetadataElementList engineActionElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                            reportElement.getElement().getElementGUID(),
                                                                                                                            2,
                                                                                                                            OpenMetadataType.ENGINE_ACTION_SURVEY_REPORT_RELATIONSHIP.typeName,

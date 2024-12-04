@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
@@ -1000,7 +1001,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(validValueSetGUID, validValueGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueSetGUID,
                                                                                                           1,
                                                                                                           OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
@@ -1018,7 +1019,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         {
             List<ValidValueMember> validValueMembers = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
                 {
@@ -1087,7 +1088,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
                                                                                                           OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
@@ -1105,7 +1106,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         {
             List<ValidValueElement> validValueSets = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.VALID_VALUE_SET.typeName))
                 {
@@ -1166,7 +1167,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
                                                                                                           OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
@@ -1184,7 +1185,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         {
             List<ReferenceValueAssignmentItemElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.REFERENCEABLE.typeName))
                 {
@@ -1251,25 +1252,25 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                          referenceableGUID,
-                                                                                                          1,
-                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          null,
-                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                          forLineage,
-                                                                                                          forDuplicateProcessing,
-                                                                                                          effectiveTime,
-                                                                                                          startFrom,
-                                                                                                          pageSize);
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                        referenceableGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                        forLineage,
+                                                                                                        forDuplicateProcessing,
+                                                                                                        effectiveTime,
+                                                                                                        startFrom,
+                                                                                                        pageSize);
 
         if (linkedResources != null)
         {
             List<ReferenceValueAssignmentDefinitionElement> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
                 {

@@ -232,18 +232,18 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
          * Note this is only working with lineage relationships between Assets.  It would need
          * extending to work with lineage between ports and schema elements.
          */
-        List<RelatedMetadataElement> lineageLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
-                                                                                     2,
-                                                                                     null,
-                                                                                     0,
-                                                                                     0);
+        RelatedMetadataElementList lineageLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
+                                                                                   2,
+                                                                                   null,
+                                                                                   0,
+                                                                                   0);
 
-        if ((lineageLinks != null) && (! lineageLinks.isEmpty()))
+        if ((lineageLinks != null) && (! lineageLinks.getElementList().isEmpty()))
         {
             /*
              * Explore each branch in the lineage map.
              */
-            for (RelatedMetadataElement lineageLink : lineageLinks)
+            for (RelatedMetadataElement lineageLink : lineageLinks.getElementList())
             {
                 if (lineageLink != null)
                 {

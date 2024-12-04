@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterf
 import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
@@ -651,25 +652,25 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedProjects = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                         parentGUID,
-                                                                                                         1,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                         false,
-                                                                                                         false,
-                                                                                                         new Date(),
-                                                                                                         startFrom,
-                                                                                                         pageSize);
+        RelatedMetadataElementList linkedProjects = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                       parentGUID,
+                                                                                                       1,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                       false,
+                                                                                                       false,
+                                                                                                       new Date(),
+                                                                                                       startFrom,
+                                                                                                       pageSize);
 
         if (linkedProjects != null)
         {
             List<ProjectElement> filteredProjects = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedProjects)
+            for (RelatedMetadataElement relatedMetadataElement : linkedProjects.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.PROJECT.typeName))
                 {
@@ -767,7 +768,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         invalidParameterHandler.validateGUID(projectGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedActors = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList linkedActors = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                        projectGUID,
                                                                                                        1,
                                                                                                        null,
@@ -785,7 +786,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         {
             List<ProjectTeamMember> teamMembers = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedActors)
+            for (RelatedMetadataElement relatedMetadataElement : linkedActors.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName))
                 {

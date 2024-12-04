@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
@@ -354,14 +355,14 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
             try
             {
                 int startFrom = 0;
-                List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
+                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                                                      1,
                                                                                                                      referenceValueAssignmentRelationshipName,
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
                 while (relatedMetadataElements != null)
                 {
-                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
                         String attributeName = propertyHelper.getStringProperty(connectorName,
                                                                                 attributeNamePropertyName,
@@ -430,14 +431,14 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
             try
             {
                 int startFrom = 0;
-                List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
+                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
                                                                                                                      1,
                                                                                                                      null,
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
                 while (relatedMetadataElements != null)
                 {
-                    results.addAll(relatedMetadataElements);
+                    results.addAll(relatedMetadataElements.getElementList());
 
                     startFrom = startFrom + myContext.getMaxPageSize();
                     relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(egeriaGUID,
@@ -481,7 +482,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                         OpenMetadataElement          egeriaEntity,
                                         List<RelatedMetadataElement> relatedMetadataElements)
     {
-        if ((relatedMetadataElements != null) || (! relatedMetadataElements.isEmpty()))
+        if ((relatedMetadataElements != null) && (! relatedMetadataElements.isEmpty()))
         {
             // todo
         }

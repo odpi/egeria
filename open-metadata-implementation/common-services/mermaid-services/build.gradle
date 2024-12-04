@@ -1,0 +1,23 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Mermaid Common Services'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}

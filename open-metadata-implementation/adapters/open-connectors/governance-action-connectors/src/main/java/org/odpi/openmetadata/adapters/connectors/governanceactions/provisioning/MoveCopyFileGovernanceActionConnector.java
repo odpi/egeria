@@ -510,13 +510,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         try
         {
-            List<RelatedMetadataElement> connectionLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
+            RelatedMetadataElementList connectionLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                             2,
                                                                                             connectionRelationshipName,
                                                                                             0,
                                                                                             0);
 
-            if ((connectionLinks == null) || (connectionLinks.isEmpty()))
+            if ((connectionLinks == null) || (connectionLinks.getElementList().isEmpty()))
             {
                 if (auditLog != null)
                 {
@@ -525,9 +525,9 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                                         asset.getElementGUID()));
                 }
             }
-            else if (connectionLinks.size() > 1)
+            else if (connectionLinks.getElementList().size() > 1)
             {
-                for (RelatedMetadataElement connectionLink : connectionLinks)
+                for (RelatedMetadataElement connectionLink : connectionLinks.getElementList())
                 {
                     if (connectionLink != null)
                     {
@@ -547,7 +547,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                     {
                                         auditLog.logMessage(methodName,
                                                             GovernanceActionConnectorsAuditCode.TOO_MANY_CONNECTIONS.getMessageDefinition(governanceServiceName,
-                                                                                                                                          Integer.toString(connectionLinks.size()),
+                                                                                                                                          Integer.toString(connectionLinks.getElementList().size()),
                                                                                                                                           asset.getElementGUID(),
                                                                                                                                           connectionLinks.toString()));
                                     }
@@ -567,7 +567,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
             else
             {
-                pathName = this.getPathNameFromConnection(asset.getElementGUID(), connectionLinks.get(0));
+                pathName = this.getPathNameFromConnection(asset.getElementGUID(), connectionLinks.getElementList().get(0));
 
                 if (pathName != null)
                 {
@@ -643,13 +643,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
         else
         {
-            List<RelatedMetadataElement> endpointLinks = store.getRelatedMetadataElements(connection.getElementGUID(),
+            RelatedMetadataElementList  endpointLinks = store.getRelatedMetadataElements(connection.getElementGUID(),
                                                                                           2,
                                                                                           endpointRelationshipName,
                                                                                           0,
                                                                                           0);
 
-            if ((endpointLinks == null) || (endpointLinks.isEmpty()))
+            if ((endpointLinks == null) || (endpointLinks.getElementList().isEmpty()))
             {
                 if (auditLog != null)
                 {
@@ -659,7 +659,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                                     connection.getElementGUID()));
                 }
             }
-            else if (endpointLinks.size() > 1)
+            else if (endpointLinks.getElementList().size() > 1)
             {
                 if (auditLog != null)
                 {
@@ -668,13 +668,13 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                                                     assetGUID,
                                                                                                                     connection.getElementGUID(),
                                                                                                                     Integer.toString(
-                                                                                                                            endpointLinks.size()),
+                                                                                                                            endpointLinks.getElementList().size()),
                                                                                                                     endpointLinks.toString()));
                 }
             }
             else
             {
-                OpenMetadataElement endpoint = endpointLinks.get(0).getElement();
+                OpenMetadataElement endpoint = endpointLinks.getElementList().get(0).getElement();
 
                 if (endpoint == null)
                 {
@@ -682,7 +682,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                     {
                         auditLog.logMessage(methodName,
                                             GovernanceActionConnectorsAuditCode.NO_RELATED_ASSET.getMessageDefinition(governanceServiceName,
-                                                                                                                      endpointLinks.get(0).toString()));
+                                                                                                                      endpointLinks.getElementList().get(0).toString()));
                     }
                 }
                 else
@@ -955,15 +955,16 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
     {
         String folderGUID = null;
 
-        List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
-                                                                                                           2,
-                                                                                                           OpenMetadataType.NESTED_FILE_TYPE_NAME,
-                                                                                                           0,
-                                                                                                           0);
+        RelatedMetadataElementList relatedMetadataElementList
+                = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
+                                                                                      2,
+                                                                                      OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                                      0,
+                                                                                      0);
 
         if (relatedMetadataElementList != null)
         {
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {

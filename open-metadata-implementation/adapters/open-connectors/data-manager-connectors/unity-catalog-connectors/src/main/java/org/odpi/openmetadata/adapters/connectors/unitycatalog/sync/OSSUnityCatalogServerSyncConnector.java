@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
@@ -451,15 +452,15 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         {
             int startFrom = 0;
 
-            List<RelatedMetadataElement> relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
-                                                                                                                                                                  2,
-                                                                                                                                                                  OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                                                                                  startFrom,
-                                                                                                                                                                  integrationContext.getMaxPageSize());
+            RelatedMetadataElementList relatedServers = integrationContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElements(catalogGUID,
+                                                                                                                                                                2,
+                                                                                                                                                                OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                                                                                startFrom,
+                                                                                                                                                                integrationContext.getMaxPageSize());
 
             while (relatedServers != null)
             {
-                for (RelatedMetadataElement relatedServer : relatedServers)
+                for (RelatedMetadataElement relatedServer : relatedServers.getElementList())
                 {
                     if ((relatedServer != null) && (serverGUID.equals(relatedServer.getElement().getElementGUID())))
                     {

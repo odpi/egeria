@@ -16,9 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
@@ -2602,7 +2600,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         final String methodName = "getRelatedElements";
 
-        List<RelatedMetadataElement> relatedMetadataElements;
+        RelatedMetadataElementList relatedMetadataElements;
 
         if (findProperties == null)
         {
@@ -2641,7 +2639,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -2705,7 +2703,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
         invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
 
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   elementGUID,
                                                                                                                   startingAtEnd,
                                                                                                                   relationshipTypeName,
@@ -2723,7 +2721,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -2807,7 +2805,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
         invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
 
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   elementGUID,
                                                                                                                   startingAtEnd,
                                                                                                                   relationshipTypeName,
@@ -2825,7 +2823,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {
@@ -2893,7 +2891,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         final String methodName = "getRelationships";
 
-        List<OpenMetadataRelationship> openMetadataRelationships;
+        OpenMetadataRelationshipList openMetadataRelationships;
 
         if (findProperties == null)
         {
@@ -2967,7 +2965,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         final String methodName = "getRelationships";
 
-        List<OpenMetadataRelationship> openMetadataRelationships;
+        OpenMetadataRelationshipList openMetadataRelationships;
 
         if (findProperties == null)
         {
@@ -3044,7 +3042,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
     {
         final String methodName = "getRelationships";
 
-        List<OpenMetadataRelationship> openMetadataRelationships;
+        OpenMetadataRelationshipList openMetadataRelationships;
 
         if (findProperties == null)
         {
