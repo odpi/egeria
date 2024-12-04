@@ -441,6 +441,7 @@ org.odpi.openmetadata.commonservices.ffdc.properties
 org.odpi.openmetadata.commonservices.ffdc.rest
 org.odpi.openmetadata.commonservices.generichandlers
 org.odpi.openmetadata.commonservices.generichandlers.ffdc
+org.odpi.openmetadata.commonservices.mermaid
 org.odpi.openmetadata.commonservices.multitenant
 org.odpi.openmetadata.commonservices.multitenant.ffdc
 org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions

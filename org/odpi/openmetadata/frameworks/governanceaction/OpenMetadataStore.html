@@ -434,7 +434,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata elements of the requested type that contain the requested string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/OpenMetadataRelationshipList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipList</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsBetweenMetadataElements(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)" class="member-name-link">findRelationshipsBetweenMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="search/SearchProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">SearchProperties</a>&nbsp;searchProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
@@ -589,7 +589,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return each of the versions of a metadata element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/OpenMetadataRelationshipList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipList</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getMetadataElementRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
@@ -607,7 +607,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
  relationship to be attached.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/RelatedMetadataElementList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElementList</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedMetadataElements(java.lang.String,int,java.lang.String,int,int)" class="member-name-link">getRelatedMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startingAtEnd,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
@@ -1420,12 +1420,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getRelatedMetadataElements(java.lang.String,int,java.lang.String,int,int)">
 <h3>getRelatedMetadataElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedMetadataElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/RelatedMetadataElementList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElementList</a></span>&nbsp;<span class="element-name">getRelatedMetadataElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startingAtEnd,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                                        throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
@@ -1531,12 +1531,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getMetadataElementRelationships(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getMetadataElementRelationships</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getMetadataElementRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/OpenMetadataRelationshipList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipList</a></span>&nbsp;<span class="element-name">getMetadataElementRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd1GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementAtEnd2GUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                                               throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                             throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the relationships linking to the supplied elements.</div>
@@ -1600,7 +1600,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findRelationshipsBetweenMetadataElements(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,int,int)">
 <h3>findRelationshipsBetweenMetadataElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">findRelationshipsBetweenMetadataElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/OpenMetadataRelationshipList.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipList</a></span>&nbsp;<span class="element-name">findRelationshipsBetweenMetadataElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="search/SearchProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">SearchProperties</a>&nbsp;searchProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
@@ -1608,7 +1608,7 @@ loadScripts(document, 'script');</script>
  <a href="../openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                                                        throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                      throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.</div>
