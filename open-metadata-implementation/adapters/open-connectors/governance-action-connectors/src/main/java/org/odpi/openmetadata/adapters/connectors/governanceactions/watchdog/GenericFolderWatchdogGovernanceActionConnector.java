@@ -434,7 +434,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                                                                                              0);
         }
 
-        if (relatedMetadataElementList != null)
+        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
         {
             for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
             {

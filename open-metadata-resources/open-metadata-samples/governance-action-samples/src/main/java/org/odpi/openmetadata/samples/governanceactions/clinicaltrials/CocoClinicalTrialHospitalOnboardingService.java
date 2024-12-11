@@ -344,7 +344,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                                                           startFrom,
                                                                                                                           governanceContext.getOpenMetadataStore().getMaxPagingSize());
 
-        while (certifications != null)
+        while ((certifications != null) && (certifications.getElementList() != null))
         {
             for (RelatedMetadataElement certification : certifications.getElementList())
             {
@@ -392,7 +392,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                                                                         OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                                                                                                                         projectStartFrom,
                                                                                                                                         governanceContext.getMaxPageSize());
-                            while (projects != null)
+                            while ((projects != null) && (projects.getElementList() != null))
                             {
                                 for (RelatedMetadataElement project : projects.getElementList())
                                 {

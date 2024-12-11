@@ -775,18 +775,17 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     fullEntity = entity;
 
-                    referenceableHandler.validateAnchorEntity(userId,
-                                                              fullEntity.getGUID(),
-                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                              fullEntity,
-                                                              guidParameterName,
-                                                              false,
-                                                              false,
-                                                              true,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+                    referenceableHandler.validateAnchorForEntity(userId,
+                                                                 OpenMetadataType.REFERENCEABLE.typeName,
+                                                                 fullEntity,
+                                                                 guidParameterName,
+                                                                 false,
+                                                                 false,
+                                                                 true,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
                 }
             }
             else if (entityProxy != null)

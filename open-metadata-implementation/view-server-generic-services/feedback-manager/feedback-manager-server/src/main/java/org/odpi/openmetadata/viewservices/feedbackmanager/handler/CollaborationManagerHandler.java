@@ -183,7 +183,7 @@ public class CollaborationManagerHandler
 
         RelatedMetadataElement existingFeedback = null;
 
-        while ((existingFeedback == null) && (attachedFeedbacks != null))
+        while ((existingFeedback == null) && (attachedFeedbacks != null) && (attachedFeedbacks.getElementList() != null))
         {
             for (RelatedMetadataElement attachedFeedback : attachedFeedbacks.getElementList())
             {
@@ -353,7 +353,7 @@ public class CollaborationManagerHandler
     private List<RatingElement> getRatingsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
                                                                      String                     methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<RatingElement> results = new ArrayList<>();
 
@@ -486,7 +486,7 @@ public class CollaborationManagerHandler
     private List<LikeElement> getLikesFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
                                                                  String                      methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<LikeElement> results = new ArrayList<>();
 
@@ -937,7 +937,7 @@ public class CollaborationManagerHandler
     private List<CommentElement> getCommentsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
                                                                        String                     methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<CommentElement> results = new ArrayList<>();
 
@@ -1469,7 +1469,7 @@ public class CollaborationManagerHandler
                                                                                                  startFrom,
                                                                                                  pageSize);
 
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<RelatedMetadataElementStub> stubs = new ArrayList<>();
 
@@ -1542,7 +1542,7 @@ public class CollaborationManagerHandler
     private List<InformalTagElement> getTagsFromRelatedMetadataElement(RelatedMetadataElementList relatedMetadataElements,
                                                                        String                      methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<InformalTagElement> results = new ArrayList<>();
 
@@ -1792,7 +1792,7 @@ public class CollaborationManagerHandler
     private List<NoteLogElement> getNoteLogsFromRelatedMetadataElements(RelatedMetadataElementList   relatedMetadataElements,
                                                                         String                       methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<NoteLogElement> results = new ArrayList<>();
 
@@ -2173,7 +2173,7 @@ public class CollaborationManagerHandler
     private List<NoteElement> getNotesFromRelatedMetadataElements(RelatedMetadataElementList relatedMetadataElements,
                                                                   String                     methodName) throws PropertyServerException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<NoteElement> results = new ArrayList<>();
 

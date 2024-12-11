@@ -1015,7 +1015,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                           startFrom,
                                                                                                           pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<ValidValueMember> validValueMembers = new ArrayList<>();
 
@@ -1102,7 +1102,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                           startFrom,
                                                                                                           pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<ValidValueElement> validValueSets = new ArrayList<>();
 
@@ -1181,7 +1181,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                           startFrom,
                                                                                                           pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<ReferenceValueAssignmentItemElement> results = new ArrayList<>();
 
@@ -1266,7 +1266,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                         startFrom,
                                                                                                         pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<ReferenceValueAssignmentDefinitionElement> results = new ArrayList<>();
 

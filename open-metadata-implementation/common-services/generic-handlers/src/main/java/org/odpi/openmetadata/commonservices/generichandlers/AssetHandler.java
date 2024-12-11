@@ -1595,32 +1595,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
          */
         if (organizationGUID != null)
         {
-            this.validateAnchorEntity(userId,
-                                      organizationGUID,
-                                      organizationGUIDParameterName,
-                                      OpenMetadataType.ORGANIZATION_TYPE_NAME,
-                                      true,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveFrom,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         organizationGUID,
+                                         organizationGUIDParameterName,
+                                         OpenMetadataType.ORGANIZATION_TYPE_NAME,
+                                         true,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveFrom,
+                                         methodName);
         }
 
         if (businessCapabilityGUID != null)
         {
-            this.validateAnchorEntity(userId,
-                                      businessCapabilityGUID,
-                                      businessCapabilityGUIDParameterName,
-                                      OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
-                                      true,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveFrom,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         businessCapabilityGUID,
+                                         businessCapabilityGUIDParameterName,
+                                         OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
+                                         true,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveFrom,
+                                         methodName);
         }
 
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);
@@ -1722,8 +1722,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        final String guidParameterName = "originEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -1760,46 +1758,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                          queryPageSize,
                                                                                          effectiveTime,
                                                                                          methodName);
-
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  true,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -2832,6 +2797,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                        effectiveTime,
                                        forLineage,
                                        forDuplicateProcessing,
+                                       suppliedSupportedZones,
                                        methodName,
                                        retrievedEntities);
     }

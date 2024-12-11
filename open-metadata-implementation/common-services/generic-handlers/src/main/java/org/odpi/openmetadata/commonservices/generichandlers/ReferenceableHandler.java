@@ -513,7 +513,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String guidParameterName = "ownerEntity.getGUID";
         final String nameParameterName = "ownerName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -543,45 +542,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  true,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -709,8 +676,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        final String guidParameterName = "taggedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -731,45 +696,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  true,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -936,8 +869,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        final String guidParameterName = "classifiedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -969,45 +900,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -1173,8 +1072,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        final String guidParameterName = "classifiedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -1206,45 +1103,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -1637,7 +1502,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
-        final String guidParameterName = "subjectAreaEntity.getGUID";
         final String nameParameterName = "subjectAreaName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1667,60 +1531,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataProperty.NAME.name,
-                                                                             classification.getProperties(),
-                                                                             methodName);
-
-                            if ((subjectAreaName == null) || (subjectAreaName.equals(name)))
-                            {
-                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       serviceSupportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -2058,8 +1875,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        final String guidParameterName = "originEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -2079,30 +1894,23 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          queryPageSize,
                                                                                          effectiveTime,
                                                                                          methodName);
-
-        if (entities != null)
+        List<EntityDetail> validatedEntities = super.validateAnchorForEntities(userId,
+                                                                               entities,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               serviceSupportedZones,
+                                                                               effectiveTime,
+                                                                               methodName);
+        if (validatedEntities != null)
         {
             List<B>  beans = new ArrayList<>();
 
-            for (EntityDetail entity : entities)
+            for (EntityDetail entity : validatedEntities)
             {
                 if (entity != null)
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
                                                                                                      OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,

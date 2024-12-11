@@ -109,7 +109,7 @@ public class RelatedMetadataElementSummaryConverter<B> extends OpenMetadataConve
     {
         List<B> results = null;
 
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             results = new ArrayList<>();
 

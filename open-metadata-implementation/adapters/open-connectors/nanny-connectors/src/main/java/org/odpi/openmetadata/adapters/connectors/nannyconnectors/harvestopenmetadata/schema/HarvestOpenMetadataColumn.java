@@ -100,7 +100,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     EXTERNAL_IDENTIFIER          ("external_identifier", ColumnType.STRING, "Identifier from a third party system", false),
     EXTERNAL_TYPE_NAME           ("external_type_name", ColumnType.STRING, "Type Identifier from a third party system", false),
     EXTERNAL_SCOPE_GUID          ("external_source_guid", ColumnType.STRING, "Unique identifier of the identifiers external scope element.", false),
-    VERSION                      ("version", ColumnType.STRING, "Version of an element", false),
+    VERSION                      ("version", ColumnType.LONG, "Version of an element", false),
     LAST_CONFIRMED_SYNC_TIME     ("last_confirmed_sync_time", ColumnType.DATE, "Time that Egeria last contacted the external third party.", true),
     EGERIA_OWNED                 ("egeria_owned", ColumnType.BOOLEAN, "Which system is the home (owner) of the element?", true),
     EXTERNAL_USER_ID             ("external_user_id", ColumnType.BOOLEAN, "User Id received from a third party system.", true),

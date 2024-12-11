@@ -369,17 +369,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         Date effectiveTime = new Date();
 
         String assetGUID          = null;
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              surveyReportGUID,
-                                                              discoveryReportGUIDParameterName,
-                                                              OpenMetadataType.SURVEY_REPORT.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 surveyReportGUID,
+                                                                 discoveryReportGUIDParameterName,
+                                                                 OpenMetadataType.SURVEY_REPORT.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if (anchorEntity != null)
         {
@@ -443,17 +443,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         Date effectiveTime = new Date();
 
         String assetGUID          = null;
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              parentAnnotationGUID,
-                                                              parentAnnotationGUIDParameterName,
-                                                              OpenMetadataType.ANNOTATION.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 parentAnnotationGUID,
+                                                                 parentAnnotationGUIDParameterName,
+                                                                 OpenMetadataType.ANNOTATION.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if (anchorEntity != null)
         {
@@ -605,17 +605,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                       repositoryHelper,
                                                                       serviceName,
                                                                       serverName);
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              annotationGUID,
-                                                              annotationGUIDParameterName,
-                                                              OpenMetadataType.ANNOTATION.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 annotationGUID,
+                                                                 annotationGUIDParameterName,
+                                                                 OpenMetadataType.ANNOTATION.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {

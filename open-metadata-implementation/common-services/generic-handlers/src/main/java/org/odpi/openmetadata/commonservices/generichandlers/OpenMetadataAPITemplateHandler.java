@@ -415,18 +415,17 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             /*
              * Check that the template is visible to the calling user.  If the template is an anchor, its own entity is returned.
              */
-            EntityDetail templateAnchorEntity = this.validateAnchorEntity(userId,
-                                                                          templateGUID,
-                                                                          entityTypeName,
-                                                                          templateEntity,
-                                                                          templateGUIDParameterName,
-                                                                          true,
-                                                                          false,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          serviceSupportedZones,
-                                                                          effectiveTime,
-                                                                          methodName);
+            EntityDetail templateAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                             entityTypeName,
+                                                                             templateEntity,
+                                                                             templateGUIDParameterName,
+                                                                             true,
+                                                                             false,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             serviceSupportedZones,
+                                                                             effectiveTime,
+                                                                             methodName);
             if (templateAnchorEntity != null)
             {
                 if ((firstIteration) && (! templateGUID.equals(templateAnchorEntity.getGUID())))
@@ -792,18 +791,17 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                         String nextTemplateEntityTypeGUID = nextTemplateEntity.getType().getTypeDefGUID();
                         String nextTemplateEntityTypeName = nextTemplateEntity.getType().getTypeDefName();
 
-                        EntityDetail nextTemplateEntityAnchor = this.validateAnchorEntity(userId,
-                                                                                          nextTemplateEntity.getGUID(),
-                                                                                          null,
-                                                                                          nextTemplateEntity,
-                                                                                          nextTemplateEntityGUIDParameterName,
-                                                                                          true,
-                                                                                          false,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          serviceSupportedZones,
-                                                                                          effectiveTime,
-                                                                                          methodName);
+                        EntityDetail nextTemplateEntityAnchor = this.validateAnchorForEntity(userId,
+                                                                                             null,
+                                                                                             nextTemplateEntity,
+                                                                                             nextTemplateEntityGUIDParameterName,
+                                                                                             true,
+                                                                                             false,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             serviceSupportedZones,
+                                                                                             effectiveTime,
+                                                                                             methodName);
 
                         String nextTemplateAnchorGUID = null;
                         if (nextTemplateEntityAnchor != null)

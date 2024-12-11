@@ -243,7 +243,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                startFrom,
                                                                                                                openMetadataAccess.getMaxPagingSize());
 
-            while (relatedMetadataElements != null)
+            while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
@@ -363,7 +363,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                      OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
                                                                                                                      startFrom,
                                                                                                                      openMetadataAccess.getMaxPagingSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
@@ -473,7 +473,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                      OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
                                                                                                                      startFrom,
                                                                                                                      openMetadataAccess.getMaxPagingSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
@@ -728,7 +728,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                  OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                                                  startFrom,
                                                                                                                  openMetadataAccess.getMaxPagingSize());
-            while (relatedMetadataElements != null)
+            while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {

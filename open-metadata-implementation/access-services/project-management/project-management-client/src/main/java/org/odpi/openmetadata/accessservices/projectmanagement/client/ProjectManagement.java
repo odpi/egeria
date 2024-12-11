@@ -666,7 +666,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                                                        startFrom,
                                                                                                        pageSize);
 
-        if (linkedProjects != null)
+        if ((linkedProjects != null) && (linkedProjects.getElementList() != null))
         {
             List<ProjectElement> filteredProjects = new ArrayList<>();
 
@@ -782,7 +782,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                                                        startFrom,
                                                                                                        pageSize);
 
-        if (linkedActors != null)
+        if ((linkedActors != null) && (linkedActors.getElementList() != null))
         {
             List<ProjectTeamMember> teamMembers = new ArrayList<>();
 

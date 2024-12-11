@@ -196,7 +196,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                                            OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
                                                                                                            startFrom,
                                                                                                            getContext().getMaxPageSize());
-            while (relatedCapabilities != null)
+            while ((relatedCapabilities != null) && (relatedCapabilities.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedCapability : relatedCapabilities.getElementList())
                 {

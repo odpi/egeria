@@ -516,7 +516,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                             0,
                                                                                             0);
 
-            if ((connectionLinks == null) || (connectionLinks.getElementList().isEmpty()))
+            if ((connectionLinks == null) || (connectionLinks.getElementList() == null) || (connectionLinks.getElementList().isEmpty()))
             {
                 if (auditLog != null)
                 {
@@ -649,7 +649,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                           0,
                                                                                           0);
 
-            if ((endpointLinks == null) || (endpointLinks.getElementList().isEmpty()))
+            if ((endpointLinks == null) || (endpointLinks.getElementList() == null) || (endpointLinks.getElementList().isEmpty()))
             {
                 if (auditLog != null)
                 {
@@ -962,7 +962,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                                       0,
                                                                                       0);
 
-        if (relatedMetadataElementList != null)
+        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
         {
             for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
             {

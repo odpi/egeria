@@ -2,32 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GlossaryTermHandler retrieves Glossary Term objects from the property server.  It runs server-side
@@ -2144,30 +2136,23 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                   String             methodName,
                                   List<EntityDetail> termEntities)
     {
-        final String entityGUIDParameterName = "termEntity.getGUID";
-
         if (termEntities != null)
         {
+            List<EntityDetail> validatedTerms = super.validateAnchorForEntities(userId,
+                                                                                termEntities,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                supportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
             List<B> results = new ArrayList<>();
 
-            for (EntityDetail entity : termEntities)
+            for (EntityDetail entity : validatedTerms)
             {
                 if (entity != null)
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  entity.getType().getTypeDefName(),
-                                                  entity,
-                                                  entityGUIDParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
                         if (glossaryGUID == null)
                         {
                             results.add(converter.getNewBean(beanClass, entity, methodName));
@@ -2327,27 +2312,61 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return this.getAttachedElements(userId,
-                                        glossaryGUID,
-                                        glossaryGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
-                                        OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
-                                        OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                        null,
-                                        null,
-                                        2,
-                                        null,
-                                        null,
-                                        SequencingOrder.CREATION_DATE_RECENT,
-                                        null,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        EntityDetail glossaryEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        glossaryGUID,
+                                                                        glossaryGUIDParameterName,
+                                                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        securityVerifier.validateUserForGlossaryRead(userId,
+                                                     glossaryEntity,
+                                                     repositoryHelper,
+                                                     serviceName,
+                                                     methodName);
+
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                          glossaryGUID,
+                                                                                          methodName);
+        List<EntityDetail> termEntities = repositoryHandler.getEntitiesForClassificationType(userId,
+                                                                                             OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+                                                                                             OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                                             matchProperties,
+                                                                                             MatchCriteria.ALL,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             null,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             startFrom,
+                                                                                             queryPageSize,
+                                                                                             effectiveTime,
+                                                                                             methodName);
+
+        if (termEntities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail termEntity : termEntities)
+            {
+                if (termEntity != null)
+                {
+                    results.add(converter.getNewBean(beanClass, termEntity, methodName));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
     }
 
 

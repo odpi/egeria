@@ -313,7 +313,7 @@ public class CreateDuplicatesTest
         activityName = "Keyword test - all returned";
         relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId, firstAssetGUID, 1, keywordLinkTypeName, null, null, null, SequencingOrder.CREATION_DATE_RECENT, true, false, null, 0, 0);
 
-        if (relatedMetadataElements == null)
+        if ((relatedMetadataElements == null) || (relatedMetadataElements.getElementList() == null))
         {
             throw new FVTUnexpectedCondition(testCaseName, "No keywords returned by " + activityName);
         }

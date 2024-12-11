@@ -136,7 +136,7 @@ public class ValidValuesReport
                                                                                                                       startFrom,
                                                                                                                       500);
 
-                    while (relatedElements != null)
+                    while ((relatedElements != null) && (relatedElements.getElementList() != null))
                     {
                         for (RelatedMetadataElement relatedElement : relatedElements.getElementList())
                         {
@@ -184,7 +184,7 @@ public class ValidValuesReport
                                                                                                                                        refDataStartFrom,
                                                                                                                                        500);
 
-                                    while (relatedRefElements != null)
+                                    while ((relatedRefElements != null) && (relatedRefElements.getElementList() != null))
                                     {
                                         for (RelatedMetadataElement relatedRefElement : relatedRefElements.getElementList())
                                         {

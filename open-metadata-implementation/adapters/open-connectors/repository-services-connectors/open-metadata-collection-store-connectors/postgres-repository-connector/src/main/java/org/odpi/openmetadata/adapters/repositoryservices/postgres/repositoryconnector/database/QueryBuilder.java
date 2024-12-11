@@ -35,6 +35,7 @@ public class QueryBuilder
     private String                relationshipEndGUID          = null;
     private String                searchString                 = null;
     private SearchProperties      searchProperties             = null;
+    private String                principleTableName           = null;
     private String                propertyTableName            = null;
     private SearchClassifications matchClassifications         = null;
     private List<String>          limitResultsByClassification = null;
@@ -186,10 +187,12 @@ public class QueryBuilder
      * @param matchProperties Optional list of entity properties to match (where any String property's value should
      *                        be defined as a Java regular expression, even if it should be an exact match).
      * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
+     * @param principleTableName table with the header for the instance
      * @param propertyTableName name of table holding the properties
      */
     public void setMatchProperties(InstanceProperties matchProperties,
                                    MatchCriteria      matchCriteria,
+                                   String             principleTableName,
                                    String             propertyTableName)
     {
         if ((matchProperties != null) &&
@@ -244,7 +247,7 @@ public class QueryBuilder
             searchProperties.setConditions(propertyConditions);
             searchProperties.setMatchCriteria(matchCriteria);
 
-            this.setSearchProperties(searchProperties, propertyTableName);
+            this.setSearchProperties(searchProperties, principleTableName, propertyTableName);
         }
     }
 
@@ -505,56 +508,56 @@ public class QueryBuilder
             {
                 case EQ ->
                 {
-                    return " (" + propertyColumn + " = '" + this.getSafeRegex(propertyValue) + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " = '" + this.getSafeRegex(propertyValue) + "') ";
                 }
                 case NEQ ->
                 {
-                    return " (" + propertyColumn + " != '" + this.getSafeRegex(propertyValue) + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " != '" + this.getSafeRegex(propertyValue) + "') ";
                 }
                 case LT ->
                 {
-                    return " (" + propertyColumn + " < '" + propertyValue + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " < '" + propertyValue + "') ";
                 }
                 case LTE ->
                 {
-                    return " (" + propertyColumn + " <= '" + propertyValue + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " <= '" + propertyValue + "') ";
                 }
                 case GT ->
                 {
-                    return " (" + propertyColumn + " > '" + propertyValue + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " > '" + propertyValue + "') ";
                 }
                 case GTE ->
                 {
-                    return " (" + propertyColumn + " >= '" + propertyValue + "') ";
+                    return " (" + principleTableName + "." + propertyColumn + " >= '" + propertyValue + "') ";
                 }
                 case IS_NULL ->
                 {
-                    return " (" + propertyColumn + " is null)";
+                    return " (" + principleTableName + "." + propertyColumn + " is null)";
                 }
                 case NOT_NULL ->
                 {
-                    return " (" + propertyColumn + " is not null)";
+                    return " (" + principleTableName + "." + propertyColumn + " is not null)";
                 }
                 case LIKE ->
                 {
                     if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
                     {
-                        return " (" + propertyColumn + " ~* '" + this.getSafeRegex(propertyValue) + "') ";
+                        return " (" + principleTableName + "." + propertyColumn + " ~* '" + this.getSafeRegex(propertyValue) + "') ";
                     }
                     else
                     {
-                        return " (" + propertyColumn + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        return " (" + principleTableName + "." + propertyColumn + " ~ '" + this.getSafeRegex(propertyValue) + "') ";
                     }
                 }
                 case NOT_LIKE ->
                 {
                     if (repositoryHelper.isCaseInsensitiveRegex(propertyValue.toString()))
                     {
-                        return " (" + propertyColumn + " !~* '" + this.getSafeRegex(propertyValue) + "') ";
+                        return " (" + principleTableName + "." + propertyColumn + " !~* '" + this.getSafeRegex(propertyValue) + "') ";
                     }
                     else
                     {
-                        return " (" + propertyColumn + " !~ '" + this.getSafeRegex(propertyValue) + "') ";
+                        return " (" + principleTableName + "." + propertyColumn + " !~ '" + this.getSafeRegex(propertyValue) + "') ";
                     }
                 }
             }
@@ -572,12 +575,15 @@ public class QueryBuilder
      * Set up the search properties.
      *
      * @param searchProperties Optional list of entity property conditions to match.
+     * @param principleTableName name of table containing the instance's header
      * @param propertyTableName name of property table for this type of instance
      */
     public void setSearchProperties(SearchProperties searchProperties,
+                                    String           principleTableName,
                                     String           propertyTableName)
     {
         this.searchProperties = searchProperties;
+        this.principleTableName = principleTableName;
         this.propertyTableName = propertyTableName;
     }
 
@@ -1045,7 +1051,7 @@ public class QueryBuilder
 
 
     /**
-     * Return the ORDER BY fragment.
+     * Return the ORDER BY fragment.  Notice that ordering by property is currently ignored
      *
      * @return sequencing
      */
@@ -1077,11 +1083,15 @@ public class QueryBuilder
                 }
                 case PROPERTY_DESCENDING ->
                 {
-                    return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " desc ";
+                    // todo temporary restriction
+                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " desc ";
+                    // return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " desc ";
                 }
                 case PROPERTY_ASCENDING ->
                 {
-                    return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " asc ";
+                    // todo temporary restriction
+                    return " order by " + RepositoryColumn.CREATE_TIME.getColumnName(principleTableName) + " asc ";
+                    // return " order by " + this.mapPropertyNameToColumn(sequencingProperty, RepositoryColumn.ATTRIBUTE_NAME.getColumnName()) + " asc ";
                 }
             }
         }
@@ -1293,6 +1303,57 @@ public class QueryBuilder
 
 
     /**
+     * Join the principle table with its associated attributes table.
+     *
+     * @param principleTable main table
+     * @param propertiesTableName name of attributes table
+     * @return the join part of the SQL query
+     */
+    public String getDistinctPropertyJoinQuery(RepositoryTable principleTable,
+                                               String          propertiesTableName)
+    {
+        StringBuilder clause = new StringBuilder("select distinct ");
+
+        boolean firstColumn = true;
+
+        for (String columnName : principleTable.getQualifiedColumnNames())
+        {
+            if (firstColumn)
+            {
+                firstColumn = false;
+            }
+            else
+            {
+                clause.append(", ");
+            }
+
+            clause.append(columnName);
+        }
+
+        clause.append(" from ");
+        clause.append(principleTable.getTableName());
+        clause.append(" left outer join ");
+        clause.append(propertiesTableName);
+        clause.append(" on ");
+        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(principleTable.getTableName()));
+        clause.append(" = ");
+        clause.append(RepositoryColumn.INSTANCE_GUID.getColumnName(propertiesTableName));
+        clause.append(" and ");
+        clause.append(RepositoryColumn.VERSION.getColumnName(principleTable.getTableName()));
+        clause.append(" = ");
+        clause.append(RepositoryColumn.VERSION.getColumnName(propertiesTableName));
+
+        if (log.isDebugEnabled())
+        {
+            log.debug(this.toString());
+            log.debug(clause.toString());
+        }
+
+        return clause.toString();
+    }
+
+
+    /**
      * Return the where clause built up from the query parameters supplied.
      *
      * @return SQL command fragment
@@ -1318,6 +1379,7 @@ public class QueryBuilder
 
         return whereClause;
     }
+
 
 
     /**

@@ -191,9 +191,9 @@ public class SurveyReport
                                                                                                              startFrom,
                                                                                                              maxPageSize);
 
-        if (annotationElements != null)
+        if ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            while (annotationElements != null)
+            while ((annotationElements != null) && (annotationElements.getElementList() != null))
             {
                 for (RelatedMetadataElement reportedAnnotationLink : annotationElements.getElementList())
                 {
@@ -247,7 +247,7 @@ public class SurveyReport
                                                                                 startFrom,
                                                                                 maxPageSize);
 
-        while (annotationElements != null)
+        while ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
             for (RelatedMetadataElement reportedAnnotationElement : annotationElements.getElementList())
             {
@@ -478,7 +478,7 @@ public class SurveyReport
                                                                                                              startFrom,
                                                                                                              maxPageSize);
 
-        while (associatedElements != null)
+        while ((associatedElements != null) && (associatedElements.getElementList() != null))
         {
             int associatedElementIndentLevel = annotationIndentLevel + 1;
 
@@ -577,7 +577,7 @@ public class SurveyReport
                                                                                                                      0,
                                                                                                                      0);
 
-                if (surveyReportElements != null)
+                if ((surveyReportElements != null) && (surveyReportElements.getElementList() != null))
                 {
                     int reportIndentLevel = detailIndentLevel + 1;
 

@@ -97,7 +97,7 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                                                                                                                                      OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                                                                      startFrom,
                                                                                                                                      governanceContext.getMaxPageSize());
-                while (reportedAnnotations != null)
+                while ((reportedAnnotations != null) && (reportedAnnotations.getElementList() != null))
                 {
                     for (RelatedMetadataElement reportedAnnotation : reportedAnnotations.getElementList())
                     {

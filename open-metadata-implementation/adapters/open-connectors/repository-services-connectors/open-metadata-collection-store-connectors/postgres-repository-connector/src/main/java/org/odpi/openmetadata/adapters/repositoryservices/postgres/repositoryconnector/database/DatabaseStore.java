@@ -347,9 +347,7 @@ public class DatabaseStore
     {
         final String methodName = "retrieveEntitiesByProperties";
 
-        String sqlEntityQuery = entityQueryBuilder.getPropertyJoinQuery(RepositoryTable.ENTITY.getTableName(),
-                                                                        RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
-                                                                        "*") +
+        String sqlEntityQuery = entityQueryBuilder.getDistinctPropertyJoinQuery(RepositoryTable.ENTITY, RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName()) +
                 " where " + entityQueryBuilder.getAsOfTimeWhereClause();
 
         try
@@ -409,9 +407,7 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationships";
 
-        String sqQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                           RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
-                                                           "*") +
+        String sqQuery = queryBuilder.getDistinctPropertyJoinQuery(RepositoryTable.RELATIONSHIP, RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName()) +
                 " where " + queryBuilder.getAsOfTimeWhereClause();
         try
         {
@@ -451,9 +447,7 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationshipsByProperties";
 
-        String sqlQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                            RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
-                                                            "*") +
+        String sqlQuery = queryBuilder.getDistinctPropertyJoinQuery(RepositoryTable.RELATIONSHIP, RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName()) +
                 " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
 
 

@@ -195,9 +195,9 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                                                                                            startFrom,
                                                                                                            maxPageSize);
 
-        if (annotationElements != null)
+        if ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            while (annotationElements != null)
+            while ((annotationElements != null) && (annotationElements.getElementList() != null))
             {
                 for (RelatedMetadataElement reportedAnnotationLink : annotationElements.getElementList())
                 {
@@ -235,7 +235,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                                                                 startFrom,
                                                                                 maxPageSize);
 
-        while (annotationElements != null)
+        while ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
             for (RelatedMetadataElement reportedAnnotationElement : annotationElements.getElementList())
             {
@@ -435,7 +435,7 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                                                                                            startFrom,
                                                                                                            maxPageSize);
 
-        while (associatedElements != null)
+        while ((associatedElements != null) && (associatedElements.getElementList() != null))
         {
             int associatedElementIndentLevel = annotationIndentLevel + 1;
 

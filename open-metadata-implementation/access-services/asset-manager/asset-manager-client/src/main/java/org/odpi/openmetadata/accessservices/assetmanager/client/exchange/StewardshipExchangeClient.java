@@ -2635,7 +2635,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                          pageSize);
         }
 
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
@@ -2717,7 +2717,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                                   startFrom,
                                                                                                                   pageSize);
 
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 
@@ -2819,7 +2819,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                                                                                                   startFrom,
                                                                                                                   pageSize);
 
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<RelatedMetadataElementSummary> results = new ArrayList<>();
 

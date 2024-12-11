@@ -606,7 +606,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                                         startFrom,
                                                                                                         context.getMaxPageSize());
 
-            while (schemaAttributes != null)
+            while ((schemaAttributes != null) && (schemaAttributes.getElementList() != null))
             {
                 for (RelatedMetadataElement schemaAttribute : schemaAttributes.getElementList())
                 {

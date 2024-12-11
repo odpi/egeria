@@ -550,17 +550,17 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(parentEntityGUID, parentEntityParameterName, methodName);
         invalidParameterHandler.validateName(dataFieldName, dataFieldNameParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              parentEntityGUID,
-                                                              parentEntityParameterName,
-                                                              parentEntityType,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 parentEntityGUID,
+                                                                 parentEntityParameterName,
+                                                                 parentEntityType,
+                                                                 true,
+                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         DataFieldBuilder builder = new DataFieldBuilder(dataFieldName,
                                                         dataFieldType,
