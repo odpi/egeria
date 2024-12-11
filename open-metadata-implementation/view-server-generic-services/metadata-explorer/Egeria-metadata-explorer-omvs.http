@@ -81,8 +81,40 @@ content-packs/CloudInformationModel.omarchive
 
 
 ###
+# @name get the GUID for the CloudInformationModel Glossary
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-@elementGUID=6204f340-d7fd-4cc8-922a-8851fb889dc2
+{
+  "class" : "NameRequestBody",
+  "name" : "Glossary:CloudInformationModel",
+  "namePropertyName" : "qualifiedName"
+}
+
+> {% client.global.set("cimGlossaryGUID", response.body.guid); %}
+
+
+###
+# @name get the GUID for the Sustainability Glossary
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "Glossary:Sustainability",
+  "namePropertyName" : "qualifiedName"
+}
+
+> {% client.global.set("sustainabilityGlossaryGUID", response.body.guid); %}
+
+
+###
+# This guid is the valid value set for the resourceUse property from the ResourceUse relationship.
+@elementGUID=81969abe-0140-4001-85cd-5c44668961ea
 
 ###
 # @name getMetadataElementByGUID
@@ -109,6 +141,18 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+
+###
+# @name getAnchoredElementsGraph (active metadata store)
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{activeMetadataStoreGUID}}/with-anchored-elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "AnyTimeRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
 
 ###
 # @name getMetadataElementByUniqueName
@@ -171,7 +215,7 @@ Content-Type: application/json
 
 
 ###
-# @name findMetadataElementsWithString
+# @name findMetadataElementsWithString (Glossary called .*Cloud.*)
 # Retrieve the metadata elements that contain the requested string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
@@ -179,7 +223,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Egeria",
+  "searchString" : "Cloud",
   "typeName" : "ValidValueDefinition",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
@@ -187,6 +231,45 @@ Content-Type: application/json
   "sequencingOrder": "CREATION_DATE_RECENT",
   "sequencingProperty": ""
 }
+
+
+###
+# @name findMetadataElementsWithString (GlossaryTerm for CO2)
+# Retrieve the metadata elements that contain the requested string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "CO2",
+  "typeName" : "GlossaryTerm",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+
+###
+# @name findMetadataElementsWithString
+# Retrieve the metadata elements that contain the requested string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=20
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "party",
+  "typeName" : "GlossaryTerm",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
 
 ###
 # @name findMetadataElementsWithString
@@ -210,7 +293,7 @@ Content-Type: application/json
 ###
 # @name getAllRelatedMetadataElements
 # Retrieve the metadata elements connected to the supplied element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=100
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -227,7 +310,7 @@ Content-Type: application/json
 ###
 # @name getAllRelatedMetadataElements
 # Retrieve the metadata elements connected to the supplied element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=100
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -237,18 +320,18 @@ Content-Type: application/json
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
   "sequencingOrder": "PROPERTY_ASCENDING",
-  "sequencingProperty": "fileName"
+  "sequencingProperty": "preferredValue"
 }
 
 
 ###
 
-@relationshipTypeName=add name here
+@relationshipTypeName=TermAnchor
 
 ###
-# @name getRelatedMetadataElements
+# @name get GlossaryTerms linked to the Sustainability Glossary
 # Retrieve the metadata elements connected to the supplied element via a specific relationship type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{elementGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{sustainabilityGlossaryGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0&startFrom=0&pageSize=1000
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -302,7 +385,7 @@ Content-Type: application/json
 
 
 ###
-# @name findMetadataElements
+# @name findMetadataElements (nested condition)
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
@@ -310,7 +393,7 @@ Content-Type: application/json
 
 {
   "class" : "FindRequestBody",
-  "metadataElementTypeName": "add typeName here",
+  "metadataElementTypeName": "Location",
   "metadataElementSubtypeNames": [],
   "searchProperties": {
      "class" : "SearchProperties",
@@ -319,39 +402,36 @@ Content-Type: application/json
                "class" : "SearchProperties",
                "conditions": [
                {
-                   "property" : "add name of property here",
-                   "operator": "EQ",
+                   "property" : "identifier",
+                   "operator": "LIKE",
                    "value": {
                       "class" : "PrimitiveTypePropertyValue",
                       "typeName" : "string",
-                      "primitiveValue" : "Add value here"
+                      "primitiveValue" : "AMS"
                    }
-               }],
-               "matchCriteria": "ALL"
-         }
-     }],
-     "matchCriteria": "ANY"
-  },
-  "matchClassifications": {
-     "class" : "SearchClassifications",
-     "conditions": [{
-         "name" : "add classification name here",
-         "searchProperties": {
-            "class" : "SearchProperties",
-               "conditions": [
+               },
                {
-                   "property" : "add name of property here",
-                   "operator": "EQ",
+                   "property" : "identifier",
+                   "operator": "LIKE",
                    "value": {
                       "class" : "PrimitiveTypePropertyValue",
                       "typeName" : "string",
-                      "primitiveValue" : "Add value here"
+                      "primitiveValue" : "LAB"
                    }
                }],
-               "matchCriteria": "ALL"
-         }
+               "matchCriteria": "ANY"
+         }},
+         {
+             "property" : "displayName",
+             "operator": "LIKE",
+             "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "Cancer"
+                   }
+
      }],
-     "matchCriteria": "ANY"
+     "matchCriteria": "ALL"
   },
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
@@ -363,7 +443,7 @@ Content-Type: application/json
 
 
 ###
-# @name findMetadataElements anchored to a specific element
+# @name findMetadataElements anchored to the SoftwareServer entity for active-metadata-store
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
@@ -384,7 +464,7 @@ Content-Type: application/json
                    "value": {
                       "class" : "PrimitiveTypePropertyValue",
                       "typeName" : "string",
-                      "primitiveValue" : "{{@activeMetadataStoreGUID}}"
+                      "primitiveValue" : "{{activeMetadataStoreGUID}}"
                    }
                }],
                "matchCriteria": "ALL"
@@ -395,9 +475,47 @@ Content-Type: application/json
 }
 
 
+###
+
+@glossaryGUID={{sustainabilityGlossaryGUID}}
 
 ###
-# @name find Glossary elements containing "party"
+# @name find GlossaryTerms for a glossary
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "GlossaryTerm",
+  "matchClassifications": {
+     "class" : "SearchClassifications",
+     "conditions": [{
+         "name" : "Anchors",
+         "searchProperties": {
+            "class" : "SearchProperties",
+               "conditions": [
+               {
+                   "property" : "anchorGUID",
+                   "operator": "EQ",
+                   "value": {
+                      "class" : "PrimitiveTypePropertyValue",
+                      "typeName" : "string",
+                      "primitiveValue" : "{{sustainabilityGlossaryGUID}}"
+                   }
+               }],
+               "matchCriteria": "ALL"
+         }
+     }],
+     "matchCriteria": "ALL"
+  }
+}
+
+
+
+###
+# @name find anchored Glossary elements (Glossary Terms, Glossary Categories, etc containing "shipping"
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
@@ -413,7 +531,7 @@ Content-Type: application/json
          "value": {
             "class" : "PrimitiveTypePropertyValue",
             "typeName" : "string",
-            "primitiveValue" : "party"
+            "primitiveValue" : "shipping"
           }},
          {
             "property" : "displayName",
@@ -421,7 +539,7 @@ Content-Type: application/json
             "value": {
                "class" : "PrimitiveTypePropertyValue",
                "typeName" : "string",
-              "primitiveValue" : "party"
+              "primitiveValue" : "shipping"
             }
          },
        {
@@ -430,7 +548,7 @@ Content-Type: application/json
          "value": {
            "class" : "PrimitiveTypePropertyValue",
            "typeName" : "string",
-           "primitiveValue" : "party"
+           "primitiveValue" : "shipping"
          }
      }],
      "matchCriteria": "ANY"
@@ -459,6 +577,31 @@ Content-Type: application/json
 }
 
 
+###
+# @name find CO2 Glossary terms
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=50
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "GlossaryTerm",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "abbreviation",
+      "operator": "LIKE",
+      "value": {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveValue" : "C"
+      }}],
+    "matchCriteria": "ANY"
+  }
+}
+
+
 
 ###
 # @name findRelationshipsBetweenMetadataElements
@@ -469,27 +612,21 @@ Content-Type: application/json
 
 {
   "class" : "FindRelationshipRequestBody",
-  "relationshipTypeName": "add typeName here",
+  "relationshipTypeName": "ResourceList",
   "searchProperties": {
-     "class" : "SearchProperties",
-     "conditions": [ {
-         "nestedConditions": {
-               "class" : "SearchProperties",
+            "class" : "SearchProperties",
                "conditions": [
                {
-                   "property" : "add name of property here",
+                   "property" : "resourceUse",
                    "operator": "EQ",
                    "value": {
                       "class" : "PrimitiveTypePropertyValue",
                       "typeName" : "string",
-                      "primitiveValue" : "Add value here"
+                      "primitiveValue" : "Survey Resource"
                    }
                }],
                "matchCriteria": "ALL"
-         }
-     }],
-     "matchCriteria": "ANY"
-  },
+         },
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",

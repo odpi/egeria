@@ -150,7 +150,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                         startFrom,
                                                                                                         pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<CollectionElement> filteredCollections = new ArrayList<>();
 
@@ -970,7 +970,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                           startFrom,
                                                                                                           pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<CollectionMember> collectionMembers = new ArrayList<>();
 

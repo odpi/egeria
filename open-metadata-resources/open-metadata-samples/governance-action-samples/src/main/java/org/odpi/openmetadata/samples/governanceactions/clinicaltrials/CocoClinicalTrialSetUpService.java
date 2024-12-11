@@ -441,7 +441,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                                0,
                                                                                                                                0);
 
-                if (actionTargets != null)
+                if ((actionTargets != null) && (actionTargets.getElementList() != null))
                 {
                     for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
                     {
@@ -464,7 +464,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                                                                  0,
                                                                                                                                  0);
 
-                if (specifications != null)
+                if ((specifications != null) && (specifications.getElementList() != null))
                 {
                     for (RelatedMetadataElement specification : specifications.getElementList())
                     {

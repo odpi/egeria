@@ -372,7 +372,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                        0,
                                                                                                        0);
 
-        if (assignedActors != null)
+        if ((assignedActors != null) && (assignedActors.getElementList() != null))
         {
             for (RelatedMetadataElement assignedActor : assignedActors.getElementList())
             {
@@ -794,7 +794,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                   InvalidParameterException,
                                                                                                   UserNotAuthorizedException
     {
-        if (relatedMetadataElements != null)
+        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
         {
             List<ToDoElement> toDoElements = new ArrayList<>();
 

@@ -15,11 +15,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -307,18 +307,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     {
         if (beanEntity != null)
         {
-            EntityDetail anchorEntity = validateAnchorEntity(userId,
-                                                             beanEntity.getGUID(),
-                                                             beanGUIDTypeName,
-                                                             beanEntity,
-                                                             beanGUIDParameterName,
-                                                             true,
-                                                             true,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             serviceSupportedZones,
-                                                             effectiveTime,
-                                                             methodName);
+            EntityDetail anchorEntity = validateAnchorForEntity(userId,
+                                                                beanGUIDTypeName,
+                                                                beanEntity,
+                                                                beanGUIDParameterName,
+                                                                true,
+                                                                true,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                serviceSupportedZones,
+                                                                effectiveTime,
+                                                                methodName);
 
             Classification existingClassification = this.getExistingClassification(beanEntity, classificationTypeName);
 
@@ -493,18 +492,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -630,18 +628,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -749,29 +746,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
             InstanceProperties newProperties = relationship.getProperties();
 
@@ -962,29 +959,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
 
             /*
@@ -1071,29 +1068,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveTime,
+                                         methodName);
 
             repositoryHandler.removeRelationship(userId,
                                                  externalSourceGUID,
@@ -1241,18 +1238,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -3009,7 +3005,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Validates that the current anchorGUID is correct and updates it if it is not.
+     * Validates that the current anchorGUID is correct and updates it if it is not.  Notice that
      *
      * @param targetGUID unique identifier of the element to validate
      * @param targetGUIDParameterName parameter that provided the guid
@@ -3080,7 +3076,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     }
 
 
-
     /**
      * Validates that the current anchorGUID is correct and updates it if it is not.
      *
@@ -3147,119 +3142,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.
+     * Check that a retrieved entity is readable.  This is always the first check and include checks
+     * for private feedback, connection selection, asset zones and security tags on glossaries
      *
-     * @param userId           userId of user making request.
-     * @param connectToGUID       unique id for the object to connect the attachment to.
-     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
-     * @param connectToType       type of the connectToElement.
-     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
-     * @param isUpdate         is this an update request?
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param suppliedSupportedZones supported zone list from calling service
-     * @param effectiveTime    the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName       calling method
-     * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
+     * @param userId calling user
+     * @param connectToEntity entity retrieved
+     * @param connectToGUIDParameterName parameter used to pass the entity to retrieve.
+     * @param connectToType type of retrieved entity
+     * @param isExplicitGetRequest is this entity requested explicitly
+     * @param suppliedSupportedZones what are the supplied supported zones
+     * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public EntityDetail validateAnchorEntity(String       userId,
-                                             String       connectToGUID,
-                                             String       connectToGUIDParameterName,
-                                             String       connectToType,
-                                             boolean      isExplicitGetRequest,
-                                             boolean      isUpdate,
-                                             boolean      forLineage,
-                                             boolean      forDuplicateProcessing,
-                                             List<String> suppliedSupportedZones,
-                                             Date         effectiveTime,
-                                             String       methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private void validateRetrievedEntityIsVisible(String       userId,
+                                                  EntityDetail connectToEntity,
+                                                  String       connectToGUIDParameterName,
+                                                  String       connectToType,
+                                                  boolean      isExplicitGetRequest,
+                                                  List<String> suppliedSupportedZones,
+                                                  String       methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(connectToGUID, connectToGUIDParameterName, methodName);
-
-        /*
-         * This returns the entity for the connectTo element and validates it is of the correct type.
-         */
-        EntityDetail  connectToEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                          connectToGUID,
-                                                                          connectToGUIDParameterName,
-                                                                          connectToType,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-        return this.validateAnchorEntity(userId,
-                                         connectToGUID,
-                                         connectToType,
-                                         connectToEntity,
-                                         connectToGUIDParameterName,
-                                         isExplicitGetRequest,
-                                         isUpdate,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         suppliedSupportedZones,
-                                         effectiveTime,
-                                         methodName);
-    }
-
-
-    /**
-     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
-     * update.
-     * <br><br>
-     * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
-     * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
-     * have access to it.
-     * <br><br>
-     * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
-     * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
-     * validated.
-     * <br><br>
-     * Some anchor entities have specific validation to perform.
-     *
-     * @param userId           userId of user making request.
-     * @param connectToGUID    unique id for the object to connect the attachment to
-     * @param connectToType    name of type of connectToEntity
-     * @param connectToEntity  entity retrieved from the repository
-     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
-     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
-     * @param isUpdate         is this an update request?
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param suppliedSupportedZones list of supported zones from the caller.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName       calling method
-     *
-     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
-     * caller to set the LatestChange classification
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public EntityDetail validateAnchorEntity(String        userId,
-                                             String        connectToGUID,
-                                             String        connectToType,
-                                             EntityDetail  connectToEntity,
-                                             String        connectToGUIDParameterName,
-                                             boolean       isExplicitGetRequest,
-                                             boolean       isUpdate,
-                                             boolean       forLineage,
-                                             boolean       forDuplicateProcessing,
-                                             List<String>  suppliedSupportedZones,
-                                             Date          effectiveTime,
-                                             String        methodName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
-
         /*
          * This first processing looks at the retrieved entity itself to ensure it is visible.
          */
@@ -3279,7 +3185,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 if (!userId.equals(connectToEntity.getCreatedBy()))
                 {
                     invalidParameterHandler.throwUnknownElement(userId,
-                                                                connectToGUID,
+                                                                connectToEntity.getGUID(),
                                                                 connectToType,
                                                                 serviceName,
                                                                 serverName,
@@ -3298,7 +3204,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
              * is validated once the properties have been updated.
              */
             securityVerifier.validateUserForAssetRead(userId,
-                                                      connectToGUID,
+                                                      connectToEntity.getGUID(),
                                                       connectToGUIDParameterName,
                                                       connectToEntity,
                                                       isExplicitGetRequest,
@@ -3319,11 +3225,460 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                          serviceName,
                                                          methodName);
         }
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.
+     *
+     * @param userId           userId of user making request.
+     * @param connectToGUID       unique id for the object to connect the attachment to.
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param connectToType       type of the connectToElement.
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones supported zone list from calling service
+     * @param effectiveTime    the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorForEntity(String       userId,
+                                                String       connectToGUID,
+                                                String       connectToGUIDParameterName,
+                                                String       connectToType,
+                                                boolean      isExplicitGetRequest,
+                                                boolean      isUpdate,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                List<String> suppliedSupportedZones,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectToGUID, connectToGUIDParameterName, methodName);
 
         /*
-         * Most referenceables have an independent lifecycle.  They are their own anchor.  This method is handling the special cases.
+         * This returns the entity for the connectTo element and validates it is of the correct type.
          */
-        EntityDetail anchorEntity = null;
+        EntityDetail  connectToEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                          connectToGUID,
+                                                                          connectToGUIDParameterName,
+                                                                          connectToType,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        return this.validateAnchorForEntity(userId,
+                                            connectToType,
+                                            connectToEntity,
+                                            connectToGUIDParameterName,
+                                            isExplicitGetRequest,
+                                            isUpdate,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            suppliedSupportedZones,
+                                            effectiveTime,
+                                            methodName);
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
+     * update.
+     * <br><br>
+     * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
+     * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
+     * have access to it.
+     * <br><br>
+     * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
+     * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
+     * validated.
+     * <br><br>
+     * Some anchor entities have specific validation to perform.
+     *
+     * @param userId           userId of user making request.
+     * @param connectToType    name of type of connectToEntity
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
+     * caller to set the LatestChange classification
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorForEntity(String        userId,
+                                                String        connectToType,
+                                                EntityDetail  connectToEntity,
+                                                String        connectToGUIDParameterName,
+                                                boolean       isExplicitGetRequest,
+                                                boolean       isUpdate,
+                                                boolean       forLineage,
+                                                boolean       forDuplicateProcessing,
+                                                List<String>  suppliedSupportedZones,
+                                                Date          effectiveTime,
+                                                String        methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
+
+        /*
+         * This first processing looks at the retrieved entity itself to ensure it is visible.
+         */
+        validateRetrievedEntityIsVisible(userId,
+                                         connectToEntity,
+                                         connectToGUIDParameterName,
+                                         connectToType,
+                                         isExplicitGetRequest,
+                                         suppliedSupportedZones,
+                                         methodName);
+
+        /*
+         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+         * derived and added to the connectToEntity.
+         */
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDForEntity(connectToEntity,
+                                                                          connectToGUIDParameterName,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+
+        /*
+         * If an anchor GUID has been found then validate it by retrieving the identified entity.
+         * Note - anchorIdentifiers may or may not be null if the connectToEntity is actually an anchor.
+         */
+        return validateAnchorGUID(userId,
+                                  connectToEntity,
+                                  anchorIdentifiers,
+                                  isExplicitGetRequest,
+                                  isUpdate,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  suppliedSupportedZones,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Validates a list of entities retrieved from the repository as a result of a query.
+     * It validates supported zones read security and the anchor GUID.  It does not handle Mementos, effective dates
+     * and element status, since they are the responsibility of the repository handler.
+     *
+     * @param userId           userId of user making request.
+     * @param retrievedEntities  entities retrieved from the repository
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return list of validated entities
+     */
+    public List<EntityDetail> validateAnchorForEntities(String             userId,
+                                                        List<EntityDetail> retrievedEntities,
+                                                        boolean            forLineage,
+                                                        boolean            forDuplicateProcessing,
+                                                        List<String>       suppliedSupportedZones,
+                                                        Date               effectiveTime,
+                                                        String             methodName)
+    {
+        if (retrievedEntities != null)
+        {
+            final String connectToGUIDParameterName = "retrievedEntity.getGUID";
+
+            Map<String, EntityDetail>      visibleEntities = new HashMap<>();
+
+            List<String>                   extractedAnchorGUIDs = new ArrayList<>();
+            Map<String, AnchorIdentifiers> extractedAnchors = new HashMap<>();
+
+            List<PropertyCondition> anchorRetrievalQuery = new ArrayList<>();
+
+            /*
+             * Identify the anchors that need to be retrieved.  The aim is to build a query that retrieves all of the
+             * required Anchor entities in a single retrieve to minimize the calls to the repositories.
+             */
+            for (EntityDetail connectToEntity : retrievedEntities)
+            {
+                if (connectToEntity != null)
+                {
+                    try
+                    {
+                        /*
+                         * This first processing looks at the retrieved entity itself to ensure it is visible.
+                         */
+                        validateRetrievedEntityIsVisible(userId,
+                                                         connectToEntity,
+                                                         connectToGUIDParameterName,
+                                                         connectToEntity.getType().getTypeDefName(),
+                                                         false,
+                                                         suppliedSupportedZones,
+                                                         methodName);
+
+                        visibleEntities.put(connectToEntity.getGUID(), connectToEntity);
+
+                        /*
+                         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+                         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+                         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+                         * derived and added to the connectToEntity.
+                         */
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDForEntity(connectToEntity,
+                                                                                          connectToGUIDParameterName,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+
+                        if (anchorIdentifiers != null)
+                        {
+                            extractedAnchors.put(connectToEntity.getGUID(), anchorIdentifiers);
+
+                            if (anchorIdentifiers.anchorGUID != null)
+                            {
+                                if (! extractedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID))
+                                {
+                                    /*
+                                     * Need to retrieve the anchor entity
+                                     */
+                                    PropertyCondition propertyCondition = new PropertyCondition();
+
+                                    propertyCondition.setProperty(OpenMetadataProperty.GUID.name);
+                                    propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                                    primitivePropertyValue.setPrimitiveValue(anchorIdentifiers.anchorGUID);
+
+                                    propertyCondition.setValue(primitivePropertyValue);
+
+                                    anchorRetrievalQuery.add(propertyCondition);
+
+                                    extractedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                                }
+                            }
+                            else
+                            {
+                                if (! extractedAnchorGUIDs.contains(connectToEntity.getGUID()))
+                                {
+                                    extractedAnchorGUIDs.add(connectToEntity.getGUID());
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception unauthorizedEntity)
+                    {
+                        // ignore this entity since the user is not allowed to see it
+                    }
+                }
+            }
+
+            /*
+             * Retrieve the anchor entities
+             */
+            Map<String, EntityDetail> retrievedAnchors = this.getAnchorsForEntityList(userId,
+                                                                                      anchorRetrievalQuery,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+            /*
+             * Validate the anchors.
+             */
+            List<String>       validatedAnchors  = new ArrayList<>();
+            List<EntityDetail> validatedEntities = new ArrayList<>();
+
+            for (EntityDetail connectToEntity : visibleEntities.values())
+            {
+                if (connectToEntity != null)
+                {
+                    try
+                    {
+                        /*
+                         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+                         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+                         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+                         * derived and added to the connectToEntity.
+                         */
+                        AnchorIdentifiers anchorIdentifiers = extractedAnchors.get(connectToEntity.getGUID());
+
+                        if (anchorIdentifiers != null)
+                        {
+                            if (anchorIdentifiers.anchorGUID != null)
+                            {
+                                EntityDetail anchorEntity = retrievedAnchors.get(anchorIdentifiers.anchorGUID);
+
+                                if (anchorEntity == null)
+                                {
+                                    /*
+                                     * Unexpectedly the Anchor GUID was not already retrieved.
+                                     */
+                                    validateAnchorGUID(userId,
+                                                       connectToEntity,
+                                                       anchorIdentifiers,
+                                                       false,
+                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       suppliedSupportedZones,
+                                                       effectiveTime,
+                                                       methodName);
+
+                                    validatedAnchors.add(anchorIdentifiers.anchorGUID);
+                                }
+                                else if (! validatedAnchors.contains(anchorEntity.getGUID()))
+                                {
+                                    validateAnchorEntity(userId,
+                                                         connectToEntity,
+                                                         anchorEntity,
+                                                         false,
+                                                         false,
+                                                         suppliedSupportedZones,
+                                                         methodName);
+
+                                    validatedAnchors.add(anchorEntity.getGUID());
+                                }
+                            }
+                        }
+
+                        validatedEntities.add(connectToEntity);
+                    }
+                    catch (Exception unauthorizedEntity)
+                    {
+                        // ignore this entity since the user is not allowed to see it
+                    }
+                }
+            }
+
+            return validatedEntities;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a map of anchor entities.
+     *
+     * @param userId calling users
+     * @param conditions list of anchor guid as search conditions
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return map of anchor entity guid to anchor entities - empty map if nothing received
+     */
+    private Map<String, EntityDetail> getAnchorsForEntityList(String                  userId,
+                                                              List<PropertyCondition> conditions,
+                                                              boolean                 forLineage,
+                                                              boolean                 forDuplicateProcessing,
+                                                              Date                    effectiveTime,
+                                                              String                  methodName)
+    {
+        Map<String, EntityDetail> retrievedAnchors = new HashMap<>();
+
+        if (!conditions.isEmpty())
+        {
+            SearchProperties searchProperties = new SearchProperties();
+
+            searchProperties.setConditions(conditions);
+            searchProperties.setMatchCriteria(MatchCriteria.ANY);
+
+            try
+            {
+                List<EntityDetail> anchorEntities = repositoryHandler.findEntities(userId,
+                                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                                                                   null,
+                                                                                   searchProperties,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.GUID,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   0,
+                                                                                   invalidParameterHandler.getMaxPagingSize(),
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+                if (anchorEntities != null)
+                {
+                    for (EntityDetail anchorEntity : anchorEntities)
+                    {
+                        if (anchorEntity != null)
+                        {
+                            retrievedAnchors.put(anchorEntity.getGUID(), anchorEntity);
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName, GenericHandlersAuditCode.FAILED_TO_RETRIEVE_ANCHOR_ENTITIES.getMessageDefinition(methodName,
+                                                                                                                                 error.getClass().getName(),
+                                                                                                                                 error.getMessage()));
+            }
+        }
+
+        return retrievedAnchors;
+    }
+
+
+
+    /**
+     * Retrieve the anchor guid for an entity.  Ths is in two phases.  If the connectToEntity has an Anchors
+     * classification then the anchor information is extracted from that classification.  If there is on
+     * Anchors classification then a new one is derived and added to the connectToEntity for the next time
+     * it is retrieved.
+     *
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor identifiers
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AnchorIdentifiers getAnchorGUIDForEntity(EntityDetail connectToEntity,
+                                                    String       connectToGUIDParameterName,
+                                                    boolean      forLineage,
+                                                    boolean      forDuplicateProcessing,
+                                                    Date         effectiveTime,
+                                                    String       methodName) throws PropertyServerException,
+                                                                                    InvalidParameterException,
+                                                                                    UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
 
         /*
          * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
@@ -3337,16 +3692,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             /*
              * The classification is missing - so walk the relationships to find the anchor if it exists.
              */
-            anchorIdentifiers = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = deriveAnchorGUID(connectToEntity.getGUID(), connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
             if (anchorIdentifiers != null)
             {
                 /*
                  * The anchor has been found so store it in the classification, so it is easy to find next time.
                  */
-                maintainAnchorGUIDInClassification(connectToGUID,
+                maintainAnchorGUIDInClassification(connectToEntity.getGUID(),
                                                    connectToGUIDParameterName,
-                                                   connectToType,
+                                                   connectToEntity.getType().getTypeDefName(),
                                                    connectToEntity,
                                                    anchorIdentifiers,
                                                    forLineage,
@@ -3356,30 +3711,118 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
         }
 
+        return anchorIdentifiers;
+    }
+
+
+    /**
+     * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
+     *
+     * @param userId userId of user making request.
+     * @param connectToEntity entity retrieved from the repository
+     * @param anchorIdentifiers retrieved anchors information
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor entity (this may be the connectToEntity if it is its own anchor or null if the element is unanchored)
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorGUID(String            userId,
+                                           EntityDetail      connectToEntity,
+                                           AnchorIdentifiers anchorIdentifiers,
+                                           boolean           isExplicitGetRequest,
+                                           boolean           isUpdate,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           List<String>      suppliedSupportedZones,
+                                           Date              effectiveTime,
+                                           String            methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        if (anchorIdentifiers == null)
+        {
+            /*
+             * The element is unanchored.
+             */
+            return null;
+        }
+
         /*
-         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorIdentifiers may be null if the connectToEntity
-         * is actually an anchor.
+         * The element has an anchor.  If anchorGUID is null it means it is its own anchor.
          */
-        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+        if (anchorIdentifiers.anchorGUID != null)
         {
             final String anchorGUIDParameterName = "anchorIdentifiers";
 
             if (! anchorIdentifiers.anchorGUID.equals(connectToEntity.getGUID()))
             {
-                anchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                 anchorIdentifiers.anchorGUID,
-                                                                 anchorGUIDParameterName,
-                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
+                EntityDetail anchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                              anchorIdentifiers.anchorGUID,
+                                                                              anchorGUIDParameterName,
+                                                                              OpenMetadataType.REFERENCEABLE.typeName,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                /*
+                 * Perform any special processing on the anchor entity
+                 */
+                validateAnchorEntity(userId,
+                                     connectToEntity,
+                                     anchorEntity,
+                                     isExplicitGetRequest,
+                                     isUpdate,
+                                     suppliedSupportedZones,
+                                     methodName);
+
+                return anchorEntity;
             }
             else
             {
-                anchorEntity = connectToEntity;
+                return connectToEntity;
             }
         }
+        else
+        {
+            return connectToEntity;
+        }
+    }
+
+
+
+    /**
+     * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
+     *
+     * @param userId userId of user making request.
+     * @param connectToEntity entity retrieved from the repository
+     * @param anchorEntity retrieved anchors entity
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param methodName       calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void validateAnchorEntity(String       userId,
+                                     EntityDetail connectToEntity,
+                                     EntityDetail anchorEntity,
+                                     boolean      isExplicitGetRequest,
+                                     boolean      isUpdate,
+                                     List<String> suppliedSupportedZones,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String anchorGUIDParameterName = "anchorIdentifiers";
 
         /*
          * Perform any special processing on the anchor entity
@@ -3390,10 +3833,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (anchorEntityType != null)
             {
-                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
+                String connectToType = connectToEntity.getType().getTypeDefName();
+                boolean isFeedbackEntity =
+                        (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
 
                 /*
                  * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine
@@ -3402,9 +3847,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 if (OpenMetadataType.ASSET.typeName.equals(anchorEntityType.getTypeDefName()))
                 {
                     securityVerifier.validateUserForAssetAttachment(userId,
-                                                                    connectToGUID,
-                                                                    connectToGUIDParameterName,
+                                                                    anchorEntity.getGUID(),
+                                                                    anchorGUIDParameterName,
                                                                     anchorEntity,
+                                                                    isExplicitGetRequest,
                                                                     isFeedbackEntity,
                                                                     isUpdate,
                                                                     suppliedSupportedZones,
@@ -3445,8 +3891,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                  */
             }
         }
-
-        return anchorEntity;
     }
 
 
@@ -4652,18 +5096,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if (entity != null)
         {
-            validateAnchorEntity(userId,
-                                 entity.getGUID(),
-                                 resultingElementTypeName,
-                                 entity,
-                                 startingElementGUIDParameterName,
-                                 true,
-                                 false,
-                                 forLineage,
-                                 forDuplicateProcessing,
-                                 serviceSupportedZones,
-                                 effectiveTime,
-                                 methodName);
+            validateAnchorForEntity(userId,
+                                    resultingElementTypeName,
+                                    entity,
+                                    startingElementGUIDParameterName,
+                                    true,
+                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
         }
 
         return entity;
@@ -5510,18 +5953,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  startingEntity.getGUID(),
-                                  startingTypeName,
-                                  startingEntity,
-                                  startingGUIDParameterName,
-                                  true,
-                                  false,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     startingTypeName,
+                                     startingEntity,
+                                     startingGUIDParameterName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         List<Relationship> retrievedRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                              startingEntity,
@@ -5862,18 +6304,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
             {
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          entityProxyParameterName,
-                                          connectToEntity,
-                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                          false,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             entityProxyParameterName,
+                                             connectToEntity,
+                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                             false,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
                 {
@@ -5885,17 +6326,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             if ((anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
             {
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          entityProxyParameterName,
-                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                          false,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             entityProxy.getGUID(),
+                                             entityProxyParameterName,
+                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                             false,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 if (anchorIdentifiers.anchorGUID != null)
                 {
@@ -6298,18 +6739,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  originalEntity.getGUID(),
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             /*
              * Sort out the properties
@@ -6555,18 +6995,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  entityGUID,
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             /*
              * There is an extra security check if the update is for an asset.
@@ -6797,18 +7236,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  originalEntity.getGUID(),
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             EntityDetail recoveredEntity = repositoryHandler.undoEntityUpdate(userId,
                                                                               externalSourceGUID,
@@ -7088,17 +7526,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              entityGUID,
-                                                              entityGUIDParameterName,
-                                                              entityTypeName,
-                                                              true,
-                                                              true,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 true,
+                                                                 true,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         /*
          * At this point, archiving is only supported on the anchor entity.  This needs to change (eg to be able to archive schema elements)
@@ -7523,18 +7961,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                  effectiveTime,
                                                                  methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              entityGUID,
-                                                              entityTypeName,
-                                                              entity,
-                                                              entityGUIDParameterName,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 entityTypeName,
+                                                                 entity,
+                                                                 entityGUIDParameterName,
+                                                                 true,
+                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         List<String> anchorEntityGUIDs = new ArrayList<>();
 
@@ -8035,17 +8472,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                   entityProxy.getGUID(),
-                                                   guidParameterName,
-                                                   attachmentEntityTypeName,
-                                                   false,
-                                                   false,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   serviceSupportedZones,
-                                                   effectiveTime,
-                                                   methodName);
+                        this.validateAnchorForEntity(userId,
+                                                     entityProxy.getGUID(),
+                                                     guidParameterName,
+                                                     attachmentEntityTypeName,
+                                                     false,
+                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     serviceSupportedZones,
+                                                     effectiveTime,
+                                                     methodName);
 
                         results.add(entityProxy.getGUID());
                     }
@@ -8248,17 +8685,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entityProxy.getGUID(),
-                                                  guidParameterName,
-                                                  attachmentEntityTypeName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
+                        this.validateAnchorForEntity(userId,
+                                                     entityProxy.getGUID(),
+                                                     guidParameterName,
+                                                     attachmentEntityTypeName,
+                                                     false,
+                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     serviceSupportedZones,
+                                                     effectiveTime,
+                                                     methodName);
 
                         if (result == null)
                         {
@@ -8374,18 +8811,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if (entity != null)
         {
-            validateAnchorEntity(userId,
-                                 startingElementGUID,
-                                 startingElementTypeName,
-                                 entity,
-                                 startingElementGUIDParameterName,
-                                 true,
-                                 false,
-                                 forLineage,
-                                 forDuplicateProcessing,
-                                 serviceSupportedZones,
-                                 effectiveTime,
-                                 methodName);
+            validateAnchorForEntity(userId,
+                                    entity.getType().getTypeDefName(),
+                                    entity,
+                                    startingElementGUIDParameterName,
+                                    true,
+                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
 
             return converter.getNewBean(beanClass, entity, methodName);
         }
@@ -8455,17 +8891,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  startingGUID,
-                                  startingGUIDParameterName,
-                                  startingTypeName,
-                                  true,
-                                  false,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     startingGUID,
+                                     startingGUIDParameterName,
+                                     startingTypeName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     supportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -8699,17 +9135,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              startingGUID,
-                                                              startingGUIDParameterName,
-                                                              startingTypeName,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 startingGUID,
+                                                                 startingGUIDParameterName,
+                                                                 startingTypeName,
+                                                                 true,
+                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         invalidParameterHandler.validateAnchorGUID(anchorGUID, anchorGUIDParameterName, anchorEntity, startingGUID, startingTypeName, methodName);
 
@@ -8868,18 +9304,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                         effectiveTime,
                                                                         methodName);
 
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          attachmentEntityTypeName,
-                                          entity,
-                                          guidParameterName,
-                                          true,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             attachmentEntityTypeName,
+                                             entity,
+                                             guidParameterName,
+                                             true,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 boolean beanValid = true;
 
@@ -9068,18 +9503,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         /*
          * This method validates that the entity is visible to the calling user.
          */
-        this.validateAnchorEntity(userId,
-                                  retrievedEntity.getGUID(),
-                                  requestedEntityTypeName,
-                                  retrievedEntity,
-                                  requestedEntityGUIDParameterName,
-                                  true,
-                                  false,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     requestedEntityTypeName,
+                                     retrievedEntity,
+                                     requestedEntityGUIDParameterName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         boolean beanValid = true;
 
@@ -9624,18 +10058,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                     try
                     {
-                        validateAnchorEntity(userId,
-                                             entity.getGUID(),
-                                             resultTypeName,
-                                             entity,
-                                             entityParameterName,
-                                             true,
-                                             false,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             serviceSupportedZones,
-                                             effectiveTime,
-                                             methodName);
+                        validateAnchorForEntity(userId,
+                                                resultTypeName,
+                                                entity,
+                                                entityParameterName,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                serviceSupportedZones,
+                                                effectiveTime,
+                                                methodName);
 
                         /*
                          * Valid entity to return since no exception occurred.
@@ -9824,18 +10257,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                     try
                     {
-                        validateAnchorEntity(userId,
-                                             entity.getGUID(),
-                                             resultTypeName,
-                                             entity,
-                                             entityParameterName,
-                                             true,
-                                             false,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             serviceSupportedZones,
-                                             effectiveTime,
-                                             methodName);
+                        validateAnchorForEntity(userId,
+                                                resultTypeName,
+                                                entity,
+                                                entityParameterName,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                serviceSupportedZones,
+                                                effectiveTime,
+                                                methodName);
 
                         /*
                          * Valid entity to return since no exception occurred.
@@ -9921,17 +10353,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  guid,
-                                  guidParameterName,
-                                  entityTypeName,
-                                  true,
-                                  true,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     guid,
+                                     guidParameterName,
+                                     entityTypeName,
+                                     true,
+                                     true,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntityDetailHistory(userId,
                                                                                guid,
@@ -10367,8 +10799,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String entityGUIDParameterName = "foundEntity.GUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
@@ -10444,8 +10874,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         return this.getValidatedEntities(userId,
                                          retrievedEntities,
-                                         entityGUIDParameterName,
-                                         typeName,
                                          null,
                                          forLineage,
                                          forDuplicateProcessing,
@@ -10845,77 +11273,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     effectiveTime,
                                                                                     methodName);
 
-        /*
-         * The loop is necessary because some entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<EntityDetail>  results = new ArrayList<>();
-        String entityParameterName = "Entity of type" + resultTypeName;
-
-        if (retrievedEntities != null)
-        {
-            for (EntityDetail entity : retrievedEntities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        validateAnchorEntity(userId,
-                                             entity.getGUID(),
-                                             resultTypeName,
-                                             entity,
-                                             entityParameterName,
-                                             false,
-                                             false,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             serviceSupportedZones,
-                                             effectiveTime,
-                                             methodName);
-
-                        boolean beanArchived = false;
-
-                        try
-                        {
-                            /*
-                             * The Memento classification means the entity is archived and should only be returned for lineage requests.
-                             * This method is not to be used for lineage requests.
-                             */
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
-                            {
-                                beanArchived = true;
-                            }
-                        }
-                        catch (ClassificationErrorException error)
-                        {
-                            /*
-                             * Since this classification is not supported, it can not be attached to the entity.
-                             */
-                        }
-
-                        if (! beanArchived)
-                        {
-                            results.add(entity);
-                        }
-                    }
-                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                    {
-                        /*
-                         * Skipping entity
-                         */
-                    }
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return this.validateAnchorForEntities(userId,
+                                              retrievedEntities,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              serviceSupportedZones,
+                                              effectiveTime,
+                                              methodName);
     }
 
 
@@ -11116,8 +11480,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     {
         final String propertyParameterName = "propertyName";
 
-        String entityParameterName = "Entity from search of value " + value;
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyParameterName, methodName);
 
@@ -11149,8 +11511,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         return getValidatedEntities(userId,
                                     retrievedEntities,
-                                    entityParameterName,
-                                    resultTypeName,
                                     omittedClassificationName,
                                     forLineage,
                                     forDuplicateProcessing,
@@ -11352,12 +11712,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                     methodName);
         }
 
-        String entityParameterName = "Entity from search of value " + value;
-
         return getValidatedEntities(userId,
                                     retrievedEntities,
-                                    entityParameterName,
-                                    resultTypeName,
                                     omittedClassificationName,
                                     forLineage,
                                     forDuplicateProcessing,
@@ -11372,8 +11728,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      *
      * @param userId the calling user
      * @param retrievedEntities entities from the repository
-     * @param entityParameterName parameter description
-     * @param resultTypeName unique value of the type that the results should match with
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage                   boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
@@ -11388,8 +11742,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      */
     public List<EntityDetail> getValidatedEntities(String             userId,
                                                    List<EntityDetail> retrievedEntities,
-                                                   String             entityParameterName,
-                                                   String             resultTypeName,
                                                    String             omittedClassificationName,
                                                    boolean            forLineage,
                                                    boolean            forDuplicateProcessing,
@@ -11399,80 +11751,39 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        if (retrievedEntities != null)
+        List<EntityDetail> validatedEntities = this.validateAnchorForEntities(userId,
+                                                                              retrievedEntities,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              serviceSupportedZones,
+                                                                              effectiveTime,
+                                                                              methodName);
+        if (validatedEntities != null)
         {
             /*
              * The loop is necessary because some entities returned may not be visible to the calling user.
              */
             List<EntityDetail> results = new ArrayList<>();
-            List<String>       validatedAnchorEntities = new ArrayList<>();
 
-            for (EntityDetail entity : retrievedEntities)
+            for (EntityDetail entity : validatedEntities)
             {
                 if (entity != null)
                 {
                     boolean beanValid = true;
 
-                    try
+                    if (omittedClassificationName != null)
                     {
-                        if (! forLineage)
+                        try
                         {
-                            try
+                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
                             {
-                                if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
-                                {
-                                    beanValid = false;
-                                }
-                            }
-                            catch (ClassificationErrorException error)
-                            {
-                                // ok - not archived
+                                beanValid = false;
                             }
                         }
-                        if (omittedClassificationName != null)
+                        catch (ClassificationErrorException error)
                         {
-                            try
-                            {
-                                if (repositoryHelper.getClassificationFromEntity(serviceName, entity, omittedClassificationName, methodName) != null)
-                                {
-                                    beanValid = false;
-                                }
-                            }
-                            catch (ClassificationErrorException error)
-                            {
-                                // ok - don't care
-                            }
+                            // ok - don't care
                         }
-
-                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorEntities.contains(anchorIdentifiers.anchorGUID)))
-                        {
-                            validateAnchorEntity(userId,
-                                                 entity.getGUID(),
-                                                 resultTypeName,
-                                                 entity,
-                                                 entityParameterName,
-                                                 false,
-                                                 false,
-                                                 forLineage,
-                                                 forDuplicateProcessing,
-                                                 serviceSupportedZones,
-                                                 effectiveTime,
-                                                 methodName);
-
-                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                            {
-                                validatedAnchorEntities.add(anchorIdentifiers.anchorGUID);
-                            }
-                        }
-                    }
-                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                    {
-                        /*
-                         * Skipping entity
-                         */
-                        beanValid = false;
                     }
 
                     if (beanValid)
@@ -11586,6 +11897,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         return null;
     }
+
 
     /**
      * Return the entity that matches the requested value.
@@ -11809,81 +12121,37 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      * @param retrievedEntities entities retrieved from the repository
      * @return list of beans
+     * @throws PropertyServerException problem in converter
      */
     public List<B> getValidatedBeans(String             userId,
                                      Date               effectiveTime,
                                      boolean            forLineage,
                                      boolean            forDuplicateProcessing,
+                                     List<String>       serviceSupportedZones,
                                      String             methodName,
-                                     List<EntityDetail> retrievedEntities)
+                                     List<EntityDetail> retrievedEntities) throws PropertyServerException
     {
-        final String entityGUIDParameterName = "entity.getGUID";
+        List<EntityDetail> validatedEntities = this.validateAnchorForEntities(userId,
+                                                                              retrievedEntities,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              serviceSupportedZones,
+                                                                              effectiveTime,
+                                                                              methodName);
 
-        if (retrievedEntities != null)
+        if (validatedEntities != null)
         {
             List<B> results = new ArrayList<>();
 
-            for (EntityDetail entity : retrievedEntities)
+            for (EntityDetail entity : validatedEntities)
             {
                 if (entity != null)
                 {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  entity.getType().getTypeDefName(),
-                                                  entity,
-                                                  entityGUIDParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-                        if (forLineage)
-                        {
-                            results.add(converter.getNewBean(beanClass, entity, methodName));
-                        }
-                        else
-                        {
-                            boolean beanArchived = false;
-
-                            try
-                            {
-                                /*
-                                 * The Memento classification means the entity is archived and should only be returned for lineage requests.
-                                 * This method is not to be used for lineage requests.
-                                 */
-                                if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
-                                {
-                                    beanArchived = true;
-                                }
-                            }
-                            catch (ClassificationErrorException error)
-                            {
-                                /*
-                                 * Since this classification is not supported, it can not be attached to the entity.
-                                 */
-                            }
-
-                            /*
-                             * Valid entity to return since no exception occurred.
-                             */
-                            if (! beanArchived)
-                            {
-                                B bean = converter.getNewBean(beanClass, entity, methodName);
-                                results.add(bean);
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // ignore entity
-                    }
+                    results.add(converter.getNewBean(beanClass, entity, methodName));
                 }
             }
 
@@ -12346,18 +12614,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             startingGUID = startingElementEntity.getGUID();
         }
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                  attachingGUID,
@@ -12375,18 +12642,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             attachingGUID = attachingElementEntity.getGUID();
         }
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -12748,18 +13014,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             startingGUID = startingElementEntity.getGUID();
         }
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                  attachingGUID,
@@ -12777,18 +13042,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             attachingGUID = attachingElementEntity.getGUID();
         }
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         Relationship newRelationship = repositoryHandler.createRelationship(userId,
                                                                             attachmentTypeGUID,
@@ -12969,18 +13233,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -12998,18 +13261,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                  effectiveTime,
                                                                                  methodName);
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -13303,18 +13565,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                    effectiveTime,
                                                                                    methodName);
 
-            EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                 startingGUID,
-                                                                                 startingElementTypeName,
-                                                                                 startingElementEntity,
-                                                                                 startingGUIDParameterName,
-                                                                                 true,
-                                                                                 false,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 suppliedSupportedZones,
-                                                                                 effectiveTime,
-                                                                                 methodName);
+            EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                    startingElementTypeName,
+                                                                                    startingElementEntity,
+                                                                                    startingGUIDParameterName,
+                                                                                    true,
+                                                                                    false,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    suppliedSupportedZones,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
             String startingElementAnchorGUID = startingGUID;
 
@@ -13332,18 +13593,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                      effectiveTime,
                                                                                      methodName);
 
-            EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                  attachingGUID,
-                                                                                  attachingElementTypeName,
-                                                                                  attachingElementEntity,
-                                                                                  attachingGUIDParameterName,
-                                                                                  true,
-                                                                                  false,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  suppliedSupportedZones,
-                                                                                  effectiveTime,
-                                                                                  methodName);
+            EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                     attachingElementTypeName,
+                                                                                     attachingElementEntity,
+                                                                                     attachingGUIDParameterName,
+                                                                                     true,
+                                                                                     false,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     suppliedSupportedZones,
+                                                                                     effectiveTime,
+                                                                                     methodName);
 
             /*
              * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -13614,18 +13874,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                 effectiveTime,
                                                                                 methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -13643,18 +13902,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     effectiveTime,
                                                                                     methodName);
 
-        EntityDetail newAttachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                 newAttachingGUID,
-                                                                                 newAttachingElementTypeName,
-                                                                                 newAttachingElementEntity,
-                                                                                 newAttachingGUIDParameterName,
-                                                                                 true,
-                                                                                 false,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 suppliedSupportedZones,
-                                                                                 effectiveTime,
-                                                                                 methodName);
+        EntityDetail newAttachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                    newAttachingElementTypeName,
+                                                                                    newAttachingElementEntity,
+                                                                                    newAttachingGUIDParameterName,
+                                                                                    true,
+                                                                                    false,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    suppliedSupportedZones,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -14178,18 +14436,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -14211,18 +14468,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail attachedElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             attachedGUID,
-                                                                             attachedElementTypeName,
-                                                                             attachedElementEntity,
-                                                                             attachedGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail attachedElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                attachedElementTypeName,
+                                                                                attachedElementEntity,
+                                                                                attachedGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         if ((!onlyCreatorPermitted) || (userId.equals(relationship.getCreatedBy())))
         {
@@ -14260,7 +14516,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                  attachedGUID);
 
 
-        if (startingElementAnchorEntity != null)
+        if ((startingElementAnchorEntity != null) && (! startingElementEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
                                          OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
@@ -14308,7 +14564,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
         }
 
-        if (attachedElementAnchorEntity != null)
+        if ((attachedElementAnchorEntity != null) && (! attachedElementAnchorEntity.getGUID().equals(attachedElementEntity.getGUID())))
         {
             /*
              * Only need to add latestChange if the anchor of the attached element is different

@@ -78,7 +78,7 @@ public class ApacheKafkaAdminProvider extends ConnectorProviderBase
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

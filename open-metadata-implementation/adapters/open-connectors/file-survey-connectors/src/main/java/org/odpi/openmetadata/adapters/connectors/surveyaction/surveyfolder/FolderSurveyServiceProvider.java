@@ -89,7 +89,7 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorTypeName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

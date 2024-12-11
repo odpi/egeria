@@ -445,7 +445,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     PropertyServerException
     {
         final String typeParameterName = "typeName";
-        final String entityGUIDParameterName = "foundEntity.GUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
@@ -470,60 +469,13 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                           effectiveTime,
                                                                           methodName);
 
-
-        if (entities != null)
-        {
-            List<B> results = new ArrayList<>();
-            List<String>       validatedAnchorGUIDs = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
-                        {
-                            this.validateAnchorEntity(userId,
-                                                      entity.getGUID(),
-                                                      entity.getType().getTypeDefName(),
-                                                      entity,
-                                                      entityGUIDParameterName,
-                                                      false,
-                                                      false,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      serviceSupportedZones,
-                                                      effectiveTime,
-                                                      methodName);
-
-                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                            {
-                                validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
-                            }
-                        }
-
-                        /*
-                         * Entity is added if validate anchor entity does not throw an exception.
-                         */
-                        results.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException notVisible)
-                    {
-                        log.debug("Skip entity " + entity.getGUID());
-                    }
-                }
-            }
-
-            if (! results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       serviceSupportedZones,
+                                       methodName,
+                                       entities);
     }
 
 

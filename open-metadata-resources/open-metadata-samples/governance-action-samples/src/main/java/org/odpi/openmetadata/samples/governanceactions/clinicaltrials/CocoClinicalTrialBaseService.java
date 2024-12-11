@@ -62,7 +62,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                                                                                                         0,
                                                                                                                         0);
-        if (contactDetails != null)
+        if ((contactDetails != null) && (contactDetails.getElementList() != null))
         {
             for (RelatedMetadataElement contactDetail : contactDetails.getElementList())
             {
@@ -105,7 +105,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                                                     OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                                                                                                     projectStartFrom,
                                                                                                                     governanceContext.getMaxPageSize());
-        while (projects != null)
+        while ((projects != null) && (projects.getElementList() != null))
         {
             for (RelatedMetadataElement project : projects.getElementList())
             {

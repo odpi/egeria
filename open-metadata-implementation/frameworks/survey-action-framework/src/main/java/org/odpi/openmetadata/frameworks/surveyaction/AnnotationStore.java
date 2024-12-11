@@ -1037,7 +1037,7 @@ public class AnnotationStore
                                                                                                        InvalidParameterException,
                                                                                                        UserNotAuthorizedException
     {
-        if (openMetadataElements != null)
+        if ((openMetadataElements != null) && (openMetadataElements.getElementList() != null))
         {
             List<Annotation> annotations = new ArrayList<>();
 
@@ -1084,7 +1084,7 @@ public class AnnotationStore
                                                                                                       this.getEffectiveTime(),
                                                                                                       0,
                                                                                                       0);
-            if (relationships != null)
+            if ((relationships != null) && (relationships.getElementList() != null))
             {
                 return converter.getAnnotationBean(Annotation.class,
                                                    annotationElement,

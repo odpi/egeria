@@ -360,7 +360,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                                                                                                      referenceValueAssignmentRelationshipName,
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
@@ -436,7 +436,7 @@ public class AtlasRelatedElementsIntegrationModule extends AtlasIntegrationModul
                                                                                                                      null,
                                                                                                                      startFrom,
                                                                                                                      myContext.getMaxPageSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
                     results.addAll(relatedMetadataElements.getElementList());
 

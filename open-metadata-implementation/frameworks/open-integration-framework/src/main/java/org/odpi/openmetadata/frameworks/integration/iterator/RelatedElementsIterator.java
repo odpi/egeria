@@ -97,7 +97,7 @@ public class RelatedElementsIterator extends IntegrationIterator
                                                                                                                   parentRelationshipTypeName,
                                                                                                                   startFrom,
                                                                                                                   maxPageSize);
-            if (relatedMetadataElementList != null)
+            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
                 elementCache = this.getElementCache(relatedMetadataElementList.getElementList());
             }

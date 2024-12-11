@@ -44,6 +44,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     private static final String ASSET_ACTIVITY_UPDATE            = "OPEN-METADATA-SECURITY-0054";
     private static final String ASSET_ACTIVITY_DELETE            = "OPEN-METADATA-SECURITY-0055";
     private static final String ASSET_ACTIVITY_SEARCH            = "OPEN-METADATA-SECURITY-0056";
+    private static final String ASSET_ACTIVITY_SEARCH_ATTACHMENT = "OPEN-METADATA-SECURITY-0057";
     private static final String USER_REQUEST_ACTIVITY            = "OMAG-MULTI-TENANT-0003";
 
 
@@ -254,6 +255,15 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                         logRecord.getMessageParameters()[3],
                                                                         logRecord.getMessageParameters()[4],
                                                                         logRecord.getMessageParameters()[0]);
+                        case ASSET_ACTIVITY_SEARCH_ATTACHMENT -> syncAssetActivity(logRecord.getThreadId(),
+                                                                                   logRecord.getOriginatorProperties().get("serverName"),
+                                                                                   logRecord.getTimeStamp(),
+                                                                                   "Asset Search Attachment",
+                                                                                   logRecord.getMessageParameters()[2],
+                                                                                   logRecord.getMessageParameters()[1],
+                                                                                   logRecord.getMessageParameters()[3],
+                                                                                   logRecord.getMessageParameters()[4],
+                                                                                   logRecord.getMessageParameters()[0]);
                         case USER_REQUEST_ACTIVITY -> syncAPICall(logRecord.getThreadId(),
                                                                   logRecord.getMessageParameters()[3],
                                                                   logRecord.getMessageParameters()[0],

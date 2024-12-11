@@ -272,7 +272,7 @@ public class StewardshipAction implements SurveyReportInterface,
                                                                                                        startFrom,
                                                                                                        pageSize);
 
-        if (reportElements != null)
+        if ((reportElements != null) && (reportElements.getElementList() != null))
         {
             List<SurveyReport> surveyReports = new ArrayList<>();
 

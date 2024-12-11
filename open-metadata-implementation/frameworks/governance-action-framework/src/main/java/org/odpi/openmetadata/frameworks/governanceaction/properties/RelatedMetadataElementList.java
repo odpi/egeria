@@ -57,18 +57,7 @@ public class RelatedMetadataElementList
      */
     public List<RelatedMetadataElement> getElementList()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementList);
-        }
+        return elementList;
     }
 
 

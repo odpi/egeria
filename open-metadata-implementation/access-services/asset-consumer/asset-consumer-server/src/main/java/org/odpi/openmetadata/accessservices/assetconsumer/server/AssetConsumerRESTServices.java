@@ -2159,19 +2159,18 @@ public class AssetConsumerRESTServices
                     }
                     else
                     {
-                        EntityDetail anchorEntity = handler.validateAnchorEntity(userId,
-                                                                                 entity.getGUID(),
-                                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                 entity,
-                                                                                 entityGUIDParameterName,
-                                                                                 false,
-                                                                                 false,
-                                                                                 false,
-                                                                                 false,
-                                                                                 handler.getSupportedZones(),
-                                                                                 new Date(),
-                                                                                 methodName);
-                        if (anchorEntity != null)
+                        EntityDetail anchorEntity = handler.validateAnchorForEntity(userId,
+                                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                    entity,
+                                                                                    entityGUIDParameterName,
+                                                                                    false,
+                                                                                    false,
+                                                                                    false,
+                                                                                    false,
+                                                                                    handler.getSupportedZones(),
+                                                                                    new Date(),
+                                                                                    methodName);
+                        if ((anchorEntity != null) && (repositoryHelper.isTypeOf(serverName, anchorEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName)))
                         {
                             if (! guids.contains(anchorEntity.getGUID()))
                             {

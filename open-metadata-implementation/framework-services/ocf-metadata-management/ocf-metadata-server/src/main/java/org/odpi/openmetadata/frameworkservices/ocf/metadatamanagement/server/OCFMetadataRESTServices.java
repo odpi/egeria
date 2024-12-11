@@ -1891,18 +1891,17 @@ public class OCFMetadataRESTServices
                 }
                 else
                 {
-                    EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
-                                                                                          guid,
-                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                          entity,
-                                                                                          OpenMetadataProperty.GUID.name,
-                                                                                          true,
-                                                                                          false,
-                                                                                          false,
-                                                                                          false,
-                                                                                          null,
-                                                                                          effectiveTime,
-                                                                                          methodName);
+                    EntityDetail anchorEntity = referenceableHandler.validateAnchorForEntity(userId,
+                                                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                             entity,
+                                                                                             OpenMetadataProperty.GUID.name,
+                                                                                             true,
+                                                                                             false,
+                                                                                             false,
+                                                                                             false,
+                                                                                             null,
+                                                                                             effectiveTime,
+                                                                                             methodName);
                     if (anchorEntity != null && repositoryHandler.isEntityATypeOf(userId,
                                                                                   anchorEntity.getGUID(),
                                                                                   OpenMetadataProperty.GUID.name,

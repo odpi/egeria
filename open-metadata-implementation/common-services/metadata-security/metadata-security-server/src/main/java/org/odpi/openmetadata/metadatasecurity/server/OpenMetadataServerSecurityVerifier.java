@@ -1362,6 +1362,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName name of parameter supplying the assetGUID
      * @param assetEntity entity storing the root of the  asset
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
      * @param isFeedback       is this request related to a feedback element (comment, like, rating) or an attachment
      * @param isUpdate         is this an update request?
      * @param suppliedSupportedZones list of supported zones from the caller.
@@ -1376,6 +1377,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                String               assetGUID,
                                                String               assetGUIDParameterName,
                                                EntityDetail         assetEntity,
+                                               boolean              isExplicitGetRequest,
                                                boolean              isFeedback,
                                                boolean              isUpdate,
                                                List<String>         suppliedSupportedZones,
@@ -1445,7 +1447,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                                                                             serviceName));
                 }
             }
-            else
+            else if (isExplicitGetRequest)
             {
                 auditLog.logMessage(assetActionDescription,
                                     OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_READ_ATTACHMENT.getMessageDefinition(userId,
@@ -1453,6 +1455,15 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                                                                                       assetGUID,
                                                                                                                       methodName,
                                                                                                                       serviceName));
+            }
+            else
+            {
+                auditLog.logMessage(assetActionDescription,
+                                    OpenMetadataSecurityAuditCode.ASSET_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition(userId,
+                                                                                                                        assetEntity.getType().getTypeDefName(),
+                                                                                                                        assetGUID,
+                                                                                                                        methodName,
+                                                                                                                        serviceName));
             }
         }
     }

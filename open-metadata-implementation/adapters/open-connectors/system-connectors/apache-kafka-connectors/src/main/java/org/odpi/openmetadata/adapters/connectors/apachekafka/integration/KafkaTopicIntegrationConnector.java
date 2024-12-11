@@ -289,7 +289,7 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
                                                                                                 0,
                                                                                                 0);
 
-        if (capabilities != null)
+        if ((capabilities != null) && (capabilities.getElementList() != null))
         {
             for (RelatedMetadataElement capability : capabilities.getElementList())
             {

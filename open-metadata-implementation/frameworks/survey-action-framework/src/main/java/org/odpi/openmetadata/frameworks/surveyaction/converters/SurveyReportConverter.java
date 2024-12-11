@@ -76,7 +76,7 @@ public class SurveyReportConverter<B> extends OpenMetadataConverterBase<B>
 
             surveyReport.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
 
-            if (relationships != null)
+            if ((relationships != null) && (relationships.getElementList() != null))
             {
                 for (RelatedMetadataElement relationship : relationships.getElementList())
                 {

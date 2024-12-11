@@ -849,7 +849,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        if (typeName == null)
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -1074,7 +1077,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                      0,
                                                                                      0);
 
-        if ((relationships != null) && (!relationships.getElementList().isEmpty()))
+        if ((relationships != null) && (relationships.getElementList() != null) && (!relationships.getElementList().isEmpty()))
         {
             if (relationships.getElementList().size() == 1)
             {
@@ -5270,7 +5273,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                        0,
                                                                                        0);
 
-        if (refDataElements != null)
+        if ((refDataElements != null) && (refDataElements.getElementList() != null))
         {
             for (RelatedMetadataElement refDataElement : refDataElements.getElementList())
             {
@@ -5881,7 +5884,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                       new Date(),
                                                                                       0,
                                                                                       0);
-        if (propertyFacets != null)
+        if ((propertyFacets != null) && (propertyFacets.getElementList() != null))
         {
             Map<String, Map<String, String>> vendorProperties = new HashMap<>();
 

@@ -238,7 +238,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                                                                                    0,
                                                                                    0);
 
-        if ((lineageLinks != null) && (! lineageLinks.getElementList().isEmpty()))
+        if ((lineageLinks != null) && (lineageLinks.getElementList() != null) && (! lineageLinks.getElementList().isEmpty()))
         {
             /*
              * Explore each branch in the lineage map.

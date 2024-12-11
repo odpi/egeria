@@ -149,7 +149,7 @@ public abstract class OpenMetadataConverterBase<B>
     {
         final String thisMethodName = "getNewComplexBean";
 
-        if (relationships != null)
+        if ((relationships != null) && (relationships.getElementList() != null))
         {
             return getNewComplexBean(beanClass, primaryElement, relationships.getElementList(), methodName);
         }

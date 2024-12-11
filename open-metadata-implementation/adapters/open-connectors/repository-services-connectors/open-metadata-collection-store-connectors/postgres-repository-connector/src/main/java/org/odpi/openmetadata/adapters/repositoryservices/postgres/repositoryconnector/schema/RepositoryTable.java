@@ -23,8 +23,7 @@ public enum RepositoryTable implements PostgreSQLTable
                new RepositoryColumn[]{
                        RepositoryColumn.SERVER_NAME,
                        RepositoryColumn.LOCAL_METADATA_COLLECTION_GUID,
-                       RepositoryColumn.SCHEMA_VERSION},
-               null
+                       RepositoryColumn.SCHEMA_VERSION}
     ),
 
 
@@ -58,8 +57,7 @@ public enum RepositoryTable implements PostgreSQLTable
                    RepositoryColumn.STATUS_ON_DELETE,
                    RepositoryColumn.INSTANCE_URL,
                    RepositoryColumn.INSTANCE_LICENCE,
-                   RepositoryColumn.REIDENTIFIED_FROM_GUID},
-           null
+                   RepositoryColumn.REIDENTIFIED_FROM_GUID}
     ),
 
     /**
@@ -93,10 +91,7 @@ public enum RepositoryTable implements PostgreSQLTable
                          RepositoryColumn.STATUS_ON_DELETE,
                          RepositoryColumn.INSTANCE_URL,
                          RepositoryColumn.INSTANCE_LICENCE,
-                         RepositoryColumn.REIDENTIFIED_FROM_GUID},
-                 new String[]{
-                         "valid_end_1_guid",
-                         "valid_end_2_guid"}
+                         RepositoryColumn.REIDENTIFIED_FROM_GUID}
     ),
 
 
@@ -124,10 +119,7 @@ public enum RepositoryTable implements PostgreSQLTable
                            RepositoryColumn.MAINTAINED_BY,
                            RepositoryColumn.CREATE_TIME,
                            RepositoryColumn.UPDATE_TIME,
-                           RepositoryColumn.STATUS_ON_DELETE},
-                   new String[]{
-                           "valid_entity_guid"
-                   }),
+                           RepositoryColumn.STATUS_ON_DELETE}),
 
     /**
      * Attributes for an entity, or for entity properties that are collections.
@@ -144,9 +136,7 @@ public enum RepositoryTable implements PostgreSQLTable
                                    RepositoryColumn.PROPERTY_CATEGORY,
                                    RepositoryColumn.IS_UNIQUE_ATTRIBUTE,
                                    RepositoryColumn.ATTRIBUTE_TYPE_GUID,
-                                   RepositoryColumn.ATTRIBUTE_TYPE_NAME},
-                           new String[]{
-                                   "valid_entity_guid"}
+                                   RepositoryColumn.ATTRIBUTE_TYPE_NAME}
     ),
 
     /**
@@ -165,10 +155,7 @@ public enum RepositoryTable implements PostgreSQLTable
                                            RepositoryColumn.PROPERTY_CATEGORY,
                                            RepositoryColumn.IS_UNIQUE_ATTRIBUTE,
                                            RepositoryColumn.ATTRIBUTE_TYPE_GUID,
-                                           RepositoryColumn.ATTRIBUTE_TYPE_NAME},
-                                   new String[]{
-                                           "valid_entity_guid",
-                                           "valid_classification_name"}
+                                           RepositoryColumn.ATTRIBUTE_TYPE_NAME}
     ),
 
     /**
@@ -186,9 +173,7 @@ public enum RepositoryTable implements PostgreSQLTable
                                          RepositoryColumn.PROPERTY_CATEGORY,
                                          RepositoryColumn.IS_UNIQUE_ATTRIBUTE,
                                          RepositoryColumn.ATTRIBUTE_TYPE_GUID,
-                                         RepositoryColumn.ATTRIBUTE_TYPE_NAME},
-                                 new String[]{
-                                         "valid_relationship_guid"}
+                                         RepositoryColumn.ATTRIBUTE_TYPE_NAME}
     ),
 
     ;
@@ -197,7 +182,6 @@ public enum RepositoryTable implements PostgreSQLTable
     private final String                 tableDescription;
     private final RepositoryColumn[]     primaryKeys;
     private final RepositoryColumn[]     dataColumns;
-    private final String[]               foreignKeys;
 
 
     /**
@@ -207,19 +191,16 @@ public enum RepositoryTable implements PostgreSQLTable
      * @param tableDescription description of the table
      * @param primaryKeys list of primary keys
      * @param dataColumns list of additional columns
-     * @param foreignKeys list of foreign keys
      */
     RepositoryTable(String                 tableName,
                     String                 tableDescription,
                     RepositoryColumn[]     primaryKeys,
-                    RepositoryColumn[]     dataColumns,
-                    String[]               foreignKeys)
+                    RepositoryColumn[]     dataColumns)
     {
         this.tableName        = tableName;
         this.tableDescription = tableDescription;
         this.primaryKeys      = primaryKeys;
         this.dataColumns      = dataColumns;
-        this.foreignKeys      = foreignKeys;
     }
 
 
@@ -322,8 +303,31 @@ public enum RepositoryTable implements PostgreSQLTable
             }
         }
 
-
         return columnNameTypeMap;
+    }
+
+
+    public List<String> getQualifiedColumnNames()
+    {
+        List<String> columnNames = new ArrayList<>();
+
+        if (primaryKeys != null)
+        {
+            for (RepositoryColumn column: primaryKeys)
+            {
+                columnNames.add(column.getColumnName(tableName));
+            }
+        }
+
+        if (dataColumns != null)
+        {
+            for (RepositoryColumn column: dataColumns)
+            {
+                columnNames.add(column.getColumnName(tableName));
+            }
+        }
+
+        return columnNames;
     }
 
 
@@ -335,26 +339,6 @@ public enum RepositoryTable implements PostgreSQLTable
     @Override
     public List<PostgreSQLForeignKey> getForeignKeys()
     {
-        if (foreignKeys != null)
-        {
-            List<PostgreSQLForeignKey> foreignKeyEnums = new ArrayList<>();
-
-            for (String foreignKeyName : foreignKeys)
-            {
-                for (RepositoryForeignKey repositoryForeignKey : RepositoryForeignKey.values())
-                {
-                    if (foreignKeyName.equals(repositoryForeignKey.getConstraintName()))
-                    {
-                        foreignKeyEnums.add(repositoryForeignKey);
-                    }
-                }
-            }
-
-            // Todo - problem with foreign key associations in relationship because the entity guids are not
-            // Todo -  associated with a version
-            // Todo - return foreignKeyEnums;
-        }
-
         return null;
     }
 

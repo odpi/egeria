@@ -458,7 +458,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
                                                                                                                                                                 startFrom,
                                                                                                                                                                 integrationContext.getMaxPageSize());
 
-            while (relatedServers != null)
+            while ((relatedServers != null) && (relatedServers.getElementList() != null))
             {
                 for (RelatedMetadataElement relatedServer : relatedServers.getElementList())
                 {
