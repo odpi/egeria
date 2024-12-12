@@ -284,7 +284,7 @@ Content-Type: application/json
 ###
 # group: GlossaryTerms
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-specification?
+POST {{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?
     startFrom=0&pageSize=0&
     forLineage=false&
     forDuplicateProcessing=false&

@@ -2136,7 +2136,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-conditions?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -2218,7 +2218,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                       PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-conditions?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 

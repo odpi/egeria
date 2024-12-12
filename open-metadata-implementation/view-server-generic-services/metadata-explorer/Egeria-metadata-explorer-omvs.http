@@ -253,7 +253,7 @@ Content-Type: application/json
 
 
 ###
-# @name findMetadataElementsWithString
+# @name findMetadataElementsWithString (all glossary terms)
 # Retrieve the metadata elements that contain the requested string.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=20
 Authorization: Bearer {{token}}
@@ -261,7 +261,6 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "party",
   "typeName" : "GlossaryTerm",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
@@ -273,6 +272,23 @@ Content-Type: application/json
 
 ###
 # @name findMetadataElementsWithString
+# Retrieve the metadata elements that contain the requested string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=20
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "typeName" : "GlossaryTerm",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "limitResultsByStatus" : ["ACTIVE"],
+  "asOfTime" : "{{$isoTimestamp}}",
+  "sequencingOrder": "CREATION_DATE_RECENT",
+  "sequencingProperty": ""
+}
+
+###
+# @name findMetadataElementsWithString
 # Retrieve the metadata elements that contain the requested string in any attribute.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string
 Authorization: Bearer {{token}}
@@ -280,8 +296,8 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Egeria.*",
-  "typeName" : "ValidValueDefinition",
+  "searchString" : "Cancer",
+  "typeName" : "Location",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -387,7 +403,7 @@ Content-Type: application/json
 ###
 # @name findMetadataElements (nested condition)
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=100
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -416,7 +432,7 @@ Content-Type: application/json
                    "value": {
                       "class" : "PrimitiveTypePropertyValue",
                       "typeName" : "string",
-                      "primitiveValue" : "LAB"
+                      "primitiveValue" : "OFFICE"
                    }
                }],
                "matchCriteria": "ANY"
@@ -445,7 +461,7 @@ Content-Type: application/json
 ###
 # @name findMetadataElements anchored to the SoftwareServer entity for active-metadata-store
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -482,7 +498,7 @@ Content-Type: application/json
 ###
 # @name find GlossaryTerms for a glossary
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -517,7 +533,7 @@ Content-Type: application/json
 ###
 # @name find anchored Glossary elements (Glossary Terms, Glossary Categories, etc containing "shipping"
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -580,7 +596,7 @@ Content-Type: application/json
 ###
 # @name find CO2 Glossary terms
 # Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?startFrom=0&pageSize=50
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -591,12 +607,100 @@ Content-Type: application/json
     "class" : "SearchProperties",
     "conditions": [ {
       "property" : "abbreviation",
+      "operator": "EQ",
+      "value": {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveValue" : "CO2"
+      }}],
+    "matchCriteria": "ANY"
+  }
+}
+
+
+
+###
+# @name find Unity Catalog Technology Types
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "ValidValueDefinition",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "preferredValue",
       "operator": "LIKE",
       "value": {
         "class" : "PrimitiveTypePropertyValue",
         "typeName" : "string",
-        "primitiveValue" : "C"
+        "primitiveValue" : ".*Data File"
+      }},
+      {
+        "property" : "category",
+        "operator": "LIKE",
+        "value": {
+          "class" : "PrimitiveTypePropertyValue",
+          "typeName" : "string",
+          "primitiveValue" : ".*deployedImplementationType"
+        }},
+      {
+        "property" : "usage",
+        "operator": "EQ",
+        "value": {
+          "class" : "PrimitiveTypePropertyValue",
+          "typeName" : "string",
+          "primitiveValue" : "Used to control valid values in open metadata."
+        }}],
+    "matchCriteria": "ALL"
+  }
+}
+
+
+
+###
+# @name find  Glossary terms with abbreviations != CO2
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "GlossaryTerm",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "abbreviation",
+      "operator": "NEQ",
+      "value": {
+        "class" : "PrimitiveTypePropertyValue",
+        "typeName" : "string",
+        "primitiveValue" : "CO2"
       }}],
+    "matchCriteria": "ANY"
+  }
+}
+
+
+###
+# @name find  Glossary terms with abbreviations != CO2
+# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FindRequestBody",
+  "metadataElementTypeName": "GlossaryTerm",
+  "searchProperties": {
+    "class" : "SearchProperties",
+    "conditions": [ {
+      "property" : "abbreviation",
+      "operator": "NOT_NULL"}],
     "matchCriteria": "ANY"
   }
 }
@@ -606,7 +710,7 @@ Content-Type: application/json
 ###
 # @name findRelationshipsBetweenMetadataElements
 # Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/relationships/by-search-specification?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/relationships/by-search-conditions?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
