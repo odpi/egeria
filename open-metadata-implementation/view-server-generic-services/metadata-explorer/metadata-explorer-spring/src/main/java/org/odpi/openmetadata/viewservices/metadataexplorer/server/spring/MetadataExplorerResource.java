@@ -498,7 +498,7 @@ public class MetadataExplorerResource
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/metadata-elements/by-search-specification")
+    @PostMapping(path = "/metadata-elements/by-search-conditions")
 
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
@@ -538,7 +538,7 @@ public class MetadataExplorerResource
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/relationships/by-search-specification")
+    @PostMapping(path = "/relationships/by-search-conditions")
 
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",

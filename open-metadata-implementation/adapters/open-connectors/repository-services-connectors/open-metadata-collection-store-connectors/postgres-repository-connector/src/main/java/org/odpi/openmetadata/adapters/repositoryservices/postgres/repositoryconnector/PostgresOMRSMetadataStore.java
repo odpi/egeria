@@ -220,7 +220,10 @@ class PostgresOMRSMetadataStore
     {
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
-        QueryBuilder entityQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder entityQueryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                           RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                           repositoryHelper,
+                                                           repositoryName);
 
         entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName);
         entityQueryBuilder.setSearchString(searchCriteria);
@@ -233,7 +236,10 @@ class PostgresOMRSMetadataStore
 
         if ((limitResultsByClassification != null) && (! limitResultsByClassification.isEmpty()))
         {
-            classificationQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            classificationQueryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                          repositoryHelper,
+                                                          repositoryName);
 
             classificationQueryBuilder.setLimitResultsByClassification(limitResultsByClassification);
             classificationQueryBuilder.setAsOfTime(asOfTime);
@@ -287,13 +293,14 @@ class PostgresOMRSMetadataStore
     {
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
-        QueryBuilder entityQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder entityQueryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                           RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                           repositoryHelper,
+                                                           repositoryName);
 
         entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName);
         entityQueryBuilder.setMatchProperties(matchProperties,
-                                              matchCriteria,
-                                              RepositoryTable.ENTITY.getTableName(),
-                                              RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName());
+                                              matchCriteria);
         entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         entityQueryBuilder.setAsOfTime(asOfTime);
         entityQueryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
@@ -303,7 +310,10 @@ class PostgresOMRSMetadataStore
 
         if ((limitResultsByClassification != null) && (! limitResultsByClassification.isEmpty()))
         {
-            classificationQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            classificationQueryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                          repositoryHelper,
+                                                          repositoryName);
 
             classificationQueryBuilder.setLimitResultsByClassification(limitResultsByClassification);
             classificationQueryBuilder.setAsOfTime(asOfTime);
@@ -357,13 +367,14 @@ class PostgresOMRSMetadataStore
         final String entityTypeGUIDParameterName = "entityTypeGUID";
         final String entitySubtypeGUIDsParameterName = "entitySubtypeGUIDs";
 
-        QueryBuilder entityQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder entityQueryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                           RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                           repositoryHelper,
+                                                           repositoryName);
         QueryBuilder classificationQueryBuilder = null;
 
         entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName, entitySubtypeGUIDs, entitySubtypeGUIDsParameterName);
-        entityQueryBuilder.setSearchProperties(matchProperties,
-                                               RepositoryTable.ENTITY.getTableName(),
-                                               RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName());
+        entityQueryBuilder.setSearchProperties(matchProperties);
         entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         entityQueryBuilder.setAsOfTime(asOfTime);
         entityQueryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
@@ -371,7 +382,10 @@ class PostgresOMRSMetadataStore
 
         if (matchClassifications != null)
         {
-            classificationQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            classificationQueryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                          repositoryHelper,
+                                                          repositoryName);
 
             classificationQueryBuilder.setSearchClassifications(matchClassifications);
             classificationQueryBuilder.setAsOfTime(asOfTime);
@@ -426,8 +440,14 @@ class PostgresOMRSMetadataStore
     {
         final String entityTypeGUIDParameterName = "entityTypeGUID";
 
-        QueryBuilder entityQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
-        QueryBuilder classificationQueryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder entityQueryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                           RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                           repositoryHelper,
+                                                           repositoryName);
+        QueryBuilder classificationQueryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                   RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                   repositoryHelper,
+                                                                   repositoryName);
 
         entityQueryBuilder.setTypeGUID(entityTypeGUID, entityTypeGUIDParameterName);
         entityQueryBuilder.setLimitResultsByStatus(limitResultsByStatus);
@@ -436,10 +456,7 @@ class PostgresOMRSMetadataStore
         entityQueryBuilder.setPaging(fromEntityElement, pageSize);
 
         classificationQueryBuilder.setLimitResultsByClassification(Collections.singletonList(classificationName));
-        classificationQueryBuilder.setMatchProperties(matchClassificationProperties,
-                                                      matchCriteria,
-                                                      RepositoryTable.CLASSIFICATION.getTableName(),
-                                                      RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName());
+        classificationQueryBuilder.setMatchProperties(matchClassificationProperties, matchCriteria);
         classificationQueryBuilder.setAsOfTime(asOfTime);
 
         DatabaseStore  databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
@@ -567,7 +584,10 @@ class PostgresOMRSMetadataStore
     {
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
 
-        QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                     repositoryHelper,
+                                                     repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
@@ -654,12 +674,13 @@ class PostgresOMRSMetadataStore
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
         final String relationshipSubtypeGUIDsParameterName = "relationshipSubtypeGUIDs";
 
-        QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                     repositoryHelper,
+                                                     repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName, relationshipSubtypeGUIDs, relationshipSubtypeGUIDsParameterName);
-        queryBuilder.setSearchProperties(matchProperties,
-                                         RepositoryTable.RELATIONSHIP.getTableName(),
-                                         RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName());
+        queryBuilder.setSearchProperties(matchProperties);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         queryBuilder.setAsOfTime(asOfTime);
         queryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
@@ -711,13 +732,14 @@ class PostgresOMRSMetadataStore
     {
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
 
-        QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                     repositoryHelper,
+                                                     repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName);
         queryBuilder.setMatchProperties(matchProperties,
-                                        matchCriteria,
-                                        RepositoryTable.RELATIONSHIP.getTableName(),
-                                        RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName());
+                                        matchCriteria);
         queryBuilder.setLimitResultsByStatus(limitResultsByStatus);
         queryBuilder.setAsOfTime(asOfTime);
         queryBuilder.setSequencingOrder(sequencingOrder, sequencingProperty);
@@ -768,7 +790,10 @@ class PostgresOMRSMetadataStore
     {
         final String relationshipTypeGUIDParameterName = "relationshipTypeGUID";
 
-        QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+        QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.RELATIONSHIP.getTableName(),
+                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                                                     repositoryHelper,
+                                                     repositoryName);
 
         queryBuilder.setTypeGUID(relationshipTypeGUID, relationshipTypeGUIDParameterName);
         queryBuilder.setSearchString(searchCriteria);

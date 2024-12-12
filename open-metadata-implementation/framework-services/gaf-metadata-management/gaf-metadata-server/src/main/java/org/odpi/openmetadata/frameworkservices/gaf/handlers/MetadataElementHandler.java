@@ -369,7 +369,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        if (typeName == null)
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
+        else if (searchString == null)
+        {
+            searchString = ".*";
+        }
 
         String searchTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 

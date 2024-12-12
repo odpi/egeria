@@ -391,7 +391,7 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-specification?
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?
     startFrom=0&
     pageSize=0&
     forLineage=false&
