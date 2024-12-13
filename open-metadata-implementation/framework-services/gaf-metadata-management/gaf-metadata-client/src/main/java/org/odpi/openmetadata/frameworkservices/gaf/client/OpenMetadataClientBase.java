@@ -5297,7 +5297,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
                         additionalProperties.put(propertyType + "Name",
                                                  propertyHelper.getStringProperty(serviceURLMarker,
-                                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                                   refDataElement.getElement().getElementProperties(),
                                                                                   methodName));
 

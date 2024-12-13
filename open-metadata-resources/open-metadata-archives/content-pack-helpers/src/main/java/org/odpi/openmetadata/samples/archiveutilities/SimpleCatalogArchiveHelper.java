@@ -4830,7 +4830,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @param format format of the file system
      * @param encryption type of encryption
-=     * @param methodName calling method
+     * @param methodName calling method
      * @return classification object
      */
     public Classification getFileSystemClassification(String              format,
@@ -6242,13 +6242,13 @@ public class SimpleCatalogArchiveHelper
             InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CATEGORY_PROPERTY_NAME, category, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SCOPE_PROPERTY_NAME, scope, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME, preferredValue, methodName);
-            properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME, isDeprecated, methodName);
-            properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME, isCaseSensitive, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PREFERRED_VALUE.name, preferredValue, methodName);
+            properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IS_DEPRECATED.name, isDeprecated, methodName);
+            properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IS_CASE_SENSITIVE.name, isCaseSensitive, methodName);
             properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
             List<Classification> entityClassifications = new ArrayList<>();

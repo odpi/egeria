@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-
+import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 
 
 /**
@@ -276,6 +276,34 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getOpenMetadataStoreClient();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public TechnologyTypeHandler getTechnologyTypeHandler(String userId,
+                                                          String serverName,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getTechnologyTypeHandler();
         }
 
         return null;

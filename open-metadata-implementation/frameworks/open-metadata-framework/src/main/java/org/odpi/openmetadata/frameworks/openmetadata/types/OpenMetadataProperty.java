@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 
 /**
  * Provides the definition for all properties defined in the open metadata types.
@@ -1630,7 +1631,24 @@ public enum OpenMetadataProperty
     /**
      * Breadth of responsibility or coverage.
      */
-    SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", null, "033b4f92-fa46-4151-a095-c0bae938de8f"),
+    SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE, "033b4f92-fa46-4151-a095-c0bae938de8f"),
+
+    /**
+     * The value to use.
+     */
+    PREFERRED_VALUE("preferredValue", DataType.STRING.getName(), "The value to use.", "Survey Resource", "b6258cbe-72f5-430b-ab62-6acb6c667e87"),
+
+    /**
+     * Descriptive name of the concept that this valid value applies to.
+     */
+    CATEGORY("category", DataType.STRING.getName(), "Descriptive name of the concept that this valid value applies to.", null, "385d7ca6-bcdd-43e4-925f-026a1043e37d"),
+
+    /**
+     * Is this valid value case-sensitive, or should the values match irrespective of case?
+     */
+    IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN.getName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174"),
+
+    IS_DEPRECATED("isDeprecated", DataType.BOOLEAN.getName(),"This element may still be used but is flagged that it will be removed at some point in the future.", "false", "bf8e38f8-d841-4c7b-990a-26d701713bd0"),
 
     /**
      * "Reason for the meeting and intended outcome.

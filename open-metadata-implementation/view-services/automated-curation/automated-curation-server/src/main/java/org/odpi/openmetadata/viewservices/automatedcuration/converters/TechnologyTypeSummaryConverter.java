@@ -2,20 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.automatedcuration.converters;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
 
 import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * ReferenceableConverter generates a ReferenceableElement
+ * TechnologyTypeSummaryConverter generates a TechnologyTypeSummary bean
  */
-public class ReferenceableConverter<B> extends AutomatedCurationConverterBase<B>
+public class TechnologyTypeSummaryConverter<B> extends AutomatedCurationConverterBase<B>
 {
     /**
      * Constructor
@@ -24,9 +25,9 @@ public class ReferenceableConverter<B> extends AutomatedCurationConverterBase<B>
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public ReferenceableConverter(PropertyHelper propertyHelper,
-                                  String         serviceName,
-                                  String         serverName)
+    public TechnologyTypeSummaryConverter(PropertyHelper propertyHelper,
+                                          String         serviceName,
+                                          String         serverName)
     {
         super(propertyHelper, serviceName, serverName);
     }
@@ -54,37 +55,22 @@ public class ReferenceableConverter<B> extends AutomatedCurationConverterBase<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ReferenceableElement bean)
+            if (returnBean instanceof TechnologyTypeSummary bean)
             {
-                ReferenceableProperties properties = new ReferenceableProperties();
-
-                bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
-
-                /*
-                 * The initial set of values come from the openMetadataElement.
-                 */
                 if (openMetadataElement != null)
                 {
                     ElementProperties elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
 
-                    properties.setQualifiedName(this.removeQualifiedName(elementProperties));
-                    properties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    properties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
-                    properties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
-
-                    /*
-                     * Any remaining properties are returned in the extended properties.  They are
-                     * assumed to be defined in a subtype.
-                     */
-                    properties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    properties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+                    bean.setTechnologyTypeGUID(openMetadataElement.getElementGUID());
+                    bean.setName(super.removeName(elementProperties));
+                    bean.setQualifiedName(this.removeQualifiedName(elementProperties));
+                    bean.setCategory(this.removeCategory(elementProperties));
+                    bean.setDescription(this.removeDescription(elementProperties));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
-
-                bean.setReferenceableProperties(properties);
             }
 
             return returnBean;

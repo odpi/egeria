@@ -3,8 +3,9 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.accessservices.assetowner.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.OpenGovernanceClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -14,31 +15,20 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Date;
 
 
 /**
@@ -54,9 +44,6 @@ public class AutomatedCurationRESTServices extends TokenController
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Default constructor
@@ -105,59 +92,31 @@ public class AutomatedCurationRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
-
-            Date effectiveTime = new Date();
-            String searchString = null;
+            TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                effectiveTime = requestBody.getEffectiveTime();
-
-                String searchValue = requestBody.getFilter();
-
-                if ((searchValue != null) && (!searchValue.isBlank()))
-                {
-                    if (startsWith)
-                    {
-                        searchValue = "(" + searchValue;
-                    }
-                    if (endsWith)
-                    {
-                        searchValue = searchValue + ")";
-                    }
-                }
-                searchString = instanceHandler.getSearchString(searchValue, false, false, ignoreCase);
-            }
-
-            List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                          searchString,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          effectiveTime);
-
-            if ((requestBody != null) && (requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()) && (validValues != null))
-            {
-                List<ValidValueElement> filteredValidValues = new ArrayList<>();
-                String filterString = instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase);
-
-                for (ValidValueElement validValue : validValues)
-                {
-                    if ((validValue != null) && (validValue.getValidValueProperties() != null) && (validValue.getValidValueProperties().getPreferredValue() != null))
-                    {
-                        if ((validValue.getValidValueProperties().getQualifiedName().startsWith("Egeria:ValidMetadataValue:")) &&
-                                (validValue.getValidValueProperties().getPreferredValue().matches(filterString)))
-                        {
-                            filteredValidValues.add(validValue);
-                        }
-                    }
-                }
-
-                response.setElements(this.getTechnologySummaries(filteredValidValues));
+                response.setElements(handler.findTechnologyTypes(userId,
+                                                                 instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 requestBody.getLimitResultsByStatus(),
+                                                                 requestBody.getAsOfTime(),
+                                                                 requestBody.getSequencingOrder(),
+                                                                 requestBody.getSequencingProperty()));
             }
             else
             {
-                response.setElements(this.getTechnologySummaries(validValues));
+                response.setElements(handler.findTechnologyTypes(userId,
+                                                                 instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 new Date(),
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_OLDEST,
+                                                                 null));
             }
         }
         catch (Exception error)
@@ -171,48 +130,10 @@ public class AutomatedCurationRESTServices extends TokenController
 
 
     /**
-     * Concert valid values in to technology types.
-     *
-     * @param validValues valid values retrieved from the open metadata ecosystem.
-     * @return list of technology type summaries
-     */
-    private List<TechnologyTypeSummary> getTechnologySummaries(List<ValidValueElement> validValues)
-    {
-        if (validValues != null)
-        {
-            List<TechnologyTypeSummary> technologySummaries = new ArrayList<>();
-
-            for (ValidValueElement validValueElement : validValues)
-            {
-                if ((validValueElement != null) && (validValueElement.getValidValueProperties().getQualifiedName().endsWith(")")))
-                {
-                    TechnologyTypeSummary technologyTypeSummary = new TechnologyTypeSummary();
-
-                    technologyTypeSummary.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
-                    technologyTypeSummary.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
-                    technologyTypeSummary.setName(validValueElement.getValidValueProperties().getPreferredValue());
-                    technologyTypeSummary.setDescription(validValueElement.getValidValueProperties().getDescription());
-                    technologyTypeSummary.setCategory(validValueElement.getValidValueProperties().getCategory());
-
-                    technologySummaries.add(technologyTypeSummary);
-                }
-            }
-
-            if (! technologySummaries.isEmpty())
-            {
-                return technologySummaries;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
      *
      * @param serverName name of the service to route the request to
-     * @param typeName does the value start with the supplied string?
+     * @param typeName the type name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody does the value start with the supplied string?
@@ -223,10 +144,10 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
 
-    public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String                   serverName,
-                                                                                   String                   typeName,
-                                                                                   int                      startFrom,
-                                                                                   int                      pageSize,
+    public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String             serverName,
+                                                                                   String             typeName,
+                                                                                   int                startFrom,
+                                                                                   int                pageSize,
                                                                                    ResultsRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
@@ -247,25 +168,31 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (typeName != null)
             {
-                ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+                TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
 
                 if (requestBody != null)
                 {
-                    List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  requestBody.getEffectiveTime());
-                    response.setElements(this.getTechnologySummaries(validValues));
+                    response.setElements(handler.getTechnologyTypesForOpenMetadataType(userId,
+                                                                                       typeName,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       requestBody.getLimitResultsByStatus(),
+                                                                                       requestBody.getAsOfTime(),
+                                                                                       requestBody.getSequencingOrder(),
+                                                                                       requestBody.getSequencingProperty()));
                 }
                 else
                 {
-                    List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  new Date());
-                    response.setElements(this.getTechnologySummaries(validValues));
+                    response.setElements(handler.getTechnologyTypesForOpenMetadataType(userId,
+                                                                                       typeName,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       new Date(),
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_OLDEST,
+                                                                                       null));
                 }
             }
             else
@@ -284,7 +211,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
 
     /**
-     * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+     * Retrieve the requested deployed implementation type metadata element.
      *
      * @param serverName name of the service to route the request to
      * @param requestBody string to find in the properties
@@ -317,170 +244,15 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getFilter() != null)
                 {
-                    ValidValuesAssetOwner    validValuesHandler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
-                    ExternalReferenceManager externalRefHandler = instanceHandler.getExternalReferenceManager(userId, serverName, methodName);
-                    OpenMetadataStoreClient  openHandler        = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
 
-                    List<ValidValueElement> validValues = validValuesHandler.findValidValues(userId,
-                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
-                                                                                             0,
-                                                                                             0,
-                                                                                             requestBody.getEffectiveTime());
-
-                    if (validValues != null)
-                    {
-                        TechnologyTypeReport report = new TechnologyTypeReport();
-
-                        for (ValidValueElement validValueElement : validValues)
-                        {
-                            if ((validValueElement != null) &&
-                                    (validValueElement.getValidValueProperties() != null) &&
-                                    (requestBody.getFilter().equals(validValueElement.getValidValueProperties().getPreferredValue())))
-                            {
-                                report.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
-                                report.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
-                                report.setName(validValueElement.getValidValueProperties().getPreferredValue());
-                                report.setDescription(validValueElement.getValidValueProperties().getDescription());
-                                report.setCategory(validValueElement.getValidValueProperties().getCategory());
-
-                                if (validValueElement.getSetGUID() != null)
-                                {
-                                    ValidValueElement superElement = validValuesHandler.getValidValueByGUID(userId, validValueElement.getSetGUID());
-
-                                    if (superElement != null)
-                                    {
-                                        report.setTechnologySuperType(superElement.getValidValueProperties().getPreferredValue());
-                                    }
-                                }
-
-                                List<ValidValueElement> subElements = validValuesHandler.getValidValueSetMembers(userId, validValueElement.getElementHeader().getGUID(), 0, 0);
-
-                                if (subElements != null)
-                                {
-                                    List<String> subElementNames = new ArrayList<>();
-
-                                    for (ValidValueElement subElement : subElements)
-                                    {
-                                        if (subElement != null)
-                                        {
-                                            subElementNames.add(subElement.getValidValueProperties().getPreferredValue());
-                                        }
-                                    }
-
-                                    report.setTechnologySubtypes(subElementNames);
-                                }
-
-                                List<RelatedElement> resourceList = externalRefHandler.getResourceList(userId,
-                                                                                                       validValueElement.getElementHeader().getGUID(),
-                                                                                                       0, 0);
-
-                                if (resourceList != null)
-                                {
-                                    List<ResourceDescription> resources = new ArrayList<>();
-
-                                    for (RelatedElement resource : resourceList)
-                                    {
-                                        if (resource != null)
-                                        {
-                                            if ((resource.getRelationshipProperties() != null) && (resource.getRelationshipProperties().getExtendedProperties() != null))
-                                            {
-                                                Map<String, Object> extendedProperties = resource.getRelationshipProperties().getExtendedProperties();
-
-                                                ResourceDescription resourceDescription = new ResourceDescription();
-
-                                                if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name) != null)
-                                                {
-                                                    resourceDescription.setResourceUse(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name).toString());
-                                                }
-                                                if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name) != null)
-                                                {
-                                                    resourceDescription.setResourceUseDescription(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name).toString());
-                                                }
-
-                                                resourceDescription.setRelatedElement(resource.getRelatedElement());
-                                                resourceDescription.setSpecification(openHandler.getSpecification(userId, resource.getRelatedElement().getGUID()));
-
-                                                resources.add(resourceDescription);
-                                            }
-                                        }
-                                    }
-
-                                    if (!resources.isEmpty())
-                                    {
-                                        report.setResourceList(resources);
-                                    }
-                                }
-
-                                List<RelatedElement> catalogTemplateList = externalRefHandler.getCatalogTemplateList(userId,
-                                                                                                                     validValueElement.getElementHeader().getGUID(),
-                                                                                                                     0, 0);
-
-                                if (catalogTemplateList != null)
-                                {
-                                    List<CatalogTemplate> catalogTemplates = new ArrayList<>();
-
-                                    for (RelatedElement templateElement : catalogTemplateList)
-                                    {
-                                        if (templateElement != null)
-                                        {
-                                            CatalogTemplate catalogTemplate = new CatalogTemplate();
-
-                                            catalogTemplate.setRelatedElement(templateElement.getRelatedElement());
-
-                                            List<ElementClassification> classifications = templateElement.getRelatedElement().getClassifications();
-
-                                            if (classifications != null)
-                                            {
-                                                for (ElementClassification classification : classifications)
-                                                {
-                                                    if (classification != null)
-                                                    {
-                                                        if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
-                                                        {
-                                                            if (classification.getClassificationProperties() != null)
-                                                            {
-                                                                if (classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name) != null)
-                                                                {
-                                                                    catalogTemplate.setName(classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name).toString());
-                                                                }
-                                                                else if (classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
-                                                                {
-                                                                    catalogTemplate.setDescription(classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name).toString());
-                                                                }
-                                                                else if (classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name) != null)
-                                                                {
-                                                                    catalogTemplate.setVersionIdentifier(classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name).toString());
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            catalogTemplate.setSpecification(openHandler.getSpecification(userId, templateElement.getRelatedElement().getGUID()));
-
-                                            catalogTemplates.add(catalogTemplate);
-                                        }
-                                    }
-
-                                    if (! catalogTemplates.isEmpty())
-                                    {
-                                        report.setCatalogTemplates(catalogTemplates);
-                                    }
-                                }
-
-                                List<ExternalReferenceElement> externalReferenceElements = externalRefHandler.retrieveAttachedExternalReferences(userId,
-                                                                                                                                                 validValueElement.getElementHeader().getGUID(),
-                                                                                                                                                 0, 0);
-
-                                report.setExternalReferences(externalReferenceElements);
-
-                                break;
-                            }
-                        }
-
-                        response.setElement(report);
-                    }
+                    response.setElement(handler.getTechnologyTypeDetail(userId,
+                                                                        requestBody.getFilter(),
+                                                                        requestBody.getEffectiveTime(),
+                                                                        requestBody.getLimitResultsByStatus(),
+                                                                        requestBody.getAsOfTime(),
+                                                                        requestBody.getSequencingOrder(),
+                                                                        requestBody.getSequencingProperty()));
                 }
                 else
                 {
@@ -509,7 +281,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @param serverName name of the service to route the request to
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
+     * @param getTemplates boolean indicating whether templates or non-template elements should be returned.
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -543,33 +315,18 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getFilter() != null)
                 {
-                    OpenMetadataStoreClient  openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                    TechnologyTypeHandler technologyTypeHandler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
 
-                    invalidParameterHandler.validateUserId(userId, methodName);
-                    invalidParameterHandler.validateName(requestBody.getFilter(), parameterName, methodName);
-                    invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-                    List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-
-                    List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                                      null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter(), PropertyComparisonOperator.LIKE),
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      requestBody.getEffectiveTime(),
-                                                                                                      startFrom,
-                                                                                                      pageSize);
-
-                    response.setElements(convertReferenceable(openMetadataElements,
-                                                              getTemplates,
-                                                              serverName,
-                                                              methodName));
+                    response.setElements(technologyTypeHandler.getTechnologyTypeElements(userId,
+                                                                                         requestBody.getFilter(),
+                                                                                         getTemplates,
+                                                                                         startFrom,
+                                                                                         pageSize,
+                                                                                         requestBody.getEffectiveTime(),
+                                                                                         requestBody.getLimitResultsByStatus(),
+                                                                                         requestBody.getAsOfTime(),
+                                                                                         requestBody.getSequencingOrder(),
+                                                                                         requestBody.getSequencingProperty()));
                 }
                 else
                 {
@@ -590,86 +347,6 @@ public class AutomatedCurationRESTServices extends TokenController
         return response;
     }
 
-
-    /**
-     * Determine whether the element is a template.
-     *
-     * @param openMetadataElement element header
-     * @return boolean flag
-     */
-    private boolean isTemplate(OpenMetadataElement openMetadataElement)
-    {
-        if (openMetadataElement.getClassifications() != null)
-        {
-            for (AttachedClassification classification : openMetadataElement.getClassifications())
-            {
-                if (classification != null)
-                {
-                    if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Convert open metadata objects from the OpenMetadataClient to local beans.
-     *
-     * @param openMetadataElements retrieved elements
-     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
-     * @param serverName name of the server
-     * @param methodName calling method
-     *
-     * @return list of validValue elements
-     *
-     * @throws PropertyServerException the repository is not available or not working properly.
-     * */
-    private List<ReferenceableElement> convertReferenceable(List<OpenMetadataElement>  openMetadataElements,
-                                                            boolean                    getTemplates,
-                                                            String                     serverName,
-                                                            String                     methodName) throws PropertyServerException
-    {
-        ReferenceableConverter<ReferenceableElement> converter = new ReferenceableConverter<>(propertyHelper, instanceHandler.getServiceName(), serverName);
-        if (openMetadataElements != null)
-        {
-            List<ReferenceableElement> referenceableElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    if (this.isTemplate(openMetadataElement) && (getTemplates))
-                    {
-                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
-
-                        if (referenceableElement != null)
-                        {
-                            referenceableElements.add(referenceableElement);
-                        }
-                    }
-
-                    if (!this.isTemplate(openMetadataElement) && (!getTemplates))
-                    {
-                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
-
-                        if (referenceableElement != null)
-                        {
-                            referenceableElements.add(referenceableElement);
-                        }
-                    }
-                }
-            }
-
-            return referenceableElements;
-        }
-
-        return null;
-    }
 
 
     /* =====================================================================================================================
