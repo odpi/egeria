@@ -15164,7 +15164,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                         additionalProperties.put(propertyType + "Name",
                                                  repositoryHelper.getStringProperty(serviceName,
-                                                                                    OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                                     specificationDetail.getProperties(),
                                                                                     methodName));
 

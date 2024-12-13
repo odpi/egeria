@@ -2084,30 +2084,10 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.CATEGORY_PROPERTY_NAME;
-        final String attribute1Description     = "Descriptive name of the concept that this valid value describes a possible value for.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME;
-        final String attribute2Description     = "Is this valid value case-sensitive, or should the values match irrespective of case?";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataType.DATA_TYPE_PROPERTY_NAME;
-        final String attribute3Description     = "The type of the value identifies it format and content.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CATEGORY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_CASE_SENSITIVE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

@@ -1326,27 +1326,27 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                  validValueProperties.getUsage());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CATEGORY_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.CATEGORY.name,
                                                                  validValueProperties.getUsage());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                  validValueProperties.getPreferredValue());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DATA_TYPE.name,
                                                                  validValueProperties.getDataType());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.SCOPE.name,
                                                                  validValueProperties.getScope());
 
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                  OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.IS_DEPRECATED.name,
                                                                   validValueProperties.getIsDeprecated());
 
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                  OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.IS_CASE_SENSITIVE.name,
                                                                   validValueProperties.getIsCaseSensitive());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,

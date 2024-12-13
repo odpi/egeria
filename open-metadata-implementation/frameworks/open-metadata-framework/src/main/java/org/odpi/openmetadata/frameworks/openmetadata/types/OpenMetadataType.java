@@ -3471,19 +3471,6 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
 
-
-
-    /**
-     * Open Connector Framework (OCF)
-     */
-    public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
-
-    /**
-     * Java
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
-
-
     /**
      * 740e76e1-77b4-4426-ad52-d0a4ed15fff9
      */
@@ -4699,20 +4686,6 @@ public enum OpenMetadataType
     public static final String QUERY_SCHEMA_TYPE_TYPE_NAME = "QuerySchemaType";
     /* ComplexSchemaType */
 
-    /**
-     * category
-     */
-    public static final String CATEGORY_PROPERTY_NAME = "category";             /* from ValidValueDefinition entity */
-
-    /**
-     * preferredValue
-     */
-    public static final String PREFERRED_VALUE_PROPERTY_NAME = "preferredValue";       /* from ValidValueDefinition entity */
-
-    /**
-     * isCaseSensitive
-     */
-    public static final String IS_CASE_SENSITIVE_PROPERTY_NAME = "isCaseSensitive";      /* from ValidValueDefinition entity */
 
     /**
      * strictRequirement

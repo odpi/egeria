@@ -21,7 +21,8 @@ public class OpenMetadataHandler extends OpenMetadataClientBase
      */
     public OpenMetadataHandler(String serviceURLMarker,
                                String serverName,
-                               String serverPlatformURLRoot, int maxPageSize) throws InvalidParameterException
+                               String serverPlatformURLRoot,
+                               int    maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
     }

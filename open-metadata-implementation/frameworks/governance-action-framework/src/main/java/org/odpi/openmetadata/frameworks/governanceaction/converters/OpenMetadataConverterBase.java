@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.converters;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
@@ -2252,7 +2253,7 @@ public abstract class OpenMetadataConverterBase<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
     }
 
 
@@ -2278,7 +2279,7 @@ public abstract class OpenMetadataConverterBase<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
     }
 
 
@@ -6150,7 +6151,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.PREFERRED_VALUE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6172,7 +6173,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.CATEGORY_PROPERTY_NAME,
+                                                       OpenMetadataProperty.CATEGORY.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6194,7 +6195,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeBooleanProperty(serviceName,
-                                                        OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                        OpenMetadataProperty.IS_CASE_SENSITIVE.name,
                                                         elementProperties,
                                                         methodName);
         }

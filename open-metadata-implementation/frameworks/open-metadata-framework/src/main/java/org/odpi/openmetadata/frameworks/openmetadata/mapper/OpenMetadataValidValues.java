@@ -8,6 +8,17 @@ package org.odpi.openmetadata.frameworks.openmetadata.mapper;
 public class OpenMetadataValidValues
 {
     /**
+     * Open Connector Framework (OCF)
+     */
+    public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
+
+    /**
+     * Java
+     */
+    public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
+
+
+    /**
      * This scope value means that the associated value is valid across the open metadata ecosystem - that is all tools, runtimes, repositories
      * using open metadata standards.
      */
