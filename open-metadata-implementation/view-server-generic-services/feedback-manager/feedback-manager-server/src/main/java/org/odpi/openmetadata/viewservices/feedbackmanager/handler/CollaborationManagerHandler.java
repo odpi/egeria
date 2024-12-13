@@ -717,7 +717,7 @@ public class CollaborationManagerHandler
                                                                                               0,
                                                                                               0);
 
-        if (relationships != null)
+        if ((relationships != null) && (relationships.getElementList() != null))
         {
             for (OpenMetadataRelationship relationship : relationships.getElementList())
             {
@@ -809,7 +809,7 @@ public class CollaborationManagerHandler
                                                                                               0,
                                                                                               0);
 
-        if (relationships != null)
+        if ((relationships != null) && (relationships.getElementList() != null))
         {
             for (OpenMetadataRelationship relationship : relationships.getElementList())
             {

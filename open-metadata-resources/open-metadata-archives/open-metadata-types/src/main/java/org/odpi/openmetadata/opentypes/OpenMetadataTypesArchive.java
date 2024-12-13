@@ -174,7 +174,7 @@ public class OpenMetadataTypesArchive
     private EntityDef addDataAccessManagerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_ACCESS_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
     }
 
 
