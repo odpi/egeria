@@ -615,6 +615,7 @@ public class OpenMetadataTypesArchive3_1
     {
         this.archiveBuilder.addEntityDef(addCatalogEntity());
         this.archiveBuilder.addEntityDef(addDataManagerEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDatabaseManager());
     }
 
 
@@ -628,6 +629,20 @@ public class OpenMetadataTypesArchive3_1
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+    }
+
+    private TypeDefPatch updateDatabaseManager()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
+
+        return typeDefPatch;
     }
 
 
