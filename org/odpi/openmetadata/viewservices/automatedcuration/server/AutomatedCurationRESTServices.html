@@ -467,7 +467,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
-<dd><code>typeName</code> - does the value start with the supplied string?</dd>
+<dd><code>typeName</code> - the type name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>requestBody</code> - does the value start with the supplied string?</dd>
@@ -484,7 +484,7 @@ loadScripts(document, 'script');</script>
 <h3>getTechnologyTypeDetail</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/TechnologyTypeReportResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeReportResponse</a></span>&nbsp;<span class="element-name">getTechnologyTypeDetail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.</div>
+<div class="block">Retrieve the requested deployed implementation type metadata element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
@@ -511,7 +511,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>getTemplates</code> - boolean indicating whether templates or non-template platforms should be returned.</dd>
+<dd><code>getTemplates</code> - boolean indicating whether templates or non-template elements should be returned.</dd>
 <dd><code>requestBody</code> - string to find in the properties</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
