@@ -29,7 +29,7 @@ public class MermaidGraphBuilderBase
             {
                 if (! firstValue)
                 {
-                    stringBuilder.append(",");
+                    stringBuilder.append(",\n");
                 }
 
                 firstValue = false;
@@ -78,9 +78,9 @@ public class MermaidGraphBuilderBase
 
         if (label != null)
         {
-            mermaidGraph.append("-->|");
+            mermaidGraph.append("-->|\"");
             mermaidGraph.append(label);
-            mermaidGraph.append("|");
+            mermaidGraph.append("\"|");
         }
         else
         {

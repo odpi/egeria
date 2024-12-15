@@ -632,7 +632,7 @@ public class AssetConsumerRESTServices
                 if (relationship != null)
                 {
                     String relationshipName = this.getRelationshipName(relationship, assetHandler.getRepositoryHelper());
-                    if (lineageRelationshipTypeNames.contains(relationshipName))
+                    if (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName()))
                     {
                         String end1AnchorGUID = this.getAnchorGUID(relationship.getEntityOneProxy(), assetHandler);
                         String end2AnchorGUID = this.getAnchorGUID(relationship.getEntityTwoProxy(), assetHandler);
