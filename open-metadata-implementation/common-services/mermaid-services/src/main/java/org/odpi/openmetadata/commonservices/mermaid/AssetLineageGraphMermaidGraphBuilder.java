@@ -33,8 +33,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
         String currentNodeName    = assetLineageGraph.getElementHeader().getGUID();
         String currentDisplayName = assetLineageGraph.getProperties().getDisplayName();
 
-        appendMermaidNode(mermaidGraph,
-                          currentNodeName,
+        appendMermaidNode(currentNodeName,
                           currentDisplayName,
                           assetLineageGraph.getElementHeader().getType().getTypeName());
 
@@ -64,8 +63,7 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getElementHeader().getType().getTypeName());
 
@@ -78,12 +76,9 @@ public class AssetLineageGraphMermaidGraphBuilder extends MermaidGraphBuilderBas
             {
                 if (line != null)
                 {
-                    mermaidGraph.append(line.getEnd1AssetGUID());
-                    mermaidGraph.append("-->|");
-                    mermaidGraph.append(this.getListLabel(line.getRelationshipTypes()));
-                    mermaidGraph.append("|");
-                    mermaidGraph.append(line.getEnd2AssetGUID());
-                    mermaidGraph.append("\n");
+                    super.appendMermaidLine(line.getEnd1AssetGUID(),
+                                            this.getListLabel(line.getRelationshipTypes()),
+                                            line.getEnd2AssetGUID());
                 }
             }
         }

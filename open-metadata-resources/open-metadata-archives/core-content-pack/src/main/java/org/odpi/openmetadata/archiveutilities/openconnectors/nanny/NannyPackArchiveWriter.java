@@ -62,12 +62,13 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.NANNY_CONTENT_PACK);
 
         this.createAndHarvestToAssetGovernanceActionProcess("HarvestSurveyToPostgreSQLDatabaseSchema",
-                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                          PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
-                                                          RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
-                                                          GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
-                                                          RequestTypeDefinition.HARVEST_SURVEYS,
-                                                          GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE);
+                                                            OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+                                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
+                                                            RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
+                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
+                                                            RequestTypeDefinition.HARVEST_SURVEYS,
+                                                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
 
         this.createAndHarvestToAssetGovernanceActionProcess("HarvestOpenMetadataToPostgreSQLDatabaseSchema",
                                                             OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
@@ -75,7 +76,8 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
                                                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                             RequestTypeDefinition.HARVEST_OPEN_METADATA,
-                                                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE);
+                                                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                                                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

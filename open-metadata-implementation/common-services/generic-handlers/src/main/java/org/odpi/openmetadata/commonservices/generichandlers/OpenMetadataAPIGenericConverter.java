@@ -2613,13 +2613,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return ordinal or 0 for not specified
      */
-    protected int removeKarmaPoints(InstanceProperties instanceProperties)
+    protected long removeKarmaPoints(InstanceProperties instanceProperties)
     {
         final String methodName = "removeKarmaPoints";
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeIntProperty(serviceName,
+            return repositoryHelper.removeLongProperty(serviceName,
                                                       OpenMetadataProperty.KARMA_POINTS.name,
                                                       instanceProperties,
                                                       methodName);

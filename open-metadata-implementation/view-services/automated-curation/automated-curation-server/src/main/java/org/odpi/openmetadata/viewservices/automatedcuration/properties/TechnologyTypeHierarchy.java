@@ -23,17 +23,42 @@ public class TechnologyTypeHierarchy extends TechnologyTypeSummary
     private List<TechnologyTypeHierarchy> subTypes = null;
 
 
+    /**
+     * Default constructor
+     */
     public TechnologyTypeHierarchy()
     {
         super();
     }
 
 
+    /**
+     * Copy constructor
+     *
+     * @param template super type
+     */
+    public TechnologyTypeHierarchy(TechnologyTypeSummary template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Return details of the subtypes of this technology type.
+     *
+     * @return list of subtypes
+     */
     public List<TechnologyTypeHierarchy> getSubTypes()
     {
         return subTypes;
     }
 
+
+    /**
+     * Set up the details of the subtypes of this technology type.
+     *
+     * @param subTypes list of subtypes
+     */
     public void setSubTypes(List<TechnologyTypeHierarchy> subTypes)
     {
         this.subTypes = subTypes;

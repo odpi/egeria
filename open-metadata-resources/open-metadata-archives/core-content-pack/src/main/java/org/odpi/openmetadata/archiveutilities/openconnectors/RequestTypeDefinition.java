@@ -3,11 +3,17 @@
 
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +36,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.NEW_FILES_WATCHDOG,
                         "69bead73-b5b7-4791-9293-c660990ec7bf",
-                        null,
+                        DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
                         ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -43,7 +49,7 @@ public enum RequestTypeDefinition
               GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
               GovernanceServiceDefinition.FILE_PROVISIONER,
               "4f7c739b-69d3-4310-9bb2-507625dc2899",
-              null,
+              DeployedImplementationType.FILE.getQualifiedName(),
               ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -56,7 +62,7 @@ public enum RequestTypeDefinition
               GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
               GovernanceServiceDefinition.FILE_PROVISIONER,
               "dc3ad63e-6663-4087-bcf3-6e48c68ed5b6",
-              null,
+              DeployedImplementationType.FILE.getQualifiedName(),
               ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -69,7 +75,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.FILE_GOVERNANCE_ENGINE,
                 GovernanceServiceDefinition.FILE_PROVISIONER,
                 "c658530b-5f99-4212-a321-92bad0cd9b60",
-                null,
+                DeployedImplementationType.FILE.getQualifiedName(),
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -82,7 +88,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                 GovernanceServiceDefinition.ORIGIN_SEEKER,
                 "98a63f4c-01fc-4c38-9897-d59fb7c888ee",
-                null,
+                DeployedImplementationType.DATA_ASSET.getQualifiedName(),
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -95,7 +101,7 @@ public enum RequestTypeDefinition
                 GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                 GovernanceServiceDefinition.ZONE_PUBLISHER,
                 "05df4044-bc0a-40cd-b729-66aef891e7f0",
-                null,
+                DeployedImplementationType.ASSET.getQualifiedName(),
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
 
@@ -109,7 +115,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                      GovernanceServiceDefinition.RETENTION_CLASSIFIER,
                      "633cca67-7be8-49bf-9c38-f82e4ceea44c",
-                     null,
+                     DeployedImplementationType.DATA_ASSET.getQualifiedName(),
                      ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -122,7 +128,7 @@ public enum RequestTypeDefinition
                  GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                  GovernanceServiceDefinition.VERIFY_ASSET,
                  "a7983409-8eee-4239-a252-a3c5515def59",
-                 null,
+                 DeployedImplementationType.ASSET.getQualifiedName(),
                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -135,7 +141,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                          GovernanceServiceDefinition.EVALUATE_ANNOTATIONS,
                          "be193d1c-1a60-4f03-8204-22817f2d40c4",
-                         null,
+                         DeployedImplementationType.ASSET.getQualifiedName(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -148,7 +154,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.STEWARDSHIP_ENGINE,
                          GovernanceServiceDefinition.PRINT_SURVEY_REPORT,
                          "8b81d9c1-3320-43b1-90a7-57772855460b",
-                         null,
+                        DeployedImplementationType.ASSET.getQualifiedName(),
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -201,7 +207,7 @@ public enum RequestTypeDefinition
                     GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                     GovernanceServiceDefinition.CSV_FILE_SURVEY,
                     "fcd7ddce-b61e-49eb-b993-293907dadf72",
-                    null,
+                    DeployedImplementationType.CSV_FILE.getQualifiedName(),
                     ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -214,7 +220,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                      GovernanceServiceDefinition.DATA_FILE_SURVEY,
                      "3a15cfe4-e130-4b8c-b4fb-eedd39e1a2ae",
-                     null,
+                     DeployedImplementationType.DATA_FILE.getQualifiedName(),
                      ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -227,7 +233,7 @@ public enum RequestTypeDefinition
                   GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                   GovernanceServiceDefinition.FOLDER_SURVEY,
                   "381c60e6-733b-42db-a025-8e6eb29294fc",
-                  null,
+                  DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
                   ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -240,7 +246,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                             GovernanceServiceDefinition.FOLDER_SURVEY,
                             "633e7711-0c65-47b5-894f-c9dba5472412",
-                            null,
+                            DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
                             ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -253,7 +259,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                        GovernanceServiceDefinition.FOLDER_SURVEY,
                        "a6f2f6e8-d912-4101-982f-79c62190f1ba",
-                       null,
+                       DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
                        ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -266,7 +272,7 @@ public enum RequestTypeDefinition
                                  GovernanceEngineDefinition.FILE_SURVEY_ENGINE,
                                  GovernanceServiceDefinition.FOLDER_SURVEY,
                                  "cc642671-898a-4c83-9d29-b1a1758672d2",
-                                 null,
+                                 DeployedImplementationType.FILE_FOLDER.getQualifiedName(),
                                  ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -279,7 +285,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE,
                         GovernanceServiceDefinition.APACHE_ATLAS_SURVEY,
                         "18d36065-3e39-43bc-be31-4b6c22354480",
-                        null,
+                        AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -292,7 +298,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
                         GovernanceServiceDefinition.KAFKA_SERVER_SURVEY,
                         "71c73133-6817-42a1-9cc6-b610cee34a8b",
-                        null,
+                        KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -305,7 +311,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_SERVER_SURVEY,
                      "c9fca16e-854d-43bc-b97e-33691afafac3",
-                     null,
+                     UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -318,7 +324,7 @@ public enum RequestTypeDefinition
                       GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                       GovernanceServiceDefinition.UC_CATALOG_SURVEY,
                       "d00bc9af-0d2f-4640-a24b-35d77110883e",
-                      null,
+                      UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getQualifiedName(),
                       ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -331,7 +337,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_SCHEMA_SURVEY,
                      "a53211fc-89e6-4405-9768-606d519649ee",
-                     null,
+                     UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getQualifiedName(),
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -344,21 +350,21 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
                      GovernanceServiceDefinition.UC_VOLUME_SURVEY,
                      "b62df48b-1390-4cb2-afff-2aa136d8467d",
-                     null,
+                     UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName(),
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * provision-unity-catalog-resource
      */
     PROVISION_UC("provision-unity-catalog-resource",
-                     null,
-                     null,
-                     null,
-                     GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
-                     GovernanceServiceDefinition.PROVISION_UC,
-                     "b67bce2e-fc02-43b1-a45b-e3c7be02da66",
-                     null,
-                     ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
+                 null,
+                 null,
+                 null,
+                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                 GovernanceServiceDefinition.PROVISION_UC,
+                 "b67bce2e-fc02-43b1-a45b-e3c7be02da66",
+                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName(),
+                 ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
      * survey-postgres-server
@@ -370,7 +376,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
                            GovernanceServiceDefinition.POSTGRES_SERVER_SURVEY,
                            "fcad7603-bd05-4d07-b6e8-a4fb29fd57fc",
-                           null,
+                           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -383,7 +389,7 @@ public enum RequestTypeDefinition
                              GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
                              GovernanceServiceDefinition.POSTGRES_DATABASE_SURVEY,
                              "8a7e16eb-15e3-4e16-ba7e-1e8d6653677b",
-                             null,
+                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
 
@@ -397,7 +403,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                            GovernanceServiceDefinition.CREATE_ASSET,
                            "2be30523-5c6a-4c5d-a9ca-595ea491a047",
-                           null,
+                           DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -410,7 +416,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "b45aa1ba-690e-4a6d-aaf7-1f6498ea0ea9",
-                           null,
+                           DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
@@ -423,7 +429,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "134d6840-9f9d-42bb-bd84-a936b6401541",
-                            null,
+                            DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName(),
                             ContentPackDefinition.CORE_CONTENT_PACK),
 
 
@@ -437,7 +443,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                      GovernanceServiceDefinition.CREATE_ASSET,
                      "78e47705-a159-4e3d-9199-3a2c9400dcee",
-                     null,
+                     UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -450,7 +456,7 @@ public enum RequestTypeDefinition
                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                      GovernanceServiceDefinition.DELETE_ASSET,
                      "986d550a-c5d8-4c44-9f94-601a15fc25f1",
-                     null,
+                     UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                      ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -463,7 +469,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "323d8a5c-4f79-4bc0-a35a-0c39d1990a9e",
-                        null,
+                        UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName(),
                         ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -476,7 +482,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "cfeafd56-a6dd-41e5-bf0e-33b65639085d",
-                        null,
+                        UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName(),
                         ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -489,7 +495,7 @@ public enum RequestTypeDefinition
                       GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                       GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                       "1b2d71c8-b7f9-4b9b-a466-f20e529391ef",
-                      null,
+                      UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName(),
                       ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
     /**
@@ -502,7 +508,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "c4ea5182-1707-4e43-9151-ad3c42107b00",
-                        null,
+                        AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -515,7 +521,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "7bed9078-085f-40fd-9f72-168196d7b277",
-                        null,
+                        AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -528,7 +534,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.ATLAS_GOVERNANCE_ENGINE,
                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                          "95a89892-e66f-4ad7-913a-9b10ce7c64ac",
-                         null,
+                         AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName(),
                          ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
     /**
@@ -541,7 +547,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CREATE_ASSET,
                         "8f735dbc-7bc3-442f-8b16-699ef43a15f3",
-                        null,
+                        KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -554,7 +560,7 @@ public enum RequestTypeDefinition
                         GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.DELETE_ASSET,
                         "9eace0dd-bcd6-41df-86f7-4b5799774411",
-                        null,
+                        KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                         ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
     /**
@@ -567,7 +573,7 @@ public enum RequestTypeDefinition
                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                          "81f0fad0-84eb-4926-865f-c518df876cab",
-                         null,
+                         KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName(),
                          ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
 
 
@@ -581,7 +587,7 @@ public enum RequestTypeDefinition
                                 GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                 GovernanceServiceDefinition.CREATE_ASSET,
                                 "2cb0bfc6-7bd9-4144-b0ad-4cd3a7acb502",
-                                null,
+                                EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                 ContentPackDefinition.NANNY_CONTENT_PACK),
 
     /**
@@ -594,7 +600,7 @@ public enum RequestTypeDefinition
                                 GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                 GovernanceServiceDefinition.DELETE_ASSET,
                                 "f24a52a9-553f-4eb2-b62e-faaf4a17c662",
-                                null,
+                                EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                 ContentPackDefinition.NANNY_CONTENT_PACK),
 
     /**
@@ -607,7 +613,7 @@ public enum RequestTypeDefinition
                                  GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                                  GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                                  "e22b0fbb-f63e-4aa2-9436-6b34dc0246c7",
-                                 null,
+                                 EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName(),
                                  ContentPackDefinition.NANNY_CONTENT_PACK),
 
 
@@ -621,7 +627,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.CREATE_ASSET,
                            "3facbdba-43c6-44b8-a222-ad0ad2c3c3d5",
-                           null,
+                           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -634,7 +640,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "5c49625e-8935-44fa-9076-5e099cf392ca",
-                           null,
+                           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -647,7 +653,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "dab2303b-7bac-4985-b8eb-4a706e77d036",
-                            null,
+                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName(),
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -660,7 +666,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "47353b59-b1cd-453a-841f-3873130703b7",
-                       null,
+                       PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                        ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -673,7 +679,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.DELETE_ASSET,
                        "610d8562-7e48-4ba8-b596-d66b7888e268",
-                       null,
+                       PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                        ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -686,7 +692,7 @@ public enum RequestTypeDefinition
                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                             GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                             "32ca425d-6aeb-40f0-bc7c-508a9689d24e",
-                            null,
+                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName(),
                             ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -699,7 +705,7 @@ public enum RequestTypeDefinition
                        GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                        GovernanceServiceDefinition.CREATE_ASSET,
                        "b0c07a56-2d4b-4665-93a3-e33cbb1aba61",
-                       null,
+                       PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                        ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -712,7 +718,7 @@ public enum RequestTypeDefinition
                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                            GovernanceServiceDefinition.DELETE_ASSET,
                            "08fa65f0-8925-46bd-8c19-806d47ce2da1",
-                           null,
+                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                            ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
@@ -725,34 +731,34 @@ public enum RequestTypeDefinition
                               GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                               GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
                               "c4702cb9-9787-4756-889d-b7d8efd3d240",
-                              null,
+                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                               ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
     /**
      * harvest-surveys
      */
     HARVEST_SURVEYS("harvest-surveys",
-                              null,
-                              null,
-                              getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_SURVEYS.getGUID()),
-                              GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                              GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
-                              "e3ea80ac-728f-4b33-8557-f92d17a6ad49",
-                              null,
-                              ContentPackDefinition.NANNY_CONTENT_PACK),
+                    null,
+                    null,
+                    getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_SURVEYS.getGUID()),
+                    GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                    GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                    "e3ea80ac-728f-4b33-8557-f92d17a6ad49",
+                    null,
+                    ContentPackDefinition.NANNY_CONTENT_PACK),
 
     /**
      * harvest-open-metadata
      */
     HARVEST_OPEN_METADATA("harvest-open-metadata",
-                    null,
-                    null,
-                    getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_OPEN_METADATA.getGUID()),
-                    GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                    GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
-                    "2f3b500f-b918-400d-bacb-dcff50772d9b",
-                    null,
-                    ContentPackDefinition.NANNY_CONTENT_PACK),
+                          null,
+                          null,
+                          getCatalogTargetAssetActionTargets(IntegrationConnectorDefinition.HARVEST_OPEN_METADATA.getGUID()),
+                          GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                          GovernanceServiceDefinition.CATALOG_TARGET_ASSET,
+                          "2f3b500f-b918-400d-bacb-dcff50772d9b",
+                          null,
+                          ContentPackDefinition.NANNY_CONTENT_PACK),
     ;
 
     private final String                      governanceRequestType;
@@ -867,7 +873,9 @@ public enum RequestTypeDefinition
      * @param actionTargets predefined action targets (for governance action type)
      * @param governanceEngine governance engine that supports this request type
      * @param governanceService governance service that implements this request type
+     * @param supportedElementQualifiedName qualified name of the element that this should be listed as a resource
      * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param contentPackDefinition which content pack?
      */
     RequestTypeDefinition(String                      governanceRequestType,
                           String                      serviceRequestType,

@@ -40,6 +40,11 @@ public class OpenMetadataValidValues
     public static final String VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX   = "Egeria:ValidMetadataValue:";
 
     /**
+     * This is the inheritance association name use between open metadata valid values
+     */
+    public static final String VALID_METADATA_VALUE_IS_TYPE_OF   = "isATypeOf";
+
+    /**
      * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.
      */
     public static final String ASSET_SUB_TYPE_NAME = "assetSubTypeName";

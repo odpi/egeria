@@ -18,7 +18,7 @@ public class MermaidGraphBuilderBase
      * @param labelValues array of labels
      * @return string value without square brackets (Mermaid does not allow them)
      */
-     String getListLabel(List<String> labelValues)
+    public String getListLabel(List<String> labelValues)
     {
         if (labelValues != null)
         {
@@ -29,7 +29,7 @@ public class MermaidGraphBuilderBase
             {
                 if (! firstValue)
                 {
-                    stringBuilder.append(",");
+                    stringBuilder.append(",\n");
                 }
 
                 firstValue = false;
@@ -46,15 +46,13 @@ public class MermaidGraphBuilderBase
     /**
      * Create a node in the mermaid graph.
      *
-     * @param mermaidGraph current state of the graph
      * @param currentNodeName unique name/identifier
      * @param currentDisplayName display name
      * @param currentType type of element
      */
-    void appendMermaidNode(StringBuilder mermaidGraph,
-                           String currentNodeName,
-                           String currentDisplayName,
-                           String currentType)
+    public void appendMermaidNode(String        currentNodeName,
+                                  String        currentDisplayName,
+                                  String        currentType)
     {
         mermaidGraph.append(this.removeSpaces(currentNodeName));
         mermaidGraph.append("(\"`*");
@@ -62,6 +60,35 @@ public class MermaidGraphBuilderBase
         mermaidGraph.append("*\n**");
         mermaidGraph.append(currentDisplayName);
         mermaidGraph.append("**`\")\n");
+    }
+
+
+    /**
+     * Append a line to the graph.
+     *
+     * @param end1Id identifier of the starting end
+     * @param label label for the line
+     * @param end2Id identifier of the ending end
+     */
+    public void appendMermaidLine(String end1Id,
+                                  String label,
+                                  String end2Id)
+    {
+        mermaidGraph.append(this.removeSpaces(end1Id));
+
+        if (label != null)
+        {
+            mermaidGraph.append("-->|\"");
+            mermaidGraph.append(label);
+            mermaidGraph.append("\"|");
+        }
+        else
+        {
+            mermaidGraph.append("-->");
+        }
+
+        mermaidGraph.append(this.removeSpaces(end2Id));
+        mermaidGraph.append("\n");
     }
 
 
