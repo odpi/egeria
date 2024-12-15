@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
@@ -273,6 +274,71 @@ public class AutomatedCurationRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public TechnologyTypeHierarchyResponse getTechnologyTypeHierarchy(String            serverName,
+                                                                      FilterRequestBody requestBody)
+    {
+        final String methodName = "getTechnologyTypeHierarchy";
+        final String parameterName = "requestBody.filter";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TechnologyTypeHierarchyResponse response = new TechnologyTypeHierarchyResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getFilter() != null)
+                {
+                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+
+                    response.setElement(handler.getTechnologyTypeHierarchy(userId,
+                                                                           requestBody.getFilter(),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           requestBody.getLimitResultsByStatus(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getSequencingOrder(),
+                                                                           requestBody.getSequencingProperty()));
+
+                    response.setMermaidString(handler.getTechnologyTypeHierarchyMermaidString(response.getElement()));
+                }
+                else
+                {
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**

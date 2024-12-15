@@ -41,8 +41,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         String currentNodeName    = elementGraph.getElementGUID();
         String currentDisplayName = this.getDisplayName(elementGraph.getElementProperties(), elementGraph.getType().getTypeName());
 
-        appendMermaidNode(mermaidGraph,
-                          currentNodeName,
+        appendMermaidNode(currentNodeName,
                           currentDisplayName,
                           elementGraph.getType().getTypeName());
 
@@ -59,8 +58,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 
@@ -104,8 +102,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
         String currentNodeName    = elementGUID;
         String currentDisplayName = elementGUID;
 
-        appendMermaidNode(mermaidGraph,
-                          currentNodeName,
+        appendMermaidNode(currentNodeName,
                           currentDisplayName,
                           "Starting from");
 
@@ -122,8 +119,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 
@@ -190,8 +186,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 
@@ -211,8 +206,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 
@@ -272,8 +266,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 
@@ -293,8 +286,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 
                     if (!usedNodeNames.contains(currentNodeName))
                     {
-                        appendMermaidNode(mermaidGraph,
-                                          currentNodeName,
+                        appendMermaidNode(currentNodeName,
                                           currentDisplayName,
                                           node.getType().getTypeName());
 

@@ -629,54 +629,57 @@ public class AssetConsumerRESTServices
 
             for (Relationship relationship : relationships)
             {
-                if ((relationship != null) && (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName())))
+                if (relationship != null)
                 {
-
-                    String end1AnchorGUID = this.getAnchorGUID(relationship.getEntityOneProxy(), assetHandler);
-                    String end2AnchorGUID = this.getAnchorGUID(relationship.getEntityTwoProxy(), assetHandler);
-
-                    if (assetGUID.equals(end1AnchorGUID))
+                    String relationshipName = this.getRelationshipName(relationship, assetHandler.getRepositoryHelper());
+                    if (lineageRelationshipTypeNames.contains(relationshipName))
                     {
-                        if (assetGUID.equals(end2AnchorGUID))
+                        String end1AnchorGUID = this.getAnchorGUID(relationship.getEntityOneProxy(), assetHandler);
+                        String end2AnchorGUID = this.getAnchorGUID(relationship.getEntityTwoProxy(), assetHandler);
+
+                        if (assetGUID.equals(end1AnchorGUID))
                         {
-                            internalRelationship.add(relationship);
+                            if (assetGUID.equals(end2AnchorGUID))
+                            {
+                                internalRelationship.add(relationship);
+                            }
+                            else
+                            {
+                                List<String> currentRelationshipNames = downstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentRelationshipNames == null)
+                                {
+                                    currentRelationshipNames = new ArrayList<>();
+                                }
+
+                                if (! currentRelationshipNames.contains(relationshipName))
+                                {
+                                    currentRelationshipNames.add(relationshipName);
+                                }
+
+                                downstreamAssets.put(end2AnchorGUID, currentRelationshipNames);
+                                downstreamRelationships.add(relationship);
+                            }
                         }
                         else
                         {
-                            List<String> currentRelationshipNames = downstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
-
-                            if (currentRelationshipNames == null)
+                            if (assetGUID.equals(end2AnchorGUID))
                             {
-                                currentRelationshipNames = new ArrayList<>();
+                                List<String> currentRelationshipNames = upstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentRelationshipNames == null)
+                                {
+                                    currentRelationshipNames = new ArrayList<>();
+                                }
+
+                                if (! currentRelationshipNames.contains(relationshipName))
+                                {
+                                    currentRelationshipNames.add(relationshipName);
+                                }
+
+                                upstreamAssets.put(end1AnchorGUID, currentRelationshipNames);
+                                upstreamRelationships.add(relationship);
                             }
-
-                            if (! currentRelationshipNames.contains(relationship.getType().getTypeDefName()))
-                            {
-                                currentRelationshipNames.add(relationship.getType().getTypeDefName());
-                            }
-
-                            downstreamAssets.put(end2AnchorGUID, currentRelationshipNames);
-                            downstreamRelationships.add(relationship);
-                        }
-                    }
-                    else
-                    {
-                        if (assetGUID.equals(end2AnchorGUID))
-                        {
-                            List<String> currentRelationshipNames = upstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
-
-                            if (currentRelationshipNames == null)
-                            {
-                                currentRelationshipNames = new ArrayList<>();
-                            }
-
-                            if (! currentRelationshipNames.contains(relationship.getType().getTypeDefName()))
-                            {
-                                currentRelationshipNames.add(relationship.getType().getTypeDefName());
-                            }
-
-                            upstreamAssets.put(end1AnchorGUID, currentRelationshipNames);
-                            upstreamRelationships.add(relationship);
                         }
                     }
                 }
@@ -690,6 +693,40 @@ public class AssetConsumerRESTServices
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract the name of the relationship from a relationship.
+     *
+     * @param relationship relationship to query
+     * @param repositoryHelper repository helper to extract properties
+     * @return relationship name
+     */
+    private String getRelationshipName(Relationship         relationship,
+                                       OMRSRepositoryHelper repositoryHelper)
+    {
+        final String methodName = "getRelationshipName";
+
+        /*
+         * The default name is the type name
+         */
+        String relationshipName = relationship.getType().getTypeDefName();
+
+        /*
+         * If the relationship has a label then this is used to embellish the relationship name.
+         */
+        String label = repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                          OpenMetadataProperty.LABEL.name,
+                                                          relationship.getProperties(),
+                                                          methodName);
+
+        if (label != null)
+        {
+            relationshipName = label + " [" + relationshipName + "]";
+        }
+
+        return relationshipName;
     }
 
 

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationRESTServices;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
@@ -158,6 +159,32 @@ public class AutomatedCurationResource
                                                                 @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getTechnologyTypeDetail(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/technology-types/hierarchy")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getTechnologyTypeHierarchy",
+            description="Retrieve the details of the named technology type. This name should be the name of the technology type and contain no wild cards. A summary of the technology type is returned with its subtypes.  A mermaid version if the hierarchy is also returned.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-implementation-type"))
+
+    public TechnologyTypeHierarchyResponse getTechnologyTypeHierarchy(@PathVariable String            serverName,
+                                                                      @RequestBody  FilterRequestBody requestBody)
+    {
+        return restAPI.getTechnologyTypeHierarchy(serverName, requestBody);
     }
 
 

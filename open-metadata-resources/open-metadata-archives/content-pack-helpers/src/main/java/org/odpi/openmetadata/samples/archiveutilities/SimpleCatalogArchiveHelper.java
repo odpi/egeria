@@ -1581,7 +1581,8 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a new IT profile.
      *
-     * @param assetGUID unique identifier of asset to connect the profile to.
+     * @param assetGUID unique identifier of asset to connect the profile to
+     * @param userId userId of the asset
      * @param qualifiedName qualified name of profile
      * @param name display name (preferred name of individual)
      * @param description description (eg job description)
@@ -1589,6 +1590,7 @@ public class SimpleCatalogArchiveHelper
      * @return unique identifier of the new profile
      */
     public  String addITProfileToAsset(String              assetGUID,
+                                       String              userId,
                                        String              qualifiedName,
                                        String              name,
                                        String              description,
@@ -1618,7 +1620,31 @@ public class SimpleCatalogArchiveHelper
 
             archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
                                                                          idToGUIDMap.getGUID(assetGUID + "_to_" + profile.getGUID() + "_it_infrastructure_profile_relationship"),
-                                                                         properties,
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        if (userId != null)
+        {
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName + ":UserIdentity", methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USER_ID.name, userId, methodName);
+
+            EntityDetail userIdentity = archiveHelper.getEntityDetail(OpenMetadataType.USER_IDENTITY.typeName,
+                                                                      idToGUIDMap.getGUID(qualifiedName + ":UserIdentity"),
+                                                                      properties,
+                                                                      InstanceStatus.ACTIVE,
+                                                                      null);
+
+            archiveBuilder.addEntity(userIdentity);
+
+            EntityProxy end1 = archiveHelper.getEntityProxy(profile);
+            EntityProxy end2 = archiveHelper.getEntityProxy(userIdentity);
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
+                                                                         idToGUIDMap.getGUID(profile.getGUID() + "_to_" + userIdentity.getGUID() + "_profile_identity_relationship"),
+                                                                         null,
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
                                                                          end2));
@@ -6457,6 +6483,42 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(matchingValue1Id + "_to_" + matchingValueId + "_valid_values_mapping_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a relationship between two valid values.
+     *
+     * @param end1QName qualified name of one of the valid values.
+     * @param end2QName qualified name of the other valid value.
+     * @param associationName a description of the meaning of the association
+     * @param associationType a formal name of the meaning of the association
+     * @param additionalProperties other information about the meaning of the association
+     */
+    public void addValidValueAssociationRelationship(String              end1QName,
+                                                     String              end2QName,
+                                                     String              associationName,
+                                                     String              associationType,
+                                                     Map<String, String> additionalProperties)
+    {
+        final String methodName = "addValidValueAssociationRelationship";
+
+        String end1GUID = idToGUIDMap.getGUID(end1QName);
+        String end2GUID = idToGUIDMap.getGUID(end2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end1GUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end2GUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSOCIATION_NAME.name, associationName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ASSOCIATION_TYPE.name, associationType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_valid_value_association_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

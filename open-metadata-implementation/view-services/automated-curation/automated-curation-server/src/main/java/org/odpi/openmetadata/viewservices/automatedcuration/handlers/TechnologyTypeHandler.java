@@ -6,11 +6,14 @@ package org.odpi.openmetadata.viewservices.automatedcuration.handlers;
 import org.odpi.openmetadata.accessservices.assetowner.client.ExternalReferenceManager;
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.mermaid.HierarchyMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
@@ -20,13 +23,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.TechnologyTypeSummaryConverter;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.*;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Provides additional support for retrieving technology types
@@ -366,6 +365,238 @@ public class TechnologyTypeHandler
             }
 
             return report;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+     *
+     * @param userId calling user
+     * @param technologyTypeName string value to look for
+     * @param effectiveTime the effective date/time to use for the query
+     * @param limitResultsByStatus limit the status values that the elements should be
+     * @param asOfTime repository time
+     * @param sequencingOrder order of results
+     * @param sequencingProperty optional property name
+     *
+     * @return detailed report for technology type
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public TechnologyTypeHierarchy getTechnologyTypeHierarchy(String              userId,
+                                                              String              technologyTypeName,
+                                                              Date                effectiveTime,
+                                                              List<ElementStatus> limitResultsByStatus,
+                                                              Date                asOfTime,
+                                                              SequencingOrder     sequencingOrder,
+                                                              String              sequencingProperty) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName = "getTechnologyTypeHierarchy";
+        final String parameterName = "technologyTypeName";
+
+        invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
+
+        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+                                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                                          null,
+                                                                                          this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
+                                                                                          limitResultsByStatus,
+                                                                                          asOfTime,
+                                                                                          null,
+                                                                                          sequencingProperty,
+                                                                                          sequencingOrder,
+                                                                                          false,
+                                                                                          false,
+                                                                                          effectiveTime,
+                                                                                          0,
+                                                                                          0);
+
+        if (openMetadataElements != null)
+        {
+            TechnologyTypeHierarchy technologyTypeHierarchy = null;
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    technologyTypeHierarchy = new TechnologyTypeHierarchy(this.convertTechTypeSummary(openMetadataElement));
+
+                    technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId, openMetadataElement.getElementGUID()));
+
+                    break;
+                }
+            }
+
+            return technologyTypeHierarchy;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the mermaid graph for a technology type hierarchy.
+     *
+     * @param technologyTypeHierarchy hierarchy to parse
+     * @return mermaid string or null
+     */
+    public String getTechnologyTypeHierarchyMermaidString(TechnologyTypeHierarchy technologyTypeHierarchy)
+    {
+        if (technologyTypeHierarchy != null)
+        {
+            HierarchyMermaidGraphBuilder mermaidGraphBuilder = new HierarchyMermaidGraphBuilder("Technology type hierarchy",
+                                                                                                technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                                                                technologyTypeHierarchy.getName());
+
+            mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                  technologyTypeHierarchy.getName(),
+                                                  technologyTypeHierarchy.getCategory());
+
+            this.addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
+                                                              technologyTypeHierarchy.getSubTypes());
+
+            if (technologyTypeHierarchy.getSubTypes() != null)
+            {
+                for (TechnologyTypeHierarchy subType : technologyTypeHierarchy.getSubTypes())
+                {
+                    mermaidGraphBuilder.appendMermaidLine(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                          null,
+                                                          subType.getTechnologyTypeGUID());
+                }
+
+                addTechnologyTypeHierarchyLinesMermaidString(mermaidGraphBuilder,
+                                                             technologyTypeHierarchy.getSubTypes());
+            }
+
+
+            return mermaidGraphBuilder.getMermaidGraph();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add the nodes to a mermaid hierarchy
+     *
+     * @param mermaidGraphBuilder graph builder
+     * @param technologyTypeHierarchies hierarchy to scan
+     */
+    private void addTechnologyTypeHierarchyNodesMermaidString(HierarchyMermaidGraphBuilder   mermaidGraphBuilder,
+                                                              List<TechnologyTypeHierarchy>  technologyTypeHierarchies)
+    {
+        if (technologyTypeHierarchies != null)
+        {
+            for (TechnologyTypeHierarchy technologyTypeHierarchy : technologyTypeHierarchies)
+            {
+                mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                      technologyTypeHierarchy.getName(),
+                                                      technologyTypeHierarchy.getCategory());
+
+                addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
+                                                             technologyTypeHierarchy.getSubTypes());
+            }
+        }
+    }
+
+
+    /**
+     * Add the lines to a mermaid hierarchy
+     *
+     * @param mermaidGraphBuilder graph builder
+     * @param technologyTypeHierarchies hierarchy to scan
+     */
+    private void addTechnologyTypeHierarchyLinesMermaidString(HierarchyMermaidGraphBuilder   mermaidGraphBuilder,
+                                                              List<TechnologyTypeHierarchy>  technologyTypeHierarchies)
+    {
+        if (technologyTypeHierarchies != null)
+        {
+            for (TechnologyTypeHierarchy technologyTypeHierarchy : technologyTypeHierarchies)
+            {
+                if (technologyTypeHierarchy.getSubTypes() != null)
+                {
+                    for (TechnologyTypeHierarchy subType : technologyTypeHierarchy.getSubTypes())
+                    {
+                        mermaidGraphBuilder.appendMermaidLine(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                              null,
+                                                              subType.getTechnologyTypeGUID());
+                    }
+
+                    addTechnologyTypeHierarchyLinesMermaidString(mermaidGraphBuilder,
+                                                                 technologyTypeHierarchy.getSubTypes());
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Extract the subtypes for a technology type
+     *
+     * @param userId calling user
+     * @param technologyTypeGUID guid of the super type
+     * @return subtype list or null
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    private List<TechnologyTypeHierarchy> getSubTypes(String userId,
+                                                      String technologyTypeGUID) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "getSubTypes";
+
+        RelatedMetadataElementList relatedElements = openHandler.getRelatedMetadataElements(userId,
+                                                                                            technologyTypeGUID,
+                                                                                            2,
+                                                                                            OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                                            false,
+                                                                                            false,
+                                                                                            new Date(),
+                                                                                            0,
+                                                                                            0);
+
+        if ((relatedElements != null) && (relatedElements.getElementList() != null))
+        {
+            List<TechnologyTypeHierarchy> technologyTypeHierarchies = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedElements.getElementList())
+            {
+                if (relatedMetadataElement != null)
+                {
+                    String associationName = propertyHelper.getStringProperty(serviceName,
+                                                                              OpenMetadataProperty.ASSOCIATION_NAME.name,
+                                                                              relatedMetadataElement.getRelationshipProperties(),
+                                                                              methodName);
+
+                    if (OpenMetadataValidValues.VALID_METADATA_VALUE_IS_TYPE_OF.equals(associationName))
+                    {
+                        TechnologyTypeHierarchy technologyTypeHierarchy = new TechnologyTypeHierarchy(this.convertTechTypeSummary(relatedMetadataElement.getElement()));
+
+                        technologyTypeHierarchy.setSubTypes(this.getSubTypes(userId, relatedMetadataElement.getElement().getElementGUID()));
+
+                        technologyTypeHierarchies.add(technologyTypeHierarchy);
+                    }
+                }
+            }
+
+            if (! technologyTypeHierarchies.isEmpty())
+            {
+                return technologyTypeHierarchies;
+            }
         }
 
         return null;
