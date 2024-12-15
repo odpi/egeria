@@ -19,7 +19,7 @@ javaPlatform {
 
 // Assign variables for any constraints
 ext {
-    lombokVersion = '1.18.32'
+    lombokVersion = '1.18.36'
     // TODO: version 4 under new package name
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
