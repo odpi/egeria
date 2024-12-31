@@ -11,13 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -2300,7 +2295,7 @@ public class GlossaryExchangeResource
                                                                @RequestParam (required = false, defaultValue = "false")
                                                                              boolean                forDuplicateProcessing,
                                                                @RequestBody(required = false)
-                                                                             HistoryRequestBody     requestBody)
+                                                                   HistoryExternalIdentifiersRequestBody requestBody)
     {
         return restAPI.getGlossaryTermHistory(serverName, userId, glossaryTermGUID, startFrom, pageSize, oldestFirst, forLineage, forDuplicateProcessing, requestBody);
     }

@@ -38,6 +38,32 @@ public interface ExternalIdentifierManagerInterface
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException;
 
+    /**
+     * Add a new external identifier to an existing open metadata element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param assetManagerTypeName type name of the software capability describing the asset manager
+     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifierProperties optional properties used to define an external identifier
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    void addExternalIdentifier(String                       userId,
+                               String                       assetManagerGUID,
+                               String                       assetManagerName,
+                               String                       assetManagerTypeName,
+                               String                       openMetadataElementGUID,
+                               String                       openMetadataElementTypeName,
+                               ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
+
+
 
     /**
      * Update the description of a specific external identifier.

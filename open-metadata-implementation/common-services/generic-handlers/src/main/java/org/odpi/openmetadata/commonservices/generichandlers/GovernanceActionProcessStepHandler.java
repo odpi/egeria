@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -315,6 +316,10 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                                                               OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                               OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                                               2,
+                                                                                              null,
+                                                                                              null,
+                                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                                              null,
                                                                                               forLineage,
                                                                                               forDuplicateProcessing,
                                                                                               effectiveTime,
@@ -589,10 +594,13 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -646,10 +654,13 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     false,
                                     false,
                                     serviceSupportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -801,53 +812,16 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                            0,
+                                           null,
+                                           null,
+                                           SequencingOrder.CREATION_DATE_RECENT,
+                                           null,
                                            false,
                                            false,
                                            serviceSupportedZones,
                                            effectiveTime,
                                            methodName);
         }
-    }
-
-
-    /**
-     * Return the governance action process step that is the first step in a governance action process.
-     *
-     * @param userId calling user
-     * @param processGUID unique identifier of the governance action process
-     * @param serviceSupportedZones supported zones for calling service
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return properties of the governance action process step
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public Relationship getFirstActionProcessStepLink(String       userId,
-                                                      String       processGUID,
-                                                      List<String> serviceSupportedZones,
-                                                      Date         effectiveTime,
-                                                      String       methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        final String processGUIDParameterName = "processGUID";
-
-        return this.getUniqueAttachmentLink(userId,
-                                            processGUID,
-                                            processGUIDParameterName,
-                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_GUID,
-                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
-                                            null,
-                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                            2,
-                                            false,
-                                            false,
-                                            serviceSupportedZones,
-                                            effectiveTime,
-                                            methodName);
     }
 
 
@@ -1057,17 +1031,17 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  processStepGUID,
-                                  guidParameterName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                  true,
-                                  false,
-                                  true,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     processStepGUID,
+                                     guidParameterName,
+                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                     true,
+                                     false,
+                                     true,
+                                     false,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         return repositoryHandler.getRelationshipsByType(userId,
                                                         processStepGUID,
@@ -1075,6 +1049,10 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                         OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
                                                         OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                         2,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         false,
                                                         false,
                                                         startFrom,

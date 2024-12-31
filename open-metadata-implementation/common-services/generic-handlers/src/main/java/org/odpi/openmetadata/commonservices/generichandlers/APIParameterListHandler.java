@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -550,9 +551,12 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                         OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
                                                         null,
                                                         null,
-                                                        null,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -617,10 +621,13 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                               false,
                                                               null,
                                                               null,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               supportedZones,
-                                                              null,
                                                               startFrom,
                                                               pageSize,
                                                               effectiveTime,
@@ -739,6 +746,10 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                                    null,
                                                                    OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
                                                                    0,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
                                                                    supportedZones,
@@ -866,6 +877,10 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                                        null,
                                                                        OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                                        0,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
                                                                        supportedZones,

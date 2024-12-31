@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -735,18 +734,17 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     fullEntity = entity;
 
-                    assetHandler.validateAnchorEntity(userId,
-                                                      fullEntity.getGUID(),
-                                                      fullEntity.getType().getTypeDefName(),
-                                                      fullEntity,
-                                                      guidParameterName,
-                                                      false,
-                                                      false,
-                                                      true,
-                                                      false,
-                                                      supportedZones,
-                                                      effectiveTime,
-                                                      methodName);
+                    assetHandler.validateAnchorForEntity(userId,
+                                                         fullEntity.getType().getTypeDefName(),
+                                                         fullEntity,
+                                                         guidParameterName,
+                                                         false,
+                                                         false,
+                                                         true,
+                                                         false,
+                                                         supportedZones,
+                                                         effectiveTime,
+                                                         methodName);
                 }
             }
             else if (entityProxy != null)

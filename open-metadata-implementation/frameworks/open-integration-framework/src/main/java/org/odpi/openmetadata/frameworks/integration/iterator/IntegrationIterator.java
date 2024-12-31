@@ -193,20 +193,24 @@ public abstract class IntegrationIterator
         {
             if (externalScopeGUID == null)
             {
-                correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(element.getElementGUID(),
-                                                                                      propertyHelper.getStringProperty(element.getElementGUID(),
+                correlationHeaders = openMetadataAccess.getExternalIdentifiers(element.getElementGUID(),
+                                                                               propertyHelper.getStringProperty(element.getElementGUID(),
                                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                                        element.getElementProperties(),
                                                                                                                        methodName),
-                                                                                      element.getElementGUID(),
-                                                                                      element.getType().getTypeName());
+                                                                               element.getElementGUID(),
+                                                                               element.getType().getTypeName(),
+                                                                               0,
+                                                                               0);
             }
             else
             {
-                correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(externalScopeGUID,
-                                                                                      externalScopeName,
-                                                                                      element.getElementGUID(),
-                                                                                      element.getType().getTypeName());
+                correlationHeaders = openMetadataAccess.getExternalIdentifiers(externalScopeGUID,
+                                                                               externalScopeName,
+                                                                               element.getElementGUID(),
+                                                                               element.getType().getTypeName(),
+                                                                               0,
+                                                                               0);
             }
 
             vendorProperties = openMetadataAccess.getVendorProperties(element.getElementGUID(),

@@ -338,15 +338,15 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         PersonContactDetails custodianContactDetails = null;
 
         int startFrom = 0;
-        List<RelatedMetadataElement> certifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(hospitalGUID,
+        RelatedMetadataElementList certifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(hospitalGUID,
                                                                                                                           1,
                                                                                                                           OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                                                                                                           startFrom,
                                                                                                                           governanceContext.getOpenMetadataStore().getMaxPagingSize());
 
-        while (certifications != null)
+        while ((certifications != null) && (certifications.getElementList() != null))
         {
-            for (RelatedMetadataElement certification : certifications)
+            for (RelatedMetadataElement certification : certifications.getElementList())
             {
                 if (certification != null)
                 {
@@ -387,14 +387,14 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                              * Now check it is the certification for the right project.
                              */
                             int projectStartFrom = 0;
-                            List<RelatedMetadataElement> projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
+                            RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certification.getElement().getElementGUID(),
                                                                                                                                         1,
                                                                                                                                         OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                                                                                                                         projectStartFrom,
                                                                                                                                         governanceContext.getMaxPageSize());
-                            while (projects != null)
+                            while ((projects != null) && (projects.getElementList() != null))
                             {
-                                for (RelatedMetadataElement project : projects)
+                                for (RelatedMetadataElement project : projects.getElementList())
                                 {
                                     if (project != null)
                                     {

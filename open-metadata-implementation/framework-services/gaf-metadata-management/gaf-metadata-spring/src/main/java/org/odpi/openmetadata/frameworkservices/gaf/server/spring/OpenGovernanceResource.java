@@ -499,7 +499,7 @@ public class OpenGovernanceResource
                                                                                 @PathVariable String userId,
                                                                                 @PathVariable String processGUID,
                                                                                 @RequestBody(required = false)
-                                                                                              EffectiveTimeRequestBody requestBody)
+                                                                                    ResultsRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessGraph(serverName, serviceURLMarker, userId, processGUID, requestBody);
     }

@@ -129,7 +129,7 @@ public class OMRSArchiveManager
      * @throws RepositoryErrorException there is a problem accessing the archive
      */
     public void addOpenMetadataArchive(OpenMetadataArchiveStore archiveStore,
-                                       String                               archiveSource) throws RepositoryErrorException
+                                       String                   archiveSource) throws RepositoryErrorException
     {
         this.processOpenMetadataArchiveStore(archiveStore, archiveSource, repositoryContentManager, localInstanceEventProcessor);
         this.openMetadataArchiveStores.add(archiveStore);

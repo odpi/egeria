@@ -31,6 +31,19 @@ public class TechnologyTypeSummary
     }
 
 
+    public TechnologyTypeSummary(TechnologyTypeSummary template)
+    {
+        if (template != null)
+        {
+            technologyTypeGUID = template.getTechnologyTypeGUID();
+            qualifiedName = template.getQualifiedName();
+            name = template.getName();
+            description = template.getDescription();
+            category = template.getCategory();
+        }
+    }
+
+
     public String getTechnologyTypeGUID()
     {
         return technologyTypeGUID;

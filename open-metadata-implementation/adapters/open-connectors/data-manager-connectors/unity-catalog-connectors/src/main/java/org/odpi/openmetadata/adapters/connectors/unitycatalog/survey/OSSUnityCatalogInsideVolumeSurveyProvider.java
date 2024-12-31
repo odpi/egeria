@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFolderAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -88,7 +88,7 @@ public class OSSUnityCatalogInsideVolumeSurveyProvider extends SurveyActionServi
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorTypeName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

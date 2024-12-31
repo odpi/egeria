@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 
 /**
  * Provides the definition for all properties defined in the open metadata types.
@@ -10,7 +11,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 public enum OpenMetadataProperty
 {
     /* ======================================================
-     * These values are from the repository element header
+     * These values are from the repository element header.
+     * They are used for searching properties and ordering results.
+     * Using them when adding attributes to elements will result in an error.
      */
 
     /**
@@ -27,6 +30,47 @@ public enum OpenMetadataProperty
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
     METADATA_COLLECTION_NAME("metadataCollectionName", DataType.STRING.getName(), "The unique name for the metadata collection that is the home for a metadata element.", "MyDataManagerForDatabase1", "25b43665-87e9-4637-9e6d-d0658ba26261"),
+
+    /**
+     * Category of metadata collection.
+     */
+    INSTANCE_PROVENANCE_TYPE("instanceProvenanceType", DataType.STRING.getName(), "Category of metadata collection.", "Local Cohort", "f12562a3-52b2-42d2-9126-011207d4af55"),
+
+    /**
+     * UserId that created this instance.
+     */
+    CREATED_BY("createdBy", DataType.STRING.getName(), "UserId that created this instance.", "peterprofile", "5c9c9c94-b738-4203-b592-527801877f07"),
+
+    /**
+     * UserId that updated this instance.
+     */
+    UPDATED_BY("updatedBy", DataType.STRING.getName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b"),
+
+    /**
+     * The date/time that this instance should start to be used (null means it can be used from creationTime).
+     */
+    EFFECTIVE_FROM_TIME("effectiveFromTime", DataType.DATE.getName(), "The date/time that this instance should start to be used (null means it can be used from creationTime).", null, "dfffede5-d593-4f53-a7a1-bf7ddf095ee3"),
+
+    /**
+     * The date/time that this instance should no longer be used.
+     */
+    EFFECTIVE_TO_TIME("effectiveToTime", DataType.DATE.getName(), "The date/time that this instance should no longer be used.", null, "c1de164e-b9bf-4d13-bac5-573a5078ef10"),
+
+    /**
+     * Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.
+     */
+    VERSION("version", DataType.LONG.getName(), "Version is a monotonically increasing indicator of the order that updates have been made to the instance. It is used by the open metadata repositories to ensure updates to reference copies of the instance are applied in the right sequence. The home open metadata repository (where the create an all subsequent updates happen) maintains the version number.", "1", "62dfdb89-5e99-449c-aafe-202d7e527414"),
+
+    /**
+     * Status of this instance. Values from the Instance Status enum. (use only for ordering results),
+     */
+    CURRENT_STATUS("currentStatus", DataType.STRING.getName(), "Status of this instance. Values from the Instance Status enum.", "Active", "de25c3fb-5061-4f3e-bd7d-29c1cd2c112f"),
+
+    /**
+     * Name of an open metadata type. (Use only for ordering results).
+     */
+    OPEN_METADATA_TYPE_NAME("openMetadataTypeName", DataType.STRING.getName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712"),
+
 
     /* ======================================================
      * These values are attributes defined in the type system.
@@ -297,6 +341,17 @@ public enum OpenMetadataProperty
      * The fully qualified physical location of the data store.
      */
     PATH_NAME("pathName", DataType.STRING.getName(), "The fully qualified physical location of the data store.", null, "34d24b66-12f1-437c-afd3-1f1ab3377472"),
+
+
+    /**
+     * The url path segments that identify this API operation.
+     */
+    PATH("path", DataType.STRING.getName(), "The url path segments that identify this API operation.", "/assets", "7f8c1ed7-90ac-404d-a1ab-08934e423ac5"),
+
+    /**
+     * The url path segments that identify this API operation.
+     */
+    COMMAND("command", DataType.STRING.getName(), "The REST command for this API operation.", "POST", "cc4a83dd-4a11-4873-8a16-e7c9232ad4cf"),
 
     /**
      * File type descriptor (or logical file type) typically extracted from the file name.
@@ -1325,7 +1380,7 @@ public enum OpenMetadataProperty
     /**
      * Name of the organization that this external source is from.
      */
-    SOURCE_ORGANIZATION("sourceOrganization", DataType.STRING.getName(), "Name of the organization that this external source is from.", null, ""),
+    ORGANIZATION("organization", DataType.STRING.getName(), "Name of the organization that this external source is from.", null, "a837b6b5-ca30-4662-a643-5477d793bd29"),
 
     /**
      * Network address used to connect to the endpoint.
@@ -1529,6 +1584,11 @@ public enum OpenMetadataProperty
     HEAD_COUNT("headCount", DataType.INT.getName(), "Number of people that can be appointed to the role.", null, "58e9c9c4-d5e3-4576-a2a7-9f459bcdd439"),
 
     /**
+     * What percentage of time is the appointee expected to devote to this role.
+     */
+    EXPECTED_TIME_ALLOCATION_PERCENT("expectedTimeAllocationPercent", DataType.INT.getName(), "What percentage of time is the appointee expected to devote to this role.", "50", "027c580d-c5c9-4dda-a7d3-79a9951a85ad"),
+
+    /**
      * Type of team, such as department.
      */
     TEAM_TYPE("teamType", DataType.STRING.getName(), "Type of team, such as division, or department.", null, "109d24af-b694-4f1e-90d2-ad3945596f2f"),
@@ -1571,7 +1631,24 @@ public enum OpenMetadataProperty
     /**
      * Breadth of responsibility or coverage.
      */
-    SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", null, "033b4f92-fa46-4151-a095-c0bae938de8f"),
+    SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE, "033b4f92-fa46-4151-a095-c0bae938de8f"),
+
+    /**
+     * The value to use.
+     */
+    PREFERRED_VALUE("preferredValue", DataType.STRING.getName(), "The value to use.", "Survey Resource", "b6258cbe-72f5-430b-ab62-6acb6c667e87"),
+
+    /**
+     * Descriptive name of the concept that this valid value applies to.
+     */
+    CATEGORY("category", DataType.STRING.getName(), "Descriptive name of the concept that this valid value applies to.", null, "385d7ca6-bcdd-43e4-925f-026a1043e37d"),
+
+    /**
+     * Is this valid value case-sensitive, or should the values match irrespective of case?
+     */
+    IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN.getName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174"),
+
+    IS_DEPRECATED("isDeprecated", DataType.BOOLEAN.getName(),"This element may still be used but is flagged that it will be removed at some point in the future.", "false", "bf8e38f8-d841-4c7b-990a-26d701713bd0"),
 
     /**
      * "Reason for the meeting and intended outcome.
@@ -1742,6 +1819,28 @@ public enum OpenMetadataProperty
      * Level of encryption used on the filesystem (if any).
      */
     ENCRYPTION("encryption", DataType.STRING.getName(), "Level of encryption used on the filesystem (if any).", null, "011e4f70-b914-4dc8-9dc0-f259014e6f63"),
+
+    /**
+     * Display label to use when displaying this lineage relationship in a lineage graph.
+     */
+    LABEL("label", DataType.STRING.getName(), "Display label to use when displaying this lineage relationship in a lineage graph.", "provision data", "767aead2-5b37-4607-ba09-77d805e17d35"),
+
+    /**
+     * Location of the call in the implementation.
+     */
+    LINE_NUMBER("lineNumber", DataType.STRING.getName(), "Location of the call in the implementation.", "21", "942f07c9-54ba-44c4-8b9b-78753bc4fef2"),
+
+    /**
+     * Function that must be true to travel down this control flow.
+     */
+    GUARD( "guard", DataType.STRING.getName(), "Function, or value that must be true to travel down this control flow.", "x>4", "ca2d3fd9-3c6a-4771-9e9c-7bb623f62ba2"),
+
+    /**
+     * The number of hops along the lineage graph to the ultimate source organized by type of element.
+     */
+    HOPS("hops", DataType.MAP_STRING_INT.getName(), "The number of hops along the lineage graph to the ultimate source organized by type of element.", null, "4bcc1f8e-ebef-4a6e-adbe-65d3932104e7"),
+
+
     ;
 
 

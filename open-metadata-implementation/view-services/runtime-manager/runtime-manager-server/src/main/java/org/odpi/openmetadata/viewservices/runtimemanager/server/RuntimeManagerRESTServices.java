@@ -886,7 +886,7 @@ public class RuntimeManagerRESTServices extends TokenController
                                        String serverGUID,
                                        String governanceEngineName)
     {
-        final String methodName = "getGovernanceEngineSummaries";
+        final String methodName = "refreshConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -910,6 +910,67 @@ public class RuntimeManagerRESTServices extends TokenController
                 omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.refreshEngineConfig(governanceEngineName);
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param serverGUID unique identifier of the server to call
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  GovernanceEngineException there was a problem detected by the governance engine.
+     */
+    public  VoidResponse refreshConfig(String serverName,
+                                       String serverGUID)
+    {
+        final String methodName = "refreshConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID, auditLog);
+
+            if (connector instanceof EngineHostConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+                omagServerConnector.refreshEngineConfig();
                 omagServerConnector.disconnect();
             }
             else

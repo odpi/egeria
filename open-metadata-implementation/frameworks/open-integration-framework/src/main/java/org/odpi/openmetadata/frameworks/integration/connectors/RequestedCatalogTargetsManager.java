@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
@@ -95,8 +94,8 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param catalogTargetIntegrator subclass of connector implementation
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
-    List<RequestedCatalogTarget> refreshKnownCatalogTargets(IntegrationContext      integrationContext,
-                                                            CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
+    public List<RequestedCatalogTarget> refreshKnownCatalogTargets(IntegrationContext integrationContext,
+                                                                   CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
     {
         final String methodName = "refreshKnownCatalogTargets";
 

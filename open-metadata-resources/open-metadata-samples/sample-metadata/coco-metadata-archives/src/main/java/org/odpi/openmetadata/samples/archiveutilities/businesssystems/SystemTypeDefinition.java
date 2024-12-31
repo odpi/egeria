@@ -139,7 +139,7 @@ public enum SystemTypeDefinition
                 "UI server supplying UI code (javascript/typescript) to the browser.",
                 "These servers are part of a middleware deployment.",
                 null,
-                "null"),
+                null),
 
     /**
      * cloud-saas-service - Application or service hosted by an external cloud provider.

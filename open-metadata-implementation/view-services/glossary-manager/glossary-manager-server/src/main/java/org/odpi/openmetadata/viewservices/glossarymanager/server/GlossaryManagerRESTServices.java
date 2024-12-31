@@ -35,6 +35,7 @@ import org.odpi.openmetadata.viewservices.glossarymanager.rest.TemplateRequestBo
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 /**
@@ -3315,7 +3316,11 @@ public class GlossaryManagerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElement(handler.undoGlossaryTermUpdate(userId,
+                                                                   glossaryTermGUID,
+                                                                   new Date(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
             }
         }
         catch (Exception error)

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionMemberConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
@@ -23,9 +24,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,21 +136,25 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
-                                                                                                          parentGUID,
-                                                                                                          1,
-                                                                                                          OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                                                          false,
-                                                                                                          false,
-                                                                                                          new Date(),
-                                                                                                          startFrom,
-                                                                                                          pageSize);
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                        parentGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                        false,
+                                                                                                        false,
+                                                                                                        new Date(),
+                                                                                                        startFrom,
+                                                                                                        pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<CollectionElement> filteredCollections = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.COLLECTION.typeName))
                 {
@@ -302,6 +304,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
                                                                                                                 OpenMetadataType.COLLECTION.typeName,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
+                                                                                                                null,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 effectiveTime,
@@ -443,6 +449,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                    collectionGUID,
                                                                                                    false,
                                                                                                    false,
+                                                                                                   null,
                                                                                                    new Date());
 
         if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION.typeName)))
@@ -821,6 +828,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                           parentGUID,
                                                                                           false,
                                                                                           false,
+                                                                                          null,
                                                                                           new Date());
 
             if (parent != null)
@@ -948,21 +956,25 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           collectionGUID,
                                                                                                           1,
                                                                                                           OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
                                                                                                           false,
                                                                                                           false,
                                                                                                           new Date(),
                                                                                                           startFrom,
                                                                                                           pageSize);
 
-        if (linkedResources != null)
+        if ((linkedResources != null) && (linkedResources.getElementList() != null))
         {
             List<CollectionMember> collectionMembers = new ArrayList<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : linkedResources)
+            for (RelatedMetadataElement relatedMetadataElement : linkedResources.getElementList())
             {
                 collectionMembers.add(collectionMemberConverter.getNewBean(collectionMemberBeanClass, relatedMetadataElement, methodName));
             }
@@ -995,19 +1007,23 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        List<OpenMetadataRelationship> linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                 collectionGUID,
-                                                                                                                 elementGUID,
-                                                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                                 false,
-                                                                                                                 false,
-                                                                                                                 new Date(),
-                                                                                                                 0,
-                                                                                                                 0);
+        OpenMetadataRelationshipList linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
+                                                                                                               collectionGUID,
+                                                                                                               elementGUID,
+                                                                                                               OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                               null,
+                                                                                                               null,
+                                                                                                               null,
+                                                                                                               null,
+                                                                                                               false,
+                                                                                                               false,
+                                                                                                               new Date(),
+                                                                                                               0,
+                                                                                                               0);
 
         if (linkedResources != null)
         {
-            for (OpenMetadataRelationship relatedMetadataElement : linkedResources)
+            for (OpenMetadataRelationship relatedMetadataElement : linkedResources.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {

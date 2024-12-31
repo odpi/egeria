@@ -1466,21 +1466,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            /*
-             * We have seen duplicate instances coming out of XTDB - the map de-duplicates.
-             */
-            Map<String, EntityDetail>   resultList = new HashMap<>();
+            List<EntityDetail>   resultList = new ArrayList<>();
 
             for (EntityDetail   entity : instanceList)
             {
                 if (entity != null)
                 {
-                    setLocalProvenanceThroughoutEntity(entity);
-                    resultList.put(entity.getGUID(), entity);
+                    resultList.add(entity);
                 }
             }
 
-            return new ArrayList<>(resultList.values());
+            return resultList;
         }
     }
 
@@ -1499,21 +1495,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            /*
-             * We have seen duplicate instances coming out of XTDB - the map de-duplicates.
-             */
-            Map<String, Relationship> resultList = new HashMap<>();
+            List<Relationship> resultList = new ArrayList<>();
 
             for (Relationship   relationship : instanceList)
             {
                 if (relationship != null)
                 {
                     setLocalProvenanceThroughoutRelationship(relationship);
-                    resultList.put(relationship.getGUID(), relationship);
+                    resultList.add(relationship);
                 }
             }
 
-            return new ArrayList<>(resultList.values());
+            return resultList;
         }
     }
 

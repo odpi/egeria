@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,11 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenAPISpecification
 {
-    private String                              openapi = null;
-    private OpenAPIInfo                         info = null;
-    private List<OpenAPIServer>                 servers = null;
-    private List<OpenAPITag>                    tags = null;
-    private Map<String, OpenAPIPathDescription> paths = null;
+    private String                                     openapi      = null;
+    private OpenAPIExternalDocs                        externalDocs = null;
+    private OpenAPIInfo                                info         = null;
+    private List<OpenAPIServer>                        servers      = null;
+    private List<OpenAPITag>                           tags         = null;
+    private Map<String, Map<String, OpenAPIOperation>> paths        = null;
 
     public OpenAPISpecification()
     {
@@ -44,6 +46,15 @@ public class OpenAPISpecification
         this.openapi = openapi;
     }
 
+    public OpenAPIExternalDocs getExternalDocs()
+    {
+        return externalDocs;
+    }
+
+    public void setExternalDocs(OpenAPIExternalDocs externalDocs)
+    {
+        this.externalDocs = externalDocs;
+    }
 
     public OpenAPIInfo getInfo()
     {
@@ -81,27 +92,41 @@ public class OpenAPISpecification
     }
 
 
-    public Map<String, OpenAPIPathDescription> getPaths()
+    public Map<String, Map<String, OpenAPIOperation>> getPaths()
     {
         return paths;
     }
 
-
-    public void setPaths(Map<String, OpenAPIPathDescription> paths)
+    public void setPaths(Map<String, Map<String, OpenAPIOperation>> paths)
     {
         this.paths = paths;
     }
-
 
     @Override
     public String toString()
     {
         return "OpenAPISpecification{" +
-                       "openapi='" + openapi + '\'' +
-                       ", info=" + info +
-                       ", servers=" + servers +
-                       ", tags=" + tags +
-                       ", paths=" + paths +
-                       '}';
+                "openapi='" + openapi + '\'' +
+                ", externalDocs=" + externalDocs +
+                ", info=" + info +
+                ", servers=" + servers +
+                ", tags=" + tags +
+                ", paths=" + paths +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        OpenAPISpecification that = (OpenAPISpecification) objectToCompare;
+        return Objects.equals(openapi, that.openapi) && Objects.equals(externalDocs, that.externalDocs) && Objects.equals(info, that.info) && Objects.equals(servers, that.servers) && Objects.equals(tags, that.tags) && Objects.equals(paths, that.paths);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(openapi, externalDocs, info, servers, tags, paths);
     }
 }

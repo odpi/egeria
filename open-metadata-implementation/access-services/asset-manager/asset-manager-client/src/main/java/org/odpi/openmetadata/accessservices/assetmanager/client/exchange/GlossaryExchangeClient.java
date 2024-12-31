@@ -21,6 +21,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryExternalIdentifiersRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.HistoryRequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -1877,7 +1879,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                String                       glossaryGUID,
                                                ExternalIdentifierProperties externalIdentifierProperties,
                                                GlossaryTermProperties       glossaryTermProperties,
-                                               GlossaryTermStatus initialStatus,
+                                               GlossaryTermStatus           initialStatus,
                                                Date                         effectiveTime,
                                                boolean                      forLineage,
                                                boolean                      forDuplicateProcessing) throws InvalidParameterException, 
@@ -3855,9 +3857,9 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        HistoryRequestBody requestBody = new HistoryRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        HistoryExternalIdentifiersRequestBody requestBody = new HistoryExternalIdentifiersRequestBody();
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
         requestBody.setFromTime(fromTime);
         requestBody.setToTime(toTime);
         requestBody.setEffectiveTime(effectiveTime);

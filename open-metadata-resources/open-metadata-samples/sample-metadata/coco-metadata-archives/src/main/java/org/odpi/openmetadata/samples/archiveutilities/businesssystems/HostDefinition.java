@@ -14,6 +14,20 @@ import java.util.List;
 public enum HostDefinition
 {
     /**
+     * ams03 - Amsterdam data centre standard machine 02.
+     */
+    COCO_MFG_PLANNING_AMS_HOST("ams03",
+                              "Amsterdam data centre standard machine 03.",
+                              HostTypeDefinition.BARE_METAL,
+                              FacilityDefinition.AMSTERDAM_DC,
+                              "https://ams03.coco.com",
+                              "Ubuntu",
+                              "23.04",
+                              null,
+                              new String[]{"machines"},
+                              0),
+
+    /**
      * ams45 - Amsterdam data centre standard machine 45.
      */
     COCO_PROCUREMENT_AMS_HOST("ams45",
@@ -96,6 +110,20 @@ public enum HostDefinition
                         null,
                         new String[]{"machines"},
                         0),
+
+    /**
+     * ams04 - Amsterdam data centre standard machine 04.
+     */
+    COCO_SUS_AMS_HOST("ams04",
+                      "Amsterdam data centre standard machine 04.",
+                      HostTypeDefinition.BARE_METAL,
+                      FacilityDefinition.AMSTERDAM_DC,
+                      "https://ams04.coco.com",
+                      "Ubuntu",
+                      "23.04",
+                      null,
+                      new String[]{"machines"},
+                      500),
 
     /**
      * ams02 - Amsterdam data centre standard machine 02.

@@ -13,8 +13,9 @@ import java.util.Objects;
  */
 public class AssetGraph extends AssetElement
 {
-    List<MetadataElementSummary> anchoredElements = null;
-    List<MetadataRelationship>   relationships    = null;
+    private List<MetadataElementSummary> anchoredElements = null;
+    private List<MetadataRelationship>   relationships    = null;
+    private String                       mermaidGraph     = null;
 
     /**
      * Default constructor
@@ -48,6 +49,7 @@ public class AssetGraph extends AssetElement
         {
             anchoredElements = template.getAnchoredElements();
             relationships = template.getRelationships();
+            mermaidGraph = getMermaidGraph();
         }
     }
 
@@ -75,7 +77,7 @@ public class AssetGraph extends AssetElement
 
 
     /**
-     * Return the relationships that connector the anchored elements to the asset, to each other,
+     * Return the relationships that connect the anchored elements to the asset, to each other,
      * and to other open metadata elements.
      *
      * @return relationships
@@ -87,7 +89,7 @@ public class AssetGraph extends AssetElement
 
 
     /**
-     * Set up the relationships that connector the anchored elements to the asset, to each other,
+     * Set up the relationships that connect the anchored elements to the asset, to each other,
      * and to other open metadata elements.
      *
      * @param relationships relationships
@@ -95,6 +97,28 @@ public class AssetGraph extends AssetElement
     public void setRelationships(List<MetadataRelationship> relationships)
     {
         this.relationships = relationships;
+    }
+
+
+    /**
+     * Return the mermaid string used to render a graph.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidGraph string in Mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -109,6 +133,7 @@ public class AssetGraph extends AssetElement
         return "AssetGraph{" +
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
+                ", mermaidGraph=" + mermaidGraph +
                 "} " + super.toString();
     }
 
@@ -126,7 +151,9 @@ public class AssetGraph extends AssetElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         AssetGraph that = (AssetGraph) objectToCompare;
-        return Objects.equals(anchoredElements, that.anchoredElements) && Objects.equals(relationships, that.relationships);
+        return Objects.equals(anchoredElements, that.anchoredElements) &&
+                Objects.equals(relationships, that.relationships) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 

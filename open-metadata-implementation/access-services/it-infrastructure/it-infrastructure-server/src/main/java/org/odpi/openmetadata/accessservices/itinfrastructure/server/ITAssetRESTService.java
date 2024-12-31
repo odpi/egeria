@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -1400,7 +1401,7 @@ public class ITAssetRESTService
                                                                    String                   assetTypeName,
                                                                    int                      startFrom,
                                                                    int                      pageSize,
-                                                                   EffectiveTimeRequestBody requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getAssetsForInfrastructureManager";
         final String infrastructureManagerGUIDParameterName = "infrastructureManagerGUID";
@@ -1437,6 +1438,10 @@ public class ITAssetRESTService
                                                                             null,
                                                                             null,
                                                                             2,
+                                                                            null,
+                                                                            null,
+                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                            null,
                                                                             false,
                                                                             false,
                                                                             startFrom,
@@ -1482,7 +1487,7 @@ public class ITAssetRESTService
                                                String                   userId,
                                                String                   assetTypeName,
                                                String                   guid,
-                                               EffectiveTimeRequestBody requestBody)
+                                               ResultsRequestBody requestBody)
     {
         final String methodName = "getAssetByGUID";
         final String guidParameterName = "guid";
@@ -1566,7 +1571,7 @@ public class ITAssetRESTService
                                                             int                      startingEnd,
                                                             int                      startFrom,
                                                             int                      pageSize,
-                                                            EffectiveTimeRequestBody requestBody)
+                                                            ResultsRequestBody requestBody)
     {
         // todo
         return null;
@@ -1602,7 +1607,7 @@ public class ITAssetRESTService
                                                   int                      startingEnd,
                                                   int                      startFrom,
                                                   int                      pageSize,
-                                                  EffectiveTimeRequestBody requestBody)
+                                                  ResultsRequestBody requestBody)
     {
         final String methodName = "getRelatedAssets";
         final String guidParameterName = "assetGUID";
@@ -1821,6 +1826,7 @@ public class ITAssetRESTService
                                                                requestBody.getProperties().getEffectiveFrom(),
                                                                requestBody.getProperties().getEffectiveTo(),
                                                                requestBody.getProperties().getQualifiedName(),
+                                                               requestBody.getProperties().getLabel(),
                                                                requestBody.getProperties().getDescription(),
                                                                requestBody.getProperties().getFormula(),
                                                                false,
@@ -1840,6 +1846,7 @@ public class ITAssetRESTService
                                                                requestBody.getProperties().getEffectiveFrom(),
                                                                requestBody.getProperties().getEffectiveTo(),
                                                                requestBody.getProperties().getQualifiedName(),
+                                                               requestBody.getProperties().getLabel(),
                                                                requestBody.getProperties().getDescription(),
                                                                requestBody.getProperties().getFormula(),
                                                                false,
@@ -1857,6 +1864,7 @@ public class ITAssetRESTService
                                                            dataSupplierGUIDParameterName,
                                                            dataConsumerGUID,
                                                            dataConsumerGUIDParameterName,
+                                                           null,
                                                            null,
                                                            null,
                                                            null,
@@ -2013,6 +2021,7 @@ public class ITAssetRESTService
                                            requestBody.getProperties().getEffectiveFrom(),
                                            requestBody.getProperties().getEffectiveTo(),
                                            requestBody.getProperties().getQualifiedName(),
+                                           requestBody.getProperties().getLabel(),
                                            requestBody.getProperties().getDescription(),
                                            requestBody.getProperties().getFormula(),
                                            false,
@@ -2027,6 +2036,7 @@ public class ITAssetRESTService
                                            requestBody.getExternalSourceName(),
                                            dataFlowGUID,
                                            dataFlowGUIDParameterName,
+                                           null,
                                            null,
                                            null,
                                            null,
@@ -2147,7 +2157,7 @@ public class ITAssetRESTService
                                                          String                   dataSupplierGUID,
                                                          int                      startFrom,
                                                          int                      pageSize,
-                                                         EffectiveTimeRequestBody requestBody)
+                                                         ResultsRequestBody requestBody)
     {
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
         final String methodName = "getDataFlowConsumers";
@@ -2224,7 +2234,7 @@ public class ITAssetRESTService
                                                          String                   dataConsumerGUID,
                                                          int                      startFrom,
                                                          int                      pageSize,
-                                                         EffectiveTimeRequestBody requestBody)
+                                                         ResultsRequestBody requestBody)
     {
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
         final String methodName = "getDataFlowSuppliers";
@@ -2339,6 +2349,7 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getEffectiveFrom(),
                                                                   requestBody.getProperties().getEffectiveTo(),
                                                                   requestBody.getProperties().getQualifiedName(),
+                                                                  requestBody.getProperties().getLabel(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getGuard(),
                                                                   false,
@@ -2358,6 +2369,7 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getEffectiveFrom(),
                                                                   requestBody.getProperties().getEffectiveTo(),
                                                                   requestBody.getProperties().getQualifiedName(),
+                                                                  requestBody.getProperties().getLabel(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getGuard(),
                                                                   false,
@@ -2375,6 +2387,7 @@ public class ITAssetRESTService
                                                               currentStepGUIDParameterName,
                                                               nextStepGUID,
                                                               nextStepGUIDParameterName,
+                                                              null,
                                                               null,
                                                               null,
                                                               null,
@@ -2529,6 +2542,7 @@ public class ITAssetRESTService
                                           requestBody.getProperties().getEffectiveFrom(),
                                           requestBody.getProperties().getEffectiveTo(),
                                           requestBody.getProperties().getQualifiedName(),
+                                          requestBody.getProperties().getLabel(),
                                           requestBody.getProperties().getDescription(),
                                           requestBody.getProperties().getGuard(),
                                           false,
@@ -2645,7 +2659,7 @@ public class ITAssetRESTService
                                                                String                   currentStepGUID,
                                                                int                      startFrom,
                                                                int                      pageSize,
-                                                               EffectiveTimeRequestBody requestBody)
+                                                               ResultsRequestBody requestBody)
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
         final String methodName = "getControlFlowNextSteps";
@@ -2722,7 +2736,7 @@ public class ITAssetRESTService
                                                                    String                   currentStepGUID,
                                                                    int                      startFrom,
                                                                    int                      pageSize,
-                                                                   EffectiveTimeRequestBody requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
         final String methodName = "getControlFlowPreviousSteps";
@@ -2837,6 +2851,7 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getEffectiveFrom(),
                                                                   requestBody.getProperties().getEffectiveTo(),
                                                                   requestBody.getProperties().getQualifiedName(),
+                                                                  requestBody.getProperties().getLabel(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getFormula(),
                                                                   false,
@@ -2856,6 +2871,7 @@ public class ITAssetRESTService
                                                                   requestBody.getProperties().getEffectiveFrom(),
                                                                   requestBody.getProperties().getEffectiveTo(),
                                                                   requestBody.getProperties().getQualifiedName(),
+                                                                  requestBody.getProperties().getLabel(),
                                                                   requestBody.getProperties().getDescription(),
                                                                   requestBody.getProperties().getFormula(),
                                                                   false,
@@ -2873,6 +2889,7 @@ public class ITAssetRESTService
                                                               callerGUIDParameterName,
                                                               calledGUID,
                                                               calledGUIDParameterName,
+                                                              null,
                                                               null,
                                                               null,
                                                               null,
@@ -3027,6 +3044,7 @@ public class ITAssetRESTService
                                           requestBody.getProperties().getEffectiveFrom(),
                                           requestBody.getProperties().getEffectiveTo(),
                                           requestBody.getProperties().getQualifiedName(),
+                                          requestBody.getProperties().getLabel(),
                                           requestBody.getProperties().getDescription(),
                                           requestBody.getProperties().getFormula(),
                                           false,
@@ -3143,7 +3161,7 @@ public class ITAssetRESTService
                                                         String                   callerGUID,
                                                         int                      startFrom,
                                                         int                      pageSize,
-                                                        EffectiveTimeRequestBody requestBody)
+                                                        ResultsRequestBody requestBody)
     {
         final String callerGUIDParameterName = "callerGUID";
         final String methodName = "getProcessCalled";
@@ -3220,7 +3238,7 @@ public class ITAssetRESTService
                                                          String                   calledGUID,
                                                          int                      startFrom,
                                                          int                      pageSize,
-                                                         EffectiveTimeRequestBody requestBody)
+                                                         ResultsRequestBody requestBody)
     {
         final String callerGUIDParameterName = "callerGUID";
         final String methodName = "getProcessCallers";
@@ -3329,6 +3347,7 @@ public class ITAssetRESTService
                                                 destinationElementGUID,
                                                 destinationElementGUIDParameterName,
                                                 requestBody.getProperties().getQualifiedName(),
+                                                requestBody.getProperties().getLabel(),
                                                 requestBody.getProperties().getDescription(),
                                                 requestBody.getProperties().getEffectiveFrom(),
                                                 requestBody.getProperties().getEffectiveTo(),
@@ -3348,6 +3367,7 @@ public class ITAssetRESTService
                                                 null,
                                                 null,
                                                 null,
+                                                null,
                                                 false,
                                                 false,
                                                 requestBody.getEffectiveTime(),
@@ -3361,6 +3381,7 @@ public class ITAssetRESTService
                                             sourceElementGUIDParameterName,
                                             destinationElementGUID,
                                             destinationElementGUIDParameterName,
+                                            null,
                                             null,
                                             null,
                                             null,
@@ -3550,7 +3571,7 @@ public class ITAssetRESTService
                                                                         String                   sourceElementGUID,
                                                                         int                      startFrom,
                                                                         int                      pageSize,
-                                                                        EffectiveTimeRequestBody requestBody)
+                                                                        ResultsRequestBody requestBody)
     {
         final String sourceElementGUIDParameterName = "sourceElementGUID";
         final String methodName = "getDestinationLineageMappings";
@@ -3627,7 +3648,7 @@ public class ITAssetRESTService
                                                                    String                   destinationElementGUID,
                                                                    int                      startFrom,
                                                                    int                      pageSize,
-                                                                   EffectiveTimeRequestBody requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         final String destinationElementGUIDParameterName = "destinationElementGUID";
         final String methodName = "getSourceLineageMappings";

@@ -22,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -1402,6 +1403,10 @@ public class SchemaManagerRESTServices
                                                                           null,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           1,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           0,
@@ -1423,6 +1428,10 @@ public class SchemaManagerRESTServices
                                                            null,
                                                            OpenMetadataType.PORT_TYPE_NAME,
                                                            1,
+                                                           null,
+                                                           null,
+                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                           null,
                                                            false,
                                                            false,
                                                            0,

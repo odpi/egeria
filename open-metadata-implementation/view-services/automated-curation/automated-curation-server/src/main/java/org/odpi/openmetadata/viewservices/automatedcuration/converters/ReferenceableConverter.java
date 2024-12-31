@@ -60,14 +60,12 @@ public class ReferenceableConverter<B> extends AutomatedCurationConverterBase<B>
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
 
-                ElementProperties elementProperties;
-
                 /*
                  * The initial set of values come from the openMetadataElement.
                  */
                 if (openMetadataElement != null)
                 {
-                    elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
+                    ElementProperties elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
 
                     properties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));

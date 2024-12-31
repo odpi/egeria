@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.commonservices.mermaid.AssetGraphMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.AssetLineageGraphMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
@@ -21,10 +24,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -45,6 +46,7 @@ public class AssetConsumerRESTServices
 
     private static final RESTCallLogger                 restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
                                                                                                   instanceHandler.getServiceName());
+
 
     /**
      * Default constructor
@@ -153,8 +155,8 @@ public class AssetConsumerRESTServices
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
-     * @param userId the userId of the requesting user.
-     * @param assetGUID  unique name for the connection.
+     * @param userId the userId of the requesting user
+     * @param assetGUID  unique identifier for the asset
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -201,6 +203,10 @@ public class AssetConsumerRESTServices
                                                                                                       asset.getElementHeader().getGUID(),
                                                                                                       parameterName,
                                                                                                       OpenMetadataType.ASSET.typeName,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                      null,
                                                                                                       false,
                                                                                                       false,
                                                                                                       new Date(),
@@ -250,7 +256,7 @@ public class AssetConsumerRESTServices
                                                                                                  searchClassifications,
                                                                                                  null,
                                                                                                  null,
-                                                                                                 null,
+                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
                                                                                                  false,
                                                                                                  false,
                                                                                                  startFrom,
@@ -273,6 +279,10 @@ public class AssetConsumerRESTServices
                                                                                               metadataElement.getElementHeader().getGUID(),
                                                                                               anchoredElementParameterName,
                                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                              null,
+                                                                                              null,
+                                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                                              null,
                                                                                               false,
                                                                                               false,
                                                                                               new Date(),
@@ -312,6 +322,9 @@ public class AssetConsumerRESTServices
                     assetGraph.setRelationships(metadataRelationships);
                 }
 
+                AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
+                assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
                 response.setAssetGraph(assetGraph);
             }
         }
@@ -322,6 +335,656 @@ public class AssetConsumerRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+     * retrieved both from the asset, and the anchored schema elements
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the userId of the requesting user
+     * @param assetGUID  unique identifier for the asset
+     * @param relationshipTypes list of relationship type names to use in the search
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetLineageGraphResponse getAssetLineageGraph(String       serverName,
+                                                          String       userId,
+                                                          String       assetGUID,
+                                                          List<String> relationshipTypes,
+                                                          int          startFrom,
+                                                          int          pageSize)
+    {
+        final String methodName = "getAssetLineageGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetLineageGraphResponse response = new AssetLineageGraphResponse();
+        AuditLog                  auditLog = null;
+
+        try
+        {
+            AssetHandler<AssetElement>                   assetHandler                = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataRelationship>   metadataRelationshipHandler = instanceHandler.getMetadataRelationshipHandler(userId, serverName, methodName);
+
+            List<String> lineageRelationshipTypeNames = getLineageRelationshipTypeNames(relationshipTypes);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            List<AssetLineageGraphNode>         linkedAssets         = new ArrayList<>();
+            List<AssetLineageGraphRelationship> lineageRelationships = new ArrayList<>();
+            Set<String> processedAssets = new HashSet<>();
+
+            this.getAssetLineageGraphNodes(userId,
+                                           assetGUID,
+                                           lineageRelationshipTypeNames,
+                                           startFrom,
+                                           pageSize,
+                                           linkedAssets,
+                                           lineageRelationships,
+                                           processedAssets,
+                                           assetHandler,
+                                           metadataRelationshipHandler.getConverter());
+
+            if (! linkedAssets.isEmpty())
+            {
+                AssetLineageGraph assetLineageGraph = new AssetLineageGraph(linkedAssets.get(0));
+
+                if (linkedAssets.size() > 1)
+                {
+                    assetLineageGraph.setLinkedAssets(new ArrayList<>(linkedAssets.subList(1, linkedAssets.size())));
+                }
+
+                assetLineageGraph.setLineageRelationships(this.deDupLineageRelationships(lineageRelationships));
+
+                AssetLineageGraphMermaidGraphBuilder graphBuilder = new AssetLineageGraphMermaidGraphBuilder(assetLineageGraph);
+                assetLineageGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+                response.setAssetLineageGraph(assetLineageGraph);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove any duplicated relationships.
+     *
+     * @param lineageRelationships derived relationships
+     * @return deduplicated list
+     */
+    private List<AssetLineageGraphRelationship> deDupLineageRelationships(List<AssetLineageGraphRelationship> lineageRelationships)
+    {
+        Map<String, AssetLineageGraphRelationship> relationshipMap = new HashMap<>();
+
+        for (AssetLineageGraphRelationship lineageRelationship : lineageRelationships)
+        {
+            relationshipMap.put(lineageRelationship.getEnd1AssetGUID() + lineageRelationship.getEnd2AssetGUID(),
+                                lineageRelationship);
+        }
+
+        return new ArrayList<>(relationshipMap.values());
+    }
+
+
+    /**
+     * Construct a list of the lineage relationship types to search for,
+     *
+     * @param relationshipTypes relationship type names supplied by the user.
+     * @return list of relationship type names
+     */
+    private List<String> getLineageRelationshipTypeNames(List<String> relationshipTypes)
+    {
+        List<String> lineageRelationshipTypeNames = relationshipTypes;
+
+        if ((lineageRelationshipTypeNames == null) || (lineageRelationshipTypeNames.isEmpty()))
+        {
+            lineageRelationshipTypeNames = new ArrayList<>();
+
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_FLOW.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.CONTROL_FLOW.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.LINEAGE_MAPPING.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.PROCESS_CALL.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME);
+            lineageRelationshipTypeNames.add(OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName);
+        }
+        return lineageRelationshipTypeNames;
+    }
+
+
+    /**
+     * Retrieve the asset and its lineage relationships.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param startFrom where to start from in retrieval
+     * @param pageSize maximum number of elements to receive
+     * @param assetHandler handler for retrieving entities/relationships
+     * @param linkedAssets set of assets that are upstream of this asset
+     * @param lineageRelationships relationships that link the assets together in the lineage graph
+     * @param lineageRelationshipTypeNames list of requested type names
+     * @param processedAssets list of assets covered so far
+     * @param converter relationship converter
+     * @throws InvalidParameterException invalid parameter - not expected
+     * @throws PropertyServerException problem accessing the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    void getAssetLineageGraphNodes(String                                                userId,
+                                   String                                                assetGUID,
+                                   List<String>                                          lineageRelationshipTypeNames,
+                                   int                                                   startFrom,
+                                   int                                                   pageSize,
+                                   List<AssetLineageGraphNode>                           linkedAssets,
+                                   List<AssetLineageGraphRelationship>                   lineageRelationships,
+                                   Set<String>                                           processedAssets,
+                                   AssetHandler<AssetElement>                            assetHandler,
+                                   OpenMetadataAPIGenericConverter<MetadataRelationship> converter) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        Map<String, List<String>> upstreamAssets   = new HashMap<>();
+        Map<String, List<String>> downstreamAssets = new HashMap<>();
+
+        AssetLineageGraphNode asset = this.getAssetLineageGraphNode(userId,
+                                                                    assetGUID,
+                                                                    lineageRelationshipTypeNames,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    upstreamAssets,
+                                                                    downstreamAssets,
+                                                                    assetHandler,
+                                                                    converter);
+
+        if (asset != null)
+        {
+            processedAssets.add(asset.getElementHeader().getGUID());
+            linkedAssets.add(asset);
+
+            /*
+             * Process upstream assets
+             */
+            for (String linkedAssetGUID : upstreamAssets.keySet())
+            {
+                AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
+
+                assetLineageGraphRelationship.setRelationshipTypes(upstreamAssets.get(linkedAssetGUID));
+                assetLineageGraphRelationship.setEnd1AssetGUID(linkedAssetGUID);
+                assetLineageGraphRelationship.setEnd2AssetGUID(asset.getElementHeader().getGUID());
+
+                lineageRelationships.add(assetLineageGraphRelationship);
+
+                if (! processedAssets.contains(linkedAssetGUID))
+                {
+                    this.getAssetLineageGraphNodes(userId,
+                                                   linkedAssetGUID,
+                                                   lineageRelationshipTypeNames,
+                                                   startFrom,
+                                                   pageSize,
+                                                   linkedAssets,
+                                                   lineageRelationships,
+                                                   processedAssets,
+                                                   assetHandler,
+                                                   converter);
+                }
+            }
+
+            /*
+             * Process downstream assets
+             */
+            for (String linkedAssetGUID : downstreamAssets.keySet())
+            {
+                AssetLineageGraphRelationship assetLineageGraphRelationship = new AssetLineageGraphRelationship();
+
+                assetLineageGraphRelationship.setRelationshipTypes(downstreamAssets.get(linkedAssetGUID));
+                assetLineageGraphRelationship.setEnd1AssetGUID(asset.getElementHeader().getGUID());
+                assetLineageGraphRelationship.setEnd2AssetGUID(linkedAssetGUID);
+
+                lineageRelationships.add(assetLineageGraphRelationship);
+
+                if (! processedAssets.contains(linkedAssetGUID))
+                {
+                    this.getAssetLineageGraphNodes(userId,
+                                                   linkedAssetGUID,
+                                                   lineageRelationshipTypeNames,
+                                                   startFrom,
+                                                   pageSize,
+                                                   linkedAssets,
+                                                   lineageRelationships,
+                                                   processedAssets,
+                                                   assetHandler,
+                                                   converter);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Retrieve the asset and its lineage relationships.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param lineageRelationshipTypeNames list of requested type names
+     * @param startFrom where to start from in retrieval
+     * @param pageSize maximum number of elements to receive
+     * @param upstreamAssets set of assets that are upstream of this asset
+     * @param downstreamAssets set of assets that are downstream of this asset
+     * @param assetHandler handler for retrieving entities/relationships
+     * @param converter relationship converter
+     * @return asset lineage node
+     * @throws InvalidParameterException invalid parameter - not expected
+     * @throws PropertyServerException problem accessing the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    AssetLineageGraphNode getAssetLineageGraphNode(String                                                userId,
+                                                   String                                                assetGUID,
+                                                   List<String>                                          lineageRelationshipTypeNames,
+                                                   int                                                   startFrom,
+                                                   int                                                   pageSize,
+                                                   Map<String, List<String>>                             upstreamAssets,
+                                                   Map<String, List<String>>                             downstreamAssets,
+                                                   AssetHandler<AssetElement>                            assetHandler,
+                                                   OpenMetadataAPIGenericConverter<MetadataRelationship> converter) throws InvalidParameterException,
+                                                                                                                           PropertyServerException,
+                                                                                                                           UserNotAuthorizedException
+    {
+        final String  assetGUIDParameterName = "assetGUID";
+        final String  methodName = "getAssetLineageGraphNode";
+
+        AssetElement asset = assetHandler.getBeanFromRepository(userId,
+                                                                assetGUID,
+                                                                assetGUIDParameterName,
+                                                                OpenMetadataType.ASSET.typeName,
+                                                                methodName);
+
+        if (asset != null)
+        {
+            AssetLineageGraphNode assetLineageGraphNode = new AssetLineageGraphNode(asset);
+
+            /*
+             * Retrieve all the lineage relationships for the asset.
+             */
+            List<Relationship> relationships = this.getAssetLineageRelationships(userId,
+                                                                                 asset.getElementHeader().getGUID(),
+                                                                                 lineageRelationshipTypeNames,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 assetHandler);
+
+            List<Relationship> upstreamRelationships = new ArrayList<>();
+            List<Relationship> downstreamRelationships = new ArrayList<>();
+            List<Relationship> internalRelationship = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    String relationshipName = this.getRelationshipName(relationship, assetHandler.getRepositoryHelper());
+                    if (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName()))
+                    {
+                        String end1AnchorGUID = this.getAnchorGUID(relationship.getEntityOneProxy(), assetHandler);
+                        String end2AnchorGUID = this.getAnchorGUID(relationship.getEntityTwoProxy(), assetHandler);
+
+                        if (assetGUID.equals(end1AnchorGUID))
+                        {
+                            if (assetGUID.equals(end2AnchorGUID))
+                            {
+                                internalRelationship.add(relationship);
+                            }
+                            else
+                            {
+                                List<String> currentRelationshipNames = downstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentRelationshipNames == null)
+                                {
+                                    currentRelationshipNames = new ArrayList<>();
+                                }
+
+                                if (! currentRelationshipNames.contains(relationshipName))
+                                {
+                                    currentRelationshipNames.add(relationshipName);
+                                }
+
+                                downstreamAssets.put(end2AnchorGUID, currentRelationshipNames);
+                                downstreamRelationships.add(relationship);
+                            }
+                        }
+                        else
+                        {
+                            if (assetGUID.equals(end2AnchorGUID))
+                            {
+                                List<String> currentRelationshipNames = upstreamAssets.get(relationship.getEntityTwoProxy().getGUID());
+
+                                if (currentRelationshipNames == null)
+                                {
+                                    currentRelationshipNames = new ArrayList<>();
+                                }
+
+                                if (! currentRelationshipNames.contains(relationshipName))
+                                {
+                                    currentRelationshipNames.add(relationshipName);
+                                }
+
+                                upstreamAssets.put(end1AnchorGUID, currentRelationshipNames);
+                                upstreamRelationships.add(relationship);
+                            }
+                        }
+                    }
+                }
+            }
+
+            assetLineageGraphNode.setUpstreamRelationships(convertRelationships(upstreamRelationships, converter));
+            assetLineageGraphNode.setDownstreamRelationships(convertRelationships(downstreamRelationships, converter));
+            assetLineageGraphNode.setInternalRelationships(convertRelationships(internalRelationship, converter));
+
+            return assetLineageGraphNode;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the name of the relationship from a relationship.
+     *
+     * @param relationship relationship to query
+     * @param repositoryHelper repository helper to extract properties
+     * @return relationship name
+     */
+    private String getRelationshipName(Relationship         relationship,
+                                       OMRSRepositoryHelper repositoryHelper)
+    {
+        final String methodName = "getRelationshipName";
+
+        /*
+         * The default name is the type name
+         */
+        String relationshipName = relationship.getType().getTypeDefName();
+
+        /*
+         * If the relationship has a label then this is used to embellish the relationship name.
+         */
+        String label = repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                          OpenMetadataProperty.LABEL.name,
+                                                          relationship.getProperties(),
+                                                          methodName);
+
+        if (label != null)
+        {
+            relationshipName = label + " [" + relationshipName + "]";
+        }
+
+        return relationshipName;
+    }
+
+
+    /**
+     * Retrieve the asset anchorGUID from an entity proxy.  It is possible that the anchor guid of the proxy is not an
+     * asset. (for example, it may be the asset's schema type)  Therefore it is necessary to
+     *
+     * @param entityProxy end of a relationship
+     * @param assetHandler handler
+     * @return unique identifier of
+     */
+    private String getAnchorGUID(EntityProxy                entityProxy,
+                                 AssetHandler<AssetElement> assetHandler)
+    {
+        final String methodName = "getAnchorGUID";
+
+        if (entityProxy != null)
+        {
+            /*
+             * If the end is an asset, use its GUID
+             */
+            if (assetHandler.getRepositoryHelper().isTypeOf(methodName,
+                                                            entityProxy.getType().getTypeDefName(),
+                                                            OpenMetadataType.ASSET.typeName))
+            {
+                return entityProxy.getGUID();
+            }
+
+            /*
+             * For ends that are not assets, use the anchor.
+             */
+            List<Classification> classifications = entityProxy.getClassifications();
+
+            if (classifications != null)
+            {
+                for (Classification classification : classifications)
+                {
+                    if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getName())))
+                    {
+                        String anchorGUID = assetHandler.getRepositoryHelper().removeStringProperty(entityProxy.getGUID(),
+                                                                                                    OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                                    classification.getProperties(),
+                                                                                                    methodName);
+
+                        if (anchorGUID == null)
+                        {
+                            anchorGUID = entityProxy.getGUID();
+                        }
+
+                        return anchorGUID;
+                    }
+                }
+            }
+
+            return entityProxy.getGUID();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert a list of relationships into a list of metadata relationships.
+     *
+     * @param relationships list of relationships
+     * @param converter converter
+     * @return list of metadata elements.  Will be null if list of relationships is empty
+     * @throws PropertyServerException problem in converter
+     */
+    private List<MetadataRelationship> convertRelationships(List<Relationship>                                    relationships,
+                                                            OpenMetadataAPIGenericConverter<MetadataRelationship> converter) throws PropertyServerException
+    {
+        final String methodName = "convertRelationships";
+
+        if (! relationships.isEmpty())
+        {
+            List<MetadataRelationship> results = new ArrayList<>();
+
+            for (Relationship relationship: relationships)
+            {
+                if (relationship != null)
+                {
+                    MetadataRelationship metadataRelationship = converter.getNewRelationshipBean(MetadataRelationship.class,
+                                                                                                 relationship,
+                                                                                                 methodName);
+
+                    results.add(metadataRelationship);
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve all the relevant lineage relationships for an asset.  This considers relationships from the
+     * asst itself and any of its schema elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param startFrom where to start from in retrieval
+     * @param pageSize maximum number of elements to receive
+     * @param assetHandler handler for retrieving entities/relationships
+     * @param lineageRelationshipTypeNames list of requested type names
+     * @return list for relationships - may be empty
+     * @throws InvalidParameterException invalid parameter - not expected
+     * @throws PropertyServerException problem accessing the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    private List<Relationship> getAssetLineageRelationships(String                     userId,
+                                                            String                     assetGUID,
+                                                            List<String>               lineageRelationshipTypeNames,
+                                                            int                        startFrom,
+                                                            int                        pageSize,
+                                                            AssetHandler<AssetElement> assetHandler) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String  assetGUIDParameterName = "assetGUID";
+        final String  methodName = "getAssetLineageRelationships";
+
+        /*
+         * Begin by retrieving all the relationships for the asset and filtering out the lineage relationships.
+         */
+        List<Relationship> lineageRelationships = new ArrayList<>(this.getLineageRelationshipsForElement(userId,
+                                                                                                         assetGUID,
+                                                                                                         assetGUIDParameterName,
+                                                                                                         OpenMetadataType.ASSET.typeName,
+                                                                                                         lineageRelationshipTypeNames,
+                                                                                                         assetHandler));
+
+
+        /*
+         * Now find the SchemaElements that belong to the asset.
+         */
+        SearchClassifications         searchClassifications    = new SearchClassifications();
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
+        SearchProperties              searchProperties         = new SearchProperties();
+        List<PropertyCondition>       propertyConditions       = new ArrayList<>();
+        PropertyCondition             propertyCondition        = new PropertyCondition();
+        PrimitivePropertyValue        primitivePropertyValue   = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(assetGUID);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+        propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+        propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+        propertyCondition.setValue(primitivePropertyValue);
+        propertyConditions.add(propertyCondition);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+        searchProperties.setConditions(propertyConditions);
+
+        classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+        classificationCondition.setMatchProperties(searchProperties);
+        classificationConditions.add(classificationCondition);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+        searchClassifications.setConditions(classificationConditions);
+
+        List<EntityDetail> anchoredElements = assetHandler.findEntities(userId,
+                                                                        OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        searchClassifications,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        true,
+                                                                        false,
+                                                                        startFrom,
+                                                                        pageSize,
+                                                                        assetHandler.getSupportedZones(),
+                                                                        new Date(),
+                                                                        methodName);
+
+        /*
+         * For each schema element in the asset, retrieve its lineage relationships
+         */
+        if (anchoredElements != null)
+        {
+            final String anchoredElementGUIDParameterName = "anchoredElement.getGUID()";
+
+            for (EntityDetail anchoredElement : anchoredElements)
+            {
+                lineageRelationships.addAll(this.getLineageRelationshipsForElement(userId,
+                                                                                   anchoredElement.getGUID(),
+                                                                                   anchoredElementGUIDParameterName,
+                                                                                   OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                                   lineageRelationshipTypeNames,
+                                                                                   assetHandler));
+            }
+        }
+
+        return lineageRelationships;
+    }
+
+
+    /**
+     * Return the lineage relationships for a particular element.
+     *
+     * @param userId calling user
+     * @param elementGUID starting element
+     * @param elementGUIDParameterName parameter name of element's unique identifier
+     * @param elementTypeName type name of element
+     * @param lineageRelationshipTypeNames list of requested type names
+     * @param assetHandler handler for retrieving relationships
+     * @return list for relationships - may be empty
+     * @throws InvalidParameterException invalid parameter - not expected
+     * @throws PropertyServerException problem accessing the repository
+     * @throws UserNotAuthorizedException security problem
+     */
+    List<Relationship> getLineageRelationshipsForElement(String                     userId,
+                                                         String                     elementGUID,
+                                                         String                     elementGUIDParameterName,
+                                                         String                     elementTypeName,
+                                                         List<String>               lineageRelationshipTypeNames,
+                                                         AssetHandler<AssetElement> assetHandler) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        final String methodName = "getLineageRelationshipsForElement";
+
+        List<Relationship> lineageRelationships = new ArrayList<>();
+
+        /*
+         * Begin by retrieving all the relationships for the asset and filtering out the lineage relationships.
+         */
+        List<Relationship> relationships = assetHandler.getAllAttachmentLinks(userId,
+                                                                              elementGUID,
+                                                                              elementGUIDParameterName,
+                                                                              elementTypeName,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
+                                                                              true,
+                                                                              false,
+                                                                              new Date(),
+                                                                              methodName);
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if ((relationship != null) && (lineageRelationshipTypeNames.contains(relationship.getType().getTypeDefName())))
+                {
+                    lineageRelationships.add(relationship);
+                }
+            }
+        }
+
+        return lineageRelationships;
     }
 
 
@@ -1505,6 +2168,10 @@ public class AssetConsumerRESTServices
                                                                               null,
                                                                               null,
                                                                               1,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               false,
                                                                               false,
                                                                               startFrom,
@@ -1529,19 +2196,18 @@ public class AssetConsumerRESTServices
                     }
                     else
                     {
-                        EntityDetail anchorEntity = handler.validateAnchorEntity(userId,
-                                                                                 entity.getGUID(),
-                                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                 entity,
-                                                                                 entityGUIDParameterName,
-                                                                                 false,
-                                                                                 false,
-                                                                                 false,
-                                                                                 false,
-                                                                                 handler.getSupportedZones(),
-                                                                                 new Date(),
-                                                                                 methodName);
-                        if (anchorEntity != null)
+                        EntityDetail anchorEntity = handler.validateAnchorForEntity(userId,
+                                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                    entity,
+                                                                                    entityGUIDParameterName,
+                                                                                    false,
+                                                                                    false,
+                                                                                    false,
+                                                                                    false,
+                                                                                    handler.getSupportedZones(),
+                                                                                    new Date(),
+                                                                                    methodName);
+                        if ((anchorEntity != null) && (repositoryHelper.isTypeOf(serverName, anchorEntity.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName)))
                         {
                             if (! guids.contains(anchorEntity.getGUID()))
                             {

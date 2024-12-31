@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -652,74 +653,16 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               typeGUID,
                               typeName,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               effectiveTime,
                               methodName);
-    }
-
-
-    /**
-     * Return the list of elements associated with a definition.
-     *
-     * @param userId calling user
-     * @param definitionGUID unique identifier of the definition to query
-     * @param definitionGUIDParameterName name of the parameter supplying definitionGUID
-     * @param definitionTypeName type of the starting element
-     * @param relationshipTypeGUID unique identifier of the relationship (null if any relationship)
-     * @param relationshipTypeName unique name of the relationship (null if any relationship)
-     * @param targetElementType type of the target element
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of metadata elements describing the definitions associated with the requested definition
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B>   getLinkedDefinitions(String  userId,
-                                          String  definitionGUID,
-                                          String  definitionGUIDParameterName,
-                                          String  definitionTypeName,
-                                          String  relationshipTypeGUID,
-                                          String  relationshipTypeName,
-                                          String  targetElementType,
-                                          int     startFrom,
-                                          int     pageSize,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime,
-                                          String  methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        definitionGUID,
-                                        definitionGUIDParameterName,
-                                        definitionTypeName,
-                                        relationshipTypeGUID,
-                                        relationshipTypeName,
-                                        targetElementType,
-                                        null,
-                                        null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
     }
 
 
@@ -767,6 +710,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,
@@ -837,6 +783,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              typeGUID,
                                                              typeName,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
@@ -941,10 +890,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -1006,10 +958,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -1068,6 +1023,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                        null,
                                        typeName,
                                        1,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,
@@ -1123,6 +1082,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -1178,6 +1141,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -1229,6 +1196,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -1325,6 +1296,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                           guid,
                                                                           guidParameterName,
                                                                           OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
                                                                           effectiveTime,

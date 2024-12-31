@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OCFMe
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -183,6 +184,10 @@ public class OCFMetadataRESTServices
                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                          OpenMetadataType.CONNECTION.typeGUID,
                                                                          OpenMetadataType.CONNECTION.typeName,
+                                                                         null,
+                                                                         null,
+                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                         null,
                                                                          false,
                                                                          false,
                                                                          instanceHandler.getSupportedZones(userId,
@@ -1736,6 +1741,10 @@ public class OCFMetadataRESTServices
                                                                                      apiOperation.getGUID(),
                                                                                      apiOpGUIDParameterName,
                                                                                      OpenMetadataType.API_OPERATION_TYPE_NAME,
+                                                                                     null,
+                                                                                     null,
+                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                     null,
                                                                                      false,
                                                                                      false,
                                                                                      effectiveTime,
@@ -1882,18 +1891,17 @@ public class OCFMetadataRESTServices
                 }
                 else
                 {
-                    EntityDetail anchorEntity = referenceableHandler.validateAnchorEntity(userId,
-                                                                                          guid,
-                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                          entity,
-                                                                                          OpenMetadataProperty.GUID.name,
-                                                                                          true,
-                                                                                          false,
-                                                                                          false,
-                                                                                          false,
-                                                                                          null,
-                                                                                          effectiveTime,
-                                                                                          methodName);
+                    EntityDetail anchorEntity = referenceableHandler.validateAnchorForEntity(userId,
+                                                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                             entity,
+                                                                                             OpenMetadataProperty.GUID.name,
+                                                                                             true,
+                                                                                             false,
+                                                                                             false,
+                                                                                             false,
+                                                                                             null,
+                                                                                             effectiveTime,
+                                                                                             methodName);
                     if (anchorEntity != null && repositoryHandler.isEntityATypeOf(userId,
                                                                                   anchorEntity.getGUID(),
                                                                                   OpenMetadataProperty.GUID.name,

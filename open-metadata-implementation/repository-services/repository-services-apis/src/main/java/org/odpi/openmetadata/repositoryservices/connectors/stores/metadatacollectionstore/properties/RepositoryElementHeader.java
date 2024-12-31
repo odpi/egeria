@@ -97,12 +97,10 @@ public abstract class RepositoryElementHeader implements Serializable
         {
             return true;
         }
-        if (! (objectToCompare instanceof RepositoryElementHeader))
+        if (! (objectToCompare instanceof RepositoryElementHeader that))
         {
             return false;
         }
-
-        RepositoryElementHeader that = (RepositoryElementHeader) objectToCompare;
 
         return headerVersion == that.headerVersion;
     }

@@ -252,7 +252,7 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
     public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
                                                       OMRSMetadataCollection            metadataCollection)
     {
-        if (accumulatedEntities.isEmpty())
+        if ((accumulatedEntities == null) || (accumulatedEntities.isEmpty()))
         {
             return null;
         }

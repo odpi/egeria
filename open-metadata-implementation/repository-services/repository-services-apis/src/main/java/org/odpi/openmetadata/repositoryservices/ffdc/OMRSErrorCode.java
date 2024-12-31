@@ -411,11 +411,11 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Correct the caller's code and attempt the request again."),
 
     /**
-     * OMRS-REPOSITORY-400-048 - A {0} request has been made to repository {1} to remove a non-existent classification {2} from entity {3}
+     * OMRS-REPOSITORY-400-048 - A {0} request has been made to repository {1} to access a non-existent classification {2} from entity {3}
      */
     ENTITY_NOT_CLASSIFIED(400, "OMRS-REPOSITORY-400-048",
-            "A {0} request has been made to repository {1} to remove a non-existent classification {2} from entity {3}",
-            "The system is unable to perform the request as the instance has invalid values.",
+            "A {0} request has been made to repository {1} to access a non-existent classification {2} from entity {3}",
+            "The system is unable to perform the request as the instance has a missing classification.",
             "Correct the caller's code and reattempt the request."),
 
     /**
@@ -1048,7 +1048,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * OMRS-AUDIT-LOG-400-002 - An Audit Log destination for server {0} is not correctly configured
      */
     NULL_AUDIT_LOG_STORE(400, "OMRS-AUDIT-LOG-400-002",
-            "An Audit Log destination for server {0} is not correctly configured",
+            "An Audit Log destination for server {0} is not correctly configured and a {1} exception occurred with message {2}",
             "The system is unable to send diagnostic and audit information to one of the configured audit log destinations because the supplied " +
                                  "connector failed to initialize.",
             "Correct the configuration for the audit log store connection in the server configuration. " +
@@ -1530,6 +1530,14 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The repository content manager has detected an unknown TypeDef {0} ({1}) from {2}. It was passed to method {3} via parameters {4} and {5}",
             "There is an internal problem in the Open Metadata Ecosystem code or its callers because an invalid unique identifier, or name of a type has been passed to the Open Metadata Repository Services (OMRS).",
             "Trace the caller of the request to determine where the type information was specified.  If the error is in the Egeria code, or you need help from the community, raise a Github issue so this can be addressed."),
+
+    /**
+     * OMRS-CONTENT-MANAGER-500-006 - The repository content manager has received an instance {0} of class {1} with an open metadata type name of {2}, which is from category {3}
+     */
+    WRONG_TYPEDEF_CATEGORY(500, "OMRS-CONTENT-MANAGER-500-006",
+                    "The repository content manager has received an instance {0} of class {1} with an open metadata type name of {2}, which is from category {3}",
+                    "The local repository has received an instance either from an Open Metadata Archive, or another member of one of its Open Metadata Repository Cohorts, that is using a type from a different category of instance.",
+                    "Trace the caller of the request to determine where the came from and correct the source."),
 
     /**
      * OMRS-OPEN-METADATA-ARCHIVE-500-001 - The archive builder failed to initialize

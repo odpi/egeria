@@ -18,6 +18,8 @@ This includes:
 * A connection for the [graph open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md)
 * A connection for the [graph repository event mapper connector](../repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md).
 * A connection for the [in memory open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector/README.md)
+* A connection for the [xtdb open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/xtdb-repository-connector/README.md)
+* A connection for the [postgres open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/postgres-repository-connector/README.md)
 * A connection for the [remote open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector/README.md)
 * A connection for an [event bus connector](../event-bus-connectors/README.md)
 * A connection for the [OMRS topic connector](../../../repository-services/docs/omrs-event-topic.md) used to pass events from OMRS to the [Open Metadata Access Services (OMASs)](../../../access-services/README.md).

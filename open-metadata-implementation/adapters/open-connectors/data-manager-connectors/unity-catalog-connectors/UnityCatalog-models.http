@@ -1,0 +1,93 @@
+
+@ucURL=http://localhost:8080
+#ucURL=http://egeria.pdr-associates.com:8070
+
+###
+# @name list registered models
+GET {{ucURL}}/api/2.1/unity-catalog/models?catalog_name=unity&schema_name=default&max_results=10
+
+###
+# @name create registered model
+POST {{ucURL}}/api/2.1/unity-catalog/models
+Content-Type: application/json
+
+{
+  "name": "my_model",
+  "catalog_name" : "unity",
+  "schema_name": "default",
+  "comment": "Test model"
+}
+
+###
+# @name get registered model
+GET {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model
+Content-Type: application/json
+
+
+###
+# @name patch registered model
+PATCH {{ucURL}}/api/2.1/unity-catalog/models/unity.default.model1
+Content-Type: application/json
+
+{
+  "new_name" : "my_model",
+  "comment" : "This is an updated comment"
+}
+
+###
+# @name delete model
+DELETE {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model
+Content-Type: application/json
+
+
+###
+# @name create model version
+POST {{ucURL}}/api/2.1/unity-catalog/models/versions
+Content-Type: application/json
+
+{
+  "model_name": "my_model",
+  "catalog_name" : "unity",
+  "schema_name": "default",
+  "run_id": "first",
+  "source" : "lucky_dip",
+  "comment": "Test model version"
+}
+
+###
+# @name list model versions
+GET {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions&max_results=10
+Content-Type: application/json
+
+
+###
+# @name get model version
+GET {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions/1
+Content-Type: application/json
+
+
+###
+# @name patch model version
+PATCH {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions/1
+Content-Type: application/json
+
+{
+  "comment" : "This is an updated comment"
+}
+
+
+###
+# @name finalize model version
+PATCH {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions/1/finalize
+Content-Type: application/json
+
+{
+  "full_name" : "unity.default.my_model",
+  "version" : 1
+}
+
+
+###
+# @name delete model version
+DELETE {{ucURL}}/api/2.1/unity-catalog/models/unity.default.my_model/versions/1
+Content-Type: application/json

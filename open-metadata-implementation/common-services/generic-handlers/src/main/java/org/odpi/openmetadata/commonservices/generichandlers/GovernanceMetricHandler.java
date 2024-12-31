@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -11,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -591,69 +591,16 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
                               OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               effectiveTime,
                               methodName);
-    }
-
-
-    /**
-     * Retrieve the list of governanceMetric metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param name name to search for
-     * @param nameParameterName parameter supplying name
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B>   getGovernanceMetricsByName(String  userId,
-                                                String  name,
-                                                String  nameParameterName,
-                                                int     startFrom,
-                                                int     pageSize,
-                                                boolean forLineage,
-                                                boolean forDuplicateProcessing,
-                                                Date    effectiveTime,
-                                                String  methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
-
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    OpenMetadataType.GOVERNANCE_METRIC_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
-                                    specificMatchPropertyNames,
-                                    true,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    supportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
     }
 
 
@@ -698,6 +645,10 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                                                null,
                                                                null,
                                                                1,
+                                                               null,
+                                                               null,
+                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                               null,
                                                                forLineage,
                                                                forDuplicateProcessing,
                                                                supportedZones,
@@ -718,6 +669,10 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
                                                                                   guid,
                                                                                   guidParameterName,
                                                                                   OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -731,63 +686,6 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
             {
                 return results;
             }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the definition metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     * @param guidParameterName parameter name of guid
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getGovernanceMetricImplementations(String  userId,
-                                                String  guid,
-                                                String  guidParameterName,
-                                                boolean forLineage,
-                                                boolean forDuplicateProcessing,
-                                                Date    effectiveTime,
-                                                String  methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        EntityDetail entity = this.getEntityFromRepository(userId,
-                                                           guid,
-                                                           guidParameterName,
-                                                           OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
-                                                           null,
-                                                           null,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
-
-        if (entity != null)
-        {
-            List<Relationship> relationships = this.getAllAttachmentLinks(userId,
-                                                                          guid,
-                                                                          guidParameterName,
-                                                                          OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-            return converter.getNewComplexBean(beanClass, entity, relationships, methodName);
         }
 
         return null;

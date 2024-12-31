@@ -46,7 +46,7 @@ public class CocoTypesArchiveWriter extends OMRSArchiveWriter
     /*
      * Specific values for initializing TypeDefs
      */
-    private static final long   versionNumber = 1L;
+    private static final long   versionNumber = new Date().getTime();
     private static final String versionName   = "1.0";
 
 

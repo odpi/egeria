@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -155,6 +156,10 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                                                                     null,
                                                                     OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                     2,
+                                                                    null,
+                                                                    null,
+                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                    null,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,

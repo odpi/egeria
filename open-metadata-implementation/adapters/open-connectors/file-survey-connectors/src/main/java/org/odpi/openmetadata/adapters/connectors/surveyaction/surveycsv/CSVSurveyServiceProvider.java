@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 
 import java.util.ArrayList;
 
@@ -84,7 +84,7 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorTypeName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

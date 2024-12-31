@@ -20,6 +20,101 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
+# Load interesting connectors
+#
+
+###
+# @name get the GUID for active-metadata-store
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "active-metadata-store",
+  "namePropertyName" : "name"
+}
+
+> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/PostgresContentPack.omarchive
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/UnityCatalogContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ApacheAtlasContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ApacheKafkaContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/APIsContentPack.omarchive
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ObservabilityContentPack.omarchive
+
+###
+# =====================================================================================================================
 # The technology types provide the reference data to guide the curator.  They are extracted from the valid
 # values for deployedImplementationType
 #
@@ -46,12 +141,12 @@ Content-Type: application/json
 ###
 # @name findTechnologyTypes
 # Retrieve the list of deployed implementation type metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=true&ignoreCase=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "Add search string here"
+   "filter" : "Raster"
 }
 
 
@@ -65,6 +160,7 @@ Content-Type: application/json
 {
   "filter" : "PostgreSQL"
 }
+
 
 
 ###
@@ -165,6 +261,40 @@ Content-Type: application/json
 }
 
 
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Root Technology Type"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Software Server"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "File"
+}
 
 
 ###
@@ -319,7 +449,7 @@ Content-Type: application/json
     "directoryPathName" : "Add full path name here, eg a/b/c/myFolder",
     "directoryName" : "Add directory name without enclosing directory names, eg myFolder",
     "description" : "Add description",
-    "versionIdentifier" : "Add version identifier eg V1.0",
+    "versionIdentifier" : "Add version identifier eg V1.0"
   }
 }
 
@@ -925,3 +1055,193 @@ Content-Type: application/json
 {
   "filter" : "add string here"
 }
+
+
+###
+# =====================================================================================================================
+# External identifiers originate in thrid party technologies.  They are linked to the corresponding open metadata elements.
+# https://egeria-project.org/types/0/0017-External-Identifiers/
+###
+
+@openMetadataElementTypeName=add type name
+@openMetadataElementGUID=add guid here
+@externalScopeGUID=add guid here
+@externalScopeName=add qualified name here
+@externalScopeTypeName=add type name
+
+###
+# @name addExternalIdentifier
+# Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope (specified in the request body).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/add?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateMetadataCorrelatorsRequestBody",
+  "metadataCorrelationProperties": {
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalScopeTypeName" : "{{externalScopeTypeName}}",
+    "externalIdentifier" : "Add external identifier here",
+    "permittedSynchronization" : "BOTH_DIRECTIONS",
+    "synchronizationDescription": "Add optional description here",
+    "externalIdentifierName": "Add optional name used for the identifier in the third party technology here",
+    "externalIdentifierUsage": "Add how the identifier is used by the third party",
+    "externalIdentifierSource": "Describe how the identifier was discovered",
+    "keyPattern": "LOCAL_KEY",
+    "externalInstanceCreatedBy": "Add userId used in third Party",
+    "externalInstanceCreationTime": "When was the instance created in the third party",
+    "externalInstanceLastUpdatedBy": "Add userId used in third Party",
+    "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
+    "externalInstanceVersion": 1,
+    "mappingProperties": {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    }
+  },
+  "effectiveFrom" : "{{isoTimestamp}}",
+  "effectiveTo" : "{{isoTimestamp}}",
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name updateExternalIdentifier
+# Update the description of a specific external identifier.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/update?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateMetadataCorrelatorsRequestBody",
+  "metadataCorrelationProperties": {
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalScopeTypeName" : "{{externalScopeTypeName}}",
+    "externalIdentifier" : "Add external identifier here",
+    "permittedSynchronization" : "BOTH_DIRECTIONS",
+    "synchronizationDescription": "Add optional description here",
+    "externalIdentifierName": "Add optional name used for the identifier in the third party technology here",
+    "externalIdentifierUsage": "Add how the identifier is used by the third party",
+    "externalIdentifierSource": "Describe how the identifier was discovered",
+    "keyPattern": "LOCAL_KEY",
+    "externalInstanceCreatedBy": "Add userId used in third Party",
+    "externalInstanceCreationTime": "When was the instance created in the third party",
+    "externalInstanceLastUpdatedBy": "Add userId used in third Party",
+    "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
+    "externalInstanceVersion": 1,
+    "mappingProperties": {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    }
+  },
+  "effectiveFrom" : "{{isoTimestamp}}",
+  "effectiveTo" : "{{isoTimestamp}}",
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name validateExternalIdentifier
+# Validate that the external identifier is linked to the open metadata GUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/validate?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateMetadataCorrelatorsRequestBody",
+  "metadataCorrelationProperties": {
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalIdentifier" : "Add external identifier here"
+  },
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name removeExternalIdentifier
+# Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/remove?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateMetadataCorrelatorsRequestBody",
+  "metadataCorrelationProperties": {
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalIdentifier" : "Add external identifier here"
+  },
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name removeExternalScope
+# Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
+# The linked open metadata elements are not affected.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/external-scope/{{externalScopeGUID}}/remove?forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EffectiveTimeRequestBody",
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name confirmSynchronization
+# Confirm that the values of a particular metadata element have been synchronized.  This is important
+# from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/synchronized
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalIdentifier" : "Add external identifier here"
+}
+
+
+###
+# @name getElementsForExternalIdentifier
+# Retrieve the metadata element associated with a particular external identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/external-identifiers/open-metadata-elements?startFrom=0&pageSize=100&forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateMetadataCorrelatorsRequestBody",
+  "metadataCorrelationProperties": {
+    "class" : "MetadataCorrelationProperties",
+    "externalScopeGUID" : "{{externalScopeGUID}}",
+    "externalScopeName" : "{{externalScopeName}}",
+    "externalIdentifier" : "Add external identifier here"
+  },
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+
+
+###
+# @name getExternalIdentifiers
+# Retrieve the external identifiers attached to the supplied element guid.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers?startFrom=0&pageSize=100&forLineage=false&forDuplicateProcessing=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "EffectiveTimeQueryRequestBody",
+  "externalScopeGUID" : "{{externalScopeGUID}}",
+  "externalScopeName" : "{{externalScopeName}}",
+  "effectiveTime" : "{{isoTimestamp}}"
+}
+

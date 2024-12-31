@@ -39,6 +39,8 @@ public class EffectiveTimeQueryRequestBody extends ExternalSourceRequestBody
      */
     public EffectiveTimeQueryRequestBody(EffectiveTimeQueryRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             effectiveTime = template.getEffectiveTime();
@@ -78,9 +80,10 @@ public class EffectiveTimeQueryRequestBody extends ExternalSourceRequestBody
     public String toString()
     {
         return "EffectiveTimeQueryRequestBody{" +
-                       "effectiveTime=" + effectiveTime +
-                       '}';
+                "effectiveTime=" + effectiveTime +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -92,14 +95,9 @@ public class EffectiveTimeQueryRequestBody extends ExternalSourceRequestBody
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         EffectiveTimeQueryRequestBody that = (EffectiveTimeQueryRequestBody) objectToCompare;
         return Objects.equals(effectiveTime, that.effectiveTime);
     }
@@ -113,6 +111,6 @@ public class EffectiveTimeQueryRequestBody extends ExternalSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveTime);
+        return Objects.hash(super.hashCode(), effectiveTime);
     }
 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.platformservices.properties.BuildProperties;
 
 import java.util.*;
 
@@ -24,6 +25,7 @@ public class OMAGServerPlatformProperties
     private String                      platformName                 = null;
     private String                      platformURLRoot              = null;
     private String                      platformOrigin               = null;
+    private BuildProperties             platformBuildProperties      = null;
     private Date                        platformStartTime            = null;
     private OMAGConnectorProperties     configurationStoreConnection = null;
     private OMAGConnectorProperties     platformSecurityConnection   = null;
@@ -63,6 +65,16 @@ public class OMAGServerPlatformProperties
     public void setPlatformOrigin(String platformOrigin)
     {
         this.platformOrigin = platformOrigin;
+    }
+
+    public BuildProperties getPlatformBuildProperties()
+    {
+        return platformBuildProperties;
+    }
+
+    public void setPlatformBuildProperties(BuildProperties platformBuildProperties)
+    {
+        this.platformBuildProperties = platformBuildProperties;
     }
 
     public Date getPlatformStartTime()

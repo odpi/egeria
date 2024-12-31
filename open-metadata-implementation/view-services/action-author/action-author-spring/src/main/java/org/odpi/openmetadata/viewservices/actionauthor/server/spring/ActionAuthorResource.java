@@ -459,7 +459,7 @@ public class ActionAuthorResource
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
                                                                                 @PathVariable String                   processGUID,
                                                                                 @RequestBody(required = false)
-                                                                                              EffectiveTimeRequestBody requestBody)
+                                                                                    ResultsRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessGraph(serverName, processGUID, requestBody);
     }

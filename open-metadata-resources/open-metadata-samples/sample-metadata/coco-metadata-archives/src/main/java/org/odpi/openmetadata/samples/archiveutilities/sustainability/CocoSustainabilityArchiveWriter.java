@@ -31,6 +31,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveName        = "Coco Pharmaceuticals Sustainability Project";
     private static final String                  archiveDescription = "The base definitions for Coco Pharmaceuticals' sustainability initiative.";
 
+    private static final Date                    creationDate       = new Date(1639984840038L);
 
     /**
      * Default constructor initializes the archive.
@@ -40,7 +41,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
         super(archiveGUID,
               archiveName,
               archiveDescription,
-              new Date(),
+              creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoOrganizationArchiveWriter().getOpenMetadataArchive() });

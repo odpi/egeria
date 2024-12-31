@@ -44,6 +44,13 @@ public enum ResourceUse
                      null),
 
     /**
+     * Remove asset and associated metadata for the real-world resource from the open metadata repositories.
+     */
+    UNCATALOG_RESOURCE("Uncatalog Resource",
+                     "Remove asset and associated metadata for the real-world resource from the open metadata repositories.",
+                     null),
+
+    /**
      * Make a change to the real-world resource such as add or copy data.
      */
     PROVISION_RESOURCE("Provision Resource",

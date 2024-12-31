@@ -63,6 +63,20 @@ public enum UnityCatalogTemplateType
                              "a490ba65-6104-4213-9be9-524e16fed8aa",
                              null),
 
+    OSS_UC_REGISTERED_MODEL_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL.getDeployedImplementationType(),
+                             "Create a DeployedAnalyticsModel asset to represent an analytics model deployed to the Unity Catalog (UC).",
+                             UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL.getAssociatedTypeName(),
+                             false,
+                             "0d762ec5-c1f5-4364-aa64-e7e00d27f837",
+                             null),
+
+    OSS_UC_MODEL_VERSION_TEMPLATE(UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL_VERSION.getDeployedImplementationType(),
+                             "Create an AnalyticsModelRun asset to represent a version of an analytics model deployed to the Unity Catalog (UC).",
+                             UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL_VERSION.getAssociatedTypeName(),
+                             false,
+                             "1364bfe7-8295-4e99-9243-8840aeac4cf1",
+                             null),
+
     ;
 
 

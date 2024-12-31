@@ -50,7 +50,7 @@ public class LineageExchangeRESTServices
 
 
     /* =====================================================================================================================
-     * A process describes a well defined series of steps that gets something done.
+     * A process describes a well-defined series of steps that gets something done.
      */
 
     /**
@@ -2395,6 +2395,7 @@ public class LineageExchangeRESTServices
                                                        dataSupplierGUID,
                                                        dataConsumerGUID,
                                                        dataFlowProperties.getQualifiedName(),
+                                                       dataFlowProperties.getLabel(),
                                                        dataFlowProperties.getDescription(),
                                                        dataFlowProperties.getFormula(),
                                                        dataFlowProperties.getEffectiveFrom(),
@@ -2412,6 +2413,7 @@ public class LineageExchangeRESTServices
                                                        assetManagerIsHome,
                                                        dataSupplierGUID,
                                                        dataConsumerGUID,
+                                                       null,
                                                        null,
                                                        null,
                                                        null,
@@ -2549,6 +2551,7 @@ public class LineageExchangeRESTServices
                                        requestBody.getExternalSourceName(),
                                        dataFlowGUID,
                                        properties.getQualifiedName(),
+                                       properties.getLabel(),
                                        properties.getDescription(),
                                        properties.getFormula(),
                                        properties.getEffectiveFrom(),
@@ -2837,6 +2840,7 @@ public class LineageExchangeRESTServices
                                                           currentStepGUID,
                                                           nextStepGUID,
                                                           properties.getQualifiedName(),
+                                                          properties.getLabel(),
                                                           properties.getDescription(),
                                                           properties.getGuard(),
                                                           properties.getEffectiveFrom(),
@@ -2854,6 +2858,7 @@ public class LineageExchangeRESTServices
                                                           assetManagerIsHome,
                                                           currentStepGUID,
                                                           nextStepGUID,
+                                                          null,
                                                           null,
                                                           null,
                                                           null,
@@ -2991,6 +2996,7 @@ public class LineageExchangeRESTServices
                                           requestBody.getExternalSourceName(),
                                           controlFlowGUID,
                                           properties.getQualifiedName(),
+                                          properties.getLabel(),
                                           properties.getDescription(),
                                           properties.getGuard(),
                                           properties.getEffectiveFrom(),
@@ -3279,6 +3285,7 @@ public class LineageExchangeRESTServices
                                                           callerGUID,
                                                           calledGUID,
                                                           properties.getQualifiedName(),
+                                                          properties.getLabel(),
                                                           properties.getDescription(),
                                                           properties.getFormula(),
                                                           properties.getEffectiveFrom(),
@@ -3296,6 +3303,7 @@ public class LineageExchangeRESTServices
                                                           assetManagerIsHome,
                                                           callerGUID,
                                                           calledGUID,
+                                                          null,
                                                           null,
                                                           null,
                                                           null,
@@ -3433,6 +3441,7 @@ public class LineageExchangeRESTServices
                                           requestBody.getExternalSourceName(),
                                           processCallGUID,
                                           properties.getQualifiedName(),
+                                          properties.getLabel(),
                                           properties.getDescription(),
                                           properties.getFormula(),
                                           properties.getEffectiveFrom(),
@@ -3723,6 +3732,7 @@ public class LineageExchangeRESTServices
                                                        sourceElementGUID,
                                                        destinationElementGUID,
                                                        properties.getQualifiedName(),
+                                                       properties.getLabel(),
                                                        properties.getDescription(),
                                                        properties.getEffectiveFrom(),
                                                        properties.getEffectiveTo(),
@@ -3742,6 +3752,7 @@ public class LineageExchangeRESTServices
                                                        null,
                                                        null,
                                                        null,
+                                                       null,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        requestBody.getEffectiveTime(),
@@ -3755,6 +3766,7 @@ public class LineageExchangeRESTServices
                                                    null,
                                                    sourceElementGUID,
                                                    destinationElementGUID,
+                                                   null,
                                                    null,
                                                    null,
                                                    null,
@@ -3893,6 +3905,7 @@ public class LineageExchangeRESTServices
                                              requestBody.getExternalSourceName(),
                                              lineageMappingGUID,
                                              properties.getQualifiedName(),
+                                             properties.getLabel(),
                                              properties.getDescription(),
                                              properties.getEffectiveFrom(),
                                              properties.getEffectiveTo(),

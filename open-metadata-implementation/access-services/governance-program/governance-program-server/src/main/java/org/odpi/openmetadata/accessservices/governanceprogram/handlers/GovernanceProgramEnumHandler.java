@@ -153,6 +153,8 @@ class GovernanceProgramEnumHandler
         return repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                           properties,
                                                           propertyName,
+                                                          GovernanceDomain.getOpenTypeGUID(),
+                                                          GovernanceDomain.getOpenTypeName(),
                                                           ordinal,
                                                           symbolicName,
                                                           description,

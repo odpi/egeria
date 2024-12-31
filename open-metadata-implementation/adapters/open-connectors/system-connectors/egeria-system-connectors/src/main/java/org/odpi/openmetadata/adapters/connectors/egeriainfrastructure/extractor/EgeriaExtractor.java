@@ -27,17 +27,12 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.integrationservices.lineage.client.LineageIntegrator;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
 import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
-import org.odpi.openmetadata.repositoryservices.rest.properties.BooleanResponse;
-import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
 import org.odpi.openmetadata.serveroperations.client.ServerOperationsClient;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
@@ -125,6 +120,7 @@ public class EgeriaExtractor
         platformReport.setPlatformName(platformName);
         platformReport.setPlatformURLRoot(platformURLRoot);
         platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin(clientUserId));
+        platformReport.setPlatformBuildProperties(platformServicesClient.getPlatformBuildProperties(clientUserId));
         platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime(clientUserId));
         platformReport.setPlatformSecurityConnection(this.getConnectorProperties("Platform Security Connector",
                                                                                  platformServicesClient.getPlatformSecurityConnection(clientUserId)));
@@ -1295,6 +1291,28 @@ public class EgeriaExtractor
         assert engineHostClient != null;
         engineHostClient.refreshConfig(clientUserId, governanceEngineName);
     }
+
+
+
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the governance engine.
+     */
+    public  void refreshEngineConfig() throws InvalidParameterException,
+                                              UserNotAuthorizedException,
+                                              PropertyServerException
+    {
+        assert engineHostClient != null;
+        engineHostClient.refreshConfig(clientUserId);
+    }
+
 
     /*
      * ========================================================================================

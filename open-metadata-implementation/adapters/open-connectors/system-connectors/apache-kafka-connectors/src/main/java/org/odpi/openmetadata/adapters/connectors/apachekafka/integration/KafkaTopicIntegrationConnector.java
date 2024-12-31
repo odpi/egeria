@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.integration;
 
 import org.apache.kafka.clients.admin.Admin;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TopicElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc.KafkaIntegrationConnectorAuditCode;
@@ -282,15 +283,15 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
 
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
 
-        List<RelatedMetadataElement> capabilities = openMetadataAccess.getRelatedMetadataElements(server.getGUID(),
-                                                                                                  1,
-                                                                                                  OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                                                                  0,
-                                                                                                  0);
+        RelatedMetadataElementList capabilities = openMetadataAccess.getRelatedMetadataElements(server.getGUID(),
+                                                                                                1,
+                                                                                                OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                                                                0,
+                                                                                                0);
 
-        if (capabilities != null)
+        if ((capabilities != null) && (capabilities.getElementList() != null))
         {
-            for (RelatedMetadataElement capability : capabilities)
+            for (RelatedMetadataElement capability : capabilities.getElementList())
             {
                 if (capability != null)
                 {

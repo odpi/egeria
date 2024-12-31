@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -284,6 +285,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    OpenMetadataType.ZONE_TYPE_GUID,
                                    OpenMetadataType.ZONE_TYPE_NAME,
                                    specificMatchPropertyNames,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
+                                   null,
                                    false,
                                    false,
                                    supportedZones,
@@ -322,6 +327,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             null,
                                             OpenMetadataType.ZONE_TYPE_NAME,
                                             1,
+                                            null,
+                                            null,
+                                            SequencingOrder.CREATION_DATE_RECENT,
+                                            null,
                                             false,
                                             false,
                                             new Date(),
@@ -359,6 +368,10 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        null,
                                        OpenMetadataType.ZONE_TYPE_NAME,
                                        2,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        false,
                                        false,
                                        supportedZones,
@@ -393,6 +406,9 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataType.ZONE_TYPE_GUID,
                                    OpenMetadataType.ZONE_TYPE_NAME,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
                                    null,
                                    false,
                                    false,
@@ -435,6 +451,9 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              OpenMetadataType.ZONE_TYPE_GUID,
                                                              OpenMetadataType.ZONE_TYPE_NAME,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                              null,
                                                              false,
                                                              false,

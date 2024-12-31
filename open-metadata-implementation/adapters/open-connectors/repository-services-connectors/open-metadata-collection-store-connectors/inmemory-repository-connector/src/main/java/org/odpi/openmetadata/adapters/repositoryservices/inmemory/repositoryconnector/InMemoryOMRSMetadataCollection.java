@@ -1418,6 +1418,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                  metadataCollectionId,
                                                                  metadataCollectionName,
                                                                  InstanceProvenanceType.LOCAL_COHORT,
+                                                                 null,
                                                                  userId,
                                                                  typeDef.getName(),
                                                                  initialProperties,
@@ -1497,13 +1498,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                  externalSourceGUID,
                                                                  externalSourceName,
                                                                  InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                 metadataCollectionId,
                                                                  userId,
                                                                  typeDef.getName(),
                                                                  initialProperties,
                                                                  initialClassifications);
 
-        newEntity.setMetadataCollectionName(externalSourceName);
-        newEntity.setReplicatedBy(metadataCollectionId);
 
         /*
          * If an initial status is supplied then override the default value.
@@ -3642,7 +3642,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        repositoryStore.updateEntityInStore(entity);
+        repositoryStore.updateEntityInStore(updatedEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.

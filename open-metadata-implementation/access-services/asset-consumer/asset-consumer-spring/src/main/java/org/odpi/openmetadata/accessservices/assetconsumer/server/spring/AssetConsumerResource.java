@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.CommentRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RatingRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -401,6 +401,44 @@ public class AssetConsumerResource
                                                           int   pageSize)
     {
         return restAPI.getAssetGraph(serverName, userId, assetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+     * retrieved both from the asset, and the anchored schema elements
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the userId of the requesting user
+     * @param assetGUID  unique identifier for the asset
+     * @param relationshipTypes list of relationship type names to use in the search
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assets/{assetGUID}/as-lineage-graph")
+
+    @Operation(summary="getAssetLineageGraph",
+            description="Return all the elements that are linked to an asset using lineage relationships.  The relationships are" +
+                    " retrieved both from the asset, and the anchored schema elements.",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/features/lineage-management/overview/"))
+
+    public AssetLineageGraphResponse getAssetLineageGraph(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String assetGUID,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                                        int   startFrom,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                                        int   pageSize,
+                                                          @RequestBody(required = false)
+                                                                        List<String> relationshipTypes)
+    {
+        return restAPI.getAssetLineageGraph(serverName, userId, assetGUID, relationshipTypes, startFrom, pageSize);
     }
 
 

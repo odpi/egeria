@@ -33,6 +33,30 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+
+###
+# @name=getAssetLineageGraph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name=getAssetLineageGraph
+# Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+# retrieved both from the asset, and the anchored schema elements.
+#
+# Lineage: https://egeria-project.org/features/lineage-management/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-lineage-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+["DataContentForDataSet"]
+
 ###
 # @name=findAssetsInDomain
 # Locate string value in elements that are anchored to assets.

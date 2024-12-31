@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.surveyaction.extractors;
 
-import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

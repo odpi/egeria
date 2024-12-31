@@ -1197,9 +1197,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "ProcessCall";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1208,16 +1206,8 @@ public class OpenMetadataTypesArchive4_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -1230,9 +1220,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "DataFlow";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1241,16 +1229,8 @@ public class OpenMetadataTypesArchive4_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.FORMULA_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.FORMULA_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.FORMULA_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

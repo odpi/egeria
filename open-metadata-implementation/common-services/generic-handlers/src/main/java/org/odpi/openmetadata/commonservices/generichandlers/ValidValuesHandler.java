@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -810,57 +811,6 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Remove the link between a valid value and its consistent value.
-     *
-     * @param userId             calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param validValue1GUID    unique identifier of first valid value
-     * @param validValue2GUID    unique identifier of second valid value
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName         calling method
-     * @throws InvalidParameterException  one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException    the repository is not available or not working properly.
-     */
-    public void detachConsistentValidValues(String  userId,
-                                            String  externalSourceGUID,
-                                            String  externalSourceName,
-                                            String  validValue1GUID,
-                                            String  validValue2GUID,
-                                            boolean forLineage,
-                                            boolean forDuplicateProcessing,
-                                            Date    effectiveTime,
-                                            String  methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        final String setGUIDParameter        = "validValue1GUID";
-        final String validValueGUIDParameter = "validValue2GUID";
-
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      validValue1GUID,
-                                      setGUIDParameter,
-                                      OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                      validValue2GUID,
-                                      validValueGUIDParameter,
-                                      OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
-                                      OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
      * Link a valid value typically to a schema element or glossary term to show that it uses
      * the valid values.
      *
@@ -1220,7 +1170,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PREFERRED_VALUE.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -1231,10 +1181,13 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     suppliedSupportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -1279,10 +1232,13 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
                               OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               suppliedSupportedZones,
-                              null,
                               startFrom,
                               pageSize,
                               effectiveTime,
@@ -1333,6 +1289,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         suppliedSupportedZones,
@@ -1386,6 +1346,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         suppliedSupportedZones,
@@ -1439,6 +1403,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         suppliedSupportedZones,
@@ -1484,6 +1452,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                        2,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        suppliedSupportedZones,
@@ -1535,6 +1507,10 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         suppliedSupportedZones,
@@ -1578,6 +1554,9 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
                                    OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,

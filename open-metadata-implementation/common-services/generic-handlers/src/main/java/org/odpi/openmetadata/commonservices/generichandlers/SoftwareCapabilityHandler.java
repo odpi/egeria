@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Date;
@@ -507,137 +508,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * Retrieve a list of unique identifiers for defined software capabilities.
      *
      * @param userId calling user
-     * @param typeGUID unique identifier of type
-     * @param typeName unique name of type
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return List of unique identifiers
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<String> getSoftwareCapabilityGUIDsByType(String  userId,
-                                                         String  typeGUID,
-                                                         String  typeName,
-                                                         int     startingFrom,
-                                                         int     maxPageSize,
-                                                         boolean forLineage,
-                                                         boolean forDuplicateProcessing,
-                                                         Date    effectiveTime,
-                                                         String  methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        return this.getBeanGUIDsByType(userId,
-                                       typeGUID,
-                                       typeName,
-                                       null,
-                                       forLineage,
-                                       forDuplicateProcessing,
-                                       supportedZones,
-                                       startingFrom,
-                                       maxPageSize,
-                                       effectiveTime,
-                                       methodName);
-    }
-
-
-    /**
-     * Retrieve a list of defined software capabilities.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of type
-     * @param typeName unique name of type
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return List of beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<B> getSoftwareServerCapabilitiesByType(String  userId,
-                                                       String  typeGUID,
-                                                       String  typeName,
-                                                       int     startingFrom,
-                                                       int     maxPageSize,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing,
-                                                       Date    effectiveTime,
-                                                       String  methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        return this.getBeansByType(userId,
-                                   typeGUID,
-                                   typeName,
-                                   null,
-                                   forLineage,
-                                   forDuplicateProcessing,
-                                   supportedZones,
-                                   startingFrom,
-                                   maxPageSize,
-                                   effectiveTime,
-                                   methodName);
-    }
-
-
-    /**
-     * Retrieve a list of defined software capabilities.
-     *
-     * @param userId calling user
-     * @param classificationName name of classification
-     * @param startingFrom starting point in the list
-     * @param maxPageSize maximum number of results
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return List of beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<B> getSoftwareServerCapabilitiesByClassification(String  userId,
-                                                                 String  classificationName,
-                                                                 int     startingFrom,
-                                                                 int     maxPageSize,
-                                                                 boolean forLineage,
-                                                                 boolean forDuplicateProcessing,
-                                                                 Date    effectiveTime,
-                                                                 String  methodName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
-    {
-        return this.getBeansByClassification(userId,
-                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
-                                             classificationName,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             startingFrom,
-                                             maxPageSize,
-                                             effectiveTime,
-                                             methodName);
-    }
-
-
-    /**
-     * Retrieve a list of unique identifiers for defined software capabilities.
-     *
-     * @param userId calling user
      * @param classificationName name of the classification that identifies the type of software capability required
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
@@ -666,6 +536,10 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanGUIDsByClassification(userId,
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
                                                  classificationName,
+                                                 null,
+                                                 null,
+                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                 null,
                                                  forLineage,
                                                  forDuplicateProcessing,
                                                  startingFrom,

@@ -4,7 +4,7 @@
 
 ###
 # @name list schemas
-GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=new_catalog&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=unity&max_results=10
 
 ###
 # @name create schema
@@ -40,12 +40,12 @@ Content-Type: application/json
 
 ###
 # @name patch schema
-PATCH {{ucURL}}/api/2.1/unity-catalog/schemas/test.test4schema1
+PATCH {{ucURL}}/api/2.1/unity-catalog/schemas/unity.defaults
 Content-Type: application/json
 
 {
-  "new_name" : "test4schema2",
-  "comment" : "Change name to test4schema2",
+  "new_name" : "default",
+  "comment" : "Change name to default",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"
   }

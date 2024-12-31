@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
+import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
@@ -73,8 +74,6 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
     {
         final String governanceEngineParameterName = "governanceEngineName";
 
-        invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, serviceOperationName);
-
         if (governanceEngineHandlers == null)
         {
             throw new PropertyServerException(EngineHostServicesErrorCode.NO_GOVERNANCE_ENGINES.getMessageDefinition(serverName),
@@ -82,17 +81,46 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
                                               serviceOperationName);
         }
 
-        GovernanceEngineHandler handler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineName);
-
-        if (handler == null)
+        if (governanceEngineName == null)
         {
-            throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
-                                                this.getClass().getName(),
-                                                serviceOperationName,
-                                                governanceEngineParameterName);
-        }
+            List<String> governanceEngineNames = new ArrayList<>(governanceEngineHandlers.getGovernanceEngineNames());
+            for (String engineName : governanceEngineNames)
+            {
+                auditLog.logMessage(serviceOperationName,
+                                    EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(engineName));
 
-        handler.refreshConfig();
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineName);
+
+                if (governanceEngineHandler != null)
+                {
+                    governanceEngineHandler.refreshConfig();
+                }
+
+                auditLog.logMessage(serviceOperationName,
+                                    EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(engineName));
+            }
+        }
+        else
+        {
+            GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineName);
+
+            if (governanceEngineHandler == null)
+            {
+                throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
+                                                    this.getClass().getName(),
+                                                    serviceOperationName,
+                                                    governanceEngineParameterName);
+            }
+
+            auditLog.logMessage(serviceOperationName,
+                                EngineHostServicesAuditCode.CLEARING_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
+
+            governanceEngineHandler.refreshConfig();
+
+            auditLog.logMessage(serviceOperationName,
+                                EngineHostServicesAuditCode.FINISHED_ALL_GOVERNANCE_ENGINE_CONFIG.getMessageDefinition(governanceEngineName));
+
+        }
     }
 
 

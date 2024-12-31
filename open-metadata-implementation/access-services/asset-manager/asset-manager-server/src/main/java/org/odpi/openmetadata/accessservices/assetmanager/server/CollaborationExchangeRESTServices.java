@@ -30,6 +30,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -1512,6 +1513,10 @@ public class CollaborationExchangeRESTServices
                                                               null,
                                                               null,
                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               false,
                                                               false,
                                                               startFrom,

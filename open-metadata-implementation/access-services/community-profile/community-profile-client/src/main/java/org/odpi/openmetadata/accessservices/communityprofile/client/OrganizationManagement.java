@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 
@@ -896,7 +895,7 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/{2}/appointees?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 

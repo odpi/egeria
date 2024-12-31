@@ -39,12 +39,16 @@ Content-Type: application/json
 		}
 }
 
+###
+
+@glossaryGUID= add guid here
 
 ###
 # group: Glossaries
 # @name Retrieve a glossary by GUID
 # This call retrieves the glossar's GUID.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/retrieve
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -58,6 +62,7 @@ Content-Type: application/json
 # @name Retrieve a glossary By Name
 # This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-name
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -72,6 +77,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-search-string?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -83,7 +89,8 @@ Content-Type: application/json
 # group: Glossaries
 # @name Delete a glossary
 # Remove a glossary from the repository.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/remove
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {	
@@ -98,7 +105,8 @@ Content-Type: application/json
 # group: Glossaries
 # @name Create a category
 # Save the returned guid in the domain1GUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/categories
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/categories
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -113,19 +121,25 @@ Content-Type: application/json
 }
 
 ###
+
+@glossaryCategoryGUID=add guid here
+
+###
 # group: Glossaries
 # @name Retrieve ALL the categories for my glossary
 # This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/categories/retrieve?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
 # group: Glossaries
 # @name Create a controlled glossary term in a glossary
 # Add the returned guid as orgGlossaryTerm1GUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/new-controlled
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/terms/new-controlled
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -151,10 +165,15 @@ Content-Type: application/json
 }
 
 ###
+
+@glossaryTermGUID = add guid here
+
+###
 # group: Glossaries
 # @name Create a copy of a glossary term
 # Add the returned guid as adGlossaryTerm1GUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/from-template/{{glossaryTermGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/terms/from-template/{{glossaryTermGUID}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -172,7 +191,8 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Add the data field values classification to the glossary term
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/is-data-field
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/glossaries/terms/{{glossaryTermGUID}}/is-data-field
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -190,7 +210,8 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Add the confidentiality classification to the glossary term
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/confidentiality
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{glossaryTermGUID}}/confidentiality
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -205,7 +226,8 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Add the subject area classification to the glossary term
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/subject-area-member
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{glossaryTermGUID}}/subject-area-member
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -220,8 +242,9 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Update a glossary term in a glossary
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/update?
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update?
     isMergeUpdate=true
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -237,8 +260,9 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Update a glossary term's version identfier
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/update?
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update?
     isMergeUpdate=true
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -253,7 +277,8 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Add a glossary term to a cateogry
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -266,13 +291,15 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Remove a glossary term from a category
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}/remove
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
 # group: Glossaries
 # @name Change the status of a glossary term in a glossary
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/status
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -283,7 +310,8 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Undo an update to the glossary term
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/undo
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/undo
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -292,6 +320,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/retrieve?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -300,6 +329,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/retrieve?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -309,6 +339,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -317,6 +348,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -332,6 +364,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -345,6 +378,7 @@ Content-Type: application/json
 # group: Glossaries
 # @name Retrieve a glossary term by GUID
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/retrieve
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -353,6 +387,7 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/history?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
@@ -362,7 +397,12 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/note-logs/retrieve?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
+
+###
+
+@glossaryTermRevisionLogGUID=add guid here
 
 ###
 # group: Glossaries
@@ -371,17 +411,19 @@ Content-Type: application/json
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/note-logs/{{glossaryTermRevisionLogGUID}}/notes/retrieve?
     startFrom=0&
     pageSize=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
 # group: Glossaries
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{viewServer}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-specification?
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?
     startFrom=0&
     pageSize=0&
     forLineage=false&
     forDuplicateProcessing=false&
     effectiveTime=0
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -406,7 +448,8 @@ Content-Type: application/json
 
 ###
 # group: Glossaries
-# @name Delete a. glossary term
+# @name Delete a glossary term
 # This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/remove
+Authorization: Bearer {{token}}
 Content-Type: application/json

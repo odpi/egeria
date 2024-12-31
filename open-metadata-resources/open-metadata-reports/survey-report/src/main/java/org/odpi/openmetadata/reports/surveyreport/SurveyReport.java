@@ -5,6 +5,8 @@ package org.odpi.openmetadata.reports.surveyreport;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -175,21 +177,25 @@ public class SurveyReport
         int startFrom   = 0;
         int maxPageSize = 100;
 
-        List<RelatedMetadataElement> annotationElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+        RelatedMetadataElementList annotationElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
                                                                                                              surveyReportLinkElement.getElement().getElementGUID(),
                                                                                                              1,
                                                                                                              OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                             null,
+                                                                                                             null,
+                                                                                                             null,
+                                                                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                                                                              false,
                                                                                                              false,
                                                                                                              reportDate,
                                                                                                              startFrom,
                                                                                                              maxPageSize);
 
-        if (annotationElements != null)
+        if ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            while (annotationElements != null)
+            while ((annotationElements != null) && (annotationElements.getElementList() != null))
             {
-                for (RelatedMetadataElement reportedAnnotationLink : annotationElements)
+                for (RelatedMetadataElement reportedAnnotationLink : annotationElements.getElementList())
                 {
                     if ((reportedAnnotationLink != null) && (reportedAnnotationLink.getElement() != null))
                     {
@@ -205,6 +211,10 @@ public class SurveyReport
                                                                                         surveyReportLinkElement.getElement().getElementGUID(),
                                                                                         1,
                                                                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        SequencingOrder.CREATION_DATE_RECENT,
                                                                                         false,
                                                                                         false,
                                                                                         reportDate,
@@ -227,15 +237,19 @@ public class SurveyReport
                                                                                 surveyReportLinkElement.getElement().getElementGUID(),
                                                                                 1,
                                                                                 OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                SequencingOrder.CREATION_DATE_RECENT,
                                                                                 false,
                                                                                 false,
                                                                                 reportDate,
                                                                                 startFrom,
                                                                                 maxPageSize);
 
-        while (annotationElements != null)
+        while ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            for (RelatedMetadataElement reportedAnnotationElement : annotationElements)
+            for (RelatedMetadataElement reportedAnnotationElement : annotationElements.getElementList())
             {
                 if ((reportedAnnotationElement != null) && (reportedAnnotationElement.getElement() != null))
                 {
@@ -253,6 +267,10 @@ public class SurveyReport
                                                                                     surveyReportLinkElement.getElement().getElementGUID(),
                                                                                     1,
                                                                                     OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
                                                                                     false,
                                                                                     false,
                                                                                     reportDate,
@@ -446,21 +464,25 @@ public class SurveyReport
             }
         }
 
-        List<RelatedMetadataElement> associatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+        RelatedMetadataElementList associatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
                                                                                                              reportedAnnotationElement.getElement().getElementGUID(),
                                                                                                              2,
                                                                                                              OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                             null,
+                                                                                                             null,
+                                                                                                             null,
+                                                                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                                                                              false,
                                                                                                              false,
                                                                                                              reportDate,
                                                                                                              startFrom,
                                                                                                              maxPageSize);
 
-        while (associatedElements != null)
+        while ((associatedElements != null) && (associatedElements.getElementList() != null))
         {
             int associatedElementIndentLevel = annotationIndentLevel + 1;
 
-            for (RelatedMetadataElement associatedElement : associatedElements)
+            for (RelatedMetadataElement associatedElement : associatedElements.getElementList())
             {
                 if (associatedElement != null)
                 {
@@ -484,6 +506,10 @@ public class SurveyReport
                                                                                     reportedAnnotationElement.getElement().getElementGUID(),
                                                                                     2,
                                                                                     OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
                                                                                     false,
                                                                                     false,
                                                                                     reportDate,
@@ -537,24 +563,28 @@ public class SurveyReport
 
                 outputReport.printReportSubheading(detailIndentLevel, "Survey report summaries");
 
-                List<RelatedMetadataElement> surveyReportElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
-                                                                                                                       assetGUID,
-                                                                                                                       1,
-                                                                                                                       OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
-                                                                                                                       false,
-                                                                                                                       false,
-                                                                                                                       reportDate,
-                                                                                                                       0,
-                                                                                                                       0);
+                RelatedMetadataElementList surveyReportElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                                                     assetGUID,
+                                                                                                                     1,
+                                                                                                                     OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                                                     null,
+                                                                                                                     null,
+                                                                                                                     null,
+                                                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                     false,
+                                                                                                                     false,
+                                                                                                                     reportDate,
+                                                                                                                     0,
+                                                                                                                     0);
 
-                if (surveyReportElements != null)
+                if ((surveyReportElements != null) && (surveyReportElements.getElementList() != null))
                 {
                     int reportIndentLevel = detailIndentLevel + 1;
 
                     /*
                      * First loop creates table of contents
                      */
-                    for (RelatedMetadataElement surveyReportElement : surveyReportElements)
+                    for (RelatedMetadataElement surveyReportElement : surveyReportElements.getElementList())
                     {
                         if (surveyReportElement != null)
                         {
@@ -565,7 +595,7 @@ public class SurveyReport
                     /*
                      * Now print out the contents of each report
                      */
-                    for (RelatedMetadataElement surveyReportElement : surveyReportElements)
+                    for (RelatedMetadataElement surveyReportElement : surveyReportElements.getElementList())
                     {
                         if (surveyReportElement != null)
                         {
