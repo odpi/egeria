@@ -1170,7 +1170,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PREFERRED_VALUE.name);
 
         return this.getBeansByValue(userId,
                                     name,

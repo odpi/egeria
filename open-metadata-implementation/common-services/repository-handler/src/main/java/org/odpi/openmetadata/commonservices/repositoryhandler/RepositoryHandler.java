@@ -112,6 +112,7 @@ public class RepositoryHandler
      * @param guid              unique identifier of the entity.
      * @param guidParameterName name of parameter that passed the guid
      * @param entityTypeName    expected type of asset.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param methodName        name of method called.
      *
      * @return retrieved entity
@@ -124,6 +125,7 @@ public class RepositoryHandler
                                            String guid,
                                            String guidParameterName,
                                            String entityTypeName,
+                                           Date   asOfTime,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -132,7 +134,16 @@ public class RepositoryHandler
 
         try
         {
-            EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
+            EntityDetail entity;
+
+            if (asOfTime == null)
+            {
+                entity = metadataCollection.getEntityDetail(userId, guid);
+            }
+            else
+            {
+                entity = metadataCollection.getEntityDetail(userId, guid, asOfTime);
+            }
 
             if (entity != null)
             {
@@ -3113,9 +3124,45 @@ public class RepositoryHandler
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
+        return this.getEntityByGUID(userId, guid, guidParameterName, entityTypeName, forLineage, forDuplicateProcessing, null, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the requested entity, converting any errors from the repository services into the local
+     * OMAS exceptions.
+     *
+     * @param userId calling user
+     * @param guid unique identifier for the entity
+     * @param guidParameterName name of the guid parameter for error handling
+     * @param entityTypeName expected type of the entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method name
+     *
+     * @return entity detail object
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public EntityDetail   getEntityByGUID(String  userId,
+                                          String  guid,
+                                          String  guidParameterName,
+                                          String  entityTypeName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    asOfTime,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
         final String localMethodName = "getEntityByGUID";
 
-        EntityDetail entity = validateEntityGUID(userId, guid, guidParameterName, entityTypeName, methodName);
+        EntityDetail entity = validateEntityGUID(userId, guid, guidParameterName, entityTypeName, asOfTime, methodName);
 
         if (entity != null)
         {
@@ -3334,165 +3381,6 @@ public class RepositoryHandler
                                                                                              sequencingPropertyName,
                                                                                              sequencingOrder,
                                                                                              pageSize);
-
-            return this.validateEntities(userId,
-                                         retrievedEntities,
-                                         null,
-                                         limitResultsByStatus,
-                                         asOfTime,
-                                         sequencingOrder,
-                                         sequencingPropertyName,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         effectiveTime,
-                                         methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the entities that match all supplied properties.
-     *
-     * @param userId calling userId
-     * @param properties list of name properties to search on.
-     * @param entityTypeGUID unique identifier of the entity's type
-     * @param sequencingPropertyName property name used to sequence the results
-     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
-     * @param limitResultsByClassification only return elements that have the requested classification(s)
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
-     *
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
-     */
-    public List<EntityDetail>  getEntitiesByAllProperties(String               userId,
-                                                          InstanceProperties   properties,
-                                                          String               entityTypeGUID,
-                                                          List<InstanceStatus> limitResultsByStatus,
-                                                          List<String>         limitResultsByClassification,
-                                                          Date                 asOfTime,
-                                                          SequencingOrder      sequencingOrder,
-                                                          String               sequencingPropertyName,
-                                                          boolean              forLineage,
-                                                          boolean              forDuplicateProcessing,
-                                                          int                  startingFrom,
-                                                          int                  pageSize,
-                                                          Date                 effectiveTime,
-                                                          String               methodName) throws UserNotAuthorizedException,
-                                                                                                  PropertyServerException
-    {
-        final String localMethodName = "getEntitiesByAllProperties";
-
-        try
-        {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                             entityTypeGUID,
-                                                                                             properties,
-                                                                                             MatchCriteria.ALL,
-                                                                                             startingFrom,
-                                                                                             limitResultsByStatus,
-                                                                                             limitResultsByClassification,
-                                                                                             asOfTime,
-                                                                                             sequencingPropertyName,
-                                                                                             sequencingOrder,
-                                                                                             pageSize);
-
-            return this.validateEntities(userId,
-                                         retrievedEntities,
-                                         null,
-                                         limitResultsByStatus,
-                                         asOfTime,
-                                         sequencingOrder,
-                                         sequencingPropertyName,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         effectiveTime,
-                                         methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Exception   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the entities that match none of the supplied properties.
-     *
-     * @param userId calling userId
-     * @param properties list of name properties to search on.
-     * @param entityTypeGUID unique identifier of the entity's type
-     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
-     * @param limitResultsByClassification only return elements that have the requested classification(s)
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
-     *
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
-     */
-    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String               userId,
-                                                                InstanceProperties   properties,
-                                                                String               entityTypeGUID,
-                                                                List<InstanceStatus> limitResultsByStatus,
-                                                                List<String>         limitResultsByClassification,
-                                                                Date                 asOfTime,
-                                                                SequencingOrder      sequencingOrder,
-                                                                String               sequencingPropertyName,
-                                                                boolean              forLineage,
-                                                                boolean              forDuplicateProcessing,
-                                                                int                  startingFrom,
-                                                                int                  pageSize,
-                                                                Date                 effectiveTime,
-                                                                String               methodName) throws UserNotAuthorizedException,
-                                                                                                        PropertyServerException
-    {
-        final String localMethodName = "getEntitiesWithoutPropertyValues";
-
-        try
-        {
-            List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                    entityTypeGUID,
-                                                                                    properties,
-                                                                                    MatchCriteria.NONE,
-                                                                                    startingFrom,
-                                                                                    limitResultsByStatus,
-                                                                                    limitResultsByClassification,
-                                                                                    asOfTime,
-                                                                                    sequencingPropertyName,
-                                                                                    sequencingOrder,
-                                                                                    pageSize);
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -3911,6 +3799,81 @@ public class RepositoryHandler
 
         return null;
     }
+
+
+
+    /**
+     * Return the current version of a requested relationship.
+     *
+     * @param userId  user making the request
+     * @param relationshipGUID unique identifier for the relationship
+     * @param relationshipParameterName parameter name supplying relationshipGUID
+     * @param relationshipTypeName type name for the relationship
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationship or exception
+     *
+     * @throws InvalidParameterException the GUID is invalid
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public Relationship getRelationshipByGUID(String userId,
+                                              String relationshipGUID,
+                                              String relationshipParameterName,
+                                              String relationshipTypeName,
+                                              Date   asOfTime,
+                                              Date   effectiveTime,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String localMethodName = "getRelationshipByGUID";
+
+        try
+        {
+            Relationship relationship;
+
+            if (asOfTime == null)
+            {
+                relationship = metadataCollection.getRelationship(userId, relationshipGUID);
+            }
+            else
+            {
+                relationship = metadataCollection.getRelationship(userId, relationshipGUID, asOfTime);
+            }
+
+            errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName, localMethodName);
+
+            if (isCorrectEffectiveTime(relationship.getProperties(), effectiveTime))
+            {
+                return relationship;
+            }
+
+            errorHandler.handleNotEffectiveElement(relationshipGUID,
+                                                   relationshipTypeName,
+                                                   relationship.getProperties(),
+                                                   methodName,
+                                                   relationshipParameterName,
+                                                   effectiveTime);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException  error)
+        {
+            errorHandler.handleUnknownRelationship(error, relationshipGUID, relationshipTypeName, methodName, relationshipParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all historical

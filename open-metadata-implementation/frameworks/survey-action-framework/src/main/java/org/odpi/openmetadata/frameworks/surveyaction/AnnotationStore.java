@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -548,19 +549,19 @@ public class AnnotationStore
     {
         final String methodName = "getAnnotationsForElement";
 
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
-                                                                                                            elementGUID,
-                                                                                                            1,
-                                                                                                            OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                            forLineage,
-                                                                                                            forDuplicateProcessing,
-                                                                                                            getEffectiveTime(),
-                                                                                                            startingFrom,
-                                                                                                            maximumResults);
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
+                                                                                                          elementGUID,
+                                                                                                          1,
+                                                                                                          OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                          forLineage,
+                                                                                                          forDuplicateProcessing,
+                                                                                                          getEffectiveTime(),
+                                                                                                          startingFrom,
+                                                                                                          maximumResults);
 
         return this.getRelatedAnnotationBeans(relatedMetadataElements, methodName);
     }
@@ -584,7 +585,7 @@ public class AnnotationStore
     {
         final String methodName = "getNewAnnotations";
 
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
                                                                                                             surveyReportGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
@@ -623,7 +624,7 @@ public class AnnotationStore
     {
         final String methodName = "getExtendedAnnotations";
 
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(userId,
                                                                                                             annotationGUID,
                                                                                                             1,
                                                                                                             OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
@@ -660,6 +661,7 @@ public class AnnotationStore
                                                                                              annotationGUID,
                                                                                              forLineage,
                                                                                              forDuplicateProcessing,
+                                                                                             null,
                                                                                              this.getEffectiveTime());
         return getAnnotationBean(openMetadataElement, methodName);
     }
@@ -1030,16 +1032,16 @@ public class AnnotationStore
      * @throws UserNotAuthorizedException insufficient authorization
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    private List<Annotation> getRelatedAnnotationBeans(List<RelatedMetadataElement> openMetadataElements,
-                                                       String                       methodName) throws PropertyServerException,
+    private List<Annotation> getRelatedAnnotationBeans(RelatedMetadataElementList openMetadataElements,
+                                                       String                      methodName) throws PropertyServerException,
                                                                                                        InvalidParameterException,
                                                                                                        UserNotAuthorizedException
     {
-        if (openMetadataElements != null)
+        if ((openMetadataElements != null) && (openMetadataElements.getElementList() != null))
         {
             List<Annotation> annotations = new ArrayList<>();
 
-            for (RelatedMetadataElement openMetadataElement : openMetadataElements)
+            for (RelatedMetadataElement openMetadataElement : openMetadataElements.getElementList())
             {
                 annotations.add(this.getAnnotationBean(openMetadataElement.getElement(), methodName));
             }
@@ -1069,7 +1071,7 @@ public class AnnotationStore
     {
         if (annotationElement != null)
         {
-            List<RelatedMetadataElement> relationships = openMetadataStore.getRelatedMetadataElements(userId,
+            RelatedMetadataElementList relationships = openMetadataStore.getRelatedMetadataElements(userId,
                                                                                                       annotationElement.getElementGUID(),
                                                                                                       0,
                                                                                                       null,
@@ -1082,10 +1084,20 @@ public class AnnotationStore
                                                                                                       this.getEffectiveTime(),
                                                                                                       0,
                                                                                                       0);
-            return converter.getAnnotationBean(Annotation.class,
-                                               annotationElement,
-                                               relationships,
-                                               methodName);
+            if ((relationships != null) && (relationships.getElementList() != null))
+            {
+                return converter.getAnnotationBean(Annotation.class,
+                                                   annotationElement,
+                                                   relationships.getElementList(),
+                                                   methodName);
+            }
+            else
+            {
+                return converter.getAnnotationBean(Annotation.class,
+                                                   annotationElement,
+                                                   null,
+                                                   methodName);
+            }
         }
 
         return null;

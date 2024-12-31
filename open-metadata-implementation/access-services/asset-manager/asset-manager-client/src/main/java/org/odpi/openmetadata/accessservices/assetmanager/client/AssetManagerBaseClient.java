@@ -2005,7 +2005,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   startingElementGUID,
                                                                                                                   startingAtEnd,
                                                                                                                   relationshipTypeName,

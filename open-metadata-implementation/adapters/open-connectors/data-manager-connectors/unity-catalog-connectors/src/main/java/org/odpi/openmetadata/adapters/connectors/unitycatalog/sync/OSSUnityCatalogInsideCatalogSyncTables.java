@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
@@ -599,15 +600,15 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
             int startFrom = 0;
 
-            List<RelatedMetadataElement> schemaAttributes = openMetadataAccess.getRelatedMetadataElements(memberElement.getRootSchemaType().getElement().getElementGUID(),
-                                                                                                          1,
-                                                                                                          OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                                                          startFrom,
-                                                                                                          context.getMaxPageSize());
+            RelatedMetadataElementList schemaAttributes = openMetadataAccess.getRelatedMetadataElements(memberElement.getRootSchemaType().getElement().getElementGUID(),
+                                                                                                        1,
+                                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                                        startFrom,
+                                                                                                        context.getMaxPageSize());
 
-            while (schemaAttributes != null)
+            while ((schemaAttributes != null) && (schemaAttributes.getElementList() != null))
             {
-                for (RelatedMetadataElement schemaAttribute : schemaAttributes)
+                for (RelatedMetadataElement schemaAttribute : schemaAttributes.getElementList())
                 {
                     if (schemaAttribute != null)
                     {

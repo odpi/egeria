@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 
 /**
  * AutomatedCurationInstance caches references to objects it needs for a specific server.
@@ -30,6 +31,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     private final OpenIntegrationServiceClient openIntegrationServiceClient;
     private final GovernanceConfigurationClient governanceConfigurationClient;
     private final ConnectedAssetClient         connectedAssetClient;
+    private final TechnologyTypeHandler        technologyTypeHandler;
 
     /**
      * Set up the Automated Curation OMVS instance
@@ -57,18 +59,19 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        assetCertificationManager    = new AssetCertificationManager(remoteServerName, remoteServerURL);
-        assetLicenseManager          = new AssetLicenseManager(remoteServerName, remoteServerURL);
-        externalReferenceManager     = new ExternalReferenceManager(remoteServerName, remoteServerURL);
-        validValuesAssetOwner        = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
-        fileSystemAssetOwner         = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        csvFileAssetOwner            = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        avroFileAssetOwner           = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        connectedAssetClient         = new ConnectedAssetClient(remoteServerName, remoteServerURL);
-        openMetadataStoreClient      = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-        openGovernanceClient         = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
-        openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
+        assetCertificationManager     = new AssetCertificationManager(remoteServerName, remoteServerURL);
+        assetLicenseManager           = new AssetLicenseManager(remoteServerName, remoteServerURL);
+        externalReferenceManager      = new ExternalReferenceManager(remoteServerName, remoteServerURL);
+        validValuesAssetOwner         = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
+        fileSystemAssetOwner          = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        csvFileAssetOwner             = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        avroFileAssetOwner            = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        connectedAssetClient          = new ConnectedAssetClient(remoteServerName, remoteServerURL);
+        openMetadataStoreClient       = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+        openGovernanceClient          = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
+        openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
         governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, maxPageSize);
+        technologyTypeHandler         = new TechnologyTypeHandler(externalReferenceManager, openMetadataStoreClient, serviceName, serverName);
     }
 
 
@@ -170,6 +173,18 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     public OpenMetadataStoreClient getOpenMetadataStoreClient()
     {
         return openMetadataStoreClient;
+    }
+
+
+    /**
+     * Return the technology type handler.  This client is from the Automated Curation OMVS and is for accessing
+     * technology types.
+     *
+     * @return client
+     */
+    public TechnologyTypeHandler getTechnologyTypeHandler()
+    {
+        return technologyTypeHandler;
     }
 
 

@@ -207,12 +207,8 @@ public class OpenMetadataTypesArchive2_9
 
     private ClassificationDef getMasterDataManagerClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.MASTER_DATA_MANAGER.typeGUID,
-                                                  OpenMetadataType.MASTER_DATA_MANAGER.typeName,
+        return archiveHelper.getClassificationDef(OpenMetadataType.MASTER_DATA_MANAGER,
                                                   null,
-                                                  OpenMetadataType.MASTER_DATA_MANAGER.description,
-                                                  OpenMetadataType.MASTER_DATA_MANAGER.descriptionGUID,
-                                                  OpenMetadataType.MASTER_DATA_MANAGER.wikiURL,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
@@ -234,12 +230,8 @@ public class OpenMetadataTypesArchive2_9
 
     private RelationshipDef getActionTargetRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACTION_TARGET_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.description,
-                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.ACTION_TARGET_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;

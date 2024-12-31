@@ -6,11 +6,8 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
 {
-    private List<OpenMetadataRelationship> elementList = null;
+    private OpenMetadataRelationshipList relationshipList = null;
 
 
     /**
@@ -47,7 +44,7 @@ public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            relationshipList = template.getRelationshipList();
         }
     }
 
@@ -57,31 +54,20 @@ public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<OpenMetadataRelationship> getElementList()
+    public OpenMetadataRelationshipList getRelationshipList()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementList);
-        }
+        return relationshipList;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param relationshipList result object
      */
-    public void setElementList(List<OpenMetadataRelationship> elementList)
+    public void setRelationshipList(OpenMetadataRelationshipList relationshipList)
     {
-        this.elementList = elementList;
+        this.relationshipList = relationshipList;
     }
 
 
@@ -93,19 +79,9 @@ public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "OpenMetadataElementsResponse{" +
-                "elementList=" + elementList +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+        return "OpenMetadataRelationshipListResponse{" +
+                "relationshipList=" + relationshipList +
+                "} " + super.toString();
     }
 
 
@@ -131,7 +107,7 @@ public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
             return false;
         }
         OpenMetadataRelationshipListResponse that = (OpenMetadataRelationshipListResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(relationshipList, that.relationshipList);
     }
 
 
@@ -143,6 +119,6 @@ public class OpenMetadataRelationshipListResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), relationshipList);
     }
 }

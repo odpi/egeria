@@ -256,8 +256,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                   "No action is required, but this message can be used to capture user activity information."),
 
 
-
-
     /**
      * OPEN-METADATA-SECURITY-0051 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}
      */
@@ -312,6 +310,15 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                           "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
                           "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
                           "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches."),
+
+    /**
+     * OPEN-METADATA-SECURITY-0057 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}
+     */
+    ASSET_ACTIVITY_SEARCH_ATTACHMENT("OPEN-METADATA-SECURITY-0057",
+                                     AuditLogRecordSeverityLevel.ACTIVITY,
+                                     "User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}",
+                                     "This message is used to capture user requests to retrieve part of an asset as part of a search request.  This asset may not be the caller's choice.",
+                                     "No action is required, but this message can be used to capture user activity information relating to the attachments of an asset assets being retrieved through searches."),
 
 
     /**

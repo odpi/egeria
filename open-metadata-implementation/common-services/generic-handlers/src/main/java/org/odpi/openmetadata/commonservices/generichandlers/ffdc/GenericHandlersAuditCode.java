@@ -201,7 +201,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                           "No action is required, but this message can be used to capture user activity information related to asset creation."),
 
     /**
-     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}
+     * OMAG-GENERIC-HANDLERS-0027 - Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request
      */
     ENGINE_ACTION_CANCELLED("OMAG-GENERIC-HANDLERS-0027",
                             AuditLogRecordSeverityLevel.SHUTDOWN,
@@ -209,6 +209,17 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                             "The engine action is updated to show that it was cancelled.  If a governance service is running in an engine host," +
                                     " it is informed and it will attempt to stop the service as fast as possible.",
                             "Monitor the shutdown of the request in the engine host."),
+
+
+    /**
+     * OMAG-GENERIC-HANDLERS-0028 - Governance engine with {0} userId has successfully claimed engine action {1}
+     */
+    FAILED_TO_RETRIEVE_ANCHOR_ENTITIES("OMAG-GENERIC-HANDLERS-0028",
+                            AuditLogRecordSeverityLevel.INFO,
+                            "Method {0} was unable to receive anchor entities due to a {1} exception with message {2}",
+                            "The generic handlers were unable to perform a bulk retrieval of the anchor entities.  They will be retrieved individually.",
+                            "The bulk retrieval is more efficient.  However, one or more of the repositories in use may not support this request.  " +
+                                               "The individual retrieval still provides the same security protection - it is just slower to execute."),
 
     ;
 

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -925,8 +926,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                    null,
                                                                                    null,
                                                                                    connectorProviderClassName,
-                                                                                   OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT,
-                                                                                   OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                                                                                   OpenMetadataValidValues.CONNECTOR_FRAMEWORK_NAME_DEFAULT,
+                                                                                   OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
                                                                                    null,
                                                                                    null,
                                                                                    null,

@@ -333,7 +333,7 @@ public class DatabaseStore
 
 
     /**
-     * This query is issued against a join of the entity table and the entity attribute table.
+     * This query is issued against the entity table and the entity attribute table.
      *
      * @param classificationQueryBuilder filled with conditions for the where clause for the SQL query
      * @param entityQueryBuilder filled with conditions for the where clause for the SQL query
@@ -347,10 +347,7 @@ public class DatabaseStore
     {
         final String methodName = "retrieveEntitiesByProperties";
 
-        String sqlEntityQuery = entityQueryBuilder.getPropertyJoinQuery(RepositoryTable.ENTITY.getTableName(),
-                                                                        RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
-                                                                        "*") +
-                " where " + entityQueryBuilder.getAsOfTimeWhereClause();
+        String sqlEntityQuery = "select distinct * from " + RepositoryTable.ENTITY.getTableName() + " where " + entityQueryBuilder.getAsOfTimeWhereClause();
 
         try
         {
@@ -409,10 +406,10 @@ public class DatabaseStore
     {
         final String methodName = "retrieveRelationships";
 
+        String sqQuery = "select distinct * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                                                                      queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqQuery + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
@@ -436,7 +433,7 @@ public class DatabaseStore
 
 
     /**
-     * This query is issued against a join of the relationship table and the relationship attribute table.
+     * This query is issued against the relationship table and the relationship attribute table.
      *
      * @param queryBuilder populated with details of the where clause for the SQL query
      * @param asOfTime database time
@@ -446,13 +443,9 @@ public class DatabaseStore
     public List<RelationshipMapper> retrieveRelationshipsByProperties(QueryBuilder queryBuilder,
                                                                       Date         asOfTime) throws RepositoryErrorException
     {
-        final String methodName = "retrieveRelationships";
+        final String methodName = "retrieveRelationshipsByProperties";
 
-        String sqlQuery = queryBuilder.getPropertyJoinQuery(RepositoryTable.RELATIONSHIP.getTableName(),
-                                                            RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
-                                                            "*") +
-                " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
-
+        String sqlQuery = "select distinct * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName());
 
         try
         {
@@ -603,7 +596,10 @@ public class DatabaseStore
         {
             try
             {
-                QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+                QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.ENTITY.getTableName(),
+                                                             RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                                                             repositoryHelper,
+                                                             repositoryName);
 
                 queryBuilder.setGUIDList(entityGUIDs);
                 queryBuilder.setAsOfTime(asOfTime);
@@ -648,13 +644,17 @@ public class DatabaseStore
              * Get the attributes for each of the entities returned
              */
             Map<String, DatabaseResultRows> databaseResultRowsMap = this.getAttributesDatabaseResults(entityRows,
+                                                                                                      RepositoryTable.ENTITY,
                                                                                                       RepositoryTable.ENTITY_ATTRIBUTE_VALUE);
 
             /*
              * Entities have an additional complication in that they have classifications.  These are matched by
              * asOfTime because their versions are independent of the entity versions.
              */
-            QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            QueryBuilder queryBuilder = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                         RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                         repositoryHelper,
+                                                         repositoryName);
 
             queryBuilder.setGUIDList(new ArrayList<>(databaseResultRowsMap.keySet()));
             queryBuilder.setAsOfTime(asOfTime);
@@ -702,6 +702,7 @@ public class DatabaseStore
         if ((relationshipRows != null) && (! relationshipRows.isEmpty()))
         {
             Map<String, DatabaseResultRows> mapperResultRowsMap = this.getAttributesDatabaseResults(relationshipRows,
+                                                                                                    RepositoryTable.RELATIONSHIP,
                                                                                                     RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE);
 
             if (! mapperResultRowsMap.isEmpty())
@@ -757,11 +758,13 @@ public class DatabaseStore
      * Retrieve the attribute rows that match the instance rows returned.
      *
      * @param instanceRows rows from principle instance table (entity or relationship)
+     * @param principleTable table holding instance header
      * @param attributesTable the attributes table to retrieve from
      * @return organised database results
      * @throws RepositoryErrorException unexpected exception retrieving values from the database
      */
     private Map<String, DatabaseResultRows> getAttributesDatabaseResults(List<Map<String, JDBCDataValue>> instanceRows,
+                                                                         RepositoryTable                  principleTable,
                                                                          RepositoryTable                  attributesTable) throws RepositoryErrorException
     {
         final String methodName = "getAttributesDatabaseResults";
@@ -770,7 +773,10 @@ public class DatabaseStore
         {
             Map<String, DatabaseResultRows> databaseResultRowsMap = new HashMap<>();
 
-            QueryBuilder queryBuilder = new QueryBuilder(repositoryHelper, repositoryName);
+            QueryBuilder queryBuilder = new QueryBuilder(principleTable.getTableName(),
+                                                         attributesTable.getTableName(),
+                                                         repositoryHelper,
+                                                         repositoryName);
             List<String> instanceGUIDs  = new ArrayList<>();
 
             StringBuilder instanceWhereClause = new StringBuilder();
@@ -885,7 +891,10 @@ public class DatabaseStore
                  * independent of the version of the entity).
                  */
                 Map<String, DatabaseResultRows> mapperResultRowsMap = new HashMap<>();
-                QueryBuilder                    queryBuilder        = new QueryBuilder(repositoryHelper, repositoryName);
+                QueryBuilder                    queryBuilder        = new QueryBuilder(RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                                       RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                                       repositoryHelper,
+                                                                                       repositoryName);
 
                 StringBuilder classificationWhereClause = new StringBuilder();
 
@@ -1156,7 +1165,7 @@ public class DatabaseStore
         }
         else
         {
-            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " < '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
+            return " and (" + RepositoryColumn.VERSION_START_TIME.getColumnName() + " <= '" + asOfTime + "' and (" + RepositoryColumn.VERSION_END_TIME.getColumnName() + " is null or " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " > '" + asOfTime + "'))";
         }
     }
 

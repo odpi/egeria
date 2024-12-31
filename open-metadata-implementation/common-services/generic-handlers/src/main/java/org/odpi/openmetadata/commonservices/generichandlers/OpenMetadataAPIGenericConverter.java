@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
@@ -2157,7 +2158,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
     }
 
 
@@ -2183,7 +2184,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
     }
 
 
@@ -2612,13 +2613,13 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return ordinal or 0 for not specified
      */
-    protected int removeKarmaPoints(InstanceProperties instanceProperties)
+    protected long removeKarmaPoints(InstanceProperties instanceProperties)
     {
         final String methodName = "removeKarmaPoints";
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeIntProperty(serviceName,
+            return repositoryHelper.removeLongProperty(serviceName,
                                                       OpenMetadataProperty.KARMA_POINTS.name,
                                                       instanceProperties,
                                                       methodName);
@@ -4417,7 +4418,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.CATEGORY_PROPERTY_NAME,
+                                                         OpenMetadataProperty.CATEGORY.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5522,7 +5523,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.PREFERRED_VALUE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5544,7 +5545,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeBooleanProperty(serviceName,
-                                                          OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                          OpenMetadataProperty.IS_CASE_SENSITIVE.name,
                                                           instanceProperties,
                                                           methodName);
         }

@@ -995,18 +995,17 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 fullEntity = entity;
 
-                assetHandler.validateAnchorEntity(userId,
-                                                  fullEntity.getGUID(),
-                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                  fullEntity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  true,
-                                                  false,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
+                assetHandler.validateAnchorForEntity(userId,
+                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                     fullEntity,
+                                                     guidParameterName,
+                                                     false,
+                                                     false,
+                                                     true,
+                                                     false,
+                                                     supportedZones,
+                                                     effectiveTime,
+                                                     methodName);
             }
             else if (entityProxy != null)
             {

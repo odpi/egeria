@@ -519,6 +519,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param elementGUID unique identifier for the metadata element
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
@@ -532,6 +533,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                         String  elementGUID,
                                                         boolean forLineage,
                                                         boolean forDuplicateProcessing,
+                                                        Date    asOfTime,
                                                         Date    effectiveTime) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -543,7 +545,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
                                                                                                urlTemplate,
@@ -567,6 +570,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or null if not found
@@ -581,6 +585,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                               String  uniquePropertyName,
                                                               boolean forLineage,
                                                               boolean forDuplicateProcessing,
+                                                              Date    asOfTime,
                                                               Date    effectiveTime) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
@@ -595,6 +600,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setNameParameterName(nameParameterName);
 
@@ -700,6 +706,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param uniquePropertyName     name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage             the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime          only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
@@ -714,6 +721,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                      String  uniquePropertyName,
                                                      boolean forLineage,
                                                      boolean forDuplicateProcessing,
+                                                     Date    asOfTime,
                                                      Date    effectiveTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -729,6 +737,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         NameRequestBody requestBody = new NameRequestBody();
         requestBody.setName(uniqueName);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
 
         if (uniquePropertyName != null)
@@ -840,7 +849,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        if (typeName == null)
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -894,7 +906,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+    public   RelatedMetadataElementList getRelatedMetadataElements(String              userId,
                                                                    String              elementGUID,
                                                                    int                 startingAtEnd,
                                                                    String              relationshipTypeName,
@@ -960,7 +972,63 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                pageSize);
         }
 
-        return restResult.getElementList();
+        return restResult.getRelatedElementList();
+    }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param userId name of the server instances for this request
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public OpenMetadataElementGraph getAnchoredElementsGraph(String             userId,
+                                                             String             elementGUID,
+                                                             boolean            forLineage,
+                                                             boolean            forDuplicateProcessing,
+                                                             int                startFrom,
+                                                             int                pageSize,
+                                                             Date               asOfTime,
+                                                             Date               effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName        = "getAnchoredElementsGraph";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/with-anchored-elements?forLineage={4}&forDuplicateProcessing={5}&startFrom={6}&pageSize={7}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
+        requestBody.setEffectiveTime(effectiveTime);
+        OpenMetadataGraphResponse restResult = restClient.callOpenMetadataGraphPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            serviceURLMarker,
+                                                                                            userId,
+                                                                                            elementGUID,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing,
+                                                                                            startFrom,
+                                                                                            pageSize);
+
+        return restResult.getElementGraph();
     }
 
 
@@ -995,7 +1063,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName = "getRelatedMetadataElement";
 
-        List<RelatedMetadataElement> relationships = this.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList  relationships = this.getRelatedMetadataElements(userId,
                                                                                      elementGUID,
                                                                                      startingAtEnd,
                                                                                      relationshipTypeName,
@@ -1009,17 +1077,17 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                      0,
                                                                                      0);
 
-        if ((relationships != null) && (!relationships.isEmpty()))
+        if ((relationships != null) && (relationships.getElementList() != null) && (!relationships.getElementList().isEmpty()))
         {
-            if (relationships.size() == 1)
+            if (relationships.getElementList().size() == 1)
             {
-                return relationships.get(0);
+                return relationships.getElementList().get(0);
             }
             else
             {
                 RelatedMetadataElement result = null;
 
-                for (RelatedMetadataElement relatedMetadataElement : relationships)
+                for (RelatedMetadataElement relatedMetadataElement : relationships.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -1133,7 +1201,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+    public   OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
                                                                           String              metadataElementAtEnd1GUID,
                                                                           String              metadataElementAtEnd2GUID,
                                                                           String              relationshipTypeName,
@@ -1199,7 +1267,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                  pageSize);
         }
 
-        return restResult.getElementList();
+        return restResult.getRelationshipList();
     }
 
 
@@ -2068,7 +2136,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-conditions?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -2134,23 +2202,23 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
-                                                                                   String              relationshipTypeName,
-                                                                                   SearchProperties    searchProperties,
-                                                                                   List<ElementStatus> limitResultsByStatus,
-                                                                                   Date                asOfTime,
-                                                                                   String              sequencingProperty,
-                                                                                   SequencingOrder     sequencingOrder,
-                                                                                   boolean             forLineage,
-                                                                                   boolean             forDuplicateProcessing,
-                                                                                   Date                effectiveTime,
-                                                                                   int                 startFrom,
-                                                                                   int                 pageSize) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException
+    public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              userId,
+                                                                                 String              relationshipTypeName,
+                                                                                 SearchProperties    searchProperties,
+                                                                                 List<ElementStatus> limitResultsByStatus,
+                                                                                 Date                asOfTime,
+                                                                                 String              sequencingProperty,
+                                                                                 SequencingOrder     sequencingOrder,
+                                                                                 boolean             forLineage,
+                                                                                 boolean             forDuplicateProcessing,
+                                                                                 Date                effectiveTime,
+                                                                                 int                 startFrom,
+                                                                                 int                 pageSize) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-conditions?forLineage={3}&forDuplicateProcessing={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -2175,7 +2243,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                   startFrom,
                                                                                                                   pageSize);
 
-        return restResult.getElementList();
+        return restResult.getRelationshipList();
     }
 
 
@@ -2185,6 +2253,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return relationship properties
@@ -2197,6 +2266,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                           String  relationshipGUID,
                                                           boolean forLineage,
                                                           boolean forDuplicateProcessing,
+                                                          Date    asOfTime,
                                                           Date    effectiveTime) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -2208,7 +2278,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
+        requestBody.setAsOfTime(asOfTime);
         requestBody.setEffectiveTime(effectiveTime);
 
         OpenMetadataRelationshipResponse restResult = restClient.callOpenMetadataRelationshipPostRESTCall(methodName,
@@ -2245,7 +2316,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
+    public  OpenMetadataRelationshipList getRelationshipHistory(String  userId,
                                                                   String  relationshipGUID,
                                                                   Date    fromTime,
                                                                   Date    toTime,
@@ -2282,7 +2353,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                   startFrom,
                                                                                                                   pageSize);
 
-        return restResult.getElementList();
+        return restResult.getRelationshipList();
     }
 
 
@@ -5188,7 +5259,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         Map<String, List<Map<String, String>>> specification = new HashMap<>();
 
-        List<RelatedMetadataElement> refDataElements = this.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList  refDataElements = this.getRelatedMetadataElements(userId,
                                                                                        elementGUID,
                                                                                        1,
                                                                                        OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
@@ -5202,9 +5273,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                        0,
                                                                                        0);
 
-        if (refDataElements != null)
+        if ((refDataElements != null) && (refDataElements.getElementList() != null))
         {
-            for (RelatedMetadataElement refDataElement : refDataElements)
+            for (RelatedMetadataElement refDataElement : refDataElements.getElementList())
             {
                 if (refDataElement != null)
                 {
@@ -5226,7 +5297,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
                         additionalProperties.put(propertyType + "Name",
                                                  propertyHelper.getStringProperty(serviceURLMarker,
-                                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                                   refDataElement.getElement().getElementProperties(),
                                                                                   methodName));
 
@@ -5800,7 +5871,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName = "getVendorProperties";
 
-        List<RelatedMetadataElement> propertyFacets = this.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList  propertyFacets = this.getRelatedMetadataElements(userId,
                                                                                       openMetadataElementGUID,
                                                                                       1,
                                                                                       OpenMetadataType.REFERENCEABLE_FACET.typeName,
@@ -5813,11 +5884,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                       new Date(),
                                                                                       0,
                                                                                       0);
-        if (propertyFacets != null)
+        if ((propertyFacets != null) && (propertyFacets.getElementList() != null))
         {
             Map<String, Map<String, String>> vendorProperties = new HashMap<>();
 
-            for (RelatedMetadataElement relatedMetadataElement : propertyFacets)
+            for (RelatedMetadataElement relatedMetadataElement : propertyFacets.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {

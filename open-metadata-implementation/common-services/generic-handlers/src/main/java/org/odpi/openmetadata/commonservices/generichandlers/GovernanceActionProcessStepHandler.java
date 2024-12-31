@@ -1031,17 +1031,17 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processStepGUID, guidParameterName, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  processStepGUID,
-                                  guidParameterName,
-                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                  true,
-                                  false,
-                                  true,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     processStepGUID,
+                                     guidParameterName,
+                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                     true,
+                                     false,
+                                     true,
+                                     false,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         return repositoryHandler.getRelationshipsByType(userId,
                                                         processStepGUID,

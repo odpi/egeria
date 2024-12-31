@@ -312,4 +312,27 @@ public class ViewServiceRegistrationEntry
     {
         this.viewServiceAdminClassName = viewServiceAdminClassName;
     }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "ViewServiceRegistrationEntry{" +
+                "viewServiceCode=" + viewServiceCode +
+                ", viewServiceDevelopmentStatus=" + viewServiceDevelopmentStatus +
+                ", viewServiceName='" + viewServiceName + '\'' +
+                ", viewServiceFullName='" + viewServiceFullName + '\'' +
+                ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
+                ", viewServiceDescription='" + viewServiceDescription + '\'' +
+                ", viewServiceWiki='" + viewServiceWiki + '\'' +
+                ", viewServicePartnerService='" + viewServicePartnerService + '\'' +
+                ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
+                ", viewServiceAdminClassName='" + viewServiceAdminClassName + '\'' +
+                '}';
+    }
 }

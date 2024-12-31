@@ -464,6 +464,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  effectiveTime,
                                  forLineage,
                                  forDuplicateProcessing,
+                                 supportedZones,
                                  methodName,
                                  retrievedEntities);
     }
@@ -588,6 +589,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      effectiveTime,
                                      forLineage,
                                      forDuplicateProcessing,
+                                     supportedZones,
                                      methodName,
                                      myEntities);
         }

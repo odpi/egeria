@@ -2774,17 +2774,17 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         final String methodName = "markActionTargetsAsComplete";
         final String guidParameterName = "engineActionGUID";
 
-        this.validateAnchorEntity(userId,
-                                  engineActionGUID,
-                                  guidParameterName,
-                                  OpenMetadataType.ENGINE_ACTION.typeName,
-                                  true,
-                                  false,
-                                  true,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     engineActionGUID,
+                                     guidParameterName,
+                                     OpenMetadataType.ENGINE_ACTION.typeName,
+                                     true,
+                                     false,
+                                     true,
+                                     false,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         List<Relationship> actionTargetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                                 engineActionGUID,
