@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Locati
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -915,9 +916,12 @@ public class LocationRESTServices
                                                                     parameterName,
                                                                     OpenMetadataType.LOCATION.typeGUID,
                                                                     OpenMetadataType.LOCATION.typeName,
-                                                                    null,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    null,
+                                                                    null,
+                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                    null,
                                                                     false,
                                                                     false,
                                                                     new Date(),
@@ -984,6 +988,10 @@ public class LocationRESTServices
                                                                           specificMatchPropertyNames,
                                                                           true,
                                                                           null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
                                                                           null,
                                                                           false,
                                                                           false,

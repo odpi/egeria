@@ -26,12 +26,33 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
                   "A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.",
                   "https://github.com/unitycatalog/unitycatalog"),
 
+    /**
+     * An analytics model deployed to Unity Catalog (UC).
+     */
+    OSS_UC_REGISTERED_MODEL("Unity Catalog Registered Model",
+                  DeployedImplementationType.SOFTWARE_COMPONENT,
+                  OpenMetadataType.DEPLOYED_ANALYTICS_MODEL.typeName,
+                  null,
+                  "An analytics model deployed to Unity Catalog (UC).",
+                  "https://github.com/unitycatalog/unitycatalog"),
+
+
+    /**
+     * A version of an analytics model deployed to Unity Catalog (UC).
+     */
+    OSS_UC_REGISTERED_MODEL_VERSION("Unity Catalog Registered Model Version",
+                            DeployedImplementationType.SOFTWARE_COMPONENT,
+                            OpenMetadataType.ANALYTICS_MODEL_RUN.typeName,
+                            null,
+                            "A version of an analytics model deployed to Unity Catalog (UC).",
+                            "https://github.com/unitycatalog/unitycatalog"),
+
 
     /**
      * A function found in Unity Catalog (UC) that is working with data.
      */
     OSS_UC_FUNCTION("Unity Catalog Function",
-                  null,
+                  DeployedImplementationType.SOFTWARE_COMPONENT,
                   OpenMetadataType.DEPLOYED_API.typeName,
                   null,
                   "A function found in Unity Catalog (UC) that is working with data.",
@@ -59,12 +80,12 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
                   "https://github.com/unitycatalog/unitycatalog"),
 
     /**
-     * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     * An operational data platform manager within the Unity Catalog (UC) 'catalog of catalogs'.
      */
     OSS_UC_CATALOG("Unity Catalog Catalog",
-                   DeployedImplementationType.ASSET_CATALOG,
-                   OpenMetadataType.CATALOG.typeName,
-                   OpenMetadataType.ASSET_MANAGER.typeName,
+                   DeployedImplementationType.SOFTWARE_CAPABILITY,
+                   OpenMetadataType.DATA_ACCESS_MANAGER.typeName,
+                   null,
                    "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
                    "https://github.com/unitycatalog/unitycatalog"),
 

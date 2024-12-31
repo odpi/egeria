@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -861,45 +862,6 @@ public class RelationalDataHandler<DATABASE,
                                           effectiveTime,
                                           methodName);
     }
-    
-    /**
-     * Retrieve the list of database metadata elements.
-     *
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of database metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<DATABASE> getDatabases(String  userId,
-                                       int     startFrom,
-                                       int     pageSize,
-                                       boolean forLineage,
-                                       boolean forDuplicateProcessing,
-                                       Date    effectiveTime,
-                                       String  methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        return databaseHandler.getBeansByType(userId,
-                                              OpenMetadataType.DATABASE.typeGUID,
-                                              OpenMetadataType.DATABASE.typeName,
-                                              null,
-                                              startFrom,
-                                              pageSize,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              effectiveTime,
-                                              methodName);
-    }
 
 
     /**
@@ -991,6 +953,10 @@ public class RelationalDataHandler<DATABASE,
                                                    null,
                                                    null,
                                                    0,
+                                                   null,
+                                                   null,
+                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                   null,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    startFrom,
@@ -1634,6 +1600,10 @@ public class RelationalDataHandler<DATABASE,
                                                          null,
                                                          null,
                                                          0,
+                                                         null,
+                                                         null,
+                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                         null,
                                                          forLineage,
                                                          forDuplicateProcessing,
                                                          startFrom,
@@ -3702,6 +3672,10 @@ public class RelationalDataHandler<DATABASE,
                                                                              OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                              2,
+                                                                             null,
+                                                                             null,
+                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                             null,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -4025,6 +3999,10 @@ public class RelationalDataHandler<DATABASE,
                                                                           OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                           2,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
                                                                           effectiveTime,

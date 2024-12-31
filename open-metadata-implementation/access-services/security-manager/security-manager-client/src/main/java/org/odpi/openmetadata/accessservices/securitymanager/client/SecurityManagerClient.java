@@ -916,7 +916,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}/appointees?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        ResultsRequestBody requestBody = new ResultsRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 

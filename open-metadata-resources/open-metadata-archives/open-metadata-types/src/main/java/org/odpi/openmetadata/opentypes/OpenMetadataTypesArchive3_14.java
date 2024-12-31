@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -189,6 +190,20 @@ public class OpenMetadataTypesArchive3_14
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setTypeDefStatus(TypeDefStatus.ACTIVE_TYPEDEF);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATH);
+        properties.add(property);
+
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMAND);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }

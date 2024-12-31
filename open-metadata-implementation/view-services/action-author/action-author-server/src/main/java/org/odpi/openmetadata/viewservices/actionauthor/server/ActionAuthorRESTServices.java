@@ -794,7 +794,7 @@ public class ActionAuthorRESTServices extends TokenController
      */
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
                                                                                 String                   processGUID,
-                                                                                EffectiveTimeRequestBody requestBody)
+                                                                                ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
 

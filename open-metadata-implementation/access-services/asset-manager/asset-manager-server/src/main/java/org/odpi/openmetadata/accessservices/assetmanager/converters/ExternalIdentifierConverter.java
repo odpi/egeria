@@ -146,6 +146,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                                     bean.setSynchronizationDescription(this.removeDescription(instanceProperties));
 
                                     bean.setExternalScopeGUID(relationship.getEntityOneProxy().getGUID());
+                                    bean.setExternalScopeTypeName(relationship.getEntityOneProxy().getType().getTypeDefName());
 
                                     instanceProperties = new InstanceProperties(relationship.getEntityOneProxy().getUniqueProperties());
 

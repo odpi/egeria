@@ -2,24 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropertiesValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.*;
-import org.odpi.openmetadata.commonservices.generichandlers.ffdc.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropertiesValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
@@ -308,18 +307,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     {
         if (beanEntity != null)
         {
-            EntityDetail anchorEntity = validateAnchorEntity(userId,
-                                                             beanEntity.getGUID(),
-                                                             beanGUIDTypeName,
-                                                             beanEntity,
-                                                             beanGUIDParameterName,
-                                                             true,
-                                                             true,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             serviceSupportedZones,
-                                                             effectiveTime,
-                                                             methodName);
+            EntityDetail anchorEntity = validateAnchorForEntity(userId,
+                                                                beanGUIDTypeName,
+                                                                beanEntity,
+                                                                beanGUIDParameterName,
+                                                                true,
+                                                                true,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                serviceSupportedZones,
+                                                                effectiveTime,
+                                                                methodName);
 
             Classification existingClassification = this.getExistingClassification(beanEntity, classificationTypeName);
 
@@ -494,18 +492,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -591,48 +588,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public void updateBeanEffectivityDates(String       userId,
-                                           String       externalSourceGUID,
-                                           String       externalSourceName,
-                                           String       beanGUID,
-                                           String       beanGUIDParameterName,
-                                           String       beanGUIDTypeGUID,
-                                           String       beanGUIDTypeName,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           Date         effectiveFrom,
-                                           Date         effectiveTo,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        updateBeanEffectivityDates(userId, externalSourceGUID, externalSourceName, beanGUID, beanGUIDParameterName, beanGUIDTypeGUID, beanGUIDTypeName, forLineage, forDuplicateProcessing, effectiveFrom, effectiveTo, supportedZones, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Update the effectivity dates of a specific entity .
-     * The effectivity dates control the visibility of the entity through specific APIs.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param beanGUID unique identifier of the entity in the repositories
-     * @param beanGUIDParameterName parameter name that passed the beanGUID
-     * @param beanGUIDTypeGUID type of bean
-     * @param beanGUIDTypeName type of bean
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param serviceSupportedZones list of supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
@@ -673,18 +628,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -738,44 +692,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
     }
 
-    /**
-     * Update the effectivity dates of a specific relationship.
-     * The effectivity dates control the visibility of the relationship through specific APIs.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param relationshipGUID unique identifier of the entity in the repositories
-     * @param relationshipGUIDParameterName parameter name that passed the relationshipGUID
-     * @param relationshipGUIDTypeName type of relationship
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the user is not allowed to perform this action
-     * @throws PropertyServerException there is a problem with the metadata store
-     */
-    public void updateRelationshipEffectivityDates(String  userId,
-                                                   String  externalSourceGUID,
-                                                   String  externalSourceName,
-                                                   String  relationshipGUID,
-                                                   String  relationshipGUIDParameterName,
-                                                   String  relationshipGUIDTypeName,
-                                                   Date    effectiveFrom,
-                                                   Date    effectiveTo,
-                                                   boolean forLineage,
-                                                   boolean forDuplicateProcessing,
-                                                   Date    effectiveTime,
-                                                   String  methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        updateRelationshipEffectivityDates(userId, externalSourceGUID, externalSourceName, relationshipGUID, relationshipGUIDParameterName, relationshipGUIDTypeName, effectiveFrom, effectiveTo, forLineage, forDuplicateProcessing, supportedZones, effectiveTime, methodName);
-    }
 
     /**
      * Update the effectivity dates of a specific relationship.
@@ -830,29 +746,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
             InstanceProperties newProperties = relationship.getProperties();
 
@@ -1043,29 +959,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
 
             /*
@@ -1152,29 +1068,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityOneProxy().getGUID(),
-                                      entityOneParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityOneProxy().getGUID(),
+                                         entityOneParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveTime,
+                                         methodName);
 
-            this.validateAnchorEntity(userId,
-                                      relationship.getEntityTwoProxy().getGUID(),
-                                      entityTwoParameterName,
-                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                      false,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      effectiveTime,
-                                      methodName);
+            this.validateAnchorForEntity(userId,
+                                         relationship.getEntityTwoProxy().getGUID(),
+                                         entityTwoParameterName,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                         false,
+                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         supportedZones,
+                                         effectiveTime,
+                                         methodName);
 
             repositoryHandler.removeRelationship(userId,
                                                  externalSourceGUID,
@@ -1322,18 +1238,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            effectiveTime,
                                                            methodName);
 
-        EntityDetail  anchorEntity = validateAnchorEntity(userId,
-                                                          beanGUID,
-                                                          beanGUIDTypeName,
-                                                          beanEntity,
-                                                          beanGUIDParameterName,
-                                                          true,
-                                                          true,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          serviceSupportedZones,
-                                                          effectiveTime,
-                                                          methodName);
+        EntityDetail  anchorEntity = validateAnchorForEntity(userId,
+                                                             beanGUIDTypeName,
+                                                             beanEntity,
+                                                             beanGUIDParameterName,
+                                                             true,
+                                                             true,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             effectiveTime,
+                                                             methodName);
 
         if (beanEntity != null)
         {
@@ -1571,9 +1486,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @throws InvalidParameterException problem with one of the properties
      * @throws PropertyServerException problem within the repository services
-     * @throws UserNotAuthorizedException local server user not allowed to issue the request.
      */
     private void maintainAnchorGUIDInClassification(String            targetGUID,
                                                     String            targetGUIDParameterName,
@@ -1583,9 +1496,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                     boolean           forLineage,
                                                     boolean           forDuplicateProcessing,
                                                     Date              effectiveTime,
-                                                    String            methodName) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+                                                    String            methodName) throws PropertyServerException
     {
         Classification     anchorsClassification;
         InstanceProperties anchorsProperties = null;
@@ -1824,6 +1735,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                                                                   OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -1849,6 +1764,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1869,6 +1788,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1889,6 +1812,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1905,6 +1832,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1925,6 +1856,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1941,6 +1876,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1958,6 +1897,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1975,6 +1918,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -1995,6 +1942,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                      false,
                                                                      OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                                      OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -2056,6 +2007,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2078,6 +2033,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                            OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                            true,
+                                                                           null,
+                                                                           null,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                           null,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            effectiveTime,
@@ -2129,6 +2088,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   true,
                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
                                                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2187,6 +2150,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeGUID,
                                                                                     OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
                                                                                     1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     0,
@@ -2228,6 +2195,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                  OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeGUID,
                                                                  OpenMetadataType.CONNECTION_ENDPOINT_RELATIONSHIP.typeName,
                                                                  2,
+                                                                 null,
+                                                                 null,
+                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                 null,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  0, 0,
@@ -2298,6 +2269,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeGUID,
                                                                                   OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2355,6 +2330,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeGUID,
                                                                                   OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2412,6 +2391,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.REPORT_TO_ASSET_TYPE_GUID,
                                                                                   OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2469,6 +2452,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeGUID,
                                                                                   OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2527,6 +2514,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeGUID,
                                                                                     OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                     1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     0, 0,
@@ -2590,6 +2581,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP.typeGUID,
                                                                                   OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2643,6 +2638,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                   false,
                                                                                   OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                                                                   OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
                                                                                   forLineage,
                                                                                   forDuplicateProcessing,
                                                                                   effectiveTime,
@@ -2697,6 +2696,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
                                                                                     OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                                                     1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     0, 0,
@@ -2776,6 +2779,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
                                                                                     OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                                                     1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     0, 0,
@@ -2841,6 +2848,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
                                                                                     OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
                                                                                     1,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
                                                                                     0, 0,
@@ -2994,7 +3005,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Validates that the current anchorGUID is correct and updates it if it is not.
+     * Validates that the current anchorGUID is correct and updates it if it is not.  Notice that
      *
      * @param targetGUID unique identifier of the element to validate
      * @param targetGUIDParameterName parameter that provided the guid
@@ -3065,7 +3076,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     }
 
 
-
     /**
      * Validates that the current anchorGUID is correct and updates it if it is not.
      *
@@ -3132,119 +3142,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.
+     * Check that a retrieved entity is readable.  This is always the first check and include checks
+     * for private feedback, connection selection, asset zones and security tags on glossaries
      *
-     * @param userId           userId of user making request.
-     * @param connectToGUID       unique id for the object to connect the attachment to.
-     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
-     * @param connectToType       type of the connectToElement.
-     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
-     * @param isUpdate         is this an update request?
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param suppliedSupportedZones supported zone list from calling service
-     * @param effectiveTime    the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName       calling method
-     * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
+     * @param userId calling user
+     * @param connectToEntity entity retrieved
+     * @param connectToGUIDParameterName parameter used to pass the entity to retrieve.
+     * @param connectToType type of retrieved entity
+     * @param isExplicitGetRequest is this entity requested explicitly
+     * @param suppliedSupportedZones what are the supplied supported zones
+     * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public EntityDetail validateAnchorEntity(String       userId,
-                                             String       connectToGUID,
-                                             String       connectToGUIDParameterName,
-                                             String       connectToType,
-                                             boolean      isExplicitGetRequest,
-                                             boolean      isUpdate,
-                                             boolean      forLineage,
-                                             boolean      forDuplicateProcessing,
-                                             List<String> suppliedSupportedZones,
-                                             Date         effectiveTime,
-                                             String       methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    private void validateRetrievedEntityIsVisible(String       userId,
+                                                  EntityDetail connectToEntity,
+                                                  String       connectToGUIDParameterName,
+                                                  String       connectToType,
+                                                  boolean      isExplicitGetRequest,
+                                                  List<String> suppliedSupportedZones,
+                                                  String       methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(connectToGUID, connectToGUIDParameterName, methodName);
-
-        /*
-         * This returns the entity for the connectTo element and validates it is of the correct type.
-         */
-        EntityDetail  connectToEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                          connectToGUID,
-                                                                          connectToGUIDParameterName,
-                                                                          connectToType,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
-
-        return this.validateAnchorEntity(userId,
-                                         connectToGUID,
-                                         connectToType,
-                                         connectToEntity,
-                                         connectToGUIDParameterName,
-                                         isExplicitGetRequest,
-                                         isUpdate,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         suppliedSupportedZones,
-                                         effectiveTime,
-                                         methodName);
-    }
-
-
-    /**
-     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
-     * update.
-     * <br><br>
-     * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
-     * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
-     * have access to it.
-     * <br><br>
-     * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
-     * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
-     * validated.
-     * <br><br>
-     * Some anchor entities have specific validation to perform.
-     *
-     * @param userId           userId of user making request.
-     * @param connectToGUID    unique id for the object to connect the attachment to
-     * @param connectToType    name of type of connectToEntity
-     * @param connectToEntity  entity retrieved from the repository
-     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
-     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
-     * @param isUpdate         is this an update request?
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param suppliedSupportedZones list of supported zones from the caller.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName       calling method
-     *
-     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
-     * caller to set the LatestChange classification
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public EntityDetail validateAnchorEntity(String        userId,
-                                             String        connectToGUID,
-                                             String        connectToType,
-                                             EntityDetail  connectToEntity,
-                                             String        connectToGUIDParameterName,
-                                             boolean       isExplicitGetRequest,
-                                             boolean       isUpdate,
-                                             boolean       forLineage,
-                                             boolean       forDuplicateProcessing,
-                                             List<String>  suppliedSupportedZones,
-                                             Date          effectiveTime,
-                                             String        methodName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
-
         /*
          * This first processing looks at the retrieved entity itself to ensure it is visible.
          */
@@ -3264,7 +3185,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 if (!userId.equals(connectToEntity.getCreatedBy()))
                 {
                     invalidParameterHandler.throwUnknownElement(userId,
-                                                                connectToGUID,
+                                                                connectToEntity.getGUID(),
                                                                 connectToType,
                                                                 serviceName,
                                                                 serverName,
@@ -3283,7 +3204,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
              * is validated once the properties have been updated.
              */
             securityVerifier.validateUserForAssetRead(userId,
-                                                      connectToGUID,
+                                                      connectToEntity.getGUID(),
                                                       connectToGUIDParameterName,
                                                       connectToEntity,
                                                       isExplicitGetRequest,
@@ -3304,11 +3225,460 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                          serviceName,
                                                          methodName);
         }
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an update.
+     *
+     * @param userId           userId of user making request.
+     * @param connectToGUID       unique id for the object to connect the attachment to.
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param connectToType       type of the connectToElement.
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones supported zone list from calling service
+     * @param effectiveTime    the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor entity or null.  The anchor entity is used by the caller to set the LatestChange classification
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorForEntity(String       userId,
+                                                String       connectToGUID,
+                                                String       connectToGUIDParameterName,
+                                                String       connectToType,
+                                                boolean      isExplicitGetRequest,
+                                                boolean      isUpdate,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                List<String> suppliedSupportedZones,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectToGUID, connectToGUIDParameterName, methodName);
 
         /*
-         * Most referenceables have an independent lifecycle.  They are their own anchor.  This method is handling the special cases.
+         * This returns the entity for the connectTo element and validates it is of the correct type.
          */
-        EntityDetail anchorEntity = null;
+        EntityDetail  connectToEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                          connectToGUID,
+                                                                          connectToGUIDParameterName,
+                                                                          connectToType,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+        return this.validateAnchorForEntity(userId,
+                                            connectToType,
+                                            connectToEntity,
+                                            connectToGUIDParameterName,
+                                            isExplicitGetRequest,
+                                            isUpdate,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            suppliedSupportedZones,
+                                            effectiveTime,
+                                            methodName);
+    }
+
+
+    /**
+     * Validates whether an operation is valid based on the type of entity it is connecting to, who the user is and whether it is a read or an
+     * update.
+     * <br><br>
+     * The first part of this method is looking to see if the connectToEntity is an anchor entity. In which case it calls any specific validation
+     * for that entity and returns the connectToEntity, assuming all is ok - exceptions are thrown if the entity is not valid or the user does not
+     * have access to it.
+     * <br><br>
+     * If the connectToEntity is of a type that has a lifecycle that is linked to the lifecycle of another entity - typically a referenceable -
+     * then that other entity is its anchor (examples are schema elements, comments, connections).  The anchor entity needs to be retrieved and
+     * validated.
+     * <br><br>
+     * Some anchor entities have specific validation to perform.
+     *
+     * @param userId           userId of user making request.
+     * @param connectToType    name of type of connectToEntity
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return anchor entity or null if this entity is an anchor or does not have an anchor.  The anchor entity is used by the
+     * caller to set the LatestChange classification
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorForEntity(String        userId,
+                                                String        connectToType,
+                                                EntityDetail  connectToEntity,
+                                                String        connectToGUIDParameterName,
+                                                boolean       isExplicitGetRequest,
+                                                boolean       isUpdate,
+                                                boolean       forLineage,
+                                                boolean       forDuplicateProcessing,
+                                                List<String>  suppliedSupportedZones,
+                                                Date          effectiveTime,
+                                                String        methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
+
+        /*
+         * This first processing looks at the retrieved entity itself to ensure it is visible.
+         */
+        validateRetrievedEntityIsVisible(userId,
+                                         connectToEntity,
+                                         connectToGUIDParameterName,
+                                         connectToType,
+                                         isExplicitGetRequest,
+                                         suppliedSupportedZones,
+                                         methodName);
+
+        /*
+         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+         * derived and added to the connectToEntity.
+         */
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDForEntity(connectToEntity,
+                                                                          connectToGUIDParameterName,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+
+        /*
+         * If an anchor GUID has been found then validate it by retrieving the identified entity.
+         * Note - anchorIdentifiers may or may not be null if the connectToEntity is actually an anchor.
+         */
+        return validateAnchorGUID(userId,
+                                  connectToEntity,
+                                  anchorIdentifiers,
+                                  isExplicitGetRequest,
+                                  isUpdate,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  suppliedSupportedZones,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Validates a list of entities retrieved from the repository as a result of a query.
+     * It validates supported zones read security and the anchor GUID.  It does not handle Mementos, effective dates
+     * and element status, since they are the responsibility of the repository handler.
+     *
+     * @param userId           userId of user making request.
+     * @param retrievedEntities  entities retrieved from the repository
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     *
+     * @return list of validated entities
+     */
+    public List<EntityDetail> validateAnchorForEntities(String             userId,
+                                                        List<EntityDetail> retrievedEntities,
+                                                        boolean            forLineage,
+                                                        boolean            forDuplicateProcessing,
+                                                        List<String>       suppliedSupportedZones,
+                                                        Date               effectiveTime,
+                                                        String             methodName)
+    {
+        if (retrievedEntities != null)
+        {
+            final String connectToGUIDParameterName = "retrievedEntity.getGUID";
+
+            Map<String, EntityDetail>      visibleEntities = new HashMap<>();
+
+            List<String>                   extractedAnchorGUIDs = new ArrayList<>();
+            Map<String, AnchorIdentifiers> extractedAnchors = new HashMap<>();
+
+            List<PropertyCondition> anchorRetrievalQuery = new ArrayList<>();
+
+            /*
+             * Identify the anchors that need to be retrieved.  The aim is to build a query that retrieves all of the
+             * required Anchor entities in a single retrieve to minimize the calls to the repositories.
+             */
+            for (EntityDetail connectToEntity : retrievedEntities)
+            {
+                if (connectToEntity != null)
+                {
+                    try
+                    {
+                        /*
+                         * This first processing looks at the retrieved entity itself to ensure it is visible.
+                         */
+                        validateRetrievedEntityIsVisible(userId,
+                                                         connectToEntity,
+                                                         connectToGUIDParameterName,
+                                                         connectToEntity.getType().getTypeDefName(),
+                                                         false,
+                                                         suppliedSupportedZones,
+                                                         methodName);
+
+                        visibleEntities.put(connectToEntity.getGUID(), connectToEntity);
+
+                        /*
+                         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+                         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+                         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+                         * derived and added to the connectToEntity.
+                         */
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDForEntity(connectToEntity,
+                                                                                          connectToGUIDParameterName,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+
+                        if (anchorIdentifiers != null)
+                        {
+                            extractedAnchors.put(connectToEntity.getGUID(), anchorIdentifiers);
+
+                            if (anchorIdentifiers.anchorGUID != null)
+                            {
+                                if (! extractedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID))
+                                {
+                                    /*
+                                     * Need to retrieve the anchor entity
+                                     */
+                                    PropertyCondition propertyCondition = new PropertyCondition();
+
+                                    propertyCondition.setProperty(OpenMetadataProperty.GUID.name);
+                                    propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                                    primitivePropertyValue.setPrimitiveValue(anchorIdentifiers.anchorGUID);
+
+                                    propertyCondition.setValue(primitivePropertyValue);
+
+                                    anchorRetrievalQuery.add(propertyCondition);
+
+                                    extractedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                                }
+                            }
+                            else
+                            {
+                                if (! extractedAnchorGUIDs.contains(connectToEntity.getGUID()))
+                                {
+                                    extractedAnchorGUIDs.add(connectToEntity.getGUID());
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception unauthorizedEntity)
+                    {
+                        // ignore this entity since the user is not allowed to see it
+                    }
+                }
+            }
+
+            /*
+             * Retrieve the anchor entities
+             */
+            Map<String, EntityDetail> retrievedAnchors = this.getAnchorsForEntityList(userId,
+                                                                                      anchorRetrievalQuery,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing,
+                                                                                      effectiveTime,
+                                                                                      methodName);
+
+            /*
+             * Validate the anchors.
+             */
+            List<String>       validatedAnchors  = new ArrayList<>();
+            List<EntityDetail> validatedEntities = new ArrayList<>();
+
+            for (EntityDetail connectToEntity : visibleEntities.values())
+            {
+                if (connectToEntity != null)
+                {
+                    try
+                    {
+                        /*
+                         * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
+                         * The exception occurs where the entity is not being managed by this handler, or something equivalent that
+                         * maintains the Anchors classification.  Therefore, if the Anchors classification is missing, a new one is
+                         * derived and added to the connectToEntity.
+                         */
+                        AnchorIdentifiers anchorIdentifiers = extractedAnchors.get(connectToEntity.getGUID());
+
+                        if (anchorIdentifiers != null)
+                        {
+                            if (anchorIdentifiers.anchorGUID != null)
+                            {
+                                EntityDetail anchorEntity = retrievedAnchors.get(anchorIdentifiers.anchorGUID);
+
+                                if (anchorEntity == null)
+                                {
+                                    /*
+                                     * Unexpectedly the Anchor GUID was not already retrieved.
+                                     */
+                                    validateAnchorGUID(userId,
+                                                       connectToEntity,
+                                                       anchorIdentifiers,
+                                                       false,
+                                                       false,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       suppliedSupportedZones,
+                                                       effectiveTime,
+                                                       methodName);
+
+                                    validatedAnchors.add(anchorIdentifiers.anchorGUID);
+                                }
+                                else if (! validatedAnchors.contains(anchorEntity.getGUID()))
+                                {
+                                    validateAnchorEntity(userId,
+                                                         connectToEntity,
+                                                         anchorEntity,
+                                                         false,
+                                                         false,
+                                                         suppliedSupportedZones,
+                                                         methodName);
+
+                                    validatedAnchors.add(anchorEntity.getGUID());
+                                }
+                            }
+                        }
+
+                        validatedEntities.add(connectToEntity);
+                    }
+                    catch (Exception unauthorizedEntity)
+                    {
+                        // ignore this entity since the user is not allowed to see it
+                    }
+                }
+            }
+
+            return validatedEntities;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a map of anchor entities.
+     *
+     * @param userId calling users
+     * @param conditions list of anchor guid as search conditions
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return map of anchor entity guid to anchor entities - empty map if nothing received
+     */
+    private Map<String, EntityDetail> getAnchorsForEntityList(String                  userId,
+                                                              List<PropertyCondition> conditions,
+                                                              boolean                 forLineage,
+                                                              boolean                 forDuplicateProcessing,
+                                                              Date                    effectiveTime,
+                                                              String                  methodName)
+    {
+        Map<String, EntityDetail> retrievedAnchors = new HashMap<>();
+
+        if (!conditions.isEmpty())
+        {
+            SearchProperties searchProperties = new SearchProperties();
+
+            searchProperties.setConditions(conditions);
+            searchProperties.setMatchCriteria(MatchCriteria.ANY);
+
+            try
+            {
+                List<EntityDetail> anchorEntities = repositoryHandler.findEntities(userId,
+                                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                                                                   null,
+                                                                                   searchProperties,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.GUID,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   0,
+                                                                                   invalidParameterHandler.getMaxPagingSize(),
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+                if (anchorEntities != null)
+                {
+                    for (EntityDetail anchorEntity : anchorEntities)
+                    {
+                        if (anchorEntity != null)
+                        {
+                            retrievedAnchors.put(anchorEntity.getGUID(), anchorEntity);
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName, GenericHandlersAuditCode.FAILED_TO_RETRIEVE_ANCHOR_ENTITIES.getMessageDefinition(methodName,
+                                                                                                                                 error.getClass().getName(),
+                                                                                                                                 error.getMessage()));
+            }
+        }
+
+        return retrievedAnchors;
+    }
+
+
+
+    /**
+     * Retrieve the anchor guid for an entity.  Ths is in two phases.  If the connectToEntity has an Anchors
+     * classification then the anchor information is extracted from that classification.  If there is on
+     * Anchors classification then a new one is derived and added to the connectToEntity for the next time
+     * it is retrieved.
+     *
+     * @param connectToEntity  entity retrieved from the repository
+     * @param connectToGUIDParameterName  name of the parameter that passed the connectTo guid
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor identifiers
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AnchorIdentifiers getAnchorGUIDForEntity(EntityDetail connectToEntity,
+                                                    String       connectToGUIDParameterName,
+                                                    boolean      forLineage,
+                                                    boolean      forDuplicateProcessing,
+                                                    Date         effectiveTime,
+                                                    String       methodName) throws PropertyServerException,
+                                                                                    InvalidParameterException,
+                                                                                    UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateObject(connectToEntity, connectToGUIDParameterName, methodName);
 
         /*
          * If an entity has an anchor, the unique identifier of the anchor should be in the Anchors classifications.
@@ -3322,16 +3692,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             /*
              * The classification is missing - so walk the relationships to find the anchor if it exists.
              */
-            anchorIdentifiers = deriveAnchorGUID(connectToGUID, connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+            anchorIdentifiers = deriveAnchorGUID(connectToEntity.getGUID(), connectToEntity.getType().getTypeDefName(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
             if (anchorIdentifiers != null)
             {
                 /*
                  * The anchor has been found so store it in the classification, so it is easy to find next time.
                  */
-                maintainAnchorGUIDInClassification(connectToGUID,
+                maintainAnchorGUIDInClassification(connectToEntity.getGUID(),
                                                    connectToGUIDParameterName,
-                                                   connectToType,
+                                                   connectToEntity.getType().getTypeDefName(),
                                                    connectToEntity,
                                                    anchorIdentifiers,
                                                    forLineage,
@@ -3341,30 +3711,118 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
         }
 
+        return anchorIdentifiers;
+    }
+
+
+    /**
+     * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
+     *
+     * @param userId userId of user making request.
+     * @param connectToEntity entity retrieved from the repository
+     * @param anchorIdentifiers retrieved anchors information
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param forLineage             the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName       calling method
+     * @return anchor entity (this may be the connectToEntity if it is its own anchor or null if the element is unanchored)
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail validateAnchorGUID(String            userId,
+                                           EntityDetail      connectToEntity,
+                                           AnchorIdentifiers anchorIdentifiers,
+                                           boolean           isExplicitGetRequest,
+                                           boolean           isUpdate,
+                                           boolean           forLineage,
+                                           boolean           forDuplicateProcessing,
+                                           List<String>      suppliedSupportedZones,
+                                           Date              effectiveTime,
+                                           String            methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        if (anchorIdentifiers == null)
+        {
+            /*
+             * The element is unanchored.
+             */
+            return null;
+        }
+
         /*
-         * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorIdentifiers may be null if the connectToEntity
-         * is actually an anchor.
+         * The element has an anchor.  If anchorGUID is null it means it is its own anchor.
          */
-        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+        if (anchorIdentifiers.anchorGUID != null)
         {
             final String anchorGUIDParameterName = "anchorIdentifiers";
 
             if (! anchorIdentifiers.anchorGUID.equals(connectToEntity.getGUID()))
             {
-                anchorEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                 anchorIdentifiers.anchorGUID,
-                                                                 anchorGUIDParameterName,
-                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
+                EntityDetail anchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                              anchorIdentifiers.anchorGUID,
+                                                                              anchorGUIDParameterName,
+                                                                              OpenMetadataType.REFERENCEABLE.typeName,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              effectiveTime,
+                                                                              methodName);
+
+                /*
+                 * Perform any special processing on the anchor entity
+                 */
+                validateAnchorEntity(userId,
+                                     connectToEntity,
+                                     anchorEntity,
+                                     isExplicitGetRequest,
+                                     isUpdate,
+                                     suppliedSupportedZones,
+                                     methodName);
+
+                return anchorEntity;
             }
             else
             {
-                anchorEntity = connectToEntity;
+                return connectToEntity;
             }
         }
+        else
+        {
+            return connectToEntity;
+        }
+    }
+
+
+
+    /**
+     * Check that the anchor attached to an entity allows the entity to be either returned to the caller or acted upon.
+     *
+     * @param userId userId of user making request.
+     * @param connectToEntity entity retrieved from the repository
+     * @param anchorEntity retrieved anchors entity
+     * @param isExplicitGetRequest Is this request an explicit get request for the asset or a find request.
+     * @param isUpdate         is this an update request?
+     * @param suppliedSupportedZones list of supported zones from the caller.
+     * @param methodName       calling method
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem accessing the properties in the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void validateAnchorEntity(String       userId,
+                                     EntityDetail connectToEntity,
+                                     EntityDetail anchorEntity,
+                                     boolean      isExplicitGetRequest,
+                                     boolean      isUpdate,
+                                     List<String> suppliedSupportedZones,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        final String anchorGUIDParameterName = "anchorIdentifiers";
 
         /*
          * Perform any special processing on the anchor entity
@@ -3375,10 +3833,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (anchorEntityType != null)
             {
-                boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
+                String connectToType = connectToEntity.getType().getTypeDefName();
+                boolean isFeedbackEntity =
+                        (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING.typeName)) ||
+                                (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE.typeName));
 
                 /*
                  * Determine if the element is attached directly or indirectly to an asset (or is an asset) so it is possible to determine
@@ -3387,9 +3847,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 if (OpenMetadataType.ASSET.typeName.equals(anchorEntityType.getTypeDefName()))
                 {
                     securityVerifier.validateUserForAssetAttachment(userId,
-                                                                    connectToGUID,
-                                                                    connectToGUIDParameterName,
+                                                                    anchorEntity.getGUID(),
+                                                                    anchorGUIDParameterName,
                                                                     anchorEntity,
+                                                                    isExplicitGetRequest,
                                                                     isFeedbackEntity,
                                                                     isUpdate,
                                                                     suppliedSupportedZones,
@@ -3430,15 +3891,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                  */
             }
         }
-
-        return anchorEntity;
     }
 
 
     /**
      * Validates that the unique property is not already in use across all types that contain the unique property.
      *
-     * @param entityGUID existing entity (or null if this is a create)
+     * @param entityGUID existing entity (or null if this is a create method)
      * @param entityTypeName the unique name of the type of the entity
      * @param uniqueParameterValue the value of the unique parameter
      * @param uniqueParameterName the name of the unique parameter
@@ -3490,7 +3949,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
             else
             {
-                // should not happen. Log?
+                // Should not happen. Log?
                 break;
             }
         }
@@ -3508,10 +3967,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                       false,
                                                                       null,
                                                                       OpenMetadataType.MEMENTO_CLASSIFICATION.typeName,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
                                                                       false,
                                                                       false,
                                                                       supportedZones,
-                                                                      null,
                                                                       0,
                                                                       invalidParameterHandler.getMaxPagingSize(),
                                                                       effectiveTime,
@@ -3800,9 +4262,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     }
 
 
-
     /**
-     * Return the domain name of an type.
+     * Return the domain name of a type.
      *
      * @param typeName type to check
      * @return domain name
@@ -4007,6 +4468,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                         // Ignore exception, possibly a race condition - the entity is already classified
                     }
                 }
+                catch (PropertyServerException e)
+                {
+                    // Ignore exception, possibly a race condition - the entity is already classified
+                }
                 catch (InvalidParameterException | TypeErrorException error)
                 {
                     throw new PropertyServerException(error);
@@ -4084,6 +4549,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                         OpenMetadataType.GLOSSARY_TYPE_GUID,
                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                         qualifiedNamePropertyNamesList,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -4478,6 +4947,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                        attachmentTypeGUID,
                                                                                        attachmentTypeName,
                                                                                        attachmentEntityEnd,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
@@ -4612,6 +5085,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                              0,
                                                                              resultingElementTypeName,
                                                                              attachmentEntityEnd,
+                                                                             null,
+                                                                             null,
+                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                             null,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -4619,171 +5096,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if (entity != null)
         {
-            validateAnchorEntity(userId,
-                                 entity.getGUID(),
-                                 resultingElementTypeName,
-                                 entity,
-                                 startingElementGUIDParameterName,
-                                 true,
-                                 false,
-                                 forLineage,
-                                 forDuplicateProcessing,
-                                 serviceSupportedZones,
-                                 effectiveTime,
-                                 methodName);
+            validateAnchorForEntity(userId,
+                                    resultingElementTypeName,
+                                    entity,
+                                    startingElementGUIDParameterName,
+                                    true,
+                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
         }
 
         return entity;
-    }
-
-
-
-    /**
-     * Return the list of entities at the other end of the requested relationship type that were created or edited by
-     * the requesting user.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param attachedEntityTypeGUID  identifier for the relationship to follow
-     * @param attachedEntityTypeName  type name for the relationship to follow
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     * @return retrieved entities or null
-     * @throws InvalidParameterException the entity at the other end is not of the expected type
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @SuppressWarnings(value = "unused")
-    public EntityDetail getAttachedEntityFromUser(String  userId,
-                                                  String  startingEntityGUID,
-                                                  String  startingEntityTypeName,
-                                                  String  relationshipTypeGUID,
-                                                  String  relationshipTypeName,
-                                                  String  attachedEntityTypeGUID,
-                                                  String  attachedEntityTypeName,
-                                                  Date    effectiveTime,
-                                                  String  methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        final String localMethodName = "getAttachedEntityFromUser";
-
-        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
-                                                                                           invalidParameterHandler,
-                                                                                           userId,
-                                                                                           startingEntityGUID,
-                                                                                           startingEntityTypeName,
-                                                                                           relationshipTypeGUID,
-                                                                                           relationshipTypeName,
-                                                                                           null,
-                                                                                           false,
-                                                                                           false,
-                                                                                           0,
-                                                                                           invalidParameterHandler.getMaxPagingSize(),
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-        while (iterator.moreToReceive())
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
-                    return entity;
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the list of entities at the other end of the requested relationship type that were created or
-     * edited by the requesting user.
-     *
-     * @param userId  user making the request
-     * @param startingEntityGUID  starting entity's GUID
-     * @param startingEntityTypeName  starting entity's type name
-     * @param relationshipTypeGUID  identifier for the relationship to follow
-     * @param relationshipTypeName  type name for the relationship to follow
-     * @param attachedEntityTypeGUID  identifier for the relationship to follow
-     * @param attachedEntityTypeName  type name for the relationship to follow
-     * @param sequencingPropertyName name of property used to sequence the results - needed for paging
-     * @param startingFrom initial position in the stored list
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName  name of calling method
-     * @return retrieved entities or null
-     * @throws PropertyServerException problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     * @throws InvalidParameterException one of the parameters is in error
-     */
-    @SuppressWarnings(value = "unused")
-    public List<EntityDetail> getAttachedEntitiesFromUser(String  userId,
-                                                          String  startingEntityGUID,
-                                                          String  startingEntityTypeName,
-                                                          String  relationshipTypeGUID,
-                                                          String  relationshipTypeName,
-                                                          String  attachedEntityTypeGUID,
-                                                          String  attachedEntityTypeName,
-                                                          String  sequencingPropertyName,
-                                                          int     startingFrom,
-                                                          int     pageSize,
-                                                          Date    effectiveTime,
-                                                          String  methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        final String localMethodName = "getAttachedEntitiesFromUser";
-
-        List<EntityDetail> results = new ArrayList<>();
-
-        RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
-                                                                                           invalidParameterHandler,
-                                                                                           userId,
-                                                                                           startingEntityGUID,
-                                                                                           startingEntityTypeName,
-                                                                                           relationshipTypeGUID,
-                                                                                           relationshipTypeName,
-                                                                                           sequencingPropertyName,
-                                                                                           false,
-                                                                                           false,
-                                                                                           startingFrom,
-                                                                                           pageSize,
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-        while ((iterator.moreToReceive() && ((pageSize == 0) || (results.size() < pageSize))))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                if ((userId.equals(entity.getCreatedBy()) ||
-                             (userId.equals(entity.getUpdatedBy())) ||
-                             ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
-                {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
-                    results.add(entity);
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
     }
 
 
@@ -4800,6 +5126,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this part of a lineage request?
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -4814,16 +5146,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<EntityDetail> getAttachedEntities(String       userId,
-                                                  String       startingGUID,
-                                                  String       startingGUIDParameterName,
-                                                  String       startingTypeName,
-                                                  String       relationshipTypeGUID,
-                                                  String       relationshipTypeName,
-                                                  String       resultingElementTypeName,
-                                                  String       requiredClassificationName,
-                                                  String       omittedClassificationName,
-                                                  int          attachmentEntityEnd,
+    public List<EntityDetail> getAttachedEntities(String               userId,
+                                                  String               startingGUID,
+                                                  String               startingGUIDParameterName,
+                                                  String               startingTypeName,
+                                                  String               relationshipTypeGUID,
+                                                  String               relationshipTypeName,
+                                                  String               resultingElementTypeName,
+                                                  String               requiredClassificationName,
+                                                  String               omittedClassificationName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
                                                   boolean      forLineage,
                                                   boolean      forDuplicateProcessing,
                                                   List<String> serviceSupportedZones,
@@ -4856,6 +5192,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                         requiredClassificationName,
                                         omittedClassificationName,
                                         attachmentEntityEnd,
+                                        limitResultsByStatus,
+                                        asOfTime,
+                                        sequencingOrder,
+                                        sequencingProperty,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
@@ -4879,6 +5219,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this part of a lineage request?
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -4893,25 +5239,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<EntityDetail> getAttachedEntities(String       userId,
-                                                  EntityDetail startingElement,
-                                                  String       startingElementGUIDParameterName,
-                                                  String       startingElementTypeName,
-                                                  String       relationshipTypeGUID,
-                                                  String       relationshipTypeName,
-                                                  String       resultingElementTypeName,
-                                                  String       requiredClassificationName,
-                                                  String       omittedClassificationName,
-                                                  int          attachmentEntityEnd,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  List<String> serviceSupportedZones,
-                                                  int          startingFrom,
-                                                  int          pageSize,
-                                                  Date         effectiveTime,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<EntityDetail> getAttachedEntities(String               userId,
+                                                  EntityDetail         startingElement,
+                                                  String               startingElementGUIDParameterName,
+                                                  String               startingElementTypeName,
+                                                  String               relationshipTypeGUID,
+                                                  String               relationshipTypeName,
+                                                  String               resultingElementTypeName,
+                                                  String               requiredClassificationName,
+                                                  String               omittedClassificationName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  List<String>         serviceSupportedZones,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(startingElement, startingElementGUIDParameterName, methodName);
@@ -4925,6 +5275,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                           null,
                                                                           resultingElementTypeName,
                                                                           attachmentEntityEnd,
+                                                                          limitResultsByStatus,
+                                                                          asOfTime,
+                                                                          sequencingOrder,
+                                                                          sequencingProperty,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
                                                                           serviceSupportedZones,
@@ -4997,6 +5351,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this part of a lineage request?
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom start position for results
@@ -5010,24 +5370,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<EntityDetail> getAttachedEntities(String       userId,
-                                                  String       startingElementGUID,
-                                                  String       startingElementGUIDParameterName,
-                                                  String       startingElementTypeName,
-                                                  String       relationshipTypeGUID,
-                                                  String       relationshipTypeName,
-                                                  String       resultingElementTypeName,
-                                                  String       requiredClassificationName,
-                                                  String       omittedClassificationName,
-                                                  int          attachmentEntityEnd,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  int          startingFrom,
-                                                  int          pageSize,
-                                                  Date         effectiveTime,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<EntityDetail> getAttachedEntities(String               userId,
+                                                  String               startingElementGUID,
+                                                  String               startingElementGUIDParameterName,
+                                                  String               startingElementTypeName,
+                                                  String               relationshipTypeGUID,
+                                                  String               relationshipTypeName,
+                                                  String               resultingElementTypeName,
+                                                  String               requiredClassificationName,
+                                                  String               omittedClassificationName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         return getAttachedEntities(userId,
                                    startingElementGUID,
@@ -5039,6 +5403,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                    requiredClassificationName,
                                    omittedClassificationName,
                                    attachmentEntityEnd,
+                                   limitResultsByStatus,
+                                   asOfTime,
+                                   sequencingOrder,
+                                   sequencingProperty,
                                    forLineage,
                                    forDuplicateProcessing,
                                    supportedZones,
@@ -5091,45 +5459,46 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Return the relationship between the requested elements - there should be only one.  Note that the entities are not checked.
+     * Return a visible relationship retrieved by its GUID.
      *
-     * @param userId     calling user
-     * @param startingGUID identifier for the entity that the identifier is attached to
-     * @param startingGUIDParameterName name of the parameter used to pass the guid
-     * @param startingTypeName type name for anchor
-     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
-     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
-     * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
-     * @param attachmentEntityTypeName unique name of the attached entity's type
-     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
-     * @param forLineage is this a lineage request
-     * @param forDuplicateProcessing is this processing part of duplicate processing?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param userId calling user
+     * @param relationshipGUID unique identifier
+     * @param relationshipGUIDParameterName parameter passing the unique identifier
+     * @param relationshipTypeName type of relationship to be retrieved
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime effective time for the retrieval
      * @param methodName calling method
-     *
-     * @return list of retrieved relationships or null if none found
+     * @return list of retrieved objects or null if none found
      *
      * @throws InvalidParameterException  the input properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public Relationship  getUniqueAttachmentLink(String   userId,
-                                                 String   startingGUID,
-                                                 String   startingGUIDParameterName,
-                                                 String   startingTypeName,
-                                                 String   attachmentRelationshipTypeGUID,
-                                                 String   attachmentRelationshipTypeName,
-                                                 String   attachmentEntityGUID,
-                                                 String   attachmentEntityTypeName,
-                                                 int      attachmentEntityEnd,
-                                                 boolean  forLineage,
-                                                 boolean  forDuplicateProcessing,
-                                                 Date     effectiveTime,
-                                                 String   methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public Relationship getAttachmentLink(String userId,
+                                          String relationshipGUID,
+                                          String relationshipGUIDParameterName,
+                                          String relationshipTypeName,
+                                          Date   asOfTime,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+
     {
-        return getUniqueAttachmentLink(userId, startingGUID, startingGUIDParameterName, startingTypeName, attachmentRelationshipTypeGUID, attachmentRelationshipTypeName, attachmentEntityGUID, attachmentEntityTypeName, attachmentEntityEnd, forLineage, forDuplicateProcessing, supportedZones, effectiveTime, methodName);
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            asOfTime,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+            return relationship;
+        }
+
+        return null;
     }
 
 
@@ -5145,6 +5514,82 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage is this a lineage request
+     * @param forDuplicateProcessing is this processing part of duplicate processing?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved relationships or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public Relationship  getUniqueAttachmentLink(String               userId,
+                                                 String               startingGUID,
+                                                 String               startingGUIDParameterName,
+                                                 String               startingTypeName,
+                                                 String               attachmentRelationshipTypeGUID,
+                                                 String               attachmentRelationshipTypeName,
+                                                 String               attachmentEntityGUID,
+                                                 String               attachmentEntityTypeName,
+                                                 int                  attachmentEntityEnd,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 Date                 asOfTime,
+                                                 SequencingOrder      sequencingOrder,
+                                                 String               sequencingProperty,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        return getUniqueAttachmentLink(userId,
+                                       startingGUID,
+                                       startingGUIDParameterName,
+                                       startingTypeName,
+                                       attachmentRelationshipTypeGUID,
+                                       attachmentRelationshipTypeName,
+                                       attachmentEntityGUID,
+                                       attachmentEntityTypeName,
+                                       attachmentEntityEnd,
+                                       limitResultsByStatus,
+                                       asOfTime,
+                                       sequencingOrder,
+                                       sequencingProperty,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       effectiveTime,
+                                       methodName);
+    }
+
+
+    /**
+     * Return the relationship between the requested elements - there should be only one.  Note that the entities are not checked.
+     *
+     * @param userId     calling user
+     * @param startingGUID identifier for the entity that the identifier is attached to
+     * @param startingGUIDParameterName name of the parameter used to pass the guid
+     * @param startingTypeName type name for anchor
+     * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
+     * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
+     * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
+     * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param serviceSupportedZones list of supported zones for this service
@@ -5157,22 +5602,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public Relationship  getUniqueAttachmentLink(String       userId,
-                                                 String       startingGUID,
-                                                 String       startingGUIDParameterName,
-                                                 String       startingTypeName,
-                                                 String       attachmentRelationshipTypeGUID,
-                                                 String       attachmentRelationshipTypeName,
-                                                 String       attachmentEntityGUID,
-                                                 String       attachmentEntityTypeName,
-                                                 int          attachmentEntityEnd,
-                                                 boolean      forLineage,
-                                                 boolean      forDuplicateProcessing,
-                                                 List<String> serviceSupportedZones,
-                                                 Date         effectiveTime,
-                                                 String       methodName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public Relationship  getUniqueAttachmentLink(String               userId,
+                                                 String               startingGUID,
+                                                 String               startingGUIDParameterName,
+                                                 String               startingTypeName,
+                                                 String               attachmentRelationshipTypeGUID,
+                                                 String               attachmentRelationshipTypeName,
+                                                 String               attachmentEntityGUID,
+                                                 String               attachmentEntityTypeName,
+                                                 int                  attachmentEntityEnd,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 Date                 asOfTime,
+                                                 SequencingOrder      sequencingOrder,
+                                                 String               sequencingProperty,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 List<String>         serviceSupportedZones,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    startingGUID,
@@ -5183,6 +5632,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                    attachmentEntityGUID,
                                                                    attachmentEntityTypeName,
                                                                    attachmentEntityEnd,
+                                                                   limitResultsByStatus,
+                                                                   asOfTime,
+                                                                   sequencingOrder,
+                                                                   sequencingProperty,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
                                                                    serviceSupportedZones,
@@ -5219,6 +5672,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param startingGUID identifier for the entity that the identifier is attached to
      * @param startingGUIDParameterName name of the parameter used to pass the guid
      * @param startingTypeName type name for anchor
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -5230,16 +5689,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<Relationship>  getAllAttachmentLinks(String   userId,
-                                                     String   startingGUID,
-                                                     String   startingGUIDParameterName,
-                                                     String   startingTypeName,
-                                                     boolean  forLineage,
-                                                     boolean  forDuplicateProcessing,
-                                                     Date     effectiveTime,
-                                                     String   methodName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public List<Relationship>  getAllAttachmentLinks(String               userId,
+                                                     String               startingGUID,
+                                                     String               startingGUIDParameterName,
+                                                     String               startingTypeName,
+                                                     List<InstanceStatus> limitResultsByStatus,
+                                                     Date                 asOfTime,
+                                                     SequencingOrder      sequencingOrder,
+                                                     String               sequencingProperty,
+                                                     boolean              forLineage,
+                                                     boolean              forDuplicateProcessing,
+                                                     Date                 effectiveTime,
+                                                     String               methodName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         return this.getAttachmentLinks(userId,
                                        startingGUID,
@@ -5250,6 +5713,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                        null,
                                        null,
                                        0,
+                                       limitResultsByStatus,
+                                       asOfTime,
+                                       sequencingOrder,
+                                       sequencingProperty,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,
@@ -5272,6 +5739,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param startingFrom start position for results
@@ -5285,23 +5758,27 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<Relationship>  getAttachmentLinks(String       userId,
-                                                  String       startingGUID,
-                                                  String       startingGUIDParameterName,
-                                                  String       startingTypeName,
-                                                  String       attachmentRelationshipTypeGUID,
-                                                  String       attachmentRelationshipTypeName,
-                                                  String       attachmentEntityGUID,
-                                                  String       attachmentEntityTypeName,
-                                                  int          attachmentEntityEnd,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  int          startingFrom,
-                                                  int          pageSize,
-                                                  Date         effectiveTime,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<Relationship>  getAttachmentLinks(String               userId,
+                                                  String               startingGUID,
+                                                  String               startingGUIDParameterName,
+                                                  String               startingTypeName,
+                                                  String               attachmentRelationshipTypeGUID,
+                                                  String               attachmentRelationshipTypeName,
+                                                  String               attachmentEntityGUID,
+                                                  String               attachmentEntityTypeName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         return getAttachmentLinks(userId,
                                   startingGUID,
@@ -5312,6 +5789,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                   attachmentEntityGUID,
                                   attachmentEntityTypeName,
                                   attachmentEntityEnd,
+                                  limitResultsByStatus,
+                                  asOfTime,
+                                  sequencingOrder,
+                                  sequencingProperty,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -5334,6 +5815,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param serviceSupportedZones supported zones for calling service
@@ -5348,24 +5835,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<Relationship>  getAttachmentLinks(String       userId,
-                                                  String       startingGUID,
-                                                  String       startingGUIDParameterName,
-                                                  String       startingTypeName,
-                                                  String       attachmentRelationshipTypeGUID,
-                                                  String       attachmentRelationshipTypeName,
-                                                  String       attachmentEntityGUID,
-                                                  String       attachmentEntityTypeName,
-                                                  int          attachmentEntityEnd,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  List<String> serviceSupportedZones,
-                                                  int          startingFrom,
-                                                  int          pageSize,
-                                                  Date         effectiveTime,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<Relationship>  getAttachmentLinks(String               userId,
+                                                  String               startingGUID,
+                                                  String               startingGUIDParameterName,
+                                                  String               startingTypeName,
+                                                  String               attachmentRelationshipTypeGUID,
+                                                  String               attachmentRelationshipTypeName,
+                                                  String               attachmentEntityGUID,
+                                                  String               attachmentEntityTypeName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  List<String>         serviceSupportedZones,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
@@ -5388,6 +5879,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                   attachmentEntityGUID,
                                   attachmentEntityTypeName,
                                   attachmentEntityEnd,
+                                  limitResultsByStatus,
+                                  asOfTime,
+                                  sequencingOrder,
+                                  sequencingProperty,
                                   forLineage,
                                   forDuplicateProcessing,
                                   serviceSupportedZones,
@@ -5410,6 +5905,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentEntityGUID unique identifier of the entity on the other end or null if unknown
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage is this a lineage request
      * @param forDuplicateProcessing is this processing part of duplicate processing?
      * @param serviceSupportedZones supported zones for calling service
@@ -5424,93 +5925,95 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<Relationship>  getAttachmentLinks(String       userId,
-                                                  EntityDetail startingEntity,
-                                                  String       startingGUIDParameterName,
-                                                  String       startingTypeName,
-                                                  String       attachmentRelationshipTypeGUID,
-                                                  String       attachmentRelationshipTypeName,
-                                                  String       attachmentEntityGUID,
-                                                  String       attachmentEntityTypeName,
-                                                  int          attachmentEntityEnd,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  List<String> serviceSupportedZones,
-                                                  int          startingFrom,
-                                                  int          pageSize,
-                                                  Date         effectiveTime,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public List<Relationship>  getAttachmentLinks(String               userId,
+                                                  EntityDetail         startingEntity,
+                                                  String               startingGUIDParameterName,
+                                                  String               startingTypeName,
+                                                  String               attachmentRelationshipTypeGUID,
+                                                  String               attachmentRelationshipTypeName,
+                                                  String               attachmentEntityGUID,
+                                                  String               attachmentEntityTypeName,
+                                                  int                  attachmentEntityEnd,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  Date                 asOfTime,
+                                                  SequencingOrder      sequencingOrder,
+                                                  String               sequencingProperty,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  List<String>         serviceSupportedZones,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(startingEntity, startingGUIDParameterName, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  startingEntity.getGUID(),
-                                  startingTypeName,
-                                  startingEntity,
-                                  startingGUIDParameterName,
-                                  true,
-                                  false,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     startingTypeName,
+                                     startingEntity,
+                                     startingGUIDParameterName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
-        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
-                                                                                       invalidParameterHandler,
-                                                                                       userId,
-                                                                                       startingEntity,
-                                                                                       startingTypeName,
-                                                                                       attachmentRelationshipTypeGUID,
-                                                                                       attachmentRelationshipTypeName,
-                                                                                       attachmentEntityEnd,
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
-                                                                                       startingFrom,
-                                                                                       queryPageSize,
-                                                                                       effectiveTime,
-                                                                                       methodName);
+        List<Relationship> retrievedRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                             startingEntity,
+                                                                                             startingTypeName,
+                                                                                             attachmentRelationshipTypeGUID,
+                                                                                             attachmentRelationshipTypeName,
+                                                                                             attachmentEntityEnd,
+                                                                                             limitResultsByStatus,
+                                                                                             asOfTime,
+                                                                                             sequencingOrder,
+                                                                                             sequencingProperty,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             startingFrom,
+                                                                                             queryPageSize,
+                                                                                             effectiveTime,
+                                                                                             methodName);
 
-
-        List<Relationship> visibleRelationships = new ArrayList<>();
-
-        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (visibleRelationships.size() < queryPageSize)))
+        if (retrievedRelationships != null)
         {
-            Relationship relationship = iterator.getNext();
+            List<Relationship> visibleRelationships = new ArrayList<>();
 
-            if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+            for (Relationship relationship : retrievedRelationships)
             {
-                EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), startingTypeName, relationship, attachmentEntityEnd, methodName);
-
-                /*
-                 * Does the relationship point to an appropriate type of entity?
-                 */
-                if (repositoryHelper.isTypeOf(serviceName, otherEnd.getType().getTypeDefName(), attachmentEntityTypeName))
+                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
                 {
-                    if ((attachmentEntityGUID == null) || (attachmentEntityGUID.equals(otherEnd.getGUID())))
+                    EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), startingTypeName, relationship, attachmentEntityEnd, methodName);
+
+                    /*
+                     * Does the relationship point to an appropriate type of entity?
+                     */
+                    if (repositoryHelper.isTypeOf(serviceName, otherEnd.getType().getTypeDefName(), attachmentEntityTypeName))
                     {
-                        log.debug("Accepting relationship: " + relationship.getGUID());
-                        visibleRelationships.add(relationship);
+                        if ((attachmentEntityGUID == null) || (attachmentEntityGUID.equals(otherEnd.getGUID())))
+                        {
+                            log.debug("Accepting relationship: " + relationship.getGUID());
+                            visibleRelationships.add(relationship);
+                        }
+                        else
+                        {
+                            log.debug("Ignoring relationship based on entity instance: " + relationship.getGUID());
+                        }
                     }
                     else
                     {
-                        log.debug("Ignoring relationship based on entity instance: " + relationship.getGUID());
+                        log.debug("Ignoring relationship based on type of attachment: " + relationship.getGUID());
                     }
                 }
-                else
-                {
-                    log.debug("Ignoring relationship based on type of attachment: " + relationship.getGUID());
-                }
             }
-        }
 
-        if (! visibleRelationships.isEmpty())
-        {
             return visibleRelationships;
         }
 
@@ -5519,64 +6022,80 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Return all elements for a specific type.
+     * Retrieve the list of versions for the relationship.
      *
      * @param userId calling user
-     * @param relationshipTypeName type of relationship
-     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
-     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
-     * @param asOfTime time requirements
-     * @param sequencingProperty optional property used to order results
-     * @param sequencingOrder how should results be ordered
-     * @param startingFrom paging start from
-     * @param pageSize maximum results returned in one call
-     * @param effectiveTime effective time
+     * @param guid unique identifier of object to update
+     * @param guidParameterName name of parameter supplying the GUID
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param sequencingOrder order of the results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     * @return list of matching relationships
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the repositories
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<Relationship> getAttachmentsForType(String                userId,
-                                                    String                relationshipTypeName,
-                                                    List<InstanceStatus>  limitResultsByStatus,
-                                                    Date                  asOfTime,
-                                                    String                sequencingProperty,
-                                                    SequencingOrder       sequencingOrder,
-                                                    int                   startingFrom,
-                                                    int                   pageSize,
-                                                    Date                  effectiveTime,
-                                                    String                methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     String                 guidParameterName,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startingFrom,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder,
+                                                     boolean                forLineage,
+                                                     boolean                forDuplicateProcessing,
+                                                     List<String>           serviceSupportedZones,
+                                                     Date                   effectiveTime,
+                                                     String                 methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipHistory(userId,
+                                                                                    guid,
+                                                                                    fromTime,
+                                                                                    toTime,
+                                                                                    startingFrom,
+                                                                                    pageSize,
+                                                                                    sequencingOrder,
+                                                                                    methodName);
 
-        String relationshipTypeGUID = null;
-
-        if (relationshipTypeName != null)
+        if (relationships != null)
         {
-            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
-                                                                            null,
-                                                                            serviceName,
-                                                                            methodName,
-                                                                            repositoryHelper);
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    validateRelationship(userId,
+                                         relationship,
+                                         new ArrayList<>(),
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
+                    /*
+                     * Only need to validate one
+                     */
+                    break;
+                }
+            }
         }
 
-        return repositoryHandler.getRelationshipsForType(userId,
-                                                         relationshipTypeGUID,
-                                                         relationshipTypeName,
-                                                         limitResultsByStatus,
-                                                         startingFrom,
-                                                         queryPageSize,
-                                                         asOfTime,
-                                                         sequencingProperty,
-                                                         sequencingOrder,
-                                                         effectiveTime,
-                                                         methodName);
+        return relationships;
     }
+
 
 
     /**
@@ -5637,57 +6156,37 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                             repositoryHelper);
         }
 
+        List<Relationship> retrievedRelationships = repositoryHandler.findRelationships(userId,
+                                                                                        relationshipTypeGUID,
+                                                                                        null,
+                                                                                        searchProperties,
+                                                                                        limitResultsByStatus,
+                                                                                        asOfTime,
+                                                                                        sequencingProperty,
+                                                                                        sequencingOrder,
+                                                                                        forDuplicateProcessing,
+                                                                                        startingFrom,
+                                                                                        queryPageSize,
+                                                                                        effectiveTime,
+                                                                                        methodName);
 
-        RepositoryFindRelationshipsIterator iterator = new RepositoryFindRelationshipsIterator(repositoryHandler,
-                                                                                               invalidParameterHandler,
-                                                                                               userId,
-                                                                                               relationshipTypeGUID,
-                                                                                               null,
-                                                                                               searchProperties,
-                                                                                               limitResultsByStatus,
-                                                                                               asOfTime,
-                                                                                               sequencingProperty,
-                                                                                               sequencingOrder,
-                                                                                               startingFrom,
-                                                                                               queryPageSize,
-                                                                                               forLineage,
-                                                                                               forDuplicateProcessing,
-                                                                                               effectiveTime,
-                                                                                               methodName);
-
-        List<Relationship> results = new ArrayList<>();
-        List<String>       validatedAnchorGUIDs = new ArrayList<>();
-
-        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        if (retrievedRelationships != null)
         {
-            Relationship relationship = iterator.getNext();
+            List<Relationship> results              = new ArrayList<>();
+            List<String>       validatedAnchorGUIDs = new ArrayList<>();
 
-            if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+            for (Relationship relationship : retrievedRelationships)
             {
                 try
                 {
-                    final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
-                    final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
-
-                    validateEntityProxyAnchor(userId,
-                                              relationship.getEntityOneProxy(),
-                                              entityOneParameterName,
-                                              validatedAnchorGUIDs,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              serviceSupportedZones,
-                                              effectiveTime,
-                                              methodName);
-
-                    validateEntityProxyAnchor(userId,
-                                              relationship.getEntityTwoProxy(),
-                                              entityTwoParameterName,
-                                              validatedAnchorGUIDs,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              serviceSupportedZones,
-                                              effectiveTime,
-                                              methodName);
+                    validateRelationship(userId,
+                                         relationship,
+                                         validatedAnchorGUIDs,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
 
                     results.add(relationship);
                 }
@@ -5696,10 +6195,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                     // ignore an element that is not visible to the caller
                 }
             }
-        }
 
-        if (! results.isEmpty())
-        {
             return results;
         }
 
@@ -5707,6 +6203,78 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     }
 
 
+    /**
+     * Validate that a relationship can be returned to the caller.
+     *
+     * @param userId calling user
+     * @param relationship relationship to test
+     * @param validatedAnchorGUIDs the anchor GUIDs that have been validated (don't want to do this many times).
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+
+     */
+    protected void validateRelationship(String       userId,
+                                        Relationship relationship,
+                                        List<String> validatedAnchorGUIDs,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        List<String> serviceSupportedZones,
+                                        Date         effectiveTime,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+            validateEntityProxyAnchor(userId,
+                                      relationship.getEntityOneProxy(),
+                                      entityOneParameterName,
+                                      validatedAnchorGUIDs,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      serviceSupportedZones,
+                                      effectiveTime,
+                                      methodName);
+
+            validateEntityProxyAnchor(userId,
+                                      relationship.getEntityTwoProxy(),
+                                      entityTwoParameterName,
+                                      validatedAnchorGUIDs,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      serviceSupportedZones,
+                                      effectiveTime,
+                                      methodName);
+        }
+    }
+
+
+    /**
+     * Check that a relationship returned from the repository is linked to entities that
+     * are visible to the caller.
+     *
+     * @param userId caller
+     * @param entityProxy linked entity
+     * @param entityProxyParameterName name of the parameter for this end
+     * @param validatedAnchorGUIDs the anchor GUIDs that have been validated (don't want to do this many times).
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @throws InvalidParameterException one of the search parameters is invalid
+     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
     private void validateEntityProxyAnchor(String       userId,
                                            EntityProxy  entityProxy,
                                            String       entityProxyParameterName,
@@ -5736,18 +6304,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
             {
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          entityProxyParameterName,
-                                          connectToEntity,
-                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                          false,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             entityProxyParameterName,
+                                             connectToEntity,
+                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                             false,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
                 {
@@ -5759,17 +6326,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             if ((anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
             {
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          entityProxyParameterName,
-                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                          false,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             entityProxy.getGUID(),
+                                             entityProxyParameterName,
+                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                             false,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 if (anchorIdentifiers.anchorGUID != null)
                 {
@@ -6172,18 +6739,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  originalEntity.getGUID(),
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             /*
              * Sort out the properties
@@ -6429,18 +6995,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  entityGUID,
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             /*
              * There is an extra security check if the update is for an asset.
@@ -6671,18 +7236,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
-            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                                  originalEntity.getGUID(),
-                                                                  entityTypeName,
-                                                                  originalEntity,
-                                                                  entityGUIDParameterName,
-                                                                  true,
-                                                                  true,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  serviceSupportedZones,
-                                                                  effectiveTime,
-                                                                  methodName);
+            EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                     entityTypeName,
+                                                                     originalEntity,
+                                                                     entityGUIDParameterName,
+                                                                     true,
+                                                                     true,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
 
             EntityDetail recoveredEntity = repositoryHandler.undoEntityUpdate(userId,
                                                                               externalSourceGUID,
@@ -6852,7 +7416,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                 AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                if ((anchorIdentifiers != null) && (anchorIdentifiers.equals(anchorEntity.getGUID())))
+                if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID.equals(anchorEntity.getGUID())))
                 {
                     this.archiveBeanInRepository(userId,
                                                  externalSourceGUID,
@@ -6962,17 +7526,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, entityGUIDParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              entityGUID,
-                                                              entityGUIDParameterName,
-                                                              entityTypeName,
-                                                              true,
-                                                              true,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 true,
+                                                                 true,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         /*
          * At this point, archiving is only supported on the anchor entity.  This needs to change (eg to be able to archive schema elements)
@@ -7114,6 +7678,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                            null,
                                                                                            null,
                                                                                            0,
+                                                                                           null,
+                                                                                           null,
+                                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                                           null,
                                                                                            forLineage,
                                                                                            forDuplicateProcessing,
                                                                                            0,
@@ -7393,18 +7961,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                  effectiveTime,
                                                                  methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              entityGUID,
-                                                              entityTypeName,
-                                                              entity,
-                                                              entityGUIDParameterName,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 entityTypeName,
+                                                                 entity,
+                                                                 entityGUIDParameterName,
+                                                                 true,
+                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         List<String> anchorEntityGUIDs = new ArrayList<>();
 
@@ -7575,6 +8142,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                        null,
                                                                                        null,
                                                                                        0,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
@@ -7619,58 +8190,16 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                        entityTypeName,
                                        validatingPropertyName,
                                        validatingPropertyValue,
+                                       null,
+                                       null,
+                                       SequencingOrder.CREATION_DATE_RECENT,
+                                       null,
                                        forLineage,
                                        forDuplicateProcessing,
                                        effectiveTime,
                                        methodName);
     }
 
-
-    /**
-     * Is the bean isolated - i.e. has no relationships.
-     *
-     * @param userId calling user
-     * @param entityGUID unique identifier of object to update
-     * @param entityTypeName unique name of the entity's type
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     * @return test results
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem removing the properties from the repository.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public boolean isBeanIsolated(String       userId,
-                                  String       entityGUID,
-                                  String       entityTypeName,
-                                  boolean      forLineage,
-                                  boolean      forDuplicateProcessing,
-                                  Date         effectiveTime,
-                                  String       methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
-    {
-        /*
-         * Retrieve the first relationship, if there is one then we have relationships.
-         */
-        RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
-                                                                                       invalidParameterHandler,
-                                                                                       userId,
-                                                                                       entityGUID,
-                                                                                       entityTypeName,
-                                                                                       null,
-                                                                                       null,
-                                                                                       0,
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing,
-                                                                                       0,
-                                                                                       invalidParameterHandler.getMaxPagingSize(),
-                                                                                       effectiveTime,
-                                                                                       methodName);
-
-        return ! (iterator.moreToReceive());
-    }
 
 
     /**
@@ -7773,6 +8302,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom start position for results
@@ -7786,21 +8321,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<String> getAttachedElementGUIDs(String       userId,
-                                                String       startingGUID,
-                                                String       startingGUIDParameterName,
-                                                String       startingTypeName,
-                                                String       attachmentRelationshipTypeGUID,
-                                                String       attachmentRelationshipTypeName,
-                                                String       attachmentEntityTypeName,
-                                                boolean      forLineage,
-                                                boolean      forDuplicateProcessing,
-                                                int          startingFrom,
-                                                int          pageSize,
-                                                Date         effectiveTime,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<String> getAttachedElementGUIDs(String               userId,
+                                                String               startingGUID,
+                                                String               startingGUIDParameterName,
+                                                String               startingTypeName,
+                                                String               attachmentRelationshipTypeGUID,
+                                                String               attachmentRelationshipTypeName,
+                                                String               attachmentEntityTypeName,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                Date                 asOfTime,
+                                                SequencingOrder      sequencingOrder,
+                                                String               sequencingPropertyName,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                int                  startingFrom,
+                                                int                  pageSize,
+                                                Date                 effectiveTime,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         return this.getAttachedElementGUIDs(userId,
                                             startingGUID,
@@ -7809,6 +8348,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                             attachmentRelationshipTypeGUID,
                                             attachmentRelationshipTypeName,
                                             attachmentEntityTypeName,
+                                            limitResultsByStatus,
+                                            asOfTime,
+                                            sequencingOrder,
+                                            sequencingPropertyName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
@@ -7829,6 +8372,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentRelationshipTypeGUID unique identifier of the relationship type connect to the attachment
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityTypeName unique name of the attached entity's type
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -7843,22 +8392,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public List<String> getAttachedElementGUIDs(String       userId,
-                                                String       startingGUID,
-                                                String       startingGUIDParameterName,
-                                                String       startingTypeName,
-                                                String       attachmentRelationshipTypeGUID,
-                                                String       attachmentRelationshipTypeName,
-                                                String       attachmentEntityTypeName,
-                                                boolean      forLineage,
-                                                boolean      forDuplicateProcessing,
-                                                List<String> serviceSupportedZones,
-                                                int          startingFrom,
-                                                int          pageSize,
-                                                Date         effectiveTime,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<String> getAttachedElementGUIDs(String               userId,
+                                                String               startingGUID,
+                                                String               startingGUIDParameterName,
+                                                String               startingTypeName,
+                                                String               attachmentRelationshipTypeGUID,
+                                                String               attachmentRelationshipTypeName,
+                                                String               attachmentEntityTypeName,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                Date                 asOfTime,
+                                                SequencingOrder      sequencingOrder,
+                                                String               sequencingPropertyName,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                List<String>         serviceSupportedZones,
+                                                int                  startingFrom,
+                                                int                  pageSize,
+                                                Date                 effectiveTime,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String guidParameterName = "relationship.end.guid";
 
@@ -7887,6 +8440,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                     null,
                                                                     attachmentEntityTypeName,
                                                                     0,
+                                                                    limitResultsByStatus,
+                                                                    asOfTime,
+                                                                    sequencingOrder,
+                                                                    sequencingPropertyName,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -7915,17 +8472,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                   entityProxy.getGUID(),
-                                                   guidParameterName,
-                                                   attachmentEntityTypeName,
-                                                   false,
-                                                   false,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   serviceSupportedZones,
-                                                   effectiveTime,
-                                                   methodName);
+                        this.validateAnchorForEntity(userId,
+                                                     entityProxy.getGUID(),
+                                                     guidParameterName,
+                                                     attachmentEntityTypeName,
+                                                     false,
+                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     serviceSupportedZones,
+                                                     effectiveTime,
+                                                     methodName);
 
                         results.add(entityProxy.getGUID());
                     }
@@ -7963,6 +8520,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -7974,20 +8537,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public String getAttachedElementGUID(String  userId,
-                                         String  startingGUID,
-                                         String  startingGUIDParameterName,
-                                         String  startingTypeName,
-                                         String  attachmentRelationshipTypeGUID,
-                                         String  attachmentRelationshipTypeName,
-                                         String  attachmentEntityTypeName,
-                                         int     selectionEnd,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public String getAttachedElementGUID(String               userId,
+                                         String               startingGUID,
+                                         String               startingGUIDParameterName,
+                                         String               startingTypeName,
+                                         String               attachmentRelationshipTypeGUID,
+                                         String               attachmentRelationshipTypeName,
+                                         String               attachmentEntityTypeName,
+                                         int                  selectionEnd,
+                                         List<InstanceStatus> limitResultsByStatus,
+                                         Date                 asOfTime,
+                                         SequencingOrder      sequencingOrder,
+                                         String               sequencingPropertyName,
+                                         boolean              forLineage,
+                                         boolean              forDuplicateProcessing,
+                                         Date                 effectiveTime,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         return getAttachedElementGUID(userId,
                                       startingGUID,
@@ -7997,6 +8564,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                       attachmentRelationshipTypeName,
                                       attachmentEntityTypeName,
                                       selectionEnd,
+                                      limitResultsByStatus,
+                                      asOfTime,
+                                      sequencingOrder,
+                                      sequencingPropertyName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
@@ -8016,6 +8587,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param attachmentRelationshipTypeName unique name of the relationship type connect to the attachment
      * @param attachmentEntityTypeName unique name of the attached entity's type
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -8028,21 +8605,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public String getAttachedElementGUID(String       userId,
-                                         String       startingGUID,
-                                         String       startingGUIDParameterName,
-                                         String       startingTypeName,
-                                         String       attachmentRelationshipTypeGUID,
-                                         String       attachmentRelationshipTypeName,
-                                         String       attachmentEntityTypeName,
-                                         int          selectionEnd,
-                                         boolean      forLineage,
-                                         boolean      forDuplicateProcessing,
-                                         List<String> serviceSupportedZones,
-                                         Date         effectiveTime,
-                                         String       methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public String getAttachedElementGUID(String               userId,
+                                         String               startingGUID,
+                                         String               startingGUIDParameterName,
+                                         String               startingTypeName,
+                                         String               attachmentRelationshipTypeGUID,
+                                         String               attachmentRelationshipTypeName,
+                                         String               attachmentEntityTypeName,
+                                         int                  selectionEnd,
+                                         List<InstanceStatus> limitResultsByStatus,
+                                         Date                 asOfTime,
+                                         SequencingOrder      sequencingOrder,
+                                         String               sequencingPropertyName,
+                                         boolean              forLineage,
+                                         boolean              forDuplicateProcessing,
+                                         List<String>         serviceSupportedZones,
+                                         Date                 effectiveTime,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String guidParameterName = "relationship.end.guid";
 
@@ -8071,6 +8652,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                     null,
                                                                     attachmentEntityTypeName,
                                                                     0,
+                                                                    limitResultsByStatus,
+                                                                    asOfTime,
+                                                                    sequencingOrder,
+                                                                    sequencingPropertyName,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -8100,17 +8685,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entityProxy.getGUID(),
-                                                  guidParameterName,
-                                                  attachmentEntityTypeName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
+                        this.validateAnchorForEntity(userId,
+                                                     entityProxy.getGUID(),
+                                                     guidParameterName,
+                                                     attachmentEntityTypeName,
+                                                     false,
+                                                     false,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     serviceSupportedZones,
+                                                     effectiveTime,
+                                                     methodName);
 
                         if (result == null)
                         {
@@ -8153,6 +8738,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -8165,21 +8756,25 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public B getAttachedElement(String       userId,
-                                String       startingElementGUID,
-                                String       startingElementGUIDParameterName,
-                                String       startingElementTypeName,
-                                String       relationshipTypeGUID,
-                                String       relationshipTypeName,
-                                String       resultingElementTypeName,
-                                int          attachmentEntityEnd,
-                                boolean      forLineage,
-                                boolean      forDuplicateProcessing,
-                                List<String> serviceSupportedZones,
-                                Date         effectiveTime,
-                                String       methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public B getAttachedElement(String               userId,
+                                String               startingElementGUID,
+                                String               startingElementGUIDParameterName,
+                                String               startingElementTypeName,
+                                String               relationshipTypeGUID,
+                                String               relationshipTypeName,
+                                String               resultingElementTypeName,
+                                int                  attachmentEntityEnd,
+                                List<InstanceStatus> limitResultsByStatus,
+                                Date                 asOfTime,
+                                SequencingOrder      sequencingOrder,
+                                String               sequencingPropertyName,
+                                boolean              forLineage,
+                                boolean              forDuplicateProcessing,
+                                List<String>         serviceSupportedZones,
+                                Date                 effectiveTime,
+                                String               methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
@@ -8205,6 +8800,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                              0,
                                                                              resultingElementTypeName,
                                                                              attachmentEntityEnd,
+                                                                             limitResultsByStatus,
+                                                                             asOfTime,
+                                                                             sequencingOrder,
+                                                                             sequencingPropertyName,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -8212,18 +8811,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if (entity != null)
         {
-            validateAnchorEntity(userId,
-                                 startingElementGUID,
-                                 startingElementTypeName,
-                                 entity,
-                                 startingElementGUIDParameterName,
-                                 true,
-                                 false,
-                                 forLineage,
-                                 forDuplicateProcessing,
-                                 serviceSupportedZones,
-                                 effectiveTime,
-                                 methodName);
+            validateAnchorForEntity(userId,
+                                    entity.getType().getTypeDefName(),
+                                    entity,
+                                    startingElementGUIDParameterName,
+                                    true,
+                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
 
             return converter.getNewBean(beanClass, entity, methodName);
         }
@@ -8246,6 +8844,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param limitResultsByEnumValues  The list of ordinals for the enum value.
      * @param enumPropertyName   String the name of a property in the relationship that is an enum.
      * @param attachmentEntityEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
      * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
@@ -8259,41 +8863,45 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public   List<B> getAttachedElements(String         userId,
-                                         String         startingGUID,
-                                         String         startingGUIDParameterName,
-                                         String         startingTypeName,
-                                         String         attachmentRelationshipTypeGUID,
-                                         String         attachmentRelationshipTypeName,
-                                         String         attachmentEntityTypeName,
-                                         String         requiredClassificationName,
-                                         String         omittedClassificationName,
-                                         List<Integer>  limitResultsByEnumValues,
-                                         String         enumPropertyName,
-                                         int            attachmentEntityEnd,
-                                         boolean        forLineage,
-                                         boolean        forDuplicateProcessing,
-                                         int            startingFrom,
-                                         int            pageSize,
-                                         Date           effectiveTime,
-                                         String         methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public   List<B> getAttachedElements(String               userId,
+                                         String               startingGUID,
+                                         String               startingGUIDParameterName,
+                                         String               startingTypeName,
+                                         String               attachmentRelationshipTypeGUID,
+                                         String               attachmentRelationshipTypeName,
+                                         String               attachmentEntityTypeName,
+                                         String               requiredClassificationName,
+                                         String               omittedClassificationName,
+                                         List<Integer>        limitResultsByEnumValues,
+                                         String               enumPropertyName,
+                                         int                  attachmentEntityEnd,
+                                         List<InstanceStatus> limitResultsByStatus,
+                                         Date                 asOfTime,
+                                         SequencingOrder      sequencingOrder,
+                                         String               sequencingProperty,
+                                         boolean              forLineage,
+                                         boolean              forDuplicateProcessing,
+                                         int                  startingFrom,
+                                         int                  pageSize,
+                                         Date                 effectiveTime,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              startingGUID,
-                                                              startingGUIDParameterName,
-                                                              startingTypeName,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        this.validateAnchorForEntity(userId,
+                                     startingGUID,
+                                     startingGUIDParameterName,
+                                     startingTypeName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     supportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -8308,6 +8916,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                     null,
                                                                     attachmentEntityTypeName,
                                                                     attachmentEntityEnd,
+                                                                    limitResultsByStatus,
+                                                                    asOfTime,
+                                                                    sequencingOrder,
+                                                                    sequencingProperty,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     supportedZones,
@@ -8391,6 +9003,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
      * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
@@ -8404,24 +9022,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public   List<B> getAttachedElements(String  userId,
-                                         String  startingGUID,
-                                         String  startingGUIDParameterName,
-                                         String  startingTypeName,
-                                         String  attachmentRelationshipTypeGUID,
-                                         String  attachmentRelationshipTypeName,
-                                         String  attachmentEntityTypeName,
-                                         String  requiredClassificationName,
-                                         String  omittedClassificationName,
-                                         int     selectionEnd,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         int     startingFrom,
-                                         int     pageSize,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public   List<B> getAttachedElements(String               userId,
+                                         String               startingGUID,
+                                         String               startingGUIDParameterName,
+                                         String               startingTypeName,
+                                         String               attachmentRelationshipTypeGUID,
+                                         String               attachmentRelationshipTypeName,
+                                         String               attachmentEntityTypeName,
+                                         String               requiredClassificationName,
+                                         String               omittedClassificationName,
+                                         int                  selectionEnd,
+                                         List<InstanceStatus> limitResultsByStatus,
+                                         Date                 asOfTime,
+                                         SequencingOrder      sequencingOrder,
+                                         String               sequencingProperty,
+                                         boolean              forLineage,
+                                         boolean              forDuplicateProcessing,
+                                         int                  startingFrom,
+                                         int                  pageSize,
+                                         Date                 effectiveTime,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -8435,6 +9057,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                         requiredClassificationName,
                                         omittedClassificationName,
                                         selectionEnd,
+                                        limitResultsByStatus,
+                                        asOfTime,
+                                        sequencingOrder,
+                                        sequencingProperty,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -8460,6 +9086,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -8474,42 +9106,46 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public   List<B> getAttachedElements(String       userId,
-                                         String       anchorGUID,
-                                         String       anchorGUIDParameterName,
-                                         String       startingGUID,
-                                         String       startingGUIDParameterName,
-                                         String       startingTypeName,
-                                         String       attachmentRelationshipTypeGUID,
-                                         String       attachmentRelationshipTypeName,
-                                         String       attachmentEntityTypeName,
-                                         String       requiredClassificationName,
-                                         String       omittedClassificationName,
-                                         int          selectionEnd,
-                                         boolean      forLineage,
-                                         boolean      forDuplicateProcessing,
-                                         List<String> serviceSupportedZones,
-                                         int          startingFrom,
-                                         int          pageSize,
-                                         Date         effectiveTime,
-                                         String       methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public   List<B> getAttachedElements(String               userId,
+                                         String               anchorGUID,
+                                         String               anchorGUIDParameterName,
+                                         String               startingGUID,
+                                         String               startingGUIDParameterName,
+                                         String               startingTypeName,
+                                         String               attachmentRelationshipTypeGUID,
+                                         String               attachmentRelationshipTypeName,
+                                         String               attachmentEntityTypeName,
+                                         String               requiredClassificationName,
+                                         String               omittedClassificationName,
+                                         int                  selectionEnd,
+                                         List<InstanceStatus> limitResultsByStatus,
+                                         Date                 asOfTime,
+                                         SequencingOrder      sequencingOrder,
+                                         String               sequencingProperty,
+                                         boolean              forLineage,
+                                         boolean              forDuplicateProcessing,
+                                         List<String>         serviceSupportedZones,
+                                         int                  startingFrom,
+                                         int                  pageSize,
+                                         Date                 effectiveTime,
+                                         String               methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              startingGUID,
-                                                              startingGUIDParameterName,
-                                                              startingTypeName,
-                                                              true,
-                                                              false,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              serviceSupportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 startingGUID,
+                                                                 startingGUIDParameterName,
+                                                                 startingTypeName,
+                                                                 true,
+                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 serviceSupportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         invalidParameterHandler.validateAnchorGUID(anchorGUID, anchorGUIDParameterName, anchorEntity, startingGUID, startingTypeName, methodName);
 
@@ -8526,6 +9162,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                     null,
                                                                     attachmentEntityTypeName,
                                                                     selectionEnd,
+                                                                    limitResultsByStatus,
+                                                                    asOfTime,
+                                                                    sequencingOrder,
+                                                                    sequencingProperty,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -8664,18 +9304,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                         effectiveTime,
                                                                         methodName);
 
-                this.validateAnchorEntity(userId,
-                                          entityProxy.getGUID(),
-                                          attachmentEntityTypeName,
-                                          entity,
-                                          guidParameterName,
-                                          true,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                this.validateAnchorForEntity(userId,
+                                             attachmentEntityTypeName,
+                                             entity,
+                                             guidParameterName,
+                                             true,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                 boolean beanValid = true;
 
@@ -8725,442 +9364,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
 
         return null;
-    }
-
-
-    /**
-     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
-     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
-     * <ul>
-     * <li> with the relationship relationshipTypeName</li>
-     * <li> the relationship relationshipTypeGUID</li>
-     * <li> be at this end of the relationship.</li>
-     * <li> it is visible to the calling user </li>
-     * </ul>
-     * <p>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
-     *</ul>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
-     * </ul>
-     *
-     * @param userId       calling user
-     * @param startingGUID identifier for the entity that the identifier is attached to
-     * @param startingGUIDParameterName name of parameter supplying the GUID
-     * @param startingTypeName name of the type of object being attached to
-     * @param relationshipTypeName name of the type of relationship attaching the attached entity
-     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
-     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param specificMatchPropertyNames list of property names to
-     * @param searchCriteria text to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
-     * @param ignoreCase if set ignore case on the match, if not set then case must match
-     * @param queryPageSize requested page size
-     * @param methodName   calling method
-     * @return List of attached entities
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the repositories
-     */
-    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
-                                                          String        startingGUID,
-                                                          String        startingGUIDParameterName,
-                                                          String        startingTypeName,
-                                                          String        relationshipTypeName,
-                                                          String        relationshipTypeGUID,
-                                                          int           selectionEnd,
-                                                          Set<String>   specificMatchPropertyNames,
-                                                          String        searchCriteria,
-                                                          int           startFrom,
-                                                          boolean       startsWith,
-                                                          boolean       ignoreCase,
-                                                          int           queryPageSize,
-                                                          String        methodName) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        return getAttachedFilteredEntities(userId,
-                                           startingGUID,
-                                           startingGUIDParameterName,
-                                           startingTypeName,
-                                           relationshipTypeName,
-                                           relationshipTypeGUID,
-                                           selectionEnd,
-                                           null,
-                                           null,
-                                           true,
-                                           specificMatchPropertyNames,
-                                           searchCriteria,
-                                           startFrom,
-                                           startsWith,
-                                           ignoreCase,
-                                           queryPageSize,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
-    }
-
-
-    /**
-     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
-     *
-     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
-     * <ul>
-     * <li> with the relationship relationshipTypeName</li>
-     * <li> the relationship relationshipTypeGUID</li>
-     * <li> be at this end of the relationship.</li>
-     * <li> it is visible to the calling user </li>
-     * </ul>
-     * <p>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
-     *</ul>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
-     * </ul>
-     *
-     * @param userId       calling user
-     * @param startingGUID identifier for the entity that the identifier is attached to
-     * @param startingGUIDParameterName name of parameter supplying the GUID
-     * @param startingTypeName name of the type of object being attached to
-     * @param relationshipTypeName name of the type of relationship attaching the attached entity
-     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
-     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param specificMatchPropertyNames list of property names to
-     * @param searchCriteria text to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
-     * @param ignoreCase if set ignore case on the match, if not set then case must match
-     * @param queryPageSize requested page size
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName   calling method
-     * @return List of attached entities
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the repositories
-     */
-    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
-                                                          String        startingGUID,
-                                                          String        startingGUIDParameterName,
-                                                          String        startingTypeName,
-                                                          String        relationshipTypeName,
-                                                          String        relationshipTypeGUID,
-                                                          int           selectionEnd,
-                                                          Set<String>   specificMatchPropertyNames,
-                                                          String        searchCriteria,
-                                                          int           startFrom,
-                                                          boolean       startsWith,
-                                                          boolean       ignoreCase,
-                                                          int           queryPageSize,
-                                                          Date          effectiveTime,
-                                                          String        methodName) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        return getAttachedFilteredEntities(userId,
-                                           startingGUID,
-                                           startingGUIDParameterName,
-                                           startingTypeName,
-                                           relationshipTypeName,
-                                           relationshipTypeGUID,
-                                           selectionEnd,
-                                           null,
-                                           null,
-                                           true,
-                                           specificMatchPropertyNames,
-                                           searchCriteria,
-                                           startFrom,
-                                           startsWith,
-                                           ignoreCase,
-                                           queryPageSize,
-                                           false,
-                                           false,
-                                           effectiveTime,
-                                           methodName);
-    }
-
-
-    /**
-     * Retrieve the entities that are attached to the entity with startingGUID. The entities are only returned if they match the supplied filtering.
-     *
-     * To be returned the attached entity needs to be directly attached to the entity with startingGUID:
-     * <ul>
-     * <li> with the relationship relationshipTypeName</li>
-     * <li> the relationship relationshipTypeGUID</li>
-     * <li> be at this end of the relationship.</li>
-     * <li> it is visible to the calling user </li>
-     * </ul>
-     * <p>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> match the searchCriteria taking into account the ignoreCase and startsWith flags against the text property fields named in specificMatchPropertyNames.</li>
-     *</ul>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> be in the requested page as specified by startFrom and queryPageSize</li>
-     * </ul>
-     * Optionally if specified, the attached entity needs to
-     * <ul>
-     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeName</li>
-     * <li> not have a relationship to a unique parent entity via the attachedEntityFilterRelationshipTypeGUID</li>
-     * <li> not have a relationship to a unique parent entity where the parent is at the other end, the parent end is identified using attachedEntityParentAtEnd1</li>
-     *</ul>
-     *
-     * @param userId       calling user
-     * @param startingGUID identifier for the entity that the identifier is attached to
-     * @param startingGUIDParameterName name of parameter supplying the GUID
-     * @param startingTypeName name of the type of object being attached to
-     * @param relationshipTypeName name of the type of relationship attaching the attached entity
-     * @param relationshipTypeGUID guid of the type of relationship attaching the attached entity
-     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
-     * @param attachedEntityFilterRelationshipTypeName do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has no effect on the match.
-     * @param attachedEntityFilterRelationshipTypeGUID do not return attached entities that have this parent relationship at attachedEntityParentAtEnd1. If null this has no effect on the match.
-     * @param attachedEntityParentAtEnd1 if the attached entity has a parent the entity will not be returned.
-     * @param specificMatchPropertyNames list of property names to
-     * @param searchCriteria text to search on
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param startsWith if flag set search looking for matches starting with the supplied searchCriteria, otherwise an exact match
-     * @param ignoreCase if set ignore case on the match, if not set then case must match
-     * @param queryPageSize requested page size
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName   calling method
-     * @return List of attached entities
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the repositories
-     */
-    public List<EntityDetail> getAttachedFilteredEntities(String        userId,
-                                                          String        startingGUID,
-                                                          String        startingGUIDParameterName,
-                                                          String        startingTypeName,
-                                                          String        relationshipTypeName,
-                                                          String        relationshipTypeGUID,
-                                                          int           selectionEnd,
-                                                          String        attachedEntityFilterRelationshipTypeName,
-                                                          String        attachedEntityFilterRelationshipTypeGUID,
-                                                          boolean       attachedEntityParentAtEnd1,
-                                                          Set<String>   specificMatchPropertyNames,
-                                                          String        searchCriteria,
-                                                          int           startFrom,
-                                                          boolean       startsWith,
-                                                          boolean       ignoreCase,
-                                                          int           queryPageSize,
-                                                          boolean       forLineage,
-                                                          boolean       forDuplicateProcessing,
-                                                          Date          effectiveTime,
-                                                          String        methodName) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
-        int localStartFrom = 0;
-
-        RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
-                                                                                                        invalidParameterHandler,
-                                                                                                        userId,
-                                                                                                        startingGUID,
-                                                                                                        startingTypeName,
-                                                                                                        relationshipTypeGUID,
-                                                                                                        relationshipTypeName,
-                                                                                                        null,
-                                                                                                        forLineage,
-                                                                                                        forDuplicateProcessing,
-                                                                                                        localStartFrom,
-                                                                                                        queryPageSize,
-                                                                                                        selectionEnd,
-                                                                                                        effectiveTime,
-                                                                                                        methodName);
-        // resultsToReturn is the subset of the filtered results to meets the requested startFrom
-        List<EntityDetail> resultsToReturn = new ArrayList<>();
-        // accumulate the total filtered results from 0 - so we can then honour the requested startFrom which is the index into the filtered results.
-        List<EntityDetail> totalFilteredResults = new ArrayList<>();
-
-        // iterate through the related entities applying the filter.
-        while ((relatedEntityIterator.moreToReceive()) && ((queryPageSize == 0) || resultsToReturn.size() < queryPageSize))
-        {
-            EntityDetail relatedEntity = relatedEntityIterator.getNext();
-
-            if (relatedEntity != null)
-            {
-                if (log.isDebugEnabled())
-                {
-                    String displayName = "";
-                    String qualifiedName = "";
-
-                    if (relatedEntity.getProperties() !=null && relatedEntity.getProperties().getInstanceProperties() != null )
-                    {
-                        if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null)
-                        {
-                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.DISPLAY_NAME.name).toString();
-                        }
-                        else if (relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.NAME.name) != null)
-                        {
-                            displayName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.NAME.name).toString();
-                        }
-                        if ( relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name)!=null)
-                        {
-                            qualifiedName = relatedEntity.getProperties().getInstanceProperties().get(OpenMetadataProperty.QUALIFIED_NAME.name).toString();
-                        }
-                    }
-
-                    log.debug("getAttachedFilteredEntities - while  relatedEntity guid=" + relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName=" + qualifiedName);
-                }
-
-                Relationship parentRelationship = null;
-                // apply the filter if there is one
-                if ((attachedEntityFilterRelationshipTypeGUID != null) && (attachedEntityFilterRelationshipTypeName != null))
-                {
-                    parentRelationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
-                                                                                             relatedEntity.getGUID(),
-                                                                                             relatedEntity.getType().getTypeDefName(),
-                                                                                             attachedEntityFilterRelationshipTypeGUID,
-                                                                                             attachedEntityFilterRelationshipTypeName,
-                                                                                             attachedEntityParentAtEnd1,
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing,
-                                                                                             effectiveTime,
-                                                                                             methodName);
-
-                    if (log.isDebugEnabled())
-                    {
-                        if (parentRelationship != null)
-                        {
-                            log.debug("getAttachedFilteredEntities - while found parent relationship  parentRelationship" + parentRelationship.getGUID());
-                        }
-                    }
-                }
-
-                // if there is a parentRelationship - this should not be included.
-                if ((parentRelationship == null) && entityMatchSearchCriteria(relatedEntity, specificMatchPropertyNames, searchCriteria, !startsWith, ignoreCase))
-                {
-                    totalFilteredResults.add(relatedEntity);
-
-                    if (totalFilteredResults.size() > startFrom)
-                    {
-                        resultsToReturn.add(relatedEntity);
-                    }
-                }
-            }
-        }
-
-        if (resultsToReturn.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return resultsToReturn;
-        }
-
-    }
-
-
-    /**
-     * Check whether the attribute values, associated with the supplied attribute names, in the supplied entity match the search criteria. This text match is influenced by the
-     * exactValue and ignoreCase flags.
-     *
-     * @param entity entity to check
-     * @param attributeNames attribute names to check the value of - these are expected to be attributes that hold text values; if they will be ignored
-     * @param searchCriteria literal text search criteria
-     * @param exactValue when set match exactly otherwise look for matches starting with this text
-     * @param ignoreCase when set ignore the case, otherwise do a case-sensitive match.
-     * @return true for match otherwise false
-     */
-    protected boolean entityMatchSearchCriteria(EntityDetail entity,
-                                                Set<String>  attributeNames,
-                                                String       searchCriteria,
-                                                boolean      exactValue,
-                                                boolean      ignoreCase)
-    {
-        if (attributeNames == null)
-        {
-            return true; // TODO maybe this should be an error
-        }
-
-        if (searchCriteria == null)
-        {
-            return true; // nothing specific to match so it all matches
-        }
-
-        String regExedSearchCriteria = regexSearchCriteria(searchCriteria, exactValue, ignoreCase);
-        boolean isMatch = false;
-        InstanceProperties matchProperties = entity.getProperties();
-        Iterator<String> propertyNames = matchProperties.getPropertyNames();
-
-        if (propertyNames != null)
-        {
-            while (propertyNames.hasNext())
-            {
-                String propertyName = propertyNames.next();
-                if (attributeNames.contains(propertyName))
-                {
-                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
-
-                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
-                    if (ipCat == InstancePropertyCategory.PRIMITIVE)
-                    {
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
-                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
-                        {
-                            String currentValue = (String) ppv.getPrimitiveValue();
-                            if (currentValue != null && currentValue.matches(regExedSearchCriteria))
-                            {
-                                isMatch = true;
-                            }
-                        }
-
-                        // TODO if there are no valid string attributes throw an error?
-                    }
-                }
-            }
-        }
-
-        return isMatch;
-    }
-
-
-    /**
-     * Take a literal string supplied in searchCriteria and augment it with extra content for the regex engine to process.
-     * 2 flags exactValue and ignoreCase are supplied that determine the nature of the regex expression that is created.
-     *
-     * @param searchCriteria text literal use as the basis of the match, if this empty then match everything ignoring the flags.
-     * @param exactValue the exactValue flag when set means to exactly match the string, otherwise it looks for strings starting with the searchCriteria.
-     * @param ignoreCase if set ignore the case on the match, if not set then the case must match.
-     * @return a regex expression created to match implement the supplied searchCriteria and flags.
-     */
-    protected String regexSearchCriteria(String searchCriteria, boolean exactValue, boolean ignoreCase)
-    {
-        if (searchCriteria == null || searchCriteria.trim().length() == 0)
-        {
-            // ignore the flags for an empty search criteria string - assume we want everything
-            searchCriteria = ".*";
-        }
-        else
-        {
-            // lose any leading and trailing blanks
-            searchCriteria = searchCriteria.trim();
-            if (exactValue)
-            {
-                searchCriteria = repositoryHelper.getExactMatchRegex(searchCriteria, ignoreCase);
-            }
-            else
-            {
-                searchCriteria = repositoryHelper.getStartsWithRegex(searchCriteria, ignoreCase);
-            }
-        }
-
-        return searchCriteria;
     }
 
 
@@ -9244,6 +9447,46 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.getEntityFromRepository(userId, requestedEntityGUID, requestedEntityGUIDParameterName, requestedEntityTypeName, requiredClassificationName, omittedClassificationName, forLineage, forDuplicateProcessing, serviceSupportedZones, null, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the entity for the supplied unique identifier (guid).  An exception is thrown if the entity does not exist.
+     *
+     * @param userId userId of the user making the request
+     * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
+     * @param requestedEntityGUIDParameterName name of the parameter supplying the GUID
+     * @param requestedEntityTypeName name of type of entity to retrieve
+     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
+     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return retrieved entity
+     * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public EntityDetail getEntityFromRepository(String       userId,
+                                                String       requestedEntityGUID,
+                                                String       requestedEntityGUIDParameterName,
+                                                String       requestedEntityTypeName,
+                                                String       requiredClassificationName,
+                                                String       omittedClassificationName,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                List<String> serviceSupportedZones,
+                                                Date         asOfTime,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(requestedEntityGUID, requestedEntityGUIDParameterName, methodName);
 
@@ -9253,24 +9496,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                           requestedEntityTypeName,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
+                                                                          asOfTime,
                                                                           effectiveTime,
                                                                           methodName);
 
         /*
          * This method validates that the entity is visible to the calling user.
          */
-        this.validateAnchorEntity(userId,
-                                  retrievedEntity.getGUID(),
-                                  requestedEntityTypeName,
-                                  retrievedEntity,
-                                  requestedEntityGUIDParameterName,
-                                  true,
-                                  false,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     requestedEntityTypeName,
+                                     retrievedEntity,
+                                     requestedEntityGUIDParameterName,
+                                     true,
+                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         boolean beanValid = true;
 
@@ -9447,6 +9690,64 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     }
 
 
+
+    /**
+     * Return the bean for the supplied unique identifier (guid).  An exception occurs if the bean GUID is not known.
+     *
+     * @param userId userId of the user making the request
+     * @param guid unique identifier of the entity to retrieve from the repository
+     * @param guidParameterName name of the parameter supplying the GUID
+     * @param entityTypeName name of type of entity to retrieve
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return new bean
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public B getBeanFromRepository(String       userId,
+                                   String       guid,
+                                   String       guidParameterName,
+                                   String       entityTypeName,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
+                                   List<String> serviceSupportedZones,
+                                   Date         asOfTime,
+                                   Date         effectiveTime,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           entityTypeName,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           serviceSupportedZones,
+                                                           asOfTime,
+                                                           effectiveTime,
+                                                           methodName);
+
+        if (entity != null)
+        {
+            return converter.getNewBean(beanClass, entity, methodName);
+        }
+
+        return null;
+    }
+
+
     /**
      * Return the bean for the supplied unique identifier (guid).  An exception occurs if the bean GUID is not known.
      *
@@ -9607,122 +9908,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Base on the parameters, load an appropriate repository helper iterator.
-     *
-     * @param userId calling user
-     * @param searchString search string (or null to just return entities of a specific type)
-     * @param resultTypeGUID type identifier of entities to return
-     * @param resultTypeName type name of entities to return
-     * @param specificMatchPropertyNames list of property names to look in (or null to search any string property)
-     * @param exactValueMatch should the value be treated as a literal or a RegEx?
-     * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
-     * @param sequencingPropertyName should the results be sequenced?
-     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
-     * @param limitResultsByClassification only return elements that have the requested classification(s)
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param queryPageSize maximum number of values to return
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return configured iterator
-     */
-    RepositoryIteratorForEntities getEntitySearchIterator(String               userId,
-                                                          String               searchString,
-                                                          String               resultTypeGUID,
-                                                          String               resultTypeName,
-                                                          List<String>         specificMatchPropertyNames,
-                                                          boolean              exactValueMatch,
-                                                          boolean              caseInsensitive,
-                                                          String               sequencingPropertyName,
-                                                          List<InstanceStatus> limitResultsByStatus,
-                                                          List<String>         limitResultsByClassification,
-                                                          boolean              forLineage,
-                                                          boolean              forDuplicateProcessing,
-                                                          int                  startFrom,
-                                                          int                  queryPageSize,
-                                                          Date                 effectiveTime,
-                                                          String               methodName) throws InvalidParameterException
-    {
-        RepositoryIteratorForEntities iterator;
-
-        if (searchString != null)
-        {
-            String searchValue = searchString;
-
-            if (exactValueMatch)
-            {
-                searchValue = repositoryHelper.getExactMatchRegex(searchString, caseInsensitive);
-            }
-
-            if ((specificMatchPropertyNames == null) || (specificMatchPropertyNames.isEmpty()))
-            {
-                /*
-                 * Search for value in any string property
-                 */
-                iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
-                                                                  invalidParameterHandler,
-                                                                  userId,
-                                                                  resultTypeGUID,
-                                                                  searchValue,
-                                                                  sequencingPropertyName,
-                                                                  limitResultsByStatus,
-                                                                  limitResultsByClassification,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  startFrom,
-                                                                  queryPageSize,
-                                                                  effectiveTime,
-                                                                  methodName);
-            }
-            else
-            {
-                /*
-                 * Search for value in specific properties
-                 */
-                iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
-                                                                  invalidParameterHandler,
-                                                                  userId,
-                                                                  resultTypeGUID,
-                                                                  this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
-                                                                  MatchCriteria.ANY,
-                                                                  sequencingPropertyName,
-                                                                  limitResultsByStatus,
-                                                                  limitResultsByClassification,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  startFrom,
-                                                                  queryPageSize,
-                                                                  effectiveTime,
-                                                                  methodName);
-            }
-        }
-        else
-        {
-            /*
-             * Get all values of a specific type
-             */
-            iterator = new RepositoryEntitiesIterator(repositoryHandler,
-                                                      invalidParameterHandler,
-                                                      userId,
-                                                      resultTypeGUID,
-                                                      resultTypeName,
-                                                      sequencingPropertyName,
-                                                      limitResultsByStatus,
-                                                      limitResultsByClassification,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      startFrom,
-                                                      queryPageSize,
-                                                      effectiveTime,
-                                                      methodName);
-        }
-
-        return iterator;
-    }
-
-
-    /**
      * Return the unique identifier of the entity that has the supplied unique name. An exception is thrown if
      * multiple entities are found with this name.
      *
@@ -9732,6 +9917,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -9742,18 +9933,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String getBeanGUIDByUniqueName(String       userId,
-                                          String       name,
-                                          String       nameParameterName,
-                                          String       namePropertyName,
-                                          String       resultTypeGUID,
-                                          String       resultTypeName,
-                                          boolean      forLineage,
-                                          boolean      forDuplicateProcessing,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public String getBeanGUIDByUniqueName(String               userId,
+                                          String               name,
+                                          String               nameParameterName,
+                                          String               namePropertyName,
+                                          String               resultTypeGUID,
+                                          String               resultTypeName,
+                                          List<InstanceStatus> limitResultsByStatus,
+                                          Date                 asOfTime,
+                                          SequencingOrder      sequencingOrder,
+                                          String               sequencingPropertyName,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          Date                 effectiveTime,
+                                          String               methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         return this.getBeanGUIDByUniqueName(userId,
                                             name,
@@ -9761,6 +9956,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                             namePropertyName,
                                             resultTypeGUID,
                                             resultTypeName,
+                                            limitResultsByStatus,
+                                            asOfTime,
+                                            sequencingOrder,
+                                            sequencingPropertyName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
@@ -9779,6 +9978,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
@@ -9790,44 +9995,50 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String getBeanGUIDByUniqueName(String       userId,
-                                          String       name,
-                                          String       nameParameterName,
-                                          String       namePropertyName,
-                                          String       resultTypeGUID,
-                                          String       resultTypeName,
-                                          boolean      forLineage,
-                                          boolean      forDuplicateProcessing,
-                                          List<String> serviceSupportedZones,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public String getBeanGUIDByUniqueName(String               userId,
+                                          String               name,
+                                          String               nameParameterName,
+                                          String               namePropertyName,
+                                          String               resultTypeGUID,
+                                          String               resultTypeName,
+                                          List<InstanceStatus> limitResultsByStatus,
+                                          Date                 asOfTime,
+                                          SequencingOrder      sequencingOrder,
+                                          String               sequencingPropertyName,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          List<String>         serviceSupportedZones,
+                                          Date                 effectiveTime,
+                                          String               methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        List<String> propertyNames = new ArrayList<>();
-        propertyNames.add(namePropertyName);
-
         int queryPageSize = invalidParameterHandler.getMaxPagingSize();
 
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         name,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         propertyNames,
-                                                                         true,
-                                                                         false,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          namePropertyName,
+                                                                                          name,
+                                                                                          methodName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   matchProperties,
+                                                                                   resultTypeGUID,
+                                                                                   limitResultsByStatus,
+                                                                                   null,
+                                                                                   asOfTime,
+                                                                                   sequencingOrder,
+                                                                                   sequencingPropertyName,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   0,
+                                                                                   queryPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
 
         /*
          * The loop is necessary because some entities returned may not be visible to the calling user.
@@ -9837,42 +10048,42 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         Set<String>   duplicateEntities = new HashSet<>();
         String        entityParameterName = "Entity from search of value " + name;
 
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))
+        if (retrievedEntities != null)
         {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
+            for (EntityDetail entity : retrievedEntities)
             {
-                duplicateEntities.add(entity.getGUID());
-
-                try
+                if (entity != null)
                 {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         true,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         serviceSupportedZones,
-                                         effectiveTime,
-                                         methodName);
+                    duplicateEntities.add(entity.getGUID());
 
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    if (guid == null)
+                    try
                     {
-                        guid = entity.getGUID();
+                        validateAnchorForEntity(userId,
+                                                resultTypeName,
+                                                entity,
+                                                entityParameterName,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                serviceSupportedZones,
+                                                effectiveTime,
+                                                methodName);
+
+                        /*
+                         * Valid entity to return since no exception occurred.
+                         */
+                        if (guid == null)
+                        {
+                            guid = entity.getGUID();
+                        }
                     }
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
+                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
+                    {
+                        /*
+                         * Skipping entity
+                         */
+                    }
                 }
             }
         }
@@ -9906,6 +10117,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -9916,18 +10133,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getBeanByUniqueName(String       userId,
-                                 String       name,
-                                 String       nameParameterName,
-                                 String       namePropertyName,
-                                 String       resultTypeGUID,
-                                 String       resultTypeName,
-                                 boolean      forLineage,
-                                 boolean      forDuplicateProcessing,
-                                 Date         effectiveTime,
-                                 String       methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public B getBeanByUniqueName(String               userId,
+                                 String               name,
+                                 String               nameParameterName,
+                                 String               namePropertyName,
+                                 String               resultTypeGUID,
+                                 String               resultTypeName,
+                                 List<InstanceStatus> limitResultsByStatus,
+                                 Date                 asOfTime,
+                                 SequencingOrder      sequencingOrder,
+                                 String               sequencingPropertyName,
+                                 boolean              forLineage,
+                                 boolean              forDuplicateProcessing,
+                                 Date                 effectiveTime,
+                                 String               methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
         return getBeanByUniqueName(userId,
                                    name,
@@ -9935,6 +10156,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                    namePropertyName,
                                    resultTypeGUID,
                                    resultTypeName,
+                                   limitResultsByStatus,
+                                   asOfTime,
+                                   sequencingOrder,
+                                   sequencingPropertyName,
                                    forLineage,
                                    forDuplicateProcessing,
                                    supportedZones,
@@ -9952,6 +10177,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param namePropertyName open metadata property name to match on
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
@@ -9963,44 +10194,49 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getBeanByUniqueName(String       userId,
-                                 String       name,
-                                 String       nameParameterName,
-                                 String       namePropertyName,
-                                 String       resultTypeGUID,
-                                 String       resultTypeName,
-                                 boolean      forLineage,
-                                 boolean      forDuplicateProcessing,
-                                 List<String> serviceSupportedZones,
-                                 Date         effectiveTime,
-                                 String       methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public B getBeanByUniqueName(String               userId,
+                                 String               name,
+                                 String               nameParameterName,
+                                 String               namePropertyName,
+                                 String               resultTypeGUID,
+                                 String               resultTypeName,
+                                 List<InstanceStatus> limitResultsByStatus,
+                                 Date                 asOfTime,
+                                 SequencingOrder      sequencingOrder,
+                                 String               sequencingPropertyName,
+                                 boolean              forLineage,
+                                 boolean              forDuplicateProcessing,
+                                 List<String>         serviceSupportedZones,
+                                 Date                 effectiveTime,
+                                 String               methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        List<String> propertyNames = new ArrayList<>();
-        propertyNames.add(namePropertyName);
-
         int queryPageSize = invalidParameterHandler.getMaxPagingSize();
 
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         name,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         propertyNames,
-                                                                         true,
-                                                                         false,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          namePropertyName,
+                                                                                          name,
+                                                                                          methodName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   matchProperties,
+                                                                                   resultTypeGUID,
+                                                                                   limitResultsByStatus,
+                                                                                   null,
+                                                                                   asOfTime,
+                                                                                   sequencingOrder,
+                                                                                   sequencingPropertyName,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   0,
+                                                                                   queryPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
 
         /*
          * The loop is necessary because some entities returned may not be visible to the calling user.
@@ -10010,42 +10246,44 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         Set<String>  duplicateEntities = new HashSet<>();
         String       entityParameterName = "Entity from search of value " + name;
 
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))
+        if (retrievedEntities != null)
         {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
+            for (EntityDetail entity : retrievedEntities)
             {
-                duplicateEntities.add(entity.getGUID());
 
-                try
+                if (entity != null)
                 {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         true,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         serviceSupportedZones,
-                                         effectiveTime,
-                                         methodName);
+                    duplicateEntities.add(entity.getGUID());
 
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    if (bean == null)
+                    try
                     {
-                        bean = converter.getNewBean(beanClass, entity, methodName);
+                        validateAnchorForEntity(userId,
+                                                resultTypeName,
+                                                entity,
+                                                entityParameterName,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                serviceSupportedZones,
+                                                effectiveTime,
+                                                methodName);
+
+                        /*
+                         * Valid entity to return since no exception occurred.
+                         */
+                        if (bean == null)
+                        {
+                            bean = converter.getNewBean(beanClass, entity, methodName);
+                        }
                     }
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
+                    catch (InvalidParameterException | PropertyServerException |
+                           UserNotAuthorizedException invisibleEntity)
+                    {
+                        /*
+                         * Skipping entity
+                         */
+                    }
                 }
             }
         }
@@ -10115,17 +10353,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  guid,
-                                  guidParameterName,
-                                  entityTypeName,
-                                  true,
-                                  true,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     guid,
+                                     guidParameterName,
+                                     entityTypeName,
+                                     true,
+                                     true,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntityDetailHistory(userId,
                                                                                guid,
@@ -10164,6 +10402,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -10175,19 +10419,23 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the bean definition.
      */
-    public  B getBeanByValue(String       userId,
-                             String       value,
-                             String       valueParameterName,
-                             String       resultTypeGUID,
-                             String       resultTypeName,
-                             List<String> specificMatchPropertyNames,
-                             boolean      forLineage,
-                             boolean      forDuplicateProcessing,
-                             List<String> serviceSupportedZones,
-                             Date         effectiveTime,
-                             String       methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public  B getBeanByValue(String               userId,
+                             String               value,
+                             String               valueParameterName,
+                             String               resultTypeGUID,
+                             String               resultTypeName,
+                             List<String>         specificMatchPropertyNames,
+                             List<InstanceStatus> limitResultsByStatus,
+                             Date                 asOfTime,
+                             SequencingOrder      sequencingOrder,
+                             String               sequencingPropertyName,
+                             boolean              forLineage,
+                             boolean              forDuplicateProcessing,
+                             List<String>         serviceSupportedZones,
+                             Date                 effectiveTime,
+                             String               methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              value,
@@ -10199,10 +10447,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                              false,
                                                              null,
                                                              null,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingOrder,
+                                                             sequencingPropertyName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              serviceSupportedZones,
-                                                             null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              effectiveTime,
@@ -10238,9 +10489,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param searchStringParameterName name of parameter providing search string
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10251,20 +10507,23 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> findBeans(String       userId,
-                             String       searchString,
-                             String       searchStringParameterName,
-                             String       resultTypeGUID,
-                             String       resultTypeName,
-                             String       sequencingPropertyName,
-                             int          startFrom,
-                             int          pageSize,
-                             boolean      forLineage,
-                             boolean      forDuplicateProcessing,
-                             Date         effectiveTime,
-                             String       methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public List<B> findBeans(String               userId,
+                             String               searchString,
+                             String               searchStringParameterName,
+                             String               resultTypeGUID,
+                             String               resultTypeName,
+                             int                  startFrom,
+                             int                  pageSize,
+                             List<InstanceStatus> limitResultsByStatus,
+                             Date                 asOfTime,
+                             SequencingOrder      sequencingOrder,
+                             String               sequencingPropertyName,
+                             boolean              forLineage,
+                             boolean              forDuplicateProcessing,
+                             Date                 effectiveTime,
+                             String               methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return this.getBeansByValue(userId,
                                     searchString,
@@ -10275,10 +10534,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                     false,
                                     null,
                                     null,
+                                    limitResultsByStatus,
+                                    asOfTime,
+                                    sequencingOrder,
+                                    sequencingPropertyName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -10295,9 +10557,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param serviceSupportedZones list of supported zones for this service.
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
      * @param forLineage this request is for lineage so ignore Memento classifications
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10308,21 +10575,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> findBeans(String       userId,
-                             String       searchString,
-                             String       searchStringParameterName,
-                             String       resultTypeGUID,
-                             String       resultTypeName,
-                             boolean      forLineage,
-                             boolean      forDuplicateProcessing,
-                             List<String> serviceSupportedZones,
-                             String       sequencingPropertyName,
-                             int          startFrom,
-                             int          pageSize,
-                             Date         effectiveTime,
-                             String       methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public List<B> findBeans(String               userId,
+                             String               searchString,
+                             String               searchStringParameterName,
+                             String               resultTypeGUID,
+                             String               resultTypeName,
+                             List<InstanceStatus> limitResultsByStatus,
+                             Date                 asOfTime,
+                             SequencingOrder      sequencingOrder,
+                             String               sequencingPropertyName,
+                             boolean              forLineage,
+                             boolean              forDuplicateProcessing,
+                             List<String>         serviceSupportedZones,
+                             int                  startFrom,
+                             int                  pageSize,
+                             Date                 effectiveTime,
+                             String               methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return this.getBeansByValue(userId,
                                     searchString,
@@ -10333,10 +10603,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                     false,
                                     null,
                                     null,
+                                    limitResultsByStatus,
+                                    asOfTime,
+                                    sequencingOrder,
+                                    sequencingPropertyName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -10526,8 +10799,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String entityGUIDParameterName = "foundEntity.GUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
@@ -10585,76 +10856,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
         }
 
-        /*
-         * Validate that the anchor guid means that the entity is visible to caller.
-         */
-        RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
-                                                                                     invalidParameterHandler,
-                                                                                     userId,
-                                                                                     typeGUID,
-                                                                                     subTypeGUIDs,
-                                                                                     searchProperties,
-                                                                                     limitResultsByStatus,
-                                                                                     searchClassifications,
-                                                                                     asOfTime,
-                                                                                     sequencingProperty,
-                                                                                     sequencingOrder,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing,
-                                                                                     startingFrom,
-                                                                                     queryPageSize,
-                                                                                     effectiveTime,
-                                                                                     methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.findEntities(userId,
+                                                                              typeGUID,
+                                                                              subTypeGUIDs,
+                                                                              searchProperties,
+                                                                              limitResultsByStatus,
+                                                                              searchClassifications,
+                                                                              asOfTime,
+                                                                              sequencingProperty,
+                                                                              sequencingOrder,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              startingFrom,
+                                                                              queryPageSize,
+                                                                              effectiveTime,
+                                                                              methodName);
 
-        List<EntityDetail> results              = new ArrayList<>();
-        List<String>       validatedAnchorGUIDs = new ArrayList<>();
-
-        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                try
-                {
-                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                    if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  entity.getType().getTypeDefName(),
-                                                  entity,
-                                                  entityGUIDParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                        {
-                            validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
-                        }
-                    }
-
-                    results.add(entity);
-                }
-                catch (Exception error)
-                {
-                    // Skip entity
-                }
-            }
-        }
-
-        if (! results.isEmpty())
-        {
-            return results;
-        }
-
-        return null;
+        return this.getValidatedEntities(userId,
+                                         retrievedEntities,
+                                         null,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         serviceSupportedZones,
+                                         effectiveTime,
+                                         methodName);
     }
 
 
@@ -10671,9 +10896,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10684,24 +10914,27 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByValue(String       userId,
-                                   String       value,
-                                   String       valueParameterName,
-                                   String       resultTypeGUID,
-                                   String       resultTypeName,
-                                   List<String> specificMatchPropertyNames,
-                                   boolean      exactValueMatch,
-                                   String       requiredClassificationName,
-                                   String       omittedClassificationName,
-                                   boolean      forLineage,
-                                   boolean      forDuplicateProcessing,
-                                   String       sequencingPropertyName,
-                                   int          startFrom,
-                                   int          pageSize,
-                                   Date         effectiveTime,
-                                   String       methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public List<B> getBeansByValue(String               userId,
+                                   String               value,
+                                   String               valueParameterName,
+                                   String               resultTypeGUID,
+                                   String               resultTypeName,
+                                   List<String>         specificMatchPropertyNames,
+                                   boolean              exactValueMatch,
+                                   String               requiredClassificationName,
+                                   String               omittedClassificationName,
+                                   List<InstanceStatus> limitResultsByStatus,
+                                   Date                 asOfTime,
+                                   SequencingOrder      sequencingOrder,
+                                   String               sequencingPropertyName,
+                                   boolean              forLineage,
+                                   boolean              forDuplicateProcessing,
+                                   int                  startFrom,
+                                   int                  pageSize,
+                                   Date                 effectiveTime,
+                                   String               methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         return this.getBeansByValue(userId,
                                     value,
@@ -10712,10 +10945,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                     exactValueMatch,
                                     requiredClassificationName,
                                     omittedClassificationName,
+                                    limitResultsByStatus,
+                                    asOfTime,
+                                    sequencingOrder,
+                                    sequencingPropertyName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    sequencingPropertyName,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -10734,10 +10970,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param propertyName property  to look in - if null or empty list then all string properties are checked.
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10748,23 +10989,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByIntValue(String       userId,
-                                      int          value,
-                                      String       resultTypeGUID,
-                                      String       resultTypeName,
-                                      String       propertyName,
-                                      String       requiredClassificationName,
-                                      String       omittedClassificationName,
-                                      boolean      forLineage,
-                                      boolean      forDuplicateProcessing,
-                                      List<String> serviceSupportedZones,
-                                      String       sequencingPropertyName,
-                                      int          startFrom,
-                                      int          pageSize,
-                                      Date         effectiveTime,
-                                      String       methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    public List<B> getBeansByIntValue(String               userId,
+                                      int                  value,
+                                      String               resultTypeGUID,
+                                      String               resultTypeName,
+                                      String               propertyName,
+                                      String               requiredClassificationName,
+                                      String               omittedClassificationName,
+                                      List<InstanceStatus> limitResultsByStatus,
+                                      Date                 asOfTime,
+                                      SequencingOrder      sequencingOrder,
+                                      String               sequencingPropertyName,
+                                      boolean              forLineage,
+                                      boolean              forDuplicateProcessing,
+                                      List<String>         serviceSupportedZones,
+                                      int                  startFrom,
+                                      int                  pageSize,
+                                      Date                 effectiveTime,
+                                      String               methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         List<EntityDetail> entities = getEntitiesByIntValue(userId,
                                                             value,
@@ -10773,10 +11017,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                             propertyName,
                                                             requiredClassificationName,
                                                             omittedClassificationName,
+                                                            limitResultsByStatus,
+                                                            asOfTime,
+                                                            sequencingOrder,
+                                                            sequencingPropertyName,
                                                             forLineage,
                                                             forDuplicateProcessing,
                                                             serviceSupportedZones,
-                                                            sequencingPropertyName,
                                                             startFrom,
                                                             pageSize,
                                                             effectiveTime,
@@ -10819,10 +11066,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10833,25 +11085,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByValue(String       userId,
-                                   String       value,
-                                   String       valueParameterName,
-                                   String       resultTypeGUID,
-                                   String       resultTypeName,
-                                   List<String> specificMatchPropertyNames,
-                                   boolean      exactValueMatch,
-                                   String       requiredClassificationName,
-                                   String       omittedClassificationName,
-                                   boolean      forLineage,
-                                   boolean      forDuplicateProcessing,
-                                   List<String> serviceSupportedZones,
-                                   String       sequencingPropertyName,
-                                   int          startFrom,
-                                   int          pageSize,
-                                   Date         effectiveTime,
-                                   String       methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public List<B> getBeansByValue(String               userId,
+                                   String               value,
+                                   String               valueParameterName,
+                                   String               resultTypeGUID,
+                                   String               resultTypeName,
+                                   List<String>         specificMatchPropertyNames,
+                                   boolean              exactValueMatch,
+                                   String               requiredClassificationName,
+                                   String               omittedClassificationName,
+                                   List<InstanceStatus> limitResultsByStatus,
+                                   Date                 asOfTime,
+                                   SequencingOrder      sequencingOrder,
+                                   String               sequencingPropertyName,
+                                   boolean              forLineage,
+                                   boolean              forDuplicateProcessing,
+                                   List<String>         serviceSupportedZones,
+                                   int                  startFrom,
+                                   int                  pageSize,
+                                   Date                 effectiveTime,
+                                   String               methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         List<EntityDetail> entities = getEntitiesByValue(userId,
                                                          value,
@@ -10863,10 +11118,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                          false,
                                                          requiredClassificationName,
                                                          omittedClassificationName,
+                                                         limitResultsByStatus,
+                                                         asOfTime,
+                                                         sequencingOrder,
+                                                         sequencingPropertyName,
                                                          forLineage,
                                                          forDuplicateProcessing,
                                                          serviceSupportedZones,
-                                                         sequencingPropertyName,
                                                          startFrom,
                                                          pageSize,
                                                          effectiveTime,
@@ -10903,9 +11161,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10916,20 +11179,36 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByType(String       userId,
-                                                String       resultTypeGUID,
-                                                String       resultTypeName,
-                                                String       sequencingPropertyName,
-                                                boolean      forLineage,
-                                                boolean      forDuplicateProcessing,
-                                                int          startFrom,
-                                                int          pageSize,
-                                                Date         effectiveTime,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<EntityDetail> getEntitiesByType(String               userId,
+                                                String               resultTypeGUID,
+                                                String               resultTypeName,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                Date                 asOfTime,
+                                                SequencingOrder      sequencingOrder,
+                                                String               sequencingPropertyName,
+                                                int                  startFrom,
+                                                int                  pageSize,
+                                                Date                 effectiveTime,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
-        return getEntitiesByType(userId, resultTypeGUID, resultTypeName, sequencingPropertyName, forLineage, forDuplicateProcessing, supportedZones, startFrom, pageSize, effectiveTime, methodName);
+        return getEntitiesByType(userId,
+                                 resultTypeGUID,
+                                 resultTypeName,
+                                 limitResultsByStatus,
+                                 asOfTime,
+                                 sequencingOrder,
+                                 sequencingPropertyName,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 supportedZones,
+                                 startFrom,
+                                 pageSize,
+                                 effectiveTime,
+                                 methodName);
     }
 
 
@@ -10940,7 +11219,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param forLineage the query is to support lineage retrieval
@@ -10953,125 +11237,50 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByType(String       userId,
-                                                String       resultTypeGUID,
-                                                String       resultTypeName,
-                                                String       sequencingPropertyName,
-                                                boolean      forLineage,
-                                                boolean      forDuplicateProcessing,
-                                                List<String> serviceSupportedZones,
-                                                int          startFrom,
-                                                int          pageSize,
-                                                Date         effectiveTime,
-                                                String       methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<EntityDetail> getEntitiesByType(String               userId,
+                                                String               resultTypeGUID,
+                                                String               resultTypeName,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                Date                 asOfTime,
+                                                SequencingOrder      sequencingOrder,
+                                                String               sequencingPropertyName,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                List<String>         serviceSupportedZones,
+                                                int                  startFrom,
+                                                int                  pageSize,
+                                                Date                 effectiveTime,
+                                                String               methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         null,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         null,
-                                                                         false,
-                                                                         false,
-                                                                         sequencingPropertyName,
-                                                                         null,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesForType(userId,
+                                                                                    resultTypeGUID,
+                                                                                    resultTypeName,
+                                                                                    limitResultsByStatus,
+                                                                                    null,
+                                                                                    asOfTime,
+                                                                                    sequencingOrder,
+                                                                                    sequencingPropertyName,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    startFrom,
+                                                                                    queryPageSize,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
-
-        /*
-         * The loop is necessary because some entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<EntityDetail>  results = new ArrayList<>();
-        String entityParameterName = "Entity of type" + resultTypeName;
-        int skippedValues = 0;
-
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                try
-                {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         false,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         serviceSupportedZones,
-                                         effectiveTime,
-                                         methodName);
-
-                    boolean beanArchived = false;
-
-                    try
-                    {
-                        /*
-                         * The Memento classification means the entity is archived and should only be returned for lineage requests.
-                         * This method is not to be used for lineage requests.
-                         */
-                        if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
-                        {
-                            beanArchived = true;
-                        }
-                    }
-                    catch (ClassificationErrorException error)
-                    {
-                        /*
-                         * Since this classification is not supported, it can not be attached to the entity.
-                         */
-                    }
-
-                    if (! beanArchived)
-                    {
-                        /*
-                         * Valid entity to return since no exception occurred and the entity has not been archived.
-                         */
-                        if (skippedValues < startFrom)
-                        {
-                            skippedValues ++;
-                        }
-                        else
-                        {
-                            results.add(entity);
-                        }
-                    }
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return this.validateAnchorForEntities(userId,
+                                              retrievedEntities,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              serviceSupportedZones,
+                                              effectiveTime,
+                                              methodName);
     }
-
 
 
     /**
@@ -11084,7 +11293,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeName unique value of the type that the results should match with
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -11097,24 +11311,44 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> findEntities(String       userId,
-                                           String       searchString,
-                                           String       searchStringParameterName,
-                                           String       resultTypeGUID,
-                                           String       resultTypeName,
-                                           String       requiredClassificationName,
-                                           String       omittedClassificationName,
-                                           String       sequencingPropertyName,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public List<EntityDetail> findEntities(String               userId,
+                                           String               searchString,
+                                           String               searchStringParameterName,
+                                           String               resultTypeGUID,
+                                           String               resultTypeName,
+                                           String               requiredClassificationName,
+                                           String               omittedClassificationName,
+                                           int                  startFrom,
+                                           int                  pageSize,
+                                           List<InstanceStatus> limitResultsByStatus,
+                                           Date                 asOfTime,
+                                           SequencingOrder      sequencingOrder,
+                                           String               sequencingPropertyName,
+                                           boolean              forLineage,
+                                           boolean              forDuplicateProcessing,
+                                           Date                 effectiveTime,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
-        return findEntities(userId, searchString, searchStringParameterName, resultTypeGUID, resultTypeName, requiredClassificationName, omittedClassificationName, sequencingPropertyName, startFrom, pageSize, forLineage, forDuplicateProcessing, supportedZones, effectiveTime, methodName);
+        return findEntities(userId,
+                            searchString,
+                            searchStringParameterName,
+                            resultTypeGUID,
+                            resultTypeName,
+                            requiredClassificationName,
+                            omittedClassificationName,
+                            startFrom,
+                            pageSize,
+                            limitResultsByStatus,
+                            asOfTime,
+                            sequencingOrder,
+                            sequencingPropertyName,
+                            forLineage,
+                            forDuplicateProcessing,
+                            supportedZones,
+                            effectiveTime,
+                            methodName);
     }
 
 
@@ -11128,7 +11362,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeName unique value of the type that the results should match with
      * @param requiredClassificationName  String the name of the classification that must be on the entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param forLineage return elements marked with the Memento classification?
@@ -11142,23 +11381,26 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> findEntities(String       userId,
-                                           String       searchString,
-                                           String       searchStringParameterName,
-                                           String       resultTypeGUID,
-                                           String       resultTypeName,
-                                           String       requiredClassificationName,
-                                           String       omittedClassificationName,
-                                           String       sequencingPropertyName,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           List<String> serviceSupportedZones,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public List<EntityDetail> findEntities(String               userId,
+                                           String               searchString,
+                                           String               searchStringParameterName,
+                                           String               resultTypeGUID,
+                                           String               resultTypeName,
+                                           String               requiredClassificationName,
+                                           String               omittedClassificationName,
+                                           int                  startFrom,
+                                           int                  pageSize,
+                                           List<InstanceStatus> limitResultsByStatus,
+                                           Date                 asOfTime,
+                                           SequencingOrder      sequencingOrder,
+                                           String               sequencingPropertyName,
+                                           boolean              forLineage,
+                                           boolean              forDuplicateProcessing,
+                                           List<String>         serviceSupportedZones,
+                                           Date                 effectiveTime,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
@@ -11172,74 +11414,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                        false,
                                        requiredClassificationName,
                                        omittedClassificationName,
+                                       limitResultsByStatus,
+                                       asOfTime,
+                                       sequencingOrder,
+                                       sequencingPropertyName,
                                        forLineage,
                                        forDuplicateProcessing,
                                        serviceSupportedZones,
-                                       sequencingPropertyName,
-                                       startFrom,
-                                       pageSize,
-                                       effectiveTime,
-                                       methodName);
-    }
-
-
-    /**
-     * Return the list of entities of the requested type that match the supplied value.
-     *
-     * @param userId the calling user
-     * @param value value to search
-     * @param valueParameterName parameter providing value
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultTypeName unique value of the type that the results should match with
-     * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
-     * @param exactValueMatch indicates whether the value must match the whole property value in a matching result, or whether it is a
-     *                        RegEx partial match
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
-     * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
-     * @param forLineage             the query is to support lineage retrieval
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<EntityDetail> getEntitiesByValue(String       userId,
-                                                 String       value,
-                                                 String       valueParameterName,
-                                                 String       resultTypeGUID,
-                                                 String       resultTypeName,
-                                                 List<String> specificMatchPropertyNames,
-                                                 boolean      exactValueMatch,
-                                                 String       requiredClassificationName,
-                                                 String       omittedClassificationName,
-                                                 boolean      forLineage,
-                                                 boolean      forDuplicateProcessing,
-                                                 int          startFrom,
-                                                 int          pageSize,
-                                                 Date         effectiveTime,
-                                                 String       methodName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
-    {
-        return this.getEntitiesByValue(userId,
-                                       value,
-                                       valueParameterName,
-                                       resultTypeGUID,
-                                       resultTypeName,
-                                       specificMatchPropertyNames,
-                                       exactValueMatch,
-                                       false,
-                                       requiredClassificationName,
-                                       omittedClassificationName,
-                                       forLineage,
-                                       forDuplicateProcessing,
-                                       supportedZones,
-                                       null,
                                        startFrom,
                                        pageSize,
                                        effectiveTime,
@@ -11257,10 +11438,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param propertyName  property name to look in.
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -11271,27 +11457,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByIntValue(String       userId,
-                                                    int          value,
-                                                    String       resultTypeGUID,
-                                                    String       resultTypeName,
-                                                    String       propertyName,
-                                                    String       requiredClassificationName,
-                                                    String       omittedClassificationName,
-                                                    boolean      forLineage,
-                                                    boolean      forDuplicateProcessing,
-                                                    List<String> serviceSupportedZones,
-                                                    String       sequencingPropertyName,
-                                                    int          startFrom,
-                                                    int          pageSize,
-                                                    Date         effectiveTime,
-                                                    String       methodName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public List<EntityDetail> getEntitiesByIntValue(String               userId,
+                                                    int                  value,
+                                                    String               resultTypeGUID,
+                                                    String               resultTypeName,
+                                                    String               propertyName,
+                                                    String               requiredClassificationName,
+                                                    String               omittedClassificationName,
+                                                    List<InstanceStatus> limitResultsByStatus,
+                                                    Date                 asOfTime,
+                                                    SequencingOrder      sequencingOrder,
+                                                    String               sequencingPropertyName,
+                                                    boolean              forLineage,
+                                                    boolean              forDuplicateProcessing,
+                                                    List<String>         serviceSupportedZones,
+                                                    int                  startFrom,
+                                                    int                  pageSize,
+                                                    Date                 effectiveTime,
+                                                    String               methodName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String propertyParameterName = "propertyName";
-
-        String entityParameterName = "Entity from search of value " + value;
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(propertyName, propertyParameterName, methodName);
@@ -11307,34 +11494,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             limitResultsByClassification.add(requiredClassificationName);
         }
 
-        RepositoryIteratorForEntities iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
-                                                                                        invalidParameterHandler,
-                                                                                        userId,
-                                                                                        resultTypeGUID,
-                                                                                        repositoryHelper.addIntPropertyToInstance(serviceName, null, propertyName, value, methodName),
-                                                                                        MatchCriteria.ANY,
-                                                                                        sequencingPropertyName,
-                                                                                        null,
-                                                                                        limitResultsByClassification,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing,
-                                                                                        0,
-                                                                                        queryPageSize,
-                                                                                        effectiveTime,
-                                                                                        methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   repositoryHelper.addIntPropertyToInstance(serviceName, null, propertyName, value, methodName),
+                                                                                   resultTypeGUID,
+                                                                                   limitResultsByStatus,
+                                                                                   limitResultsByClassification,
+                                                                                   asOfTime,
+                                                                                   sequencingOrder,
+                                                                                   sequencingPropertyName,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   startFrom,
+                                                                                   queryPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
 
-        return getEntitiesByValue(userId,
-                                  iterator,
-                                  entityParameterName,
-                                  resultTypeName,
-                                  omittedClassificationName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  startFrom,
-                                  queryPageSize,
-                                  effectiveTime,
-                                  methodName);
+        return getValidatedEntities(userId,
+                                    retrievedEntities,
+                                    omittedClassificationName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -11351,9 +11533,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -11364,24 +11551,27 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByValue(String       userId,
-                                                 String       value,
-                                                 String       valueParameterName,
-                                                 String       resultTypeGUID,
-                                                 String       resultTypeName,
-                                                 List<String> specificMatchPropertyNames,
-                                                 boolean      exactValueMatch,
-                                                 String       requiredClassificationName,
-                                                 String       omittedClassificationName,
-                                                 boolean      forLineage,
-                                                 boolean      forDuplicateProcessing,
-                                                 String       sequencingPropertyName,
-                                                 int          startFrom,
-                                                 int          pageSize,
-                                                 Date         effectiveTime,
-                                                 String       methodName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public List<EntityDetail> getEntitiesByValue(String               userId,
+                                                 String               value,
+                                                 String               valueParameterName,
+                                                 String               resultTypeGUID,
+                                                 String               resultTypeName,
+                                                 List<String>         specificMatchPropertyNames,
+                                                 boolean              exactValueMatch,
+                                                 String               requiredClassificationName,
+                                                 String               omittedClassificationName,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 Date                 asOfTime,
+                                                 SequencingOrder      sequencingOrder,
+                                                 String               sequencingPropertyName,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 int                  startFrom,
+                                                 int                  pageSize,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         return this.getEntitiesByValue(userId,
                                        value,
@@ -11393,15 +11583,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                        false,
                                        requiredClassificationName,
                                        omittedClassificationName,
+                                       limitResultsByStatus,
+                                       asOfTime,
+                                       sequencingOrder,
+                                       sequencingPropertyName,
                                        forLineage,
                                        forDuplicateProcessing,
                                        supportedZones,
-                                       sequencingPropertyName,
                                        startFrom,
                                        pageSize,
                                        effectiveTime,
                                        methodName);
     }
+
 
     /**
      * Return the list of entities of the requested type that match the supplied value.
@@ -11417,10 +11611,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -11431,26 +11630,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByValue(String       userId,
-                                                 String       value,
-                                                 String       valueParameterName,
-                                                 String       resultTypeGUID,
-                                                 String       resultTypeName,
-                                                 List<String> specificMatchPropertyNames,
-                                                 boolean      exactValueMatch,
-                                                 boolean      caseInsensitive,
-                                                 String       requiredClassificationName,
-                                                 String       omittedClassificationName,
-                                                 boolean      forLineage,
-                                                 boolean      forDuplicateProcessing,
-                                                 List<String> serviceSupportedZones,
-                                                 String       sequencingPropertyName,
-                                                 int          startFrom,
-                                                 int          pageSize,
-                                                 Date         effectiveTime,
-                                                 String       methodName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    public List<EntityDetail> getEntitiesByValue(String               userId,
+                                                 String               value,
+                                                 String               valueParameterName,
+                                                 String               resultTypeGUID,
+                                                 String               resultTypeName,
+                                                 List<String>         specificMatchPropertyNames,
+                                                 boolean              exactValueMatch,
+                                                 boolean              caseInsensitive,
+                                                 String               requiredClassificationName,
+                                                 String               omittedClassificationName,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 Date                 asOfTime,
+                                                 SequencingOrder      sequencingOrder,
+                                                 String               sequencingPropertyName,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 List<String>         serviceSupportedZones,
+                                                 int                  startFrom,
+                                                 int                  pageSize,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(value, valueParameterName, methodName);
@@ -11466,41 +11668,58 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             limitResultsByClassifications.add(requiredClassificationName);
         }
 
-        /*
-         * Notice that the startFrom is 0 - it allows the filtering process to skip over the right number of
-         * elements.
-         */
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         value,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         specificMatchPropertyNames,
-                                                                         exactValueMatch,
-                                                                         caseInsensitive,
-                                                                         sequencingPropertyName,
-                                                                         null,
-                                                                         limitResultsByClassifications,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
+        String searchValue = value;
 
-        String entityParameterName = "Entity from search of value " + value;
+        if (exactValueMatch)
+        {
+            searchValue = repositoryHelper.getExactMatchRegex(value, caseInsensitive);
+        }
 
-        return getEntitiesByValue(userId,
-                                  iterator,
-                                  entityParameterName,
-                                  resultTypeName,
-                                  omittedClassificationName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  startFrom,
-                                  queryPageSize,
-                                  effectiveTime,
-                                  methodName);
+        List<EntityDetail> retrievedEntities;
+
+        if ((specificMatchPropertyNames == null) || (specificMatchPropertyNames.isEmpty()))
+        {
+            retrievedEntities = repositoryHandler.getEntitiesByValue(userId,
+                                                                     searchValue,
+                                                                     resultTypeGUID,
+                                                                     limitResultsByStatus,
+                                                                     limitResultsByClassifications,
+                                                                     asOfTime,
+                                                                     sequencingOrder,
+                                                                     sequencingPropertyName,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     startFrom,
+                                                                     queryPageSize,
+                                                                     effectiveTime,
+                                                                     methodName);
+        }
+        else
+        {
+            retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                    this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
+                                                                    resultTypeGUID,
+                                                                    limitResultsByStatus,
+                                                                    limitResultsByClassifications,
+                                                                    asOfTime,
+                                                                    sequencingOrder,
+                                                                    sequencingPropertyName,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    startFrom,
+                                                                    queryPageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
+        }
+
+        return getValidatedEntities(userId,
+                                    retrievedEntities,
+                                    omittedClassificationName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    serviceSupportedZones,
+                                    effectiveTime,
+                                    methodName);
     }
 
 
@@ -11508,15 +11727,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * Return the list of entities of the requested type that match the supplied value.
      *
      * @param userId the calling user
-     * @param iterator mechanism for search
-     * @param entityParameterName parameter description
-     * @param resultTypeName unique value of the type that the results should match with
+     * @param retrievedEntities entities from the repository
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage                   boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param queryPageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -11525,39 +11740,37 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<EntityDetail> getEntitiesByValue(String                        userId,
-                                                 RepositoryIteratorForEntities iterator,
-                                                 String                        entityParameterName,
-                                                 String                        resultTypeName,
-                                                 String                        omittedClassificationName,
-                                                 boolean                       forLineage,
-                                                 boolean                       forDuplicateProcessing,
-                                                 List<String>                  serviceSupportedZones,
-                                                 int                           startFrom,
-                                                 int                           queryPageSize,
-                                                 Date                          effectiveTime,
-                                                 String                        methodName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public List<EntityDetail> getValidatedEntities(String             userId,
+                                                   List<EntityDetail> retrievedEntities,
+                                                   String             omittedClassificationName,
+                                                   boolean            forLineage,
+                                                   boolean            forDuplicateProcessing,
+                                                   List<String>       serviceSupportedZones,
+                                                   Date               effectiveTime,
+                                                   String             methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
-        /*
-         * The loop is necessary because some entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<EntityDetail> results = new ArrayList<>();
-        List<String>       validatedAnchorEntities = new ArrayList<>();
-        int                skippedValues = 0;
-
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        List<EntityDetail> validatedEntities = this.validateAnchorForEntities(userId,
+                                                                              retrievedEntities,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              serviceSupportedZones,
+                                                                              effectiveTime,
+                                                                              methodName);
+        if (validatedEntities != null)
         {
-            EntityDetail entity = iterator.getNext();
+            /*
+             * The loop is necessary because some entities returned may not be visible to the calling user.
+             */
+            List<EntityDetail> results = new ArrayList<>();
 
-            if (entity != null)
+            for (EntityDetail entity : validatedEntities)
             {
-                boolean beanValid = true;
-
-                try
+                if (entity != null)
                 {
+                    boolean beanValid = true;
+
                     if (omittedClassificationName != null)
                     {
                         try
@@ -11573,63 +11786,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                         }
                     }
 
-                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                    if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorEntities.contains(anchorIdentifiers.anchorGUID)))
-                    {
-                        validateAnchorEntity(userId,
-                                             entity.getGUID(),
-                                             resultTypeName,
-                                             entity,
-                                             entityParameterName,
-                                             false,
-                                             false,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             serviceSupportedZones,
-                                             effectiveTime,
-                                             methodName);
-
-                        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                        {
-                            validatedAnchorEntities.add(anchorIdentifiers.anchorGUID);
-                        }
-                    }
-
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
-                    beanValid = false;
-                }
-
-                if (beanValid)
-                {
-                    /*
-                     * Ignore entities until it reaches the start point
-                     */
-                    if (skippedValues < startFrom)
-                    {
-                        skippedValues ++;
-                    }
-                    else
+                    if (beanValid)
                     {
                         results.add(entity);
                     }
                 }
             }
-        }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
             return results;
         }
+
+        return null;
     }
 
 
@@ -11646,9 +11813,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      *                        RegEx partial match
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage boolean indicating whether the entity is being retrieved for a lineage request or not.
      * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
@@ -11660,25 +11832,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getEntityGUIDsByValue(String       userId,
-                                              String       value,
-                                              String       valueParameterName,
-                                              String       resultTypeGUID,
-                                              String       resultTypeName,
-                                              List<String> specificMatchPropertyNames,
-                                              boolean      exactValueMatch,
-                                              String       requiredClassificationName,
-                                              String       omittedClassificationName,
-                                              boolean      forLineage,
-                                              boolean      forDuplicateProcessing,
-                                              List<String> serviceSupportedZones,
-                                              String       sequencingPropertyName,
-                                              int          startFrom,
-                                              int          pageSize,
-                                              Date         effectiveTime,
-                                              String       methodName) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    public List<String> getEntityGUIDsByValue(String               userId,
+                                              String               value,
+                                              String               valueParameterName,
+                                              String               resultTypeGUID,
+                                              String               resultTypeName,
+                                              List<String>         specificMatchPropertyNames,
+                                              boolean              exactValueMatch,
+                                              String               requiredClassificationName,
+                                              String               omittedClassificationName,
+                                              List<InstanceStatus> limitResultsByStatus,
+                                              Date                 asOfTime,
+                                              SequencingOrder      sequencingOrder,
+                                              String               sequencingPropertyName,
+                                              boolean              forLineage,
+                                              boolean              forDuplicateProcessing,
+                                              List<String>         serviceSupportedZones,
+                                              int                  startFrom,
+                                              int                  pageSize,
+                                              Date                 effectiveTime,
+                                              String               methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         List<EntityDetail> entities = this.getEntitiesByValue(userId,
                                                               value,
@@ -11690,10 +11865,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                               false,
                                                               requiredClassificationName,
                                                               omittedClassificationName,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingOrder,
+                                                              sequencingPropertyName,
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               serviceSupportedZones,
-                                                              sequencingPropertyName,
                                                               startFrom,
                                                               pageSize,
                                                               effectiveTime,
@@ -11720,6 +11898,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         return null;
     }
 
+
     /**
      * Return the entity that matches the requested value.
      *
@@ -11729,6 +11908,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -11739,18 +11924,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public  EntityDetail getEntityByValue(String       userId,
-                                          String       value,
-                                          String       valueParameterName,
-                                          String       resultTypeGUID,
-                                          String       resultTypeName,
-                                          List<String> specificMatchPropertyNames,
-                                          boolean      forLineage,
-                                          boolean      forDuplicateProcessing,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public  EntityDetail getEntityByValue(String               userId,
+                                          String               value,
+                                          String               valueParameterName,
+                                          String               resultTypeGUID,
+                                          String               resultTypeName,
+                                          List<String>         specificMatchPropertyNames,
+                                          List<InstanceStatus> limitResultsByStatus,
+                                          Date                 asOfTime,
+                                          SequencingOrder      sequencingOrder,
+                                          String               sequencingPropertyName,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          Date                 effectiveTime,
+                                          String               methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         return this.getEntityByValue(userId,
                                      value,
@@ -11758,6 +11947,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                      resultTypeGUID,
                                      resultTypeName,
                                      specificMatchPropertyNames,
+                                     limitResultsByStatus,
+                                     asOfTime,
+                                     sequencingOrder,
+                                     sequencingPropertyName,
                                      forLineage,
                                      forDuplicateProcessing,
                                      supportedZones,
@@ -11775,6 +11968,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -11786,19 +11985,24 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public  EntityDetail getEntityByValue(String       userId,
-                                          String       value,
-                                          String       valueParameterName,
-                                          String       resultTypeGUID,
-                                          String       resultTypeName,
-                                          List<String> specificMatchPropertyNames,
-                                          boolean      forLineage,
-                                          boolean      forDuplicateProcessing,
-                                          List<String> serviceSupportedZones,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public  EntityDetail getEntityByValue(String               userId,
+                                          String               value,
+                                          String               valueParameterName,
+                                          String               resultTypeGUID,
+                                          String               resultTypeName,
+                                          List<String>         specificMatchPropertyNames,
+                                          List<InstanceStatus> limitResultsByStatus,
+                                          Date                 asOfTime,
+                                          SequencingOrder      sequencingOrder,
+                                          String               sequencingPropertyName,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          List<String>         serviceSupportedZones,
+                                          Date                 effectiveTime,
+                                          String               methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+
+                                                                                  PropertyServerException
     {
         List<EntityDetail> results = this.getEntitiesByValue(userId,
                                                              value,
@@ -11810,10 +12014,13 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                              false,
                                                              null,
                                                              null,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingOrder,
+                                                             sequencingPropertyName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              serviceSupportedZones,
-                                                             null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              effectiveTime,
@@ -11849,6 +12056,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -11859,18 +12072,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public  String getEntityGUIDByValue(String       userId,
-                                        String       value,
-                                        String       valueParameterName,
-                                        String       resultTypeGUID,
-                                        String       resultTypeName,
-                                        List<String> specificMatchPropertyNames,
-                                        boolean      forLineage,
-                                        boolean      forDuplicateProcessing,
-                                        Date         effectiveTime,
-                                        String       methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public  String getEntityGUIDByValue(String               userId,
+                                        String               value,
+                                        String               valueParameterName,
+                                        String               resultTypeGUID,
+                                        String               resultTypeName,
+                                        List<String>         specificMatchPropertyNames,
+                                        List<InstanceStatus> limitResultsByStatus,
+                                        Date                 asOfTime,
+                                        SequencingOrder      sequencingOrder,
+                                        String               sequencingPropertyName,
+                                        boolean              forLineage,
+                                        boolean              forDuplicateProcessing,
+                                        Date                 effectiveTime,
+                                        String               methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         EntityDetail result = this.getEntityByValue(userId,
                                                     value,
@@ -11878,6 +12095,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                     resultTypeGUID,
                                                     resultTypeName,
                                                     specificMatchPropertyNames,
+                                                    limitResultsByStatus,
+                                                    asOfTime,
+                                                    sequencingOrder,
+                                                    sequencingPropertyName,
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,
@@ -11894,216 +12115,50 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Return the list of beans of the requested type that match the supplied value.
+     * Determine if the entities returned from the repository should be converted to beans and returned to caller.
      *
-     * @param userId the searchString of the calling user.
-     * @param searchString searchString of endpoint.  This may include wild card characters.
-     * @param searchStringParameterName name of parameter providing search string
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultTypeName unique value of the type that the results should match with
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> findBeanGUIDs(String       userId,
-                                      String       searchString,
-                                      String       searchStringParameterName,
-                                      String       resultTypeGUID,
-                                      String       resultTypeName,
-                                      String       sequencingPropertyName,
-                                      int          startFrom,
-                                      int          pageSize,
-                                      boolean      forLineage,
-                                      boolean      forDuplicateProcessing,
-                                      Date         effectiveTime,
-                                      String       methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
-    {
-        return this.getEntityGUIDsByValue(userId,
-                                          searchString,
-                                          searchStringParameterName,
-                                          resultTypeGUID,
-                                          resultTypeName,
-                                          null,
-                                          false,
-                                          null,
-                                          null,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          sequencingPropertyName,
-                                          startFrom,
-                                          pageSize,
-                                          effectiveTime,
-                                          methodName);
-    }
-
-
-    /**
-     * Return the list of beans of the requested type that were created by the requesting user.
-     *
-     * @param userId the name of the calling user
-     * @param searchString value that describes what to search for
-     * @param searchStringParameterName parameter providing search string
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultTypeName unique name of the type that the results should match with
-     * @param specificMatchPropertyNames name of properties to visit
-     * @param exactValueMatch does the value need to match exactly?
+     * @param userId calling user
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
-     *
+     * @param retrievedEntities entities retrieved from the repository
      * @return list of beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException problem in converter
      */
-    public List<B> getBeansByCreator(String       userId,
-                                     String       searchString,
-                                     String       searchStringParameterName,
-                                     String       resultTypeGUID,
-                                     String       resultTypeName,
-                                     List<String> specificMatchPropertyNames,
-                                     boolean      exactValueMatch,
-                                     boolean      forLineage,
-                                     boolean      forDuplicateProcessing,
-                                     List<String> serviceSupportedZones,
-                                     String       sequencingPropertyName,
-                                     int          startFrom,
-                                     int          pageSize,
-                                     Date         effectiveTime,
-                                     String       methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public List<B> getValidatedBeans(String             userId,
+                                     Date               effectiveTime,
+                                     boolean            forLineage,
+                                     boolean            forDuplicateProcessing,
+                                     List<String>       serviceSupportedZones,
+                                     String             methodName,
+                                     List<EntityDetail> retrievedEntities) throws PropertyServerException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(searchString, searchStringParameterName, methodName);
+        List<EntityDetail> validatedEntities = this.validateAnchorForEntities(userId,
+                                                                              retrievedEntities,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              serviceSupportedZones,
+                                                                              effectiveTime,
+                                                                              methodName);
 
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         searchString,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         specificMatchPropertyNames,
-                                                                         exactValueMatch,
-                                                                         false,
-                                                                         sequencingPropertyName,
-                                                                         null,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-        /*
-         * The loop is necessary because some entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<B>  results = new ArrayList<>();
-        String   entityParameterName = "Entity from createdBy search of " + searchString;
-        int      skippedValues = 0;
-
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        if (validatedEntities != null)
         {
-            EntityDetail entity = iterator.getNext();
+            List<B> results = new ArrayList<>();
 
-            if (entity != null)
+            for (EntityDetail entity : validatedEntities)
             {
-                /*
-                 * Eliminate anything that was not created by this user
-                 */
-                if (userId.equals(entity.getCreatedBy()))
+                if (entity != null)
                 {
-                    try
-                    {
-                        validateAnchorEntity(userId,
-                                             entity.getGUID(),
-                                             resultTypeName,
-                                             entity,
-                                             entityParameterName,
-                                             false,
-                                             false,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             serviceSupportedZones,
-                                             effectiveTime,
-                                             methodName);
-
-                        boolean beanArchived = false;
-
-                        try
-                        {
-                            /*
-                             * The Memento classification means the entity is archived and should only be returned for lineage requests.
-                             * This method is not to be used for lineage requests.
-                             */
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, OpenMetadataType.MEMENTO_CLASSIFICATION.typeName, methodName) != null)
-                            {
-                                beanArchived = true;
-                            }
-                        }
-                        catch (ClassificationErrorException error)
-                        {
-                            /*
-                             * Since this classification is not supported, it can not be attached to the entity.
-                             */
-                        }
-
-                        /*
-                         * Valid entity to return since no exception occurred.
-                         */
-                        if (! beanArchived)
-                        {
-                            B bean = converter.getNewBean(beanClass, entity, methodName);
-                            if (bean != null)
-                            {
-                                if (skippedValues < startFrom)
-                                {
-                                    skippedValues ++;
-                                }
-                                else
-                                {
-                                    results.add(bean);
-                                }
-                            }
-                        }
-                    }
-                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                    {
-                        /*
-                         * Skipping entity
-                         */
-                    }
+                    results.add(converter.getNewBean(beanClass, entity, methodName));
                 }
             }
-        }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
             return results;
         }
+
+        return null;
     }
 
 
@@ -12113,7 +12168,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param forLineage return elements marked with the Memento classification?
@@ -12126,22 +12186,28 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByType(String       userId,
-                                  String       resultTypeGUID,
-                                  String       resultTypeName,
-                                  String       sequencingPropertyName,
-                                  int          startFrom,
-                                  int          pageSize,
-                                  boolean      forLineage,
-                                  boolean      forDuplicateProcessing,
-                                  Date         effectiveTime,
-                                  String       methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public List<B> getBeansByType(String               userId,
+                                  String               resultTypeGUID,
+                                  String               resultTypeName,
+                                  int                  startFrom,
+                                  int                  pageSize,
+                                  List<InstanceStatus> limitResultsByStatus,
+                                  Date                 asOfTime,
+                                  SequencingOrder      sequencingOrder,
+                                  String               sequencingPropertyName,
+                                  boolean              forLineage,
+                                  boolean              forDuplicateProcessing,
+                                  Date                 effectiveTime,
+                                  String               methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         return getBeansByType(userId,
                               resultTypeGUID,
                               resultTypeName,
+                              limitResultsByStatus,
+                              asOfTime,
+                              sequencingOrder,
                               sequencingPropertyName,
                               forLineage,
                               forDuplicateProcessing,
@@ -12160,9 +12226,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
      * @param forLineage this request is for lineage so ignore Memento classifications
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -12173,23 +12244,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getBeansByType(String       userId,
-                                  String       resultTypeGUID,
-                                  String       resultTypeName,
-                                  String       sequencingPropertyName,
-                                  boolean      forLineage,
-                                  boolean      forDuplicateProcessing,
-                                  List<String> serviceSupportedZones,
-                                  int          startFrom,
-                                  int          pageSize,
-                                  Date         effectiveTime,
-                                  String       methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public List<B> getBeansByType(String               userId,
+                                  String               resultTypeGUID,
+                                  String               resultTypeName,
+                                  List<InstanceStatus> limitResultsByStatus,
+                                  Date                 asOfTime,
+                                  SequencingOrder      sequencingOrder,
+                                  String               sequencingPropertyName,
+                                  boolean              forLineage,
+                                  boolean              forDuplicateProcessing,
+                                  List<String>         serviceSupportedZones,
+                                  int                  startFrom,
+                                  int                  pageSize,
+                                  Date                 effectiveTime,
+                                  String               methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              resultTypeGUID,
                                                              resultTypeName,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingOrder,
                                                              sequencingPropertyName,
                                                              forLineage,
                                                              forDuplicateProcessing,
@@ -12226,229 +12303,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
 
     /**
-     * Return the list of beans of the requested type.
-     *
-     * @param userId the name of the calling user
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultTypeName unique name of the type that the results should match with
-     * @param sequencingPropertyName should the results be sequenced?
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of unique identifiers for matching beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> getBeanGUIDsByType(String       userId,
-                                           String       resultTypeGUID,
-                                           String       resultTypeName,
-                                           String       sequencingPropertyName,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        return this.getBeanGUIDsByType(userId, resultTypeGUID, resultTypeName, sequencingPropertyName, forLineage, forDuplicateProcessing, supportedZones, startFrom, pageSize, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Return the list of beans of the requested type.
-     *
-     * @param userId the name of the calling user
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultTypeName unique name of the type that the results should match with
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param sequencingPropertyName should the results be sequenced?
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of unique identifiers for matching beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> getBeanGUIDsByType(String       userId,
-                                           String       resultTypeGUID,
-                                           String       resultTypeName,
-                                           String       sequencingPropertyName,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           List<String> serviceSupportedZones,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        RepositoryIteratorForEntities iterator = getEntitySearchIterator(userId,
-                                                                         null,
-                                                                         resultTypeGUID,
-                                                                         resultTypeName,
-                                                                         null,
-                                                                         false,
-                                                                         false,
-                                                                         sequencingPropertyName,
-                                                                         null,
-                                                                         null,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing,
-                                                                         0,
-                                                                         queryPageSize,
-                                                                         effectiveTime,
-                                                                         methodName);
-
-        /*
-         * The loop is necessary because some entities returned may not be visible to the calling user.
-         * Once they are filtered out, more entities need to be retrieved to fill the gaps.
-         */
-        List<String> results = new ArrayList<>();
-        String       entityParameterName = "Entity of type" + resultTypeName;
-        int          skippedValues = 0;
-
-        while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
-        {
-            EntityDetail entity = iterator.getNext();
-
-            if (entity != null)
-            {
-                try
-                {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         false,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         serviceSupportedZones,
-                                         effectiveTime,
-                                         methodName);
-
-                    /*
-                     * Valid entity to return since no exception occurred.
-                     */
-                    if (skippedValues < startFrom)
-                    {
-                        skippedValues ++;
-                    }
-                    else
-                    {
-                        results.add(entity.getGUID());
-                    }
-                }
-                catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
-                {
-                    /*
-                     * Skipping entity
-                     */
-                }
-
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
-    }
-
-
-    /**
      * Return the list of beans of the requested type that match the supplied classification.
      *
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultClassificationName unique name of the classification that the results should match with
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of beans
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the repositories.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getBeansByClassification(String  userId,
-                                            String  resultTypeGUID,
-                                            String  resultClassificationName,
-                                            boolean forLineage,
-                                            boolean forDuplicateProcessing,
-                                            int     startFrom,
-                                            int     pageSize,
-                                            Date    effectiveTime,
-                                            String  methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
-                                                                                         resultTypeGUID,
-                                                                                         resultClassificationName,
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing,
-                                                                                         startFrom,
-                                                                                         queryPageSize,
-                                                                                         effectiveTime,
-                                                                                         methodName);
-
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    beans.add(converter.getNewBean(beanClass, entity, methodName));
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the list of beans of the requested type that match the supplied classification.
-     *
-     * @param userId the name of the calling user
-     * @param resultTypeGUID unique identifier of the type that the results should match with
-     * @param resultClassificationName unique name of the classification that the results should match with
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startFrom  index of the list to start from (0 for start)
@@ -12461,17 +12326,21 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getBeanGUIDsByClassification(String  userId,
-                                                     String  resultTypeGUID,
-                                                     String  resultClassificationName,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime,
-                                                     String  methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public List<String> getBeanGUIDsByClassification(String               userId,
+                                                     String               resultTypeGUID,
+                                                     String               resultClassificationName,
+                                                     List<InstanceStatus> limitResultsByStatus,
+                                                     Date                 asOfTime,
+                                                     SequencingOrder      sequencingOrder,
+                                                     String               sequencingPropertyName,
+                                                     boolean              forLineage,
+                                                     boolean              forDuplicateProcessing,
+                                                     int                  startFrom,
+                                                     int                  pageSize,
+                                                     Date                 effectiveTime,
+                                                     String               methodName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -12479,6 +12348,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          resultTypeGUID,
                                                                                          resultClassificationName,
+                                                                                         null,
+                                                                                         null,
+                                                                                         limitResultsByStatus,
+                                                                                         asOfTime,
+                                                                                         sequencingOrder,
+                                                                                         sequencingPropertyName,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -12488,19 +12363,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         if (entities != null)
         {
-            List<String>  softwareServerCapabilityGUIDs = new ArrayList<>();
+            List<String>  entityGUID = new ArrayList<>();
 
             for (EntityDetail entity : entities)
             {
                 if (entity != null)
                 {
-                    softwareServerCapabilityGUIDs.add(entity.getGUID());
+                    entityGUID.add(entity.getGUID());
                 }
             }
 
-            if (! softwareServerCapabilityGUIDs.isEmpty())
+            if (! entityGUID.isEmpty())
             {
-                return softwareServerCapabilityGUIDs;
+                return entityGUID;
             }
         }
 
@@ -12739,18 +12614,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             startingGUID = startingElementEntity.getGUID();
         }
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                  attachingGUID,
@@ -12768,18 +12642,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             attachingGUID = attachingElementEntity.getGUID();
         }
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -12791,11 +12664,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         List<Relationship> existingRelationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                                      startingElementEntity,
-                                                                                                     startingElementEntity.getType().getTypeDefName(),
+                                                                                                     startingElementTypeName,
                                                                                                      attachingGUID,
                                                                                                      attachmentTypeGUID,
                                                                                                      attachmentTypeName,
                                                                                                      2,
+                                                                                                     null,
+                                                                                                     null,
+                                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                     null,
                                                                                                      forLineage,
                                                                                                      forDuplicateProcessing,
                                                                                                      effectiveFrom,
@@ -12990,7 +12867,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
         else
         {
-            if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE.typeName))
+            if ((repositoryHelper.isTypeOf(serviceName, startingElementTypeName, OpenMetadataType.REFERENCEABLE.typeName)) &&
+                    (startingElementEntity != null))
             {
                 this.addLatestChangeToAnchor(startingElementEntity,
                                              OpenMetadataType.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
@@ -13136,18 +13014,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             startingGUID = startingElementEntity.getGUID();
         }
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
                                                                                  attachingGUID,
@@ -13165,18 +13042,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             attachingGUID = attachingElementEntity.getGUID();
         }
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         Relationship newRelationship = repositoryHandler.createRelationship(userId,
                                                                             attachmentTypeGUID,
@@ -13357,18 +13233,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -13386,18 +13261,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                  effectiveTime,
                                                                                  methodName);
 
-        EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                              attachingGUID,
-                                                                              attachingElementTypeName,
-                                                                              attachingElementEntity,
-                                                                              attachingGUIDParameterName,
-                                                                              true,
-                                                                              false,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing,
-                                                                              suppliedSupportedZones,
-                                                                              effectiveTime,
-                                                                              methodName);
+        EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                 attachingElementTypeName,
+                                                                                 attachingElementEntity,
+                                                                                 attachingGUIDParameterName,
+                                                                                 true,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -13411,6 +13285,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                      attachingGUID,
                                                                                      attachmentTypeGUID,
                                                                                      attachmentTypeName,
+                                                                                     null,
+                                                                                     null,
+                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                     null,
                                                                                      forLineage,
                                                                                      forDuplicateProcessing,
                                                                                      effectiveTime,
@@ -13687,18 +13565,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                    effectiveTime,
                                                                                    methodName);
 
-            EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                 startingGUID,
-                                                                                 startingElementTypeName,
-                                                                                 startingElementEntity,
-                                                                                 startingGUIDParameterName,
-                                                                                 true,
-                                                                                 false,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 suppliedSupportedZones,
-                                                                                 effectiveTime,
-                                                                                 methodName);
+            EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                    startingElementTypeName,
+                                                                                    startingElementEntity,
+                                                                                    startingGUIDParameterName,
+                                                                                    true,
+                                                                                    false,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    suppliedSupportedZones,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
             String startingElementAnchorGUID = startingGUID;
 
@@ -13716,18 +13593,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                      effectiveTime,
                                                                                      methodName);
 
-            EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                  attachingGUID,
-                                                                                  attachingElementTypeName,
-                                                                                  attachingElementEntity,
-                                                                                  attachingGUIDParameterName,
-                                                                                  true,
-                                                                                  false,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  suppliedSupportedZones,
-                                                                                  effectiveTime,
-                                                                                  methodName);
+            EntityDetail attachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                     attachingElementTypeName,
+                                                                                     attachingElementEntity,
+                                                                                     attachingGUIDParameterName,
+                                                                                     true,
+                                                                                     false,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     suppliedSupportedZones,
+                                                                                     effectiveTime,
+                                                                                     methodName);
 
             /*
              * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -13869,7 +13745,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     /**
      * Deleted the existing relationship between the starting element and another element then create a new relationship
      * between the starting element and the new attaching element.
-     *
      * If successful this updates the LatestChange in each one's anchor entity (if they have one).
      * Both elements must be visible to the user to allow the relinking.
      *
@@ -13939,7 +13814,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
     /**
      * Deleted the existing relationship between the starting element and another element then create a new relationship
      * between the starting element and the new attaching element.
-     *
      * If successful this updates the LatestChange in each one's anchor entity (if they have one).
      * Both elements must be visible to the user to allow the relinking.
      *
@@ -14000,18 +13874,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                 effectiveTime,
                                                                                 methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -14029,18 +13902,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                     effectiveTime,
                                                                                     methodName);
 
-        EntityDetail newAttachingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                                 newAttachingGUID,
-                                                                                 newAttachingElementTypeName,
-                                                                                 newAttachingElementEntity,
-                                                                                 newAttachingGUIDParameterName,
-                                                                                 true,
-                                                                                 false,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 suppliedSupportedZones,
-                                                                                 effectiveTime,
-                                                                                 methodName);
+        EntityDetail newAttachingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                    newAttachingElementTypeName,
+                                                                                    newAttachingElementEntity,
+                                                                                    newAttachingGUIDParameterName,
+                                                                                    true,
+                                                                                    false,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    suppliedSupportedZones,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
         /*
          * The calls above validate the existence of the two entities and that they are visible to the user.
@@ -14060,6 +13932,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                    attachmentTypeGUID,
                                                                                    attachmentTypeName,
                                                                                    attachmentEntityEnd,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                   null,
                                                                                    forLineage,
                                                                                    forDuplicateProcessing,
                                                                                    effectiveTime,
@@ -14397,6 +14273,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                       attachedGUID,
                                                                                       attachmentTypeGUID,
                                                                                       attachmentTypeName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                      null,
                                                                                       forLineage,
                                                                                       forDuplicateProcessing,
                                                                                       effectiveTime,
@@ -14556,18 +14436,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             startingGUID,
-                                                                             startingElementTypeName,
-                                                                             startingElementEntity,
-                                                                             startingGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail startingElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                startingElementTypeName,
+                                                                                startingElementEntity,
+                                                                                startingGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         String startingElementAnchorGUID = startingGUID;
 
@@ -14589,18 +14468,17 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                effectiveTime,
                                                                                methodName);
 
-        EntityDetail attachedElementAnchorEntity = this.validateAnchorEntity(userId,
-                                                                             attachedGUID,
-                                                                             attachedElementTypeName,
-                                                                             attachedElementEntity,
-                                                                             attachedGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             suppliedSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+        EntityDetail attachedElementAnchorEntity = this.validateAnchorForEntity(userId,
+                                                                                attachedElementTypeName,
+                                                                                attachedElementEntity,
+                                                                                attachedGUIDParameterName,
+                                                                                true,
+                                                                                false,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                suppliedSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         if ((!onlyCreatorPermitted) || (userId.equals(relationship.getCreatedBy())))
         {
@@ -14638,7 +14516,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                  attachedGUID);
 
 
-        if (startingElementAnchorEntity != null)
+        if ((startingElementAnchorEntity != null) && (! startingElementEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
         {
             this.addLatestChangeToAnchor(startingElementAnchorEntity,
                                          OpenMetadataType.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
@@ -14686,7 +14564,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             }
         }
 
-        if (attachedElementAnchorEntity != null)
+        if ((attachedElementAnchorEntity != null) && (! attachedElementAnchorEntity.getGUID().equals(attachedElementEntity.getGUID())))
         {
             /*
              * Only need to add latestChange if the anchor of the attached element is different
@@ -14889,6 +14767,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                        attachmentTypeGUID,
                                                                                        attachmentTypeName,
                                                                                        2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        0,
@@ -14993,6 +14875,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            null,
                                                            detachedElementTypeName,
                                                            0,
+                                                           null,
+                                                           null,
+                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                           null,
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            suppliedSupportedZones,
@@ -15194,53 +15080,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
     }
 
-    /**
-     * Test whether an entity is of a particular type or not. Internally it delegates to {@link RepositoryHandler#isEntityATypeOf}
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the entity.
-     * @param guidParameterName name of the parameter containing the guid.
-     * @param entityTypeName name of the type to test for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return boolean flag
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
-     */
-    public boolean isEntityATypeOf(String  userId,
-                                   String  guid,
-                                   String  guidParameterName,
-                                   String  entityTypeName,
-                                   boolean forLineage,
-                                   boolean forDuplicateProcessing,
-                                   Date    effectiveTime,
-                                   String  methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, "GUID", methodName);
-        invalidParameterHandler.validateObject(entityTypeName, "entityTypeName", methodName);
-
-        EntityDetail entityDetail = this.getEntityFromRepository(userId,
-                                                                 guid,
-                                                                 guidParameterName,
-                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 effectiveTime,
-                                                                 methodName);
-
-        return entityDetail != null && entityDetail.getType().getTypeDefName().equals(entityTypeName);
-    }
-
 
     /**
      * Retrieve the reference data for this element.
@@ -15277,6 +15116,10 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                           null,
                                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                           2,
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
                                                                           false,
                                                                           false,
                                                                           serviceSupportedZones,
@@ -15321,7 +15164,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                         additionalProperties.put(propertyType + "Name",
                                                  repositoryHelper.getStringProperty(serviceName,
-                                                                                    OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                                     specificationDetail.getProperties(),
                                                                                     methodName));
 

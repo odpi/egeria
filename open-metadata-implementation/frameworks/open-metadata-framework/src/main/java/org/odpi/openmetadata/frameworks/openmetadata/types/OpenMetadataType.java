@@ -170,8 +170,8 @@ public enum OpenMetadataType
     SEARCH_KEYWORD("0134c9ae-0fe6-4224-bb3b-e18b78a90b1e",
                    "SearchKeyword",
                    OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
-                   "A shareable keyword to help locating relevant assets.",
-                   "26707bea-f65c-43bc-9576-5991d9bafc24"),
+                   "26707bea-f65c-43bc-9576-5991d9bafc24",
+                   "A shareable keyword to help locating relevant assets."),
 
     /**
      * Provides a link to a keyword that helps to identify specific elements in a search.
@@ -190,6 +190,42 @@ public enum OpenMetadataType
                                  OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
                                  "e8b2dba2-6d3a-4a83-8ebf-1f0555b5164d",
                                  "Links search keywords that have similar meanings together."),
+
+    /**
+     * Link to more information.
+     */
+    EXTERNAL_REFERENCE_LINK_RELATIONSHIP("7d818a67-ab45-481c-bc28-f6b1caf12f06",
+                                         "ExternalReferenceLink",
+                                         OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                                         "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
+                                         "Link to more information."),
+
+    /**
+     * A link to an external reference source such as a web page, article or book.
+     */
+    EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
+                       "ExternalReference",
+                       OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                       "cd59edf8-ef6d-4436-bfc5-e93403238df4",
+                       "A link to an external reference source such as a web page, article or book."),
+
+    /**
+     * Images, video or sound media.
+     */
+    RELATED_MEDIA("747f8b86-fe7c-4c9b-ba75-979e093cc307",
+                  "RelatedMedia",
+                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                  "4b4f379f-0d69-46ae-b5cd-0b6c08dffb21",
+                  "Images, video or sound media."),
+
+    /**
+     * Link to related media such as images, videos and audio.
+     */
+    MEDIA_REFERENCE_RELATIONSHIP("1353400f-b0ab-4ab9-ab09-3045dd8a7140",
+                                 "MediaReference",
+                                 OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                                 "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
+                                 "Link to related media such as images, videos and audio."),
 
     /**
      * Alternative identifier used in another system.
@@ -218,7 +254,6 @@ public enum OpenMetadataType
                                    "e1e481ce-0536-4637-8658-5224353c7d69",
                                    "Places where an external identifier is recognized."),
 
-
     /**
      * Additional properties that support a particular vendor or service.
      */
@@ -237,6 +272,93 @@ public enum OpenMetadataType
                         OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
                         "2393b97a-436a-44f6-a5ef-45ad8b16b5d4",
                         "Link between a property facet and the element it relates to."),
+
+
+    /**
+     * A group of related items.
+     */
+    COLLECTION("347005ba-2b35-4670-b5a7-12c9ebed0cf7",
+               "Collection",
+               OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+               "b5ff9f14-e7eb-465b-8803-b1ba6ea3a8afe",
+               "A group of related items."),
+
+
+    /**
+     * Identifies a member of a collection.
+     */
+    COLLECTION_MEMBERSHIP_RELATIONSHIP("5cabb76a-e25b-4bb5-8b93-768bbac005af",
+                                       "CollectionMembership",
+                                       OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                       "5fdfa2b1-7511-4700-aa27-e87458b93446",
+                                       "Identifies a member of a collection."),
+
+
+    /**
+     * This collection is the root collection in a collection hierarchy.
+     */
+    ROOT_COLLECTION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
+                    "RootCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "f531c0b8-712c-4327-a8e5-7500727bab1d",
+                    "This collection is the root collection in a collection hierarchy."),
+
+
+    /**
+     * This is a collection of data fields that describe some desired data.
+     */
+    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
+                         "DataSpec",
+                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
+                         "This is a collection of data fields that describe some desired data."),
+
+
+    /**
+     * This collection is the home collection for a referenceable.
+     */
+    HOME_COLLECTION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
+                    "HomeCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "e1138106-f222-4847-ba1e-c6f014de7b4a",
+                    "This collection is the home collection for a referenceable."),
+
+    /**
+     * Defines that a collection is a set of results from an activity, query, ...
+     */
+    RESULTS_SET("3947f08d-7412-4022-81fc-344a20dfbb26",
+                "ResultsSet",
+                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                "883529d0-f230-4fd1-93d3-13820090f320",
+                "Defines that a collection is a set of results from an activity, query, ..."),
+
+    /**
+     * A collection that lists elements that have been part of recent activity.
+     */
+    RECENT_ACCESS("e68d7cdf-08bc-4eee-844b-502f5940082",
+                  "RecentAccess",
+                  OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                  "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
+                  "A collection that lists elements that have been part of recent activity."),
+
+    /**
+     * Defines that a collection should be treated like a folder.
+     */
+    FOLDER("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
+           "Folder",
+           OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+           "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
+           "Defines that a collection should be treated like a folder."),
+
+    /**
+     * Defines a list of activities such as ToDos, Tasks etc...
+     */
+    WORK_ITEM_LIST("9d958a7c-5fca-4acc-83b3-f59b70e73f54",
+                   "WorkItemList",
+                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                   "2ee49f29-da72-490f-a6c4-e7525516e6f0",
+                   "Defines a list of activities such as ToDos, Tasks etc..."),
+
 
     /**
      * A physical place, digital location or area.
@@ -657,31 +779,40 @@ public enum OpenMetadataType
                           "A capability that supports event-based services, typically around topics."),
 
     /**
-     * A capability that manages collections of data.
+     * A capability that manages collections of stored data.
      */
     DATA_MANAGER("82efa1fa-501f-4ac7-942c-6536c4a1cd61",
                  "DataManager",
                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                  "b2151b29-e115-417f-a711-521a9d66f99b",
-                 "A capability that manages collections of data."),
+                 "A capability that manages collections of stored data.  It typically maintains a schema to describe how data is formatted and that schema is used in the query and maintenance APIs by the caller to work with the data they desire."),
 
     /**
      * Defines a capability that manages data organized as relational schemas.
      */
     DATABASE_MANAGER("68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9",
-                 "DatabaseManager",
-                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                 "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
-                 "Defines a capability that manages data organized as relational schemas."),
+                     "DatabaseManager",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                     "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
+                     "Defines a capability that manages data organized as relational schemas.  It is also responsible for managing the data including maintaining query indexes, statistics and backups."),
+
+    /**
+     * Defines a capability that manages data organized as relational schemas.
+     */
+    DATA_ACCESS_MANAGER("c7e4008e-779e-4586-85f1-ab6264eb54e9",
+                        "DataAccessManager",
+                        OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                        "d54ad0a0-5254-4bf6-903c-82c1337eb209",
+                        "Defines a capability that manages data organized as structured schemas (typically relational tables and columns).  It does this by linking the schemas to data sources that are external to its own storage."),
 
     /**
      * A capability that manages collections of descriptions about people, places, digital assets, things, ...
      */
-    CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
-            "Catalog",
-            OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-            "df539ee4-fb5a-4555-8697-c391e244557d",
-            "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
+    INVENTORY_CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
+                      "InventoryCatalog",
+                      OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                      "df539ee4-fb5a-4555-8697-c391e244557d",
+                      "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
 
     /**
      * A programmable engine for running automated processes.
@@ -948,42 +1079,34 @@ public enum OpenMetadataType
 
 
     /**
-     * Relationship identifying a person's contribution record.
+     * Relationship identifying a person's contribution record (replaced by Contribution).
      */
    PERSONAL_CONTRIBUTION_RELATIONSHIP("4a316abe-eeee-4d11-ad5a-4bfb4079b80b",
                                       "PersonalContribution",
-                                      OpenMetadataWikiPages.MODEL_0112_PEOPLE,
+                                      OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
                                       "73d21888-20f0-485f-b88e-36617b51b0a8",
-                                      "Relationship identifying a person's contribution record."),
+                                      "Deprecated Relationship identifying a person's contribution record (replaced by Contribution)."),
+
 
     /**
-     * A record of the contribution of an individual.
+     * Relationship identifying an actor's contribution record.
      */
-    CONTRIBUTION_RECORD("ac406bf8-e53e-49f1-9088-2af28cccd285",
+    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
+                                       "Contribution",
+                                       OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                                       "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
+                                       "Relationship identifying an actor's contribution record."),
+
+
+    /**
+     * A record of the contribution of an actor profile.
+     */
+    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
                         "ContributionRecord",
-                        OpenMetadataWikiPages.MODEL_0112_PEOPLE,
-                        "43bc8cc3-4496-45ad-a40c-42bcf22b0111",
-                        "A record of the contribution of an individual."),
+                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
+                        "A record of the contribution of an actor profile."),
 
-
-    /**
-     * A role performed by one or more individuals.
-     */
-    PERSON_ROLE("ac406bf8-e53e-49f1-9088-2af28bcbd285",
-                "PersonRole",
-                OpenMetadataWikiPages.MODEL_0112_PEOPLE,
-                "6259c839-f310-4b73-87dc-28e60a119e1a",
-                "A role performed by one or more individuals."),
-
-
-    /**
-     * Relationship identifying a person's roles.
-     */
-    PERSON_ROLE_APPOINTMENT_RELATIONSHIP("4a316abe-bcce-4d11-ad5a-4bfb4079b80b",
-                                         "PersonRoleAppointment",
-                                         OpenMetadataWikiPages.MODEL_0112_PEOPLE,
-                                         "41282fe0-3d45-403f-97bc-c9c80c5081de",
-                                         "Relationship identifying a person's roles."),
 
     /**
      * Relationship identifying a person's peer network.
@@ -1012,41 +1135,6 @@ public enum OpenMetadataType
                                 "51a4a318-d9d9-4833-a55b-b3f7948a1a37",
                                 "Relationship identifying a team reporting hierarchy."),
 
-    /**
-     * Person assigned to a team.
-     */
-    TEAM_MEMBER("46db26d5-abb2-538b-bc15-d62d373c5db6",
-                "TeamMember",
-                OpenMetadataWikiPages.MODEL_0115_TEAMS,
-                "69b06feb-3880-4796-ae15-f85fcce35900",
-                "Person assigned to a team."),
-
-    /**
-     * Relationship identifying the members of teams.
-     */
-    TEAM_MEMBERSHIP_RELATIONSHIP("1ebc4fb2-b62a-4269-8f18-e9237a2119ca",
-                                 "TeamMembership",
-                                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
-                                 "623667d6-2d09-4e2c-8078-bbfd7f8bdbcc",
-                                 "Relationship identifying the members of teams."),
-
-    /**
-     * Person leading a team.
-     */
-    TEAM_LEADER("36db26d5-abb2-439b-bc15-d62d373c5db6",
-                "TeamLeader",
-                OpenMetadataWikiPages.MODEL_0115_TEAMS,
-                "021c3a71-c912-49e1-a099-1866746e4825",
-                "Person leading a team."),
-
-    /**
-     * Relationship identifying the leaders of teams.
-     */
-    TEAM_LEADERSHIP_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2119ca",
-                                 "TeamLeadership",
-                                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
-                                 "83e54789-e20e-439c-99af-e5dcb21e3b29",
-                                 "Relationship identifying the leaders of teams."),
 
     /**
      * Descriptive details about a processing engine or other IT infrastructure.
@@ -1065,6 +1153,113 @@ public enum OpenMetadataType
                                            OpenMetadataWikiPages.MODEL_0117_IT_PROFILES,
                                            "f52f4e19-f148-495b-84df-8ec2f2b02263",
                                            "Link between an ITProfile and the asset for the piece of infrastructure it describes."),
+
+
+    /**
+     * A collection of related responsibilities.
+     */
+    ACTOR_ROLE("8f87b861-4d11-43ab-8212-c6fc0a0caccd",
+               "ActorRole",
+               OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+               "5919c473-3769-4637-a638-45ef17bd0585",
+               "A collection of related responsibilities."),
+
+
+    /**
+     * A role performed by one or more individuals.
+     */
+    PERSON_ROLE("ac406bf8-e53e-49f1-9088-2af28bcbd285",
+                "PersonRole",
+                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                "6259c839-f310-4b73-87dc-28e60a119e1a",
+                "A role performed by one or more individuals."),
+
+
+    /**
+     * Relationship identifying a person's roles.
+     */
+    PERSON_ROLE_APPOINTMENT_RELATIONSHIP("4a316abe-bcce-4d11-ad5a-4bfb4079b80b",
+                                         "PersonRoleAppointment",
+                                         OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                                         "41282fe0-3d45-403f-97bc-c9c80c5081de",
+                                         "Relationship identifying a person's roles."),
+
+
+    /**
+     * A role performed by a team.
+     */
+    TEAM_ROLE("2dfe3f58-ff31-4933-a0d3-cf8c242400f2",
+                "TeamRole",
+                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                "455fdae7-3f36-4adb-a402-af0ddaa59c25",
+                "A role performed by a team."),
+
+
+    /**
+     * Relationship identifying a team's roles.
+     */
+    TEAM_ROLE_APPOINTMENT_RELATIONSHIP("2c474468-e5f8-48bf-8140-854d516af3f3",
+                                         "TeamRoleAppointment",
+                                         OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                                         "e8b9570f-2eba-4a97-87a0-cb5300a65a62",
+                                         "Relationship identifying a team's roles."),
+
+
+    /**
+     * A role performed by some software automation.
+     */
+    IT_PROFILE_ROLE("3fe208fc-cff4-4fcf-8e74-b12267b154bb",
+                "ITProfileRole",
+                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                "9cd02fe0-4926-401f-859d-0ccddd444510",
+                "A role performed by some software automation."),
+
+
+    /**
+     * Relationship identifying a software automation executable's roles.
+     */
+    IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP("ebf49c54-319d-4c5e-80e4-d3084d4ff9f1",
+                                         "ITProfileRoleAppointment",
+                                         OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                                         "6166a902-bd0d-42de-821a-f062f69b6e61",
+                                         "Relationship identifying a software automation executable's roles."),
+
+
+    /**
+     * Person assigned to a team.
+     */
+    TEAM_MEMBER("46db26d5-abb2-538b-bc15-d62d373c5db6",
+                "TeamMember",
+                OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
+                "69b06feb-3880-4796-ae15-f85fcce35900",
+                "Person assigned to a team."),
+
+    /**
+     * Relationship identifying the members of teams.
+     */
+    TEAM_MEMBERSHIP_RELATIONSHIP("1ebc4fb2-b62a-4269-8f18-e9237a2119ca",
+                                 "TeamMembership",
+                                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
+                                 "623667d6-2d09-4e2c-8078-bbfd7f8bdbcc",
+                                 "Relationship identifying the members of teams."),
+
+    /**
+     * Person leading a team.
+     */
+    TEAM_LEADER("36db26d5-abb2-439b-bc15-d62d373c5db6",
+                "TeamLeader",
+                OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
+                "021c3a71-c912-49e1-a099-1866746e4825",
+                "Person leading a team."),
+
+    /**
+     * Relationship identifying the leaders of teams.
+     */
+    TEAM_LEADERSHIP_RELATIONSHIP("5ebc4fb2-b62a-4269-8f18-e9237a2119ca",
+                                 "TeamLeadership",
+                                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
+                                 "83e54789-e20e-439c-99af-e5dcb21e3b29",
+                                 "Relationship identifying the leaders of teams."),
 
     /**
      * Links a profile, role or project to the elements that they are responsible for managing.
@@ -1091,17 +1286,17 @@ public enum OpenMetadataType
     PROJECT("0799569f-0c16-4a1f-86d9-e2e89568f7fd",
             "Project",
             OpenMetadataWikiPages.MODEL_0130_PROJECTS,
-            "An organized activity, typically to achieve a well defined goal.",
-            "1d8eed39-17e2-400c-adac-4d0c8f3063ad"),
+            "1d8eed39-17e2-400c-adac-4d0c8f3063ad",
+            "An organized activity, typically to achieve a well-defined goal."),
 
     /**
-     * An person with overall responsibility for one or more project.
+     * A person with overall responsibility for one or more project.
      */
     PROJECT_MANAGER("0798569f-0c16-4a1f-86d9-e2e89568f7fd",
                     "ProjectManager",
                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                     "fbc22a33-8a07-45a3-afdf-839717be9f05",
-                    "An person with overall responsibility for one or more projects."),
+                    "A person with overall responsibility for one or more projects."),
 
     /**
      * The link between a project and its project manager role.
@@ -2030,6 +2225,24 @@ public enum OpenMetadataType
                      "b6a9209c-de82-4357-8e03-447f904814e0",
                      "A virtual asset that can be called as a table through a SQL-like API."),
 
+
+    /**
+     * A packaged and deployed analytics model.
+     */
+    DEPLOYED_ANALYTICS_MODEL("ddace5d7-3f4d-4ff8-a23e-d4992b2e874f",
+                                "DeployedAnalyticsModel",
+                                OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
+                                "0172e405-3500-42de-9d0b-cf9f851628e7",
+                                "A packaged and deployed analytics model."),
+
+    /**
+     * An execution (run) of a deployed analytics model.
+     */
+    ANALYTICS_MODEL_RUN("8178e11b-abad-49c1-b24a-a868d760d603",
+                        "AnalyticsModelRun",
+                        OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
+                        "52e73acc-fa40-4def-9df5-b5911ba0418b",
+                        "An execution (run) of a deployed analytics model."),
 
     /**
      * A text file containing a program written in a language that needs to be complied into an executable form before it can run.
@@ -3138,127 +3351,9 @@ public enum OpenMetadataType
                                        "Link to the external data resource containing the surveyed resource's profile data."),
 
 
-    /**
-     * Link to more information.
-     */
-    EXTERNAL_REFERENCE_LINK_RELATIONSHIP("7d818a67-ab45-481c-bc28-f6b1caf12f06",
-                                         "ExternalReferenceLink",
-                                         OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
-                                         "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
-                                         "Link to more information."),
-
-    /**
-     * A link to an external reference source such as a web page, article or book.
-     */
-    EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
-                       "ExternalReference",
-                       OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
-                       "cd59edf8-ef6d-4436-bfc5-e93403238df4",
-                       "A link to an external reference source such as a web page, article or book."),
-
-    /**
-     * Images, video or sound media.
-     */
-    RELATED_MEDIA("747f8b86-fe7c-4c9b-ba75-979e093cc307",
-                  "RelatedMedia",
-                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
-                  "4b4f379f-0d69-46ae-b5cd-0b6c08dffb21",
-                  "Images, video or sound media."),
-
-    /**
-     * Link to related media such as images, videos and audio.
-     */
-    MEDIA_REFERENCE_RELATIONSHIP("1353400f-b0ab-4ab9-ab09-3045dd8a7140",
-                               "MediaReference",
-                               OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
-                               "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
-                                 "Link to related media such as images, videos and audio."),
-
-
-    /**
-     * A group of related items.
-     */
-    COLLECTION("347005ba-2b35-4670-b5a7-12c9ebed0cf7",
-               "Collection",
-               OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-               "b5ff9f14-e7eb-465b-8803-b1ba6ea3a8afe",
-               "A group of related items."),
-
-
-    /**
-     * Identifies a member of a collection.
-     */
-    COLLECTION_MEMBERSHIP_RELATIONSHIP("5cabb76a-e25b-4bb5-8b93-768bbac005af",
-                                       "CollectionMembership",
-                                       OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                       "5fdfa2b1-7511-4700-aa27-e87458b93446",
-                                       "Identifies a member of a collection."),
-
-
-    /**
-     * This collection is the root collection in a collection hierarchy.
-     */
-    ROOT_COLLECTION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
-                    "RootCollection",
-                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                    "f531c0b8-712c-4327-a8e5-7500727bab1d",
-                    "This collection is the root collection in a collection hierarchy."),
-
-
-    /**
-     * This is a collection of data fields that describe some desired data.
-     */
-    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
-                         "DataSpec",
-                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                         "This is a collection of data fields that describe some desired data."),
-
-
-    /**
-     * This collection is the home collection for a referenceable.
-     */
-    HOME_COLLECTION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
-                    "HomeCollection",
-                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                    "e1138106-f222-4847-ba1e-c6f014de7b4a",
-                    "This collection is the home collection for a referenceable."),
-
-    /**
-     * Defines that a collection is a set of results from an activity, query, ...
-     */
-    RESULTS_SET("3947f08d-7412-4022-81fc-344a20dfbb26",
-                    "ResultsSet",
-                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                    "883529d0-f230-4fd1-93d3-13820090f320",
-                    "Defines that a collection is a set of results from an activity, query, ..."),
-
-    /**
-     * A collection that lists elements that have been part of recent activity.
-     */
-    RECENT_ACCESS("e68d7cdf-08bc-4eee-844b-502f5940082",
-                "RecentAccess",
-                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
-                "A collection that lists elements that have been part of recent activity."),
-
-    /**
-     * Defines that a collection should be treated like a folder.
-     */
-    FOLDER("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
-                  "Folder",
-                  OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                  "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
-                  "Defines that a collection should be treated like a folder."),
-
-    /**
-     * Defines a list of activities such as ToDos, Tasks etc...
-     */
-    WORK_ITEM_LIST("9d958a7c-5fca-4acc-83b3-f59b70e73f54",
-           "WorkItemList",
-           OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-           "2ee49f29-da72-490f-a6c4-e7525516e6f0",
-           "Defines a list of activities such as ToDos, Tasks etc..."),
+    /* ============================================================================================================================*/
+    /* Area 7 - Lineage and Data Products                                                                                          */
+    /* ============================================================================================================================*/
 
 
     /**
@@ -3269,6 +3364,62 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
                                    "6751673f-a4e7-4b64-84e4-4c59163d0102",
                                    "Identifies an element that represents a digital product."),
+
+
+    /**
+     * Shows that data flows in one direction from one element to another.
+     */
+    DATA_FLOW("d2490c0c-06cc-458a-add2-33cf2f5dd724",
+              "DataFlow",
+              OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+              "e965ab1e-5c04-44a9-b301-3b359e6f169f",
+              "Shows that data flows in one direction from one element to another."),
+
+    /**
+     * Shows that when one element completes processing, control passes to the next element.
+     */
+    CONTROL_FLOW("35450726-1c32-4d41-b928-22db6d1ae2f4",
+                 "ControlFlow",
+                 OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+                 "ce664de9-b65e-443e-bf58-15e8e44503d3",
+                 "Shows that when one element completes processing, control passes to the next element."),
+
+    /**
+     * Shows a request-response call between two elements.
+     */
+    PROCESS_CALL("af904501-6347-4f52-8378-da50e8d74828",
+                 "ProcessCall",
+                 OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
+                 "e5892596-1be2-4a22-9fb0-2aae6627f127",
+                 "Shows a request-response call between two elements."),
+
+    /**
+     * Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.
+     */
+    ULTIMATE_SOURCE("e5649e7a-4d97-4a41-a91d-20f521f961aa",
+                    "UltimateSource",
+                    OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
+                    "f85c52e9-cbfa-4e8c-9a54-17c0e0576cef",
+                    "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow."),
+
+    /**
+     * Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.
+     */
+    ULTIMATE_DESTINATION("27d48f4a-a5bd-4320-a4ba-55f03adbb27b",
+                         "UltimateDestination",
+                         OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
+                         "f8e24bca-3fe7-48f6-af28-48a1cc9f18e7",
+                         "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow."),
+
+    /**
+     * A lineage stitching link between two equivalent elements
+     */
+    LINEAGE_MAPPING("a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff",
+                    "LineageMapping",
+                    OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
+                    "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
+                    "A lineage stitching link between two equivalent elements"),
+
     ;
 
 
@@ -3318,19 +3469,6 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
-
-
-
-
-    /**
-     * Open Connector Framework (OCF)
-     */
-    public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
-
-    /**
-     * Java
-     */
-    public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
 
 
     /**
@@ -4548,20 +4686,6 @@ public enum OpenMetadataType
     public static final String QUERY_SCHEMA_TYPE_TYPE_NAME = "QuerySchemaType";
     /* ComplexSchemaType */
 
-    /**
-     * category
-     */
-    public static final String CATEGORY_PROPERTY_NAME = "category";             /* from ValidValueDefinition entity */
-
-    /**
-     * preferredValue
-     */
-    public static final String PREFERRED_VALUE_PROPERTY_NAME = "preferredValue";       /* from ValidValueDefinition entity */
-
-    /**
-     * isCaseSensitive
-     */
-    public static final String IS_CASE_SENSITIVE_PROPERTY_NAME = "isCaseSensitive";      /* from ValidValueDefinition entity */
 
     /**
      * strictRequirement
@@ -4645,7 +4769,6 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
 
-
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID = "28f63c94-aaef-4c84-98f7-d77aa605272e";
     public static final String IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME = "ImplementedBy";
     /* End1 = Referenceable; End 2 = Referenceable */
@@ -4658,17 +4781,6 @@ public enum OpenMetadataType
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";
     /* End1 = SolutionPort; End 2 = SchemaType */
 
-    public static final String DATA_FLOW_TYPE_GUID = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
-    public static final String DATA_FLOW_TYPE_NAME = "DataFlow";
-    /* End1 = Referenceable - supplier; End 2 = Referenceable - consumer */
-
-    public static final String CONTROL_FLOW_TYPE_GUID = "35450726-1c32-4d41-b928-22db6d1ae2f4";
-    public static final String CONTROL_FLOW_TYPE_NAME = "ControlFlow";
-    /* End1 = Referenceable - currentStep; End 2 = Referenceable - nextStep */
-
-    public static final String PROCESS_CALL_TYPE_GUID = "af904501-6347-4f52-8378-da50e8d74828";
-    public static final String PROCESS_CALL_TYPE_NAME = "ProcessCall";
-    /* End1 = Referenceable - calls; End 2 = Referenceable - calledBy */
 
     public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID = "085febdd-f129-4f4b-99aa-01f3e6294e9f";
     public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME = "BusinessSignificance";
@@ -4677,9 +4789,6 @@ public enum OpenMetadataType
     public static final String BUSINESS_CAPABILITY_GUID_PROPERTY_NAME = "businessCapabilityGUID";  /* from BusinessSignificant entity */
 
 
-    public static final String LINEAGE_MAPPING_TYPE_GUID = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
-    public static final String LINEAGE_MAPPING_TYPE_NAME = "LineageMapping";
-    /* End1 = Referenceable - sourceElement; End 2 = Referenceable - targetElement */
 
 
     /* ============================================================================================================================*/

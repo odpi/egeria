@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -141,6 +142,56 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         validateRepositoryContentManager(methodName);
 
         return repositoryContentManager.getKnownTypeDefGallery();
+    }
+
+
+    /**
+     * Determine the list of attribute names that contain a unique value.  An empty list is returned if none have.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @return list of attribute names
+     */
+    public List<String> getUniqueAttributesList(String sourceName,
+                                                String typeName)
+    {
+        List<String> uniqueAttributes = new ArrayList<>();
+
+        TypeDef typeDef = this.getTypeDefByName(sourceName, typeName);
+
+        if (typeDef != null)
+        {
+            /*
+             * Determine the list of names of unique properties
+             */
+            this.getUniquePropertiesList(typeDef.getPropertiesDefinition(), uniqueAttributes);
+
+            /*
+             * Navigate to the super types.
+             */
+            TypeDef superType = null;
+
+            if (typeDef.getSuperType() != null)
+            {
+                superType = this.getTypeDefByName(sourceName, typeDef.getSuperType().getName());
+            }
+
+            while (superType != null)
+            {
+                this.getUniquePropertiesList(superType.getPropertiesDefinition(), uniqueAttributes);
+
+                if (superType.getSuperType() != null)
+                {
+                    superType = this.getTypeDefByName(sourceName, superType.getSuperType().getName());
+                }
+                else
+                {
+                    superType = null;
+                }
+            }
+        }
+
+        return uniqueAttributes;
     }
 
 
@@ -1122,6 +1173,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sourceName           source of the request (used for logging)
      * @param metadataCollectionId unique identifier for the home metadata collection
      * @param provenanceType       origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName             name of the creator
      * @param typeName             name of the type
      * @param properties           properties for the entity
@@ -1133,12 +1185,13 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     public EntityDetail getNewEntity(String                 sourceName,
                                      String                 metadataCollectionId,
                                      InstanceProvenanceType provenanceType,
+                                     String                 replicatedBy,
                                      String                 userName,
                                      String                 typeName,
                                      InstanceProperties     properties,
                                      List<Classification>   classifications) throws TypeErrorException
     {
-        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, userName, typeName, properties, classifications);
+        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, replicatedBy, userName, typeName, properties, classifications);
     }
 
 
@@ -1149,6 +1202,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName               name of the creator
      * @param typeName               name of the type
      * @param properties             properties for the entity
@@ -1161,6 +1215,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                      String                 metadataCollectionId,
                                      String                 metadataCollectionName,
                                      InstanceProvenanceType provenanceType,
+                                     String                 replicatedBy,
                                      String                 userName,
                                      String                 typeName,
                                      InstanceProperties     properties,
@@ -1173,8 +1228,30 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                      userName,
                                                      typeName);
 
+        entity.setReplicatedBy(replicatedBy);
         entity.setProperties(properties);
-        entity.setClassifications(classifications);
+
+        if (classifications != null)
+        {
+            /*
+             * Make sure the classifications have the same metadata collection id as their entity.
+             */
+            List<Classification> homedClassifications = new ArrayList<>();
+
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    classification.setMetadataCollectionId(metadataCollectionId);
+                    classification.setMetadataCollectionName(metadataCollectionName);
+                    classification.setReplicatedBy(replicatedBy);
+
+                    homedClassifications.add(classification);
+                }
+            }
+
+            entity.setClassifications(homedClassifications);
+        }
 
         return entity;
     }
@@ -1427,11 +1504,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     @Override
     public Classification checkEntityNotClassifiedEntity(String             sourceName,
-                                                  EntitySummary      entity,
-                                                  String             classificationName,
-                                                  InstanceProperties classificationProperties,
-                                                  AuditLog           auditLog,
-                                                  String             methodName) throws ClassificationErrorException
+                                                         EntitySummary      entity,
+                                                         String             classificationName,
+                                                         InstanceProperties classificationProperties,
+                                                         AuditLog           auditLog,
+                                                         String             methodName) throws ClassificationErrorException
     {
         final String thisMethodName = "checkEntityNotClassifiedEntity";
 
@@ -1857,8 +1934,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the setup of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update
@@ -1932,8 +2008,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the setup of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName            source of the request (used for logging)
      * @param entity                entity to update
@@ -2490,12 +2565,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
             {
                 // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
-                        one.getProperties(),
-                        two.getProperties(),
-                        sequencingProperty,
-                        sequencingOrder
-                ));
+                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
+                                                                      two.getProperties(),
+                                                                      sequencingProperty,
+                                                                      sequencingOrder));
             }
             else
             {
@@ -2562,12 +2635,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             if (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING) || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING))
             {
                 // If the sequencing is property-based, handover to the property comparator
-                fullResults.sort((one, two) -> OMRSRepositoryContentHelper.compareProperties(
-                        one.getProperties(),
-                        two.getProperties(),
-                        sequencingProperty,
-                        sequencingOrder
-                ));
+                fullResults.sort((one, two) -> this.compareProperties(one.getProperties(),
+                                                                      two.getProperties(),
+                                                                      sequencingProperty,
+                                                                      sequencingOrder));
             }
             else
             {
@@ -2717,10 +2788,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param sequencingOrder ascending or descending order
      * @return sort result
      */
-    private static int  compareProperties(InstanceProperties     instance1Properties,
-                                          InstanceProperties     instance2Properties,
-                                          String                 propertyName,
-                                          SequencingOrder        sequencingOrder)
+    public int  compareProperties(InstanceProperties     instance1Properties,
+                                  InstanceProperties     instance2Properties,
+                                  String                 propertyName,
+                                  SequencingOrder        sequencingOrder)
     {
 
         // todo need to add support for properties in the instance header eg createdBy
@@ -2817,51 +2888,26 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     private static int typeSpecificCompare(String typeName, Object v1, Object v2)
     {
-        int sortOrder;
-        switch (typeName)
+        return switch (typeName)
         {
-            case "boolean":
-                sortOrder = ((Boolean) v1).compareTo((Boolean) v2);
-                break;
-            case "byte":
-                sortOrder = ((Byte) v1).compareTo((Byte) v2);
-                break;
-            case "char":
-                sortOrder = ((Character) v1).compareTo((Character) v2);
-                break;
-            case "short":
-                sortOrder = ((Short) v1).compareTo((Short) v2);
-                break;
-            case "integer":
-                sortOrder = ((Integer) v1).compareTo((Integer) v2);
-                break;
-            case "long":
-                sortOrder = ((Long) v1).compareTo((Long) v2);
-                break;
-            case "float":
-                sortOrder = ((Float) v1).compareTo((Float) v2);
-                break;
-            case "double":
-                sortOrder = ((Double) v1).compareTo((Double) v2);
-                break;
-            case "biginteger":
-                sortOrder = ((BigInteger) v1).compareTo((BigInteger) v2);
-                break;
-            case "bigdecimal":
-                sortOrder = ((BigDecimal) v1).compareTo((BigDecimal) v2);
-                break;
-            case "string":
-                sortOrder = ((String) v1).compareTo((String) v2);
-                break;
-            case "date":
-                sortOrder = ((Date) v1).compareTo((Date) v2);
-                break;
-            default:
+            case "boolean" -> ((Boolean) v1).compareTo((Boolean) v2);
+            case "byte" -> ((Byte) v1).compareTo((Byte) v2);
+            case "char" -> ((Character) v1).compareTo((Character) v2);
+            case "short" -> ((Short) v1).compareTo((Short) v2);
+            case "integer" -> ((Integer) v1).compareTo((Integer) v2);
+            case "long" -> ((Long) v1).compareTo((Long) v2);
+            case "float" -> ((Float) v1).compareTo((Float) v2);
+            case "double" -> ((Double) v1).compareTo((Double) v2);
+            case "biginteger" -> ((BigInteger) v1).compareTo((BigInteger) v2);
+            case "bigdecimal" -> ((BigDecimal) v1).compareTo((BigDecimal) v2);
+            case "string" -> ((String) v1).compareTo((String) v2);
+            case "date" -> ((Date) v1).compareTo((Date) v2);
+            default ->
+            {
                 log.debug("Property type not catered for in compare function");
-                sortOrder = 0;
-        }
-
-        return sortOrder;
+                yield 0;
+            }
+        };
     }
 
 

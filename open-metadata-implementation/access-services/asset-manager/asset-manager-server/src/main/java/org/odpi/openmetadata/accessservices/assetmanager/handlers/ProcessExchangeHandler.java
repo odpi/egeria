@@ -2228,7 +2228,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2251,6 +2252,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                 String  dataSupplierGUID,
                                 String  dataConsumerGUID,
                                 String  qualifiedName,
+                                String  label,
                                 String  description,
                                 String  formula,
                                 Date    effectiveFrom,
@@ -2284,6 +2286,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                             effectiveFrom,
                                             effectiveTo,
                                             qualifiedName,
+                                            label,
                                             description,
                                             formula,
                                             forLineage,
@@ -2347,7 +2350,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2366,6 +2370,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                  String  assetManagerName,
                                  String  dataFlowGUID,
                                  String  qualifiedName,
+                                 String  label,
                                  String  description,
                                  String  formula,
                                  Date    effectiveFrom,
@@ -2387,6 +2392,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                       effectiveFrom,
                                       effectiveTo,
                                       qualifiedName,
+                                      label,
                                       description,
                                       formula,
                                       forLineage,
@@ -2532,7 +2538,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2555,6 +2562,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                    String  currentStepGUID,
                                    String  nextStepGUID,
                                    String  qualifiedName,
+                                   String  label,
                                    String  description,
                                    String  guard,
                                    Date    effectiveFrom,
@@ -2588,6 +2596,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                effectiveFrom,
                                                effectiveTo,
                                                qualifiedName,
+                                               label,
                                                description,
                                                guard,
                                                forLineage,
@@ -2651,7 +2660,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the control flow
      * @param guard function that must be true to travel down this control flow
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2670,6 +2680,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                   String  assetManagerName,
                                   String  controlFlowGUID,
                                   String  qualifiedName,
+                                  String  label,
                                   String  description,
                                   String  guard,
                                   Date    effectiveFrom,
@@ -2691,6 +2702,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                          effectiveFrom,
                                          effectiveTo,
                                          qualifiedName,
+                                         label,
                                          description,
                                          guard,
                                          forLineage,
@@ -2836,7 +2848,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the process call
      * @param formula function that describes the function performed
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2859,6 +2872,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                    String  callerGUID,
                                    String  calledGUID,
                                    String  qualifiedName,
+                                   String  label,
                                    String  description,
                                    String  formula,
                                    Date    effectiveFrom,
@@ -2892,6 +2906,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                effectiveFrom,
                                                effectiveTo,
                                                qualifiedName,
+                                               label,
                                                description,
                                                formula,
                                                forLineage,
@@ -2955,7 +2970,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for the information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that describes the function performed
      * @param effectiveFrom the date when this element is active - null for active now
@@ -2974,6 +2990,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                   String  assetManagerName,
                                   String  processCallGUID,
                                   String  qualifiedName,
+                                  String  label,
                                   String  description,
                                   String  formula,
                                   Date    effectiveFrom,
@@ -2995,6 +3012,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                          effectiveFrom,
                                          effectiveTo,
                                          qualifiedName,
+                                         label,
                                          description,
                                          formula,
                                          forLineage,
@@ -3141,7 +3159,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-     * @param qualifiedName unique identifier for this relationship
+     * @param qualifiedName unique identifier for associated information supply chain
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the mapping
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -3161,6 +3180,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                       String  sourceElementGUID,
                                       String  destinationElementGUID,
                                       String  qualifiedName,
+                                      String  label,
                                       String  description,
                                       Date    effectiveFrom,
                                       Date    effectiveTo,
@@ -3180,6 +3200,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                          destinationElementGUID,
                                                          destinationElementGUIDParameterName,
                                                          qualifiedName,
+                                                         label,
                                                          description,
                                                          effectiveFrom,
                                                          effectiveTo,
@@ -3190,7 +3211,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
+                                                          OpenMetadataType.LINEAGE_MAPPING.typeName,
                                                           sourceElementGUID,
                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                           destinationElementGUID,
@@ -3257,6 +3278,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerName unique name of software server capability representing the caller
      * @param lineageMappingGUID unique identifier of the process call relationship
      * @param qualifiedName unique identifier for this relationship
+     * @param label label for the visualization of the relationship
      * @param description description and/or purpose of the mapping
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -3275,6 +3297,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                      String  assetManagerName,
                                      String  lineageMappingGUID,
                                      String  qualifiedName,
+                                     String  label,
                                      String  description,
                                      Date    effectiveFrom,
                                      Date    effectiveTo,
@@ -3291,6 +3314,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                            lineageMappingGUID,
                                            lineageMappingGUIDParameterName,
                                            qualifiedName,
+                                           label,
                                            description,
                                            effectiveFrom,
                                            effectiveTo,

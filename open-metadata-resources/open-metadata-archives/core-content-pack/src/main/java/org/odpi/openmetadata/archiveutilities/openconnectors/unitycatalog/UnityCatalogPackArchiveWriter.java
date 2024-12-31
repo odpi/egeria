@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiv
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -41,7 +41,6 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }
@@ -64,7 +63,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
         /*
@@ -84,6 +84,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addUCVolumeCatalogTemplate();
         this.addUCTableCatalogTemplate();
         this.addUCFunctionCatalogTemplate();
+        this.addUCRegisteredModelCatalogTemplate();
+        this.addUCModelVersionCatalogTemplate();
 
         /*
          * Create the default integration group.
@@ -114,46 +116,68 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.CREATE_UC_SERVER,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("UnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
+        this.deleteAsCatalogTargetGovernanceActionProcess("UnityCatalogServer",
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                          UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
 
         this.createAndSurveyServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_DB_UC_SERVER,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
-                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_DB_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
-                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
+        this.deleteAsCatalogTargetGovernanceActionProcess("DatabricksUnityCatalogServer",
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_UC_SERVER,
+                                                          GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                          UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getQualifiedName());
+
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogCatalog",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogSchema",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogVolume",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogTable",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogFunction",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
-                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE);
+                                                                GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
+                                                                UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -169,17 +193,21 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
      * @param technologyType value for deployed implementation type
      * @param provisionRequestType request type used to create the server's metadata element
      * @param provisionEngineDefinition governance action engine
+     * @param supportedElementQualifiedName qualified name of the element that this should be listed as a resource
      */
     protected void createProvisionUnityCatalogGovernanceActionProcess(String                     technologyName,
                                                                       String                     technologyType,
                                                                       RequestTypeDefinition      provisionRequestType,
-                                                                      GovernanceEngineDefinition provisionEngineDefinition)
+                                                                      GovernanceEngineDefinition provisionEngineDefinition,
+                                                                      String                     supportedElementQualifiedName)
     {
+        String description = "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.";
+
         String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                       "Provision:" + technologyName + ":GovernanceActionProcess",
                                                                       "Provision " + technologyType,
                                                                       null,
-                                                                      "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
+                                                                      description,
                                                                       null,
                                                                       0,
                                                                       null,
@@ -216,6 +244,17 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
             requestParameters.put(ProvisionUnityCatalogRequestParameter.TECHNOLOGY_TYPE.getName(), technologyType);
 
             archiveHelper.addGovernanceActionProcessFlow(processGUID, null, requestParameters, step1GUID);
+        }
+
+        if (supportedElementQualifiedName != null)
+        {
+            String supportedElementGUID = archiveHelper.queryGUID(supportedElementQualifiedName);
+            archiveHelper.addResourceListRelationshipByGUID(supportedElementGUID,
+                                                            processGUID,
+                                                            ResourceUse.SURVEY_RESOURCE.getResourceUse(),
+                                                            description,
+                                                            provisionRequestType.getRequestParameters(),
+                                                            false);
         }
     }
 
@@ -527,6 +566,101 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                OpenMetadataType.ASSET.typeName,
                                                UnityCatalogPlaceholderProperty.getFunctionPlaceholderPropertyTypes());
     }
+
+
+    private void addUCRegisteredModelCatalogTemplate()
+    {
+        final String methodName = "addUCRegisteredModelCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getDefaultTemplateGUID();
+
+        DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL;
+        String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+                + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getTemplateDescription(),
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        archiveHelper.setGUID(qualifiedName, guid);
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getRegisteredModelPlaceholderPropertyTypes());
+    }
+
+
+    private void addUCModelVersionCatalogTemplate()
+    {
+        final String methodName = "addUCModelVersionCatalogTemplate";
+        final String guid       = UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getDefaultTemplateGUID();
+
+        DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL_VERSION;
+        String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                + UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder();
+        String                     qualifiedName                        = deployedImplementationType.getDeployedImplementationType() + ":"
+                + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
+                + fullName + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder();
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getTemplateDescription(),
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        archiveHelper.setGUID(qualifiedName, guid);
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  UnityCatalogPlaceholderProperty.MODEL_NAME.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.MODEL_VERSION.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getModelVersionPlaceholderPropertyTypes());
+    }
+
 
 
     /**

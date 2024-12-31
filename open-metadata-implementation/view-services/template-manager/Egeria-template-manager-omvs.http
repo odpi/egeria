@@ -34,7 +34,7 @@ Content-Type: application/json
 # This version of the method allows access to advanced features such as multiple states and
 # effectivity dates.
      
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -63,7 +63,7 @@ Content-Type: application/json
 # Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
 # The selected type also controls the names and types of the properties that are allowed.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/from-template
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -77,7 +77,16 @@ Content-Type: application/json
   "isOwnAnchor" : false,
   "effectiveFrom" : "{{$isoTimestamp}}",
   "effectiveTo": "{{$isoTimestamp}}",
-  "replacementProperties" : { },
+  "replacementProperties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "propertyName" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "value of property"
+      }
+    }
+  },
   "placeholderProperties" : {
      "placeholderName1" : "placeholderValue1",
      "placeholderName2" : "placeholderValue2"
@@ -96,7 +105,7 @@ Content-Type: application/json
 # metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
 # the value used in the replaceProperties flag.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-properties
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-properties
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -106,7 +115,18 @@ Content-Type: application/json
   "externalSourceName" : "",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "properties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "replaceProperties" : false
 }
 
 
@@ -115,7 +135,7 @@ Content-Type: application/json
 # Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
 # assigned when it was created.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-status
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -125,7 +145,8 @@ Content-Type: application/json
   "externalSourceName" : "",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "newStatus" : "ACTIVE"
 }
 
 
@@ -133,7 +154,7 @@ Content-Type: application/json
 # @name updateMetadataElementEffectivityInStore
 # Update the effectivity dates control the visibility of the element through specific APIs.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-effectivity
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/update-effectivity
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -153,7 +174,7 @@ Content-Type: application/json
 # @name deleteMetadataElementInStore
 # Delete a specific metadata element.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -171,7 +192,7 @@ Content-Type: application/json
 # @name archiveMetadataElementInStore
 # Archive a specific metadata element.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/archive
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/archive
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -198,7 +219,7 @@ Content-Type: application/json
 # Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
 # a metadata element.
 
- POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -216,7 +237,7 @@ Content-Type: application/json
 # @name reclassifyMetadataElementInStore
 # Update the properties of a classification that is currently attached to a specific metadata element.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-properties
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-properties
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -235,7 +256,7 @@ Content-Type: application/json
 # Update the effectivity dates of a specific classification attached to a metadata element.
 # The effectivity dates control the visibility of the classification through specific APIs.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-effectivity
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-effectivity
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -255,7 +276,7 @@ Content-Type: application/json
 # @name declassifyMetadataElementInStore
 # Remove the named classification from a specific metadata element.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -274,7 +295,7 @@ Content-Type: application/json
 # Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
 # according to the type definition since this will affect how the relationship is interpreted.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -292,7 +313,7 @@ Content-Type: application/json
 # @name updateRelatedElementsInStore
 # Update the properties associated with a relationship.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-properties
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-properties
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -311,7 +332,7 @@ Content-Type: application/json
 # Update the effectivity dates of a specific relationship between metadata elements.
 # The effectivity dates control the visibility of the classification through specific APIs.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-effectivity
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/update-effectivity
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -331,7 +352,7 @@ Content-Type: application/json
 # @name deleteRelatedElementsInStore
 # Delete a relationship between two metadata elements.
 
-POST {{baseURL}}/api/open-metadata/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/related-elements/{{relationshipGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -49,6 +49,15 @@ public enum ActionTarget
               OpenMetadataType.ASSET.typeName,
               null),
 
+
+    /**
+     * A newly deleted Asset (or a subtype of).
+     */
+    DELETED_ASSET("deletedAsset",
+              "A newly deleted Asset (or a subtype of).",
+              OpenMetadataType.ASSET.typeName,
+              null),
+
     /**
      * A person or team who is accountable for the correct operation of a process.
      */

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -77,7 +78,6 @@ public class AssetCatalogRESTServices extends TokenController
                                             int      startFrom,
                                             int      pageSize)
     {
-        final String parameterName = "assetGUID";
         final String methodName    = "getAssetGraph";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
@@ -108,6 +108,56 @@ public class AssetCatalogRESTServices extends TokenController
 
 
     /**
+     * Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+     * retrieved both from the asset, and the anchored schema elements
+     *
+     * @param serverName name of the server instances for this request
+     * @param assetGUID  unique identifier for the asset
+     * @param relationshipTypes list of relationship type names to use in the search
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetLineageGraphResponse getAssetLineageGraph(String       serverName,
+                                                          String       assetGUID,
+                                                          List<String> relationshipTypes,
+                                                          int          startFrom,
+                                                          int          pageSize)
+    {
+        final String methodName    = "getAssetLineageGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AssetLineageGraphResponse response = new AssetLineageGraphResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetConsumer handler = instanceHandler.getAssetConsumerClient(userId, serverName, methodName);
+
+            response.setAssetLineageGraph(handler.getAssetLineageGraph(userId, assetGUID, relationshipTypes, startFrom, pageSize));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Return a list of assets with the requested search string in their name, qualified name
      * or description.  The search string is interpreted as a regular expression (RegEx).
      *
@@ -124,15 +174,15 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetSearchMatchesListResponse findAssetsInDomain(String            serverName,
-                                                             FilterRequestBody requestBody,
-                                                             boolean           startsWith,
-                                                             boolean           endsWith,
-                                                             boolean           ignoreCase,
-                                                             int               startFrom,
-                                                             int               pageSize)
+    public AssetSearchMatchesListResponse findInAssetDomain(String            serverName,
+                                                            FilterRequestBody requestBody,
+                                                            boolean           startsWith,
+                                                            boolean           endsWith,
+                                                            boolean           ignoreCase,
+                                                            int               startFrom,
+                                                            int               pageSize)
     {
-        final String methodName = "findAssetsInDomain";
+        final String methodName = "findInAssetDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 

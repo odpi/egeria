@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -247,6 +248,10 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                     if (primitiveValue instanceof Integer castValue)
                     {
                         return castValue.longValue();
+                    }
+                    else if (primitiveValue instanceof Date date)
+                    {
+                        return date.getTime();
                     }
                     else
                     {

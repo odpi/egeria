@@ -128,6 +128,15 @@ public enum FileType
                 "A document of words and linked to diagrams in Markdown format that describes the other files in the same directory (folder)."),
 
     /**
+     * A formal diagram in Mermaid Markdown format.
+     */
+    MERMAID_FILE("Mermaid Markdown Document",
+                 "Mermaid Markdown",
+                 OpenMetadataType.DOCUMENT.typeName,
+                 DeployedImplementationType.DOCUMENT,
+                "A formal diagram in Mermaid Markdown format."),
+
+    /**
      * A text file with comma-separated values.
      */
     CSV_FILE("CSV File",

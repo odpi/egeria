@@ -787,7 +787,7 @@ public class OMAGServerAdminStoreServices
 
                 for (String variableName : currentPlaceholderValues.keySet())
                 {
-                    String regExMatchString = Pattern.quote("{{"+ variableName + "}}");
+                    String regExMatchString = Pattern.quote("~{"+ variableName + "}~");
                     String[] configBits = omagServerConfigString.split(regExMatchString);
 
                     if (configBits.length > 1)

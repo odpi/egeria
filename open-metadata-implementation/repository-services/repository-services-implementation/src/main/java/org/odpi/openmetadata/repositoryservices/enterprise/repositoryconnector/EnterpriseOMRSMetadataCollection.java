@@ -1075,7 +1075,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         federationControl.executeCommand(executor);
 
-        return executor.getEntityDetailHistory();
+        return executor.getEntityDetailAsOfTime();
     }
 
 
@@ -1843,7 +1843,81 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getRelationshipHistory();
+        return executor.getRelationshipAsOfTime();
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Relationship>} of each historical version of the relationship within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                       at the time requested.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<Relationship> getRelationshipHistory(String                 userId,
+                                                     String                 guid,
+                                                     Date                   fromTime,
+                                                     Date                   toTime,
+                                                     int                    startFromElement,
+                                                     int                    pageSize,
+                                                     HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationshipHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl              federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetRelationshipHistoryExecutor executor          = new GetRelationshipHistoryExecutor(userId,
+                                                                                              guid,
+                                                                                              fromTime,
+                                                                                              toTime,
+                                                                                              startFromElement,
+                                                                                              pageSize,
+                                                                                              sequencingOrder,
+                                                                                              localMetadataCollectionId,
+                                                                                              auditLog,
+                                                                                              repositoryValidator,
+                                                                                              methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getHistoryResults(enterpriseParentConnector);
     }
 
 
@@ -2657,12 +2731,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
             return null;
         }
 
-        return validatedEntityListResults(repositoryName,
-                                          combinedResults,
-                                          sequencingProperty,
-                                          sequencingOrder,
-                                          pageSize,
-                                          methodName);
+        return new ArrayList<>(combinedResults.values());
     }
 
 
@@ -4559,7 +4628,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove
      * relationships attached to the entity.
-     *
      * This method is called when a remote repository calls the variant of purgeEntity that
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
      * However, it may also be used to purge after a soft-delete.
@@ -4732,7 +4800,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * This method is called when a remote repository calls the variant of purgeRelationship that
      * passes the relationship object.  This is typically used if purge is called without a previous soft-delete.
      * However, it may also be used to purge after a soft-delete.
-     *
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
@@ -5098,40 +5165,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                this.getClass().getName(),
                                                methodName);
         }
-    }
-
-
-    /**
-     * Return a validated, sorted list of search results.
-     *
-     * @param repositoryName name of this repository
-     * @param combinedResults results from all cohort repositories
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @param methodName name of method called
-     * @return list of entities
-     * @throws RepositoryErrorException there is a problem with the results
-     */
-    private List<EntityDetail> validatedEntityListResults(String                    repositoryName,
-                                                          Map<String, EntityDetail> combinedResults,
-                                                          String                    sequencingProperty,
-                                                          SequencingOrder           sequencingOrder,
-                                                          int                       pageSize,
-                                                          String                    methodName) throws RepositoryErrorException
-    {
-        if (combinedResults.isEmpty())
-        {
-            return null;
-        }
-
-        List<EntityDetail> actualResults = new ArrayList<>(combinedResults.values());
-
-        // todo: sort results and crop to max page size
-
-        return actualResults;
     }
 
 

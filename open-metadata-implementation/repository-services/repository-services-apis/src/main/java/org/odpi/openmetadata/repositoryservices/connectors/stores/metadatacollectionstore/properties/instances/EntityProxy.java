@@ -63,13 +63,11 @@ public class EntityProxy extends EntitySummary
     {
         super(template);
 
-        if (template instanceof EntityProxy)
+        if (template instanceof EntityProxy entityProxy)
         {
-            EntityProxy entityProxy = (EntityProxy) template;
-
             this.uniqueProperties = entityProxy.getUniqueProperties();
         }
-        else if (template instanceof EntityDetail)
+        else if (template instanceof EntityDetail entityDetail)
         {
             /*
              * This implementation is taking advantage that the only unique property used in the open metadata types
@@ -77,8 +75,6 @@ public class EntityProxy extends EntitySummary
              * properties are unique.  This needs to come from the type definition.
              */
             final String qualifiedNameProperty = "qualifiedName";
-
-            EntityDetail entityDetail = (EntityDetail) template;
 
             if (entityDetail.getProperties() != null)
             {

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -136,14 +135,7 @@ public class EmbeddedConnection extends PropertyBase
      */
     public Connection getEmbeddedConnection()
     {
-        if (embeddedConnection == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Connection(embeddedConnection);
-        }
+        return embeddedConnection;
     }
 
 

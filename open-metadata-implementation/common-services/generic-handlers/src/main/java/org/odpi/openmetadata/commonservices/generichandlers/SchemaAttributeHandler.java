@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -319,7 +320,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             if (schemaTypeBuilder != null && schemaTypeBuilder.isDerived())
             {
                 String sourceName = "local";
-                if (externalSourceName != null && externalSourceName.length() >0)
+                if (externalSourceName != null && !externalSourceName.isEmpty())
                 {
                     sourceName = externalSourceName;
                 }
@@ -819,6 +820,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 requiredClassificationName,
                                                                 omittedClassificationName,
                                                                 2,
+                                                                null,
+                                                                null,
+                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                null,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 serviceSupportedZones,
@@ -1098,6 +1103,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 null,
                                                                 null,
                                                                 2,
+                                                                null,
+                                                                null,
+                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                null,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 serviceSupportedZones,
@@ -1214,6 +1223,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                    null,
                                                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                    0,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
                                                                    supportedZones,
@@ -1595,10 +1608,13 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               false,
                                                                               requiredClassificationName,
                                                                               omittedClassificationName,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               forLineage,
                                                                               forDuplicateProcessing,
                                                                               serviceSupportedZones,
-                                                                              null,
                                                                               startFrom,
                                                                               pageSize,
                                                                               effectiveTime,
@@ -1655,9 +1671,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        resultTypeName,
                                                                        requiredClassificationName,
                                                                        omittedClassificationName,
-                                                                       null,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
                                                                        effectiveTime,
@@ -1997,7 +2016,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                     {
                         try {
                             String sourceName = "local";
-                            if (externalSourceName != null && externalSourceName.length() >0)
+                            if (externalSourceName != null && !externalSourceName.isEmpty())
                             {
                                 sourceName = externalSourceName;
                             }

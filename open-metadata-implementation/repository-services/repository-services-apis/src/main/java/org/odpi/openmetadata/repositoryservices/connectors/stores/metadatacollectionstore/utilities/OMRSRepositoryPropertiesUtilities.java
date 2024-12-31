@@ -1663,6 +1663,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
@@ -1709,6 +1711,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
@@ -1755,6 +1759,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getGUID());
         primitivePropertyValue.setPrimitiveValue(propertyValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
@@ -1806,6 +1812,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
              */
             primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
             Long longValue = propertyValue.getTime();
             primitivePropertyValue.setPrimitiveValue(longValue);
 
@@ -1873,7 +1881,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param sourceName name of caller
      * @param properties properties object to add property to, may be null.
      * @param propertyName name of property
-     * @param ordinal numeric value of property
+     * @param attributeTypeGUID unique identifier of the enum type
+     * @param attributeTypeName unique name of the enum type  * @param ordinal numeric value of property
      * @param symbolicName String value of property
      * @param description String description of property value
      * @param methodName calling method name
@@ -1883,6 +1892,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     public InstanceProperties addEnumPropertyToInstance(String             sourceName,
                                                         InstanceProperties properties,
                                                         String             propertyName,
+                                                        String             attributeTypeGUID,
+                                                        String             attributeTypeName,
                                                         int                ordinal,
                                                         String             symbolicName,
                                                         String             description,
@@ -1910,6 +1921,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         enumPropertyValue.setOrdinal(ordinal);
         enumPropertyValue.setSymbolicName(symbolicName);
         enumPropertyValue.setDescription(description);
+        enumPropertyValue.setTypeGUID(attributeTypeGUID);
+        enumPropertyValue.setTypeName(attributeTypeName);
 
         resultingProperties.setProperty(propertyName, enumPropertyValue);
 
@@ -1964,6 +1977,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                 PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
                 primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
                 primitivePropertyValue.setPrimitiveValue(arrayValue);
 
                 arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
@@ -2554,6 +2569,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
                         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
                         primitivePropertyValue.setPrimitiveValue(arrayValue);
 
                         arrayPropertyValue.setArrayValue(index, primitivePropertyValue);

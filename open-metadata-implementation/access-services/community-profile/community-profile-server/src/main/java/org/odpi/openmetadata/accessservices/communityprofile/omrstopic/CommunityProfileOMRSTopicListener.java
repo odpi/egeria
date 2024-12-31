@@ -105,7 +105,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                     ActorProfileElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
                                                                                                                    contributingUserId,
                                                                                                                    userParameterName,
-                                                                                                                   OpenMetadataType.PERSON.typeName,
+                                                                                                                   OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                                                    false,
                                                                                                                    false,
                                                                                                                    new Date(),

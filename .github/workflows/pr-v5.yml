@@ -16,7 +16,7 @@ jobs:
     name: "Verify PR v5"
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v4.2.0
+      - uses: actions/checkout@v4.2.2
       - uses: gradle/wrapper-validation-action@v2
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -32,12 +32,12 @@ jobs:
             build
             --scan
       - name: Upload Test coverage report
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: Jacoco Coverage Report
           path: build/reports/jacoco/codeCoverageReport
       - name: Upload Log of any dependency failures
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: Dependency Analysis Report (on failure)
           path: build/reports/dependency-analysis/build-health-report.txt

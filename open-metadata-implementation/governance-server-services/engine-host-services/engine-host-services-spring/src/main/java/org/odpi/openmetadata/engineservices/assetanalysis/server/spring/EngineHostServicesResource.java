@@ -136,4 +136,35 @@ public class EngineHostServicesResource
     {
         return restAPI.refreshConfig(serverName, userId, governanceEngineName);
     }
+
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server.
+     * @param userId identifier of calling user
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  GovernanceEngineException there was a problem detected by the governance engine.
+     */
+    @GetMapping(path = "/governance-engines/refresh-config")
+
+    @Operation(summary="refreshConfig",
+            description="Request that all governance engines refresh their configuration by calling the metadata server. " +
+                    "This request is useful if the metadata server has an outage, particularly while the " +
+                    "governance server is initializing.  This request just ensures that the latest configuration " +
+                    "is in use.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine-definition/"))
+
+    public  VoidResponse refreshConfig(@PathVariable String serverName,
+                                       @PathVariable String userId)
+    {
+        return restAPI.refreshConfig(serverName, userId);
+    }
 }

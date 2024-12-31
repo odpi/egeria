@@ -427,9 +427,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Create the Patch
          */
-        final String typeName = "LineageMapping";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -440,16 +438,9 @@ public class OpenMetadataTypesArchive3_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -462,9 +453,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Create the Patch
          */
-        final String typeName = "DataFlow";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FLOW.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -480,9 +469,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Create the Patch
          */
-        final String typeName = "ControlFlow";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_FLOW.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -498,9 +485,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Create the Patch
          */
-        final String typeName = "ProcessCall";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+       TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -511,17 +496,8 @@ public class OpenMetadataTypesArchive3_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "lineNumber";
-        final String attribute1Description     = "Location of the call in the implementation.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LINE_NUMBER));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

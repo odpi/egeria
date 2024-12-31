@@ -26,6 +26,9 @@ provides a local repository with the highest performance persistence store plus 
 * **[graph-repository-connector](graph-repository-connector)** -
 provides a local repository that uses a graph store as its persistence store.
 
+* **[postgres-repository-connector](postgres-repository-connector)** -
+  provides a local repository that uses a postgres database as its persistence store.  Each server/repository has its own database schema.
+
 * **[inmemory-repository-connector](inmemory-repository-connector)** -
 provides a local repository that is entirely in memory.  It is useful for
 testing/developing OMASs and demos.  This module also contains the  **read-only-repository-connector** that

@@ -19,7 +19,7 @@ public class DataDiscoveryInstance extends OMVSServiceInstance
 
 
     /**
-     * Set up theData Discovery OMVS instance
+     * Set up the Data Discovery OMVS instance
      *
      * @param serverName name of this server
      * @param auditLog logging destination

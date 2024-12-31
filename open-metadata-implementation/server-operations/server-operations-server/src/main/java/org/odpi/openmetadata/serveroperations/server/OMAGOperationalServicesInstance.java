@@ -5,6 +5,7 @@ package org.odpi.openmetadata.serveroperations.server;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.adminservices.registration.ViewServerGenericServiceAdmin;
 import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
@@ -34,17 +35,18 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
     private final ServerTypeClassification        serverTypeClassification;
 
-    private OMAGServerConfig                     operationalConfiguration            = null;
-    private OMRSOperationalServices              operationalRepositoryServices       = null;
-    private OCFMetadataOperationalServices       operationalOCFMetadataServices      = null;
-    private GAFMetadataOperationalServices       operationalGAFMetadataServices      = null;
-    private OIFMetadataOperationalServices       operationalOIFMetadataServices      = null;
-    private List<AccessServiceAdmin>             operationalAccessServiceAdminList   = new ArrayList<>();
-    private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
-    private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
-    private EngineHostOperationalServices        operationalEngineHost               = null;
-    private IntegrationDaemonOperationalServices operationalIntegrationDaemon       = null;
-    private OMRSAuditLog                         auditLog                            = null;
+    private OMAGServerConfig                     operationalConfiguration                     = null;
+    private OMRSOperationalServices              operationalRepositoryServices                = null;
+    private OCFMetadataOperationalServices       operationalOCFMetadataServices               = null;
+    private GAFMetadataOperationalServices       operationalGAFMetadataServices               = null;
+    private OIFMetadataOperationalServices       operationalOIFMetadataServices               = null;
+    private List<AccessServiceAdmin>             operationalAccessServiceAdminList            = new ArrayList<>();
+    private List<ViewServiceAdmin>               operationalViewServiceAdminList              = new ArrayList<>();
+    private List<ViewServerGenericServiceAdmin>  operationalViewServerGenericServiceAdminList = new ArrayList<>();
+    private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices          = null;
+    private EngineHostOperationalServices        operationalEngineHost                        = null;
+    private IntegrationDaemonOperationalServices operationalIntegrationDaemon                 = null;
+    private OMRSAuditLog                         auditLog                                     = null;
 
 
     /**
@@ -317,6 +319,28 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     void setOperationalViewServiceAdminList(List<ViewServiceAdmin> operationalViewServiceAdminList)
     {
         this.operationalViewServiceAdminList = operationalViewServiceAdminList;
+    }
+
+
+    /**
+     * Return the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @return list of ViewServiceAdmin objects
+     */
+    public List<ViewServerGenericServiceAdmin> getOperationalViewServerGenericServiceAdminList()
+    {
+        return operationalViewServerGenericServiceAdminList;
+    }
+
+
+    /**
+     * Set up the list of references to the admin object for each active Open Metadata View Service (OMVS).
+     *
+     * @param operationalViewServerGenericServiceAdminList list of ViewServiceAdmin objects
+     */
+    public void setOperationalViewServerGenericServiceAdminList(List<ViewServerGenericServiceAdmin> operationalViewServerGenericServiceAdminList)
+    {
+        this.operationalViewServerGenericServiceAdminList = operationalViewServerGenericServiceAdminList;
     }
 
 

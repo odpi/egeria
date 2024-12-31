@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyRequestParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,6 @@ import java.util.List;
  */
 public enum UnityCatalogSurveyRequestParameter
 {
-    /**
-     * Property name to control how much profiling the survey action service does.
-     */
-    FINAL_ANALYSIS_STEP ("finalAnalysisStep", "Property name to control how much profiling the survey action service does.", "string", "Schema Extraction"),
-
     CATALOG_NAME (UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
                   UnityCatalogPlaceholderProperty.CATALOG_NAME.getDescription(),
                   UnityCatalogPlaceholderProperty.CATALOG_NAME.getDataType(),
@@ -128,7 +124,7 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
 
         return requestParameterTypes;
     }
@@ -143,7 +139,7 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
 
         return requestParameterTypes;
@@ -159,7 +155,7 @@ public enum UnityCatalogSurveyRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getRequestParameterType());
         requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
         requestParameterTypes.add(SCHEMA_NAME.getRequestParameterType());
 

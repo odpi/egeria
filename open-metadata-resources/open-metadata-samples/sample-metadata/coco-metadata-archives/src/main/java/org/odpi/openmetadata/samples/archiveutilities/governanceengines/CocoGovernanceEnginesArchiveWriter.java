@@ -41,6 +41,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveGUID        = "9cbd2b33-e80f-4df2-adc6-d859ebff4c34";
     private static final String                  archiveName        = "CocoGovernanceEngineDefinitions";
     private static final String                  archiveDescription = "Governance Engines for Coco Pharmaceuticals.";
+    private static final Date                    creationDate       = new Date(1639984840038L);
 
 
     /**
@@ -51,7 +52,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         super(archiveGUID,
               archiveName,
               archiveDescription,
-              new Date(),
+              creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });

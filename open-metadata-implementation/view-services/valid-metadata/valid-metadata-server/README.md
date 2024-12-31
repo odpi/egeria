@@ -5,7 +5,7 @@
 
 The Valid Metadata OMVS server-side support is organized in the following top level packages 
 
-* admin -  MyProfileAdmin controls this OMVS's lifecycle. It is initialised here receiving the view service configuration. It is shutdown here.
+* admin -  ValidMetadataAdmin controls this OMVS's lifecycle. It is initialised here receiving the view service configuration. It is shutdown here.
 * ffdc - defines the exceptions and audit log messages.
 * rest - defines the payloads used on the REST API.
 * server - implementation of the view service

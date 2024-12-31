@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -326,46 +327,6 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return information about a specific external reference.
-     *
-     * @param userId calling user
-     * @param qualifiedName unique name for the external reference
-     * @param qualifiedNameParameter name of parameter supplying the qualifiedName
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return properties of the external reference
-     *
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public B getExternalReferenceByQualifiedName(String  userId,
-                                                 String  qualifiedName,
-                                                 String  qualifiedNameParameter,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 Date    effectiveTime,
-                                                 String  methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        return this.getBeanByUniqueName(userId,
-                                        qualifiedName,
-                                        qualifiedNameParameter,
-                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                        OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
-                                        OpenMetadataType.EXTERNAL_REFERENCE.typeName,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
      * Retrieve the list of external reference metadata elements with a matching referenceId.
      * There are no wildcards supported on this request.
      *
@@ -409,10 +370,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -466,10 +430,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -522,10 +489,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -563,6 +533,9 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByType(userId,
                                    OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
                                    OpenMetadataType.EXTERNAL_REFERENCE.typeName,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,
@@ -611,9 +584,12 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
                               OpenMetadataType.EXTERNAL_REFERENCE.typeName,
-                              null,
                               startFrom,
                               pageSize,
+                              null,
+                              null,
+                              SequencingOrder.CREATION_DATE_RECENT,
+                              null,
                               forLineage,
                               forDuplicateProcessing,
                               effectiveTime,

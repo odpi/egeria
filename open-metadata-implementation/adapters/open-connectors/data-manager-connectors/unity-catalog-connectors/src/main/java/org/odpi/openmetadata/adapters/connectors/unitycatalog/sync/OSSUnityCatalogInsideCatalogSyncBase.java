@@ -41,6 +41,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     protected final String                                 connectorName;
     protected final CatalogIntegratorContext               context;
     protected final String                                 catalogGUID;
+    protected final String                                 catalogTypeName = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName();
     protected final String                                 catalogQualifiedName;
     protected final String                                 catalogName;
     protected final PermittedSynchronization               targetPermittedSynchronization;
@@ -447,9 +448,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param memberElement element from Egeria
      * @return properties for UC
      */
-    protected Map<String, String> getUCPropertiesFomMember(MemberElement memberElement)
+    protected Map<String, String> getUCPropertiesFromMember(MemberElement memberElement)
     {
-        final String methodName = "getUCPropertiesFomMember";
+        final String methodName = "getUCPropertiesFromMember";
 
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 

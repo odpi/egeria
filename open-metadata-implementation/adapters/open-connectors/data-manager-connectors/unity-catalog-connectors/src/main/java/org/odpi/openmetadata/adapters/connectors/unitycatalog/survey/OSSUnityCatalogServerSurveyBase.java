@@ -12,8 +12,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileLogAnnotation;
 
@@ -24,9 +27,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 {
     private static final String fullNameProperty                   = "Full Name";
     private static final String descriptionProperty                = "Description";
-    private static final String creationDateProperty = "Creation Date";
-    private static final String createdByProperty    = "Created By";
-    private static final String lastUpdateProperty   = "Last Update Date";
+    private static final String creationDateProperty               = "Creation Date";
+    private static final String createdByProperty                  = "Created By";
+    private static final String lastUpdateProperty                 = "Last Update Date";
     private static final String lastUpdatedByProperty              = "Last Updated By";
     private static final String deployedImplementationTypeProperty = "Deployed Implementation Type";
 
@@ -48,7 +51,7 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
     {
         if (connectionProperties.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogSurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
+            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {
@@ -61,9 +64,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
              */
             if (surveyContext.getRequestParameters() != null)
             {
-                if (surveyContext.getRequestParameters().get(UnityCatalogSurveyRequestParameter.FINAL_ANALYSIS_STEP.getName()) != null)
+                if (surveyContext.getRequestParameters().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName()) != null)
                 {
-                    finalAnalysisStep = surveyContext.getRequestParameters().get(UnityCatalogSurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
+                    finalAnalysisStep = surveyContext.getRequestParameters().get(SurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
                 }
             }
         }
@@ -77,7 +80,7 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * @param nameProperties list of names with properties
      * @return annotation
      */
-    protected ResourceProfileAnnotation getNameListAnnotation(UnityCatalogAnnotationType      annotationType,
+    protected ResourceProfileAnnotation getNameListAnnotation(AnnotationType                  annotationType,
                                                               Map<String, ResourceProperties> nameProperties)
     {
         Map<String, String> nameList = new HashMap<>();
@@ -94,7 +97,11 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
         setUpAnnotation(resourceProfileAnnotation, annotationType);
 
-        resourceProfileAnnotation.setProfilePropertyNames(annotationType.getProfilePropertyNames());
+        List<String> propertyNames = new ArrayList<>();
+
+        propertyNames.add(OpenMetadataProperty.PROFILE_PROPERTIES.name);
+
+        resourceProfileAnnotation.setProfilePropertyNames(propertyNames);
         resourceProfileAnnotation.setProfileProperties(nameList);
 
         return resourceProfileAnnotation;
@@ -307,5 +314,27 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
         protected Date   lastUpdateDate = null;
         protected String lastUpdatedBy  = null;
         protected String owner          = null;
+
+        /**
+         * Default constructor
+         */
+        public ResourceProperties()
+        {
+        }
+
+        /**
+         * Copy/clone constructor
+         *
+         * @param template object to copy
+         */
+        public ResourceProperties(ResourceProperties template)
+        {
+            this.description    = template.description;
+            this.creationDate   = template.creationDate;
+            this.createdBy      = template.createdBy;
+            this.lastUpdateDate = template.lastUpdateDate;
+            this.lastUpdatedBy  = template.lastUpdatedBy;
+            this.owner          = template.owner;
+        }
     }
 }

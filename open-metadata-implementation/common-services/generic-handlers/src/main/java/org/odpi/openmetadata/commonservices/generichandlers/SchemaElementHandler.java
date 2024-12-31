@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -524,6 +525,10 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                   OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                   2,
+                                                                  null,
+                                                                  null,
+                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                  null,
                                                                   false,
                                                                   false,
                                                                   effectiveTime,

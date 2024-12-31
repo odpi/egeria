@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
+import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
@@ -19,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,22 +50,25 @@ public class ConnectorConfigurationFactory
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
 
-    private static final String FILE_BASED_SERVER_CONFIG_STORE_PROVIDER                    = "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider";
-    private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER                     = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
-    private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER                         = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
-    private static final String FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
-    private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
-    private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER                       = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
-    private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
-    private static final String JDBC_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.JDBCAuditLogDestinationProvider";
-    private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
-    private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
-    private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
-    private static final String XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
-    private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
-    private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
-    private static final String OMRS_REST_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
-    private static final String OMRS_TOPIC_PROVIDER                                        = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
+    private static final String FILE_BASED_SERVER_CONFIG_STORE_PROVIDER         = "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider";
+    private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER          = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
+    private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER              = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
+    private static final String FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
+    private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
+    private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
+    private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER             = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
+    private static final String POSTGRES_BASED_AUDIT_LOG_STORE_PROVIDER         = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.PostgreSQLAuditLogDestinationProvider";
+    private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
+    private static final String FILE_BASED_REGISTRY_STORE_PROVIDER              = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
+    private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER        = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String POSTGRES_OMRS_REPOSITORY_CONNECTOR_PROVIDER     = "org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.PostgresOMRSRepositoryConnectorProvider";
+    private static final String YAML_SECRETS_STORE_CONNECTOR_PROVIDER           = "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider";
+    private static final String JDBC_RESOURCE_CONNECTOR_PROVIDER                = "org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider";
+    private static final String XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER         = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
+    private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER    = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
+    private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER    = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
+    private static final String OMRS_REST_REPOSITORY_CONNECTOR_PROVIDER         = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
+    private static final String OMRS_TOPIC_PROVIDER                             = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
@@ -119,8 +123,8 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultAuditLogConnection()
     {
-        List<AuditLogRecordSeverityLevel> supportedSeverityDefinitions = Arrays.asList(AuditLogRecordSeverityLevel.values());
-        List<String>                      supportedSeverities = new ArrayList<>();
+        AuditLogRecordSeverityLevel[] supportedSeverityDefinitions = AuditLogRecordSeverityLevel.values();
+        List<String>                  supportedSeverities          = new ArrayList<>();
 
         for (AuditLogRecordSeverityLevel severityDefinition : supportedSeverityDefinitions)
         {
@@ -225,29 +229,64 @@ public class ConnectorConfigurationFactory
      * Return the connection for the JDBC-based audit log.
      * By default, the File-based Audit log is stored in a directory called localServerName.ffdc.
      *
-     * @param connectionString address of database schema
-     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @param storageProperties  properties used to configure access to the database
      * @return OCF Connection used to create the file based audit logger
      */
-    public Connection getJDBCBasedAuditLogConnection(String       connectionString,
-                                                     List<String> supportedSeverities)
+    public Connection getPostgreSQLBasedAuditLogConnection(Map<String, Object> storageProperties)
     {
-        final String destinationName = "JDBCDatabase";
+        Connection secretsStoreConnection = new Connection();
+        Endpoint   endpoint               = new Endpoint();
 
-        Endpoint endpoint = new Endpoint();
+        if (storageProperties.containsKey(JDBCConfigurationProperty.SECRETS_STORE.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(JDBCConfigurationProperty.SECRETS_STORE.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(JDBCConfigurationProperty.SECRETS_STORE.getExample());
+        }
 
-        endpoint.setAddress(connectionString);
+        secretsStoreConnection.setEndpoint(endpoint);
+        secretsStoreConnection.setConnectorType(getConnectorType(YAML_SECRETS_STORE_CONNECTOR_PROVIDER));
+        secretsStoreConnection.setConfigurationProperties(storageProperties);
 
-        Connection connection = new Connection();
+        List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+        EmbeddedConnection       embeddedConnection  = new EmbeddedConnection();
 
-        connection.setQualifiedName(destinationName + " at " + connectionString);
-        connection.setDisplayName(destinationName + " at " + connectionString);
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(JDBC_BASED_AUDIT_LOG_STORE_PROVIDER));
+        embeddedConnection.setEmbeddedConnection(secretsStoreConnection);
+        embeddedConnections.add(embeddedConnection);
 
-        setSupportedAuditLogSeverities(supportedSeverities, connection);
+        VirtualConnection jdbcResourceConnection = new VirtualConnection();
 
-        return connection;
+        jdbcResourceConnection.setEmbeddedConnections(embeddedConnections);
+        jdbcResourceConnection.setConnectorType(getConnectorType(JDBC_RESOURCE_CONNECTOR_PROVIDER));
+        jdbcResourceConnection.setConfigurationProperties(storageProperties);
+
+        endpoint = new Endpoint();
+
+        if (storageProperties.containsKey(JDBCConfigurationProperty.DATABASE_URL.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(JDBCConfigurationProperty.DATABASE_URL.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(JDBCConfigurationProperty.DATABASE_URL.getExample());
+        }
+        jdbcResourceConnection.setEndpoint(endpoint);
+
+        embeddedConnections = new ArrayList<>();
+        embeddedConnection = new EmbeddedConnection();
+        embeddedConnection.setEmbeddedConnection(jdbcResourceConnection);
+        embeddedConnections.add(embeddedConnection);
+
+        VirtualConnection jdbcAuditLogConnection = new VirtualConnection();
+
+        jdbcAuditLogConnection.setDisplayName("PostgreSQL Database Schema for Audit Log events");
+        jdbcAuditLogConnection.setConnectorType(getConnectorType(POSTGRES_BASED_AUDIT_LOG_STORE_PROVIDER));
+        jdbcAuditLogConnection.setConfigurationProperties(storageProperties);
+        jdbcAuditLogConnection.setEmbeddedConnections(embeddedConnections);
+
+        return jdbcAuditLogConnection;
     }
 
 
@@ -429,6 +468,73 @@ public class ConnectorConfigurationFactory
         connection.setConfigurationProperties(storageProperties);
 
         return connection;
+    }
+
+
+    /**
+     * Return the postgres repository's connection.  This is using the PostgresOMRSRepositoryConnector.
+     *
+     * @param localServerName name of local server
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     *
+     * @return Connection object
+     */
+    public Connection getPostgresRepositoryLocalConnection(String              localServerName,
+                                                           Map<String, Object> storageProperties)
+    {
+        Connection secretsStoreConnection = new Connection();
+        Endpoint   endpoint               = new Endpoint();
+
+        if (storageProperties.containsKey(PostgresConfigurationProperty.SECRETS_STORE.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.SECRETS_STORE.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(PostgresConfigurationProperty.SECRETS_STORE.getExample());
+        }
+
+        secretsStoreConnection.setEndpoint(endpoint);
+        secretsStoreConnection.setConnectorType(getConnectorType(YAML_SECRETS_STORE_CONNECTOR_PROVIDER));
+        secretsStoreConnection.setConfigurationProperties(storageProperties);
+
+        List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+        EmbeddedConnection       embeddedConnection  = new EmbeddedConnection();
+
+        embeddedConnection.setEmbeddedConnection(secretsStoreConnection);
+        embeddedConnections.add(embeddedConnection);
+
+        VirtualConnection jdbcResourceConnection = new VirtualConnection();
+
+        jdbcResourceConnection.setEmbeddedConnections(embeddedConnections);
+        jdbcResourceConnection.setConnectorType(getConnectorType(JDBC_RESOURCE_CONNECTOR_PROVIDER));
+        jdbcResourceConnection.setConfigurationProperties(storageProperties);
+
+        endpoint = new Endpoint();
+
+        if (storageProperties.containsKey(PostgresConfigurationProperty.DATABASE_URL.getName()))
+        {
+            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.DATABASE_URL.getName()).toString());
+        }
+        else
+        {
+            endpoint.setAddress(PostgresConfigurationProperty.DATABASE_URL.getExample());
+        }
+        jdbcResourceConnection.setEndpoint(endpoint);
+
+        embeddedConnections = new ArrayList<>();
+        embeddedConnection = new EmbeddedConnection();
+        embeddedConnection.setEmbeddedConnection(jdbcResourceConnection);
+        embeddedConnections.add(embeddedConnection);
+
+        VirtualConnection postgresConnection = new VirtualConnection();
+
+        postgresConnection.setDisplayName("PostgreSQL Database Schema Repository for " + localServerName);
+        postgresConnection.setConnectorType(getConnectorType(POSTGRES_OMRS_REPOSITORY_CONNECTOR_PROVIDER));
+        postgresConnection.setConfigurationProperties(storageProperties);
+        postgresConnection.setEmbeddedConnections(embeddedConnections);
+
+        return postgresConnection;
     }
 
 

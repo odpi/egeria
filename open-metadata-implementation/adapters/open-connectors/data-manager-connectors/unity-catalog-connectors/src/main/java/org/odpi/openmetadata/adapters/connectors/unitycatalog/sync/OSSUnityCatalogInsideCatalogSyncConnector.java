@@ -43,6 +43,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
     private List<String> defaultIncludeFunctionNames = null;
     private List<String> defaultExcludeVolumeNames   = null;
     private List<String> defaultIncludeVolumeNames   = null;
+    private List<String> defaultExcludeModelNames   = null;
+    private List<String> defaultIncludeModelNames   = null;
 
     private Date lastRefreshCompleteTime = null;
     
@@ -98,6 +100,12 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                              connectionProperties.getConfigurationProperties(),
                                                                              null);
         this.defaultIncludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
+        this.defaultExcludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_MODEL_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
+        this.defaultIncludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_MODEL_NAMES.getName(),
                                                                              connectionProperties.getConfigurationProperties(),
                                                                              null);
     }
@@ -393,6 +401,12 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
         List<String> includeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
                                                                               configurationProperties,
                                                                               defaultIncludeVolumeNames);
+        List<String> excludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_MODEL_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultExcludeModelNames);
+        List<String> includeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_MODEL_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultIncludeModelNames);
 
         try
         {
@@ -463,6 +477,23 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                                     auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncFunctions.refresh());
+
+            OSSUnityCatalogInsideCatalogSyncRegisteredModels syncRegisteredModels = new OSSUnityCatalogInsideCatalogSyncRegisteredModels(connectorName,
+                                                                                                                                         this.getContext(),
+                                                                                                                                         catalogName,
+                                                                                                                                         catalogGUID,
+                                                                                                                                         catalogQualifiedName,
+                                                                                                                                         ucFullNameToEgeriaGUID,
+                                                                                                                                         targetPermittedSynchronization,
+                                                                                                                                         ucConnector,
+                                                                                                                                         ucServerEndpoint,
+                                                                                                                                         templates,
+                                                                                                                                         configurationProperties,
+                                                                                                                                         excludeModelNames,
+                                                                                                                                         includeModelNames,
+                                                                                                                                         auditLog);
+
+            ucFullNameToEgeriaGUID.putAll(syncRegisteredModels.refresh());
         }
         catch (Exception exception)
         {

@@ -1432,18 +1432,16 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connectionString address of database schema
-     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @param storageProperties  properties used to configure access to the database
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or null userId parameter.
      */
-    public VoidResponse addJDBCAuditLogDestination(String       userId,
-                                                   String       serverName,
-                                                   String       connectionString,
-                                                   List<String> supportedSeverities)
+    public VoidResponse addPostgreSQLAuditLogDestination(String              userId,
+                                                         String              serverName,
+                                                         Map<String, Object> storageProperties)
     {
-        final String methodName = "addJDBCAuditLogDestination";
+        final String methodName = "addPostgreSQLAuditLogDestination";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1456,7 +1454,7 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getJDBCBasedAuditLogConnection(connectionString, supportedSeverities));
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getPostgreSQLBasedAuditLogConnection(storageProperties));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1712,6 +1710,63 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
+
+
+    /**
+     * Set up a PostgreSQL Database Schema as the local repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param storageProperties  properties used to configure Egeria Graph DB
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse setPostgresLocalRepository(String              userId,
+                                                   String              serverName,
+                                                   Map<String, Object> storageProperties)
+    {
+        final String methodName = "setPostgresLocalRepository";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+
+            this.setLocalRepositoryConfig(userId,
+                                          serverName,
+                                          configurationFactory.getPostgresLocalRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                                serverConfig.getLocalServerURL(),
+                                                                                                storageProperties));
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**

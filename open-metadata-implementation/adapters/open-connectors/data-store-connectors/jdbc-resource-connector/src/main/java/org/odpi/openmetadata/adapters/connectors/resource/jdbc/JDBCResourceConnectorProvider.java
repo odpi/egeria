@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc;
 
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
@@ -12,8 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * JDBCResourceConnectorProvider is the OCF connector provider for the jdbc resource connector.
@@ -33,25 +32,6 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
     private static final String connectorDisplayName = "Relational Database JDBC Connector";
     private static final String connectorTypeDescription = "Connector supports access to relational databases using exclusively the JDBC API.  This includes both data and metadata.";
     private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/jdbc-resource-connector/";
-
-
-    /**
-     * An optional configuration property that causes the named class to be loaded and registered as a driver.
-     * This property only needs to be defined if the connector is experiencing exceptions related to a missing DriverManager class for
-     * the database URL.
-     */
-    public static final String JDBC_DRIVER_MANAGER_CLASS_NAME = "jdbcDriverManagerClassName";
-
-    /**
-     * Sets the maximum time in seconds that this data source will wait while attempting to connect to a database.
-     * The default value is 0 which means use the system default timeout, if any; otherwise it means no timeout.
-     */
-    public static final String JDBC_CONNECTION_TIMEOUT = "jdbcConnectionTimeout";
-
-    /**
-     * Provides a name to use in messages about the database.  If it is not set then the connection URL string is used.
-     */
-    public static final String JDBC_DATABASE_NAME = "jdbcDatabaseName";
 
 
     /*
@@ -82,11 +62,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(JDBC_DRIVER_MANAGER_CLASS_NAME);
-        recognizedConfigurationProperties.add(JDBC_CONNECTION_TIMEOUT);
-        recognizedConfigurationProperties.add(JDBC_DATABASE_NAME);
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setRecognizedConfigurationProperties(JDBCConfigurationProperty.getRecognizedConfigurationProperties());
 
         /*
          * Information about the type of assets this type of connector works with and the interface it supports.
@@ -113,5 +89,6 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
                 DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_TABLE});
+        super.supportedConfigurationProperties = JDBCConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

@@ -668,15 +668,11 @@ public class OpenMetadataTypesArchive2_5
 
     private TypeDefPatch updateProcessCallRelationship()
     {
-        final String typeName    = "ProcessCall";
-        final String description = "Shows a request-response call between two elements.";
-
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(description);
+        typeDefPatch.setDescription(OpenMetadataType.PROCESS_CALL.description);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -713,24 +709,10 @@ public class OpenMetadataTypesArchive2_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "formula";
-        final String attribute3Description     = "Function that determines the subset of the data that flows.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -740,16 +722,8 @@ public class OpenMetadataTypesArchive2_5
 
     private RelationshipDef addDataFlowRelationship()
     {
-        final String guid            = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
-        final String name            = "DataFlow";
-        final String description     = "Shows that data flows in one direction from one element to another.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_FLOW,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -787,25 +761,10 @@ public class OpenMetadataTypesArchive2_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "formula";
-        final String attribute3Description     = "Function that determines the subset of the data that flows.";
-        final String attribute3DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -815,16 +774,8 @@ public class OpenMetadataTypesArchive2_5
 
     private RelationshipDef addControlFlowRelationship()
     {
-        final String guid            = "35450726-1c32-4d41-b928-22db6d1ae2f4";
-        final String name            = "ControlFlow";
-        final String description     = "Shows that when one element completes processing, control passes to the next element.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTROL_FLOW,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -862,24 +813,10 @@ public class OpenMetadataTypesArchive2_5
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "guard";
-        final String attribute3Description     = "Function that must be true to travel down this control flow.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -900,9 +837,7 @@ public class OpenMetadataTypesArchive2_5
 
     private TypeDefPatch updateLineageMappingRelationship()
     {
-        final String typeName = "LineageMapping";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

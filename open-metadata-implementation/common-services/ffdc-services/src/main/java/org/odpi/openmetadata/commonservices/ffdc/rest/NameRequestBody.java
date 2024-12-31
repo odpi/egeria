@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,9 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NameRequestBody
+public class NameRequestBody extends ResultsRequestBody
 {
-    private Date   effectiveTime = null;
     private String name = null;
     private String nameParameterName = null;
     private String namePropertyName = null;
@@ -44,35 +42,14 @@ public class NameRequestBody
      */
     public NameRequestBody(NameRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            effectiveTime = template.getEffectiveTime();
             name = template.getName();
             nameParameterName = template.getNameParameterName();
             namePropertyName = template.getNamePropertyName();
         }
-    }
-
-
-    /**
-     * Return the date/time to use for the query.
-     *
-     * @return date object
-     */
-    public Date getEffectiveTime()
-    {
-        return effectiveTime;
-    }
-
-
-    /**
-     * Set up  the date/time to use for the query.
-     *
-     * @param effectiveTime date object
-     */
-    public void setEffectiveTime(Date effectiveTime)
-    {
-        this.effectiveTime = effectiveTime;
     }
 
 
@@ -151,11 +128,10 @@ public class NameRequestBody
     public String toString()
     {
         return "NameRequestBody{" +
-                       "effectiveTime=" + effectiveTime +
-                       ", name='" + name + '\'' +
-                       ", nameParameterName='" + nameParameterName + '\'' +
-                       ", namePropertyName='" + namePropertyName + '\'' +
-                       '}';
+                "name='" + name + '\'' +
+                ", nameParameterName='" + nameParameterName + '\'' +
+                ", namePropertyName='" + namePropertyName + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -168,19 +144,13 @@ public class NameRequestBody
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         NameRequestBody that = (NameRequestBody) objectToCompare;
-        return Objects.equals(effectiveTime, that.effectiveTime) &&
-                       Objects.equals(name, that.name) &&
-                       Objects.equals(nameParameterName, that.nameParameterName) &&
-                       Objects.equals(namePropertyName, that.namePropertyName);
+        return Objects.equals(name, that.name) &&
+                Objects.equals(nameParameterName, that.nameParameterName) &&
+                Objects.equals(namePropertyName, that.namePropertyName);
     }
 
 
@@ -192,6 +162,6 @@ public class NameRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveTime, name, nameParameterName, namePropertyName);
+        return Objects.hash(super.hashCode(), name, nameParameterName, namePropertyName);
     }
 }

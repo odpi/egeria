@@ -354,6 +354,39 @@ public class GAFRESTClient extends OCFRESTClient
     }
 
 
+
+    /**
+     * Issue a POST REST call that returns a OpenMetadataGraphResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public OpenMetadataGraphResponse callOpenMetadataGraphPostRESTCall(String    methodName,
+                                                                       String    urlTemplate,
+                                                                       Object    requestBody,
+                                                                       Object... params) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        OpenMetadataGraphResponse restResult = this.callPostRESTCall(methodName,
+                                                                     OpenMetadataGraphResponse.class,
+                                                                     urlTemplate,
+                                                                     requestBody,
+                                                                     params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a GET REST call that returns a OpenMetadataElementResponse object.
      *
@@ -381,7 +414,7 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a RelatedMetadataElementsListResponse object.
+     * Issue a POST REST call that returns a OpenMetadataRelationshipListResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
@@ -393,77 +426,77 @@ public class GAFRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public RelatedMetadataElementsListResponse callRelatedMetadataElementsListPostRESTCall(String    methodName,
+    public OpenMetadataRelationshipListResponse callOpenMetadataRelationshipListPostRESTCall(String    methodName,
+                                                                                             String    urlTemplate,
+                                                                                             Object    requestBody,
+                                                                                             Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        OpenMetadataRelationshipListResponse restResult = this.callPostRESTCall(methodName,
+                                                                                OpenMetadataRelationshipListResponse.class,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a POST REST call that returns a OpenMetadataRelationshipResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public OpenMetadataRelationshipResponse callOpenMetadataRelationshipPostRESTCall(String    methodName,
+                                                                                     String    urlTemplate,
+                                                                                     Object    requestBody,
+                                                                                     Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        OpenMetadataRelationshipResponse restResult = this.callPostRESTCall(methodName,
+                                                                            OpenMetadataRelationshipResponse.class,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a OpenMetadataRelationshipListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public OpenMetadataRelationshipListResponse callRelatedMetadataElementsListGetRESTCall(String    methodName,
                                                                                            String    urlTemplate,
-                                                                                           Object    requestBody,
                                                                                            Object... params) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
-    {
-        RelatedMetadataElementsListResponse restResult = this.callPostRESTCall(methodName,
-                                                                               RelatedMetadataElementsListResponse.class,
-                                                                               urlTemplate,
-                                                                               requestBody,
-                                                                               params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a POST REST call that returns a RelatedMetadataElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public RelatedMetadataElementsResponse callRelatedMetadataElementsPostRESTCall(String    methodName,
-                                                                                   String    urlTemplate,
-                                                                                   Object    requestBody,
-                                                                                   Object... params) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
-    {
-        RelatedMetadataElementsResponse restResult = this.callPostRESTCall(methodName,
-                                                                           RelatedMetadataElementsResponse.class,
-                                                                           urlTemplate,
-                                                                           requestBody,
-                                                                           params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a RelatedMetadataElementsListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public RelatedMetadataElementsListResponse callRelatedMetadataElementsListGetRESTCall(String    methodName,
-                                                                                      String    urlTemplate,
-                                                                                      Object... params) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException
     {
-        RelatedMetadataElementsListResponse restResult = this.callGetRESTCall(methodName, RelatedMetadataElementsListResponse.class, urlTemplate, params);
+        OpenMetadataRelationshipListResponse restResult = this.callGetRESTCall(methodName, OpenMetadataRelationshipListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -472,7 +505,7 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a RelatedMetadataElementsResponse object.
+     * Issue a GET REST call that returns a OpenMetadataRelationshipResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
@@ -483,13 +516,13 @@ public class GAFRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public RelatedMetadataElementsResponse callRelatedMetadataElementGetRESTCall(String    methodName,
-                                                                                 String    urlTemplate,
-                                                                                 Object... params) throws InvalidParameterException,
+    public OpenMetadataRelationshipResponse callRelatedMetadataElementGetRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object... params) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException
     {
-        RelatedMetadataElementsResponse restResult = this.callGetRESTCall(methodName, RelatedMetadataElementsResponse.class, urlTemplate, params);
+        OpenMetadataRelationshipResponse restResult = this.callGetRESTCall(methodName, OpenMetadataRelationshipResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -711,6 +744,32 @@ public class GAFRESTClient extends OCFRESTClient
     }
 
 
+    /**
+     * Issue a GET REST call that returns a BooleanResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public BooleanResponse callBooleanPostRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object    requestBody,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        BooleanResponse restResult = this.callPostRESTCall(methodName, BooleanResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
 
 
     /**

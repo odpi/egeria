@@ -50,13 +50,13 @@ public class GovernanceEngineMap
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
-    public GovernanceEngineMap(String                              localServerName,
-                               String                              localServerUserId,
-                               String                              localServerPassword,
+    public GovernanceEngineMap(String                        localServerName,
+                               String                        localServerUserId,
+                               String                        localServerPassword,
                                GovernanceConfigurationClient configurationClient,
-                               GovernanceContextClient engineActionClient,
-                               AuditLog                            auditLog,
-                               int                                 maxPageSize)
+                               GovernanceContextClient       engineActionClient,
+                               AuditLog                      auditLog,
+                               int                           maxPageSize)
     {
         governanceEngineHandlerFactoryMap = OMAGEngineServiceRegistration.getGovernanceEngineHandlerFactoryMap();
 

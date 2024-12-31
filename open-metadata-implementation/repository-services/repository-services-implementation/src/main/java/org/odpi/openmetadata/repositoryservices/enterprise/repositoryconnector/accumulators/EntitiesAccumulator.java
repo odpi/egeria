@@ -249,7 +249,7 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
     public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
                                                       OMRSMetadataCollection            metadataCollection)
     {
-        if (accumulatedEntities.isEmpty())
+        if ((accumulatedEntities == null) || (accumulatedEntities.isEmpty()))
         {
             return null;
         }
@@ -291,10 +291,8 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
      * The local repository may use this list to send out refresh requests on the OMRS Topic.  If the rules allow, and
      * the remote repository response with a refresh response, this entity could be replicated into the local
      * repository.
-     *
      * The value of this processing is that the entity is of interest to the local users so having a local copy could
      * reduce the access time for the entity.
-     *
      * This call should be made once all processing has stopped.
      *
      * @param repositoryConnector enterprise connector
@@ -316,7 +314,7 @@ public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
         {
             if (accumulatedEntity != null)
             {
-                String  entityGUID = accumulatedEntity.getGUID();
+                String entityGUID = accumulatedEntity.getGUID();
 
                 if (entityGUID != null)
                 {

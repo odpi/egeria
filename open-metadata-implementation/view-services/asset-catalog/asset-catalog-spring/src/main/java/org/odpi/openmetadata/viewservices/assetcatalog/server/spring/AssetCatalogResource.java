@@ -6,12 +6,17 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetLineageGraphResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetListResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -95,6 +100,42 @@ public class AssetCatalogResource
 
 
     /**
+     * Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+     * retrieved both from the asset, and the anchored schema elements
+     *
+     * @param serverName name of the server instances for this request
+     * @param assetGUID  unique identifier for the asset
+     * @param relationshipTypes list of relationship type names to use in the search
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assets/{assetGUID}/as-lineage-graph")
+
+    @Operation(summary="getAssetLineageGraph",
+            description="Return all the elements that are linked to an asset using lineage relationships.  The relationships are" +
+                    " retrieved both from the asset, and the anchored schema elements.",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/features/lineage-management/overview/"))
+
+    public AssetLineageGraphResponse getAssetLineageGraph(@PathVariable String serverName,
+                                                          @PathVariable String assetGUID,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int   startFrom,
+                                                          @RequestParam(required = false, defaultValue = "0")
+                                                          int   pageSize,
+                                                          @RequestBody(required = false)
+                                                          List<String> relationshipTypes)
+    {
+        return restAPI.getAssetLineageGraph(serverName, assetGUID, relationshipTypes, startFrom, pageSize);
+    }
+
+
+    /**
      * Locate string value in elements that are anchored to assets.  The search string may be a regEx.
      *
      * @param serverName name of the server instances for this request
@@ -112,13 +153,13 @@ public class AssetCatalogResource
      */
     @PostMapping(path = "/assets/in-domain/by-search-string")
 
-    @Operation(summary="findAssetsInDomain",
+    @Operation(summary="findInAssetDomain",
             description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String            serverName,
-                                                             @RequestParam (required = false, defaultValue = "true")
+    public AssetSearchMatchesListResponse findInAssetDomain(@PathVariable String            serverName,
+                                                            @RequestParam (required = false, defaultValue = "true")
                                                                            boolean           startsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                                            boolean           endsWith,
@@ -130,7 +171,7 @@ public class AssetCatalogResource
                                                                            int               pageSize,
                                                              @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.findAssetsInDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
+        return restAPI.findInAssetDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
     }
 
 

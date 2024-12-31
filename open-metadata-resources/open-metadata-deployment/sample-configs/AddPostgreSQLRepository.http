@@ -1,0 +1,27 @@
+#
+# These commands rebuild the sample configuration documents for simple-metadata-server, active-metadata-server,
+# view-server, engine-host and integration-daemon.  They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+
+###
+# ---------------------------------------------
+# Metadata Access Store: active-metadata-store
+#
+
+###
+# @name Enable the PostgreSQL Repository
+# Set up the local repository to use the PostgreSQL Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/postgres-repository
+Content-Type: application/json
+
+{
+    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_active_metadata_store",
+    "databaseSchema": "repository_active_metadata_store",
+    "secretsStore": "~{secretsStore}~",
+    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+}
+
+###

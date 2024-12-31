@@ -35,7 +35,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                   DeployedImplementationType.USER_AUTHENTICATION_MANAGER,
                                   "User Token Manager",
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
-                                  null,
                                   OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholder(),
                                   OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                   new OMAGServerPlatformProvider().getConnectorType().getGUID(),
@@ -53,7 +52,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          DeployedImplementationType.REST_API_MANAGER,
                          "Governance Engine Status APIs",
                          PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                         PlaceholderProperty.SERVER_ID.getPlaceholder(),
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                          new EngineHostProvider().getConnectorType().getGUID(),
@@ -70,7 +68,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                 DeployedImplementationType.REST_API_MANAGER,
                                 "Governance Engine Status APIs",
                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                PlaceholderProperty.SERVER_ID.getPlaceholder(),
                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                 new IntegrationDaemonProvider().getConnectorType().getGUID(),
@@ -87,7 +84,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                     DeployedImplementationType.REST_API_MANAGER,
                                     "Open Metadata Repository Access APIs",
                                     PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                    PlaceholderProperty.SERVER_ID.getPlaceholder(),
                                     PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                     PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                     new MetadataAccessServerProvider().getConnectorType().getGUID(),
@@ -104,7 +100,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                          DeployedImplementationType.REST_API_MANAGER,
                          "Open Metadata and Governance End User APIs",
                          PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                         PlaceholderProperty.SERVER_ID.getPlaceholder(),
                          PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                          PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                          new ViewServerProvider().getConnectorType().getGUID(),
@@ -185,7 +180,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     private final DeployedImplementationTypeDefinition softwareCapabilityType;
     private final String                               softwareCapabilityName;
     private final String                               serverName;
-    private final String                               serverId;
     private final String                               description;
     private final String                               userId;
     private final String                               connectorTypeGUID;
@@ -206,7 +200,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
      * @param softwareCapabilityType           type of the associated capability
      * @param softwareCapabilityName           name for the associated capability
      * @param serverName                       name for the server
-     * @param serverId                         id for the server
      * @param description                      description for the server
      * @param userId                           userId for the connection
      * @param connectorTypeGUID                connector type to link to the connection
@@ -223,7 +216,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
                                            DeployedImplementationTypeDefinition softwareCapabilityType,
                                            String                               softwareCapabilityName,
                                            String                               serverName,
-                                           String                               serverId,
                                            String                               description,
                                            String                               userId,
                                            String                               connectorTypeGUID,
@@ -240,7 +232,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
         this.softwareCapabilityType        = softwareCapabilityType;
         this.softwareCapabilityName        = softwareCapabilityName;
         this.serverName                    = serverName;
-        this.serverId                      = serverId;
         this.description                   = description;
         this.userId                        = userId;
         this.connectorTypeGUID             = connectorTypeGUID;
@@ -273,14 +264,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
      */
     public String getQualifiedName()
     {
-        if (serverId == null)
-        {
-            return deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
-        }
-        else
-        {
-            return deployedImplementationType.getDeployedImplementationType() + ":" + serverName + "[" + serverId + "]";
-        }
+        return deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
     }
 
 
@@ -360,17 +344,6 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     public String getServerName()
     {
         return serverName;
-    }
-
-
-    /**
-     * Return the id of the server.
-     *
-     * @return string
-     */
-    public String getServerId()
-    {
-        return serverId;
     }
 
 

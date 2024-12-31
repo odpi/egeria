@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -77,7 +78,7 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
@@ -86,6 +87,7 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{UnityCatalogDeployedImplementationType.OSS_UC_CATALOG});
         super.supportedActionTargetTypes = UnityCatalogTarget.getCatalogActionTargetTypes();
+        super.supportedRequestParameters = UnityCatalogSurveyRequestParameter.getInsideCatalogSurveyRequestParameterTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_INVENTORY});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getCatalogAnnotationTypeTypes();

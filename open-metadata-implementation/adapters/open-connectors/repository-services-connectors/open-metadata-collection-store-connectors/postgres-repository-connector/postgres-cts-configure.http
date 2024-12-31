@@ -1,0 +1,151 @@
+#
+# These commands rebuild the sample configuration documents for postgres-metadata-server
+# They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+@localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
+
+@ctsServer=ctsServer
+@ctsUserId=cts
+@ctsPassword=secret
+
+@tutServer=postgres-metadata-store
+@tutPlatformURLroot=https://localhost:9443
+
+@cohort=ctsCohort
+
+
+###
+# @name Set cSuite server's user Id
+# Set up the user Id that this server should use on open metadata requests.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/server-user-id?
+    id={{ctsUserId}}
+
+###
+# @name Set up event bus to connect to cohort topics
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/event-bus
+Content-Type: application/json
+
+
+{
+"producer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+},
+"consumer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+}
+}
+
+###
+# @name Enable access to the cohort (CTS Server)
+# Request registration to a cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/cohorts/{{cohort}}
+
+###
+# @name Configure the test of an open metadata repository
+# Activate the repository workbench tests to validate the behaviour of a specific repository.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/repository-workbench/repositories
+Content-Type: application/json
+
+{
+  "class": "RepositoryConformanceWorkbenchConfig",
+  "tutRepositoryServerName": "{{tutServer}}",
+  "maxSearchResults": 20,
+  "testEntityTypes": ["Asset"]
+}
+
+
+###
+# @name Configure the test of an open metadata server platform
+# Activate the repository workbench tests to validate the behaviour of a specific server platform.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ctsServer}}/conformance-suite-workbenches/platform-workbench/platforms
+Content-Type: application/json
+
+{
+  "urlRoot": "{{tutPlatformURLroot}}"
+}
+
+
+###
+# @name Start conformance suite using config
+# Activate open metadata conformance suite services.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ctsServer}}/instance
+
+
+
+###
+# ---------------------------------------------
+# Metadata Assess Store: TUT
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/server-user-id?id=tutnpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/server-description
+Content-Type: text/plain
+
+A metadata store that uses a postgreSQL-backed repository
+
+
+###
+# @name Enable the PostgreSQL Repository
+# Set up the local repository to use the PostgreSQL Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/local-repository/mode/postgres-repository
+Content-Type: application/json
+
+{
+    "databaseURL": "~{postgreSQLDatabaseURL}~?currentSchema=repository_postgres_metadata_store",
+    "databaseSchema": "repository_postgres_metadata_store",
+    "secretsStore": "~{secretsStore}~",
+    "secretsCollectionName": "~{postgreSQLServerCollectionName}~"
+}
+
+###
+# @name Set local metadata collection id
+# Set up a human friendly name for the collection of metadata that originates from this metadata server. This name is used in events and messages to help people diagnose problems in the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/local-repository/metadata-collection-id
+Content-Type: text/plain
+
+{{localMatadataCollectionId}}
+
+
+###
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+},
+"consumer":
+{
+"bootstrap.servers":"~{kafkaEndpoint}~"
+}
+}
+
+
+###
+# @name Enable access to the cohort (TUT Server)
+# Request registration to a cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{tutServer}}/cohorts/{{cohort}}
+
+
+###
+# @name start server
+# Restart the postgres-metadata-store server on the OMAG Server Platform.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{tutServer}}/instance
+
+
+###
+

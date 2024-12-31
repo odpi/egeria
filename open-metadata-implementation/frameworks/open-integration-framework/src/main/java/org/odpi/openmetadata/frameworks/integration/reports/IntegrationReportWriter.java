@@ -227,7 +227,8 @@ public class IntegrationReportWriter
                                                                                            anchorGUID,
                                                                                            false,
                                                                                            false,
-                                                                                           null);
+                                                                                           null,
+                                                                                           new Date());
             if (anchorElement != null)
             {
                 anchorTypeMap.put(anchorGUID, anchorElement.getType().getTypeName());
@@ -293,7 +294,7 @@ public class IntegrationReportWriter
             OpenMetadataElement metadataElement;
             try
             {
-                metadataElement = openMetadataStore.getMetadataElementByGUID(userId, elementGUID, true, true, null);
+                metadataElement = openMetadataStore.getMetadataElementByGUID(userId, elementGUID, true, true, null, new Date());
             }
             catch (InvalidParameterException notKnown)
             {

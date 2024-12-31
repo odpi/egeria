@@ -93,7 +93,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage information about the deployed IT infrastructure.
      */
     IT_INFRASTRUCTURE_OMAS           (208,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "IT Infrastructure",
                                       "IT Infrastructure OMAS",
                                       "it-infrastructure",
@@ -171,7 +171,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage a digital service through its lifecycle.
      */
     DIGITAL_SERVICE_OMAS            ( 216,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Digital Service",
                                       "Digital Service OMAS",
                                       "digital-service",
@@ -210,7 +210,7 @@ public enum AccessServiceDescription implements Serializable
      * Provide metadata services and watch dog notification to the governance action services.
      */
     GOVERNANCE_ENGINE_OMAS           (219,
-                                      ComponentDevelopmentStatus.STABLE,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Governance Engine",
                                       "Governance Engine OMAS",
                                       "governance-engine",
@@ -236,7 +236,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage governance related projects.
      */
     PROJECT_MANAGEMENT_OMAS          (221,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Project Management",
                                       "Project Management OMAS",
                                       "project-management",
@@ -275,7 +275,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage exceptions and actions from open governance.
      */
     STEWARDSHIP_ACTION_OMAS          (225,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Stewardship Action",
                                       "Stewardship Action OMAS",
                                       "stewardship-action",

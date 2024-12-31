@@ -372,18 +372,8 @@ public class OpenMetadataTypesArchive2_0
 
     private EntityDef addDatabaseManagerEntity()
     {
-        final String guid            = OpenMetadataType.DATABASE_MANAGER.typeGUID;
-        final String name            = OpenMetadataType.DATABASE_MANAGER.typeName;
-        final String description     = OpenMetadataType.DATABASE_MANAGER.description;
-        final String descriptionGUID = OpenMetadataType.DATABASE_MANAGER.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATABASE_MANAGER.wikiURL;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATABASE_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
 
     }
 

@@ -10,10 +10,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerTaggi
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MeaningElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetSearchMatches;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -22,7 +19,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
@@ -348,6 +344,65 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                              pageSize);
 
         return restResult.getAssetGraph();
+    }
+
+
+    /**
+     * Return all the elements that are linked to an asset using lineage relationships.  The relationships are
+     * retrieved both from the asset, and the anchored schema elements
+     *
+     * @param userId the userId of the requesting user
+     * @param assetGUID  unique identifier for the asset
+     * @param relationshipTypes list of relationship type names to use in the search
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetLineageGraph getAssetLineageGraph(String       userId,
+                                                  String       assetGUID,
+                                                  List<String> relationshipTypes,
+                                                  int          startFrom,
+                                                  int          pageSize) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetLineageGraph";
+        final String   guidParameter = "assetGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/as-lineage-graph?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+
+        AssetLineageGraphResponse restResult;
+
+        if (relationshipTypes == null)
+        {
+            restResult = restClient.callAssetLineageGraphPostRESTCall(methodName,
+                                                                      urlTemplate,
+                                                                      new ArrayList<>(),
+                                                                      serverName,
+                                                                      userId,
+                                                                      assetGUID,
+                                                                      startFrom,
+                                                                      pageSize);
+        }
+        else
+        {
+            restResult = restClient.callAssetLineageGraphPostRESTCall(methodName,
+                                                                      urlTemplate,
+                                                                      relationshipTypes,
+                                                                      serverName,
+                                                                      userId,
+                                                                      assetGUID,
+                                                                      startFrom,
+                                                                      pageSize);
+        }
+
+        return restResult.getAssetLineageGraph();
     }
 
 

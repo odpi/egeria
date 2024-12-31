@@ -68,7 +68,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     public  static final String  defaultLocalServerType                   = null;
     private static final String  defaultLocalOrganizationName             = null;
-    private static final String  defaultLocalServerURL                    = "{{egeriaEndpoint}}";
+    private static final String  defaultLocalServerURL                    = "~{egeriaEndpoint}~";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     public  static final int     defaultMaxPageSize                       = 1000;
 

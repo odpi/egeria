@@ -80,7 +80,7 @@ public class PostgresServerIntegrationProvider extends IntegrationConnectorProvi
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.IN_DEVELOPMENT);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
         componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);

@@ -1,0 +1,77 @@
+# Egeria-repository-services-postgres-repository
+
+###
+# @name get metadata collection Id
+GET http://localhost:8080/servers/cocoMDS1/open-metadata/repository-services/users/{{adminUserId}}/metadata-collection-id
+
+###
+# @name Get types
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/all
+
+###
+# @name Get Entity Detail
+# The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entity/{{guid}}
+
+###
+# @name Get Entity Detail (federated query)
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}
+
+<> ./Get Entity.200.json
+// http://localhost:8080/open-metadata/repository-services/users/julesk/instances/entity/fd7d41e7-70f5-42ec-86d3-88683e599494
+
+###
+
+@guid=c857b5a1-e497-4436-ac6b-c2265dcc4892
+
+###
+# @name Get Relationship
+# The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/relationship/{{guid}}
+
+###
+# @name Get All Relationships For Entity (federated query)
+# The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}/relationships
+Content-Type: application/json
+
+{
+    "class" : "TypeLimitedFindRequest",
+    "offset" : 0,
+    "pageSize" : 0
+}
+
+###
+# @name Get Specific Relationships For Entity (federated query)
+# The getEntityDetails requests returns a repository services instance of category **entity**.  An entity describes a node in the graph of metadata.  An asset is stored in the repository as an entity.  This query is set up to retrieve one of the assets created in the main exercise.  Notice that the entity includes information about the type of entity and the audit header information that shows the home repository.
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/enterprise/instances/entity/{{guid}}/relationships
+Content-Type: application/json
+
+{
+  "class" : "TypeLimitedFindRequest",
+  "typeGUID" : "bc5a5eb1-881b-4055-aa2c-78f314282ac2",
+  "sequencingOrder" : "GUID",
+  "offset" : 0,
+  "pageSize" : 0
+}
+
+
+###
+# @name Get TypeDef By Name
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/typedef/name/Asset
+
+###
+# @name Get AttributeTypeDef By Name
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/types/attribute-typedef/name/GovernanceActionStatus
+
+###
+# @name Find Entities By Property Value
+POST {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{user}}/instances/entities/by-property-value?
+    searchCriteria=.*cust.*
+Content-Type: application/json
+
+{
+    "class" : "EntityPropertyFindRequest",
+    "offset" : 0,
+    "pageSize" : 100
+}

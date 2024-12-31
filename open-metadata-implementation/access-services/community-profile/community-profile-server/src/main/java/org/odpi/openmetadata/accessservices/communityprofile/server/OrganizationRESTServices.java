@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -1198,7 +1199,7 @@ public class OrganizationRESTServices
                                             String                   personRoleGUID,
                                             int                      startFrom,
                                             int                      pageSize,
-                                            EffectiveTimeRequestBody requestBody)
+                                            ResultsRequestBody requestBody)
     {
         final String methodName                  = "getAppointees";
         final String personRoleGUIDParameterName = "personRoleGUID";
@@ -1227,6 +1228,10 @@ public class OrganizationRESTServices
                                                                                              null,
                                                                                              OpenMetadataType.ACTOR_PROFILE.typeName,
                                                                                              1,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             null,
                                                                                              false,
                                                                                              false,
                                                                                              startFrom,

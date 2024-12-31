@@ -31,6 +31,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     private static final String                  archiveGUID        = "ac202586-4042-407b-ae51-8096dfda223e";
     private static final String                  archiveName        = "Coco Pharmaceuticals Business Systems";
     private static final String                  archiveDescription = "The data flows from Coco Pharmaceuticals business systems to the data lake.";
+    private static final Date                    creationDate       = new Date(1639984840038L);
 
 
     /**
@@ -41,7 +42,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
         super(archiveGUID,
               archiveName,
               archiveDescription,
-              new Date(),
+              creationDate,
               archiveFileName,
               new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
                                          new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
@@ -57,6 +58,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
     {
         addHosts();
         addSystems();
+        addSystemLineage();
     }
 
 
@@ -100,7 +102,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
             extendedProperties.put(OpenMetadataProperty.USER_ID.name, systemDefinition.getUserId());
 
-
+            archiveHelper.setGUID(systemDefinition.getQualifiedName(), systemDefinition.getSystemGUID());
             String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                        systemDefinition.getQualifiedName(),
                                                        systemDefinition.getSystemId(),
@@ -109,7 +111,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                        systemDefinition.getZones(),
                                                        null,
                                                        extendedProperties);
-
+            assert(serverGUID.equals(systemDefinition.getSystemGUID()));
 
 
             if (systemDefinition.getSystemType().getServerPurpose() != null)
@@ -125,20 +127,43 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                 {
                     String softwareCapabilityQName = softwareCapabilityTypeName + " for " + systemDefinition.getQualifiedName();
 
-                    archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
-                                                        softwareCapabilityQName,
-                                                        softwareCapabilityQName,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        (Classification)null,
-                                                        serverGUID,
-                                                        OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                        OpenMetadataType.ASSET.typeName);
+                    if (softwareCapabilityTypeName.endsWith(OpenMetadataType.ENGINE.typeName))
+                    {
+                        Classification engineClassification = archiveHelper.getEngineClassification(softwareCapabilityTypeName);
+
+                        archiveHelper.addSoftwareCapability(OpenMetadataType.ENGINE.typeName,
+                                                            softwareCapabilityQName,
+                                                            softwareCapabilityQName,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            engineClassification,
+                                                            serverGUID,
+                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                            OpenMetadataType.ASSET.typeName);
+                    }
+                    else
+                    {
+                        archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
+                                                            softwareCapabilityQName,
+                                                            softwareCapabilityQName,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            (Classification)null,
+                                                            serverGUID,
+                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                            OpenMetadataType.ASSET.typeName);
+                    }
+
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),
                                                                              null,
@@ -170,5 +195,24 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
             }
         }
     }
+
+
+
+    /**
+     * The systems define the hosts.
+     */
+    private void addSystemLineage()
+    {
+        for (SystemLevelLineage systemLevelLineage : SystemLevelLineage.values())
+        {
+            archiveHelper.addLineageRelationship(systemLevelLineage.getSourceSystem().getSystemGUID(),
+                                                 systemLevelLineage.getDestinationSystem().getSystemGUID(),
+                                                 systemLevelLineage.getRelationshipName(),
+                                                 systemLevelLineage.getRelationshipLabel());
+
+
+        }
+    }
+
 }
 

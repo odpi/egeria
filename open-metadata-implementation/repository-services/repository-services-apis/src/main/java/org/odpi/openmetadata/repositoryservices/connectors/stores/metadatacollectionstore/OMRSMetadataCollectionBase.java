@@ -6992,6 +6992,29 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     }
 
 
+
+    /**
+     * Throw exception to indicate that an entity unique identifier is not recognized.
+     *
+     * @param entityGUID unknown unique identifier
+     * @param methodName calling method
+     * @param error caught exception
+     *
+     * @throws EntityNotKnownException unknown entity
+     */
+    protected void reportEntityNotKnown(String    entityGUID,
+                                        String    methodName,
+                                        Exception error) throws EntityNotKnownException
+    {
+        throw new EntityNotKnownException(OMRSErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID,
+                                                                                              methodName,
+                                                                                              repositoryName),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          error);
+    }
+
+
     /**
      * Throw exception to indicate that a relationship unique identifier is not recognized.
      *

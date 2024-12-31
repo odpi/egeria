@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,9 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SearchStringRequestBody
+public class SearchStringRequestBody extends ResultsRequestBody
 {
-    private Date   effectiveTime             = null;
     private String searchString              = null;
     private String searchStringParameterName = null;
     private String typeName                  = null;
@@ -44,35 +42,14 @@ public class SearchStringRequestBody
      */
     public SearchStringRequestBody(SearchStringRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            effectiveTime = template.getEffectiveTime();
-            searchString = template.getSearchString();
+            searchString              = template.getSearchString();
             searchStringParameterName = template.getSearchStringParameterName();
-            typeName = template.getTypeName();
+            typeName                  = template.getTypeName();
         }
-    }
-
-
-    /**
-     * Return the date/time to use for the query.
-     *
-     * @return date object
-     */
-    public Date getEffectiveTime()
-    {
-        return effectiveTime;
-    }
-
-
-    /**
-     * Set up  the date/time to use for the query.
-     *
-     * @param effectiveTime date object
-     */
-    public void setEffectiveTime(Date effectiveTime)
-    {
-        this.effectiveTime = effectiveTime;
     }
 
 
@@ -151,11 +128,10 @@ public class SearchStringRequestBody
     public String toString()
     {
         return "SearchStringRequestBody{" +
-                       "effectiveTime=" + effectiveTime +
-                       ", searchString='" + searchString + '\'' +
-                       ", searchStringParameterName='" + searchStringParameterName + '\'' +
-                       ", typeName='" + typeName + '\'' +
-                       '}';
+                "searchString='" + searchString + '\'' +
+                ", searchStringParameterName='" + searchStringParameterName + '\'' +
+                ", typeName='" + typeName + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -168,21 +144,14 @@ public class SearchStringRequestBody
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         SearchStringRequestBody that = (SearchStringRequestBody) objectToCompare;
-        return Objects.equals(effectiveTime, that.effectiveTime) &&
-                       Objects.equals(searchString, that.searchString) &&
-                       Objects.equals(typeName, that.typeName) &&
-                       Objects.equals(searchStringParameterName, that.searchStringParameterName);
+        return Objects.equals(searchString, that.searchString) &&
+                Objects.equals(searchStringParameterName, that.searchStringParameterName) &&
+                Objects.equals(typeName, that.typeName);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -192,6 +161,6 @@ public class SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(effectiveTime, searchString, searchStringParameterName, typeName);
+        return Objects.hash(super.hashCode(), searchString, searchStringParameterName, typeName);
     }
 }

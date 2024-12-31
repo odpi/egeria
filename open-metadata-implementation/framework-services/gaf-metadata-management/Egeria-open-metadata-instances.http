@@ -74,6 +74,13 @@ GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{servic
 Content-Type: application/json
 
 ###
+# @name getMetadataElementHistory
+# Retrieve a specific metadata element.
+
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+Content-Type: application/json
+
+###
 # @name deleteMetadataElement
 # Delete a specific metadata element.
 

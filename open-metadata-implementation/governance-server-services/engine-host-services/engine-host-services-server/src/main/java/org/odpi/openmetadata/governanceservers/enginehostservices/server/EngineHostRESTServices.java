@@ -70,6 +70,49 @@ public class EngineHostRESTServices
     }
 
 
+
+    /**
+     * Request that all governance engines refresh their configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server.
+     * @param userId identifier of calling user
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  GovernanceEngineException there was a problem detected by the governance engine.
+     */
+    public  VoidResponse refreshConfig(String serverName,
+                                       String userId)
+    {
+        final String        methodName = "refreshConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            instanceHandler.refreshConfig(userId, serverName, null, methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
     /**
      * Return a summary of the requested engine's status.
      *

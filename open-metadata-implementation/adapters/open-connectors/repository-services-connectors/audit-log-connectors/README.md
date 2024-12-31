@@ -12,8 +12,8 @@ Log Destination Connector that displays the contents of event added ans addition
 Change the format or add additional information.
 
 * **[audit-log-file-connector](audit-log-file-connector)** - supports a directory of JSON files that each contain an audit log record.
-* 
-* **[audit-log-jdbc-connector](audit-log-jdbc-connector)** - supports a JDBC Schema of tables that store the data from the audit log records.
+
+* **[audit-log-postgres-connector](audit-log-postgres-connector)** - supports a PostgreSQL Database Schema that stores the data from the audit log records of one or more servers.
 
 * **[audit-log-slf4j-connector](audit-log-slf4j-connector)** - supports the logging of log record to the slf4j ecosystem.
 

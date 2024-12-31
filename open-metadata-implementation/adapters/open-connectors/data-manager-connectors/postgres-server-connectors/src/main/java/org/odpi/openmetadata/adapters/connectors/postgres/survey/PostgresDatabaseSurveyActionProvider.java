@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
@@ -77,7 +77,7 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.IN_DEVELOPMENT);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
         componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
@@ -88,6 +88,6 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
         super.supportedActionTargetTypes = PostgresTarget.getPostgresDatabaseActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
-        super.producedAnnotationTypes    = PostgresAnnotationType.getPostgresDatabaseAnnotationTypeTypes();
+        super.producedAnnotationTypes    = SurveyDatabaseAnnotationType.getPostgresDatabaseAnnotationTypeTypes();
     }
 }

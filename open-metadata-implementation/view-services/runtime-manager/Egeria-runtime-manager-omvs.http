@@ -298,11 +298,55 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/engine-hosts/{{serverGUID}}/governance-engines/{{governanceEngineName}}/refresh-config
 Authorization: Bearer {{token}}
 
+
+###
+# @name refreshConfig
+# Request that all governance engines refresh their configuration by calling the metadata server.
+# This request is useful if the metadata server has an outage, particularly while the
+# governance server is initializing.  This request just ensures that the latest configuration
+# is in use. See https://egeria-project.org/concepts/governance-engine-definition/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/engine-hosts/{{serverGUID}}/governance-engines/refresh-config
+Authorization: Bearer {{token}}
+
 ###
 # ========================================================================================
 # Metadata Access Servers
 
-@cohortName=add name here
+
+
+###
+#==================================================
+# Load Archives
+#==================================================
+
+###
+# @name get the GUID for active-metadata-store
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "active-metadata-store",
+  "namePropertyName" : "name"
+}
+
+> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
 
 ###
 # @name addOpenMetadataArchiveFile
@@ -324,6 +368,10 @@ Content-Type: application/json
 
 {
 }
+
+###
+
+@cohortName=add name here
 
 ###
 # @name connectToCohort

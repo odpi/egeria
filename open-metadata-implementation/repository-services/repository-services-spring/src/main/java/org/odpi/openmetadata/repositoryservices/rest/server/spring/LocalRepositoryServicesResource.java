@@ -746,7 +746,7 @@ public class LocalRepositoryServicesResource
     public  EntityListResponse getEntityDetailHistory(@PathVariable String              serverName,
                                                       @PathVariable String              userId,
                                                       @PathVariable String              guid,
-                                                      @RequestBody  HistoryRangeRequest historyRangeRequest)
+                                                      @RequestBody(required = false)  HistoryRangeRequest historyRangeRequest)
     {
         return restAPI.getEntityDetailHistory(serverName, userId, guid, historyRangeRequest);
     }
@@ -1157,7 +1157,8 @@ public class LocalRepositoryServicesResource
     public  RelationshipListResponse getRelationshipHistory(@PathVariable String              serverName,
                                                             @PathVariable String              userId,
                                                             @PathVariable String              guid,
-                                                            @RequestBody  HistoryRangeRequest historyRangeRequest)
+                                                            @RequestBody(required = false)
+                                                                          HistoryRangeRequest historyRangeRequest)
     {
         return restAPI.getRelationshipHistory(serverName, userId, guid, historyRangeRequest);
     }

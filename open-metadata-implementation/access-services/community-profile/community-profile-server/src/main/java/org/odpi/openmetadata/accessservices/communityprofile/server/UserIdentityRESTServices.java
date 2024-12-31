@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -562,9 +563,12 @@ public class UserIdentityRESTServices
                                                                        searchStringParameterName,
                                                                        OpenMetadataType.USER_IDENTITY.typeGUID,
                                                                        OpenMetadataType.USER_IDENTITY.typeName,
-                                                                       null,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        false,
                                                                        false,
                                                                        new Date(),

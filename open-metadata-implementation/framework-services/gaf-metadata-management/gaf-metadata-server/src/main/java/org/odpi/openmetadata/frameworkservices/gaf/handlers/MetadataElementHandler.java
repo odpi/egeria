@@ -43,7 +43,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private final RelatedElementsConverter<OpenMetadataRelationship> relatedElementsConverter;
+    private final RelatedElementsConverter<OpenMetadataRelationship> openMetadataRelationshipsConverter;
     private final RelatedElementConverter<RelatedMetadataElement>    relatedElementConverter;
 
     private final FilesAndFoldersHandler<Object, Object, Object>     filesAndFoldersHandler;
@@ -94,8 +94,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
               publishZones,
               auditLog);
 
-        relatedElementsConverter = new RelatedElementsConverter<>(repositoryHelper, serviceName, serverName);
-        relatedElementConverter = new RelatedElementConverter<>(repositoryHelper, serviceName, serverName);
+        openMetadataRelationshipsConverter = new RelatedElementsConverter<>(repositoryHelper, serviceName, serverName);
+        relatedElementConverter            = new RelatedElementConverter<>(repositoryHelper, serviceName, serverName);
 
         filesAndFoldersHandler = new FilesAndFoldersHandler<>(null,
                                                               Object.class,
@@ -125,6 +125,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param methodName calling method
      *
@@ -138,6 +139,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                       boolean      forLineage,
                                       boolean      forDuplicateProcessing,
                                       List<String> serviceSupportedZones,
+                                      Date         asOfTime,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
@@ -155,6 +157,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
+                                          asOfTime,
                                           effectiveTime,
                                           methodName);
     }
@@ -167,6 +170,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the lookup
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
@@ -178,17 +187,21 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public B getMetadataElementByUniqueName(String       userId,
-                                            String       uniqueName,
-                                            String       uniqueNameParameterName,
-                                            String       uniqueNamePropertyName,
-                                            boolean      forLineage,
-                                            boolean      forDuplicateProcessing,
-                                            List<String> serviceSupportedZones,
-                                            Date         effectiveTime,
-                                            String       methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public B getMetadataElementByUniqueName(String              userId,
+                                            String              uniqueName,
+                                            String              uniqueNameParameterName,
+                                            String              uniqueNamePropertyName,
+                                            List<ElementStatus> limitResultsByStatus,
+                                            Date                asOfTime,
+                                            SequencingOrder     sequencingOrder,
+                                            String              sequencingPropertyName,
+                                            boolean             forLineage,
+                                            boolean             forDuplicateProcessing,
+                                            List<String>        serviceSupportedZones,
+                                            Date                effectiveTime,
+                                            String              methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String nameParameterName = "uniqueName";
         final String namePropertyName  = "uniqueNamePropertyName";
@@ -206,6 +219,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueNamePropertyName,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            getInstanceStatuses(limitResultsByStatus),
+                                            asOfTime,
+                                            getSequencingOrder(sequencingOrder),
+                                            sequencingPropertyName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -222,6 +239,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueNamePropertyName,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            getInstanceStatuses(limitResultsByStatus),
+                                            asOfTime,
+                                            getSequencingOrder(sequencingOrder),
+                                            sequencingPropertyName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -238,6 +259,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the lookup
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
@@ -249,17 +276,21 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public String getMetadataElementGUIDByUniqueName(String       userId,
-                                                     String       uniqueName,
-                                                     String       uniqueNameParameterName,
-                                                     String       uniqueNamePropertyName,
-                                                     boolean      forLineage,
-                                                     boolean      forDuplicateProcessing,
-                                                     List<String> serviceSupportedZones,
-                                                     Date         effectiveTime,
-                                                     String       methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public String getMetadataElementGUIDByUniqueName(String              userId,
+                                                     String              uniqueName,
+                                                     String              uniqueNameParameterName,
+                                                     String              uniqueNamePropertyName,
+                                                     List<ElementStatus> limitResultsByStatus,
+                                                     Date                asOfTime,
+                                                     SequencingOrder     sequencingOrder,
+                                                     String              sequencingPropertyName,
+                                                     boolean             forLineage,
+                                                     boolean             forDuplicateProcessing,
+                                                     List<String>        serviceSupportedZones,
+                                                     Date                effectiveTime,
+                                                     String              methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String nameParameterName = "uniqueName";
 
@@ -280,6 +311,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueNamePropertyName,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            getInstanceStatuses(limitResultsByStatus),
+                                            asOfTime,
+                                            getSequencingOrder(sequencingOrder),
+                                            sequencingPropertyName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -295,6 +330,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param userId caller's userId
      * @param searchString name to retrieve
      * @param typeName optional type name to restrict search to a specific type of element (and their subtypes)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
@@ -308,23 +349,35 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<B> findMetadataElementsWithString(String       userId,
-                                                  String       searchString,
-                                                  String       typeName,
-                                                  boolean      forLineage,
-                                                  boolean      forDuplicateProcessing,
-                                                  List<String> serviceSupportedZones,
-                                                  Date         effectiveTime,
-                                                  int          startFrom,
-                                                  int          pageSize,
-                                                  String       methodName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<B> findMetadataElementsWithString(String              userId,
+                                                  String              searchString,
+                                                  String              typeName,
+                                                  List<ElementStatus> limitResultsByStatus,
+                                                  Date                asOfTime,
+                                                  String              sequencingProperty,
+                                                  SequencingOrder     sequencingOrder,
+                                                  boolean             forLineage,
+                                                  boolean             forDuplicateProcessing,
+                                                  List<String>        serviceSupportedZones,
+                                                  Date                effectiveTime,
+                                                  int                 startFrom,
+                                                  int                 pageSize,
+                                                  String              methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        if (typeName == null)
+        {
+            invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        }
+        else if (searchString == null)
+        {
+            searchString = ".*";
+        }
 
         String searchTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
@@ -344,10 +397,13 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                               searchStringParameterName,
                               searchTypeGUID,
                               searchTypeName,
+                              getInstanceStatuses(limitResultsByStatus),
+                              asOfTime,
+                              getSequencingOrder(sequencingOrder),
+                              sequencingProperty,
                               forLineage,
                               forDuplicateProcessing,
                               serviceSupportedZones,
-                              null,
                               startFrom,
                               pageSize,
                               effectiveTime,
@@ -387,7 +443,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                              List<ElementStatus> limitResultsByStatus,
                                              Date                asOfTime,
                                              String              sequencingProperty,
-                                             SequencingOrder sequencingOrder,
+                                             SequencingOrder     sequencingOrder,
                                              List<String>        serviceSupportedZones,
                                              Date                effectiveTime,
                                              int                 startFrom,
@@ -397,7 +453,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     PropertyServerException
     {
         final String typeParameterName = "typeName";
-        final String entityGUIDParameterName = "foundEntity.GUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
@@ -411,71 +466,24 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesByType(userId,
                                                                           entityTypeGUID,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
                                                                           this.getInstanceStatuses(limitResultsByStatus),
-                                                                          startFrom,
-                                                                          pageSize,
                                                                           asOfTime,
                                                                           sequencingProperty,
                                                                           getSequencingOrder(sequencingOrder),
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          startFrom,
+                                                                          pageSize,
                                                                           effectiveTime,
                                                                           methodName);
 
-
-        if (entities != null)
-        {
-            List<B> results = new ArrayList<>();
-            List<String>       validatedAnchorGUIDs = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
-                        {
-                            this.validateAnchorEntity(userId,
-                                                      entity.getGUID(),
-                                                      entity.getType().getTypeDefName(),
-                                                      entity,
-                                                      entityGUIDParameterName,
-                                                      false,
-                                                      false,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      serviceSupportedZones,
-                                                      effectiveTime,
-                                                      methodName);
-
-                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                            {
-                                validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
-                            }
-                        }
-
-                        /*
-                         * Entity is added if validate anchor entity does not throw an exception.
-                         */
-                        results.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException notVisible)
-                    {
-                        log.debug("Skip entity " + entity.getGUID());
-                    }
-                }
-            }
-
-            if (! results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       serviceSupportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -486,6 +494,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param elementGUID unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
@@ -500,19 +514,23 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElement> getRelatedMetadataElements(String       userId,
-                                                                   String       elementGUID,
-                                                                   int          startingAtEnd,
-                                                                   String       relationshipTypeName,
-                                                                   boolean      forLineage,
-                                                                   boolean      forDuplicateProcessing,
-                                                                   List<String> serviceSupportedZones,
-                                                                   Date         effectiveTime,
-                                                                   int          startFrom,
-                                                                   int          pageSize,
-                                                                   String       methodName) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+                                                                   String              elementGUID,
+                                                                   int                 startingAtEnd,
+                                                                   String              relationshipTypeName,
+                                                                   List<ElementStatus> limitResultsByStatus,
+                                                                   Date                asOfTime,
+                                                                   String              sequencingProperty,
+                                                                   SequencingOrder     sequencingOrder,
+                                                                   boolean             forLineage,
+                                                                   boolean             forDuplicateProcessing,
+                                                                   List<String>        serviceSupportedZones,
+                                                                   Date                effectiveTime,
+                                                                   int                 startFrom,
+                                                                   int                 pageSize,
+                                                                   String              methodName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         final String guidParameterName = "elementGUID";
         final String otherEndGUIDParameterName = "otherEnd.getGUID()";
@@ -560,6 +578,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     null,
                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     attachmentAtEnd,
+                                                                    getInstanceStatuses(limitResultsByStatus),
+                                                                    asOfTime,
+                                                                    getSequencingOrder(sequencingOrder),
+                                                                    sequencingProperty,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -635,6 +657,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of zones
@@ -649,19 +677,23 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> getMetadataElementRelationships(String       userId,
-                                                                          String       metadataElementAtEnd1GUID,
-                                                                          String       relationshipTypeName,
-                                                                          String       metadataElementAtEnd2GUID,
-                                                                          boolean      forLineage,
-                                                                          boolean      forDuplicateProcessing,
-                                                                          List<String> serviceSupportedZones,
-                                                                          Date         effectiveTime,
-                                                                          int          startFrom,
-                                                                          int          pageSize,
-                                                                          String       methodName) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+    public List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+                                                                          String              metadataElementAtEnd1GUID,
+                                                                          String              relationshipTypeName,
+                                                                          String              metadataElementAtEnd2GUID,
+                                                                          List<ElementStatus> limitResultsByStatus,
+                                                                          Date                asOfTime,
+                                                                          String              sequencingProperty,
+                                                                          SequencingOrder     sequencingOrder,
+                                                                          boolean             forLineage,
+                                                                          boolean             forDuplicateProcessing,
+                                                                          List<String>        serviceSupportedZones,
+                                                                          Date                effectiveTime,
+                                                                          int                 startFrom,
+                                                                          int                 pageSize,
+                                                                          String              methodName) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
         final String end1ParameterName = "metadataElementAtEnd1GUID";
 
@@ -685,6 +717,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     metadataElementAtEnd2GUID,
                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     0,
+                                                                    getInstanceStatuses(limitResultsByStatus),
+                                                                    asOfTime,
+                                                                    getSequencingOrder(sequencingOrder),
+                                                                    sequencingProperty,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -699,9 +735,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             for (Relationship relationship : relationships)
             {
-                results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
-                                                                            relationship,
-                                                                            methodName));
+                results.add(openMetadataRelationshipsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                      relationship,
+                                                                                      methodName));
             }
 
             return results;
@@ -939,10 +975,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private ArrayPropertyValue
-    getArrayPropertyValue(AttributeTypeDef     typeDef,
-                          int                  arrayCount,
-                          Map<String, Object>  arrayValues) throws InvalidParameterException
+    private ArrayPropertyValue getArrayPropertyValue(AttributeTypeDef     typeDef,
+                                                     int                  arrayCount,
+                                                     Map<String, Object>  arrayValues) throws InvalidParameterException
     {
         final String methodName = "getArrayPropertyValue";
 
@@ -978,9 +1013,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private EnumPropertyValue
-    getEnumPropertyValue(AttributeTypeDef typeDef,
-                         String           symbolicName) throws InvalidParameterException
+    private EnumPropertyValue getEnumPropertyValue(AttributeTypeDef typeDef,
+                                                   String           symbolicName) throws InvalidParameterException
     {
         final String methodName                = "getEnumPropertyValue";
         final String symbolicNameParameterName = "symbolicName";
@@ -1028,14 +1062,12 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private MapPropertyValue
-    getMapPropertyValue(AttributeTypeDef    typeDef,
-                        Map<String, Object> mapValues) throws InvalidParameterException
+    private MapPropertyValue getMapPropertyValue(AttributeTypeDef    typeDef,
+                                                 Map<String, Object> mapValues) throws InvalidParameterException
     {
         final String methodName = "getMapPropertyValue";
 
-        MapPropertyValue
-                omrsPropertyValue = new MapPropertyValue();
+        MapPropertyValue omrsPropertyValue = new MapPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.MAP);
@@ -1066,10 +1098,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private PrimitivePropertyValue
-    getPrimitivePropertyValue(AttributeTypeDef     typeDef,
-                              PrimitiveTypeCategory primitiveTypeCategory,
-                              Object               primitiveValue) throws InvalidParameterException
+    private PrimitivePropertyValue getPrimitivePropertyValue(AttributeTypeDef      typeDef,
+                                                             PrimitiveTypeCategory primitiveTypeCategory,
+                                                             Object                primitiveValue) throws InvalidParameterException
     {
         final String methodName = "getPrimitivePropertyValue";
         final String valueParameterName = "primitiveValue";
@@ -1146,9 +1177,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private StructPropertyValue
-    getStructPropertyValue(AttributeTypeDef    typeDef,
-                           Map<String, Object> attributes) throws InvalidParameterException
+    private StructPropertyValue getStructPropertyValue(AttributeTypeDef    typeDef,
+                                                       Map<String, Object> attributes) throws InvalidParameterException
     {
         final String methodName = "getStructPropertyValue";
 
@@ -1411,9 +1441,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             {
                 if (relationship != null)
                 {
-                    results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
-                                                                                relationship,
-                                                                                methodName));
+                    results.add(openMetadataRelationshipsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                          relationship,
+                                                                                          methodName));
                 }
             }
 
@@ -1469,8 +1499,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                                         PropertyServerException
     {
         final String typeParameterName = "typeName";
-        final String entityProxyGUIDParameterName = "foundRelationship.EntityProxy.GUID";
-        final String foundGUIDParameterName = "foundRelationship.GUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
@@ -1505,49 +1533,21 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                 {
                     try
                     {
-                        EntityProxy entityProxy = relationship.getEntityOneProxy();
-
-                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entityProxy, methodName);
-
-                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
-                        {
-                            /*
-                             * Entity is retrieved inside the loop to ensure it is only retrieved once
-                             */
-                            EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userId,
-                                                                                          entityProxy.getGUID(),
-                                                                                          entityProxyGUIDParameterName,
-                                                                                          entityProxy.getType().getTypeDefName(),
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          effectiveTime,
-                                                                                          methodName);
-
-                            this.validateAnchorEntity(userId,
-                                                      entityDetail.getGUID(),
-                                                      entityDetail.getType().getTypeDefName(),
-                                                      entityDetail,
-                                                      foundGUIDParameterName,
-                                                      false,
-                                                      false,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      serviceSupportedZones,
-                                                      effectiveTime,
-                                                      methodName);
-
-                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
-                            {
-                                validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
-                            }
-                        }
+                        validateRelationship(userId,
+                                             relationship,
+                                             validatedAnchorGUIDs,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
 
                         /*
                          * Entity is added if validate anchor relationship does not throw an exception.
                          */
-                        results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
-                                                                                    relationship,
-                                                                                    methodName));
+                        results.add(openMetadataRelationshipsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                              relationship,
+                                                                                              methodName));
                     }
                     catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException notVisible)
                     {
@@ -1560,6 +1560,38 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             {
                 return results;
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert OMRS relationships into OpenMetadataRelationships
+     *
+     * @param relationships relationships retrieved from the repository
+     * @param methodName calling method
+     * @return list of relationships or null
+     * @throws PropertyServerException unable to convert relationship
+     */
+    public List<OpenMetadataRelationship> convertOpenMetadataRelationships(List<Relationship> relationships,
+                                                                           String             methodName) throws PropertyServerException
+    {
+        if (relationships != null)
+        {
+            List<OpenMetadataRelationship> results = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    results.add(openMetadataRelationshipsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                          relationship,
+                                                                                          methodName));
+                }
+            }
+
+            return results;
         }
 
         return null;
@@ -2087,6 +2119,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                           parentRelationshipTypeGUID,
                                                                                           parentRelationshipTypeName,
                                                                                           attachmentEnd,
+                                                                                          null,
+                                                                                          null,
+                                                                                          org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder.CREATION_DATE_RECENT,
+                                                                                          null,
                                                                                           false,
                                                                                           false,
                                                                                           effectiveFrom,

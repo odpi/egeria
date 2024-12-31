@@ -102,7 +102,12 @@ public enum PropertyComparisonOperator implements Serializable
     /**
      * Has a value that matches the provided regular expression (strings only).
      */
-    LIKE      (9, "Like",                  "Has a value that matches the provided regular expression (strings only).");
+    LIKE      (9, "Like",                  "Has a value that matches the provided regular expression (strings only)."),
+
+    /**
+     * Has a value that matches the provided regular expression (strings only).
+     */
+    NOT_LIKE  (10, "Not Like",             "Has a value that does not match the provided regular expression (strings only).");
 
     private static final long serialVersionUID = 1L;
 

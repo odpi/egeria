@@ -298,6 +298,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         context.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
+                                      catalogTypeName,
                                       ucSchemaGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(schemaInfo,
@@ -358,12 +359,13 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         SchemaInfo schemaInfo = ucConnector.createSchema(super.getUCNameFromMember(memberElement),
                                                          catalogName,
                                                          super.getUCCommentFomMember(memberElement),
-                                                         super.getUCPropertiesFomMember(memberElement));
+                                                         super.getUCPropertiesFromMember(memberElement));
 
         if (memberElement.getExternalIdentifier() == null)
         {
             context.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
+                                          catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
                                           deployedImplementationType.getAssociatedTypeName(),
                                           this.getExternalIdentifierProperties(schemaInfo,

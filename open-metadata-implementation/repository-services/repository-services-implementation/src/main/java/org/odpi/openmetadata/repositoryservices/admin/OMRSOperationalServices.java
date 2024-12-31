@@ -1125,7 +1125,9 @@ public class OMRSOperationalServices
 
             log.debug("Unable to create audit log store connector: " + error);
 
-            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_AUDIT_LOG_STORE.getMessageDefinition(localServerName),
+            throw new OMRSConfigErrorException(OMRSErrorCode.NULL_AUDIT_LOG_STORE.getMessageDefinition(localServerName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       error.getMessage()),
                                                this.getClass().getName(),
                                                methodName,
                                                error);

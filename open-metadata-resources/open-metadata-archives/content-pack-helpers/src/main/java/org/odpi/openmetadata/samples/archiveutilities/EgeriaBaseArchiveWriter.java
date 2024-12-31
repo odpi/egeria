@@ -118,7 +118,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          archiveName,
                                                          originatorName,
                                                          creationDate,
-                                                         creationDate.getTime(),
+                                                         new Date().getTime(),
                                                          versionName,
                                                          guidMapFileName);
 

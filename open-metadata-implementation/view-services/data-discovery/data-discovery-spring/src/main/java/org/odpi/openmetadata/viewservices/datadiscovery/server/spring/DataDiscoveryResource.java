@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-discovery")
 
-@Tag(name="API: Data Discovery OMVS", description="The Data Discovery OMVS provides APIs for retrieving and data specifications and save searches.",
+@Tag(name="API: Data Discovery OMVS", description="The Data Discovery OMVS provides APIs for locating the data needed for a project.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-discovery/overview/"))
 

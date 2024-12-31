@@ -14,7 +14,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * ApacheKafkaPackArchiveWriter creates an open metadata archive that includes the connector type
@@ -30,7 +29,6 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }
@@ -53,7 +51,8 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
         /*
@@ -98,13 +97,21 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_KAFKA_SERVER,
-                                                          GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("ApacheKafkaServer",
                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                            GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_KAFKA_SERVER,
-                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE);
+                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
+                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
+        this.deleteAsCatalogTargetGovernanceActionProcess("ApacheKafkaServer",
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName(),
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_KAFKA_SERVER,
+                                                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

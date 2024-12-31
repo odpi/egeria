@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -406,11 +407,11 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     {
         String folderGUID = null;
 
-        List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
-                                                                                                                                      2,
-                                                                                                                                      relationshipName,
-                                                                                                                                      0,
-                                                                                                                                      0);
+        RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
+                                                                                                                                    2,
+                                                                                                                                    relationshipName,
+                                                                                                                                    0,
+                                                                                                                                    0);
 
         /*
          * It is possible that the folders have not yet been added - give the cataloguing process time to complete.
@@ -433,9 +434,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                                                                                                              0);
         }
 
-        if (relatedMetadataElementList != null)
+        if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
         {
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList)
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
             {
                 if (relatedMetadataElement != null)
                 {

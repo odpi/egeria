@@ -20,8 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LineageMappingProperties extends RelationshipProperties
 {
-    private String               qualifiedName = null;
-    private String               description   = null;
+    private String qualifiedName = null;
+    private String label         = null;
+    private String description   = null;
 
 
     /**
@@ -43,6 +44,7 @@ public class LineageMappingProperties extends RelationshipProperties
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
+            label         = template.getLabel();
             description   = template.getDescription();
         }
     }
@@ -68,6 +70,28 @@ public class LineageMappingProperties extends RelationshipProperties
     public String getQualifiedName()
     {
         return qualifiedName;
+    }
+
+
+    /**
+     * Return the label used when displaying this relationship.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the label used when displaying this relationship.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
     }
 
 
@@ -105,6 +129,7 @@ public class LineageMappingProperties extends RelationshipProperties
                        "effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + qualifiedName + '\'' +
+                       ", label='" + label + '\'' +
                        ", description='" + description + '\'' +
                        '}';
     }
@@ -129,6 +154,7 @@ public class LineageMappingProperties extends RelationshipProperties
         }
         LineageMappingProperties that = (LineageMappingProperties) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
+                Objects.equals(getLabel(), that.getLabel()) &&
                        Objects.equals(getDescription(), that.getDescription());
     }
 
@@ -141,6 +167,6 @@ public class LineageMappingProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description);
+        return Objects.hash(qualifiedName, label, description);
     }
 }
