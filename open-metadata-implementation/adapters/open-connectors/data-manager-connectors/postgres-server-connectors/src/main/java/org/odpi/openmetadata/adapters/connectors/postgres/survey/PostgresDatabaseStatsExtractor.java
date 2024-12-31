@@ -3,10 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDatabaseMeasurement;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
 
@@ -47,7 +47,7 @@ public class PostgresDatabaseStatsExtractor
      */
     List<Annotation> getStatistics() throws SQLException, PropertyServerException
     {
-        Map<String, RelationalDatabaseMeasurement> databaseMeasurements = new HashMap<>();
+        Map<String, RelationalDataManagerMeasurement> databaseMeasurements = new HashMap<>();
 
         String pg_stat_user_tablesSQLCommand = "SELECT datname, tup_fetched, tup_inserted, tup_updated, tup_deleted, session_time, active_time, stats_reset FROM pg_catalog.pg_stat_database;";
 
@@ -61,9 +61,9 @@ public class PostgresDatabaseStatsExtractor
 
             if (validDatabases.contains(databaseName))
             {
-                RelationalDatabaseMeasurement databaseMeasurement = new RelationalDatabaseMeasurement();
+                RelationalDataManagerMeasurement databaseMeasurement = new RelationalDataManagerMeasurement();
 
-                databaseMeasurement.setDatabaseName(databaseName);
+                databaseMeasurement.setResourceName(databaseName);
                 databaseMeasurement.setRowsFetched(resultSet.getLong("tup_fetched"));
                 databaseMeasurement.setRowsInserted(resultSet.getLong("tup_inserted"));
                 databaseMeasurement.setRowsUpdated(resultSet.getLong("tup_updated"));
@@ -81,7 +81,7 @@ public class PostgresDatabaseStatsExtractor
 
         for (String databaseName : validDatabases)
         {
-            RelationalDatabaseMeasurement currentDatabase = databaseMeasurements.get(databaseName);
+            RelationalDataManagerMeasurement currentDatabase = databaseMeasurements.get(databaseName);
 
             if (currentDatabase != null)
             {
@@ -113,22 +113,22 @@ public class PostgresDatabaseStatsExtractor
 
         for (String databaseName : databaseMeasurements.keySet())
         {
-            RelationalDatabaseMeasurement currentDatabase = databaseMeasurements.get(databaseName);
+            RelationalDataManagerMeasurement currentDatabase = databaseMeasurements.get(databaseName);
 
             if (currentDatabase != null)
             {
                 ResourceMeasureAnnotation annotation = new ResourceMeasureAnnotation();
 
-                annotation.setAnnotationType(PostgresAnnotationType.DATABASE_METRICS.getName());
-                annotation.setSummary(PostgresAnnotationType.DATABASE_METRICS.getSummary());
-                annotation.setExplanation(PostgresAnnotationType.DATABASE_METRICS.getExplanation());
-                annotation.setAnalysisStep(PostgresAnnotationType.DATABASE_METRICS.getAnalysisStep());
+                annotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
+                annotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
+                annotation.setExplanation(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getExplanation());
+                annotation.setAnalysisStep(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getAnalysisStep());
 
                 annotation.setJsonProperties(surveyActionServiceConnector.getJSONProperties(currentDatabase));
 
                 Map<String, String> resourceProperties = new HashMap<>();
 
-                resourceProperties.put("Database Name", currentDatabase.getDatabaseName());
+                resourceProperties.put("Database Name", currentDatabase.getResourceName());
                 resourceProperties.put("Database Size", Long.toString(currentDatabase.getSize()));
                 resourceProperties.put("Rows Fetched", Long.toString(currentDatabase.getRowsFetched()));
                 resourceProperties.put("Rows Inserted", Long.toString(currentDatabase.getRowsInserted()));

@@ -16,6 +16,15 @@ import java.util.List;
  */
 public enum SurveyRequestParameter
 {
+    /**
+     * Property name to control how much profiling the survey action service does.
+     */
+    FINAL_ANALYSIS_STEP ("finalAnalysisStep", "Property name to control how much profiling the survey action service does.", "string", "Schema Extraction"),
+
+
+    /**
+     * Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.
+     */
     IGNORE_ANALYSIS_STEPS ("ignoreAnalysisSteps", "Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.", "array<string>", "step3,step4"),
 
     ;

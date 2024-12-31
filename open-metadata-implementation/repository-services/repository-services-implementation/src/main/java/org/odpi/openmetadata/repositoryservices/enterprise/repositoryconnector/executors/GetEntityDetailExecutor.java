@@ -282,12 +282,12 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetail getEntityDetailHistory() throws InvalidParameterException,
-                                                        RepositoryErrorException,
-                                                        EntityNotKnownException,
-                                                        EntityProxyOnlyException,
-                                                        FunctionNotSupportedException,
-                                                        UserNotAuthorizedException
+    public EntityDetail getEntityDetailAsOfTime() throws InvalidParameterException,
+                                                         RepositoryErrorException,
+                                                         EntityNotKnownException,
+                                                         EntityProxyOnlyException,
+                                                         FunctionNotSupportedException,
+                                                         UserNotAuthorizedException
     {
         EntityDetail entity = this.getEntityDetail();
 

@@ -1256,7 +1256,7 @@ public class ITInfrastructureResource
                                                                  @PathVariable String                   assetGUID,
                                                                  @RequestParam int                      startFrom,
                                                                  @RequestParam int                      pageSize,
-                                                                 @RequestBody  EffectiveTimeRequestBody requestBody)
+                                                                 @RequestBody ResultsRequestBody requestBody)
     {
         return restAPI.getServerAssetUsesForElements(serverName, userId, capabilityGUID, assetGUID, startFrom, pageSize, requestBody);
     }

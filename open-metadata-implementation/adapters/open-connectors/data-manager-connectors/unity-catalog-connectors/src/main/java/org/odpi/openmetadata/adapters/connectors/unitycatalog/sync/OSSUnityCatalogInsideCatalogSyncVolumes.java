@@ -333,6 +333,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         context.addExternalIdentifier(catalogGUID,
                                       catalogQualifiedName,
+                                      catalogTypeName,
                                       ucVolumeGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(volumeInfo,
@@ -399,6 +400,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         {
             context.addExternalIdentifier(catalogGUID,
                                           catalogQualifiedName,
+                                          catalogTypeName,
                                           memberElement.getElement().getElementGUID(),
                                           deployedImplementationType.getAssociatedTypeName(),
                                           this.getExternalIdentifierProperties(volumeInfo,

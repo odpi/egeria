@@ -6,14 +6,16 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogMetric;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.FunctionInfo;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableInfo;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeInfo;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyResourceManagerAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDatabaseMetric;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
@@ -63,11 +65,15 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
 
             Map<String, ResourceProperties> functionList = new HashMap<>();
             Map<String, ResourceProperties> tableList    = new HashMap<>();
+            Map<String, ResourceProperties> columnList   = new HashMap<>();
             Map<String, ResourceProperties> volumeList   = new HashMap<>();
+            Map<String, ResourceProperties> modelList    = new HashMap<>();
 
             long functionCount = 0;
             long tableCount    = 0;
+            long columnCount   = 0;
             long volumeCount   = 0;
+            long modelCount    = 0;
 
             if ((catalogName != null) && (schemaName != null))
             {
@@ -118,6 +124,43 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
                             resourceProperties.owner = tableInfo.getOwner();
                             tableList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), resourceProperties);
                             tableCount ++;
+
+                            if (tableInfo.getColumns() != null)
+                            {
+                                for (ColumnInfo columnInfo : tableInfo.getColumns())
+                                {
+                                    ResourceProperties columnResourceProperties = new ResourceProperties(resourceProperties);
+
+                                    columnResourceProperties.description = columnInfo.getComment();
+                                    columnList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName() + "." + columnInfo.getName(), columnResourceProperties);
+                                    columnCount ++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                List<RegisteredModelInfo> registeredModelInfos = ucConnector.listRegisteredModels(catalogName, schemaName);
+
+                if (registeredModelInfos != null)
+                {
+                    for (RegisteredModelInfo registeredModelInfo : registeredModelInfos)
+                    {
+                        if (registeredModelInfo != null)
+                        {
+                            ResourceProperties resourceProperties = new ResourceProperties();
+
+                            resourceProperties.description = registeredModelInfo.getComment();
+                            resourceProperties.creationDate = new Date(registeredModelInfo.getCreated_at());
+                            resourceProperties.createdBy = registeredModelInfo.getCreated_by();
+                            if (registeredModelInfo.getUpdated_at() != 0L)
+                            {
+                                resourceProperties.lastUpdateDate = new Date(registeredModelInfo.getUpdated_at());
+                            }
+                            resourceProperties.lastUpdatedBy = registeredModelInfo.getUpdated_by();
+                            resourceProperties.owner = registeredModelInfo.getOwner();
+                            modelList.put(registeredModelInfo.getFull_name(), resourceProperties);
+                            modelCount ++;
                         }
                     }
                 }
@@ -153,20 +196,33 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
 
             setUpAnnotation(resourceMeasureAnnotation, UnityCatalogAnnotationType.SCHEMA_METRICS);
 
+            RelationalDataManagerMeasurement relationalDataManagerMeasurement = new RelationalDataManagerMeasurement();
+
+            relationalDataManagerMeasurement.setResourceName(catalogName + "." + schemaName);
+            relationalDataManagerMeasurement.setTableCount(tableCount);
+            relationalDataManagerMeasurement.setColumnCount(columnCount);
+
+            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(relationalDataManagerMeasurement));
+
             Map<String, String> resourceProperties = new HashMap<>();
 
             resourceProperties.put(UnityCatalogMetric.NO_OF_FUNCTIONS.getPropertyName(), Long.toString(functionCount));
-            resourceProperties.put(UnityCatalogMetric.NO_OF_TABLES.getPropertyName(), Long.toString(tableCount));
+            resourceProperties.put(RelationalDatabaseMetric.TABLE_COUNT.getPropertyName(), Long.toString(tableCount));
+            resourceProperties.put(RelationalDatabaseMetric.COLUMN_COUNT.getPropertyName(), Long.toString(columnCount));
             resourceProperties.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), Long.toString(volumeCount));
+            resourceProperties.put(UnityCatalogMetric.NO_OF_MODELS.getPropertyName(), Long.toString(modelCount));
 
             Map<String, Long>   resourceCounts     = new HashMap<>();
 
             resourceCounts.put(UnityCatalogMetric.NO_OF_FUNCTIONS.getPropertyName(), functionCount);
-            resourceCounts.put(UnityCatalogMetric.NO_OF_TABLES.getPropertyName(), tableCount);
+            resourceCounts.put(RelationalDatabaseMetric.TABLE_COUNT.getPropertyName(), tableCount);
+            resourceCounts.put(RelationalDatabaseMetric.COLUMN_COUNT.getPropertyName(), columnCount);
             resourceCounts.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), volumeCount);
+            resourceCounts.put(UnityCatalogMetric.NO_OF_MODELS.getPropertyName(), modelCount);
 
             resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
             resourceMeasureAnnotation.setResourceProperties(resourceProperties);
+
 
             annotationStore.addAnnotation(resourceMeasureAnnotation, null);
 
@@ -174,15 +230,23 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
             {
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.FUNCTION_LIST, functionList);
+                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(SurveyResourceManagerAnnotationType.FUNCTION_LIST, functionList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
-                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.TABLE_LIST, tableList);
+                resourceProfileAnnotation = this.getNameListAnnotation(SurveyDatabaseAnnotationType.TABLE_LIST, tableList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
-                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.VOLUME_LIST, volumeList);
+                resourceProfileAnnotation = this.getNameListAnnotation(SurveyDatabaseAnnotationType.COLUMN_LIST, columnList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
+
+                resourceProfileAnnotation = this.getNameListAnnotation(SurveyResourceManagerAnnotationType.VOLUME_LIST, volumeList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
+
+                resourceProfileAnnotation = this.getNameListAnnotation(SurveyResourceManagerAnnotationType.MODEL_LIST, modelList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 

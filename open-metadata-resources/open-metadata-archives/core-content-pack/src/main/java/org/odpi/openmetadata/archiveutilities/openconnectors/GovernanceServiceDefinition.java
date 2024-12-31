@@ -295,26 +295,37 @@ public enum GovernanceServiceDefinition
 
 
     /**
-     * Create Server Governance Service
+     * Create Asset Governance Service
      */
-    CREATE_SERVER("e971749f-4b0e-4c46-b4dd-ca0cf8df3900",
-                  "create-server-governance-service",
-                  "Create Server Governance Service",
-                  new CreateServerGovernanceActionProvider(),
-                  ResourceUse.CATALOG_RESOURCE,
-                  DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
-                  ContentPackDefinition.CORE_CONTENT_PACK),
+    CREATE_ASSET("e971749f-4b0e-4c46-b4dd-ca0cf8df3900",
+                 "create-asset-governance-service",
+                 "Create Asset Governance Service",
+                 new CreateAssetGovernanceActionProvider(),
+                 ResourceUse.CATALOG_RESOURCE,
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * Catalog Server Governance Service
+     * Delete Asset Governance Service
      */
-    CATALOG_SERVER("96a01919-a361-404d-bcb7-3855fbbc8cd5",
-                   "catalog-server-governance-service",
-                   "Catalog Server Governance Service",
-                   new CatalogServerGovernanceActionProvider(),
-                   ResourceUse.CATALOG_RESOURCE,
-                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
-                   ContentPackDefinition.CORE_CONTENT_PACK),
+    DELETE_ASSET("bb47c767-afd7-41c5-96e8-b237b2278821",
+                 "delete-asset-governance-service",
+                 "Delete Asset Governance Service",
+                 new DeleteAssetGovernanceActionProvider(),
+                 ResourceUse.UNCATALOG_RESOURCE,
+                 DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                 ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Catalog Target Asset Governance Service
+     */
+    CATALOG_TARGET_ASSET("96a01919-a361-404d-bcb7-3855fbbc8cd5",
+                         "add-catalog-target-to-asset-governance-service",
+                         "Add Catalog Target to Asset Governance Service",
+                         new CatalogTargetAssetGovernanceActionProvider(),
+                         ResourceUse.CATALOG_RESOURCE,
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
     ;
 
     private final String                               guid;

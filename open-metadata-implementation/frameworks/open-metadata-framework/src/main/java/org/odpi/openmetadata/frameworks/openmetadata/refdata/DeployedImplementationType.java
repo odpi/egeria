@@ -16,11 +16,41 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 public enum DeployedImplementationType implements DeployedImplementationTypeDefinition
 {
     /**
+     * Root technology type.
+     */
+    TECHNOLOGY("Root Technology Type",
+          null,
+          OpenMetadataType.REFERENCEABLE.typeName,
+          null,
+          "Root technology type.",
+          "https://egeria-project.org/concepts/deployed-implementation-type/"),
+
+    /**
+     * A description of a digital resource.
+     */
+    ASSET("Asset",
+          DeployedImplementationType.TECHNOLOGY,
+          OpenMetadataType.ASSET.typeName,
+          null,
+          "A description of a digital resource.",
+          "https://egeria-project.org/concepts/asset/"),
+
+    /**
+     * A well-defined set of processing steps and decisions that drive a particular aspect of the organization's business.
+     */
+    PROCESS("Process",
+            DeployedImplementationType.ASSET,
+            OpenMetadataType.PROCESS.typeName,
+            null,
+            "A well-defined set of processing steps and decisions that drive a particular aspect of the organization's business.",
+            "https://egeria-project.org/concepts/process/"),
+
+    /**
      * A collection of data, either at rest or in motion.
      */
     DATA_ASSET("Data Asset",
-               null,
-               OpenMetadataType.ASSET.typeName,
+               DeployedImplementationType.ASSET,
+               OpenMetadataType.DATA_ASSET.typeName,
                null,
                "A collection of data, either at rest or in motion.",
                "https://egeria-project.org/concepts/asset/"),
@@ -338,7 +368,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A computer (hardware) with operating system for running software.
      */
     BARE_METAL_COMPUTER("Bare Metal Computer",
-                        null,
+                        DeployedImplementationType.TECHNOLOGY,
                         OpenMetadataType.BARE_METAL_COMPUTER.typeName,
                         null,
                         "A computer (hardware) with operating system for running software.",
@@ -382,7 +412,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A callable software server.
      */
     SOFTWARE_SERVER("Software Server",
-                    null,
+                    DeployedImplementationType.ASSET,
                     OpenMetadataType.SOFTWARE_SERVER.typeName,
                     null,
                     "A callable software server.",
@@ -393,10 +423,10 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A callable software capability supporting specific types of assets.
      */
     SOFTWARE_CAPABILITY("Software Capability",
-                    null,
-                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                    null,
-                    "A callable software capability supporting specific types of assets.",
+                        DeployedImplementationType.TECHNOLOGY,
+                        OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                        null,
+                        "A callable software capability supporting specific types of assets.",
                         OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES),
 
     /**
@@ -454,7 +484,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
-                  OpenMetadataType.CATALOG.typeName,
+                  OpenMetadataType.INVENTORY_CATALOG.typeName,
                   OpenMetadataType.ASSET_MANAGER.typeName,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
@@ -473,11 +503,11 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A callable network address.
      */
     ENDPOINT("Endpoint",
-                      null,
-                      OpenMetadataType.ENDPOINT.typeName,
-                      null,
-                      "A callable network address.",
-                      OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+             DeployedImplementationType.TECHNOLOGY,
+             OpenMetadataType.ENDPOINT.typeName,
+             null,
+             "A callable network address.",
+             OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
 
     /**
      * A callable network address supporting the REST protocol.
@@ -536,7 +566,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A deployable software component.
      */
     SOFTWARE_COMPONENT("Software Component",
-                       null,
+                       DeployedImplementationType.PROCESS,
                        OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName,
                        null,
                        "A deployable software component.",
@@ -546,7 +576,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A pluggable software component that conforms to the Open Connector Framework (OCF).
      */
     OCF_CONNECTOR("Open Connector Framework (OCF) Connector",
-                  null,
+                  DeployedImplementationType.SOFTWARE_COMPONENT,
                   OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                   null,
                   "A pluggable software component that conforms to the Open Connector Framework (OCF).",
@@ -556,7 +586,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * OMRS Repository Connector - Maps open metadata calls to a metadata repository.
      */
     REPOSITORY_CONNECTOR("OMRS Repository Connector",
-                         null,
+                         DeployedImplementationType.OCF_CONNECTOR,
                          OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName,
                          null,
                          "Maps open metadata repository calls defined by the Open Metadata Repository Services (OMRS) to a metadata repository API and event notifications.",
@@ -567,7 +597,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * Manages the execution of automated governance activity requested via engine actions.
      */
     GOVERNANCE_ENGINE("Governance Engine",
-                      null,
+                      DeployedImplementationType.SOFTWARE_CAPABILITY,
                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                       null,
                       "Manages the execution of automated governance activity requested via engine actions.",
@@ -848,7 +878,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.
      */
     INTEGRATION_GROUP("Dynamic Integration Group",
-                      null,
+                      DeployedImplementationType.SOFTWARE_CAPABILITY,
                       OpenMetadataType.INTEGRATION_GROUP.typeName,
                       null,
                       "Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.",
@@ -940,10 +970,11 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return deployed implementation type enum
      */
-    public DeployedImplementationType getIsATypeOf()
+    public DeployedImplementationTypeDefinition getIsATypeOf()
     {
         return isATypeOf;
     }
+
 
     /**
      * Return the type name that this deployed implementation type is associated with.

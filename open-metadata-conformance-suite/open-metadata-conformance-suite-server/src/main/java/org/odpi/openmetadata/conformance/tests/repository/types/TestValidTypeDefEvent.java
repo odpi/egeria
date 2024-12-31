@@ -198,146 +198,142 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
                             defaultProfileId,
                             defaultRequirementId);
 
-            verifyCondition(((metadataCollectionId != null) && (metadataCollectionId.equals(repositoryConformanceWorkPad.getTutMetadataCollectionId()))),
-                            assertion6,
-                            assertionMsg6,
-                            defaultProfileId,
-                            defaultRequirementId);
-
-            addDiscoveredProperty(metadataCollectionIdPropertyName,
-                                  originator.getMetadataCollectionId(),
-                                  defaultProfileId,
-                                  defaultRequirementId);
-
-            serverName = originator.getServerName();
-
-            verifyCondition((serverName != null),
-                            assertion7,
-                            assertionMsg7,
-                            defaultProfileId,
-                            defaultRequirementId);
-
-            verifyCondition(((serverName != null) && (serverName.equals(repositoryConformanceWorkPad.getTutServerName()))),
-                            assertion8,
-                            assertionMsg8,
-                            defaultProfileId,
-                            defaultRequirementId);
-
-            addDiscoveredProperty(serverNamePropertyName,
-                                  serverName,
-                                  defaultProfileId,
-                                  defaultRequirementId);
-
-            if (originator.getServerType() != null)
+            if ((metadataCollectionId != null) && (metadataCollectionId.equals(repositoryConformanceWorkPad.getTutMetadataCollectionId())))
             {
-                addDiscoveredProperty(serverTypePropertyName,
-                                      originator.getServerType(),
+                /*
+                 * Only check type events from the TUT.
+                 */
+                addDiscoveredProperty(metadataCollectionIdPropertyName,
+                                      originator.getMetadataCollectionId(),
                                       defaultProfileId,
                                       defaultRequirementId);
-            }
-
-            if (originator.getOrganizationName() != null)
-            {
-                addDiscoveredProperty(orgNamePropertyName,
-                                      originator.getOrganizationName(),
+                serverName = originator.getServerName();
+                verifyCondition((serverName != null),
+                                assertion7,
+                                assertionMsg7,
+                                defaultProfileId,
+                                defaultRequirementId);
+                verifyCondition(((serverName != null) && (serverName.equals(repositoryConformanceWorkPad.getTutServerName()))),
+                                assertion8,
+                                assertionMsg8,
+                                defaultProfileId,
+                                defaultRequirementId);
+                addDiscoveredProperty(serverNamePropertyName,
+                                      serverName,
                                       defaultProfileId,
                                       defaultRequirementId);
-            }
-        }
 
-        if (eventType != null)
-        {
-            addDiscoveredProperty(eventTypePropertyName,
-                                  eventType.getName(),
-                                  defaultProfileId,
-                                  defaultRequirementId);
+                if (originator.getServerType() != null)
+                {
+                    addDiscoveredProperty(serverTypePropertyName,
+                                          originator.getServerType(),
+                                          defaultProfileId,
+                                          defaultRequirementId);
+                }
+
+                if (originator.getOrganizationName() != null)
+                {
+                    addDiscoveredProperty(orgNamePropertyName,
+                                          originator.getOrganizationName(),
+                                          defaultProfileId,
+                                          defaultRequirementId);
+                }
+
+                if (eventType != null)
+                {
+                    addDiscoveredProperty(eventTypePropertyName,
+                                          eventType.getName(),
+                                          defaultProfileId,
+                                          defaultRequirementId);
 
 
-            typeDef = event.getTypeDef();
-            attributeTypeDef = event.getAttributeTypeDef();
+                    typeDef          = event.getTypeDef();
+                    attributeTypeDef = event.getAttributeTypeDef();
 
-            switch (eventType)
-            {
-                case NEW_TYPEDEF_EVENT:
-                case DELETED_TYPEDEF_EVENT:
-                case RE_IDENTIFIED_TYPEDEF_EVENT:
-                    verifyCondition((typeDef != null),
-                                    assertion9,
-                                    assertionMsg9,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-                    verifyCondition((attributeTypeDef == null),
-                                    assertion10,
-                                    assertionMsg10,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-
-                    if (typeDef != null)
+                    switch (eventType)
                     {
-                        addDiscoveredProperty(typeDefGUIDPropertyName,
-                                              typeDef.getGUID(),
-                                              defaultProfileId,
-                                              defaultRequirementId);
-                        addDiscoveredProperty(typeDefNamePropertyName,
-                                              typeDef.getName(),
-                                              defaultProfileId,
-                                              defaultRequirementId);
+                        case NEW_TYPEDEF_EVENT:
+                        case DELETED_TYPEDEF_EVENT:
+                        case RE_IDENTIFIED_TYPEDEF_EVENT:
+                            verifyCondition((typeDef != null),
+                                            assertion9,
+                                            assertionMsg9,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+                            verifyCondition((attributeTypeDef == null),
+                                            assertion10,
+                                            assertionMsg10,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+
+                            if (typeDef != null)
+                            {
+                                addDiscoveredProperty(typeDefGUIDPropertyName,
+                                                      typeDef.getGUID(),
+                                                      defaultProfileId,
+                                                      defaultRequirementId);
+                                addDiscoveredProperty(typeDefNamePropertyName,
+                                                      typeDef.getName(),
+                                                      defaultProfileId,
+                                                      defaultRequirementId);
+                            }
+                            break;
+
+                        case UPDATED_TYPEDEF_EVENT:
+                            /*
+                             * If this is a type update event then it does not have the (new) TypeDef available,
+                             * so verify that the event contains the patch.
+                             */
+                            TypeDefPatch typeDefPatch = event.getTypeDefPatch();
+                            verifyCondition((typeDefPatch != null),
+                                            assertion13,
+                                            assertionMsg13,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+                            verifyCondition((typeDef == null),
+                                            assertion9,
+                                            assertionMsg9,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+                            verifyCondition((attributeTypeDef == null),
+                                            assertion10,
+                                            assertionMsg10,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+                            break;
+
+                        case NEW_ATTRIBUTE_TYPEDEF_EVENT:
+                        case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
+                        case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
+                            verifyCondition((attributeTypeDef != null),
+                                            assertion11,
+                                            assertionMsg11,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+                            verifyCondition((typeDef == null),
+                                            assertion12,
+                                            assertionMsg12,
+                                            defaultProfileId,
+                                            defaultRequirementId);
+
+                            if (attributeTypeDef != null)
+                            {
+                                addDiscoveredProperty(attributeTypeDefGUIDPropertyName,
+                                                      attributeTypeDef.getGUID(),
+                                                      defaultProfileId,
+                                                      defaultRequirementId);
+                                addDiscoveredProperty(attributeTypeDefNamePropertyName,
+                                                      attributeTypeDef.getName(),
+                                                      defaultProfileId,
+                                                      defaultRequirementId);
+                            }
+                            break;
+
+                        case TYPEDEF_ERROR_EVENT:
+
+                            break;
                     }
-                    break;
-
-                case UPDATED_TYPEDEF_EVENT:
-                    /*
-                     * If this is a type update event then it does not have the (new) TypeDef available,
-                     * so verify that the event contains the patch.
-                     */
-                    TypeDefPatch typeDefPatch = event.getTypeDefPatch();
-                    verifyCondition((typeDefPatch != null),
-                                    assertion13,
-                                    assertionMsg13,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-                    verifyCondition((typeDef == null),
-                                    assertion9,
-                                    assertionMsg9,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-                    verifyCondition((attributeTypeDef == null),
-                                    assertion10,
-                                    assertionMsg10,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-                    break;
-
-                case NEW_ATTRIBUTE_TYPEDEF_EVENT:
-                case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
-                case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
-                    verifyCondition((attributeTypeDef != null),
-                                    assertion11,
-                                    assertionMsg11,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-                    verifyCondition((typeDef == null),
-                                    assertion12,
-                                    assertionMsg12,
-                                    defaultProfileId,
-                                    defaultRequirementId);
-
-                    if (attributeTypeDef != null)
-                    {
-                        addDiscoveredProperty(attributeTypeDefGUIDPropertyName,
-                                              attributeTypeDef.getGUID(),
-                                              defaultProfileId,
-                                              defaultRequirementId);
-                        addDiscoveredProperty(attributeTypeDefNamePropertyName,
-                                              attributeTypeDef.getName(),
-                                              defaultProfileId,
-                                              defaultRequirementId);
-                    }
-                    break;
-
-                case TYPEDEF_ERROR_EVENT:
-
-                    break;
+                }
             }
         }
 

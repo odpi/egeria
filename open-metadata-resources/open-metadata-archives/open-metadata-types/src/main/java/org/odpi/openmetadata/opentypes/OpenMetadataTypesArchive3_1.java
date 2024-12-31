@@ -615,41 +615,34 @@ public class OpenMetadataTypesArchive3_1
     {
         this.archiveBuilder.addEntityDef(addCatalogEntity());
         this.archiveBuilder.addEntityDef(addDataManagerEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDatabaseManager());
     }
 
 
     private EntityDef addCatalogEntity()
     {
-        final String guid = OpenMetadataType.CATALOG.typeGUID;
-
-        final String name            = OpenMetadataType.CATALOG.typeName;
-        final String description     = OpenMetadataType.CATALOG.description;
-        final String descriptionGUID = OpenMetadataType.CATALOG.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.CATALOG.wikiURL;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.INVENTORY_CATALOG,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
     }
 
     private EntityDef addDataManagerEntity()
     {
-        final String guid = OpenMetadataType.DATA_MANAGER.typeGUID;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
+    }
 
-        final String name            = OpenMetadataType.DATA_MANAGER.typeName;
-        final String description     = OpenMetadataType.DATA_MANAGER.description;
-        final String descriptionGUID = OpenMetadataType.DATA_MANAGER.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_MANAGER.wikiURL;
+    private TypeDefPatch updateDatabaseManager()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
+
+        return typeDefPatch;
     }
 
 

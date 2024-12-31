@@ -14,6 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:mermaid-services')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:common-services:repository-handler')

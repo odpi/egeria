@@ -9,10 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
@@ -95,14 +92,14 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                  */
                 int startFrom = 0;
                 int rfaCount  = 0;
-                List<RelatedMetadataElement> reportedAnnotations = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(surveyReport.getActionTargetGUID(),
-                                                                                                                                       1,
-                                                                                                                                       OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                                                       startFrom,
-                                                                                                                                       governanceContext.getMaxPageSize());
-                while (reportedAnnotations != null)
+                RelatedMetadataElementList reportedAnnotations = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(surveyReport.getActionTargetGUID(),
+                                                                                                                                     1,
+                                                                                                                                     OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                                                     startFrom,
+                                                                                                                                     governanceContext.getMaxPageSize());
+                while ((reportedAnnotations != null) && (reportedAnnotations.getElementList() != null))
                 {
-                    for (RelatedMetadataElement reportedAnnotation : reportedAnnotations)
+                    for (RelatedMetadataElement reportedAnnotation : reportedAnnotations.getElementList())
                     {
                         if (reportedAnnotation != null)
                         {

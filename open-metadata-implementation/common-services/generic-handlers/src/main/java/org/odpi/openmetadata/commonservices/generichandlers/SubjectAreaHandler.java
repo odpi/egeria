@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -288,6 +289,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
                                    OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
                                    specificMatchPropertyNames,
+                                   null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
+                                   null,
                                    forLineage,
                                    forDuplicateProcessing,
                                    supportedZones,
@@ -385,6 +390,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                null,
                                                                null,
                                                                0,
+                                                               null,
+                                                               null,
+                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                               null,
                                                                forLineage,
                                                                forDuplicateProcessing,
                                                                supportedZones,
@@ -446,6 +455,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
                                    OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
                                    null,
+                                   null,
+                                   SequencingOrder.CREATION_DATE_RECENT,
+                                   null,
                                    forLineage,
                                    forDuplicateProcessing,
                                    supportedZones,
@@ -493,6 +505,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              OpenMetadataType.SUBJECT_AREA_TYPE_GUID,
                                                              OpenMetadataType.SUBJECT_AREA_TYPE_NAME,
+                                                             null,
+                                                             null,
+                                                             SequencingOrder.CREATION_DATE_RECENT,
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,

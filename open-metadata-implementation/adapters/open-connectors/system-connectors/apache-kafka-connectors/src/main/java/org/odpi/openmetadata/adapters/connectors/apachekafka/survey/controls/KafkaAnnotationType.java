@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyResourceManagerAnnotationType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

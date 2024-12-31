@@ -383,9 +383,19 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
 
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0035 - The {0} governance action service has determined that today is {1}
+     * GOVERNANCE-ACTION-CONNECTORS-0035 - The {0} governance action service has deleted the {1} asset called {2} ({3})
      */
-    DAY_OF_THE_WEEK("GOVERNANCE-ACTION-CONNECTORS-0035",
+    NEW_ASSET_DELETED("GOVERNANCE-ACTION-CONNECTORS-0035",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has deleted the {1} asset called {2} ({3})",
+                      "The governance action service returns an ACTIONED completion status.",
+                      "Ensure follow-on uses of the asset GUID are successful."),
+
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0036 - The {0} governance action service has determined that today is {1}
+     */
+    DAY_OF_THE_WEEK("GOVERNANCE-ACTION-CONNECTORS-0036",
                       AuditLogRecordSeverityLevel.INFO,
                       "The {0} governance action service has determined that today is {1}",
                       "The governance action service has completed successfully.",

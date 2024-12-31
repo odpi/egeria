@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
-import java.util.List;
 
 /**
  * Provides shared functions for the clinical trial services.
@@ -58,14 +57,14 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                             person.getElementProperties(),
                                                                             methodName);
 
-        List<RelatedMetadataElement> contactDetails = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(personGUID,
-                                                                                                                          1,
-                                                                                                                          OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
-                                                                                                                          0,
-                                                                                                                          0);
-        if (contactDetails != null)
+        RelatedMetadataElementList contactDetails = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(personGUID,
+                                                                                                                        1,
+                                                                                                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
+                                                                                                                        0,
+                                                                                                                        0);
+        if ((contactDetails != null) && (contactDetails.getElementList() != null))
         {
-            for (RelatedMetadataElement contactDetail : contactDetails)
+            for (RelatedMetadataElement contactDetail : contactDetails.getElementList())
             {
                 if (contactDetail != null)
                 {
@@ -101,14 +100,14 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
         final String methodName = "checkCertificationValidForProject";
 
         int projectStartFrom = 0;
-        List<RelatedMetadataElement> projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
+        RelatedMetadataElementList projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
                                                                                                                     1,
                                                                                                                     OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                                                                                                     projectStartFrom,
                                                                                                                     governanceContext.getMaxPageSize());
-        while (projects != null)
+        while ((projects != null) && (projects.getElementList() != null))
         {
-            for (RelatedMetadataElement project : projects)
+            for (RelatedMetadataElement project : projects.getElementList())
             {
                 if (project != null)
                 {

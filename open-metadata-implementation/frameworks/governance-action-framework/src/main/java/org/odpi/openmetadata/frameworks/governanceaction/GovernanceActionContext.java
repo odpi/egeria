@@ -1761,6 +1761,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param relationshipName  either LineageMapping, ProcessCall, DataFlow, ControlFlow.
      * @param sourceElementGUID unique identifier of the element that describes the source of the data.
      * @param qualifiedName     qualifiedName of the information supply chain
+     * @param label label for when the lineage relationship is visualized
      * @param targetElementGUID unique identifier of the element that describes the destination of the data.
      *
      * @return unique identifier of the relationship
@@ -1773,6 +1774,7 @@ public class GovernanceActionContext implements GovernanceContext,
     public String createLineageRelationship(String relationshipName,
                                             String sourceElementGUID,
                                             String qualifiedName,
+                                            String label,
                                             String description,
                                             String formula,
                                             String targetElementGUID) throws InvalidParameterException,
@@ -1789,10 +1791,11 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties relationshipProperties = propertyHelper.addStringProperty(null, "qualifiedName", qualifiedName);
 
+        relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "label", label);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "description", description);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "formula", formula);
 
-        String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME;
+        String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING.typeName;
         if (relationshipName != null)
         {
             lineageRelationshipTypeName = relationshipName;

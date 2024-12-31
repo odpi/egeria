@@ -26,6 +26,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
@@ -755,6 +756,10 @@ public class APIManagerRESTServices
                                                                        null,
                                                                        null,
                                                                        0,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        false,
                                                                        false,
                                                                        startFrom,
@@ -822,6 +827,10 @@ public class APIManagerRESTServices
                                                                        null,
                                                                        null,
                                                                        0,
+                                                                       null,
+                                                                       null,
+                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                       null,
                                                                        false,
                                                                        false,
                                                                        startFrom,

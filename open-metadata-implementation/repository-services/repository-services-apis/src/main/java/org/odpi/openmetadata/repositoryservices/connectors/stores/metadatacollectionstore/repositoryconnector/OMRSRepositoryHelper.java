@@ -95,6 +95,17 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Determine the list of attribute names that contain a unique value.  An empty list is returned if none have.
+     *
+     * @param sourceName caller
+     * @param typeName name of instance's type
+     * @return list of attribute names
+     */
+    List<String> getUniqueAttributesList(String sourceName,
+                                         String typeName);
+
+
+    /**
      * Return an instance properties that only contains the properties that uniquely identify the entity.
      * This is used when creating entity proxies.
      *
@@ -532,6 +543,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param sourceName            source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
      * @param provenanceType        origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName              name of the creator
      * @param typeName              name of the type
      * @param properties            properties for the entity
@@ -542,6 +554,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     EntityDetail getNewEntity(String                 sourceName,
                               String                 metadataCollectionId,
                               InstanceProvenanceType provenanceType,
+                              String                 replicatedBy,
                               String                 userName,
                               String                 typeName,
                               InstanceProperties     properties,
@@ -555,6 +568,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param metadataCollectionName unique name for the home metadata collection
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param provenanceType         origin of the entity
+     * @param replicatedBy          for external entities only - null for local cohort
      * @param userName               name of the creator
      * @param typeName               name of the type
      * @param properties             properties for the entity
@@ -566,6 +580,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                               String                 metadataCollectionId,
                               String                 metadataCollectionName,
                               InstanceProvenanceType provenanceType,
+                              String                 replicatedBy,
                               String                 userName,
                               String                 typeName,
                               InstanceProperties     properties,
@@ -862,8 +877,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * Remove a classification from an entity.
      *
      * @param sourceName             source of the request (used for logging)
      * @param entity                 entity to update
@@ -879,8 +893,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
-     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
-     * to complete the set up of the oldClassification.
+     * Remove a classification from an entity
      *
      * @param sourceName             source of the request (used for logging)
      * @param entityProxy                 entity to update
@@ -1020,6 +1033,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      */
     String  getEnd2EntityGUID(Relationship relationship);
 
+
     /**
      * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
      * entity instances.
@@ -1071,14 +1085,27 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Compare the properties of two instances and determine the sort order based on the nominated property value and
+     * sort order.
+     *
+     * @param instance1Properties properties from first instance
+     * @param instance2Properties properties from second instance
+     * @param propertyName name of property to compare
+     * @param sequencingOrder ascending or descending order
+     * @return sort result
+     */
+    int  compareProperties(InstanceProperties     instance1Properties,
+                           InstanceProperties     instance2Properties,
+                           String                 propertyName,
+                           SequencingOrder        sequencingOrder);
+
+    /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
      * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
      * used to find an exact match of the string, irrespective of whether it contains characters that may have special
      * meanings to regular expressions).
-     *
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
-     *
      * Finally, note that this enforces a case-sensitive search.
      *
      * @param searchString the string to escape to avoid being interpreted as a regular expression
@@ -1095,7 +1122,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
      * used to find an exact match of the string, irrespective of whether it contains characters that may have special
      * meanings to regular expressions).
-     *
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
@@ -1111,16 +1137,14 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
      * (false).
-     *
      * Note that this method relies on the use of the getExactMatchRegex helper method having been used to
      * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
      * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
      * general to arbitrarily detect whether they might be a regular expression or not.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     * should be possible to just directly use the string as-is, and it will be correctly interpreted).
      *
-     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString the string to check whether it should be interpreted literally or as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
@@ -1131,16 +1155,14 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
      * (false).
-     *
      * Note that this method relies on the use of the getExactMatchRegex helper method having been used to
      * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
      * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
      * general to arbitrarily detect whether they might be a regular expression or not.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
-     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     * should be possible to just directly use the string as-is, and it will be correctly interpreted).
      *
-     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString the string to check whether it should be interpreted literally or as a regular expression
      * @param insensitive when true, only return true if the string is a case-insensitive exact match regex; when
      *                    false, only return true if the string is a case-sensitive exact match regex
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a
@@ -1156,10 +1178,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
-     *
      * Finally, note that this enforces a case-sensitive search.
      *
      * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
@@ -1176,7 +1196,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
@@ -1192,10 +1211,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getContainsRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1210,10 +1227,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getContainsRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1232,10 +1247,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
-     *
      * Finally, note that this enforces a case-sensitive search.
      *
      * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
@@ -1252,7 +1265,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
@@ -1268,10 +1280,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getStartsWithRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1286,10 +1296,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getStartsWithRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1308,10 +1316,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
-     *
      * Finally, note that this enforces a case-sensitive search.
      *
      * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
@@ -1328,7 +1334,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
-     *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
@@ -1344,10 +1349,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1362,10 +1365,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
      * other regular expression (false).
-     *
      * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
      * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
-     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
@@ -1384,7 +1385,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly leverage regular expressions: so that they have a string
      * they can treat as a literal without needing to un-escape the regex-meaningful characters injected by the various
      * getXYZRegex helper methods.
-     *
      * For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.
      *
      * @param searchString - the (potentially) wrapped and escaped string to un-escape and un-wrap
@@ -1400,10 +1400,8 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     /**
      * Indicates whether the provided string should be treated as a case-insensitive regular expression (true) or as a
      * case-sensitive regular expression (false).
-     *
      * Note that this method relies on the use of the getXYZRegex helper methods having been used to qualify a string
      * with case-insensitivity.
-     *
      * Primarily this is a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *

@@ -59,8 +59,8 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:data-designer:data-designer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-discovery:data-discovery-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:devops-pipeline:devops-pipeline-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:metadata-explorer:metadata-explorer-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:feedback-manager:feedback-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:metadata-explorer:metadata-explorer-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:feedback-manager:feedback-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:governance-officer:governance-officer-spring')
@@ -123,6 +123,10 @@ bootJar {
     manifest {
         attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
     }
+}
+
+springBoot {
+    buildInfo()
 }
 
 java {

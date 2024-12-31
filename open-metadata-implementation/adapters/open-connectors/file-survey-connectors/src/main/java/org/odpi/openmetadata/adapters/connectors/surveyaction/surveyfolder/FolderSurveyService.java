@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFolderAnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -770,6 +770,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             return assetGUID;
         }
     }
+
 
     /**
      * Provide a periodic progress report for the survey process.

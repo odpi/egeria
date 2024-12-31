@@ -7,19 +7,21 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * RepositoryRelatedEntitiesIterator is an iterator class for iteratively retrieving relationships for a starting entity (possibly restricting
  * the type of relationships returned) and returning the entity at the other end.  It is used where the caller needs to filter the results coming
  * from the repository and may need to make more than one call to the repository in order to accumulate the number of requested results.
- *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
 public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEntities
@@ -43,7 +45,12 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -59,6 +66,9 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              String                  startingEntityTypeName,
                                              String                  relationshipTypeGUID,
                                              String                  relationshipTypeName,
+                                             List<InstanceStatus>    limitResultsByStatus,
+                                             Date                    asOfTime,
+                                             SequencingOrder         sequencingOrder,
                                              String                  sequencingPropertyName,
                                              boolean                 forLineage,
                                              boolean                 forDuplicateProcessing,
@@ -74,6 +84,9 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
              startingEntityTypeName,
              relationshipTypeGUID,
              relationshipTypeName,
+             limitResultsByStatus,
+             asOfTime,
+             sequencingOrder,
              sequencingPropertyName,
              forLineage,
              forDuplicateProcessing,
@@ -95,7 +108,12 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
-     * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingPropertyName String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -112,6 +130,9 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              String                  startingEntityTypeName,
                                              String                  relationshipTypeGUID,
                                              String                  relationshipTypeName,
+                                             List<InstanceStatus>    limitResultsByStatus,
+                                             Date                    asOfTime,
+                                             SequencingOrder         sequencingOrder,
                                              String                  sequencingPropertyName,
                                              boolean                 forLineage,
                                              boolean                 forDuplicateProcessing,
@@ -126,9 +147,11 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
               userId,
               null,
               null,
+              limitResultsByStatus,
+              null,
+              asOfTime,
+              sequencingOrder,
               sequencingPropertyName,
-              null,
-              null,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
@@ -177,8 +200,11 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                                                                  startingEntityTypeName,
                                                                                  relationshipTypeGUID,
                                                                                  relationshipTypeName,
-                                                                                 null,
                                                                                  selectionEnd,
+                                                                                 limitResultsByStatus,
+                                                                                 asOfTime,
+                                                                                 sequencingOrder,
+                                                                                 sequencingPropertyName,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startingFrom,

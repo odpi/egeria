@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -176,6 +178,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                             resultTypeGUID,
                                             resultTypeName,
+                                            null,
+                                            null,
+                                            SequencingOrder.CREATION_DATE_RECENT,
+                                            null,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -281,259 +287,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                         resultTypeGUID,
                                         resultTypeName,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
                                         effectiveTime,
                                         methodName);
-    }
-
-
-    /**
-     * Return a list of unique identifiers for referenceables with the requested qualified name.
-     * The match is exact. It uses the supportedZones supplied with the service.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for
-     * @param nameParameterName property that provided the name
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> getBeanGUIDsByQualifiedName(String       userId,
-                                                    String       typeGUID,
-                                                    String       typeName,
-                                                    String       name,
-                                                    String       nameParameterName,
-                                                    boolean      forLineage,
-                                                    boolean      forDuplicateProcessing,
-                                                    int          startFrom,
-                                                    int          pageSize,
-                                                    Date         effectiveTime,
-                                                    String       methodName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
-    {
-        return this.getBeanGUIDsByQualifiedName(userId,
-                                                typeGUID,
-                                                typeName,
-                                                name,
-                                                nameParameterName,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                supportedZones,
-                                                startFrom,
-                                                pageSize,
-                                                effectiveTime,
-                                                methodName);
-    }
-
-
-    /**
-     * Return a list of unique identifiers for referenceables with the requested qualified name.
-     * The match is exact.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for
-     * @param nameParameterName property that provided the name
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> getBeanGUIDsByQualifiedName(String       userId,
-                                                    String       typeGUID,
-                                                    String       typeName,
-                                                    String       name,
-                                                    String       nameParameterName,
-                                                    boolean      forLineage,
-                                                    boolean      forDuplicateProcessing,
-                                                    List<String> serviceSupportedZones,
-                                                    int          startFrom,
-                                                    int          pageSize,
-                                                    Date         effectiveTime,
-                                                    String       methodName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
-    {
-        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
-        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        if (typeGUID != null)
-        {
-            resultTypeGUID = typeGUID;
-        }
-        if (typeName != null)
-        {
-            resultTypeName = typeName;
-        }
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-
-        return this.getEntityGUIDsByValue(userId,
-                                          name,
-                                          nameParameterName,
-                                          resultTypeGUID,
-                                          resultTypeName,
-                                          specificMatchPropertyNames,
-                                          true,
-                                          null,
-                                          null,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          null,
-                                          startFrom,
-                                          pageSize,
-                                          effectiveTime,
-                                          methodName);
-    }
-
-
-    /**
-     * Return a list of referenceables with the requested qualified name.
-     * The match is exact.  It uses the supportedZones supplied with the service.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for
-     * @param nameParameterName property that provided the name
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getBeansByQualifiedName(String   userId,
-                                           String   typeGUID,
-                                           String   typeName,
-                                           String   name,
-                                           String   nameParameterName,
-                                           int      startFrom,
-                                           int      pageSize,
-                                           boolean  forLineage,
-                                           boolean  forDuplicateProcessing,
-                                           Date     effectiveTime,
-                                           String   methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
-    {
-        return getBeansByQualifiedName(userId,
-                                       typeGUID,
-                                       typeName,
-                                       name,
-                                       nameParameterName,
-                                       supportedZones,
-                                       startFrom,
-                                       pageSize,
-                                       forLineage,
-                                       forDuplicateProcessing,
-                                       effectiveTime,
-                                       methodName);
-    }
-
-
-    /**
-     * Return a list of referenceables with the requested qualified name.
-     * The match is exact.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for
-     * @param nameParameterName property that provided the name
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getBeansByQualifiedName(String       userId,
-                                           String       typeGUID,
-                                           String       typeName,
-                                           String       name,
-                                           String       nameParameterName,
-                                           List<String> serviceSupportedZones,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
-        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        if (typeGUID != null)
-        {
-            resultTypeGUID = typeGUID;
-        }
-        if (typeName != null)
-        {
-            resultTypeName = typeName;
-        }
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    resultTypeGUID,
-                                    resultTypeName,
-                                    specificMatchPropertyNames,
-                                    true,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    serviceSupportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
     }
 
 
@@ -594,10 +356,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                       false,
                                                                       null,
                                                                       null,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
                                                                       supportedZones,
-                                                                      null,
                                                                       0,
                                                                       0,
                                                                       effectiveTime,
@@ -619,204 +384,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                methodName);
         /* not reachable */
         return null;
-    }
-
-
-
-    /**
-     * Return a list of unique identifiers for referenceables with the requested qualified name.
-     * The match is via a Regular Expression (RegEx).
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for - this is a regular expression (RegEx)
-     * @param nameParameterName property that provided the name
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<String> findBeanGUIDsByQualifiedName(String       userId,
-                                                     String       typeGUID,
-                                                     String       typeName,
-                                                     String       name,
-                                                     String       nameParameterName,
-                                                     boolean      forLineage,
-                                                     boolean      forDuplicateProcessing,
-                                                     List<String> serviceSupportedZones,
-                                                     int          startFrom,
-                                                     int          pageSize,
-                                                     Date         effectiveTime,
-                                                     String       methodName) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
-    {
-        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
-        String resultTypeName = OpenMetadataType.ASSET.typeName;
-
-        if (typeGUID != null)
-        {
-            resultTypeGUID = typeGUID;
-        }
-        if (typeName != null)
-        {
-            resultTypeName = typeName;
-        }
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-
-        return this.getEntityGUIDsByValue(userId,
-                                          name,
-                                          nameParameterName,
-                                          resultTypeGUID,
-                                          resultTypeName,
-                                          specificMatchPropertyNames,
-                                          false,
-                                          null,
-                                          null,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          null,
-                                          startFrom,
-                                          pageSize,
-                                          effectiveTime,
-                                          methodName);
-    }
-
-
-    /**
-     * Return a list of referenceables with the requested qualified name.
-     * The match is via a Regular Expression (RegEx).  It uses the supportedZones supplied with the service.
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for - this is a regular expression (RegEx)
-     * @param nameParameterName property that provided the name
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> findBeansByQualifiedName(String   userId,
-                                            String   typeGUID,
-                                            String   typeName,
-                                            String   name,
-                                            String   nameParameterName,
-                                            boolean  forLineage,
-                                            boolean  forDuplicateProcessing,
-                                            int      startFrom,
-                                            int      pageSize,
-                                            Date     effectiveTime,
-                                            String   methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
-    {
-        return findBeansByQualifiedName(userId,
-                                        typeGUID,
-                                        typeName,
-                                        name,
-                                        nameParameterName,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
-     * Return a list of referenceables with the requested qualified name.
-     * The match is via a Regular Expression (RegEx).
-     *
-     * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
-     * @param name name to search for - this is a regular expression (RegEx)
-     * @param nameParameterName property that provided the name
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param serviceSupportedZones list of supported zones for this service
-     * @param startFrom starting element (used in paging through large result sets)
-     * @param pageSize maximum number of results to return
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of B beans
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> findBeansByQualifiedName(String       userId,
-                                            String       typeGUID,
-                                            String       typeName,
-                                            String       name,
-                                            String       nameParameterName,
-                                            boolean      forLineage,
-                                            boolean      forDuplicateProcessing,
-                                            List<String> serviceSupportedZones,
-                                            int          startFrom,
-                                            int          pageSize,
-                                            Date         effectiveTime,
-                                            String       methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
-        String resultTypeGUID = OpenMetadataType.REFERENCEABLE.typeGUID;
-        String resultTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        if (typeGUID != null)
-        {
-            resultTypeGUID = typeGUID;
-        }
-        if (typeName != null)
-        {
-            resultTypeName = typeName;
-        }
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-
-        return this.getBeansByValue(userId,
-                                    name,
-                                    nameParameterName,
-                                    resultTypeGUID,
-                                    resultTypeName,
-                                    specificMatchPropertyNames,
-                                    false,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    serviceSupportedZones,
-                                    null,
-                                    startFrom,
-                                    pageSize,
-                                    effectiveTime,
-                                    methodName);
     }
 
 
@@ -946,7 +513,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String guidParameterName = "ownerEntity.getGUID";
         final String nameParameterName = "ownerName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -954,9 +520,21 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        InstanceProperties classificationMatchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                        null,
+                                                                                                        OpenMetadataProperty.OWNER.name,
+                                                                                                        ownerName,
+                                                                                                        methodName);
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                                          OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
+                                                                                         classificationMatchProperties,
+                                                                                         MatchCriteria.ANY,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -964,60 +542,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  true,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataProperty.OWNER.name,
-                                                                             classification.getProperties(),
-                                                                             methodName);
-
-                            if ((ownerName == null) || (ownerName.equals(name)))
-                            {
-                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -1120,7 +651,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
 
     /**
-     * Returns the list of assets that are classified with a specific origin.
+     * Returns the list of elements that are classified with the SecurityTags classification.
      *
      * @param userId          userId of user making request
      * @param startFrom int      starting position for fist returned element.
@@ -1145,8 +676,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        final String guidParameterName = "taggedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -1154,6 +683,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                                                          OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1161,45 +696,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  true,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        beans.add(converter.getNewBean(beanClass, entity, methodName));
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -1366,15 +869,30 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        final String guidParameterName = "classifiedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        InstanceProperties classificationMatchProperties = null;
+
+        if (returnSpecificLevel)
+        {
+            classificationMatchProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME,
+                                                                                      levelIdentifier,
+                                                                                      methodName);
+        }
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                                          classificationName,
+                                                                                         classificationMatchProperties,
+                                                                                         MatchCriteria.ANY,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1382,67 +900,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     classificationName,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            if (returnSpecificLevel)
-                            {
-                                int storedLevelIdentifier = repositoryHelper.getIntProperty(serviceName,
-                                                                                            OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME,
-                                                                                            classification.getProperties(),
-                                                                                            methodName);
-
-                                if (levelIdentifier == storedLevelIdentifier)
-                                {
-                                    beans.add(converter.getNewBean(beanClass, entity, methodName));
-                                }
-                            }
-                            else
-                            {
-                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -1608,15 +1072,30 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
-        final String guidParameterName = "classifiedEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        InstanceProperties classificationMatchProperties = null;
+
+        if (returnSpecificBasisLevel)
+        {
+            classificationMatchProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
+                                                                                      levelIdentifier,
+                                                                                      methodName);
+        }
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                                          OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                                                                         classificationMatchProperties,
+                                                                                         MatchCriteria.ANY,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1624,67 +1103,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            if (returnSpecificBasisLevel)
-                            {
-                                int storedLevelIdentifier = repositoryHelper.getIntProperty(serviceName,
-                                                                                            OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
-                                                                                            classification.getProperties(),
-                                                                                            methodName);
-
-                                if (levelIdentifier == storedLevelIdentifier)
-                                {
-                                    beans.add(converter.getNewBean(beanClass, entity, methodName));
-                                }
-                            }
-                            else
-                            {
-                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -2077,7 +1502,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
-        final String guidParameterName = "subjectAreaEntity.getGUID";
         final String nameParameterName = "subjectAreaName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -2085,9 +1509,21 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        InstanceProperties classificationMatchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                        null,
+                                                                                                        OpenMetadataProperty.NAME.name,
+                                                                                                        subjectAreaName,
+                                                                                                        methodName);
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
                                                                                          OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                                         classificationMatchProperties,
+                                                                                         MatchCriteria.ANY,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -2095,60 +1531,13 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                          effectiveTime,
                                                                                          methodName);
 
-        if (entities != null)
-        {
-            List<B>  beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    try
-                    {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
-                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     entity,
-                                                                                                     OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
-                                                                                                     methodName);
-                        if (classification != null)
-                        {
-                            String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataProperty.NAME.name,
-                                                                             classification.getProperties(),
-                                                                             methodName);
-
-                            if ((subjectAreaName == null) || (subjectAreaName.equals(name)))
-                            {
-                                beans.add(converter.getNewBean(beanClass, entity, methodName));
-                            }
-                        }
-                    }
-                    catch (Exception notVisible)
-                    {
-                        // entity not visible
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
+        return super.getValidatedBeans(userId,
+                                       effectiveTime,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       serviceSupportedZones,
+                                       methodName,
+                                       entities);
     }
 
 
@@ -2486,8 +1875,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
-        final String guidParameterName = "originEntity.getGUID";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -2495,36 +1882,35 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                                                          OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         null,
+                                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                                         null,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
                                                                                          queryPageSize,
                                                                                          effectiveTime,
                                                                                          methodName);
-
-        if (entities != null)
+        List<EntityDetail> validatedEntities = super.validateAnchorForEntities(userId,
+                                                                               entities,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               serviceSupportedZones,
+                                                                               effectiveTime,
+                                                                               methodName);
+        if (validatedEntities != null)
         {
             List<B>  beans = new ArrayList<>();
 
-            for (EntityDetail entity : entities)
+            for (EntityDetail entity : validatedEntities)
             {
                 if (entity != null)
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                  entity,
-                                                  guidParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  serviceSupportedZones,
-                                                  effectiveTime,
-                                                  methodName);
-
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
                                                                                                      OpenMetadataType.DATA_VALUE_CLASSIFICATION_TYPE_NAME,
@@ -2654,6 +2040,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -2704,6 +2094,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -2934,6 +2328,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
@@ -3002,6 +2400,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3362,6 +2764,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3424,6 +2830,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3636,6 +3046,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3699,6 +3113,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3878,6 +3296,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -3941,6 +3363,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4138,6 +3564,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4206,6 +3636,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4394,6 +3828,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4462,6 +3900,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4531,6 +3973,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4600,6 +4046,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4773,6 +4223,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -4946,6 +4400,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         1,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -5135,6 +4593,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         null,
                                         null,
                                         0,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         startFrom,
@@ -5413,6 +4875,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                             element1GUID,
                                                             OpenMetadataType.REFERENCEABLE.typeName,
                                                             element2GUID,
+                                                            null,
+                                                            null,
+                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                            null,
                                                             true,
                                                             true,
                                                             null,
@@ -5430,6 +4896,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                     null,
                                     null,
                                     0,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     true,
                                     true,
                                     serviceSupportedZones,
@@ -5463,6 +4933,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                     null,
                                     null,
                                     0,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     false,
                                     true,
                                     serviceSupportedZones,
@@ -5692,6 +5166,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      null,
                                                                      null,
                                                                      2,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      supportedZones,
@@ -5862,6 +5340,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                      null,
                                                                      null,
                                                                      0,
+                                                                     null,
+                                                                     null,
+                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                     null,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      supportedZones,

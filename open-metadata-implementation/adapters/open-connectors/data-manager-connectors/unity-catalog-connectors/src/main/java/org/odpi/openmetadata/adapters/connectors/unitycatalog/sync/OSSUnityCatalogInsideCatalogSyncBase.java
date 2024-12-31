@@ -41,6 +41,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     protected final String                                 connectorName;
     protected final CatalogIntegratorContext               context;
     protected final String                                 catalogGUID;
+    protected final String                                 catalogTypeName = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName();
     protected final String                                 catalogQualifiedName;
     protected final String                                 catalogName;
     protected final PermittedSynchronization               targetPermittedSynchronization;

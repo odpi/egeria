@@ -5,10 +5,7 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,10 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryNameRequestBody extends NameRequestBody
+public class GlossaryNameRequestBody extends GlossaryResultsRequestBody
 {
-    private String                   glossaryGUID         = null;
-    private List<GlossaryTermStatus> limitResultsByStatus = null;
+    private String name = null;
+    private String nameParameterName = null;
+    private String namePropertyName = null;
+    private String glossaryGUID         = null;
 
     /**
      * Default constructor
@@ -47,10 +46,79 @@ public class GlossaryNameRequestBody extends NameRequestBody
 
         if (template != null)
         {
+            name = template.getName();
+            nameParameterName = template.getNameParameterName();
+            namePropertyName = template.getNamePropertyName();
             glossaryGUID = template.getGlossaryGUID();
-            limitResultsByStatus = template.getLimitResultsByStatus();
         }
     }
+
+
+    /**
+     * Return the name for the query request.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name for the query request.
+     *
+     * @param name string
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Return the parameter name.
+     *
+     * @return string name
+     */
+    public String getNameParameterName()
+    {
+        return nameParameterName;
+    }
+
+
+    /**
+     * Set up the parameter name.
+     *
+     * @param nameParameterName string
+     */
+    public void setNameParameterName(String nameParameterName)
+    {
+        this.nameParameterName = nameParameterName;
+    }
+
+
+    /**
+     * Return the property name from the open metadata types.
+     *
+     * @return string name
+     */
+    public String getNamePropertyName()
+    {
+        return namePropertyName;
+    }
+
+
+    /**
+     * Set up the property name from the open metadata types.
+     *
+     * @param namePropertyName string
+     */
+    public void setNamePropertyName(String namePropertyName)
+    {
+        this.namePropertyName = namePropertyName;
+    }
+
 
 
     /**
@@ -76,28 +144,6 @@ public class GlossaryNameRequestBody extends NameRequestBody
 
 
     /**
-     * Return the list of statuses to return (null for all).
-     *
-     * @return list of statuses (terms only)
-     */
-    public List<GlossaryTermStatus> getLimitResultsByStatus()
-    {
-        return limitResultsByStatus;
-    }
-
-
-    /**
-     * Set up the list of statuses to return (null for all).
-     *
-     * @param limitResultsByStatus list of statuses (terms only)
-     */
-    public void setLimitResultsByStatus(List<GlossaryTermStatus> limitResultsByStatus)
-    {
-        this.limitResultsByStatus = limitResultsByStatus;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -106,13 +152,13 @@ public class GlossaryNameRequestBody extends NameRequestBody
     public String toString()
     {
         return "GlossaryNameRequestBody{" +
-                       "glossaryGUID='" + glossaryGUID + '\'' +
-                       ", limitResultsByStatus='" + limitResultsByStatus + '\'' +
-                       ", name='" + getName() + '\'' +
-                       ", nameParameterName='" + getNameParameterName() + '\'' +
-                       ", effectiveTime=" + getEffectiveTime() + '\'' +
-                       '}';
+                "name='" + name + '\'' +
+                ", nameParameterName='" + nameParameterName + '\'' +
+                ", namePropertyName='" + namePropertyName + '\'' +
+                ", glossaryGUID='" + glossaryGUID + '\'' +
+                "} " + super.toString();
     }
+
 
 
     /**
@@ -138,7 +184,9 @@ public class GlossaryNameRequestBody extends NameRequestBody
         }
         GlossaryNameRequestBody that = (GlossaryNameRequestBody) objectToCompare;
         return Objects.equals(glossaryGUID, that.glossaryGUID) &&
-                Objects.equals(limitResultsByStatus, that.limitResultsByStatus);
+                Objects.equals(name, that.name) &&
+                Objects.equals(nameParameterName, that.nameParameterName) &&
+                Objects.equals(namePropertyName, that.namePropertyName);
     }
 
 
@@ -150,6 +198,6 @@ public class GlossaryNameRequestBody extends NameRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), glossaryGUID, limitResultsByStatus);
+        return Objects.hash(super.hashCode(), glossaryGUID, name, nameParameterName, namePropertyName);
     }
 }

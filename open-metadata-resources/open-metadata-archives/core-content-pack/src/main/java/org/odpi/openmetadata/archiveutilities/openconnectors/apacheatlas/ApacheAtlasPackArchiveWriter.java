@@ -13,7 +13,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * ApacheAtlasPackArchiveWriter creates an open metadata archive that includes the connector type
@@ -29,7 +28,6 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK.getArchiveFileName(),
               new OpenMetadataArchive[]{new CorePackArchiveWriter().getOpenMetadataArchive()});
     }
@@ -52,7 +50,8 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
         /*
@@ -97,14 +96,23 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                           RequestTypeDefinition.SURVEY_ATLAS_SERVER,
-                                                          GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE,
+                                                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
         
         this.createAndCatalogServerGovernanceActionProcess("ApacheAtlasServer",
                                                            AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_ATLAS_SERVER,
                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                            RequestTypeDefinition.CATALOG_ATLAS_SERVER,
-                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE);
+                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
+
+        this.deleteAsCatalogTargetGovernanceActionProcess("ApacheAtlasServer",
+                                                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName(),
+                                                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
+                                                          RequestTypeDefinition.DELETE_ATLAS_SERVER,
+                                                          GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
+                                                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

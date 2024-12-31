@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -368,17 +369,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         Date effectiveTime = new Date();
 
         String assetGUID          = null;
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              surveyReportGUID,
-                                                              discoveryReportGUIDParameterName,
-                                                              OpenMetadataType.SURVEY_REPORT.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 surveyReportGUID,
+                                                                 discoveryReportGUIDParameterName,
+                                                                 OpenMetadataType.SURVEY_REPORT.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if (anchorEntity != null)
         {
@@ -442,17 +443,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         Date effectiveTime = new Date();
 
         String assetGUID          = null;
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              parentAnnotationGUID,
-                                                              parentAnnotationGUIDParameterName,
-                                                              OpenMetadataType.ANNOTATION.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 parentAnnotationGUID,
+                                                                 parentAnnotationGUIDParameterName,
+                                                                 OpenMetadataType.ANNOTATION.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if (anchorEntity != null)
         {
@@ -604,17 +605,17 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                       repositoryHelper,
                                                                       serviceName,
                                                                       serverName);
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              annotationGUID,
-                                                              annotationGUIDParameterName,
-                                                              OpenMetadataType.ANNOTATION.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
+        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
+                                                                 annotationGUID,
+                                                                 annotationGUIDParameterName,
+                                                                 OpenMetadataType.ANNOTATION.typeName,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 supportedZones,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {
@@ -783,6 +784,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                     annotationEntity.getGUID(),
                                                                                     null,
                                                                                     OpenMetadataType.ANNOTATION.typeName,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
                                                                                     false,
                                                                                     false,
                                                                                     effectiveTime,
@@ -834,6 +839,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          null,
                                                                          null,
                                                                          0,
+                                                                         null,
+                                                                         null,
+                                                                         SequencingOrder.CREATION_DATE_RECENT,
+                                                                         null,
                                                                          false,
                                                                          false,
                                                                          supportedZones,
@@ -910,6 +919,10 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                                        relationshipTypeGUID,
                                                                                        relationshipTypeName,
                                                                                        2,
+                                                                                       null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
                                                                                        false,
                                                                                        false,
                                                                                        startingFrom,

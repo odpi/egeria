@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -157,71 +158,6 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a new metadata element to represent a profile using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new profile.
-     *
-     * All categories and terms are linked to a single profile.  They are owned by this profile and if the
-     * profile is deleted, any linked terms and categories are deleted as well.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software capability representing the caller
-     * @param externalSourceName     unique name of software capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the profile - used in other configuration
-     * @param name short display name for the profile
-     * @param description description of the governance profile
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createActorProfileFromTemplate(String userId,
-                                                 String externalSourceGUID,
-                                                 String externalSourceName,
-                                                 String templateGUID,
-                                                 String qualifiedName,
-                                                 String name,
-                                                 String description,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String templateGUIDParameterName   = "templateGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        ActorProfileBuilder builder = new ActorProfileBuilder(qualifiedName,
-                                                              name,
-                                                              description,
-                                                              repositoryHelper,
-                                                              serviceName,
-                                                              serverName);
-
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataType.ACTOR_PROFILE.typeGUID,
-                                           OpenMetadataType.ACTOR_PROFILE.typeName,
-                                           qualifiedName,
-                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                           builder,
-                                           supportedZones,
-                                           true,
-                                           false,
-                                           null,
-                                           methodName);
-    }
-
-
-    /**
      * Update the anchor object that all elements in a profile (terms and categories) are linked to.
      *
      * @param userId calling user
@@ -312,120 +248,6 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     isMergeUpdate,
                                     effectiveTime,
                                     methodName);
-    }
-
-
-    /**
-     * Link two person profiles as peers.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software capability representing the caller
-     * @param externalSourceName     unique name of software capability representing the caller
-     * @param profile1GUID unique identifier of person profile
-     * @param profile1GUIDParameterName parameter name supplying profile1GUID
-     * @param profile2GUID  unique identifier of the other person profile
-     * @param profile2GUIDParameterName parameter name supplying profile2GUID
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  linkPeerPersonProfiles(String  userId,
-                                        String  externalSourceGUID,
-                                        String  externalSourceName,
-                                        String  profile1GUID,
-                                        String  profile1GUIDParameterName,
-                                        String  profile2GUID,
-                                        String  profile2GUIDParameterName,
-                                        Date    effectiveFrom,
-                                        Date    effectiveTo,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  profile1GUID,
-                                  profile1GUIDParameterName,
-                                  OpenMetadataType.PERSON.typeName,
-                                  profile2GUID,
-                                  profile2GUIDParameterName,
-                                  OpenMetadataType.PERSON.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.PEER_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.PEER_RELATIONSHIP.typeName,
-                                  setUpEffectiveDates(null, effectiveFrom, effectiveTo),
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-
-    /**
-     * Unlink two person profiles as peers.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software capability representing the caller
-     * @param externalSourceName     unique name of software capability representing the caller
-     * @param profile1GUID unique identifier of person profile
-     * @param profile1GUIDParameterName parameter name supplying profile1GUID
-     * @param profile2GUID  unique identifier of the other person profile
-     * @param profile2GUIDParameterName parameter name supplying profile2GUID
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void unlinkPeerPersonProfiles(String  userId,
-                                         String  externalSourceGUID,
-                                         String  externalSourceName,
-                                         String  profile1GUID,
-                                         String  profile1GUIDParameterName,
-                                         String  profile2GUID,
-                                         String  profile2GUIDParameterName,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profile1GUID,
-                                      profile1GUIDParameterName,
-                                      OpenMetadataType.PERSON.typeName,
-                                      profile2GUID,
-                                      profile2GUIDParameterName,
-                                      OpenMetadataType.PERSON.typeGUID,
-                                      OpenMetadataType.PERSON.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.PEER_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.PEER_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
     }
 
 
@@ -637,9 +459,12 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                         typeName,
                                                         null,
                                                         null,
-                                                        null,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -728,10 +553,13 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               false,
                                                               null,
                                                               null,
+                                                              null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               forLineage,
                                                               forDuplicateProcessing,
                                                               supportedZones,
-                                                              null,
                                                               startFrom,
                                                               pageSize,
                                                               effectiveTime,
@@ -782,6 +610,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -836,6 +668,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                 null,
                                                                 null,
                                                                 1,
+                                                                null,
+                                                                null,
+                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                null,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
                                                                 startingFrom,
@@ -882,8 +718,12 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               elementTypeGUID,
                                                               elementTypeName,
                                                               null,
+                                                              null,
+                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                              null,
                                                               forLineage,
                                                               forDuplicateProcessing,
+                                                              supportedZones,
                                                               startingFrom,
                                                               pageSize,
                                                               effectiveTime,
@@ -990,6 +830,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                           OpenMetadataType.USER_IDENTITY.typeGUID,
                                                           OpenMetadataType.USER_IDENTITY.typeName,
                                                           specificMatchPropertyNames,
+                                                          null,
+                                                          null,
+                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                          null,
                                                           forLineage,
                                                           forDuplicateProcessing,
                                                           effectiveTime,
@@ -1053,63 +897,6 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                 forDuplicateProcessing,
                                                                 effectiveTime,
                                                                 methodName);
-
-        if (entity != null)
-        {
-            return getFullProfileBean(userId,
-                                      entity,
-                                      typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Retrieve the profile metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param qualifiedName unique name of the linked user id
-     * @param qualifiedNameParameterName parameter name of qualifiedName
-     * @param typeGUID unique identifier of type of profile
-     * @param typeName unique name of type of profile
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getActorProfileByUniqueName(String  userId,
-                                         String  qualifiedName,
-                                         String  qualifiedNameParameterName,
-                                         String  typeGUID,
-                                         String  typeName,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        EntityDetail entity = this.getEntityByUniqueQualifiedName(userId,
-                                                                  typeGUID,
-                                                                  typeName,
-                                                                  qualifiedName,
-                                                                  qualifiedNameParameterName,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  effectiveTime,
-                                                                  methodName);
 
         if (entity != null)
         {
@@ -1227,6 +1014,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                       primaryEntity.getGUID(),
                                                                       profileGUIDParameterName,
                                                                       typeName,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
                                                                       effectiveTime,
@@ -1282,7 +1073,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName))
+                    else if ((repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName)) ||
+                             (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName)))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

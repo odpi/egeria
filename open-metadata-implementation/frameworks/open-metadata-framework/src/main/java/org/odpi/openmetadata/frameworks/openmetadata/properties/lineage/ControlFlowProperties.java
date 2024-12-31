@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ControlFlowProperties extends RelationshipProperties
 {
     private String qualifiedName = null;
+    private String label         = null;
     private String description   = null;
     private String guard         = null;
 
@@ -44,6 +45,7 @@ public class ControlFlowProperties extends RelationshipProperties
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
+            label         = template.getLabel();
             description   = template.getDescription();
             guard         = template.getGuard();
         }
@@ -70,6 +72,28 @@ public class ControlFlowProperties extends RelationshipProperties
     public String getQualifiedName()
     {
         return qualifiedName;
+    }
+
+
+    /**
+     * Return the label used when displaying this relationship.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the label used when displaying this relationship.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
     }
 
 
@@ -129,6 +153,7 @@ public class ControlFlowProperties extends RelationshipProperties
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", guard='" + guard + '\'' +
+                       ", label='" + label + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -154,7 +179,8 @@ public class ControlFlowProperties extends RelationshipProperties
         }
         ControlFlowProperties that = (ControlFlowProperties) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getLabel(), that.getLabel()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getGuard(), that.getGuard());
     }
 
@@ -167,6 +193,6 @@ public class ControlFlowProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, guard);
+        return Objects.hash(qualifiedName, label, description, guard);
     }
 }

@@ -109,7 +109,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CATEGORY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CATEGORY.name,
                                                                   category,
                                                                   methodName);
 
@@ -121,31 +121,31 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SCOPE.name,
                                                                   scope,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                   preferredValue,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DATA_TYPE.name,
                                                                   dataType,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
                                                                    isDeprecated,
                                                                    methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_CASE_SENSITIVE.name,
                                                                    isCaseSensitive,
                                                                    methodName);
 

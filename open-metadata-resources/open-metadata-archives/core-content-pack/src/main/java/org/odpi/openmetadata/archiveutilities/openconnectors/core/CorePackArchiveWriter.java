@@ -82,7 +82,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         super(ContentPackDefinition.CORE_CONTENT_PACK.getArchiveGUID(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveName(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveDescription(),
-              new Date(),
               ContentPackDefinition.CORE_CONTENT_PACK.getArchiveFileName(),
               null);
     }
@@ -287,6 +286,28 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                OpenMetadataType.COLLECTION.typeName,
                                                                OpenMetadataProperty.COLLECTION_TYPE.name,
                                                                null);
+
+        for (AssociationType associationType : AssociationType.values())
+        {
+            this.archiveHelper.addValidValue(associationType.getDescriptionGUID(),
+                                             collectionTypeParentSetGUID,
+                                             collectionTypeParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             associationType.getQualifiedName(),
+                                             associationType.getName(),
+                                             associationType.getDescription(),
+                                             associationType.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             associationType.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
 
         for (CollectionType collectionType : CollectionType.values())
         {
@@ -501,7 +522,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
 
@@ -516,7 +538,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
         /*
@@ -559,7 +582,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
          */
-        String serverTypeGUID  = archiveHelper.queryGUID(deployedImplementationTypeQNAMEs.get(EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType()));
+        String serverTypeGUID  = archiveHelper.queryGUID(EgeriaDeployedImplementationType.METADATA_ACCESS_SERVER.getQualifiedName());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
@@ -582,7 +605,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * View services are found in the View Server.  They call an access service.
          */
-        serverTypeGUID = archiveHelper.queryGUID(deployedImplementationTypeQNAMEs.get(EgeriaDeployedImplementationType.VIEW_SERVER.getDeployedImplementationType()));
+        serverTypeGUID = archiveHelper.queryGUID(EgeriaDeployedImplementationType.VIEW_SERVER.getQualifiedName());
 
         for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
         {
@@ -1404,7 +1427,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                       OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                       null);
 
-        return super.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, category, description, wikiLink);
+        return super.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, category, description, wikiLink, null);
     }
 
 

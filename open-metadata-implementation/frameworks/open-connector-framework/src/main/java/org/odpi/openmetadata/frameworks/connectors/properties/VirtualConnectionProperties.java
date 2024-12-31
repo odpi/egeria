@@ -18,7 +18,7 @@ import java.util.Objects;
  * Connectors are uses to access the underlying assets.
  * <br><br>
  * The properties for VirtualConnectionProperties are those for ConnectionProperties plus a list of
- * connections for the
+ * connections for the embedded connectors.
  */
 public class VirtualConnectionProperties extends ConnectionProperties
 {
@@ -70,6 +70,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return connection bean
      */
+    @Override
     protected VirtualConnection getConnectionBean()
     {
         return connectionBean;
@@ -108,16 +109,15 @@ public class VirtualConnectionProperties extends ConnectionProperties
      * Returns a formatted string with the connection name.  It is used in formatting error messages for the
      * exceptions thrown by consuming components.  It is extremely cautious because most of the exceptions
      * are reporting a malformed connection object so who knows what else is wrong with it.
-     *
      * Within the connection are 2 possible properties that could
      * contain the connection name:
      *   ** qualifiedName - this is a uniqueName and should be there
      *   ** displayName - shorter simpler name but may not be unique - so may not identify the connection in error
-     *
      * This method inspects these properties and builds up a string to represent the connection name
      *
      * @return connection name
      */
+    @Override
     public String  getConnectionName()
     {
         String   connectionName = "<Unknown>"; /* if all properties are blank */
@@ -127,14 +127,14 @@ public class VirtualConnectionProperties extends ConnectionProperties
         /*
          * The qualifiedName is preferred because it is unique.
          */
-        if (qualifiedName != null && (!qualifiedName.equals("")))
+        if (qualifiedName != null && (!qualifiedName.isEmpty()))
         {
             /*
              * Use qualified name.
              */
             connectionName = qualifiedName;
         }
-        else if (displayName != null && (!displayName.equals("")))
+        else if (displayName != null && (!displayName.isEmpty()))
         {
             /*
              * The qualifiedName is not set but the displayName is available so use it.
@@ -152,6 +152,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return description
      */
+    @Override
     public String getDescription()
     {
         return connectionBean.getDescription();
@@ -164,6 +165,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return connector type for the connection
      */
+    @Override
     public ConnectorTypeProperties getConnectorType()
     {
         ConnectorType connectorType = connectionBean.getConnectorType();
@@ -185,6 +187,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return endpoint for the connection
      */
+    @Override
     public EndpointProperties getEndpoint()
     {
         Endpoint endpoint = connectionBean.getEndpoint();
@@ -207,6 +210,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return secured properties typically user credentials for the connection
      */
+    @Override
     public Map<String, String> getSecuredProperties()
     {
         return connectionBean.getSecuredProperties();

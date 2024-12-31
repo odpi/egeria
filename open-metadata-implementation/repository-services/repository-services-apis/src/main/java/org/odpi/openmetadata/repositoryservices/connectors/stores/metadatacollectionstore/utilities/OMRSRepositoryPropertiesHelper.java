@@ -688,6 +688,8 @@ public interface OMRSRepositoryPropertiesHelper
      * @param sourceName  name of caller
      * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
+     * @param attributeTypeGUID unique identifier of the enum type
+     * @param attributeTypeName unique name of the enum type
      * @param ordinal  numeric value of property
      * @param symbolicName  String value of property
      * @param description  String description of property value
@@ -697,6 +699,8 @@ public interface OMRSRepositoryPropertiesHelper
     InstanceProperties addEnumPropertyToInstance(String             sourceName,
                                                  InstanceProperties properties,
                                                  String             propertyName,
+                                                 String             attributeTypeGUID,
+                                                 String             attributeTypeName,
                                                  int                ordinal,
                                                  String             symbolicName,
                                                  String             description,

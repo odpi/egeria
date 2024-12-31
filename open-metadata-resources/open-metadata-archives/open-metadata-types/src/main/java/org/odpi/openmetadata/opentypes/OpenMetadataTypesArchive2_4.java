@@ -3182,7 +3182,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalReference";
+        final String typeName = OpenMetadataType.EXTERNAL_REFERENCE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

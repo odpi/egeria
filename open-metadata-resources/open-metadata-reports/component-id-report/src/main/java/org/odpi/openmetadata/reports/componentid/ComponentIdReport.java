@@ -25,7 +25,7 @@ public class ComponentIdReport
     private static final String reportFileName = "component-id-report.md";
     private static final String licenseString  = "<!-- SPDX-License-Identifier: CC-BY-4.0 -->\n";
     private static final String copyrightString = "<!-- Copyright Contributors to the Egeria project. -->\n\n";
-    private static final String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component Home Page | \n| :--- | :--- | :--- | :--- |\n";
+    private static final String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component | Home Page | \n| :--- | :--- | :--- | :--- | :--- |\n";
     private static final String snippetString = "\n--8<-- \"snippets/abbr.md\"";
 
     private static final String fileCohortRegistryConnector = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
@@ -35,6 +35,7 @@ public class ComponentIdReport
     private static final String readOnlyRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
     private static final String xtdbRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
     private static final String janusRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
+    private static final String postgresRepositoryConnectorClassName = "org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.PostgresOMRSRepositoryConnectorProvider";
     private static final String restRepositoryConnector = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
     private static final String platformSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider";
     private static final String serverSecurityConnectorProviderClassName = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
@@ -237,6 +238,7 @@ public class ComponentIdReport
         this.addConnectorDescription(inMemRepositoryConnector, report);
         // Problem with gradle file this.addConnectorDescription(janusRepositoryConnector, report);
         this.addConnectorDescription(xtdbRepositoryConnector, report);
+        this.addConnectorDescription(postgresRepositoryConnectorClassName, report);
         this.addConnectorDescription(readOnlyRepositoryConnector, report);
         this.addConnectorDescription(restRepositoryConnector, report);
         this.addConnectorDescription(platformSecurityConnectorProviderClassName, report);

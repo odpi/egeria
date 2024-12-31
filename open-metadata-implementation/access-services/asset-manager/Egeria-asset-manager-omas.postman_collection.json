@@ -1871,7 +1871,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-specification?startFrom=0&pageSize=0&forLineage=false&forDuplicateProcessing=false&effectiveTime=0",
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-conditions?startFrom=0&pageSize=0&forLineage=false&forDuplicateProcessing=false&effectiveTime=0",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -1885,7 +1885,7 @@
 								"users",
 								"{{user}}",
 								"metadata-elements",
-								"by-search-specification"
+								"by-search-conditions"
 							],
 							"query": [
 								{

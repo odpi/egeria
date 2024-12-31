@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.converters.IntegrationConnect
 import org.odpi.openmetadata.frameworkservices.gaf.converters.IntegrationGroupConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RegisteredIntegrationConnectorConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -245,6 +246,10 @@ public class IntegrationGroupConfigurationHandler
                                                       OpenMetadataType.INTEGRATION_GROUP.typeGUID,
                                                       OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                       specificMatchPropertyNames,
+                                                      null,
+                                                      null,
+                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                      null,
                                                       false,
                                                       false,
                                                       serviceSupportedZones,
@@ -278,6 +283,9 @@ public class IntegrationGroupConfigurationHandler
         return integrationGroupHandler.getBeansByType(userId,
                                                       OpenMetadataType.INTEGRATION_GROUP.typeGUID,
                                                       OpenMetadataType.INTEGRATION_GROUP.typeName,
+                                                      null,
+                                                      null,
+                                                      SequencingOrder.CREATION_DATE_RECENT,
                                                       null,
                                                       false,
                                                       false,
@@ -641,6 +649,10 @@ public class IntegrationGroupConfigurationHandler
                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                      1,
+                                                                                     null,
+                                                                                     null,
+                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                     null,
                                                                                      false,
                                                                                      false,
                                                                                      0, 0,
@@ -944,6 +956,10 @@ public class IntegrationGroupConfigurationHandler
                                                                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                              1,
+                                                                                             null,
+                                                                                             null,
+                                                                                             SequencingOrder.CREATION_DATE_RECENT,
+                                                                                             null,
                                                                                              false,
                                                                                              false,
                                                                                              null,
@@ -1000,6 +1016,10 @@ public class IntegrationGroupConfigurationHandler
                                                                                       null,
                                                                                       OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                       2,
+                                                                                      null,
+                                                                                      null,
+                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                      null,
                                                                                       false,
                                                                                       false,
                                                                                       startingFrom,
@@ -1390,6 +1410,10 @@ public class IntegrationGroupConfigurationHandler
                                                                                       null,
                                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                       2,
+                                                                                      null,
+                                                                                      null,
+                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                      null,
                                                                                       false,
                                                                                       false,
                                                                                       serviceSupportedZones,

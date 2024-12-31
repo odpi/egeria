@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TechnologyTypeReport extends TechnologyTypeSummary
 {
-    private String                         technologySuperType = null;
-    private List<String>                   technologySubtypes  = null;
-    private String                         openMetadataType    = null;
     private List<CatalogTemplate>          catalogTemplates    = null;
     private List<ResourceDescription>      resourceList        = null;
     private List<ExternalReferenceElement> externalReferences  = null;
@@ -36,88 +33,76 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
         super();
     }
 
-
     /**
-     * Return the full name of a more generic technology type.
-     *
-     * @return name
+     * Copy constructor
      */
-    public String getTechnologySuperType()
+    public TechnologyTypeReport(TechnologyTypeSummary template)
     {
-        return technologySuperType;
+        super(template);
     }
 
 
     /**
-     * Set up the full name of a more generic technology type.
+     * Return the list of templates for this technology type.
+     * The templates are used to create catalog entities for an instance of the technology type.
      *
-     * @param technologySuperType name
+     * @return list
      */
-    public void setTechnologySuperType(String technologySuperType)
-    {
-        this.technologySuperType = technologySuperType;
-    }
-
-
-    /**
-     * Return the names of specific technology types.
-     *
-     * @return list of names
-     */
-    public List<String> getTechnologySubtypes()
-    {
-        return technologySubtypes;
-    }
-
-
-    /**
-     * Set up the names of specific technology types.
-     *
-     * @param technologySubtypes list of names
-     */
-    public void setTechnologySubtypes(List<String> technologySubtypes)
-    {
-        this.technologySubtypes = technologySubtypes;
-    }
-
-
-
-    public String getOpenMetadataType()
-    {
-        return openMetadataType;
-    }
-
-    public void setOpenMetadataType(String openMetadataType)
-    {
-        this.openMetadataType = openMetadataType;
-    }
-
     public List<CatalogTemplate> getCatalogTemplates()
     {
         return catalogTemplates;
     }
 
+
+    /**
+     * Set up the of templates for this technology type.
+     *
+     * @param catalogTemplates list
+     */
     public void setCatalogTemplates(List<CatalogTemplate> catalogTemplates)
     {
         this.catalogTemplates = catalogTemplates;
     }
 
 
+    /**
+     * Return the list of resources available for working with this technology type.
+     *
+     * @return list
+     */
     public List<ResourceDescription> getResourceList()
     {
         return resourceList;
     }
 
+
+    /**
+     * Set up the list of resources for working with this technology type.
+     *
+     * @param resourceList list
+     */
     public void setResourceList(List<ResourceDescription> resourceList)
     {
         this.resourceList = resourceList;
     }
 
+
+    /**
+     * Return the list of external references that describe this technology type in detail.
+     *
+     * @return list
+     */
     public List<ExternalReferenceElement> getExternalReferences()
     {
         return externalReferences;
     }
 
+
+    /**
+     * Set up the list of external references that describe this technology type in detail.
+     *
+     * @param externalReferences list
+     */
     public void setExternalReferences(List<ExternalReferenceElement> externalReferences)
     {
         this.externalReferences = externalReferences;
@@ -133,12 +118,9 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
     public String toString()
     {
         return "TechnologyTypeReport{" +
-                "technologySuperType='" + technologySuperType + '\'' +
-                ", technologySubtypes=" + technologySubtypes +
-                ", openMetadataType='" + openMetadataType + '\'' +
-                ", catalogTemplates=" + catalogTemplates +
+                "catalogTemplates=" + catalogTemplates +
                 ", resourceList=" + resourceList +
                 ", externalReferences=" + externalReferences +
-                '}';
+                "} " + super.toString();
     }
 }

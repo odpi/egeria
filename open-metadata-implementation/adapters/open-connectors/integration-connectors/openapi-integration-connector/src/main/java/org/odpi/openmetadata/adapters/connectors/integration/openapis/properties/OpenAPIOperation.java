@@ -29,7 +29,6 @@ public class OpenAPIOperation
     private OpenAPIRequestBody           requestBody  = null;
     private Map<String, OpenAPIResponse> responses    = null;
     private boolean                      deprecated   = false;
-    private Map<String, List<String>>    security     = null;
     private List<OpenAPIServer>          servers      = null;
     private Map<String, Object>          extensions   = null;
 
@@ -146,17 +145,6 @@ public class OpenAPIOperation
     }
 
 
-    public Map<String, List<String>> getSecurity()
-    {
-        return security;
-    }
-
-
-    public void setSecurity(Map<String, List<String>> security)
-    {
-        this.security = security;
-    }
-
 
     public List<OpenAPIServer> getServers()
     {
@@ -195,7 +183,6 @@ public class OpenAPIOperation
                        ", requestBody=" + requestBody +
                        ", responses=" + responses +
                        ", deprecated=" + deprecated +
-                       ", security=" + security +
                        ", servers=" + servers +
                        ", extensions=" + extensions +
                        '}';

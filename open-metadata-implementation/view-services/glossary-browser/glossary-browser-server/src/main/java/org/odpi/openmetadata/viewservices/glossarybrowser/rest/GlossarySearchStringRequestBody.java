@@ -5,10 +5,6 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
-
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,10 +18,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossarySearchStringRequestBody extends SearchStringRequestBody
+public class GlossarySearchStringRequestBody extends GlossaryResultsRequestBody
 {
-    private String                   glossaryGUID         = null;
-    private List<GlossaryTermStatus> limitResultsByStatus = null;
+    private String searchString              = null;
+    private String searchStringParameterName = null;
+    private String typeName                  = null;
+    private String glossaryGUID              = null;
 
     /**
      * Default constructor
@@ -47,9 +45,77 @@ public class GlossarySearchStringRequestBody extends SearchStringRequestBody
 
         if (template != null)
         {
-            glossaryGUID = template.getGlossaryGUID();
-            limitResultsByStatus = template.getLimitResultsByStatus();
+            searchString              = template.getSearchString();
+            searchStringParameterName = template.getSearchStringParameterName();
+            typeName                  = template.getTypeName();
+            glossaryGUID              = template.getGlossaryGUID();
         }
+    }
+
+
+    /**
+     * Return the search request.
+     *
+     * @return regEx expression
+     */
+    public String getSearchString()
+    {
+        return searchString;
+    }
+
+
+    /**
+     * Set up the search.
+     *
+     * @param searchString regEx expression
+     */
+    public void setSearchString(String searchString)
+    {
+        this.searchString = searchString;
+    }
+
+
+    /**
+     * Return the search string parameter name.
+     *
+     * @return string name
+     */
+    public String getSearchStringParameterName()
+    {
+        return searchStringParameterName;
+    }
+
+
+    /**
+     * Set up the search string parameter name.
+     *
+     * @param searchStringParameterName string name
+     */
+    public void setSearchStringParameterName(String searchStringParameterName)
+    {
+        this.searchStringParameterName = searchStringParameterName;
+    }
+
+
+    /**
+     * Return the optional type name for the search results (null means any type).
+     *
+     * @return unique name of type
+     */
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Set up the optional type name for the search results (null means any type).
+     *
+     * @param typeName unique name of type
+     */
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
     }
 
 
@@ -76,28 +142,6 @@ public class GlossarySearchStringRequestBody extends SearchStringRequestBody
 
 
     /**
-     * Return the list of statuses to return (null for all).
-     *
-     * @return list of statuses (terms only)
-     */
-    public List<GlossaryTermStatus> getLimitResultsByStatus()
-    {
-        return limitResultsByStatus;
-    }
-
-
-    /**
-     * Set up the list of statuses to return (null for all).
-     *
-     * @param limitResultsByStatus list of statuses (terms only)
-     */
-    public void setLimitResultsByStatus(List<GlossaryTermStatus> limitResultsByStatus)
-    {
-        this.limitResultsByStatus = limitResultsByStatus;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -106,12 +150,11 @@ public class GlossarySearchStringRequestBody extends SearchStringRequestBody
     public String toString()
     {
         return "GlossarySearchStringRequestBody{" +
-                       "glossaryGUID='" + glossaryGUID + '\'' +
-                       ", limitResultsByStatus=" + limitResultsByStatus +
-                       ", searchString='" + getSearchString() + '\'' +
-                       ", searchStringParameterName='" + getSearchStringParameterName() + '\'' +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       '}';
+                "searchString='" + searchString + '\'' +
+                ", searchStringParameterName='" + searchStringParameterName + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", glossaryGUID='" + glossaryGUID + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -138,7 +181,9 @@ public class GlossarySearchStringRequestBody extends SearchStringRequestBody
         }
         GlossarySearchStringRequestBody that = (GlossarySearchStringRequestBody) objectToCompare;
         return Objects.equals(glossaryGUID, that.glossaryGUID) &&
-                       Objects.equals(limitResultsByStatus, that.limitResultsByStatus);
+                Objects.equals(searchString, that.searchString) &&
+                Objects.equals(searchStringParameterName, that.searchStringParameterName) &&
+                Objects.equals(typeName, that.typeName);
     }
 
 
@@ -150,6 +195,6 @@ public class GlossarySearchStringRequestBody extends SearchStringRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), glossaryGUID, limitResultsByStatus);
+        return Objects.hash(super.hashCode(), glossaryGUID, searchString, searchStringParameterName, typeName);
     }
 }

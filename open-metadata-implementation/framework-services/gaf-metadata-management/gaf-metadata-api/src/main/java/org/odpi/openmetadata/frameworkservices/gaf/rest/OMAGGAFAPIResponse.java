@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = OpenMetadataElementResponse.class, name = "OpenMetadataElementResponse"),
                 @JsonSubTypes.Type(value = OpenMetadataElementsResponse.class, name = "OpenMetadataElementsResponse"),
                 @JsonSubTypes.Type(value = RelatedMetadataElementListResponse.class, name = "RelatedMetadataElementListResponse"),
-                @JsonSubTypes.Type(value = RelatedMetadataElementsListResponse.class, name = "RelatedMetadataElementsListResponse"),
+                @JsonSubTypes.Type(value = OpenMetadataRelationshipListResponse.class, name = "OpenMetadataRelationshipListResponse"),
         })
 public abstract class OMAGGAFAPIResponse extends FFDCResponseBase
 {

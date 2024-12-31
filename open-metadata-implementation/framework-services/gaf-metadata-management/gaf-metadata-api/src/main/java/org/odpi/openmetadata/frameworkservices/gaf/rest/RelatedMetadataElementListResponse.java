@@ -6,18 +6,15 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedMetadataElementsListResponse is a response object for passing back a list of GAF OpenMetadataRelationship
+ * OpenMetadataRelationshipListResponse is a response object for passing back a list of GAF OpenMetadataRelationship
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -25,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
 {
-     private List<RelatedMetadataElement> elementList = null;
+     private RelatedMetadataElementList relatedElementList = null;
 
 
     /**
@@ -47,7 +44,7 @@ public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            relatedElementList = template.getRelatedElementList();
         }
     }
 
@@ -57,31 +54,20 @@ public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<RelatedMetadataElement> getElementList()
+    public RelatedMetadataElementList getRelatedElementList()
     {
-        if (elementList == null)
-        {
-            return null;
-        }
-        else if (elementList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementList);
-        }
+        return relatedElementList;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param relatedElementList result object
      */
-    public void setElementList(List<RelatedMetadataElement> elementList)
+    public void setRelatedElementList(RelatedMetadataElementList relatedElementList)
     {
-        this.elementList = elementList;
+        this.relatedElementList = relatedElementList;
     }
 
 
@@ -94,18 +80,8 @@ public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
     public String toString()
     {
         return "RelatedMetadataElementListResponse{" +
-                       "elementList=" + elementList +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "relatedElementList=" + relatedElementList +
+                "} " + super.toString();
     }
 
 
@@ -131,7 +107,7 @@ public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
             return false;
         }
         RelatedMetadataElementListResponse that = (RelatedMetadataElementListResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        return Objects.equals(relatedElementList, that.relatedElementList);
     }
 
 
@@ -143,6 +119,6 @@ public class RelatedMetadataElementListResponse extends OMAGGAFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), relatedElementList);
     }
 }

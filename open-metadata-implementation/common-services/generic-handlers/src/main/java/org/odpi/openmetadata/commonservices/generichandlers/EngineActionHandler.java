@@ -2,24 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositorySelectedEntitiesIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -32,7 +30,6 @@ import java.util.*;
  */
 public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
-
     /**
      * Construct the handler for engine actions.
      *
@@ -131,6 +128,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_GUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                         propertyNames,
+                                                                        null,
+                                                                        null,
+                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                        null,
                                                                         false,
                                                                         false,
                                                                         serviceSupportedZones,
@@ -411,9 +412,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
                                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
                                                                                        2,
-                                                                                       false,
-                                                                                       false,
                                                                                        null,
+                                                                                       null,
+                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                       null,
+                                                                                       false,
+                                                                                       false,
                                                                                        startFrom,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
                                                                                        new Date(),
@@ -451,9 +455,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
                                                                         OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
                                                                         2,
-                                                                        false,
-                                                                        false,
                                                                         null,
+                                                                        null,
+                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                        null,
+                                                                        false,
+                                                                        false,
                                                                         startFrom,
                                                                         invalidParameterHandler.getMaxPagingSize(),
                                                                         new Date(),
@@ -474,6 +481,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                           true,
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                          null,
                                                                                                           false,
                                                                                                           false,
                                                                                                           null,
@@ -606,6 +617,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                            propertyNames,
+                                                                           null,
+                                                                           null,
+                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                           null,
                                                                            false,
                                                                            false,
                                                                            serviceSupportedZones,
@@ -620,6 +635,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                           true,
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_GUID,
                                                                                                           OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                                          null,
+                                                                                                          null,
+                                                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                          null,
                                                                                                           false,
                                                                                                           false,
                                                                                                           effectiveTime,
@@ -678,9 +697,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeGUID,
                                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
                                                                                                2,
-                                                                                               false,
-                                                                                               false,
                                                                                                null,
+                                                                                               null,
+                                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                                               null,
+                                                                                               false,
+                                                                                               false,
                                                                                                startFrom,
                                                                                                invalidParameterHandler.getMaxPagingSize(),
                                                                                                new Date(),
@@ -711,9 +733,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                 OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeGUID,
                                                                                 OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
                                                                                 2,
-                                                                                false,
-                                                                                false,
                                                                                 null,
+                                                                                null,
+                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                null,
+                                                                                false,
+                                                                                false,
                                                                                 startFrom,
                                                                                 invalidParameterHandler.getMaxPagingSize(),
                                                                                 new Date(),
@@ -904,6 +929,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                                      true,
                                                                                                                      OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
                                                                                                                      OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
+                                                                                                                     null,
+                                                                                                                     null,
+                                                                                                                     SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                     null,
                                                                                                                      false,
                                                                                                                      false,
                                                                                                                      null,
@@ -1010,6 +1039,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
                                                                         OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                         2,
+                                                                        null,
+                                                                        null,
+                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                        null,
                                                                         false,
                                                                         false,
                                                                         startFrom,
@@ -1042,6 +1075,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                             OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
                                                                             OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                             2,
+                                                                            null,
+                                                                            null,
+                                                                            SequencingOrder.CREATION_DATE_RECENT,
+                                                                            null,
                                                                             false,
                                                                             false,
                                                                             startFrom,
@@ -1061,9 +1098,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
                                                                     OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
                                                                     2,
-                                                                    false,
-                                                                    false,
                                                                     null,
+                                                                    null,
+                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                    null,
+                                                                    false,
+                                                                    false,
                                                                     startFrom,
                                                                     invalidParameterHandler.getMaxPagingSize(),
                                                                     new Date(),
@@ -1094,9 +1134,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeGUID,
                                                                         OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
                                                                         2,
-                                                                        false,
-                                                                        false,
                                                                         null,
+                                                                        null,
+                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                        null,
+                                                                        false,
+                                                                        false,
                                                                         startFrom,
                                                                         invalidParameterHandler.getMaxPagingSize(),
                                                                         new Date(),
@@ -1235,6 +1278,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                       OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
                                                                                       OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
                                                                                       1,
+                                                                                      null,
+                                                                                      null,
+                                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                                      null,
                                                                                       false,
                                                                                       false,
                                                                                       0,
@@ -1701,10 +1748,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                false,
                                                                null,
                                                                null,
+                                                               null,
+                                                               null,
+                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                               null,
                                                                false,
                                                                false,
                                                                serviceSupportedZones,
-                                                               null,
                                                                0,
                                                                0,
                                                                null,
@@ -1884,6 +1934,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                    OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
                                                                    OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
                                                                    false,
                                                                    false,
                                                                    serviceSupportedZones,
@@ -1909,6 +1963,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    null,
                                                                    OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                    2,
+                                                                   null,
+                                                                   null,
+                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                   null,
                                                                    false,
                                                                    false,
                                                                    serviceSupportedZones,
@@ -2034,6 +2092,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            null,
                                                                                            null,
                                                                                            0,
+                                                                                           null,
+                                                                                           null,
+                                                                                           SequencingOrder.CREATION_DATE_RECENT,
+                                                                                           null,
                                                                                            false,
                                                                                            false,
                                                                                            0,
@@ -2712,17 +2774,17 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         final String methodName = "markActionTargetsAsComplete";
         final String guidParameterName = "engineActionGUID";
 
-        this.validateAnchorEntity(userId,
-                                  engineActionGUID,
-                                  guidParameterName,
-                                  OpenMetadataType.ENGINE_ACTION.typeName,
-                                  true,
-                                  false,
-                                  true,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
+        this.validateAnchorForEntity(userId,
+                                     engineActionGUID,
+                                     guidParameterName,
+                                     OpenMetadataType.ENGINE_ACTION.typeName,
+                                     true,
+                                     false,
+                                     true,
+                                     false,
+                                     serviceSupportedZones,
+                                     effectiveTime,
+                                     methodName);
 
         List<Relationship> actionTargetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                                 engineActionGUID,
@@ -2730,6 +2792,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                 OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
                                                                                                 OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                                                 2,
+                                                                                                null,
+                                                                                                null,
+                                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                null,
                                                                                                 true,
                                                                                                 false,
                                                                                                 0, 0,
@@ -2836,6 +2902,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                  OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
                                                                                                  OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                                                  2,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                 null,
                                                                                                  false,
                                                                                                  false,
                                                                                                  0,
@@ -2927,10 +2997,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               true,
                                                                               null,
                                                                               null,
+                                                                              null,
+                                                                              null,
+                                                                              SequencingOrder.CREATION_DATE_RECENT,
+                                                                              null,
                                                                               false,
                                                                               false,
                                                                               serviceSupportedZones,
-                                                                              null,
                                                                               0,
                                                                               0,
                                                                               effectiveTime,
@@ -3017,6 +3090,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
                                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                                                    2,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                   null,
                                                                                                    false,
                                                                                                    false,
                                                                                                    0, 0,
@@ -3089,31 +3166,28 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
-                                                                             invalidParameterHandler,
-                                                                             userId,
-                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                             OpenMetadataType.ENGINE_ACTION.typeName,
-                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                             null,
-                                                                             null,
-                                                                             false,
-                                                                             false,
-                                                                             0,
-                                                                             invalidParameterHandler.getMaxPagingSize(),
-                                                                             effectiveTime,
-                                                                             methodName);
+        List<EntityDetail> retrievedEntities = this.getEntitiesByType(userId,
+                                                                      OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                      OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
+                                                                      false,
+                                                                      false,
+                                                                      serviceSupportedZones,
+                                                                      startFrom,
+                                                                      queryPageSize,
+                                                                      effectiveTime,
+                                                                      methodName);
 
-        List<B> results = new ArrayList<>();
-        int entityCount = 0;
-
-        while ((iterator.moreToReceive()) && ((pageSize == 0) || (results.size() < pageSize)))
+        if (retrievedEntities != null)
         {
-            entityCount ++;
-            EntityDetail nextEngineAction = iterator.getNext();
+            List<B> results  = new ArrayList<>();
 
-            if (entityCount > startFrom)
+            for (EntityDetail nextEngineAction : retrievedEntities)
             {
                 B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 
@@ -3122,14 +3196,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     results.add(bean);
                 }
             }
+
+            return results;
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-
-        return results;
+        return null;
     }
 
 
@@ -3158,31 +3229,28 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
-                                                                             invalidParameterHandler,
-                                                                             userId,
-                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                             OpenMetadataType.ENGINE_ACTION.typeName,
-                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                             null,
-                                                                             null,
-                                                                             false,
-                                                                             false,
-                                                                             0,
-                                                                             invalidParameterHandler.getMaxPagingSize(),
-                                                                             effectiveTime,
-                                                                             methodName);
+        List<EntityDetail> retrievedEntities = this.getEntitiesByType(userId,
+                                                                      OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                      OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                      null,
+                                                                      null,
+                                                                      SequencingOrder.CREATION_DATE_RECENT,
+                                                                      null,
+                                                                      false,
+                                                                      false,
+                                                                      serviceSupportedZones,
+                                                                      startFrom,
+                                                                      queryPageSize,
+                                                                      effectiveTime,
+                                                                      methodName);
 
-        List<B> results = new ArrayList<>();
-        int entityCount = 0;
-
-        while ((iterator.moreToReceive()) && ((pageSize == 0) || (results.size() < pageSize)))
+        if (retrievedEntities != null)
         {
-            entityCount ++;
-            EntityDetail nextEngineAction = iterator.getNext();
+            List<B> results  = new ArrayList<>();
 
-            if (entityCount > startFrom)
+            for (EntityDetail nextEngineAction : retrievedEntities)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
                                                                      OpenMetadataProperty.ACTION_STATUS.name,
@@ -3190,7 +3258,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      methodName);
 
                 if ((status == EngineActionStatus.REQUESTED.getOrdinal()) || (status == EngineActionStatus.APPROVED.getOrdinal()) ||
-                    (status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))
+                        (status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))
                 {
                     B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 
@@ -3200,14 +3268,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     }
                 }
             }
+
+            return results;
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-
-        return results;
+        return null;
     }
 
 
@@ -3242,38 +3307,34 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                     null,
-                                                                                     OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
-                                                                                     userId,
-                                                                                     methodName);
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                                                          userId,
+                                                                                          methodName);
 
-        RepositorySelectedEntitiesIterator iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
-                                                                                             invalidParameterHandler,
-                                                                                             userId,
-                                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
-                                                                                             properties,
-                                                                                             MatchCriteria.ANY,
-                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                             null,
-                                                                                             null,
-                                                                                             false,
-                                                                                             false,
-                                                                                             0,
-                                                                                             invalidParameterHandler.getMaxPagingSize(),
-                                                                                             effectiveTime,
-                                                                                             methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   matchProperties,
+                                                                                   OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   startFrom,
+                                                                                   queryPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
 
-        List<B> results = new ArrayList<>();
-        int entityCount = 0;
-
-        while ((iterator.moreToReceive()) && ((pageSize == 0) || (results.size() < pageSize)))
+        if (retrievedEntities != null)
         {
-            entityCount ++;
-            EntityDetail nextEngineAction = iterator.getNext();
+            List<B> results = new ArrayList<>();
 
-            if (entityCount > startFrom)
+            for (EntityDetail nextEngineAction : retrievedEntities)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
                                                                      OpenMetadataProperty.ACTION_STATUS.name,
@@ -3285,7 +3346,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                              nextEngineAction.getProperties(),
                                                                                              methodName);
                 if ((governanceEngineGUID.equals(engineActionGovernanceEngineGUID) &&
-                    ((status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))))
+                        ((status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))))
                 {
                     B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 
@@ -3295,14 +3356,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     }
                 }
             }
+
+            return results;
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-
-        return results;
+        return null;
     }
 
 
@@ -3350,9 +3408,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         OpenMetadataType.ENGINE_ACTION.typeName,
                                                         null,
                                                         null,
-                                                        null,
                                                         startFrom,
                                                         pageSize,
+                                                        null,
+                                                        null,
+                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                        null,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -3430,10 +3491,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                false,
                                                                null,
                                                                null,
+                                                               null,
+                                                               null,
+                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                               null,
                                                                false,
                                                                false,
                                                                serviceSupportedZones,
-                                                               null,
                                                                startFrom,
                                                                pageSize,
                                                                effectiveTime,

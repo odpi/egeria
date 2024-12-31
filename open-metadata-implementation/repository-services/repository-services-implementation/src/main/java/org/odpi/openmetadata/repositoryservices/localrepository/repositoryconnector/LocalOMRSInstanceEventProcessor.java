@@ -2714,6 +2714,7 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                                                                           storedInstanceType.getTypeDefName(),
                                                                                                           storedInstanceType.toString(),
                                                                                                           incomingInstanceType.toString());
+                                auditLog.logMessage(methodName, messageDefinition);
                                 outboundRepositoryEventProcessor.processConflictingTypeEvent(localServerName,
                                                                                              localMetadataCollectionId,
                                                                                              localRepositoryConnector.getServerName(),

@@ -214,11 +214,11 @@ public class GetRelationshipExecutor extends RepositoryExecutorBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public Relationship getRelationshipHistory() throws InvalidParameterException,
-                                                        RepositoryErrorException,
-                                                        RelationshipNotKnownException,
-                                                        FunctionNotSupportedException,
-                                                        UserNotAuthorizedException
+    public Relationship getRelationshipAsOfTime() throws InvalidParameterException,
+                                                         RepositoryErrorException,
+                                                         RelationshipNotKnownException,
+                                                         FunctionNotSupportedException,
+                                                         UserNotAuthorizedException
     {
         Relationship relationship = this.getRelationship();
 

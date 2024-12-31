@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -79,61 +81,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param elementGUID identifier for the entity that the identifier is attached to
      * @param elementGUIDParameterName name of parameter supplying the GUID
      * @param elementTypeName name of the type of object being attached to
-     * @param startingFrom start position for results
-     * @param pageSize     maximum number of results
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of retrieved objects or null if none found
-     *
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public List<B>  getAttachedTags(String       userId,
-                                    String       elementGUID,
-                                    String       elementGUIDParameterName,
-                                    String       elementTypeName,
-                                    int          startingFrom,
-                                    int          pageSize,
-                                    boolean      forLineage,
-                                    boolean      forDuplicateProcessing,
-                                    Date         effectiveTime,
-                                    String       methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        elementGUID,
-                                        elementGUIDParameterName,
-                                        elementTypeName,
-                                        OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeGUID,
-                                        OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                        OpenMetadataType.INFORMAL_TAG.typeName,
-                                        null,
-                                        null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startingFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
-     * Return the informal tags attached to a supplied entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the identifier is attached to
-     * @param elementGUIDParameterName name of parameter supplying the GUID
-     * @param elementTypeName name of the type of object being attached to
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
@@ -174,6 +121,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
+                                        null,
+                                        null,
+                                        SequencingOrder.CREATION_DATE_RECENT,
+                                        null,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
@@ -352,57 +303,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Removes a tag from the repository.
-     * A private tag can be deleted by its creator and all the references are lost;
-     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
-     * This method is sufficiently special that it does not use the generic handler
-     *
-     * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param tagGUID   unique id for the tag.
-     * @param tagGUIDParameterName name of parameter supplying the GUID
-     * @param serviceSupportedZones supported zones for calling service
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void   deleteTag(String       userId,
-                            String       externalSourceGUID,
-                            String       externalSourceName,
-                            String       tagGUID,
-                            String       tagGUIDParameterName,
-                            List<String> serviceSupportedZones,
-                            boolean      forLineage,
-                            boolean      forDuplicateProcessing,
-                            Date         effectiveTime,
-                            String       methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
-    {
-        this.deleteBeanInRepository(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    tagGUID,
-                                    tagGUIDParameterName,
-                                    OpenMetadataType.INFORMAL_TAG.typeGUID,
-                                    OpenMetadataType.INFORMAL_TAG.typeName,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
-                                    serviceSupportedZones,
-                                    effectiveTime,
-                                    methodName);
-    }
-
-
-    /**
      * Return the tag for the supplied unique identifier (guid).  The tag is only returned if it is public
      * or if it is private and the
      *
@@ -439,49 +339,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           effectiveTime,
                                           methodName);
     }
-
-
-    /**
-     * Return the tag for the supplied unique identifier (guid).  The tag is only returned if it is public
-     * or if it is private and the
-     *
-     * @param userId userId of the user making the request.
-     * @param guid unique identifier of the tag.
-     * @param guidParameterName name of the parameter supplying the guid
-     * @param serviceSupportedZones list of zones that assets can be retrieved from
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return tag
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public B getTag(String       userId,
-                    String       guid,
-                    String       guidParameterName,
-                    List<String> serviceSupportedZones,
-                    boolean      forLineage,
-                    boolean      forDuplicateProcessing,
-                    Date         effectiveTime,
-                    String       methodName) throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException
-    {
-        return this.getBeanFromRepository(userId,
-                                          guid,
-                                          guidParameterName,
-                                          OpenMetadataType.INFORMAL_TAG.typeName,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
-    }
-
-
 
 
     /**
@@ -527,10 +384,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -568,25 +428,45 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        List<String>  propertyNames = new ArrayList<>();
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        propertyNames.add(OpenMetadataProperty.TAG_NAME.name);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        return this.getBeansByCreator(userId,
-                                      name,
-                                      nameParameterName,
-                                      OpenMetadataType.INFORMAL_TAG.typeGUID,
-                                      OpenMetadataType.INFORMAL_TAG.typeName,
-                                      propertyNames,
-                                      true,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      null,
-                                      startFrom,
-                                      pageSize,
-                                      effectiveTime,
-                                      methodName);
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          OpenMetadataProperty.CREATED_BY.name,
+                                                                                          userId,
+                                                                                          methodName);
+
+        matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                       matchProperties,
+                                                                       OpenMetadataProperty.TAG_NAME.name,
+                                                                       userId,
+                                                                       methodName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   matchProperties,
+                                                                                   OpenMetadataType.INFORMAL_TAG.typeGUID,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.CREATION_DATE_RECENT,
+                                                                                   null,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   startFrom,
+                                                                                   queryPageSize,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+        return getValidatedBeans(userId,
+                                 effectiveTime,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 supportedZones,
+                                 methodName,
+                                 retrievedEntities);
     }
 
 
@@ -629,10 +509,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
+                                    SequencingOrder.CREATION_DATE_RECENT,
+                                    null,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
-                                    null,
                                     startFrom,
                                     pageSize,
                                     effectiveTime,
@@ -670,21 +553,48 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
     {
-        return this.getBeansByCreator(userId,
-                                      searchString,
-                                      searchStringParameterName,
-                                      OpenMetadataType.INFORMAL_TAG.typeGUID,
-                                      OpenMetadataType.INFORMAL_TAG.typeName,
-                                      null,
-                                      false,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      null,
-                                      startFrom,
-                                      pageSize,
-                                      effectiveTime,
-                                      methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(searchString, searchStringParameterName, methodName);
+
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByValue(userId,
+                                                                                    searchString,
+                                                                                    OpenMetadataType.INFORMAL_TAG.typeGUID,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    startFrom,
+                                                                                    queryPageSize,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+        if (retrievedEntities != null)
+        {
+            List<EntityDetail> myEntities = new ArrayList<>();
+
+            for (EntityDetail entity : retrievedEntities)
+            {
+                if ((entity != null) && (entity.getCreatedBy().equals(userId)))
+                {
+                    myEntities.add(entity);
+                }
+            }
+
+            return getValidatedBeans(userId,
+                                     effectiveTime,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     supportedZones,
+                                     methodName,
+                                     myEntities);
+        }
+
+        return null;
     }
 
 

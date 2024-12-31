@@ -1,0 +1,57 @@
+#
+# These commands rebuild the sample configuration documents for postgres-metadata-server
+# They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+@localMatadataCollectionId=3fe67e5a-28eb-42bb-910c-600c3a8d6fb2
+
+@ctsServer=ctsServer
+@ctsUserId=cts
+@ctsPassword=secret
+
+@tutServer=postgres-metadata-store
+@tutPlatformURLroot=https://localhost:9443
+
+@cohort=ctsCohort
+
+
+###
+# group: Getting Results
+# @name Retrieve platform workbench results
+# Retrieve the results from the platform workbench tests.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/platform-workbench
+
+###
+# group: Getting Results
+# @name Retrieve repository workbench results
+# Retrieve the results from the repository workbench tests.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/workbenches/repository-workbench
+
+###
+# group: Getting Results
+# @name Retrieve full report of results
+# Retrieve all of the results of the conformance suite testing.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report
+
+###
+# group: Getting Results
+# @name Retrieve summary report of results
+# Retrieve all of the results of the conformance suite testing.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/summary
+
+###
+# group: Getting Results
+# @name Retrieve report of failed test cases
+# Retrieve the results of all failed test cases.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/failed
+
+###
+# group: Getting Results
+# @name Retrieve report of a specific test case
+# Retrieve the results of all failed test cases.
+GET {{baseURL}}/servers/{{ctsServer}}/open-metadata/conformance-suite/users/{{adminUserId}}/report/test-cases/repository-entity-reference-copy-lifecycle-ConceptModelElement
+
+###
+

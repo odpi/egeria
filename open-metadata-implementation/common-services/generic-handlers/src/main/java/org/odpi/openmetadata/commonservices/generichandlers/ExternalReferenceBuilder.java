@@ -200,7 +200,7 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.SOURCE_ORGANIZATION.name,
+                                                                  OpenMetadataProperty.ORGANIZATION.name,
                                                                   organization,
                                                                   methodName);
 
