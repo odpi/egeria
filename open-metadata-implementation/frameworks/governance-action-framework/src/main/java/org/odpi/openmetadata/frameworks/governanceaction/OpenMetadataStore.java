@@ -367,6 +367,7 @@ public class OpenMetadataStore
                                                            elementGUID,
                                                            forLineage,
                                                            forDuplicateProcessing,
+                                                           null,
                                                            getEffectiveTime());
     }
 
@@ -392,6 +393,7 @@ public class OpenMetadataStore
                                                                  uniquePropertyName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
+                                                                 null,
                                                                  getEffectiveTime());
     }
 
@@ -417,6 +419,7 @@ public class OpenMetadataStore
                                                                  uniquePropertyName,
                                                                  true,
                                                                  forDuplicateProcessing,
+                                                                 null,
                                                                  getEffectiveTime());
     }
 
@@ -464,6 +467,7 @@ public class OpenMetadataStore
                                                                      uniquePropertyName,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     null,
                                                                      getEffectiveTime());
     }
 
@@ -549,7 +553,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElement> getRelatedMetadataElements(String  elementGUID,
+    public RelatedMetadataElementList getRelatedMetadataElements(String  elementGUID,
                                                                    int     startingAtEnd,
                                                                    String  relationshipTypeName,
                                                                    int     startFrom,
@@ -570,6 +574,29 @@ public class OpenMetadataStore
                                                              getEffectiveTime(),
                                                              startFrom,
                                                              pageSize);
+    }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param elementGUID  unique identifier for the element
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    public OpenMetadataElementGraph getAnchoredElementsGraph(String elementGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return openMetadataClient.getAnchoredElementsGraph(userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, null, getEffectiveTime());
     }
 
 
@@ -649,7 +676,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
+    public OpenMetadataRelationshipList getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
                                                                           String  metadataElementAtEnd2GUID,
                                                                           String  relationshipTypeName,
                                                                           int     startFrom,
@@ -745,7 +772,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              relationshipTypeName,
+    public OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              relationshipTypeName,
                                                                                    SearchProperties    searchProperties,
                                                                                    List<ElementStatus> limitResultsByStatus,
                                                                                    Date                asOfTime,
@@ -785,7 +812,7 @@ public class OpenMetadataStore
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, getEffectiveTime());
+        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, null, getEffectiveTime());
     }
 
 

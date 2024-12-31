@@ -8,6 +8,17 @@ package org.odpi.openmetadata.frameworks.openmetadata.mapper;
 public class OpenMetadataValidValues
 {
     /**
+     * Open Connector Framework (OCF)
+     */
+    public static final String CONNECTOR_FRAMEWORK_NAME_DEFAULT = "Open Connector Framework (OCF)";
+
+    /**
+     * Java
+     */
+    public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
+
+
+    /**
      * This scope value means that the associated value is valid across the open metadata ecosystem - that is all tools, runtimes, repositories
      * using open metadata standards.
      */
@@ -27,6 +38,11 @@ public class OpenMetadataValidValues
      * This is the prefix used on valid value definitions for open metadata elements
      */
     public static final String VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX   = "Egeria:ValidMetadataValue:";
+
+    /**
+     * This is the inheritance association name use between open metadata valid values
+     */
+    public static final String VALID_METADATA_VALUE_IS_TYPE_OF   = "isATypeOf";
 
     /**
      * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.

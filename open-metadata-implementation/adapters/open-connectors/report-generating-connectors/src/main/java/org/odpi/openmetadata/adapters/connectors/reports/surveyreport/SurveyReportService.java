@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -188,17 +189,17 @@ public class SurveyReportService extends GeneralGovernanceActionService
         int startFrom   = 0;
         int maxPageSize = 100;
 
-        List<RelatedMetadataElement> annotationElements = openMetadataStoreClient.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
-                                                                                                             1,
-                                                                                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                             startFrom,
-                                                                                                             maxPageSize);
+        RelatedMetadataElementList annotationElements = openMetadataStoreClient.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
+                                                                                                           1,
+                                                                                                           OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                           startFrom,
+                                                                                                           maxPageSize);
 
-        if (annotationElements != null)
+        if ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            while (annotationElements != null)
+            while ((annotationElements != null) && (annotationElements.getElementList() != null))
             {
-                for (RelatedMetadataElement reportedAnnotationLink : annotationElements)
+                for (RelatedMetadataElement reportedAnnotationLink : annotationElements.getElementList())
                 {
                     if ((reportedAnnotationLink != null) && (reportedAnnotationLink.getElement() != null))
                     {
@@ -234,9 +235,9 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                                                                 startFrom,
                                                                                 maxPageSize);
 
-        while (annotationElements != null)
+        while ((annotationElements != null) && (annotationElements.getElementList() != null))
         {
-            for (RelatedMetadataElement reportedAnnotationElement : annotationElements)
+            for (RelatedMetadataElement reportedAnnotationElement : annotationElements.getElementList())
             {
                 if ((reportedAnnotationElement != null) && (reportedAnnotationElement.getElement() != null))
                 {
@@ -428,17 +429,17 @@ public class SurveyReportService extends GeneralGovernanceActionService
                                   outputReport);
         }
 
-        List<RelatedMetadataElement> associatedElements = openMetadataStoreClient.getRelatedMetadataElements(reportedAnnotationElement.getElement().getElementGUID(),
-                                                                                                             2,
-                                                                                                             OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
-                                                                                                             startFrom,
-                                                                                                             maxPageSize);
+        RelatedMetadataElementList associatedElements = openMetadataStoreClient.getRelatedMetadataElements(reportedAnnotationElement.getElement().getElementGUID(),
+                                                                                                           2,
+                                                                                                           OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                                                                                           startFrom,
+                                                                                                           maxPageSize);
 
-        while (associatedElements != null)
+        while ((associatedElements != null) && (associatedElements.getElementList() != null))
         {
             int associatedElementIndentLevel = annotationIndentLevel + 1;
 
-            for (RelatedMetadataElement associatedElement : associatedElements)
+            for (RelatedMetadataElement associatedElement : associatedElements.getElementList())
             {
                 if (associatedElement != null)
                 {

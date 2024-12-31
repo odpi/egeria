@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary;
@@ -92,9 +93,9 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public List<B> getNewBeans(Class<B>                       beanClass,
-                               List<OpenMetadataRelationship> openMetadataRelationships,
-                               String                         methodName) throws PropertyServerException
+    public List<B> getNewBeans(Class<B>                     beanClass,
+                               OpenMetadataRelationshipList openMetadataRelationships,
+                               String                       methodName) throws PropertyServerException
     {
         List<B> results = null;
 
@@ -102,7 +103,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
         {
             results = new ArrayList<>();
 
-            for (OpenMetadataRelationship openMetadataElement : openMetadataRelationships)
+            for (OpenMetadataRelationship openMetadataElement : openMetadataRelationships.getElementList())
             {
                 if (openMetadataElement != null)
                 {

@@ -259,6 +259,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param elementGUID unique identifier for the metadata element
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties
@@ -271,6 +272,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                  String  elementGUID,
                                                                  boolean forLineage,
                                                                  boolean forDuplicateProcessing,
+                                                                 Date    asOfTime,
                                                                  Date    effectiveTime) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException;
@@ -284,6 +286,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or null if not found
@@ -297,6 +300,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                        String  uniquePropertyName,
                                                                        boolean forLineage,
                                                                        boolean forDuplicateProcessing,
+                                                                       Date    asOfTime,
                                                                        Date    effectiveTime) throws InvalidParameterException,
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException;
@@ -330,6 +334,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
@@ -343,6 +348,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                               String  uniquePropertyName,
                                                               boolean forLineage,
                                                               boolean forDuplicateProcessing,
+                                                              Date    asOfTime,
                                                               Date    effectiveTime) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
@@ -451,7 +457,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<RelatedMetadataElement> getRelatedMetadataElements(String              userId,
+    public abstract RelatedMetadataElementList getRelatedMetadataElements(String              userId,
                                                                             String              elementGUID,
                                                                             int                 startingAtEnd,
                                                                             String              relationshipTypeName,
@@ -466,6 +472,37 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                             int                 pageSize) throws InvalidParameterException,
                                                                                                                  UserNotAuthorizedException,
                                                                                                                  PropertyServerException;
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param userId name of the server instances for this request
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return graph of elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract OpenMetadataElementGraph getAnchoredElementsGraph(String             userId,
+                                                                      String             elementGUID,
+                                                                      boolean            forLineage,
+                                                                      boolean            forDuplicateProcessing,
+                                                                      int                startFrom,
+                                                                      int                pageSize,
+                                                                      Date               asOfTime,
+                                                                      Date               effectiveTime) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException;
 
 
     /**
@@ -556,7 +593,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<OpenMetadataRelationship> getMetadataElementRelationships(String              userId,
+    public abstract OpenMetadataRelationshipList getMetadataElementRelationships(String              userId,
                                                                                    String              metadataElementAtEnd1GUID,
                                                                                    String              metadataElementAtEnd2GUID,
                                                                                    String              relationshipTypeName,
@@ -643,7 +680,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
+    public  abstract OpenMetadataRelationshipList findRelationshipsBetweenMetadataElements(String              userId,
                                                                                              String              relationshipTypeName,
                                                                                              SearchProperties    searchProperties,
                                                                                              List<ElementStatus> limitResultsByStatus,
@@ -665,6 +702,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param relationshipGUID unique identifier for the relationship
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return relationship properties
@@ -677,6 +715,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                     String  relationshipGUID,
                                                                     boolean forLineage,
                                                                     boolean forDuplicateProcessing,
+                                                                    Date    asOfTime,
                                                                     Date    effectiveTime) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
@@ -702,7 +741,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<OpenMetadataRelationship> getRelationshipHistory(String  userId,
+    public  abstract OpenMetadataRelationshipList getRelationshipHistory(String  userId,
                                                                            String  relationshipGUID,
                                                                            Date    fromTime,
                                                                            Date    toTime,

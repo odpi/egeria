@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -123,7 +124,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /* ==============================================================================
      * Standard methods that trigger activity.
      */
-
 
 
     /**
@@ -237,15 +237,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             List<RelatedMetadataElement> relatedOtherAnnotations                  = new ArrayList<>();
 
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
-                                                                                                                 0,
-                                                                                                                 null,
-                                                                                                                 startFrom,
-                                                                                                                 openMetadataAccess.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(surveyReportElement.getElementGUID(),
+                                                                                                               0,
+                                                                                                               null,
+                                                                                                               startFrom,
+                                                                                                               openMetadataAccess.getMaxPagingSize());
 
-            while (relatedMetadataElements != null)
+            while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -358,14 +358,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                 List<RelatedMetadataElement> relatedSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
                 List<RelatedMetadataElement> relatedActionTargets = null;
                 int startFrom = 0;
-                List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
                                                                                                                      1,
                                                                                                                      OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
                                                                                                                      startFrom,
                                                                                                                      openMetadataAccess.getMaxPagingSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
-                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
                         if (relatedMetadataElement != null)
                         {
@@ -468,14 +468,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                 RelatedMetadataElement relatedLogFile = null;
                 List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
                 int startFrom = 0;
-                List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
+                RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
                                                                                                                      1,
                                                                                                                      OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
                                                                                                                      startFrom,
                                                                                                                      openMetadataAccess.getMaxPagingSize());
-                while (relatedMetadataElements != null)
+                while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
                 {
-                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                     {
                         if (relatedMetadataElement != null)
                         {
@@ -501,7 +501,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                     {
                         Map<String, Integer> measurementValues = new HashMap<>();
 
-                        for (int recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
+                        for (long recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
                         {
                             List<String> recordValues = csvFileStoreConnector.readRecord(recordNumber);
 
@@ -723,14 +723,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             List<RelatedMetadataElement> relatedAnnotationSubjects = new ArrayList<>();
             int startFrom = 0;
-            List<RelatedMetadataElement> relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(annotationElement.getElementGUID(),
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(annotationElement.getElementGUID(),
                                                                                                                  2,
                                                                                                                  OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                                                  startFrom,
                                                                                                                  openMetadataAccess.getMaxPagingSize());
-            while (relatedMetadataElements != null)
+            while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
                 {
                     if (relatedMetadataElement != null)
                     {
@@ -965,7 +965,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
         if (connector instanceof CSVFileStoreConnector csvFileStoreConnector)
         {
-            for (int recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
+            for (long recordNumber = 0; recordNumber < csvFileStoreConnector.getRecordCount(); recordNumber ++)
             {
                 List<String> recordValues = csvFileStoreConnector.readRecord(recordNumber);
 

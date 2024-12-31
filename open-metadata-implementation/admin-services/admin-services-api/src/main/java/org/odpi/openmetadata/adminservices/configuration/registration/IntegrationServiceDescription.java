@@ -172,7 +172,7 @@ public enum IntegrationServiceDescription
      * Infrastructure Integrator OMIS - Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.
      */
     INFRASTRUCTURE_INTEGRATOR_OMIS(611,
-                                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                   ComponentDevelopmentStatus.STABLE,
                                    "Infrastructure Integrator",
                                    "Infrastructure Integrator OMIS",
                                    "infrastructure-integrator",

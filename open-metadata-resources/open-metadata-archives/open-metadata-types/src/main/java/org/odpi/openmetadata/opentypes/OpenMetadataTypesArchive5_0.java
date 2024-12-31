@@ -2084,30 +2084,10 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.CATEGORY_PROPERTY_NAME;
-        final String attribute1Description     = "Descriptive name of the concept that this valid value describes a possible value for.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME;
-        final String attribute2Description     = "Is this valid value case-sensitive, or should the values match irrespective of case?";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataType.DATA_TYPE_PROPERTY_NAME;
-        final String attribute3Description     = "The type of the value identifies it format and content.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CATEGORY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_CASE_SENSITIVE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -2199,18 +2179,8 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getValidValueAssociationRelationship()
     {
-        final String guid            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.wikiURL;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -2250,20 +2220,10 @@ public class OpenMetadataTypesArchive5_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_NAME.name,
-                                                           OpenMetadataProperty.ASSOCIATION_NAME.description,
-                                                           OpenMetadataProperty.ASSOCIATION_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE.name,
-                                                           OpenMetadataProperty.ASSOCIATION_TYPE.description,
-                                                           OpenMetadataProperty.ASSOCIATION_TYPE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         relationshipDef.setPropertiesDefinition(properties);
 

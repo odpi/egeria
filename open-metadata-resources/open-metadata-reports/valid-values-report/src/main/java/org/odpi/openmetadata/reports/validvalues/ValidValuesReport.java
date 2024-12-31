@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.client.Reference
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -121,7 +122,7 @@ public class ValidValuesReport
                     report.printReportLine(validValueInformation.indentLevel + 1, "Description", validValueInformation.element.getValidValueProperties().getDescription());
 
                     startFrom = 0;
-                    List<RelatedMetadataElement> relatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                    RelatedMetadataElementList relatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
                                                                                                                       validValueInformation.element.getElementHeader().getGUID(),
                                                                                                                       0,
                                                                                                                       null,
@@ -135,9 +136,9 @@ public class ValidValuesReport
                                                                                                                       startFrom,
                                                                                                                       500);
 
-                    while (relatedElements != null)
+                    while ((relatedElements != null) && (relatedElements.getElementList() != null))
                     {
-                        for (RelatedMetadataElement relatedElement : relatedElements)
+                        for (RelatedMetadataElement relatedElement : relatedElements.getElementList())
                         {
                             if (! propertyHelper.isTypeOf(relatedElement, OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName))
                             {
@@ -169,23 +170,23 @@ public class ValidValuesReport
 
                                     int refDataStartFrom = 0;
 
-                                    List<RelatedMetadataElement> relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
-                                                                                                                                         relatedElement.getElement().getElementGUID(),
-                                                                                                                                         0,
-                                                                                                                                         OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                                                                         null,
-                                                                                                                                         null,
-                                                                                                                                         null,
-                                                                                                                                         SequencingOrder.CREATION_DATE_RECENT,
-                                                                                                                                         false,
-                                                                                                                                         false,
-                                                                                                                                         new Date(),
-                                                                                                                                         refDataStartFrom,
-                                                                                                                                         500);
+                                    RelatedMetadataElementList relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                                                                       relatedElement.getElement().getElementGUID(),
+                                                                                                                                       0,
+                                                                                                                                       OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                                                       null,
+                                                                                                                                       null,
+                                                                                                                                       null,
+                                                                                                                                       SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                                       false,
+                                                                                                                                       false,
+                                                                                                                                       new Date(),
+                                                                                                                                       refDataStartFrom,
+                                                                                                                                       500);
 
-                                    while (relatedRefElements != null)
+                                    while ((relatedRefElements != null) && (relatedRefElements.getElementList() != null))
                                     {
-                                        for (RelatedMetadataElement relatedRefElement : relatedRefElements)
+                                        for (RelatedMetadataElement relatedRefElement : relatedRefElements.getElementList())
                                         {
                                             if (relatedRefElement != null)
                                             {

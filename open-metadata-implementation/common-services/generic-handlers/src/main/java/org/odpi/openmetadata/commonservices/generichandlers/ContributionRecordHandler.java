@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * ContributionRecordHandler manages the ContributionRecord entity that records the karma points for an individual.
- * There is on 1-1 relationship between the Person entity and the ContributionRecord and so the profile GUID is passed
+ * There is on 1-1 relationship between the ActorProfile entity and the ContributionRecord and so the profile GUID is passed
  * on the parameters.  ContributionRecords are always maintainable by the local cohort.
  */
 public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<B>
@@ -109,9 +109,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
         return this.getAttachedElement(userId,
                                        profileGUID,
                                        profileGUIDParameterName,
-                                       OpenMetadataType.PERSON.typeName,
-                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
-                                       OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
+                                       OpenMetadataType.ACTOR_PROFILE.typeName,
+                                       OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
                                        OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                        0,
                                        null,
@@ -154,9 +154,9 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
         return this.getAttachedEntity(userId,
                                       profileGUID,
                                       profileGUIDParameterName,
-                                      OpenMetadataType.PERSON.typeName,
-                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
+                                      OpenMetadataType.ACTOR_PROFILE.typeName,
+                                      OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
                                       OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                       2,
                                       forLineage,
@@ -268,15 +268,15 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                    null,
                                                    profileGUID,
                                                    profileGUIDParameterName,
-                                                   OpenMetadataType.PERSON.typeName,
+                                                   OpenMetadataType.ACTOR_PROFILE.typeName,
                                                    contributionRecordGUID,
                                                    contributionRecordGUIDParameterName,
                                                    OpenMetadataType.CONTRIBUTION_RECORD.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    supportedZones,
-                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeGUID,
-                                                   OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP.typeName,
+                                                   OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
                                                    null,
                                                    effectiveTime,
                                                    methodName);

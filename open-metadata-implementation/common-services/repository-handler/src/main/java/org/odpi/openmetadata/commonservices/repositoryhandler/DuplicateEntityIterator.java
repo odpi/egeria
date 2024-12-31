@@ -308,6 +308,7 @@ public class DuplicateEntityIterator
                                                                                                        peerProxy.getGUID(),
                                                                                                        guidParameterName,
                                                                                                        entityTypeName,
+                                                                                                       null,
                                                                                                        methodName);
 
                                         /*

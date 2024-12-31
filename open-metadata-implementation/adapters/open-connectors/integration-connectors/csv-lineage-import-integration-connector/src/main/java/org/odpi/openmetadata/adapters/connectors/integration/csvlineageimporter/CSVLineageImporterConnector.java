@@ -14,11 +14,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
@@ -261,11 +261,11 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
             }
 
 
-            List<OpenMetadataRelationship> existingRelationships = openMetadataAccess.getMetadataElementRelationships(end1GUID,
-                                                                                                                      end2GUID,
-                                                                                                                      openMetadataRelationshipType,
-                                                                                                                      0,
-                                                                                                                      0);
+            OpenMetadataRelationshipList existingRelationships = openMetadataAccess.getMetadataElementRelationships(end1GUID,
+                                                                                                                    end2GUID,
+                                                                                                                    openMetadataRelationshipType,
+                                                                                                                    0,
+                                                                                                                    0);
             if (existingRelationships == null)
             {
                 ElementProperties properties = null;

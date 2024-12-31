@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -642,30 +643,23 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                        String             methodName,
                                        List<EntityDetail> categoryEntities)
     {
-        final String entityGUIDParameterName = "categoryEntity.getGUID";
-
-        if (categoryEntities != null)
+        List<EntityDetail> validatedCategories = super.validateAnchorForEntities(userId,
+                                                                                 categoryEntities,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 supportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
+        if (validatedCategories != null)
         {
             List<B> results = new ArrayList<>();
 
-            for (EntityDetail entity : categoryEntities)
+            for (EntityDetail entity : validatedCategories)
             {
                 if (entity != null)
                 {
                     try
                     {
-                        this.validateAnchorEntity(userId,
-                                                  entity.getGUID(),
-                                                  entity.getType().getTypeDefName(),
-                                                  entity,
-                                                  entityGUIDParameterName,
-                                                  false,
-                                                  false,
-                                                  forLineage,
-                                                  forDuplicateProcessing,
-                                                  supportedZones,
-                                                  effectiveTime,
-                                                  methodName);
                         if (glossaryGUID == null)
                         {
                             results.add(converter.getNewBean(beanClass, entity, methodName));
@@ -728,26 +722,61 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return this.getAttachedElements(userId,
-                                        glossaryGUID,
-                                        glossaryGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
-                                        OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
-                                        OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
-                                        null,
-                                        null,
-                                        2,
-                                        null,
-                                        null,
-                                        SequencingOrder.CREATION_DATE_RECENT,
-                                        null,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        EntityDetail glossaryEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        glossaryGUID,
+                                                                        glossaryGUIDParameterName,
+                                                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+
+        securityVerifier.validateUserForGlossaryRead(userId,
+                                                     glossaryEntity,
+                                                     repositoryHelper,
+                                                     serviceName,
+                                                     methodName);
+
+        InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                          null,
+                                                                                          OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                          glossaryGUID,
+                                                                                          methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesForClassificationType(userId,
+                                                                                                  OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                                                  OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                                                                  matchProperties,
+                                                                                                  MatchCriteria.ALL,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                  null,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
+                                                                                                  startFrom,
+                                                                                                  queryPageSize,
+                                                                                                  effectiveTime,
+                                                                                                  methodName);
+
+        if (retrievedEntities != null)
+        {
+            List<B> results = new ArrayList<>();
+
+            for (EntityDetail entityDetail : retrievedEntities)
+            {
+                if (entityDetail != null)
+                {
+                    results.add(converter.getNewBean(beanClass, entityDetail, methodName));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
     }
 
 

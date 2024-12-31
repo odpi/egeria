@@ -116,6 +116,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                                                                  elementGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
+                                                                 null,
                                                                  effectiveTime));
         }
         catch (Exception error)

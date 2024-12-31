@@ -9,34 +9,38 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.mermaid.OpenMetadataMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationshipList;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -54,6 +58,7 @@ public class OpenMetadataStoreRESTServices
     private final        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(OpenMetadataStoreRESTServices.class),
                                                                                         instanceHandler.getServiceName());
+
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final String propertyNameParameter   = "propertyName";
@@ -636,7 +641,7 @@ public class OpenMetadataStoreRESTServices
     {
         if (effectiveTime != 0)
         {
-            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
             requestBody.setEffectiveTime(new Date(effectiveTime));
 
             return this.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
@@ -664,13 +669,13 @@ public class OpenMetadataStoreRESTServices
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    public OpenMetadataElementResponse getMetadataElementByGUID(String                   serverName,
-                                                                String                   serviceURLMarker,
-                                                                String                   userId,
-                                                                String                   elementGUID,
-                                                                boolean                  forLineage,
-                                                                boolean                  forDuplicateProcessing,
-                                                                EffectiveTimeRequestBody requestBody)
+    public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
+                                                                String             serviceURLMarker,
+                                                                String             userId,
+                                                                String             elementGUID,
+                                                                boolean            forLineage,
+                                                                boolean            forDuplicateProcessing,
+                                                                AnyTimeRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -692,6 +697,7 @@ public class OpenMetadataStoreRESTServices
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                     requestBody.getAsOfTime(),
                                                                      requestBody.getEffectiveTime(),
                                                                      methodName));
             }
@@ -703,6 +709,7 @@ public class OpenMetadataStoreRESTServices
                                                                      forDuplicateProcessing,
                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                                                      null,
+                                                                     new Date(),
                                                                      methodName));
             }
         }
@@ -1127,42 +1134,52 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
+            RelatedMetadataElementList relatedElementList = new RelatedMetadataElementList();
+
             if (requestBody != null)
             {
-                response.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                           elementGUID,
-                                                                           startingAtEnd,
-                                                                           relationshipTypeName,
-                                                                           requestBody.getLimitResultsByStatus(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getSequencingProperty(),
-                                                                           requestBody.getSequencingOrder(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                           requestBody.getEffectiveTime(),
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           methodName));
+                relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                                  elementGUID,
+                                                                                  startingAtEnd,
+                                                                                  relationshipTypeName,
+                                                                                  requestBody.getLimitResultsByStatus(),
+                                                                                  requestBody.getAsOfTime(),
+                                                                                  requestBody.getSequencingProperty(),
+                                                                                  requestBody.getSequencingOrder(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  methodName));
             }
             else
             {
-                response.setElementList(handler.getRelatedMetadataElements(userId,
-                                                                           elementGUID,
-                                                                           startingAtEnd,
-                                                                           relationshipTypeName,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           null,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                           null,
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           methodName));
+                relatedElementList.setElementList(handler.getRelatedMetadataElements(userId,
+                                                                                  elementGUID,
+                                                                                  startingAtEnd,
+                                                                                  relationshipTypeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  null,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                  null,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  methodName));
             }
+
+            if (relatedElementList.getElementList() != null)
+            {
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGUID, relatedElementList.getElementList());
+                relatedElementList.setMermaidGraph(graphBuilder.getMermaidGraph());
+            }
+
+            response.setRelatedElementList(relatedElementList);
         }
         catch (Exception error)
         {
@@ -1172,6 +1189,7 @@ public class OpenMetadataStoreRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
 
     /**
      * Retrieve the relationships linking to the supplied elements.
@@ -1284,42 +1302,51 @@ public class OpenMetadataStoreRESTServices
 
             MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
+            OpenMetadataRelationshipList relationshipList = new OpenMetadataRelationshipList();
             if (requestBody != null)
             {
-                response.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                metadataElementAtEnd1GUID,
-                                                                                relationshipTypeName,
-                                                                                metadataElementAtEnd2GUID,
-                                                                                requestBody.getLimitResultsByStatus(),
-                                                                                requestBody.getAsOfTime(),
-                                                                                requestBody.getSequencingProperty(),
-                                                                                requestBody.getSequencingOrder(),
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                requestBody.getEffectiveTime(),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                methodName));
+                relationshipList.setElementList(handler.getMetadataElementRelationships(userId,
+                                                                                     metadataElementAtEnd1GUID,
+                                                                                     relationshipTypeName,
+                                                                                     metadataElementAtEnd2GUID,
+                                                                                     requestBody.getLimitResultsByStatus(),
+                                                                                     requestBody.getAsOfTime(),
+                                                                                     requestBody.getSequencingProperty(),
+                                                                                     requestBody.getSequencingOrder(),
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                     requestBody.getEffectiveTime(),
+                                                                                     startFrom,
+                                                                                     pageSize,
+                                                                                     methodName));
             }
             else
             {
-                response.setElementList(handler.getMetadataElementRelationships(userId,
-                                                                                metadataElementAtEnd1GUID,
-                                                                                relationshipTypeName,
-                                                                                metadataElementAtEnd2GUID,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                null,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                methodName));
+                relationshipList.setElementList(handler.getMetadataElementRelationships(userId,
+                                                                                     metadataElementAtEnd1GUID,
+                                                                                     relationshipTypeName,
+                                                                                     metadataElementAtEnd2GUID,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     null,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                     null,
+                                                                                     startFrom,
+                                                                                     pageSize,
+                                                                                     methodName));
             }
+
+            if (response.getRelationshipList() != null)
+            {
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(metadataElementAtEnd1GUID, metadataElementAtEnd2GUID, relationshipList.getElementList());
+                relationshipList.setMermaidGraph(graphBuilder.getMermaidGraph());
+            }
+
+            response.setRelationshipList(relationshipList);
         }
         catch (Exception error)
         {
@@ -1424,6 +1451,224 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId the userId of the requesting user
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
+                                                              String             serviceURLMarker,
+                                                              String             userId,
+                                                              String             elementGUID,
+                                                              boolean            forLineage,
+                                                              boolean            forDuplicateProcessing,
+                                                              int                startFrom,
+                                                              int                pageSize,
+                                                              AnyTimeRequestBody requestBody)
+    {
+        final String parameterName = "elementGUID";
+        final String methodName    = "getAnchoredElementsGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OpenMetadataGraphResponse response = new OpenMetadataGraphResponse();
+        AuditLog                  auditLog = null;
+
+        try
+        {
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataElement anchorElement;
+
+            if (requestBody != null)
+            {
+                anchorElement = handler.getBeanFromRepository(userId,
+                                                              elementGUID,
+                                                              parameterName,
+                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                              requestBody.getAsOfTime(),
+                                                              requestBody.getEffectiveTime(),
+                                                              methodName);
+            }
+            else
+            {
+                anchorElement = handler.getBeanFromRepository(userId,
+                                                              elementGUID,
+                                                              parameterName,
+                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                              null,
+                                                              new Date(),
+                                                              methodName);
+            }
+
+            if (anchorElement != null)
+            {
+                OpenMetadataElementGraph elementGraph = new OpenMetadataElementGraph(anchorElement);
+
+                Map<String, Relationship> receivedRelationships = new HashMap<>();
+
+                List<Relationship>  relationships = handler.getAllAttachmentLinks(userId,
+                                                                                  anchorElement.getElementGUID(),
+                                                                                  parameterName,
+                                                                                  anchorElement.getType().getTypeName(),
+                                                                                  null,
+                                                                                  null,
+                                                                                  SequencingOrder.CREATION_DATE_RECENT,
+                                                                                  null,
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
+                                                                                  methodName);
+                if (relationships != null)
+                {
+                    for (Relationship relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            receivedRelationships.put(relationship.getGUID(), relationship);
+                        }
+                    }
+                }
+
+                SearchClassifications         searchClassifications    = new SearchClassifications();
+                List<ClassificationCondition> classificationConditions = new ArrayList<>();
+                ClassificationCondition       classificationCondition  = new ClassificationCondition();
+                SearchProperties              searchProperties         = new SearchProperties();
+                List<PropertyCondition>       propertyConditions       = new ArrayList<>();
+                PropertyCondition             propertyCondition        = new PropertyCondition();
+                PrimitivePropertyValue        primitivePropertyValue   = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(anchorElement.getElementGUID());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                propertyCondition.setValue(primitivePropertyValue);
+                propertyConditions.add(propertyCondition);
+                searchProperties.setMatchCriteria(MatchCriteria.ALL);
+                searchProperties.setConditions(propertyConditions);
+
+                classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+                classificationCondition.setMatchProperties(searchProperties);
+                classificationConditions.add(classificationCondition);
+                searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+                searchClassifications.setConditions(classificationConditions);
+
+                List<OpenMetadataElement> anchoredElements = handler.findBeans(userId,
+                                                                               null,
+                                                                               null,
+                                                                               null,
+                                                                               null,
+                                                                               searchClassifications,
+                                                                               null,
+                                                                               null,
+                                                                               SequencingOrder.CREATION_DATE_RECENT,
+                                                                               false,
+                                                                               false,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                               new Date(),
+                                                                               methodName);
+
+                elementGraph.setAnchoredElements(anchoredElements);
+
+                if (anchoredElements != null)
+                {
+                    final String anchoredElementParameterName = "anchoredElement.getGUID";
+
+                    for (OpenMetadataElement metadataElement : anchoredElements)
+                    {
+                        if (metadataElement != null)
+                        {
+                            relationships = handler.getAllAttachmentLinks(userId,
+                                                                          metadataElement.getElementGUID(),
+                                                                          anchoredElementParameterName,
+                                                                          metadataElement.getType().getTypeName(),
+                                                                          null,
+                                                                          null,
+                                                                          SequencingOrder.CREATION_DATE_RECENT,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName);
+                            if (relationships != null)
+                            {
+                                for (Relationship relationship : relationships)
+                                {
+                                    if (relationship != null)
+                                    {
+                                        receivedRelationships.put(relationship.getGUID(), relationship);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (! receivedRelationships.isEmpty())
+                {
+                    RelatedElementsConverter<OpenMetadataRelationship> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
+                                                                                                                  handler.getServiceName(),
+                                                                                                                  serverName);
+
+                    List<OpenMetadataRelationship> metadataRelationships = new ArrayList<>();
+
+                    for (Relationship relationship: receivedRelationships.values())
+                    {
+                        if (relationship != null)
+                        {
+                            OpenMetadataRelationship metadataRelationship = converter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                                             relationship,
+                                                                                                             methodName);
+
+                            metadataRelationships.add(metadataRelationship);
+                        }
+                    }
+
+                    elementGraph.setRelationships(metadataRelationships);
+                }
+
+                OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(elementGraph);
+                elementGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+                response.setElementGraph(elementGraph);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to
@@ -1464,39 +1709,49 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
+                OpenMetadataRelationshipList relationshipList = new OpenMetadataRelationshipList();
+
                 if (requestBody.getSearchProperties() != null)
                 {
-                    response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                             requestBody.getRelationshipTypeName(),
-                                                                                             requestBody.getSearchProperties(),
-                                                                                             requestBody.getLimitResultsByStatus(),
-                                                                                             requestBody.getAsOfTime(),
-                                                                                             requestBody.getSequencingProperty(),
-                                                                                             requestBody.getSequencingOrder(),
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing,
-                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                             requestBody.getEffectiveTime(),
-                                                                                             startFrom,
-                                                                                             pageSize,
-                                                                                             methodName));
+                    relationshipList.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                  requestBody.getRelationshipTypeName(),
+                                                                                                  requestBody.getSearchProperties(),
+                                                                                                  requestBody.getLimitResultsByStatus(),
+                                                                                                  requestBody.getAsOfTime(),
+                                                                                                  requestBody.getSequencingProperty(),
+                                                                                                  requestBody.getSequencingOrder(),
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
+                                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                  requestBody.getEffectiveTime(),
+                                                                                                  startFrom,
+                                                                                                  pageSize,
+                                                                                                  methodName));
                 }
                 else
                 {
-                    response.setElementList(handler.getRelationshipsByType(userId,
-                                                                           requestBody.getRelationshipTypeName(),
-                                                                           forLineage,
-                                                                           forDuplicateProcessing,
-                                                                           requestBody.getLimitResultsByStatus(),
-                                                                           requestBody.getAsOfTime(),
-                                                                           requestBody.getSequencingProperty(),
-                                                                           requestBody.getSequencingOrder(),
-                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                           null,
-                                                                           startFrom,
-                                                                           pageSize,
-                                                                           methodName));
+                    relationshipList.setElementList(handler.getRelationshipsByType(userId,
+                                                                                requestBody.getRelationshipTypeName(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                requestBody.getLimitResultsByStatus(),
+                                                                                requestBody.getAsOfTime(),
+                                                                                requestBody.getSequencingProperty(),
+                                                                                requestBody.getSequencingOrder(),
+                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                null,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                methodName));
                 }
+
+                if (relationshipList.getElementList() != null)
+                {
+                    OpenMetadataMermaidGraphBuilder graphBuilder = new OpenMetadataMermaidGraphBuilder(relationshipList.getElementList());
+                    relationshipList.setMermaidGraph(graphBuilder.getMermaidGraph());
+                }
+
+                response.setRelationshipList(relationshipList);
             }
             else
             {
@@ -1531,13 +1786,13 @@ public class OpenMetadataStoreRESTServices
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @SuppressWarnings(value = "unused")
-    public OpenMetadataRelationshipResponse getRelationshipByGUID(String                   serverName,
-                                                                  String                   serviceURLMarker,
-                                                                  String                   userId,
-                                                                  String                   relationshipGUID,
-                                                                  boolean                  forLineage,
-                                                                  boolean                  forDuplicateProcessing,
-                                                                  EffectiveTimeRequestBody requestBody)
+    public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
+                                                                  String             serviceURLMarker,
+                                                                  String             userId,
+                                                                  String             relationshipGUID,
+                                                                  boolean            forLineage,
+                                                                  boolean            forDuplicateProcessing,
+                                                                  AnyTimeRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
         final String guidParameterName = "relationshipGUID";
@@ -1560,6 +1815,7 @@ public class OpenMetadataStoreRESTServices
                                                          relationshipGUID,
                                                          guidParameterName,
                                                          null,
+                                                         requestBody.getAsOfTime(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -1568,6 +1824,7 @@ public class OpenMetadataStoreRESTServices
                 relationship = handler.getAttachmentLink(userId,
                                                          relationshipGUID,
                                                          guidParameterName,
+                                                         null,
                                                          null,
                                                          new Date(),
                                                          methodName);
@@ -1624,7 +1881,7 @@ public class OpenMetadataStoreRESTServices
                                                                        boolean            oldestFirst,
                                                                        HistoryRequestBody requestBody)
     {
-        final String methodName = "getMetadataElementHistory";
+        final String methodName = "getRelationshipHistory";
         final String guidParameterName  = "relationshipGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1678,7 +1935,11 @@ public class OpenMetadataStoreRESTServices
                                                                methodName);
             }
 
-            response.setElementList(handler.convertOpenMetadataRelationships(relationships, methodName));
+            OpenMetadataRelationshipList openMetadataRelationshipList = new OpenMetadataRelationshipList();
+            openMetadataRelationshipList.setElementList(handler.convertOpenMetadataRelationships(relationships, methodName));
+
+            response.setRelationshipList(openMetadataRelationshipList);
+            // to do add mermaid graph
         }
         catch (Exception error)
         {

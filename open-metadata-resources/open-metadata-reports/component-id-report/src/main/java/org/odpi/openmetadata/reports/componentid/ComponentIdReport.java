@@ -25,7 +25,7 @@ public class ComponentIdReport
     private static final String reportFileName = "component-id-report.md";
     private static final String licenseString  = "<!-- SPDX-License-Identifier: CC-BY-4.0 -->\n";
     private static final String copyrightString = "<!-- Copyright Contributors to the Egeria project. -->\n\n";
-    private static final String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component Home Page | \n| :--- | :--- | :--- | :--- |\n";
+    private static final String reportHeader = "| ComponentId | ComponentName | ComponentDescription | Component | Home Page | \n| :--- | :--- | :--- | :--- | :--- |\n";
     private static final String snippetString = "\n--8<-- \"snippets/abbr.md\"";
 
     private static final String fileCohortRegistryConnector = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";

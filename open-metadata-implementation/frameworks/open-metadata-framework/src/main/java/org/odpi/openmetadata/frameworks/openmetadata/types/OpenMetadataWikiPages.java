@@ -170,6 +170,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0120_ASSIGNMENT_SCOPES            = "https://egeria-project.org/types/1/0120-Assignment-Scopes/";
 
     /**
+     * <a href="https://egeria-project.org/types/1/0125-Contribution/">...</a>
+     */
+    public static final String MODEL_0125_CONTRIBUTION                    = "https://egeria-project.org/types/1/0125-Contribution/";
+
+    /**
      * <a href="https://egeria-project.org/types/1/0130-Projects/">...</a>
      */
     public static final String MODEL_0130_PROJECTS                     = "https://egeria-project.org/types/1/0130-Projects/";

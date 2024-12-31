@@ -42,7 +42,7 @@ public enum EngineServiceDescription
                            "Executes requested governance action services to monitor, assess and maintain metadata and its " +
                                    "real-world counterparts.",
                            "https://egeria-project.org/services/omes/governance-action/overview/",
-                           AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                           AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getAssociatedTypeName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                            DeployedImplementationType.GOVERNANCE_ACTION_ENGINE.getDeployedImplementationType(),
@@ -75,7 +75,7 @@ public enum EngineServiceDescription
                        "context-event",
                        "Executes requested context event services to monitor, assess and maintain context events.",
                        "https://egeria-project.org/services/omes/context-event/overview/",
-                       AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
                        DeployedImplementationType.CONTEXT_EVENT_ENGINE.getAssociatedTypeName(),
                        DeployedImplementationType.CONTEXT_EVENT_SERVICE_CONNECTOR.getAssociatedTypeName(),
                        DeployedImplementationType.CONTEXT_EVENT_ENGINE.getDeployedImplementationType(),

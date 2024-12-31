@@ -3,16 +3,14 @@
 package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -119,16 +117,47 @@ public abstract class OpenMetadataConverterBase<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewBean(Class<B>                beanClass,
-                        OpenMetadataElement     element,
+    public B getNewBean(Class<B>                 beanClass,
+                        OpenMetadataElement      element,
                         OpenMetadataRelationship relationship,
-                        String                  methodName) throws PropertyServerException
+                        String                   methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewBean(element, relationship)";
 
         handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     *
+     * @param beanClass name of the class to create
+     * @param primaryElement element that is the root of the collection of entities that make up the
+     *                      content of the bean
+     * @param relationships relationships linking the entities
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    public B getNewComplexBean(Class<B>                   beanClass,
+                               OpenMetadataElement        primaryElement,
+                               RelatedMetadataElementList relationships,
+                               String                     methodName) throws PropertyServerException
+    {
+        final String thisMethodName = "getNewComplexBean";
+
+        if ((relationships != null) && (relationships.getElementList() != null))
+        {
+            return getNewComplexBean(beanClass, primaryElement, relationships.getElementList(), methodName);
+        }
+        else
+        {
+            return getNewComplexBean(beanClass, primaryElement, (List<RelatedMetadataElement>)null, methodName);
+        }
     }
 
 
@@ -222,12 +251,12 @@ public abstract class OpenMetadataConverterBase<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public <T> B getNewSchemaAttributeBean(Class<B>                      beanClass,
-                                           OpenMetadataElement           schemaAttributeElement,
-                                           Class<T>                      typeClass,
-                                           T                             schemaType,
+    public <T> B getNewSchemaAttributeBean(Class<B>                       beanClass,
+                                           OpenMetadataElement            schemaAttributeElement,
+                                           Class<T>                       typeClass,
+                                           T                              schemaType,
                                            List<OpenMetadataRelationship> schemaAttributeOpenMetadataElements,
-                                           String                        methodName) throws PropertyServerException
+                                           String                         methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewSchemaAttributeBean";
 
@@ -2224,7 +2253,7 @@ public abstract class OpenMetadataConverterBase<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_FRAMEWORK_NAME_DEFAULT;
     }
 
 
@@ -2250,7 +2279,7 @@ public abstract class OpenMetadataConverterBase<B>
             }
         }
 
-        return OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
+        return OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT;
     }
 
 
@@ -6122,7 +6151,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.PREFERRED_VALUE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6144,7 +6173,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.CATEGORY_PROPERTY_NAME,
+                                                       OpenMetadataProperty.CATEGORY.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6166,7 +6195,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeBooleanProperty(serviceName,
-                                                        OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                        OpenMetadataProperty.IS_CASE_SENSITIVE.name,
                                                         elementProperties,
                                                         methodName);
         }

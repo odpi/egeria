@@ -51,7 +51,8 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getCategory(),
                                                deployedImplementationType.getDescription(),
-                                               deployedImplementationType.getWikiLink());
+                                               deployedImplementationType.getWikiLink(),
+                                               deployedImplementationType.getIsATypeOf());
         }
 
         /*
@@ -96,18 +97,21 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_KAFKA_SERVER,
-                                                          GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE);
+                                                          GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         this.createAndCatalogServerGovernanceActionProcess("ApacheKafkaServer",
                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_KAFKA_SERVER,
                                                            GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_KAFKA_SERVER,
-                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE);
+                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
+                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         this.deleteAsCatalogTargetGovernanceActionProcess("ApacheKafkaServer",
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName(),
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.DELETE_KAFKA_SERVER,
-                                                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE);
+                                                          GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
+                                                          KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

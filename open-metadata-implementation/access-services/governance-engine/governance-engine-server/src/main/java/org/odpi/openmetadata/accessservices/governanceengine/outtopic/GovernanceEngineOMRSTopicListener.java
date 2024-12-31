@@ -29,6 +29,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -411,6 +412,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                  false,
                                                                                                  metadataElementHandler.getSupportedZones(),
                                                                                                  null,
+                                                                                                 new Date(),
                                                                                                  methodName));
 
                 if (previousEntity != null)
@@ -421,6 +423,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                              false,
                                                                                                              metadataElementHandler.getSupportedZones(),
                                                                                                              null,
+                                                                                                             new Date(),
                                                                                                              methodName));
                 }
 
@@ -477,6 +480,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                  false,
                                                                                                  metadataElementHandler.getSupportedZones(),
                                                                                                  null,
+                                                                                                 new Date(),
                                                                                                  methodName));
                 watchdogEvent.setChangedClassification(this.getClassification(classification));
 
@@ -537,6 +541,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                 false,
                                                                 metadataElementHandler.getSupportedZones(),
                                                                 null,
+                                                                new Date(),
                                                                 methodName);
                 metadataElementHandler.getMetadataElementByGUID(userId,
                                                                 relationship.getEntityTwoProxy().getGUID(),
@@ -544,6 +549,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                 false,
                                                                 metadataElementHandler.getSupportedZones(),
                                                                 null,
+                                                                new Date(),
                                                                 methodName);
 
                 /*

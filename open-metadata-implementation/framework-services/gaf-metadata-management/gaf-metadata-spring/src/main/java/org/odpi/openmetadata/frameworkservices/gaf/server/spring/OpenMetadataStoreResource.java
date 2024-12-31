@@ -409,7 +409,7 @@ public class OpenMetadataStoreResource
                                                                 @RequestParam (required = false, defaultValue = "false")
                                                                 boolean forDuplicateProcessing,
                                                                 @RequestBody (required = false)
-                                                                    EffectiveTimeRequestBody requestBody)
+                                                                    AnyTimeRequestBody requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -1052,7 +1052,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/metadata-elements/by-search-specification")
+    @PostMapping(path = "/metadata-elements/by-search-conditions")
 
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
@@ -1078,6 +1078,45 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId the userId of the requesting user
+     * @param elementGUID  unique identifier for the element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody effective time and asOfTime
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+
+    public OpenMetadataGraphResponse getAnchoredElementsGraph(@PathVariable String          serverName,
+                                                              @PathVariable String          serviceURLMarker,
+                                                              @PathVariable String          userId,
+                                                              @PathVariable String          elementGUID,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forLineage,
+                                                              @RequestParam(required = false, defaultValue = "false")
+                                                              boolean         forDuplicateProcessing,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             startFrom,
+                                                              @RequestParam(required = false, defaultValue = "0")
+                                                              int             pageSize,
+                                                              @RequestBody (required = false)
+                                                              AnyTimeRequestBody requestBody)
+    {
+        return restAPI.getAnchoredElementsGraph(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to
@@ -1094,7 +1133,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/relationships/by-search-specification")
+    @PostMapping(path = "/relationships/by-search-conditions")
 
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
@@ -1154,7 +1193,7 @@ public class OpenMetadataStoreResource
     {
         if (effectiveTime != 0)
         {
-            EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+            AnyTimeRequestBody requestBody = new AnyTimeRequestBody();
             requestBody.setEffectiveTime(new Date(effectiveTime));
 
             return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
@@ -1201,7 +1240,7 @@ public class OpenMetadataStoreResource
                                                                   @RequestParam(required = false, defaultValue = "false")
                                                                  boolean forDuplicateProcessing,
                                                                   @RequestBody (required = false)
-                                                                 EffectiveTimeRequestBody    requestBody)
+                                                                 AnyTimeRequestBody    requestBody)
     {
         return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, requestBody);
     }
