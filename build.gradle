@@ -29,7 +29,7 @@ plugins {
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '5.2-SNAPSHOT'
+    version = '5.3-SNAPSHOT'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
