@@ -244,17 +244,10 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                               false,
-                                               false,
-                                               supportedZones,
                                                OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
-                                               OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 
@@ -373,16 +366,9 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryTermGUID,
                                                glossaryTermGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                               false,
-                                               false,
-                                               supportedZones,
                                                OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
-                                               OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
-                                               null,
                                                null,
                                                methodName);
         }
@@ -2138,13 +2124,13 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
     {
         if (termEntities != null)
         {
-            List<EntityDetail> validatedTerms = super.validateAnchorForEntities(userId,
-                                                                                termEntities,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing,
-                                                                                supportedZones,
-                                                                                effectiveTime,
-                                                                                methodName);
+            List<EntityDetail> validatedTerms = super.validateEntitiesAndAnchorsForRead(userId,
+                                                                                        termEntities,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
+                                                                                        supportedZones,
+                                                                                        effectiveTime,
+                                                                                        methodName);
             List<B> results = new ArrayList<>();
 
             for (EntityDetail entity : validatedTerms)
@@ -2324,11 +2310,11 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        securityVerifier.validateUserForGlossaryRead(userId,
-                                                     glossaryEntity,
-                                                     repositoryHelper,
-                                                     serviceName,
-                                                     methodName);
+        securityVerifier.validateUserForElementRead(userId,
+                                                    glossaryEntity,
+                                                    repositoryHelper,
+                                                    serviceName,
+                                                    methodName);
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
@@ -2447,6 +2433,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             forLineage,
                                             forDuplicateProcessing,
+                                            supportedZones,
                                             startFrom,
                                             pageSize,
                                             effectiveTime,
@@ -2545,6 +2532,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             forLineage,
                                             forDuplicateProcessing,
+                                            supportedZones,
                                             startFrom,
                                             pageSize,
                                             effectiveTime,
@@ -2595,7 +2583,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
                                         OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                        null,
+                                        (String)null,
                                         null,
                                         0,
                                         null,

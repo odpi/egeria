@@ -43,7 +43,7 @@ Content-Type: application/json
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
@@ -56,7 +56,7 @@ content-packs/PostgresContentPack.omarchive
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
@@ -68,7 +68,7 @@ content-packs/UnityCatalogContentPack.omarchive
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
@@ -80,7 +80,7 @@ content-packs/ApacheAtlasContentPack.omarchive
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
@@ -92,7 +92,7 @@ content-packs/ApacheKafkaContentPack.omarchive
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}
@@ -105,7 +105,7 @@ content-packs/APIsContentPack.omarchive
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
 # Add a new open metadata archive to running OMAG Server's repository.
 # An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
 # https://egeria-project.org/concepts/open-metadata-archives/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
 Authorization: Bearer {{token}}

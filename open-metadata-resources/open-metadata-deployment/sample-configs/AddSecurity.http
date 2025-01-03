@@ -1,0 +1,206 @@
+#
+# These commands add the open metadata security connector to the sample configuration documents for simple-metadata-server, active-metadata-server,
+# view-server, engine-host and integration-daemon.  They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+
+# ---------------------------------------------
+# Metadata Access Store: simple-metadata-store
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/security/connection
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "address" : "~{metadataAccessSecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+
+###
+# ---------------------------------------------
+# Metadata Access Store: active-metadata-store
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/security/connection
+Content-Type: application/json
+
+{
+    "class": "VirtualConnection",
+    "connectorType": {
+        "class": "ConnectorType",
+        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+    },
+    "embeddedConnections" : [{
+         "class": "EmbeddedConnection",
+         "embeddedConnection" :
+         {
+            "class" : "Connection",
+            "connectorType" :
+            {
+                "class" : "ConnectorType",
+                "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+            },
+            "endpoint" :
+            {
+                "class" : "Endpoint",
+                "address" : "~{metadataAccessSecretsStore}~"
+            },
+            "configurationProperties" :
+            {
+                "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+            }
+        }
+    }
+    ]
+}
+
+
+###
+# -------------------------
+# View Server: view-server
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/security/connection
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "address" : "~{metadataAccessSecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+
+###
+# -------------------------
+# Engine Host: engine-host
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/security/connection
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "address" : "~{metadataAccessSecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+
+###
+# ---------------------------------------
+# Integration Daemon: integration-daemon
+#
+###
+# Set up the connection for the server security connector.  This connector verifies the authorization of any user calling the server's services.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/security/connection
+Content-Type: application/json
+
+{
+  "class": "VirtualConnection",
+  "connectorType": {
+    "class": "ConnectorType",
+    "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
+  },
+  "embeddedConnections" : [{
+    "class": "EmbeddedConnection",
+    "embeddedConnection" :
+    {
+      "class" : "Connection",
+      "connectorType" :
+      {
+        "class" : "ConnectorType",
+        "connectorProviderClassName" : "org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider"
+      },
+      "endpoint" :
+      {
+        "class" : "Endpoint",
+        "address" : "~{metadataAccessSecretsStore}~"
+      },
+      "configurationProperties" :
+      {
+        "secretsCollectionName" : "~{metadataAccessCollectionName}~"
+      }
+    }
+  }
+  ]
+}
+
+###

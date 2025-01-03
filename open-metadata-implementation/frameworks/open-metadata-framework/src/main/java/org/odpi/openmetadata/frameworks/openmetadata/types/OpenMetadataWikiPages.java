@@ -265,6 +265,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0224_DATABASES                    = "https://egeria-project.org/types/2/0224-Databases/";
 
     /**
+     * <a href="https://egeria-project.org/types/2/0225-Metadata-Repositories/">...</a>
+     */
+    public static final String MODEL_0225_METADATA_REPOSITORIES                    = "https://egeria-project.org/types/2/0225-Metadata-Repositories/";
+
+    /**
      * <a href="https://egeria-project.org/types/2/0226-Archive-Files/">...</a>
      */
     public static final String MODEL_0226_ARCHIVE_FILES                = "https://egeria-project.org/types/2/0226-Archive-Files/";

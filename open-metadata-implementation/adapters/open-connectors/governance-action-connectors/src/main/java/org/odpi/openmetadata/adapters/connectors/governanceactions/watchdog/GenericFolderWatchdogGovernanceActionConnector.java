@@ -353,7 +353,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     {
         try
         {
-            String parentFolderGUID = getFolderGUID(fileGUID, OpenMetadataType.NESTED_FILE_TYPE_NAME);
+            String parentFolderGUID = getFolderGUID(fileGUID, OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName);
 
             if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
             {
@@ -377,7 +377,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         return true;
                     }
 
-                    parentFolderGUID = getFolderGUID(parentFolderGUID, OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME);
+                    parentFolderGUID = getFolderGUID(parentFolderGUID, OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName);
                 }
             }
 

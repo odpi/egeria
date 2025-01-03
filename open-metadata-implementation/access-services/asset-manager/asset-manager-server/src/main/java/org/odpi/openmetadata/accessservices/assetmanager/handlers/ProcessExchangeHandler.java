@@ -212,7 +212,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 portGUIDParameterName,
-                                                                                OpenMetadataType.PORT_TYPE_NAME,
+                                                                                OpenMetadataType.PORT.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -1274,18 +1274,18 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT.typeName;
 
         if (portProperties.getTypeName() != null)
         {
             typeName = portProperties.getTypeName();
         }
 
-        int portType = PortType.OTHER.getOpenTypeOrdinal();
+        int portType = PortType.OTHER.getOrdinal();
 
         if (portProperties.getPortType() != null)
         {
-            portType = portProperties.getPortType().getOpenTypeOrdinal();
+            portType = portProperties.getPortType().getOrdinal();
         }
 
         String portGUID = processHandler.createPort(userId,
@@ -1309,7 +1309,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           portGUID,
                                           portGUIDParameterName,
-                                          OpenMetadataType.PORT_TYPE_NAME,
+                                          OpenMetadataType.PORT.typeName,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -1358,7 +1358,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(portProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(portProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT.typeName;
 
         if (portProperties.getTypeName() != null)
         {
@@ -1375,11 +1375,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         effectiveTime,
                                         methodName);
 
-        int portType = PortType.OTHER.getOpenTypeOrdinal();
+        int portType = PortType.OTHER.getOrdinal();
 
         if (portProperties.getPortType() != null)
         {
-            portType = portProperties.getPortType().getOpenTypeOrdinal();
+            portType = portProperties.getPortType().getOrdinal();
         }
 
         processHandler.updatePort(userId,
@@ -1752,7 +1752,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         portGUID,
                                         portGUIDParameterName,
-                                        OpenMetadataType.PORT_TYPE_NAME,
+                                        OpenMetadataType.PORT.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -1982,7 +1982,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         portGUIDParameterName,
-                                                                        OpenMetadataType.PORT_TYPE_NAME,
+                                                                        OpenMetadataType.PORT.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -2096,7 +2096,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         portGUIDParameterName,
-                                                                        OpenMetadataType.PORT_TYPE_NAME,
+                                                                        OpenMetadataType.PORT.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,

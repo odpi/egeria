@@ -798,17 +798,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                    null,
                                                    governanceActionProcessEntity.getGUID(),
                                                    governanceActionProcessGUIDParameterName,
-                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                    processInstanceGUID,
                                                    governanceActionProcessInstanceGUIDParameterName,
-                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
-                                                   false,
-                                                   false,
-                                                   serviceSupportedZones,
-                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
                                                    processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
-                                                   effectiveTime,
                                                    methodName);
 
                 String engineActionGUID = prepareEngineActionFromProcessStep(userId,
@@ -837,21 +830,14 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        null,
                                                        processInstanceGUID,
                                                        governanceActionProcessInstanceGUIDParameterName,
-                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
                                                        engineActionGUID,
                                                        engineActionGUIDParameterName,
-                                                       OpenMetadataType.ENGINE_ACTION.typeName,
-                                                       false,
-                                                       false,
-                                                       serviceSupportedZones,
                                                        OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
-                                                       OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
                                                        repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                     null,
                                                                                                     OpenMetadataType.REQUEST_SOURCE_NAME_PROPERTY_NAME,
                                                                                                     processInstanceName,
                                                                                                     methodName),
-                                                       effectiveTime,
                                                        methodName);
                 }
 
@@ -2774,17 +2760,17 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         final String methodName = "markActionTargetsAsComplete";
         final String guidParameterName = "engineActionGUID";
 
-        this.validateAnchorForEntity(userId,
-                                     engineActionGUID,
-                                     guidParameterName,
-                                     OpenMetadataType.ENGINE_ACTION.typeName,
-                                     true,
-                                     false,
-                                     true,
-                                     false,
-                                     serviceSupportedZones,
-                                     effectiveTime,
-                                     methodName);
+        this.validateEntityAndAnchorForRead(userId,
+                                            engineActionGUID,
+                                            guidParameterName,
+                                            OpenMetadataType.ENGINE_ACTION.typeName,
+                                            true,
+                                            false,
+                                            true,
+                                            false,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
 
         List<Relationship> actionTargetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                                 engineActionGUID,

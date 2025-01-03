@@ -42,14 +42,14 @@ public enum GovernanceServerEventType
     /**
      * The configuration for an Integration Group has changed.
      */
-    REFRESH_INTEGRATION_GROUP_EVENT      (1,
+    REFRESH_INTEGRATION_GROUP_EVENT      (3,
                                           "Refresh Integration Group Configuration",
                                           "The configuration for an Integration Group has changed."),
 
     /**
      * The configuration for an integration connector has changed.
      */
-    REFRESH_INTEGRATION_CONNECTOR_EVENT     (2,
+    REFRESH_INTEGRATION_CONNECTOR_EVENT     (4,
                                           "Refresh Integration Connector Configuration",
                                           "The configuration for an Integration Connector has changed."),
 
@@ -64,9 +64,16 @@ public enum GovernanceServerEventType
     /**
      * New request to run a governance service.
      */
-    CANCELLED_ENGINE_ACTION_EVENT(5,
+    CANCELLED_ENGINE_ACTION_EVENT(6,
                                   "Cancelled Engine Action",
                                   "Request to stop a governance service."),
+
+    /**
+     * Metadata change event for watchdog governance action services.
+     */
+    WATCHDOG_GOVERNANCE_SERVICE_EVENT    (7,
+                                          "Metadata change event",
+                                          "Metadata change event for watchdog governance action services."),
 
     ;
 

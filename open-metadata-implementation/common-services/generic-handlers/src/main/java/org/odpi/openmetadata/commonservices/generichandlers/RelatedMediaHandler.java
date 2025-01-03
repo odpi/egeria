@@ -113,7 +113,7 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
                                         OpenMetadataType.RELATED_MEDIA.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         0,
                                         null,

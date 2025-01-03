@@ -153,6 +153,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      * 
      * @return string
      */
+    @Override
     public String getDeployedImplementationType()
     {
         return deployedImplementationType;
@@ -164,16 +165,19 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      *
      * @return deployed implementation type enum
      */
+    @Override
     public DeployedImplementationTypeDefinition getIsATypeOf()
     {
         return isATypeOf;
     }
+
 
     /**
      * Return the type name that this deployed implementation type is associated with.
      * 
      * @return string
      */
+    @Override
     public String getAssociatedTypeName()
     {
         return associatedTypeName;
@@ -185,6 +189,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      *
      * @return string
      */
+    @Override
     public String getAssociatedClassification()
     {
         return associatedClassification;
@@ -196,6 +201,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(associatedTypeName,
@@ -210,6 +216,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      *
      * @return string
      */
+    @Override
     public String getCategory()
     {
         return constructValidValueCategory(associatedTypeName,
@@ -223,6 +230,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      * 
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -234,6 +242,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      *
      * @return string url
      */
+    @Override
     public String getWikiLink()
     {
         return wikiLink;

@@ -16,7 +16,7 @@ public class MermaidGraphBuilderBase
      * Convert an array into a comma separated string.
      *
      * @param labelValues array of labels
-     * @return string value without square brackets (Mermaid does not allow them)
+     * @return string value
      */
     public String getListLabel(List<String> labelValues)
     {

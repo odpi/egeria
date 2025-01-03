@@ -719,16 +719,8 @@ public class OpenMetadataTypesArchive5_0
      */
     private ClassificationDef getDataScopeClassification()
     {
-        final String guid            = "22f996d0-c4b7-433a-af0b-6a3e9478e488";
-        final String name            = "DataScope";
-        final String description     = "Defines the scope of the data held in the associated data resource.";
-        final String descriptionGUID = null;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATA_SCOPE_CLASSIFICATION,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 

@@ -380,6 +380,70 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Retrieve a configuration property that is a comma-separated list of strings.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @param defaultValue value to use if the property is not specified.
+     * @return list of strings or null if not set
+     */
+    protected List<String> getArrayConfigurationProperty(String              propertyName,
+                                                         Map<String, Object> configurationProperties,
+                                                         String              defaultValue)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.containsKey(propertyName))
+            {
+                Object arrayOption = configurationProperties.get(propertyName);
+
+                String[] options = arrayOption.toString().split(",");
+
+                return new ArrayList<>(Arrays.asList(options));
+            }
+        }
+
+        if (defaultValue != null)
+        {
+            String[] options = defaultValue.split(",");
+
+            return new ArrayList<>(Arrays.asList(options));
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Retrieve a configuration property that is a comma-separated list of strings.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return list of strings or null if not set
+     */
+    protected List<String> getArrayConfigurationProperty(String              propertyName,
+                                                         Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.containsKey(propertyName))
+            {
+                Object arrayOption = configurationProperties.get(propertyName);
+
+                String[] options = arrayOption.toString().split(",");
+
+                return new ArrayList<>(Arrays.asList(options));
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Retrieve a configuration property that is a boolean.  If any non-null value is set it returns true unless
      * the value is set to FALSE, False or false.
      *
@@ -468,6 +532,23 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     protected String getStringConfigurationProperty(String              propertyName,
                                                     Map<String, Object> configurationProperties)
     {
+        return this.getStringConfigurationProperty(propertyName, configurationProperties, null);
+    }
+
+
+
+    /**
+     * Retrieve a configuration property that is a string or null if not set.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @param defaultValue value to use if the property is not in the configuration properties
+     * @return string value of property or null if not supplied
+     */
+    protected String getStringConfigurationProperty(String              propertyName,
+                                                    Map<String, Object> configurationProperties,
+                                                    String              defaultValue)
+    {
         if (configurationProperties != null)
         {
             if (configurationProperties.get(propertyName) != null)
@@ -476,8 +557,11 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             }
         }
 
-        return null;
+        return defaultValue;
     }
+
+
+
 
 
     /**

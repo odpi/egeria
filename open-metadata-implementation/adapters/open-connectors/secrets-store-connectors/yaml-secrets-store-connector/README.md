@@ -1,18 +1,21 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# The Environment Variable Secrets Store Connector
+# The YAML File Secrets Store Connector
 
-The *YAML File Secrets Store Connector* retrieves secrets from environment variables.  
-Each secret is found in an environment variable named after the secret name,
-prefixed with its secret's collection  and "_".  For example, the userId secret for the secret's collection
-"MY_CONNECTOR" is in an environment variable called MY_CONNECTOR_userId.
+The *YAML File Secrets Store Connector* retrieves secrets from a YAML file.
+The structure of this store is described in the `SecretsStore` java class found in the `secretsstore` package.
+The secrets store is organized into named collections.
+Each collection represents the related secrets needed by a particular type of caller.
 
-It returns null if the environment variable is not defined.
+The location of the YAML File is configured in the endpoint of the connector's connection object.
+The collection to use is supplied in the `secretsCollectionName` property found in the connection's `configurationProperties`.  
+The connector will fail if either of these two values are missing.
 
-## Deployment and configuration
 
-See [https://egeria-project.org/connectors/secrets/environment-variable-secrets-store-connector](https://egeria-project.org/connectors/secrets/environment-variable-secrets-store-connector)
+## Full description
+
+See [https://egeria-project.org/connectors/secrets/yaml-file-secrets-store-connector](https://egeria-project.org/connectors/secrets/yaml-file-secrets-store-connector)
 
 ----
 * Return to [Secrets Store Connectors module](..)

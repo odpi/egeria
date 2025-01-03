@@ -777,17 +777,17 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     fullEntity = entity;
 
-                    userIdentityHandler.validateAnchorForEntity(userId,
-                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                fullEntity,
-                                                                guidParameterName,
-                                                                false,
-                                                                false,
-                                                                true,
-                                                                false,
-                                                                supportedZones,
-                                                                effectiveTime,
-                                                                methodName);
+                    userIdentityHandler.validateEntityAndAnchorForRead(userId,
+                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                       fullEntity,
+                                                                       guidParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       true,
+                                                                       false,
+                                                                       supportedZones,
+                                                                       effectiveTime,
+                                                                       methodName);
                 }
             }
             else if (entityProxy != null)

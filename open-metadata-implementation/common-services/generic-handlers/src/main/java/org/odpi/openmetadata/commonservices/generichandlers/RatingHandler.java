@@ -112,7 +112,7 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
                                         OpenMetadataType.RATING.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         0,
                                         null,
@@ -219,17 +219,10 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                elementGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                ratingGUID,
                                                ratingGUIDParameterName,
-                                               OpenMetadataType.RATING.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
                                                builder.getRelationshipInstanceProperties(methodName),
-                                               effectiveTime,
                                                methodName);
         }
 

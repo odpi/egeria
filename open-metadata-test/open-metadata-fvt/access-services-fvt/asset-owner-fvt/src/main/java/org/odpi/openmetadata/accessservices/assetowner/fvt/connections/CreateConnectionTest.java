@@ -37,6 +37,7 @@ public class CreateConnectionTest
     private final static String endpointDescription          = "Endpoint description";
 
 
+    private static final String connectorTypeQName = "Egeria:ResourceConnector:DataFile";
     private static final String connectorTypeName = "Basic File Store Connector";
     private static final String connectorTypeGUID = "ba213761-f5f5-4cf5-a95f-6150aef09e0b";
     private static final String connectorTypeDescription = "Connector supports reading of Files.";
@@ -613,7 +614,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeProperties from Retrieve)");
             }
 
-            if (! connectorTypeName.equals(retrievedConnectorType.getQualifiedName()))
+            if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedConnectorType);
             }
@@ -634,7 +635,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad connectorProviderClassName from Retrieve) =>>" + retrievedConnectorType);
             }
 
-            List<ConnectorTypeElement> connectorTypeList = client.getConnectorTypesByName(userId, connectorTypeName, 0, maxPageSize);
+            List<ConnectorTypeElement> connectorTypeList = client.getConnectorTypesByName(userId, connectorTypeQName, 0, maxPageSize);
 
             if (connectorTypeList == null)
             {
@@ -654,7 +655,7 @@ public class CreateConnectionTest
             retrievedElement = connectorTypeList.get(0);
             retrievedConnectorType = retrievedElement.getConnectorTypeProperties();
 
-            if (! connectorTypeName.equals(retrievedConnectorType.getQualifiedName()))
+            if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedConnectorType);
             }

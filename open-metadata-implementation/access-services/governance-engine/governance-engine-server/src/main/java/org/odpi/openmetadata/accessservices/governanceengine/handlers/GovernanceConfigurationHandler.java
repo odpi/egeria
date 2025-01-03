@@ -2436,6 +2436,7 @@ public class GovernanceConfigurationHandler
                                                              instanceProperties,
                                                              false,
                                                              false,
+                                                             integrationGroupHandler.getSupportedZones(),
                                                              new Date(),
                                                              methodName);
     }
@@ -2573,6 +2574,7 @@ public class GovernanceConfigurationHandler
                                                    OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                    false,
                                                    false,
+                                                   integrationGroupHandler.getSupportedZones(),
                                                    new Date(),
                                                    methodName);
     }

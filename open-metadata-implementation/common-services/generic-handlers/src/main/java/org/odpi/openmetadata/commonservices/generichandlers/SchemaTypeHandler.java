@@ -1176,7 +1176,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         return this.getSchemaTypeForParent(userId,
                                            portGUID,
                                            portGUIDParameterName,
-                                           OpenMetadataType.PORT_TYPE_NAME,
+                                           OpenMetadataType.PORT.typeName,
                                            OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                            OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                            forLineage,
@@ -1283,7 +1283,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-        if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataType.PORT_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataType.PORT.typeName))
         {
             this.linkElementToElement(userId,
                                       externalSourceGUID,
@@ -1367,7 +1367,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
-                                                                         OpenMetadataType.PORT_TYPE_NAME))
+                                                                         OpenMetadataType.PORT.typeName))
         {
             this.unlinkElementFromElement(userId,
                                           false,

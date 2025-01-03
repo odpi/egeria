@@ -1137,6 +1137,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                         relationshipTypeName,
                                         forLineage,
                                         forDuplicateProcessing,
+                                        assetHandler.getSupportedZones(),
                                         effectiveTime,
                                         methodName);
     }

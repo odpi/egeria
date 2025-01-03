@@ -174,17 +174,10 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                profileGUID,
                                                profileGUIDParameterName,
-                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                userIdentityGUID,
                                                userIdentityGUIDParameterName,
-                                               OpenMetadataType.USER_IDENTITY.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 

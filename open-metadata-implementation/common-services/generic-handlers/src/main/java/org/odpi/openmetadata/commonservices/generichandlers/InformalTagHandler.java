@@ -118,7 +118,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                         OpenMetadataType.INFORMAL_TAG.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         0,
                                         null,

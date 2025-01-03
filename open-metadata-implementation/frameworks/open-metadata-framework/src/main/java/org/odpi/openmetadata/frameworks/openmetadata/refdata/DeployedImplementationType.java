@@ -445,7 +445,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     FILE_SYSTEM("File System",
                 DeployedImplementationType.SOFTWARE_CAPABILITY,
                 OpenMetadataType.DATA_MANAGER.typeName,
-                OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
                 "A system that manages hierarchically organized files on persistent storage.",
                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -455,7 +455,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     UNIX_FILE_SYSTEM("UNIX File System",
                      DeployedImplementationType.SOFTWARE_CAPABILITY,
                      OpenMetadataType.DATA_MANAGER.typeName,
-                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
                      "A Unix capability that manages hierarchically organized files on persistent storage.",
                      OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -959,6 +959,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * 
      * @return string
      */
+    @Override
     public String getDeployedImplementationType()
     {
         return deployedImplementationType;
@@ -970,6 +971,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return deployed implementation type enum
      */
+    @Override
     public DeployedImplementationTypeDefinition getIsATypeOf()
     {
         return isATypeOf;
@@ -981,6 +983,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * 
      * @return string
      */
+    @Override
     public String getAssociatedTypeName()
     {
         return associatedTypeName;
@@ -992,6 +995,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return string
      */
+    @Override
     public String getAssociatedClassification()
     {
         return associatedClassification;
@@ -1003,6 +1007,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(associatedTypeName,
@@ -1017,6 +1022,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return string
      */
+    @Override
     public String getCategory()
     {
         return constructValidValueCategory(associatedTypeName,
@@ -1030,6 +1036,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * 
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -1041,6 +1048,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      *
      * @return string url
      */
+    @Override
     public String getWikiLink()
     {
         return wikiLink;

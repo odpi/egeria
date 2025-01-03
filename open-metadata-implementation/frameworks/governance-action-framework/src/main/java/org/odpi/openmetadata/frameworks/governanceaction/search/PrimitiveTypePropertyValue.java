@@ -60,6 +60,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
+    @Override
     public PropertyValue cloneFromSubclass()
     {
         return new PrimitiveTypePropertyValue(this);
@@ -71,6 +72,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
+    @Override
     public  String valueAsString()
     {
         return primitiveValue == null ? "<null>" : primitiveValue.toString();
@@ -82,6 +84,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
+    @Override
     public  Object valueAsObject()
     {
         return primitiveValue;
@@ -102,6 +105,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
      *
      * @param typeName String type name
      */
+    @Override
     public void setTypeName(String typeName)
     {
         for (PrimitiveTypeCategory category : PrimitiveTypeCategory.values())

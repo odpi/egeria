@@ -82,6 +82,7 @@ public enum MediaUsage implements OpenMetadataEnum
      *
      * @return int media usage code
      */
+    @Override
     public int getOrdinal()
     {
         return ordinal;

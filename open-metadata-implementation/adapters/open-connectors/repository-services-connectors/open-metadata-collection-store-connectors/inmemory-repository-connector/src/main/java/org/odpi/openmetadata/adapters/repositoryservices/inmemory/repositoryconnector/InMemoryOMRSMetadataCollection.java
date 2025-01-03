@@ -524,7 +524,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 if ((repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
-                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, entity, entity.getProperties())))
+                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, entity.getGUID(), entity, entity.getProperties())))
                 {
                     foundEntities.add(entity);
                 }
@@ -1032,7 +1032,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
-                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, relationship, relationship.getProperties())))
+                    (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties, relationship.getGUID(), relationship, relationship.getProperties())))
                 {
                     foundRelationships.add(relationship);
                 }

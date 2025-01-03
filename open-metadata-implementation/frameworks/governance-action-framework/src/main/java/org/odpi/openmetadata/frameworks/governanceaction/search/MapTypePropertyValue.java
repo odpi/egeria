@@ -54,6 +54,7 @@ public class MapTypePropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
+    @Override
     public PropertyValue cloneFromSubclass()
     {
         return new MapTypePropertyValue(this);
@@ -65,6 +66,7 @@ public class MapTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (mapValues != null)
@@ -81,6 +83,7 @@ public class MapTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (mapValues != null)

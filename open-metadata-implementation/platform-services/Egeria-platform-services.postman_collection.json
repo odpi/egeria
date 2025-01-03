@@ -66,7 +66,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"class\": \"PlatformSecurityRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\",\n    \"platformSecurityConnection\" : {\n\t    \"class\": \"Connection\",\n\t    \"connectorType\": {\n\t        \"class\": \"ConnectorType\",\n\t        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider\"\n\t    }\n    }\n}"
+					"raw": "{\n    \"class\": \"PlatformSecurityRequestBody\",\n    \"urlRoot\": \"{{baseURL}}\",\n    \"platformSecurityConnection\" : {\n\t    \"class\": \"Connection\",\n\t    \"connectorType\": {\n\t        \"class\": \"ConnectorType\",\n\t        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider\"\n\t    }\n    }\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection",
@@ -625,7 +625,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider",
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -636,7 +636,7 @@
 						"{{adminUserId}}",
 						"server-platform",
 						"connector-types",
-						"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider"
+						"org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
 					]
 				},
 				"description": "Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform."

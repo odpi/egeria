@@ -667,7 +667,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 }
 
                 additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, templateType.getTemplateDescription());
-                additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, templateType.getTypeName());
+                additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, templateType.getTypeName());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
                 String validValueGUID = this.addValidValue(null,
@@ -1033,7 +1033,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 additionalProperties.put(OpenMetadataProperty.EXPLANATION.name, annotationTypeType.getExplanation());
                 additionalProperties.put(OpenMetadataProperty.EXPRESSION.name, annotationTypeType.getExpression());
                 additionalProperties.put(OpenMetadataProperty.ANALYSIS_STEP.name, annotationTypeType.getAnalysisStepName());
-                additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, annotationTypeType.getOpenMetadataTypeName());
+                additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, annotationTypeType.getOpenMetadataTypeName());
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -1275,6 +1275,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                       String              capabilityVersion,
                                       String              patchLevel,
                                       String              source,
+                                      String              userId,
                                       Map<String, String> additionalProperties,
                                       Map<String, Object> extendedProperties)
     {
@@ -1285,20 +1286,32 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             engineTypeName = typeName;
         }
 
-        return super.addSoftwareCapability(engineTypeName,
-                                           qualifiedName,
-                                           displayName,
-                                           description,
-                                           capabilityType,
-                                           capabilityVersion,
-                                           patchLevel,
-                                           source,
-                                           additionalProperties,
-                                           extendedProperties,
-                                           (Classification)null,
-                                           null,
-                                           null,
-                                           null);
+        String capabilityGUID  = super.addSoftwareCapability(engineTypeName,
+                                                             qualifiedName,
+                                                             displayName,
+                                                             description,
+                                                             capabilityType,
+                                                             capabilityVersion,
+                                                             patchLevel,
+                                                             source,
+                                                             additionalProperties,
+                                                             extendedProperties,
+                                                             (Classification)null,
+                                                             null,
+                                                             null,
+                                                             null);
+
+        if (capabilityGUID != null)
+        {
+            this.addITProfile(capabilityGUID,
+                              userId,
+                              qualifiedName + ":ActorProfile",
+                              displayName,
+                              description,
+                              null);
+        }
+
+        return capabilityGUID;
     }
 
 

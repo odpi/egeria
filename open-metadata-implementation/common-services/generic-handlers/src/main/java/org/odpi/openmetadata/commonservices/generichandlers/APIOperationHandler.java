@@ -213,17 +213,10 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                apiSchemaTypeGUID,
                                                apiSchemaTypeGUIDParameterName,
-                                               OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
                                                apiOperationGUID,
                                                apiOperationGUIDParameterName,
-                                               OpenMetadataType.API_OPERATION_TYPE_NAME,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 
@@ -329,17 +322,10 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            apiSchemaTypeGUID,
                                            apiSchemaTypeGUIDParameterName,
-                                           OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
                                            apiOperationGUID,
                                            apiOperationGUIDParameterName,
-                                           OpenMetadataType.API_OPERATION_TYPE_NAME,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           supportedZones,
                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                            null,
-                                           effectiveTime,
                                            methodName);
 
         return apiOperationGUID;
@@ -720,7 +706,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                             OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                             OpenMetadataType.API_OPERATION_TYPE_NAME,
-                                            null,
+                                            (String)null,
                                             null,
                                             2,
                                             null,
@@ -799,7 +785,7 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
                                             OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
                                             OpenMetadataType.API_OPERATION_TYPE_NAME,
-                                            null,
+                                            (String)null,
                                             null,
                                             2,
                                             null,

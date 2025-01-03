@@ -607,7 +607,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                         OpenMetadataType.ACTOR_PROFILE.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,

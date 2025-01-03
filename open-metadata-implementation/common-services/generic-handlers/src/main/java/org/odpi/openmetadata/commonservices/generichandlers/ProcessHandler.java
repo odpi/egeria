@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -543,15 +544,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                                                    ProcessContainmentType.getOpenTypeGUID(),
+                                                                    ProcessContainmentType.getOpenTypeName(),
                                                                     containmentType,
                                                                     methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataProperty.CONTAINMENT_TYPE.name);
         }
 
         processHandler.linkElementToElement(userId,
@@ -566,8 +567,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
-                                            OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                            OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                            OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
+                                            OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                             properties,
                                             effectiveFrom,
                                             effectiveTo,
@@ -623,8 +624,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 supportedZones,
-                                                OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                                OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                 effectiveTime,
                                                 methodName);
     }
@@ -913,8 +914,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                  processGUID,
                                                  processGUIDParameterName,
                                                  OpenMetadataType.PROCESS.typeName,
-                                                 OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                                 OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                 OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                 OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                  OpenMetadataType.PROCESS.typeName,
                                                  2,
                                                  null,
@@ -971,10 +972,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                   processGUID,
                                                   processGUIDParameterName,
                                                   OpenMetadataType.PROCESS.typeName,
-                                                  OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
-                                                  OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                  OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                  OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                   OpenMetadataType.PROCESS.typeName,
-                                                  null,
+                                                  (String)null,
                                                   null,
                                                   2,
                                                   null,
@@ -1975,6 +1976,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
                                            forDuplicateProcessing,
+                                           supportedZones,
                                            effectiveTime,
                                            methodName);
     }
@@ -2020,6 +2022,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  OpenMetadataType.DATA_FLOW.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
+                                 supportedZones,
                                  effectiveTime,
                                  methodName);
     }
@@ -2440,6 +2443,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
                                            forDuplicateProcessing,
+                                           supportedZones,
                                            effectiveTime,
                                            methodName);
     }
@@ -2485,6 +2489,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  OpenMetadataType.CONTROL_FLOW.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
+                                 supportedZones,
                                  effectiveTime,
                                  methodName);
     }
@@ -2905,6 +2910,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
                                            forDuplicateProcessing,
+                                           supportedZones,
                                            effectiveTime,
                                            methodName);
     }
@@ -2950,6 +2956,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  OpenMetadataType.PROCESS_CALL.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
+                                 supportedZones,
                                  effectiveTime,
                                  methodName);
     }
@@ -3348,6 +3355,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
                                            forDuplicateProcessing,
+                                           supportedZones,
                                            effectiveTime,
                                            methodName);
     }
@@ -3389,6 +3397,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  OpenMetadataType.LINEAGE_MAPPING.typeName,
                                  forLineage,
                                  forDuplicateProcessing,
+                                 supportedZones,
                                  effectiveTime,
                                  methodName);
     }

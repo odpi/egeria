@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -234,11 +235,11 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
         {
             auditLog.logMessage(assetActionDescription,
-                                GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
-                                                                                                    entityTypeName,
-                                                                                                    templateProgress.newBeanGUID,
-                                                                                                    methodName,
-                                                                                                    serviceName));
+                                OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                              entityTypeName,
+                                                                                                              templateProgress.newBeanGUID,
+                                                                                                              methodName,
+                                                                                                              serviceName));
         }
 
         auditLog.logMessage(methodName,
@@ -415,17 +416,17 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             /*
              * Check that the template is visible to the calling user.  If the template is an anchor, its own entity is returned.
              */
-            EntityDetail templateAnchorEntity = this.validateAnchorForEntity(userId,
-                                                                             entityTypeName,
-                                                                             templateEntity,
-                                                                             templateGUIDParameterName,
-                                                                             true,
-                                                                             false,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             serviceSupportedZones,
-                                                                             effectiveTime,
-                                                                             methodName);
+            EntityDetail templateAnchorEntity = this.validateEntityAndAnchorForRead(userId,
+                                                                                    entityTypeName,
+                                                                                    templateEntity,
+                                                                                    templateGUIDParameterName,
+                                                                                    true,
+                                                                                    false,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    serviceSupportedZones,
+                                                                                    effectiveTime,
+                                                                                    methodName);
             if (templateAnchorEntity != null)
             {
                 if ((firstIteration) && (! templateGUID.equals(templateAnchorEntity.getGUID())))
@@ -791,17 +792,17 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                         String nextTemplateEntityTypeGUID = nextTemplateEntity.getType().getTypeDefGUID();
                         String nextTemplateEntityTypeName = nextTemplateEntity.getType().getTypeDefName();
 
-                        EntityDetail nextTemplateEntityAnchor = this.validateAnchorForEntity(userId,
-                                                                                             null,
-                                                                                             nextTemplateEntity,
-                                                                                             nextTemplateEntityGUIDParameterName,
-                                                                                             true,
-                                                                                             false,
-                                                                                             forLineage,
-                                                                                             forDuplicateProcessing,
-                                                                                             serviceSupportedZones,
-                                                                                             effectiveTime,
-                                                                                             methodName);
+                        EntityDetail nextTemplateEntityAnchor = this.validateEntityAndAnchorForRead(userId,
+                                                                                                    null,
+                                                                                                    nextTemplateEntity,
+                                                                                                    nextTemplateEntityGUIDParameterName,
+                                                                                                    true,
+                                                                                                    false,
+                                                                                                    forLineage,
+                                                                                                    forDuplicateProcessing,
+                                                                                                    serviceSupportedZones,
+                                                                                                    effectiveTime,
+                                                                                                    methodName);
 
                         String nextTemplateAnchorGUID = null;
                         if (nextTemplateEntityAnchor != null)
@@ -943,17 +944,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                           externalSourceName,
                                                                                           startingGUID,
                                                                                           startingGUIDParameterName,
-                                                                                          expectedTypeName,
                                                                                           nextBeanEntityGUID,
                                                                                           nextBeanEntityGUIDParameterName,
-                                                                                          nextTemplateEntityTypeName,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          serviceSupportedZones,
                                                                                           relationship.getType().getTypeDefGUID(),
-                                                                                          relationship.getType().getTypeDefName(),
                                                                                           relationshipProperties,
-                                                                                          effectiveTime,
                                                                                           methodName);
                             }
                             else
@@ -965,17 +959,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                                           externalSourceName,
                                                                                           nextBeanEntityGUID,
                                                                                           nextBeanEntityGUIDParameterName,
-                                                                                          nextTemplateEntityTypeName,
                                                                                           startingGUID,
                                                                                           startingGUIDParameterName,
-                                                                                          expectedTypeName,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          serviceSupportedZones,
                                                                                           relationship.getType().getTypeDefGUID(),
-                                                                                          relationship.getType().getTypeDefName(),
                                                                                           relationshipProperties,
-                                                                                          effectiveTime,
                                                                                           methodName);
                             }
 

@@ -301,16 +301,26 @@ public class GovernanceDomainRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 CollectionHandler<GovernanceDomainSetElement> handler = instanceHandler.getGovernanceDomainSetHandler(userId, serverName, methodName);
 
-                List<GovernanceDomainSetElement> sets = handler.findCollections(userId,
+                List<GovernanceDomainSetElement> sets = handler.getBeansByValue(userId,
                                                                                 requestBody.getSearchString(),
                                                                                 searchStringParameterName,
+                                                                                OpenMetadataType.COLLECTION.typeGUID,
+                                                                                OpenMetadataType.COLLECTION.typeName,
+                                                                                null,
+                                                                                false,
+                                                                                OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                SequencingOrder.CREATION_DATE_RECENT,
+                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                handler.getSupportedZones(),
                                                                                 startFrom,
                                                                                 pageSize,
-                                                                                false,
-                                                                                false,
                                                                                 new Date(),
                                                                                 methodName);
-
                 this.addDomainsToSets(userId, sets, instanceHandler.getGovernanceDomainHandler(userId, serverName, methodName), methodName);
 
                 response.setElements(sets);

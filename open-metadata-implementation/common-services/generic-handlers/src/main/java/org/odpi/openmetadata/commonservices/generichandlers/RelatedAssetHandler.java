@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RelatedAssetHandler manages B objects and optionally connections in the property server.  It runs server-side in
@@ -126,40 +127,60 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                   startingEntity,
-                                                                   elementGUIDParameterName,
-                                                                   elementTypeName,
-                                                                   relationshipTypeGUID,
-                                                                   relationshipTypeName,
-                                                                   null,
-                                                                   OpenMetadataType.ASSET.typeName,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   serviceSupportedZones,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   effectiveTime,
-                                                                   methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity,
+                                                                                    elementTypeName,
+                                                                                    relationshipTypeGUID,
+                                                                                    relationshipTypeName,
+                                                                                    0,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+        if (relationships == null)
+        {
+            return null;
+        }
+
+        /*
+         * Retrieve all of the entities linked to the relationships.  This is done as a single retrieve
+         * to minimise the calls to the repositories.  It also performs security checks
+         */
+        Map<String, EntityDetail> retrievedEntities = this.getValidatedEntities(userId,
+                                                                                startingEntity.getGUID(),
+                                                                                startingEntity.getType().getTypeDefName(),
+                                                                                relationships,
+                                                                                relatedAssetsTypeName,
+                                                                                null,
+                                                                                null,
+                                                                                0,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                serviceSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
 
         List<B> results = new ArrayList<>();
 
         final String entityGUIDParameterName = "entityProxy.getGUID()";
 
-        if (relationships != null)
+        if (retrievedEntities != null)
         {
+
             for (Relationship relationship : relationships)
             {
-                if (relationship != null)
+                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
                 {
                     if ((startingEnd == 0)
-                                || ((startingEnd == 1) && (startingEntity.getGUID().equals(relationship.getEntityOneProxy().getGUID())))
-                                || ((startingEnd == 2) && (startingEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))))
+                            || ((startingEnd == 1) && (startingEntity.getGUID().equals(relationship.getEntityOneProxy().getGUID())))
+                            || ((startingEnd == 2) && (startingEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))))
                     {
                         EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), elementTypeName, relationship, 0, methodName);
 
@@ -167,33 +188,16 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                              otherEnd.getType().getTypeDefName(),
                                                                                                              relatedAssetsTypeName)))
                         {
-                            try
-                            {
-                                EntityDetail entity = this.getEntityFromRepository(userId,
-                                                                                   otherEnd.getGUID(),
-                                                                                   entityGUIDParameterName,
-                                                                                   otherEnd.getType().getTypeDefName(),
-                                                                                   null,
-                                                                                   null,
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing,
-                                                                                   serviceSupportedZones,
-                                                                                   effectiveTime,
-                                                                                   methodName);
+                            EntityDetail entity = retrievedEntities.get(otherEnd.getGUID());
 
-                                if (entity != null)
+                            if (entity != null)
+                            {
+                                B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
+
+                                if (bean != null)
                                 {
-                                    B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
-
-                                    if (bean != null)
-                                    {
-                                        results.add(bean);
-                                    }
+                                    results.add(bean);
                                 }
-                            }
-                            catch (UserNotAuthorizedException notVisible)
-                            {
-                                // skip this one
                             }
                         }
                     }
@@ -201,13 +205,6 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
             }
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return results;
     }
 }

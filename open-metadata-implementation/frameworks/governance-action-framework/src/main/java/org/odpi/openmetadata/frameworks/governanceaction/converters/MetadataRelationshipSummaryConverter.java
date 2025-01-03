@@ -99,7 +99,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
     {
         List<B> results = null;
 
-        if (openMetadataRelationships != null)
+        if ((openMetadataRelationships != null) && openMetadataRelationships.getElementList() != null)
         {
             results = new ArrayList<>();
 

@@ -597,11 +597,10 @@ public class OpenMetadataTypesArchive3_1
         final String description     = "A software service supporting a single reusable business function.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SoftwareService";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName),
                                                  description,
                                                  descriptionGUID);
     }

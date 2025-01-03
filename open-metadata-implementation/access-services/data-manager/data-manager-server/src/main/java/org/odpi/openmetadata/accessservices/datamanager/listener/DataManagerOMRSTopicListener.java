@@ -149,32 +149,32 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     if (entity != null)
                     {
-                        genericHandler.validateAnchorForEntity(serverUserId,
-                                                               instanceTypeName,
-                                                               entity,
-                                                               entityGUIDParameterName,
-                                                               false,
-                                                               false,
-                                                               false,
-                                                               false,
-                                                               supportedZones,
-                                                               effectiveTime,
-                                                               methodName);
+                        genericHandler.validateEntityAndAnchorForRead(serverUserId,
+                                                                      instanceTypeName,
+                                                                      entity,
+                                                                      entityGUIDParameterName,
+                                                                      false,
+                                                                      false,
+                                                                      false,
+                                                                      false,
+                                                                      supportedZones,
+                                                                      effectiveTime,
+                                                                      methodName);
 
                     }
                     else /* proxy */
                     {
-                        genericHandler.validateAnchorForEntity(serverUserId,
-                                                               entityProxy.getGUID(),
-                                                               entityGUIDParameterName,
-                                                               instanceTypeName,
-                                                               false,
-                                                               false,
-                                                               false,
-                                                               false,
-                                                               supportedZones,
-                                                               effectiveTime,
-                                                               methodName);
+                        genericHandler.validateEntityAndAnchorForRead(serverUserId,
+                                                                      entityProxy.getGUID(),
+                                                                      entityGUIDParameterName,
+                                                                      instanceTypeName,
+                                                                      false,
+                                                                      false,
+                                                                      false,
+                                                                      false,
+                                                                      supportedZones,
+                                                                      effectiveTime,
+                                                                      methodName);
                     }
 
                     /*
@@ -297,37 +297,37 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.NESTED_FILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_FILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_MEDIA_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TOPIC_SUBSCRIBERS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.LINKED_MEDIA_RELATIONSHIP.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TOPIC_SUBSCRIBERS_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME)))
                 {
-                    genericHandler.validateAnchorForEntity(serverUserId,
-                                                           relationship.getEntityOneProxy().getGUID(),
-                                                           entityProxyOneGUIDParameterName,
-                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                           false,
-                                                           false,
-                                                           false,
-                                                           false,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
+                    genericHandler.validateEntityAndAnchorForRead(serverUserId,
+                                                                  relationship.getEntityOneProxy().getGUID(),
+                                                                  entityProxyOneGUIDParameterName,
+                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                  false,
+                                                                  false,
+                                                                  false,
+                                                                  false,
+                                                                  supportedZones,
+                                                                  effectiveTime,
+                                                                  methodName);
 
-                    genericHandler.validateAnchorForEntity(serverUserId,
-                                                           relationship.getEntityTwoProxy().getGUID(),
-                                                           entityProxyTwoGUIDParameterName,
-                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                           false,
-                                                           false,
-                                                           false,
-                                                           false,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
+                    genericHandler.validateEntityAndAnchorForRead(serverUserId,
+                                                                  relationship.getEntityTwoProxy().getGUID(),
+                                                                  entityProxyTwoGUIDParameterName,
+                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                  false,
+                                                                  false,
+                                                                  false,
+                                                                  false,
+                                                                  supportedZones,
+                                                                  effectiveTime,
+                                                                  methodName);
 
                     /*
                      * The event will publish if both entities are visible to the publisher

@@ -444,10 +444,10 @@ public class OpenMetadataTypesArchive3_4
          * Set up end 1.
          */
         final String                     end1AttributeName            = "describedByProfile";
-        final String                     end1AttributeDescription     = "The IT infrastructure that is described by the IT profile.";
+        final String                     end1AttributeDescription     = "The IT asset/software capability that is described by the IT profile.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -458,8 +458,8 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "usedByAsset";
-        final String                     end2AttributeDescription     = "Description of the user identifies used by the asset.";
+        final String                     end2AttributeName            = "usedByInfrastructure";
+        final String                     end2AttributeDescription     = "Description of the user identifies used by the asset/software capability.";
         final String                     end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_PROFILE.typeName),

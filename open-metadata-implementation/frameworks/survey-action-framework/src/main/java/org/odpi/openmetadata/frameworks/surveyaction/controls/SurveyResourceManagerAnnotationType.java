@@ -120,6 +120,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      *
      * @return string name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -131,6 +132,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      *
      * @return analysis step name
      */
+    @Override
     public String getAnalysisStep()
     {
         return AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName();
@@ -142,6 +144,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      *
      * @return type name
      */
+    @Override
     public String getOpenMetadataTypeName()
     {
         return openMetadataTypeName;
@@ -153,6 +156,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      *
      * @return text
      */
+    @Override
     public String getSummary()
     {
         return summary;
@@ -164,6 +168,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      *
      * @return text
      */
+    @Override
     public String getExplanation()
     {
         return explanation;

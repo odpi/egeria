@@ -89,6 +89,7 @@ public enum MediaType implements OpenMetadataEnum
      *
      * @return int media type code
      */
+    @Override
     public int getOrdinal()
     {
         return ordinal;
@@ -100,6 +101,7 @@ public enum MediaType implements OpenMetadataEnum
      *
      * @return String default name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -111,6 +113,7 @@ public enum MediaType implements OpenMetadataEnum
      *
      * @return String default description
      */
+    @Override
     public String getDescription()
     {
         return description;

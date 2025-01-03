@@ -773,17 +773,17 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     fullEntity = entity;
 
-                    referenceableHandler.validateAnchorForEntity(userId,
-                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 fullEntity,
-                                                                 guidParameterName,
-                                                                 false,
-                                                                 false,
-                                                                 true,
-                                                                 false,
-                                                                 supportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
+                    referenceableHandler.validateEntityAndAnchorForRead(userId,
+                                                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                                                        fullEntity,
+                                                                        guidParameterName,
+                                                                        false,
+                                                                        false,
+                                                                        true,
+                                                                        false,
+                                                                        supportedZones,
+                                                                        effectiveTime,
+                                                                        methodName);
                 }
             }
             else if (entityProxy != null)

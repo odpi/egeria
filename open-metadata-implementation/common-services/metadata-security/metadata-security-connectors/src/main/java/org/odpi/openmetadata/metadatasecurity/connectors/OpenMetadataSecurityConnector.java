@@ -5,7 +5,6 @@ package org.odpi.openmetadata.metadatasecurity.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
-import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -14,10 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.metadatasecurity.properties.Asset;
-import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
-import org.odpi.openmetadata.metadatasecurity.properties.Connection;
-import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -38,8 +33,8 @@ import java.util.List;
 public class OpenMetadataSecurityConnector extends ConnectorBase implements AuditLoggingComponent
 
 {
-    protected       String           serverRootURL    = null;
-    protected       String           serverName        = null;
+    protected       String           serverRootURL     = null;
+    protected       String           serverName        = "platform";
     protected       String           localServerUserId = null;
     protected       String           connectorName     = null;
 
@@ -106,30 +101,6 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Return a string representing the unique identifier for the asset.
-     * If the asset is null then the guid is "null", if the guid is null then
-     * the result is "null-guid".
-     *
-     * @param asset asset to test
-     * @return string identifier for messages
-     */
-    protected  String  getAssetGUID(Asset  asset)
-    {
-        if (asset == null)
-        {
-            return "<null>";
-        }
-
-        if (asset.getGUID() == null)
-        {
-            return "<null-guid>";
-        }
-
-        return asset.getGUID();
-    }
-
-
-    /**
      * Return a string representing the list of zones.
      *
      * @param zones zones to output
@@ -148,54 +119,6 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
         }
 
         return zones.toString();
-    }
-
-
-    /**
-     * Return a string representing the unique identifier for the connection.
-     * If the connection is null then the guid is "null", if the guid is null then
-     * the result is "null-name".
-     *
-     * @param connection connection to test
-     * @return string identifier for messages
-     */
-    protected  String  getConnectionQualifiedName(Connection  connection)
-    {
-        if (connection == null)
-        {
-            return "<null>";
-        }
-
-        if (connection.getQualifiedName() == null)
-        {
-            return "<null-name>";
-        }
-
-        return connection.getQualifiedName();
-    }
-
-
-    /**
-     * Return a string representing the unique identifier for a repository instance.
-     * If the instance is null then the guid is "null", if the guid is null then
-     * the result is "null-guid".
-     *
-     * @param instance instance to test
-     * @return string identifier for messages
-     */
-    protected  String  getInstanceGUID(InstanceHeader instance)
-    {
-        if (instance == null)
-        {
-            return "<null>";
-        }
-
-        if (instance.getGUID() == null)
-        {
-            return "<null-guid>";
-        }
-
-        return instance.getGUID();
     }
 
 
@@ -389,27 +312,30 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
 
 
     /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
+     * Write an audit log message and throw exception to record an unauthorized access.
      *
      * @param userId calling user
-     * @param asset asset being accessed
+     * @param operationName name of operation
+     * @param elementTypeName type of element
+     * @param elementGUID element being accessed
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
-    protected void throwUnauthorizedAssetAccess(String   userId,
-                                                Asset    asset,
-                                                String   methodName) throws UserNotAuthorizedException
+    protected void throwUnauthorizedAnchorAccess(String   userId,
+                                                 String   operationName,
+                                                 String   elementTypeName,
+                                                 String   elementGUID,
+                                                 String   methodName) throws UserNotAuthorizedException
     {
         logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_ACCESS.getMessageDefinition(userId, this.getAssetGUID(asset)));
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ANCHOR_ACCESS.getMessageDefinition(userId, operationName, elementTypeName, elementGUID));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_ACCESS.getMessageDefinition(userId,
-                                                                                                                          this.getAssetGUID(asset)),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ANCHOR_ACCESS.getMessageDefinition(userId, operationName, elementTypeName, elementGUID),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
     }
+
 
 
     /**
@@ -451,28 +377,6 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
         }
     }
 
-    /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
-     *
-     * @param userId calling user
-     * @param asset asset being accessed
-     * @param methodName calling method
-     * @throws UserNotAuthorizedException the authorization check failed
-     */
-    protected void throwUnauthorizedAssetChange(String   userId,
-                                                Asset    asset,
-                                                String   methodName) throws UserNotAuthorizedException
-    {
-        logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId, this.getAssetGUID(asset)));
-
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE.getMessageDefinition(userId,
-                                                                                                                          this.getAssetGUID(asset)),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             userId);
-    }
 
 
     /**
@@ -480,77 +384,26 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * unauthorized access.
      *
      * @param userId calling user
-     * @param asset asset being accessed
-     * @param methodName calling method
-     * @throws UserNotAuthorizedException the authorization check failed
-     */
-    protected void throwUnauthorizedAssetCreate(String   userId,
-                                                Asset    asset,
-                                                String   methodName) throws UserNotAuthorizedException
-    {
-        logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId, asset.getTypeName()));
-
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId,
-                                                                                                                          asset.getTypeName()),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             userId);
-    }
-
-
-    /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
-     *
-     * @param userId calling user
-     * @param asset asset being accessed
-     * @param propertyName name of property that is missing
-     * @param methodName calling method
-     * @throws UserNotAuthorizedException the authorization check failed
-     */
-    protected void throwIncompleteAsset(String   userId,
-                                        Asset    asset,
-                                        String   propertyName,
-                                        String   methodName) throws UserNotAuthorizedException
-    {
-        logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET.getMessageDefinition(userId, this.getAssetGUID(asset), propertyName));
-
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET.getMessageDefinition(userId,
-                                                                                                                 this.getAssetGUID(asset),
-                                                                                                                 propertyName),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             userId);
-    }
-
-
-    /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
-     *
-     * @param userId calling user
-     * @param asset asset being accessed
-     * @param originalZones previous value of the zone membership for the asset being accessed
-     * @param newZones new value of the zone membership for the asset being accessed
+     * @param elementGUID element being accessed
+     * @param originalZones previous value of the zone membership for the element being accessed
+     * @param newZones new value of the zone membership for the element being accessed
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
     protected void throwUnauthorizedZoneChange(String        userId,
-                                               Asset         asset,
+                                               String         elementGUID,
                                                List<String>  originalZones,
                                                List<String>  newZones,
                                                String        methodName) throws UserNotAuthorizedException
     {
         logRecord(methodName,
                   OpenMetadataSecurityAuditCode.UNAUTHORIZED_ZONE_CHANGE.getMessageDefinition(userId,
-                                                                                              this.getAssetGUID(asset),
+                                                                                              elementGUID,
                                                                                               this.printZoneList(originalZones),
                                                                                               this.printZoneList(newZones)));
 
         throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ZONE_CHANGE.getMessageDefinition(userId,
-                                                                                                                         this.getAssetGUID(asset),
+                                                                                                                         elementGUID,
                                                                                                                          this.printZoneList(originalZones),
                                                                                                                          this.printZoneList(newZones)),
                                              this.getClass().getName(),
@@ -564,46 +417,20 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * unauthorized access.
      *
      * @param userId calling user
-     * @param asset asset in error
+     * @param elementGUID element in error
      * @param methodName calling method
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
-    protected void throwUnauthorizedAssetFeedback(String       userId,
-                                                  Asset        asset,
-                                                  String       methodName) throws UserNotAuthorizedException
+    protected void throwUnauthorizedAddFeedback(String       userId,
+                                                String       elementGUID,
+                                                String       methodName) throws UserNotAuthorizedException
     {
         logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_FEEDBACK.getMessageDefinition(userId,
-                                                                                                 this.getAssetGUID(asset)));
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ADD_FEEDBACK.getMessageDefinition(userId,
+                                                                                               elementGUID));
 
         throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_FEEDBACK.getMessageDefinition(userId,
-                                                                                                                            this.getAssetGUID(asset)),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             userId);
-    }
-
-
-    /**
-     * Write an audit log message and throw exception to record an
-     * unauthorized access.
-     *
-     * @param userId calling user
-     * @param connection connection to validate
-     * @param methodName calling method
-     *
-     * @throws UserNotAuthorizedException the authorization check failed
-     */
-    protected void throwUnauthorizedConnectionAccess(String       userId,
-                                                     Connection   connection,
-                                                     String       methodName) throws UserNotAuthorizedException
-    {
-        logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
-                                                                                                 this.getConnectionQualifiedName(connection)));
-
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_SERVICE_ACCESS.getMessageDefinition(userId,
-                                                                                                                            this.getConnectionQualifiedName(connection)),
+                                                                                                                            elementGUID),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -619,13 +446,13 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @throws UserNotAuthorizedException the authorization check failed
      */
-    protected void throwMissingGlossary(String       userId,
-                                        String       operation,
-                                        String       methodName) throws UserNotAuthorizedException
+    protected void throwMissingAnchor(String       userId,
+                                      String       operation,
+                                      String       methodName) throws UserNotAuthorizedException
     {
-        logRecord(methodName, OpenMetadataSecurityAuditCode.NULL_GLOSSARY.getMessageDefinition(userId, operation));
+        logRecord(methodName, OpenMetadataSecurityAuditCode.NULL_ANCHOR.getMessageDefinition(userId, operation));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NULL_GLOSSARY.getMessageDefinition(userId,operation),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.NULL_ANCHOR.getMessageDefinition(userId, operation),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -641,17 +468,19 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      *
      * @throws UserNotAuthorizedException the authorization check failed
      */
-    protected void throwUnauthorizedGlossaryAccess(String       userId,
-                                                   String       operation,
-                                                   Glossary     glossary,
-                                                   String       methodName) throws UserNotAuthorizedException
+    protected void throwUnauthorizedElementAccess(String userId,
+                                                  String operation,
+                                                  String entityGUID,
+                                                  String entityTypeName,
+                                                  String methodName) throws UserNotAuthorizedException
     {
         logRecord(methodName,
-                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_GLOSSARY_ACCESS.getMessageDefinition(userId, operation, glossary.getGUID()));
+                  OpenMetadataSecurityAuditCode.UNAUTHORIZED_ELEMENT_ACCESS.getMessageDefinition(userId, operation, entityTypeName, entityGUID));
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_GLOSSARY_ACCESS.getMessageDefinition(userId,
-                                                                                                                             operation,
-                                                                                                                             glossary.getGUID()),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ELEMENT_ACCESS.getMessageDefinition(userId,
+                                                                                                                            operation,
+                                                                                                                            entityTypeName,
+                                                                                                                            entityGUID),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -737,84 +566,17 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * @return list of supported zones for the user
      * @throws InvalidParameterException one of the parameter values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
+     * @throws UserNotAuthorizedException unknown user
      */
     protected List<String> setSupportedZonesForUser(List<String>  supportedZones,
                                                     String        serviceName,
                                                     String        user) throws InvalidParameterException,
-                                                                               PropertyServerException
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         return supportedZones;
     }
 
-
-    /**
-     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
-     * default zones.  This is called whenever a new asset is created.
-     *
-     * The default behavior is to use the default values, unless the zones have been explicitly set up,
-     * in which case, they are left unchanged.
-     *
-     * @param defaultZones setting of the default zones for the service
-     * @param asset initial values for the asset
-     *
-     * @return list of zones to set in the asset
-     * @throws InvalidParameterException one of the asset values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
-     */
-    protected List<String> setAssetZonesToDefault(List<String>  defaultZones,
-                                                  Asset         asset) throws InvalidParameterException,
-                                                                              PropertyServerException
-    {
-        List<String>  resultingZones = null;
-
-        if (asset != null)
-        {
-            if ((asset.getZoneMembership() == null) || (asset.getZoneMembership().isEmpty()))
-            {
-                resultingZones = defaultZones;
-            }
-            else
-            {
-                resultingZones = asset.getZoneMembership();
-            }
-        }
-
-        return resultingZones;
-    }
-
-
-    /**
-     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
-     * settings of both default zones and supported zones.  This method is called whenever an asset's
-     * values are changed.
-     * The default behavior is to keep the updated zones as they are.
-     *
-     * @param defaultZones setting of the default zones for the service
-     * @param supportedZones setting of the supported zones for the service
-     * @param publishZones  setting of the publishZones for the service
-     * @param originalAsset original values for the asset
-     * @param updatedAsset updated values for the asset
-     *
-     * @return list of zones to set in the asset
-     * @throws InvalidParameterException one of the asset values is invalid
-     * @throws PropertyServerException there is a problem calculating the zones
-     */
-    protected List<String> verifyAssetZones(List<String>  defaultZones,
-                                            List<String>  supportedZones,
-                                            List<String>  publishZones,
-                                            Asset         originalAsset,
-                                            Asset         updatedAsset) throws InvalidParameterException,
-                                                                               PropertyServerException
-    {
-        List<String>  resultingZones = null;
-
-        if (updatedAsset != null)
-        {
-            resultingZones = updatedAsset.getZoneMembership();
-        }
-
-        return resultingZones;
-    }
 
 
     /**
@@ -964,168 +726,6 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
         throwUnauthorizedServiceAccess(userId, serviceName, serviceOperationName, methodName);
     }
 
-    /**
-     * Tests for whether a specific user should have access to a connection.
-     *
-     * @param userId identifier of user
-     * @param connection connection object
-     * @throws UserNotAuthorizedException the user is not authorized to access this service
-     */
-    protected void  validateUserForConnection(String     userId,
-                                              Connection connection) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForConnection";
-
-        throwUnauthorizedConnectionAccess(userId, connection, methodName);
-    }
-
-
-    /**
-     * Select a connection from the list of connections attached to an asset.
-     *
-     * @param userId calling user
-     * @param asset asset requested by caller
-     * @param connections list of attached connections
-     * @return selected connection or null (pretend there are no connections attached to the asset) or
-     * @throws UserNotAuthorizedException the user is not authorized to access this service
-     */
-    protected Connection validateUserForAssetConnectionList(String           userId,
-                                                            Asset            asset,
-                                                            List<Connection> connections) throws UserNotAuthorizedException
-    {
-        UserNotAuthorizedException caughtException = null;
-
-        if ((connections != null) && (! connections.isEmpty()))
-        {
-            for (Connection connection : connections)
-            {
-                if (connection != null)
-                {
-                    try
-                    {
-                        validateUserForConnection(userId, connection);
-                        return connection;
-                    }
-                    catch (UserNotAuthorizedException error)
-                    {
-                        caughtException = error;
-                    }
-                }
-            }
-        }
-
-        if (caughtException != null)
-        {
-            throw caughtException;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Tests for whether a specific user should have the right to create an asset within a zone.
-     *
-     * @param userId identifier of user
-     * @param asset asset details
-     * @throws UserNotAuthorizedException the user is not authorized to change this asset
-     */
-    protected void  validateUserForAssetCreate(String     userId,
-                                               Asset      asset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetCreate";
-
-        throwUnauthorizedAssetCreate(userId, asset, methodName);
-    }
-
-
-    /**
-     * Tests for whether a specific user should have read access to a specific asset within a zone.
-     *
-     * @param userId identifier of user
-     * @param asset asset to test
-     * @throws UserNotAuthorizedException the user is not authorized to access this asset
-     */
-    protected void  validateUserForAssetRead(String     userId,
-                                             Asset      asset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetRead";
-
-        throwUnauthorizedAssetAccess(userId, asset, methodName);
-    }
-
-
-    /**
-     * Tests for whether a specific user should have the right to update an asset.
-     * This is used for a general asset update, which may include changes to the
-     * zones and the ownership.
-     *
-     * @param userId identifier of user
-     * @param originalAsset original asset details
-     * @param originalAssetAuditHeader details of the asset's audit header
-     * @param newAsset new asset details
-     * @throws UserNotAuthorizedException the user is not authorized to change this asset
-     */
-    protected void  validateUserForAssetDetailUpdate(String           userId,
-                                                     Asset            originalAsset,
-                                                     AssetAuditHeader originalAssetAuditHeader,
-                                                     Asset            newAsset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetDetailUpdate";
-
-        throwUnauthorizedAssetChange(userId, originalAsset, methodName);
-    }
-
-
-    /**
-     * Tests for whether a specific user should have the right to update elements attached directly
-     * to an asset such as schema and connections.
-     *
-     * @param userId identifier of user
-     * @param asset original asset details
-     * @throws UserNotAuthorizedException the user is not authorized to change this asset
-     */
-    protected void validateUserForAssetAttachmentUpdate(String     userId,
-                                                        Asset      asset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetAttachmentUpdate";
-
-        throwUnauthorizedAssetChange(userId, asset, methodName);
-    }
-
-
-    /**
-     * Tests for whether a specific user should have the right to attach feedback - such as comments,
-     * ratings, tags and likes, to the asset.
-     *
-     * @param userId identifier of user
-     * @param asset original asset details
-     * @throws UserNotAuthorizedException the user is not authorized to change this asset
-     */
-    protected void  validateUserForAssetFeedback(String     userId,
-                                                 Asset      asset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetFeedback";
-
-        throwUnauthorizedAssetFeedback(userId, asset, methodName);
-    }
-
-
-    /**
-     * Tests for whether a specific user should have the right to delete an asset within a zone.
-     *
-     * @param userId identifier of user
-     * @param asset asset details
-     * @throws UserNotAuthorizedException the user is not authorized to change this asset
-     */
-    protected void  validateUserForAssetDelete(String     userId,
-                                               Asset      asset) throws UserNotAuthorizedException
-    {
-        final String  methodName = "validateUserForAssetDelete";
-
-        throwUnauthorizedAssetChange(userId, asset, methodName);
-    }
-
 
     /**
      * Tests for whether a specific user should have the right to create a type within a repository.
@@ -1140,6 +740,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                               TypeDef    typeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeCreate";
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
 
         if (typeDef != null)
         {
@@ -1162,6 +770,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String  methodName = "validateUserForTypeCreate";
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         if (attributeTypeDef != null)
         {
             throwUnauthorizedTypeChange(userId, attributeTypeDef.getGUID(), attributeTypeDef.getName(), methodName);
@@ -1183,6 +799,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String  methodName = "validateUserForTypeRead";
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         if (typeDef != null)
         {
             throwUnauthorizedTypeAccess(userId, typeDef.getGUID(), typeDef.getName(), methodName);
@@ -1203,6 +827,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                             AttributeTypeDef      attributeTypeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeRead";
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
 
         if (attributeTypeDef != null)
         {
@@ -1227,6 +859,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String  methodName = "validateUserForTypeUpdate";
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         if (typeDef != null)
         {
             throwUnauthorizedTypeChange(userId, typeDef.getGUID(), typeDef.getName(), methodName);
@@ -1248,6 +888,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String  methodName = "validateUserForTypeDelete";
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         if (typeDef != null)
         {
             throwUnauthorizedTypeChange(userId, typeDef.getGUID(), typeDef.getName(), methodName);
@@ -1268,6 +916,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                               AttributeTypeDef attributeTypeDef) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeDelete";
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
 
         if (attributeTypeDef != null)
         {
@@ -1294,6 +950,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String  methodName = "validateUserForTypeReIdentify";
 
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
+
         if (originalTypeDef != null)
         {
             throwUnauthorizedTypeChange(userId, originalTypeDef.getGUID(), originalTypeDef.getName(), methodName);
@@ -1318,6 +982,14 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
                                                   String           newTypeDefName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForTypeReIdentify";
+
+        if (localServerUserId != null)
+        {
+            if (localServerUserId.equals(userId))
+            {
+                return;
+            }
+        }
 
         if (originalAttributeTypeDef != null)
         {

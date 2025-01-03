@@ -990,17 +990,10 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                null,
                                                scopeGUID,
                                                scopeGUIDParameterName,
-                                               scopeTypeName,
                                                externalIdGUID,
                                                externalIdGUIDParameterName,
-                                               OpenMetadataType.EXTERNAL_ID.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               serviceSupportedZones,
                                                OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName,
                                                scopeProperties,
-                                               effectiveTime,
                                                methodName);
         }
 

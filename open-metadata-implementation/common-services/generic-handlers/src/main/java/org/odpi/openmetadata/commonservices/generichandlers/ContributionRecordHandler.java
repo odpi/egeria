@@ -268,17 +268,10 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                    null,
                                                    profileGUID,
                                                    profileGUIDParameterName,
-                                                   OpenMetadataType.ACTOR_PROFILE.typeName,
                                                    contributionRecordGUID,
                                                    contributionRecordGUIDParameterName,
-                                                   OpenMetadataType.CONTRIBUTION_RECORD.typeName,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   supportedZones,
                                                    OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeGUID,
-                                                   OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
                                                    null,
-                                                   effectiveTime,
                                                    methodName);
             }
         }

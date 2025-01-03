@@ -97,6 +97,7 @@ public enum IncidentReportStatus implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -105,6 +106,7 @@ public enum IncidentReportStatus implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -113,6 +115,7 @@ public enum IncidentReportStatus implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 
@@ -121,6 +124,7 @@ public enum IncidentReportStatus implements OpenMetadataEnum
      *
      * @return  guid
      */
+    @Override
     public  String getDescriptionGUID()
     {
         return descriptionGUID;
@@ -132,6 +136,7 @@ public enum IncidentReportStatus implements OpenMetadataEnum
      *
      * @return boolean
      */
+    @Override
     public boolean isDefault()
     {
         return isDefault;
@@ -194,6 +199,6 @@ public enum IncidentReportStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "EngineActionStatus{" + name + "}";
+        return "IncidentReportStatus{" + name + "}";
     }
 }

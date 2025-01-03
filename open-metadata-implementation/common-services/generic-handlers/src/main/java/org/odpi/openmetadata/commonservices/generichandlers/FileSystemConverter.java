@@ -84,7 +84,7 @@ public class FileSystemConverter<B> extends OMFConverter<B>
                     fileSystemProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     fileSystemProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName, entity);
 
                     fileSystemProperties.setFormat(this.getFormat(instanceProperties));
                     fileSystemProperties.setEncryption(this.getEncryption(instanceProperties));

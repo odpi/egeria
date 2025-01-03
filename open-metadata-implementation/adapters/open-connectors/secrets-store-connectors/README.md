@@ -5,7 +5,11 @@
 
 # Secrets Store Connectors
 
-The secrets store connectors provide access to secrets, such as passwords and certificates, at runtime.
+The [secrets store connectors](https://egeria-project.org/concepts/secrets-store-connector/) provide access to secrets, such as passwords and certificates, at runtime.
+There are 2 implementations supplied with Egeria:
+
+* [YAML file secrets store](yaml-secrets-store-connector)
+* [Environment variable secrets store](env-variable-secrets-store-connector)
 
 Return to [open-connectors](..)
 

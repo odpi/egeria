@@ -685,7 +685,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -851,7 +851,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?

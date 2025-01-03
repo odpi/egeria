@@ -252,12 +252,8 @@ public class OpenMetadataTypesArchive5_1
 
     private ClassificationDef getDataAssetEncodingClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
-                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION,
                                                                                  null,
-                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.description,
-                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.descriptionGUID,
-                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.wikiURL,
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
                                                                                  false);
 

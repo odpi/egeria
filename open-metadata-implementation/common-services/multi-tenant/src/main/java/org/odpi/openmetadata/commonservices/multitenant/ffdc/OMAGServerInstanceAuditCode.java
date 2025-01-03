@@ -41,14 +41,7 @@ public enum OMAGServerInstanceAuditCode implements AuditLogMessageSet
                          "This is a configuration error and an exception is sent to the requester.",
                          "Correct the configuration of the access service to include the name of the topic."),
 
-    /**
-     * OMAG-MULTI-TENANT-0003 - User {0} issued REST API call to operation {1} of service {2} on server {3}
-     */
-    USER_REQUEST_ACTIVITY("OMAG-MULTI-TENANT-0003",
-                         AuditLogRecordSeverityLevel.ACTIVITY,
-                         "User {0} issued REST API call to operation {1} of service {2} on server {3}",
-                         "This message is used to capture user activity.",
-                         "No action is required, but this message can be used to capture user activity information."),
+
 
     ;
 

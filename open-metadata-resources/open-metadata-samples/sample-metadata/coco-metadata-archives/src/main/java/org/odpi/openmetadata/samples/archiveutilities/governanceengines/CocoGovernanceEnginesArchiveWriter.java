@@ -69,6 +69,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String assetGovernanceEngineName        = "AssetGovernance@CocoPharmaceuticals";
         final String assetGovernanceEngineDisplayName = "Asset Governance Governance Action Engine";
         final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
+        final String assetGovernanceEngineUserId      = "assetgovernancenpa";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                                                  assetGovernanceEngineName,
@@ -78,6 +79,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                  null,
                                                  null,
                                                  null,
+                                                 assetGovernanceEngineUserId,
                                                  null,
                                                  null);
     }
@@ -93,6 +95,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
         final String assetDiscoveryEngineName        = "AssetDiscovery@CocoPharmaceuticals";
         final String assetDiscoveryEngineDisplayName = "Asset Discovery Survey Action Engine";
         final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
+        final String assetDiscoveryEngineUserId      = "assetdiscoverynpa";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                                                  assetDiscoveryEngineName,
@@ -102,6 +105,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                  null,
                                                  null,
                                                  null,
+                                                 assetDiscoveryEngineUserId,
                                                  null,
                                                  null);
     }
@@ -465,6 +469,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                           null,
                                           null,
                                           null,
+                                          governanceEngineDefinition.getUserId(),
                                           null,
                                           null);
     }

@@ -89,7 +89,7 @@ if(postRC1.equals(200)) {
 }
 
 // --- Enable OMAS - any errors here and we exit
-System.out.println("=== Enabling ProjectProperties Profile OMAS: " + serverMem + " ===");
+System.out.println("=== Enabling Community Profile OMAS: " + serverMem + " ===");
 post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/community-profile/no-topics" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")

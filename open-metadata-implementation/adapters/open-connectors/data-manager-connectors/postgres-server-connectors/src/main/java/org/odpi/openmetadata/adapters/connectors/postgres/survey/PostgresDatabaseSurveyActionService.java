@@ -77,19 +77,21 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-
+            resultSet.close();
             final String pg_stat_user_tablesSQLCommand = "SELECT schemaname, relname, seq_tup_read, n_tup_ins, n_tup_upd, n_tup_del from pg_catalog.pg_stat_user_tables;";
 
             preparedStatement = jdbcConnection.prepareStatement(pg_stat_user_tablesSQLCommand);
 
             resultSet = preparedStatement.executeQuery();
 
+            resultSet.close();
             final String pg_tablesSQLCommand = "SELECT schemaname, tablename, tableowner, tablespace, hasindexes, hasrules, hastriggers from pg_tables;";
 
             preparedStatement = jdbcConnection.prepareStatement(pg_tablesSQLCommand);
 
             resultSet = preparedStatement.executeQuery();
 
+            resultSet.close();
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
         }
         catch (ConnectorCheckedException error)

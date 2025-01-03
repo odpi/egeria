@@ -84,7 +84,7 @@ public enum APIParameterListType
     /**
      * Return the Open Metadata Type Name used on the relationship that links the APIParameterList to an APIOperation.
      *
-     * @return strinng type name
+     * @return string type name
      */
     public String getOpenTypeRelationshipName()
     {

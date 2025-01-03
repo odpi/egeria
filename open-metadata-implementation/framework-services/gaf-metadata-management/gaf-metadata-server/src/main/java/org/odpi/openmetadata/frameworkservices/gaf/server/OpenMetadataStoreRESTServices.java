@@ -1816,6 +1816,9 @@ public class OpenMetadataStoreRESTServices
                                                          guidParameterName,
                                                          null,
                                                          requestBody.getAsOfTime(),
+                                                         false,
+                                                         false,
+                                                         handler.getSupportedZones(),
                                                          requestBody.getEffectiveTime(),
                                                          methodName);
             }
@@ -1824,7 +1827,6 @@ public class OpenMetadataStoreRESTServices
                 relationship = handler.getAttachmentLink(userId,
                                                          relationshipGUID,
                                                          guidParameterName,
-                                                         null,
                                                          null,
                                                          new Date(),
                                                          methodName);

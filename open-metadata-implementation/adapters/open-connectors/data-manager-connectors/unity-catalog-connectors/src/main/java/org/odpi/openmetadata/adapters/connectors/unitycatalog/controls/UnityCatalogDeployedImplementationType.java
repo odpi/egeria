@@ -175,6 +175,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      * 
      * @return string
      */
+    @Override
     public String getDeployedImplementationType()
     {
         return deployedImplementationType;
@@ -186,6 +187,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      *
      * @return deployed implementation type enum
      */
+    @Override
     public DeployedImplementationTypeDefinition getIsATypeOf()
     {
         return isATypeOf;
@@ -196,6 +198,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      * 
      * @return string
      */
+    @Override
     public String getAssociatedTypeName()
     {
         return associatedTypeName;
@@ -207,6 +210,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      *
      * @return string
      */
+    @Override
     public String getAssociatedClassification()
     {
         return associatedClassification;
@@ -218,6 +222,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(associatedTypeName,
@@ -232,6 +237,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      *
      * @return string
      */
+    @Override
     public String getCategory()
     {
         return constructValidValueCategory(associatedTypeName,
@@ -245,6 +251,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      * 
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -256,6 +263,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      *
      * @return string url
      */
+    @Override
     public String getWikiLink()
     {
         return wikiLink;

@@ -323,7 +323,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
     /**
      * Retrieve the metadata elements that contain the requested string.
      *
@@ -533,7 +532,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                                           PropertyServerException
     {
         final String guidParameterName = "elementGUID";
-        final String otherEndGUIDParameterName = "otherEnd.getGUID()";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -549,55 +547,86 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                             repositoryHelper);
         }
 
-        int attachmentAtEnd = 0;
+        int selectionEnd = 0;
 
         if (startingAtEnd == 1)
         {
-            attachmentAtEnd = 2;
+            selectionEnd = 2;
         }
         else if (startingAtEnd == 2)
         {
-            attachmentAtEnd = 1;
+            selectionEnd = 1;
         }
 
-        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                        elementGUID,
-                                                                        guidParameterName,
-                                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
+        /*
+         * Retrieve and validate the starting entity
+         */
+        EntityDetail startingEntity = this.getEntityFromRepository(userId,
+                                                                   elementGUID,
+                                                                   guidParameterName,
+                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
 
-        List<Relationship> relationships = super.getAttachmentLinks(userId,
-                                                                    startingEntity,
-                                                                    guidParameterName,
-                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                    relationshipTypeGUID,
-                                                                    relationshipTypeName,
-                                                                    null,
-                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                    attachmentAtEnd,
-                                                                    getInstanceStatuses(limitResultsByStatus),
-                                                                    asOfTime,
-                                                                    getSequencingOrder(sequencingOrder),
-                                                                    sequencingProperty,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    serviceSupportedZones,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    effectiveTime,
-                                                                    methodName);
+        /*
+         * Retrieve the relationships (no security calls)
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity,
+                                                                                    startingEntity.getType().getTypeDefName(),
+                                                                                    relationshipTypeGUID,
+                                                                                    relationshipTypeName,
+                                                                                    selectionEnd,
+                                                                                    getInstanceStatuses(limitResultsByStatus),
+                                                                                    asOfTime,
+                                                                                    getSequencingOrder(sequencingOrder),
+                                                                                    sequencingProperty,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
-        if (relationships != null)
+        if (relationships == null)
         {
-            List<RelatedMetadataElement> results = new ArrayList<>();
-            Set<String>                  entityGUIDs = new HashSet<>();
+            return null;
+        }
 
+        /*
+         * Retrieve all of the entities linked to the relationships.  This is done as a single retrieve
+         * to minimise the calls to the repositories.  It also performs security checks
+         */
+        Map<String, EntityDetail> retrievedEntities = this.getValidatedEntities(userId,
+                                                                                startingEntity.getGUID(),
+                                                                                startingEntity.getType().getTypeDefName(),
+                                                                                relationships,
+                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                null,
+                                                                                null,
+                                                                                selectionEnd,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                serviceSupportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
+
+        List<RelatedMetadataElement> results = new ArrayList<>();
+
+        if (retrievedEntities != null)
+        {
+            retrievedEntities.put(startingEntity.getGUID(), startingEntity);
+
+            /*
+             * Only return relationships that link to approved entities.
+             */
             for (Relationship relationship : relationships)
             {
-                if (relationship != null)
+                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
                 {
                     EntityProxy otherEnd = repositoryHandler.getOtherEnd(startingEntity.getGUID(), relationship);
 
@@ -606,47 +635,21 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                         /*
                          * Do not return the same entity twice (may occur if there are duplicates).
                          */
-                        if (! entityGUIDs.contains(otherEnd.getGUID()))
-                        {
-                            entityGUIDs.add(otherEnd.getGUID());
-                            try
-                            {
-                                EntityDetail otherEndEntity = this.getEntityFromRepository(userId,
-                                                                                           otherEnd.getGUID(),
-                                                                                           otherEndGUIDParameterName,
-                                                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                                           null,
-                                                                                           null,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing,
-                                                                                           serviceSupportedZones,
-                                                                                           effectiveTime,
-                                                                                           methodName);
+                        EntityDetail retrievedEntity = retrievedEntities.get(otherEnd.getGUID());
 
-                                if (otherEndEntity != null)
-                                {
-                                    results.add(relatedElementConverter.getNewBean(RelatedMetadataElement.class,
-                                                                                   otherEndEntity,
-                                                                                   relationship,
-                                                                                   methodName));
-                                }
-                            }
-                            catch (Exception nonVisibleEntityException)
-                            {
-                                log.debug("Ignoring entity " + otherEnd.getGUID());
-                            }
+                        if (retrievedEntity != null)
+                        {
+                            results.add(relatedElementConverter.getNewBean(RelatedMetadataElement.class,
+                                                                           retrievedEntity,
+                                                                           relationship,
+                                                                           methodName));
                         }
                     }
                 }
             }
-
-            if (! results.isEmpty())
-            {
-                return results;
-            }
         }
 
-        return null;
+        return results;
     }
 
 
@@ -1848,17 +1851,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceName,
                                                   parentGUID,
                                                   parentGUIDParameterName,
-                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                   metadataElementGUID,
                                                   metadataElementGUIDParameterName,
-                                                  metadataElementTypeName,
-                                                  false,
-                                                  false,
-                                                  serviceSupportedZones,
                                                   parentRelationshipTypeGUID,
-                                                  parentRelationshipTypeName,
                                                   relationshipProperties,
-                                                  effectiveTime,
                                                   methodName);
                 }
                 else
@@ -1868,17 +1864,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceName,
                                                   metadataElementGUID,
                                                   metadataElementGUIDParameterName,
-                                                  metadataElementTypeName,
                                                   parentGUID,
                                                   parentGUIDParameterName,
-                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                  false,
-                                                  false,
-                                                  serviceSupportedZones,
                                                   parentRelationshipTypeGUID,
-                                                  parentRelationshipTypeName,
                                                   relationshipProperties,
-                                                  effectiveTime,
                                                   methodName);
                 }
             }

@@ -111,8 +111,6 @@ public class OpenMetadataAPIRootHandler<B>
     }
 
 
-
-
     /**
      * Return this handler's converter.
      *

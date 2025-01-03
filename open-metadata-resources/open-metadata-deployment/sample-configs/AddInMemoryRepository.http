@@ -1,0 +1,20 @@
+#
+# This command updates the sample configuration document for active-metadata-server.  It uses IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+
+###
+# ---------------------------------------------
+# Metadata Access Store: active-metadata-store
+#
+
+###
+# @name Enable the In Memory Repository
+# Set up the local repository to use the In Memory Repository implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/in-memory-repository
+Content-Type: application/json
+
+
+
+###

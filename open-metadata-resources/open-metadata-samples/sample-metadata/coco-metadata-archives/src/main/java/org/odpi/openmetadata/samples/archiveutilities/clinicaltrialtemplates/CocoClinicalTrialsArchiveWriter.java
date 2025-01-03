@@ -163,8 +163,8 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
-        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, ",");
-        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, "\"");
+        extendedProperties.put(OpenMetadataProperty.DELIMITER_CHARACTER.name, ",");
+        extendedProperties.put(OpenMetadataProperty.QUOTE_CHARACTER.name, "\"");
 
         List<Classification> classifications = new ArrayList<>();
 
@@ -392,8 +392,8 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
-        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, ",");
-        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, "\"");
+        extendedProperties.put(OpenMetadataProperty.DELIMITER_CHARACTER.name, ",");
+        extendedProperties.put(OpenMetadataProperty.QUOTE_CHARACTER.name, "\"");
 
         List<Classification> classifications = new ArrayList<>();
 

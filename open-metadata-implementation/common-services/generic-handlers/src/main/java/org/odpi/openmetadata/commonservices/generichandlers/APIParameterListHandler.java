@@ -225,17 +225,10 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                apiOperationGUID,
                                                apiOperationGUIDParameterName,
-                                               OpenMetadataType.API_OPERATION_TYPE_NAME,
                                                apiParameterListGUID,
                                                apiParameterListGUIDParameterName,
-                                               OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                relationshipTypeDef.getGUID(),
-                                               relationshipTypeDef.getName(),
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 
@@ -328,17 +321,10 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                apiOperationGUID,
                                                apiOperationGUIDParameterName,
-                                               OpenMetadataType.API_OPERATION_TYPE_NAME,
                                                apiParameterListGUID,
                                                apiParameterListGUIDParameterName,
-                                               OpenMetadataType.API_PARAMETER_LIST_TYPE_NAME,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                relationshipTypeDef.getGUID(),
-                                               relationshipTypeDef.getName(),
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 

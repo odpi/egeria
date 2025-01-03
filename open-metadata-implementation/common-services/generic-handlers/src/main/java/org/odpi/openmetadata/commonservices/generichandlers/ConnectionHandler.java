@@ -1266,17 +1266,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                    externalSourceName,
                                                    connectionGUID,
                                                    connectionGUIDParameterName,
-                                                   connectionTypeName,
                                                    assetGUID,
                                                    assetGUIDParameterName,
-                                                   OpenMetadataType.ASSET.typeName,
-                                                   forLineage,
-                                                   forDuplicateProcessing,
-                                                   serviceSupportedZones,
                                                    OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeGUID,
-                                                   OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName,
                                                    this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
-                                                   effectiveTime,
                                                    methodName);
             }
 
@@ -1914,9 +1907,22 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      boolean forDuplicateProcessing,
                                      Date    effectiveTime,
                                      String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        EntityDetail connectionEntity = this.getEntityFromRepository(userId,
+                                                                     connectionGUID,
+                                                                     connectionGUIDParameterName,
+                                                                     OpenMetadataType.CONNECTION.typeName,
+                                                                     null,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     supportedZones,
+                                                                     null,
+                                                                     effectiveTime,
+                                                                     methodName);
+
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
                                                                                      OpenMetadataProperty.ASSET_SUMMARY.name,
@@ -1954,9 +1960,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         if (assetEntity != null)
         {
             this.addAnchorsClassification(userId,
-                                          connectionGUID,
+                                          connectionEntity,
                                           connectionGUIDParameterName,
-                                          OpenMetadataType.CONNECTION.typeName,
                                           assetGUID,
                                           assetEntity.getType().getTypeDefName(),
                                           OpenMetadataType.ASSET.typeName,

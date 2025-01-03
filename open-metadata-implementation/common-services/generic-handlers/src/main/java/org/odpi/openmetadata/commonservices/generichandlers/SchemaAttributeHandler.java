@@ -193,17 +193,13 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                      effectiveTime,
                                                                      methodName);
 
-            String parentElementTypeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
             String parentElementRelationshipTypeGUID = OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
-            String parentElementRelationshipTypeName = OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
 
             if ((parentEntity != null) && (parentEntity.getType() != null))
             {
                 if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
                 {
-                    parentElementTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
                     parentElementRelationshipTypeGUID = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
-                    parentElementRelationshipTypeName = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
                 }
             }
 
@@ -212,17 +208,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                externalSourceName,
                                                parentElementGUID,
                                                parentElementGUIDParameterName,
-                                               parentElementTypeName,
                                                schemaAttributeGUID,
                                                schemaAttributeGUIDParameterName,
-                                               builder.getTypeName(),
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                parentElementRelationshipTypeGUID,
-                                               parentElementRelationshipTypeName,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 
@@ -685,17 +674,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                externalSourceName,
                                                parentElementGUID,
                                                parentElementGUIDParameterName,
-                                               parentElementTypeName,
                                                schemaAttributeGUID,
                                                schemaAttributeGUIDParameterName,
-                                               schemaAttributeBuilder.getTypeName(),
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                parentAttributeRelationshipTypeGUID,
-                                               parentAttributeRelationshipTypeName,
                                                null,
-                                               effectiveTime,
                                                methodName);
 
             return schemaAttributeGUID;

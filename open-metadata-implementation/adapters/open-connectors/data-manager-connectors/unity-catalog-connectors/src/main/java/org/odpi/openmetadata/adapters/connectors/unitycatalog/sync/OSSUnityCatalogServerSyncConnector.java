@@ -54,11 +54,9 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
         {
             defaultFriendshipGUID = this.getFriendshipGUID(connectionProperties.getConfigurationProperties());
             defaultExcludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
-                                                                         null);
+                                                                         connectionProperties.getConfigurationProperties());
             defaultIncludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_CATALOG_NAMES.getName(),
-                                                                         connectionProperties.getConfigurationProperties(),
-                                                                         null);
+                                                                         connectionProperties.getConfigurationProperties());
         }
 
         if (defaultFriendshipGUID != null)

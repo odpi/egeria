@@ -43,9 +43,9 @@ import java.util.regex.Pattern;
  */
 public class OMAGServerAdminStoreServices
 {
-    private static Connection  configurationStoreConnection = null;
-    private static OMAGServerConfig defaultServerConfig = new OMAGServerConfig();
-    private static Map<String,String> placeHolderVariables = null;
+    private static Connection          configurationStoreConnection = null;
+    private static OMAGServerConfig    defaultServerConfig          = new OMAGServerConfig();
+    private static Map<String, String> placeHolderVariables         = null;
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());
@@ -59,14 +59,14 @@ public class OMAGServerAdminStoreServices
     /**
      * Override the default server configuration document.
      *
-     * @param userId calling user.
+     * @param userId              calling user.
      * @param defaultServerConfig values to include in every new configured server.
      * @return void response
      */
-    public synchronized VoidResponse setDefaultOMAGServerConfig(String           userId,
+    public synchronized VoidResponse setDefaultOMAGServerConfig(String userId,
                                                                 OMAGServerConfig defaultServerConfig)
     {
-        final String methodName = "setDefaultOMAGServerConfig";
+        final String methodName    = "setDefaultOMAGServerConfig";
         final String parameterName = "defaultServerConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
@@ -89,7 +89,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -106,13 +106,13 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return OMAGServerConfig response
      */
-    public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig(String       userId)
+    public synchronized OMAGServerConfigResponse getDefaultOMAGServerConfig(String userId)
     {
         final String methodName = "getDefaultOMAGServerConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
-        OMAGServerConfigResponse  response = new OMAGServerConfigResponse();
+        OMAGServerConfigResponse response = new OMAGServerConfigResponse();
 
         try
         {
@@ -124,7 +124,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -141,7 +141,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return void response
      */
-    public synchronized VoidResponse clearDefaultOMAGServerConfig(String   userId)
+    public synchronized VoidResponse clearDefaultOMAGServerConfig(String userId)
     {
         final String methodName = "clearDefaultServerConfig";
 
@@ -159,7 +159,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -184,14 +184,14 @@ public class OMAGServerAdminStoreServices
     /**
      * Set up the placeholder variables that will be used on each server start up.
      *
-     * @param userId calling user.
+     * @param userId               calling user.
      * @param placeholderVariables map of variable name to value.
      * @return void response
      */
-    public synchronized VoidResponse setPlaceholderVariables(String              userId,
+    public synchronized VoidResponse setPlaceholderVariables(String userId,
                                                              Map<String, String> placeholderVariables)
     {
-        final String methodName = "setPlaceholderVariables";
+        final String methodName    = "setPlaceholderVariables";
         final String parameterName = "placeholderVariables";
 
         RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
@@ -214,7 +214,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -231,13 +231,13 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return string map response
      */
-    public synchronized StringMapResponse getPlaceholderVariables(String       userId)
+    public synchronized StringMapResponse getPlaceholderVariables(String userId)
     {
         final String methodName = "getPlaceholderVariables";
 
         RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
-        StringMapResponse  response = new StringMapResponse();
+        StringMapResponse response = new StringMapResponse();
 
         try
         {
@@ -249,7 +249,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -266,7 +266,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return void response
      */
-    public synchronized VoidResponse clearPlaceholderVariables(String   userId)
+    public synchronized VoidResponse clearPlaceholderVariables(String userId)
     {
         final String methodName = "clearPlaceholderVariables";
 
@@ -284,7 +284,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -293,7 +293,6 @@ public class OMAGServerAdminStoreServices
 
         return response;
     }
-
 
 
     /**
@@ -310,13 +309,13 @@ public class OMAGServerAdminStoreServices
     /**
      * Override the default location of the configuration documents.
      *
-     * @param userId calling user.
+     * @param userId     calling user.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
      * @return void response
      */
-    public synchronized VoidResponse setConfigurationStoreConnection(String       userId,
-                                                                     Connection   connection)
+    public synchronized VoidResponse setConfigurationStoreConnection(String userId,
+                                                                     Connection connection)
     {
         final String methodName = "setConfigurationStoreConnection";
 
@@ -340,7 +339,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -358,13 +357,13 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return connection response
      */
-    public synchronized ConnectionResponse getConfigurationStoreConnection(String       userId)
+    public synchronized ConnectionResponse getConfigurationStoreConnection(String userId)
     {
         final String methodName = "getConfigurationStoreConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(null, userId, methodName);
 
-        ConnectionResponse  response = new ConnectionResponse();
+        ConnectionResponse response = new ConnectionResponse();
 
         try
         {
@@ -376,7 +375,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -393,7 +392,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user
      * @return connection response
      */
-    public synchronized VoidResponse clearConfigurationStoreConnection(String   userId)
+    public synchronized VoidResponse clearConfigurationStoreConnection(String userId)
     {
         final String methodName = "clearConfigurationStoreConnection";
 
@@ -411,7 +410,7 @@ public class OMAGServerAdminStoreServices
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }
@@ -426,7 +425,7 @@ public class OMAGServerAdminStoreServices
      * Retrieve the connection for the configuration document store.  If a connection has been provided by an
      * external party then return that - otherwise extract the file connector for the server.
      *
-     * @param serverName  name of the server
+     * @param serverName name of the server
      * @return Connection object
      */
     private synchronized Connection getConnection(String serverName)
@@ -468,15 +467,15 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve the connection to the config file.
      *
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
+     * @param serverName name of the server
+     * @param methodName method requesting the server details
      * @return configuration connector file
      * @throws OMAGInvalidParameterException the connector could not be created from the supplied config.
      */
-    private OMAGServerConfigStore getServerConfigStore(String   serverName,
-                                                       String   methodName) throws OMAGInvalidParameterException
+    private OMAGServerConfigStore getServerConfigStore(String serverName,
+                                                       String methodName) throws OMAGInvalidParameterException
     {
-        Connection   connection = this.getConnection(serverName);
+        Connection connection = this.getConnection(serverName);
 
         try
         {
@@ -492,7 +491,7 @@ public class OMAGServerAdminStoreServices
 
             return serverConfigStore;
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONFIG_FILE.getMessageDefinition(serverName,
                                                                                                             methodName,
@@ -515,7 +514,7 @@ public class OMAGServerAdminStoreServices
     {
         final String methodName = "getServerConfigStoreForRetrieveAll";
 
-        Connection   connection = this.getConnectionForRetrieveAll();
+        Connection connection = this.getConnectionForRetrieveAll();
 
         try
         {
@@ -528,14 +527,14 @@ public class OMAGServerAdminStoreServices
             connector.start();
             return getOMAGServerConfigStoreRetrieveAll(serverConfigStore, methodName);
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNABLE_TO_OBTAIN_SERVER_CONFIG_STORE.getMessageDefinition(methodName,
-                                                                                                            error.getClass().getName(),
-                                                                                                            error.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    error);
+                                                                                                                                   error.getClass().getName(),
+                                                                                                                                   error.getMessage()),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      error);
         }
     }
 
@@ -543,15 +542,15 @@ public class OMAGServerAdminStoreServices
      * Get the OMAG Server Config store for retrieving all the server configurations associated with this platform.
      *
      * @param serverConfigStore the server config store - note the configured config store may not support this operation
-     * @param methodName current operation
+     * @param methodName        current operation
      * @return the store to use for the retrieve all server configurations
      * @throws OMAGConfigurationErrorException the store does not support the retrieve all configured servers for this platform operation
      */
-    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String  methodName) throws OMAGConfigurationErrorException
+    OMAGServerConfigStoreRetrieveAll getOMAGServerConfigStoreRetrieveAll(OMAGServerConfigStore serverConfigStore, String methodName) throws OMAGConfigurationErrorException
     {
         OMAGServerConfigStoreRetrieveAll omagServerConfigStoreRetrieveAll;
 
-        if (serverConfigStore instanceof  OMAGServerConfigStoreRetrieveAll)
+        if (serverConfigStore instanceof OMAGServerConfigStoreRetrieveAll)
         {
             omagServerConfigStoreRetrieveAll = (OMAGServerConfigStoreRetrieveAll) serverConfigStore;
         }
@@ -569,19 +568,19 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve any saved configuration for this server.
      *
-     * @param userId calling user
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
-     * @return  configuration properties
+     * @param userId     calling user
+     * @param serverName name of the server
+     * @param methodName method requesting the server details
+     * @return configuration properties
      * @throws OMAGInvalidParameterException problem with the configuration file
-     * @throws OMAGNotAuthorizedException user not authorized to make these changes
-     * @throws InvalidParameterException problem matching the configuration with the internal configuration
+     * @throws OMAGNotAuthorizedException    user not authorized to make these changes
+     * @throws OMAGConfigurationErrorException  problem working with configuration document
      */
-    OMAGServerConfig getServerConfig(String   userId,
-                                     String   serverName,
-                                     String   methodName) throws OMAGInvalidParameterException,
-                                                                 OMAGNotAuthorizedException,
-                                                                 InvalidParameterException
+    OMAGServerConfig getServerConfig(String userId,
+                                     String serverName,
+                                     String methodName) throws OMAGInvalidParameterException,
+                                                               OMAGNotAuthorizedException,
+                                                               OMAGConfigurationErrorException
     {
         return getServerConfig(userId, serverName, true, methodName);
     }
@@ -590,23 +589,24 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve any saved configuration for this server.
      *
-     * @param userId calling user
-     * @param serverName  name of the server
-     * @param adminCall flag to indicate whether the
-     * @param methodName  method requesting the server details
-     * @return  configuration properties
+     * @param userId     calling user
+     * @param serverName name of the server
+     * @param adminCall  flag to indicate whether the
+     * @param methodName method requesting the server details
+     * @return configuration properties
      * @throws OMAGInvalidParameterException problem with the configuration file
-     * @throws OMAGNotAuthorizedException user not authorized to make these changes
+     * @throws OMAGNotAuthorizedException    user not authorized to make these changes
+     * @throws OMAGConfigurationErrorException problem with the configuration document
      */
     public OMAGServerConfig getServerConfig(String  userId,
                                             String  serverName,
                                             boolean adminCall,
                                             String  methodName) throws OMAGInvalidParameterException,
                                                                        OMAGNotAuthorizedException,
-                                                                       InvalidParameterException
+                                                                       OMAGConfigurationErrorException
     {
-        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
-        OMAGServerConfig        serverConfig      = null;
+        OMAGServerConfigStore serverConfigStore = getServerConfigStore(serverName, methodName);
+        OMAGServerConfig      serverConfig      = null;
 
         if (serverConfigStore != null)
         {
@@ -657,16 +657,16 @@ public class OMAGServerAdminStoreServices
                                                         methodName);
             }
 
-            validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
+            OMAGServerConfig resolvedServerConfig = resolvePlaceholdersInConfig(serverConfig);
 
             try
             {
                 OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
-                securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
+                securityVerifier.registerSecurityValidator(resolvedServerConfig.getLocalServerUserId(),
                                                            serverName,
                                                            null,
-                                                           serverConfig.getServerSecurityConnection());
+                                                           resolvedServerConfig.getServerSecurityConnection());
 
                 if (adminCall)
                 {
@@ -696,22 +696,22 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve any saved configuration for this server.
      *
-     * @param userId calling user
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
-     * @return  configuration properties
-     * @throws OMAGInvalidParameterException problem with the configuration file
-     * @throws OMAGNotAuthorizedException user not authorized to make these changes
+     * @param userId     calling user
+     * @param serverName name of the server
+     * @param methodName method requesting the server details
+     * @return configuration properties
+     * @throws OMAGInvalidParameterException   problem with the configuration file
+     * @throws OMAGNotAuthorizedException      user not authorized to make these changes
      * @throws OMAGConfigurationErrorException unable to parse the OMAGServerConfig
      */
-    public OMAGServerConfig getServerConfigForStartUp(String  userId,
-                                                      String  serverName,
-                                                      String  methodName) throws OMAGInvalidParameterException,
-                                                                                 OMAGNotAuthorizedException,
-                                                                                 OMAGConfigurationErrorException
+    public OMAGServerConfig getServerConfigForStartUp(String userId,
+                                                      String serverName,
+                                                      String methodName) throws OMAGInvalidParameterException,
+                                                                                OMAGNotAuthorizedException,
+                                                                                OMAGConfigurationErrorException
     {
-        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
-        OMAGServerConfig        serverConfig      = null;
+        OMAGServerConfigStore serverConfigStore = getServerConfigStore(serverName, methodName);
+        OMAGServerConfig      serverConfig      = null;
 
         if (serverConfigStore != null)
         {
@@ -751,8 +751,20 @@ public class OMAGServerAdminStoreServices
                                                     methodName);
         }
 
+
+        /*
+         * Replace placeholder variables with real values if required.
+         */
+        serverConfig = resolvePlaceholdersInConfig(serverConfig);
+
+        /*
+         * Double check that the server config matches the requested server name
+         */
         validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
 
+        /*
+         * Check that the calling user has access to the server config.
+         */
         try
         {
             OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
@@ -773,22 +785,37 @@ public class OMAGServerAdminStoreServices
             throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
         }
 
+
         serverConfig.setLocalServerName(serverName);
 
-        /*
-         * Replace placeholder variables with real values if required.
-         */
+
+        return serverConfig;
+    }
+
+
+    /**
+     * Replace each of the placeholders in the config with supplied placeholder values.
+     *
+     * @param retrievedServerConfig configuration document from the store
+     * @return resolved server configuration document
+     * @throws OMAGConfigurationErrorException problem working with the configuration doc
+     */
+    private OMAGServerConfig resolvePlaceholdersInConfig(OMAGServerConfig retrievedServerConfig) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "resolvePlaceholdersInConfig";
+
         Map<String, String> currentPlaceholderValues = this.getPlaceholderVariables();
+
         if ((currentPlaceholderValues != null) && (! currentPlaceholderValues.isEmpty()))
         {
             try
             {
-                String omagServerConfigString = OBJECT_MAPPER.writeValueAsString(serverConfig);
+                String omagServerConfigString = OBJECT_MAPPER.writeValueAsString(retrievedServerConfig);
 
                 for (String variableName : currentPlaceholderValues.keySet())
                 {
-                    String regExMatchString = Pattern.quote("~{"+ variableName + "}~");
-                    String[] configBits = omagServerConfigString.split(regExMatchString);
+                    String   regExMatchString = Pattern.quote("~{" + variableName + "}~");
+                    String[] configBits       = omagServerConfigString.split(regExMatchString);
 
                     if (configBits.length > 1)
                     {
@@ -797,7 +824,7 @@ public class OMAGServerAdminStoreServices
 
                         for (String configBit : configBits)
                         {
-                            if (! firstPart)
+                            if (!firstPart)
                             {
                                 newConfigString.append(currentPlaceholderValues.get(variableName));
                             }
@@ -814,11 +841,11 @@ public class OMAGServerAdminStoreServices
                     }
                 }
 
-                serverConfig = OBJECT_MAPPER.readValue(omagServerConfigString, OMAGServerConfig.class);
+                return OBJECT_MAPPER.readValue(omagServerConfigString, OMAGServerConfig.class);
             }
             catch (JsonProcessingException parsingError)
             {
-                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CONFIG_DOCUMENT_PARSE_ERROR.getMessageDefinition(serverName,
+                throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.CONFIG_DOCUMENT_PARSE_ERROR.getMessageDefinition(retrievedServerConfig.getLocalServerName(),
                                                                                                                               parsingError.getClass().getName(),
                                                                                                                               parsingError.getMessage()),
                                                           this.getClass().getName(),
@@ -826,8 +853,7 @@ public class OMAGServerAdminStoreServices
             }
         }
 
-
-        return serverConfig;
+        return retrievedServerConfig;
     }
 
 

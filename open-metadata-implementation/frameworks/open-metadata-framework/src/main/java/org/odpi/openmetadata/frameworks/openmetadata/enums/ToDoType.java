@@ -72,6 +72,7 @@ public enum ToDoType implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -80,6 +81,7 @@ public enum ToDoType implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -88,6 +90,7 @@ public enum ToDoType implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 

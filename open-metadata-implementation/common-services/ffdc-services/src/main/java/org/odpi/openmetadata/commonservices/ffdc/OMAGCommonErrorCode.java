@@ -291,6 +291,15 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                     "Update the caller to provide the request body of the recommended type."),
 
     /**
+     * OMAG-COMMON-400-032 - The value passed on the {0} parameter of the {1} operation is invalid
+     */
+    INVALID_PARAMETER(400, "OMAG-COMMON-400-032",
+                "The value passed on the {0} parameter of the {1} operation is invalid",
+                "The system is unable to process the request without a valid value for this parameter.",
+                "Correct the code in the caller to provide a valid value."),
+
+
+    /**
      * OMAG-COMMON-404-001 - The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}
      */
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreCollectionProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * YAMLSecretsStoreConnector retrieves secrets from environment variables.  Each secret is named for its environment variable.
+ * YAMLSecretsStoreConnector retrieves secrets from a YAML File
  */
 public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 {
@@ -59,6 +60,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      *
      * @return how long the secrets can be cached - 0 means indefinitely
      */
+    @Override
     public long   getRefreshTimeInterval()
     {
         if (secretsStore != null)
@@ -75,6 +77,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     }
 
 
+
     /**
      * Retrieve a secret from the secrets store.
      *
@@ -84,21 +87,6 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      */
     @Override
     public String getSecret(String secretName) throws ConnectorCheckedException
-    {
-        return this.getSecret(secretsCollectionName, secretName);
-    }
-
-
-    /**
-     * Retrieve a secret from the secrets store.
-     *
-     * @param secretsCollectionName name of collection
-     * @param secretName name of the secret.
-     * @return secret
-     * @throws ConnectorCheckedException problem with the store
-     */
-    public String getSecret(String secretsCollectionName,
-                            String secretName) throws ConnectorCheckedException
     {
         super.checkSecretsStillValid();
 
@@ -147,6 +135,61 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     }
 
 
+
+
+    /**
+     * Look up a particular named list in the collection.
+     *
+     * @param listName name of a list
+     * @return corresponding named list or null
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    @Override
+    public NamedList getNamedList(String listName) throws ConnectorCheckedException
+    {
+        super.checkSecretsStillValid();
+
+        if (secretsStore != null)
+        {
+            SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+            if ((secretsCollection != null) && (secretsCollection.getUsers() != null))
+            {
+                return secretsCollection.getNamedLists().get(listName);
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return all of the known named lists in this collection
+     *
+     * @return map of named lists in this collection
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    @Override
+    public Map<String, NamedList> getNamedLists() throws ConnectorCheckedException
+    {
+        super.checkSecretsStillValid();
+
+        if (secretsStore != null)
+        {
+            SecretsCollection secretsCollection = secretsStore.getSecretsCollections().get(secretsCollectionName);
+
+            if (secretsCollection != null)
+            {
+                return secretsCollection.getNamedLists();
+            }
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Retrieve the requested user definitions stored in the secrets collection.
      *
@@ -154,6 +197,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
      * @return associated user details or null
      * @throws ConnectorCheckedException problem with the store
      */
+    @Override
     public UserAccount getUser(String userId) throws ConnectorCheckedException
     {
         super.checkSecretsStillValid();
@@ -418,6 +462,7 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
     /**
      * Request that the subclass refreshes its secrets.
      */
+    @Override
     protected void refreshSecrets()
     {
         final String methodName = "refreshSecrets";

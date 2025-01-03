@@ -36,7 +36,7 @@ import java.util.UUID;
  */
 public class ServerConfig
 {
-    private static final String serverSecurityConnectorProviderClassName  = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private static final String serverSecurityConnectorProviderClassName  = "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider";
     private static final String defaultAPIIntegrationConnectorProvider    = "org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider";
     private static final String defaultInfraIntegrationConnectorProvider  = "org.odpi.openmetadata.devprojects.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
     private static final String defaultTopicIntegrationConnectorProvider  = "org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider";

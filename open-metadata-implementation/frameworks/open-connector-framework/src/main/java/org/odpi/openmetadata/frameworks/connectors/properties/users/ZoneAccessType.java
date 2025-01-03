@@ -24,24 +24,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum ZoneAccessType
 {
     /**
-     * The user may read assets in the zone (supportedZones).
+     * The user may read assets in the zone.
      */
-    READ_ASSETS             (0,    "ReadAssets",         "The user may read assets in the zone (supportedZones)."),
+    READ_ASSETS             (0,    "ReadAssets",         "The user may read assets in the zone."),
 
     /**
      * The user may change the metadata description of the asset.
      */
-    UPDATE_ASSETS           (1,    "UpdateAssets",        "The user may change the metadata description of the asset."),
+    CREATE_ASSETS           (1,    "CreateAssets",        "The user may create new assets metadata description of the asset."),
+
+    /**
+     * The user may change the metadata description of the asset.
+     */
+    UPDATE_ASSETS           (2,    "UpdateAssets",        "The user may change the metadata description of the asset."),
 
     /**
      * The user may remove the asset from the catalog (archive, soft-delete or purge).
      */
-    DELETE_ASSETS           (2,   "DeleteAssets",          "The user may remove the asset from the catalog (archive, soft-delete or purge)."),
+    DELETE_ASSETS           (3,   "DeleteAssets",          "The user may remove the asset from the catalog (archive, soft-delete or purge)."),
 
     /**
-     * The user may update the zone membership of an asset in this zone..
+     * The user may update the zone membership of an asset in this zone.
      */
-    CHANGE_ASSET_MEMBERSHIP (3,   "ChangeAssetMembership",  "The user may update the zone membership of an asset in this zone.");
+    CHANGE_ASSET_MEMBERSHIP (4,   "ChangeAssetMembership",  "The user may update the zone membership of an asset in this zone.");
 
 
     private  final int    ordinal;

@@ -862,7 +862,7 @@ public class QueryBuilder
                 {
                     stringBuilder.append(" or ");
                 }
-                stringBuilder.append(RepositoryColumn.CLASSIFICATION_NAME.getColumnName());
+                stringBuilder.append(RepositoryColumn.CLASSIFICATION_NAME.getColumnName(RepositoryTable.CLASSIFICATION.getTableName()));
                 stringBuilder.append(" = '");
                 stringBuilder.append(classificationName);
                 stringBuilder.append("'");

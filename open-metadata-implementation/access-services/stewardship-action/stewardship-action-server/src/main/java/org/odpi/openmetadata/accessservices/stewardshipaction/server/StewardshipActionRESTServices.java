@@ -462,10 +462,7 @@ public class StewardshipActionRESTServices
                         results.add(duplicateElement);
                     }
                 }
-            }
 
-            if (! results.isEmpty())
-            {
                 response.setElements(results);
             }
         }
@@ -768,7 +765,7 @@ public class StewardshipActionRESTServices
                                                                          OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
                                                                          OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                                                          OpenMetadataType.REFERENCEABLE.typeName,
-                                                                         null,
+                                                                         (String)null,
                                                                          null,
                                                                          1,
                                                                          null,
@@ -777,7 +774,7 @@ public class StewardshipActionRESTServices
                                                                          null,
                                                                          true,
                                                                          true,
-                                                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                         handler.getSupportedZones(),
                                                                          startFrom,
                                                                          pageSize,
                                                                          null,

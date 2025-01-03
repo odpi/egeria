@@ -9,8 +9,6 @@ The open metadata samples illustrate how to use the various APIs of Egeria.
 
 * [Admin Services samples](admin-services-samples) - illustrations of how to call some of the admin services.
 
-* [Open Metadata Security samples](open-metadata-security-samples) - illustrations of how to implement the Open Metadata Security Connectors.
-
 * [Sample Metadata](sample-metadata) - illustrations of how to implement Open Metadata Archives.
 
 ----

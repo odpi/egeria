@@ -46,6 +46,7 @@ public class SchemaAttributeElement implements MetadataElement
         {
             elementHeader = template.getElementHeader();
             schemaAttributeProperties = template.getSchemaAttributeProperties();
+            schemaTypeElement = template.getSchemaTypeElement();
         }
     }
 

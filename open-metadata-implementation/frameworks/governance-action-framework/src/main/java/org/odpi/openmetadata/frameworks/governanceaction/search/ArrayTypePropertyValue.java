@@ -58,6 +58,7 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
+    @Override
     public PropertyValue cloneFromSubclass()
     {
         return new ArrayTypePropertyValue(this);
@@ -69,6 +70,7 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (arrayValues != null)
@@ -85,6 +87,7 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (arrayValues != null)
@@ -220,7 +223,8 @@ public class ArrayTypePropertyValue extends PropertyValue
      * @return int hash code
      */
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(arrayCount, arrayValues);
     }
 }

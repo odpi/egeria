@@ -548,7 +548,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-       if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataType.PORT_TYPE_NAME))
+       if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataType.PORT.typeName))
         {
             schemaTypeHandler.linkElementToElement(userId,
                                                    this.getExternalSourceGUID(assetManagerGUID, assetManagerIsHome),
@@ -921,7 +921,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
 
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
-                                                                         OpenMetadataType.PORT_TYPE_NAME))
+                                                                         OpenMetadataType.PORT.typeName))
         {
             schemaTypeElement = schemaTypeHandler.getSchemaTypeForPort(userId,
                                                                        parentElementGUID,

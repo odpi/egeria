@@ -738,8 +738,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    OpenMetadataType.FILE_FOLDER.typeName,
                                                    forLineage,
                                                    forDuplicateProcessing,
-                                                   OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID,
-                                                   OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME,
+                                                   OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName,
                                                    null,
                                                    effectiveFrom,
                                                    effectiveTo,
@@ -1083,8 +1083,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          OpenMetadataType.DATA_FILE.typeName,
                                          forLineage,
                                          forDuplicateProcessing,
-                                         OpenMetadataType.LINKED_FILE_TYPE_GUID,
-                                         OpenMetadataType.LINKED_FILE_TYPE_NAME,
+                                         OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeGUID,
+                                         OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName,
                                          null,
                                          effectiveFrom,
                                          effectiveTo,
@@ -1141,8 +1141,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                OpenMetadataType.FILE_FOLDER.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
-                                               OpenMetadataType.LINKED_FILE_TYPE_GUID,
-                                               OpenMetadataType.LINKED_FILE_TYPE_NAME,
+                                               OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeGUID,
+                                               OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName,
                                                effectiveTime,
                                                methodName);
     }
@@ -1227,8 +1227,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               OpenMetadataType.FILE_FOLDER.typeName,
                                               forLineage,
                                               forDuplicateProcessing,
-                                              OpenMetadataType.LINKED_FILE_TYPE_GUID,
-                                              OpenMetadataType.LINKED_FILE_TYPE_NAME,
+                                              OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeGUID,
+                                              OpenMetadataType.LINKED_FILE_RELATIONSHIP.typeName,
                                               properties,
                                               effectiveTime,
                                               methodName);
@@ -1499,13 +1499,13 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             }
             else
             {
-                String relationshipTypeGUID = OpenMetadataType.NESTED_FILE_TYPE_GUID;
-                String relationshipTypeName = OpenMetadataType.NESTED_FILE_TYPE_NAME;
+                String relationshipTypeGUID = OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeGUID;
+                String relationshipTypeName = OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName;
 
                 if (repositoryHelper.isTypeOf(serviceName, fileAssetTypeName, OpenMetadataType.FILE_FOLDER.typeName))
                 {
-                    relationshipTypeGUID = OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID;
-                    relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME;
+                    relationshipTypeGUID = OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID;
+                    relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName;
                 }
 
                 folderHandler.linkElementToElement(userId,
@@ -2493,8 +2493,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         }
 
         Map<String, Object> extendedProperties = new HashMap<>();
-        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, delimiterCharacter.toString());
-        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter.toString());
+        extendedProperties.put(OpenMetadataProperty.DELIMITER_CHARACTER.name, delimiterCharacter.toString());
+        extendedProperties.put(OpenMetadataProperty.QUOTE_CHARACTER.name, quoteCharacter.toString());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
 
         Map<String, Object>  configurationProperties = new HashMap<>();
@@ -3366,7 +3366,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   PropertyServerException
     {
         return fileSystemHandler.getSoftwareCapabilityGUIDsByClassification(userId,
-                                                                            OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                                                                            OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
                                                                             startingFrom,
                                                                             pageSize,
                                                                             forLineage,
@@ -3627,8 +3627,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      parentFolderGUID,
                                                      parentFolderParameterName,
                                                      OpenMetadataType.FILE_FOLDER.typeName,
-                                                     OpenMetadataType.FOLDER_HIERARCHY_TYPE_GUID,
-                                                     OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME,
+                                                     OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.FOLDER_HIERARCHY_RELATIONSHIP.typeName,
                                                      OpenMetadataType.FILE_FOLDER.typeName,
                                                      null,
                                                      null,
@@ -3679,8 +3679,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    folderGUID,
                                                    folderGUIDParameterName,
                                                    OpenMetadataType.FILE_FOLDER.typeName,
-                                                   OpenMetadataType.NESTED_FILE_TYPE_GUID,
-                                                   OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                   OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                    OpenMetadataType.DATA_FILE.typeName,
                                                    null,
                                                    null,
@@ -3732,8 +3732,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                folderGUID,
                                                folderGUIDParameterName,
                                                OpenMetadataType.FILE_FOLDER.typeName,
-                                               OpenMetadataType.NESTED_FILE_TYPE_GUID,
-                                               OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                               OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeGUID,
+                                               OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                OpenMetadataType.DATA_FILE.typeName,
                                                null,
                                                null,

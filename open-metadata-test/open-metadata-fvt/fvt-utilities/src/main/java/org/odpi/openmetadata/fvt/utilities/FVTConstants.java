@@ -10,7 +10,7 @@ public class FVTConstants
     /**
      * testUser
      */
-    public static final String USERID              = "testUser";
+    public static final String USERID              = "erinoverview";
 
     /**
      * "<a href="https://localhost:9443">"https://localhost:9443"</a>"
@@ -20,7 +20,7 @@ public class FVTConstants
     /**
      * fvtMDS
      */
-    public static final String DEFAULT_SERVER_NAME = "fvtMDS";
+    public static final String DEFAULT_SERVER_NAME = "active-metadata-store";
 
     /*
      * These values are use in the automatic FVT execution in the build using failsafe.

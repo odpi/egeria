@@ -122,7 +122,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * confidence to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -255,7 +255,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * criticality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -387,7 +387,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -522,7 +522,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * track the retention period to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request

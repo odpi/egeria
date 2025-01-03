@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataDefaultRepositorySecurity;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
@@ -6232,12 +6231,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
         {
-            /*
-             * Save entity
-             */
-            if (securityVerifier.validateEntityReferenceCopySave(entity))
+            try
             {
-                realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+                /*
+                 * Save entity
+                 */
+                if (securityVerifier.validateEntityReferenceCopySave(userId, entity))
+                {
+                    realMetadataCollection.saveEntityReferenceCopy(userId, entity);
+                }
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+            {
+                throw new UserNotAuthorizedException(notAuth);
             }
         }
     }
@@ -6917,9 +6923,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             /*
              * Save relationship
              */
-            if (securityVerifier.validateRelationshipReferenceCopySave(relationship))
+            try
             {
-                realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+                if (securityVerifier.validateRelationshipReferenceCopySave(userId, relationship))
+                {
+                    realMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+                }
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+            {
+                throw new UserNotAuthorizedException(notAuth);
             }
         }
     }
@@ -7212,9 +7225,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
                 for (EntityDetail entity : entities)
                 {
-                    if ((entity != null) && (securityVerifier.validateEntityReferenceCopySave(entity)))
+                    try
                     {
-                        validatedEntities.add(entity);
+                        if ((entity != null) && (securityVerifier.validateEntityReferenceCopySave(userId, entity)))
+                        {
+                            validatedEntities.add(entity);
+                        }
+                    }
+                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+                    {
+                        // ignore
                     }
                 }
 
@@ -7234,9 +7254,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
                 for (Relationship relationship : relationships)
                 {
-                    if ((relationship != null) && (securityVerifier.validateRelationshipReferenceCopySave(relationship)))
+                    try
                     {
-                        validatedRelationships.add(relationship);
+                        if ((relationship != null) && (securityVerifier.validateRelationshipReferenceCopySave(userId, relationship)))
+                        {
+                            validatedRelationships.add(relationship);
+                        }
+                    }
+                    catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException notAuth)
+                    {
+                        // ignore
                     }
                 }
 

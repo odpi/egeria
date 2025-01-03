@@ -105,7 +105,7 @@ Content-Type: application/json
     "class": "Connection",
     "connectorType": {
         "class": "ConnectorType",
-        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider"
+        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
     }
 }
 

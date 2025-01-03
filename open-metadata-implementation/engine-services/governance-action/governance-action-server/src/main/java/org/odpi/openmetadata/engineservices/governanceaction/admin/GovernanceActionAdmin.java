@@ -2,17 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
-import org.odpi.openmetadata.engineservices.governanceaction.listener.GovernanceEngineOutTopicListener;
+import org.odpi.openmetadata.engineservices.governanceaction.listener.GovernanceServerOutTopicListener;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
@@ -89,32 +89,32 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                     engineServiceConfig.getOMAGServerPlatformRootURL(),
                                                                     engineServiceConfig.getOMAGServerName());
 
-            GovernanceEngineRESTClient governanceEngineRESTClient;
+            OCFRESTClient governanceEngineRESTClient;
 
             if (localServerPassword != null)
             {
-                governanceEngineRESTClient = new GovernanceEngineRESTClient(accessServiceServerName,
-                                                                            accessServiceRootURL,
-                                                                            localServerUserId,
-                                                                            localServerPassword,
-                                                                            auditLog);
+                governanceEngineRESTClient = new OCFRESTClient(accessServiceServerName,
+                                                               accessServiceRootURL,
+                                                               localServerUserId,
+                                                               localServerPassword,
+                                                               auditLog);
             }
             else
             {
-                governanceEngineRESTClient = new GovernanceEngineRESTClient(accessServiceServerName,
-                                                                            accessServiceRootURL,
-                                                                            auditLog);
+                governanceEngineRESTClient = new OCFRESTClient(accessServiceServerName,
+                                                               accessServiceRootURL,
+                                                               auditLog);
 
             }
 
-            GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(accessServiceServerName,
+            GovernanceServerEventClient eventClient = new GovernanceServerEventClient(accessServiceServerName,
                                                                                       accessServiceRootURL,
                                                                                       governanceEngineRESTClient,
                                                                                       maxPageSize,
                                                                                       auditLog,
                                                                                       localServerId);
 
-            eventClient.registerListener(localServerUserId, new GovernanceEngineOutTopicListener(governanceEngineMap, auditLog));
+            eventClient.registerListener(localServerUserId, new GovernanceServerOutTopicListener(governanceEngineMap, auditLog));
         }
         catch (Exception error)
         {

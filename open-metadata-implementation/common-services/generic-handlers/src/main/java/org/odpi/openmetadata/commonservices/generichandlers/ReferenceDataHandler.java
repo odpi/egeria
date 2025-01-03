@@ -531,17 +531,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     serviceSupportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            serviceSupportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         VALID_VALUE_ASSIGNMENT bean = validValueAssignmentConverter.getNewBean(validValueAssignmentClass,
                                                                                                consumerEntity,
@@ -656,17 +656,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     supportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            supportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         VALID_VALUE_ASSIGNMENT_DEF bean = validValueAssignmentDefConverter.getNewBean(validValueAssignmentDefClass,
                                                                                                       consumerEntity,
@@ -782,17 +782,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.ASSET.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     serviceSupportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            serviceSupportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         VALID_VALUE_IMPLEMENTATION bean = validValueImplementationConverter.getNewBean(validValueImplementationClass,
                                                                                                        consumerEntity,
@@ -907,17 +907,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     supportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            supportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         VALID_VALUE_IMPLEMENTATION_DEF bean = validValueImplementationDefConverter.getNewBean(validValueImplementationDefClass,
                                                                                                               consumerEntity,
@@ -982,106 +982,95 @@ public class ReferenceDataHandler<VALID_VALUE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                        validValueGUID,
-                                                                        validValueGUIDParameter,
-                                                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
+        EntityDetail startingEntity = this.getEntityFromRepository(userId,
+                                                                   validValueGUID,
+                                                                   validValueGUIDParameter,
+                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
          * Relationships are returned so that the isPublic property from the relationship can be retrieved.
          */
-        List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                   startingEntity,
-                                                                   validValueGUIDParameter,
-                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                   OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeGUID,
-                                                                   OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
-                                                                   null,
-                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   SequencingOrder.CREATION_DATE_RECENT,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   supportedZones,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   effectiveTime,
-                                                                   methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    startingEntity,
+                                                                                    OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                                    OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    null,
+                                                                                    null,
+                                                                                    SequencingOrder.CREATION_DATE_RECENT,
+                                                                                    null,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    effectiveTime,
+                                                                                    methodName);
 
-        if ((relationships == null) || (relationships.isEmpty()))
+        if (relationships == null)
         {
             return null;
         }
 
+        /*
+         * Retrieve all of the entities linked to the relationships.  This is done as a single retrieve
+         * to minimise the calls to the repositories.  It also performs security checks
+         */
+        Map<String, EntityDetail> retrievedEntities = this.getValidatedEntities(userId,
+                                                                                startingEntity.getGUID(),
+                                                                                startingEntity.getType().getTypeDefName(),
+                                                                                relationships,
+                                                                                OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                                null,
+                                                                                null,
+                                                                                0,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                supportedZones,
+                                                                                effectiveTime,
+                                                                                methodName);
+
         List<VALID_VALUE_MAPPING> results = new ArrayList<>();
 
-        for (Relationship relationship : relationships)
+        if (retrievedEntities != null)
         {
-            if (relationship != null)
+            for (Relationship relationship : relationships)
             {
-                EntityProxy proxy = repositoryHandler.getOtherEnd(startingEntity.getGUID(),
-                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                  relationship,
-                                                                  0,
-                                                                  methodName);
-                if (proxy != null)
+                if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
                 {
-                    try
+                    EntityProxy proxy = repositoryHandler.getOtherEnd(startingEntity.getGUID(),
+                                                                      OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                      relationship,
+                                                                      0,
+                                                                      methodName);
+                    if (proxy != null)
                     {
-                        EntityDetail consumerEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                        proxy.getGUID(),
-                                                                                        guidParameterName,
-                                                                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing,
-                                                                                        effectiveTime,
-                                                                                        methodName);
+                        EntityDetail consumerEntity = retrievedEntities.get(proxy.getGUID());
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     supportedZones,
-                                                     effectiveTime,
-                                                     methodName);
-
-                        VALID_VALUE_MAPPING bean = validValueMappingConverter.getNewBean(validValueMappingClass,
-                                                                                         consumerEntity,
-                                                                                         relationship,
-                                                                                         methodName);
-                        if (bean != null)
+                        if (consumerEntity != null)
                         {
-                            results.add(bean);
+                            VALID_VALUE_MAPPING bean = validValueMappingConverter.getNewBean(validValueMappingClass,
+                                                                                             consumerEntity,
+                                                                                             relationship,
+                                                                                             methodName);
+                            if (bean != null)
+                            {
+                                results.add(bean);
+                            }
                         }
-                    }
-                    catch (InvalidParameterException | UserNotAuthorizedException error)
-                    {
-                        /* ignore this entity and invisible to this user */
                     }
                 }
             }
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return results;
     }
 
 
@@ -1171,17 +1160,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     serviceSupportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            serviceSupportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         REFERENCE_VALUE_ASSIGNED_ITEM bean = referenceValueAssignedItemConverter.getNewBean(referenceValueAssignedItemClass,
                                                                                                             consumerEntity,
@@ -1295,17 +1284,17 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                                         effectiveTime,
                                                                                         methodName);
 
-                        this.validateAnchorForEntity(userId,
-                                                     OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                     consumerEntity,
-                                                     guidParameterName,
-                                                     true,
-                                                     false,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     supportedZones,
-                                                     effectiveTime,
-                                                     methodName);
+                        this.validateEntityAndAnchorForRead(userId,
+                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                            consumerEntity,
+                                                            guidParameterName,
+                                                            true,
+                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            supportedZones,
+                                                            effectiveTime,
+                                                            methodName);
 
                         REFERENCE_VALUE_ASSIGNMENT bean = referenceValueAssignmentConverter.getNewBean(referenceValueAssignmentClass,
                                                                                                        consumerEntity,

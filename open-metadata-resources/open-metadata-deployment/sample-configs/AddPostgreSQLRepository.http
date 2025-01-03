@@ -1,10 +1,8 @@
 #
-# These commands rebuild the sample configuration documents for simple-metadata-server, active-metadata-server,
-# view-server, engine-host and integration-daemon.  They use IntelliJ's HTTP Client.
+# This command updates the sample configuration document for active-metadata-server.  It uses IntelliJ's HTTP Client.
 #
 @baseURL=https://localhost:9443
 @adminUserId=garygeeke
-@auditLogTopic=logging
 
 ###
 # ---------------------------------------------

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 
 /**
  * AuditableServerServiceInstanceHandler supports registered services that have an audit log.
@@ -51,10 +52,10 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
 
         AuditLog auditLog = instance.getAuditLog();
 
-        auditLog.logMessage(actionDescription, OMAGServerInstanceAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(userId,
-                                                                                                                      serviceOperationName,
-                                                                                                                      serviceName,
-                                                                                                                      serverName));
+        auditLog.logMessage(actionDescription, OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition(userId,
+                                                                                                                             serviceOperationName,
+                                                                                                                             serviceName,
+                                                                                                                             serverName));
 
         return auditLog;
     }

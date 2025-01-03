@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.ffdc;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -111,13 +110,13 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                            "or if the configuration needs to be adjusted to allow this user to perform the request."),
 
     /**
-     * OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to access asset {1}
+     * OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
      */
-    UNAUTHORIZED_ASSET_ACCESS(403, "OMAG-SERVER-SECURITY-403-007",
-                             "User {0} is not authorized to access asset {1}",
-                             "The system is unable to process a request from the user because they do not have access to the " +
+    UNAUTHORIZED_ANCHOR_ACCESS(403, "OMAG-SERVER-SECURITY-403-007",
+                               "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
+                               "The system is unable to process a request from the user because they do not have access to the " +
                                       "requested asset.  The request fails with a UserNotAuthorizedException exception.",
-                             "Using knowledge about the user and the asset, determine if this is the correct result or " +
+                               "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow access."),
 
     /**
@@ -229,10 +228,10 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
     /**
      * OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on glossary {2}
      */
-    UNAUTHORIZED_GLOSSARY_ACCESS(403, "OMAG-SERVER-SECURITY-403-020",
-                                 "User {0} is not authorized to issue an operation {1} on glossary {2}",
-                                 "The security service detected an unauthorized access to a glossary.",
-                                 "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
+    UNAUTHORIZED_ELEMENT_ACCESS(403, "OMAG-SERVER-SECURITY-403-020",
+                                "User {0} is not authorized to issue an operation {1} on {2} element {3}",
+                                "The security service detected an unauthorized access to a glossary.",
+                                "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
@@ -244,12 +243,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                            "Investigate and correct the behaviour of the server security connector."),
 
     /**
-     * OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to iss operation {1} because the glossary is null
+     * OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to issue operation {1} because the anchor is null
      */
-    NULL_GLOSSARY(500, "OMAG-SERVER-SECURITY-500-002",
-                  "User {0} is not authorized to iss operation {1} because the glossary is null",
-                  "The system is unable to process a request from the user because the glossary element is not correctly anchored on a glossary.",
-                  "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
+    NULL_ANCHOR(500, "OMAG-SERVER-SECURITY-500-002",
+                "User {0} is not authorized to issue operation {1} on an element because the anchor is null",
+                "The system is unable to process a request from the user because the element is not correctly anchored.",
+                "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
 
     ;
 

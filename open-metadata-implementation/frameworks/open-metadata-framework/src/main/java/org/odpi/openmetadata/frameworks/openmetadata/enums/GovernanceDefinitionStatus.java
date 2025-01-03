@@ -82,6 +82,7 @@ public enum GovernanceDefinitionStatus implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -90,6 +91,7 @@ public enum GovernanceDefinitionStatus implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -98,6 +100,7 @@ public enum GovernanceDefinitionStatus implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 

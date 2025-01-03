@@ -550,17 +550,17 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(parentEntityGUID, parentEntityParameterName, methodName);
         invalidParameterHandler.validateName(dataFieldName, dataFieldNameParameterName, methodName);
 
-        EntityDetail anchorEntity = this.validateAnchorForEntity(userId,
-                                                                 parentEntityGUID,
-                                                                 parentEntityParameterName,
-                                                                 parentEntityType,
-                                                                 true,
-                                                                 false,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 supportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
+        EntityDetail anchorEntity = this.validateEntityAndAnchorForRead(userId,
+                                                                        parentEntityGUID,
+                                                                        parentEntityParameterName,
+                                                                        parentEntityType,
+                                                                        true,
+                                                                        false,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        supportedZones,
+                                                                        effectiveTime,
+                                                                        methodName);
 
         DataFieldBuilder builder = new DataFieldBuilder(dataFieldName,
                                                         dataFieldType,
@@ -606,17 +606,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                parentEntityGUID,
                                                parentEntityParameterName,
-                                               parentEntityType,
                                                dataFieldGUID,
                                                dataFieldGUIDParameterName,
-                                               OpenMetadataType.DATA_FIELD.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                relationshipTypeGUID,
-                                               relationshipTypeName,
                                                relationshipProperties,
-                                               effectiveTime,
                                                methodName);
         }
 

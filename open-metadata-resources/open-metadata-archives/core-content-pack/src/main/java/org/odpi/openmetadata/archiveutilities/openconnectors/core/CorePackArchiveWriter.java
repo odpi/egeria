@@ -491,8 +491,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       ToDoStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ToDoStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
-                                      OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.CONTAINMENT_TYPE.name,
                                       ProcessContainmentType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ProcessContainmentType.values())));
 
@@ -1440,16 +1440,16 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     {
         String parentSetGUID = this.getParentSet(null,
                                                  null,
-                                                 OpenMetadataProperty.TYPE_NAME.name,
+                                                 OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
                                                  null);
 
         String qualifiedName = constructValidValueQualifiedName(null,
-                                                                OpenMetadataProperty.TYPE_NAME.name,
+                                                                OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
                                                                 null,
                                                                 openMetadataType.typeName);
 
         String category = constructValidValueCategory(null,
-                                                      OpenMetadataProperty.TYPE_NAME.name,
+                                                      OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
                                                       null);
 
         String validValueGUID = this.archiveHelper.addValidValue(openMetadataType.descriptionGUID,

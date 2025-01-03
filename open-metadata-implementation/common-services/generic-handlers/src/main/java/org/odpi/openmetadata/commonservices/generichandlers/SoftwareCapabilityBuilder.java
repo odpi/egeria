@@ -186,12 +186,12 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.FORMAT_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMAT.name,
                                                                   format,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ENCRYPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ENCRYPTION.name,
                                                                   encryption,
                                                                   methodName);
 
@@ -208,7 +208,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -217,7 +217,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
         }
     }
 

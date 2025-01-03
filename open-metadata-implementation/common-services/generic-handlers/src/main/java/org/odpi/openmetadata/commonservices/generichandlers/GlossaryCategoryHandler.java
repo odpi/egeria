@@ -185,17 +185,10 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryCategoryGUID,
                                                glossaryCategoryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
-                                               true,
-                                               true,
-                                               supportedZones,
                                                OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
-                                               OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
         
@@ -290,16 +283,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                glossaryGUID,
                                                glossaryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                glossaryCategoryGUID,
                                                glossaryCategoryGUIDParameterName,
-                                               OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
-                                               true,
-                                               true,
-                                               supportedZones,
                                                OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
-                                               OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
-                                               null,
                                                null,
                                                methodName);
         }
@@ -643,13 +629,13 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                        String             methodName,
                                        List<EntityDetail> categoryEntities)
     {
-        List<EntityDetail> validatedCategories = super.validateAnchorForEntities(userId,
-                                                                                 categoryEntities,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 supportedZones,
-                                                                                 effectiveTime,
-                                                                                 methodName);
+        List<EntityDetail> validatedCategories = super.validateEntitiesAndAnchorsForRead(userId,
+                                                                                         categoryEntities,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         supportedZones,
+                                                                                         effectiveTime,
+                                                                                         methodName);
         if (validatedCategories != null)
         {
             List<B> results = new ArrayList<>();
@@ -734,11 +720,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                         effectiveTime,
                                                                         methodName);
 
-        securityVerifier.validateUserForGlossaryRead(userId,
-                                                     glossaryEntity,
-                                                     repositoryHelper,
-                                                     serviceName,
-                                                     methodName);
+        securityVerifier.validateUserForElementRead(userId,
+                                                    glossaryEntity,
+                                                    repositoryHelper,
+                                                    serviceName,
+                                                    methodName);
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,

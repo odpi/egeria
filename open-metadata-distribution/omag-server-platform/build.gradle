@@ -36,6 +36,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
@@ -92,7 +93,6 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
     implementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
-    implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
@@ -217,6 +217,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }
@@ -225,7 +226,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:governance-action-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }

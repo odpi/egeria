@@ -101,6 +101,7 @@ public enum OrderBy implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -109,6 +110,7 @@ public enum OrderBy implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -117,6 +119,7 @@ public enum OrderBy implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 
@@ -125,6 +128,7 @@ public enum OrderBy implements OpenMetadataEnum
      *
      * @return  guid
      */
+    @Override
     public  String getDescriptionGUID()
     {
         return descriptionGUID;
@@ -136,6 +140,7 @@ public enum OrderBy implements OpenMetadataEnum
      *
      * @return boolean
      */
+    @Override
     public boolean isDefault()
     {
         return isDefault;
