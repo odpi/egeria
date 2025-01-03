@@ -146,13 +146,13 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last odd-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-016 - {0} connections are connected to the asset with unique identifier {1} but the user {2} is not permitted to use any of them; the calling method is {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_GLOSSARY" class="member-name-link">NULL_GLOSSARY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_ANCHOR" class="member-name-link">NULL_ANCHOR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to iss operation {1} because the glossary is null</div>
+<div class="block">OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to issue operation {1} because the anchor is null</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ASSET_ACCESS" class="member-name-link">UNAUTHORIZED_ASSET_ACCESS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ANCHOR_ACCESS" class="member-name-link">UNAUTHORIZED_ANCHOR_ACCESS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to access asset {1}</div>
+<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ASSET_CHANGE" class="member-name-link">UNAUTHORIZED_ASSET_CHANGE</a></code></div>
 <div class="col-last even-row-color">
@@ -170,7 +170,7 @@ implements <a href="../../frameworks/auditlog/messagesets/ExceptionMessageSet.ht
 <div class="col-last odd-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-006 - User {0} is not authorized to access connection {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_GLOSSARY_ACCESS" class="member-name-link">UNAUTHORIZED_GLOSSARY_ACCESS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ELEMENT_ACCESS" class="member-name-link">UNAUTHORIZED_ELEMENT_ACCESS</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on glossary {2}</div>
 </div>
@@ -331,10 +331,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_ASSET_ACCESS">
-<h3>UNAUTHORIZED_ASSET_ACCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ASSET_ACCESS</span></div>
-<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to access asset {1}</div>
+<section class="detail" id="UNAUTHORIZED_ANCHOR_ACCESS">
+<h3>UNAUTHORIZED_ANCHOR_ACCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ANCHOR_ACCESS</span></div>
+<div class="block">OMAG-SERVER-SECURITY-403-007 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
 </section>
 </li>
 <li>
@@ -415,9 +415,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_GLOSSARY_ACCESS">
-<h3>UNAUTHORIZED_GLOSSARY_ACCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_GLOSSARY_ACCESS</span></div>
+<section class="detail" id="UNAUTHORIZED_ELEMENT_ACCESS">
+<h3>UNAUTHORIZED_ELEMENT_ACCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ELEMENT_ACCESS</span></div>
 <div class="block">OMAG-SERVER-SECURITY-403-020 - User {0} is not authorized to issue an operation {1} on glossary {2}</div>
 </section>
 </li>
@@ -429,10 +429,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_GLOSSARY">
-<h3>NULL_GLOSSARY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">NULL_GLOSSARY</span></div>
-<div class="block">OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to iss operation {1} because the glossary is null</div>
+<section class="detail" id="NULL_ANCHOR">
+<h3>NULL_ANCHOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityErrorCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityErrorCode</a></span>&nbsp;<span class="element-name">NULL_ANCHOR</span></div>
+<div class="block">OMAG-SERVER-SECURITY-500-002 - User {0} is not authorized to issue operation {1} because the anchor is null</div>
 </section>
 </li>
 </ul>

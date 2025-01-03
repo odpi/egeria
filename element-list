@@ -722,11 +722,14 @@ org.odpi.openmetadata.integrationservices.topic.contextmanager
 org.odpi.openmetadata.integrationservices.topic.ffdc
 org.odpi.openmetadata.integrationservices.topic.rest
 org.odpi.openmetadata.integrationservices.topic.server.spring
+org.odpi.openmetadata.metadataobservability.ffdc
 org.odpi.openmetadata.metadatasecurity
+org.odpi.openmetadata.metadatasecurity.accessconnector
+org.odpi.openmetadata.metadatasecurity.accessconnector.controls
+org.odpi.openmetadata.metadatasecurity.accessconnector.ffdc
 org.odpi.openmetadata.metadatasecurity.connectors
 org.odpi.openmetadata.metadatasecurity.ffdc
 org.odpi.openmetadata.metadatasecurity.properties
-org.odpi.openmetadata.metadatasecurity.samples
 org.odpi.openmetadata.metadatasecurity.server
 org.odpi.openmetadata.opentypes
 org.odpi.openmetadata.opentypes.utility

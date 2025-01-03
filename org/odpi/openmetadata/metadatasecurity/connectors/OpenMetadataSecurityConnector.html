@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../samples/CocoPharmaSecretsSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.samples">CocoPharmaSecretsSecurityConnector</a></code></dd>
+<dd><code><a href="../accessconnector/OpenMetadataAccessSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.accessconnector">OpenMetadataAccessSecurityConnector</a></code>, <code><a href="OpenMetadataPlatformSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataPlatformSecurityConnector</a></code>, <code><a href="OpenMetadataServerSecurityConnector.html" title="class in org.odpi.openmetadata.metadatasecurity.connectors">OpenMetadataServerSecurityConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataSecurityConnector</span>
@@ -169,47 +169,25 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Free up any resources held since the connector is no longer needed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGUID(org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">getAssetGUID</a><wbr>(<a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a string representing the unique identifier for the asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionQualifiedName(org.odpi.openmetadata.metadatasecurity.properties.Connection)" class="member-name-link">getConnectionQualifiedName</a><wbr>(<a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a string representing the unique identifier for the connection.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInstanceGUID(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)" class="member-name-link">getInstanceGUID</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logConnectorDisconnecting()" class="member-name-link">logConnectorDisconnecting</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a string representing the unique identifier for a repository instance.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logConnectorDisconnecting()" class="member-name-link">logConnectorDisconnecting</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write an audit log message to say that the connector is stopping.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logConnectorStarting()" class="member-name-link">logConnectorStarting</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logConnectorStarting()" class="member-name-link">logConnectorStarting</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write a log message to say that the connector is initializing.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#printZoneList(java.util.List)" class="member-name-link">printZoneList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;zones)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a string representing the list of zones.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAssetZonesToDefault(java.util.List,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">setAssetZonesToDefault</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#printZoneList(java.util.List)" class="member-name-link">printZoneList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;zones)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Determine the appropriate setting for the asset zones depending on the content of the asset and the
- default zones.</div>
+<div class="block">Return a string representing the list of zones.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
@@ -245,65 +223,34 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwIncompleteAsset(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String,java.lang.String)" class="member-name-link">throwIncompleteAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingGlossary(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwMissingGlossary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingAnchor(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwMissingAnchor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAddFeedback(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwUnauthorizedAddFeedback</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write an audit log message and throw exception to record an
  unauthorized access.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAnchorAccess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwUnauthorizedAnchorAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)" class="member-name-link">throwUnauthorizedAssetFeedback</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedConnectionAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection,java.lang.String)" class="member-name-link">throwUnauthorizedConnectionAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedGlossaryAccess(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Glossary,java.lang.String)" class="member-name-link">throwUnauthorizedGlossaryAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedElementAccess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwUnauthorizedElementAccess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
- <a href="../properties/Glossary.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Glossary</a>&nbsp;glossary,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
@@ -375,8 +322,8 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  unauthorized access.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedZoneChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.util.List,java.util.List,java.lang.String)" class="member-name-link">throwUnauthorizedZoneChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwUnauthorizedZoneChange(java.lang.String,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">throwUnauthorizedZoneChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;originalZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;newZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
@@ -416,59 +363,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserAsServerOperator(java.lang.String)" class="member-name-link">validateUserAsServerOperator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check that the calling user is authorized to issue operator requests to the OMAG Server.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetAttachmentUpdate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetAttachmentUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to update elements attached directly
- to an asset such as schema and connections.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetConnectionList(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.util.List)" class="member-name-link">validateUserForAssetConnectionList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&gt;&nbsp;connections)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Select a connection from the list of connections attached to an asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to create an asset within a zone.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetDelete(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to delete an asset within a zone.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetDetailUpdate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetDetailUpdate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;originalAsset,
- <a href="../properties/AssetAuditHeader.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">AssetAuditHeader</a>&nbsp;originalAssetAuditHeader,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;newAsset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to update an asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetFeedback</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have the right to attach feedback - such as comments,
- ratings, tags and likes, to the asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForAssetRead(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">validateUserForAssetRead</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have read access to a specific asset within a zone.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForConnection(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection)" class="member-name-link">validateUserForConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tests for whether a specific user should have access to a connection.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateUserForEntityClassificationAdd(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)" class="member-name-link">validateUserForEntityClassificationAdd</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -731,22 +625,12 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Tests for whether a specific user should have the right to update a typeDef within a repository.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#verifyAssetZones(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.metadatasecurity.properties.Asset,org.odpi.openmetadata.metadatasecurity.properties.Asset)" class="member-name-link">verifyAssetZones</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;originalAsset,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;updatedAsset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Determine the appropriate setting for the asset zones depending on the content of the asset and the
- settings of both default zones and supported zones.</div>
-</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)">logExceptionRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getStringConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Throwable)">logExceptionRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../../frameworks/connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../../frameworks/connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../../frameworks/connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../../frameworks/connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../../frameworks/connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../../frameworks/connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../../frameworks/connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../../frameworks/connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../../frameworks/connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../../frameworks/connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
@@ -867,21 +751,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetGUID(org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>getAssetGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAssetGUID</span><wbr><span class="parameters">(<a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span></div>
-<div class="block">Return a string representing the unique identifier for the asset.
- If the asset is null then the guid is "null", if the guid is null then
- the result is "null-guid".</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>asset</code> - asset to test</dd>
-<dt>Returns:</dt>
-<dd>string identifier for messages</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="printZoneList(java.util.List)">
 <h3>printZoneList</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">printZoneList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;zones)</span></div>
@@ -891,36 +760,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dd><code>zones</code> - zones to output</dd>
 <dt>Returns:</dt>
 <dd>string for messages</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectionQualifiedName(org.odpi.openmetadata.metadatasecurity.properties.Connection)">
-<h3>getConnectionQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getConnectionQualifiedName</span><wbr><span class="parameters">(<a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection)</span></div>
-<div class="block">Return a string representing the unique identifier for the connection.
- If the connection is null then the guid is "null", if the guid is null then
- the result is "null-name".</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>connection</code> - connection to test</dd>
-<dt>Returns:</dt>
-<dd>string identifier for messages</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getInstanceGUID(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader)">
-<h3>getInstanceGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getInstanceGUID</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceHeader</a>&nbsp;instance)</span></div>
-<div class="block">Return a string representing the unique identifier for a repository instance.
- If the instance is null then the guid is "null", if the guid is null then
- the result is "null-guid".</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>instance</code> - instance to test</dd>
-<dt>Returns:</dt>
-<dd>string identifier for messages</dd>
 </dl>
 </section>
 </li>
@@ -1065,18 +904,21 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="throwUnauthorizedAssetAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)">
-<h3>throwUnauthorizedAssetAccess</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAssetAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<section class="detail" id="throwUnauthorizedAnchorAccess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwUnauthorizedAnchorAccess</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAnchorAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
+                                      throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset being accessed</dd>
+<dd><code>operationName</code> - name of operation</dd>
+<dd><code>elementTypeName</code> - type of element</dd>
+<dd><code>elementGUID</code> - element being accessed</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
@@ -1103,69 +945,10 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="throwUnauthorizedAssetChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)">
-<h3>throwUnauthorizedAssetChange</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAssetChange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset being accessed</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="throwUnauthorizedAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)">
-<h3>throwUnauthorizedAssetCreate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAssetCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset being accessed</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="throwIncompleteAsset(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String,java.lang.String)">
-<h3>throwIncompleteAsset</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwIncompleteAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset being accessed</dd>
-<dd><code>propertyName</code> - name of property that is missing</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="throwUnauthorizedZoneChange(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.util.List,java.util.List,java.lang.String)">
+<section class="detail" id="throwUnauthorizedZoneChange(java.lang.String,java.lang.String,java.util.List,java.util.List,java.lang.String)">
 <h3>throwUnauthorizedZoneChange</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedZoneChange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;originalZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;newZones,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
@@ -1175,9 +958,9 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset being accessed</dd>
-<dd><code>originalZones</code> - previous value of the zone membership for the asset being accessed</dd>
-<dd><code>newZones</code> - new value of the zone membership for the asset being accessed</dd>
+<dd><code>elementGUID</code> - element being accessed</dd>
+<dd><code>originalZones</code> - previous value of the zone membership for the element being accessed</dd>
+<dd><code>newZones</code> - new value of the zone membership for the element being accessed</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
@@ -1185,18 +968,18 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="throwUnauthorizedAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.lang.String)">
-<h3>throwUnauthorizedAssetFeedback</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAssetFeedback</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
+<section class="detail" id="throwUnauthorizedAddFeedback(java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwUnauthorizedAddFeedback</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedAddFeedback</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Write an audit log message and throw exception to record an
  unauthorized access.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset in error</dd>
+<dd><code>elementGUID</code> - element in error</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this zone</dd>
@@ -1204,31 +987,12 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="throwUnauthorizedConnectionAccess(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection,java.lang.String)">
-<h3>throwUnauthorizedConnectionAccess</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedConnectionAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                          throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Write an audit log message and throw exception to record an
- unauthorized access.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>connection</code> - connection to validate</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the authorization check failed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="throwMissingGlossary(java.lang.String,java.lang.String,java.lang.String)">
-<h3>throwMissingGlossary</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwMissingGlossary</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="throwMissingAnchor(java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwMissingAnchor</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwMissingAnchor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                           throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1241,13 +1005,14 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="throwUnauthorizedGlossaryAccess(java.lang.String,java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Glossary,java.lang.String)">
-<h3>throwUnauthorizedGlossaryAccess</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedGlossaryAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="throwUnauthorizedElementAccess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwUnauthorizedElementAccess</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwUnauthorizedElementAccess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;operation,
- <a href="../properties/Glossary.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Glossary</a>&nbsp;glossary,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                        throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Write an audit log message and throw exception to record an unauthorized access.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1330,7 +1095,8 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;user)</span>
                                          throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Determine the appropriate setting for the supported zones depending on the user and the
  default supported zones set up for the service.  This is called whenever an asset is accessed.</div>
 <dl class="notes">
@@ -1343,59 +1109,7 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameter values is invalid</dd>
 <dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem calculating the zones</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAssetZonesToDefault(java.util.List,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>setAssetZonesToDefault</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">setAssetZonesToDefault</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                       throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Determine the appropriate setting for the asset zones depending on the content of the asset and the
- default zones.  This is called whenever a new asset is created.
-
- The default behavior is to use the default values, unless the zones have been explicitly set up,
- in which case, they are left unchanged.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>defaultZones</code> - setting of the default zones for the service</dd>
-<dd><code>asset</code> - initial values for the asset</dd>
-<dt>Returns:</dt>
-<dd>list of zones to set in the asset</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the asset values is invalid</dd>
-<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem calculating the zones</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="verifyAssetZones(java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.metadatasecurity.properties.Asset,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>verifyAssetZones</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">verifyAssetZones</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;publishZones,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;originalAsset,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;updatedAsset)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Determine the appropriate setting for the asset zones depending on the content of the asset and the
- settings of both default zones and supported zones.  This method is called whenever an asset's
- values are changed.
- The default behavior is to keep the updated zones as they are.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>defaultZones</code> - setting of the default zones for the service</dd>
-<dd><code>supportedZones</code> - setting of the supported zones for the service</dd>
-<dd><code>publishZones</code> - setting of the publishZones for the service</dd>
-<dd><code>originalAsset</code> - original values for the asset</dd>
-<dd><code>updatedAsset</code> - updated values for the asset</dd>
-<dt>Returns:</dt>
-<dd>list of zones to set in the asset</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the asset values is invalid</dd>
-<dd><code><a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem calculating the zones</dd>
+<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - unknown user</dd>
 </dl>
 </section>
 </li>
@@ -1528,146 +1242,6 @@ implements <a href="../../frameworks/auditlog/AuditLoggingComponent.html" title=
 <dd><code>serviceOperationName</code> - name of called operation</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForConnection(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Connection)">
-<h3>validateUserForConnection</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&nbsp;connection)</span>
-                                  throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have access to a connection.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>connection</code> - connection object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetConnectionList(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,java.util.List)">
-<h3>validateUserForAssetConnectionList</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a></span>&nbsp;<span class="element-name">validateUserForAssetConnectionList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a>&gt;&nbsp;connections)</span>
-                                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Select a connection from the list of connections attached to an asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>asset</code> - asset requested by caller</dd>
-<dd><code>connections</code> - list of attached connections</dd>
-<dt>Returns:</dt>
-<dd>selected connection or null (pretend there are no connections attached to the asset) or</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetCreate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetCreate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to create an asset within a zone.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>asset</code> - asset details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this asset</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetRead(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetRead</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetRead</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have read access to a specific asset within a zone.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>asset</code> - asset to test</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access this asset</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetDetailUpdate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset,org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetDetailUpdate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetDetailUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;originalAsset,
- <a href="../properties/AssetAuditHeader.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">AssetAuditHeader</a>&nbsp;originalAssetAuditHeader,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;newAsset)</span>
-                                         throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to update an asset.
- This is used for a general asset update, which may include changes to the
- zones and the ownership.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>originalAsset</code> - original asset details</dd>
-<dd><code>originalAssetAuditHeader</code> - details of the asset's audit header</dd>
-<dd><code>newAsset</code> - new asset details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this asset</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetAttachmentUpdate(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetAttachmentUpdate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetAttachmentUpdate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                             throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to update elements attached directly
- to an asset such as schema and connections.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>asset</code> - original asset details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this asset</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetFeedback(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetFeedback</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetFeedback</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to attach feedback - such as comments,
- ratings, tags and likes, to the asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>asset</code> - original asset details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this asset</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="validateUserForAssetDelete(java.lang.String,org.odpi.openmetadata.metadatasecurity.properties.Asset)">
-<h3>validateUserForAssetDelete</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateUserForAssetDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a>&nbsp;asset)</span>
-                                   throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Tests for whether a specific user should have the right to delete an asset within a zone.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - identifier of user</dd>
-<dd><code>asset</code> - asset details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to change this asset</dd>
 </dl>
 </section>
 </li>

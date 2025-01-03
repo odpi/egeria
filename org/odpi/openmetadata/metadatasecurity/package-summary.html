@@ -68,13 +68,15 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="connectors/package-summary.html">org.odpi.openmetadata.metadatasecurity.connectors</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.metadatasecurity.ffdc</a></div>
+<div class="col-first even-row-color"><a href="accessconnector/package-summary.html">org.odpi.openmetadata.metadatasecurity.accessconnector</a></div>
+<div class="col-last even-row-color">
+<div class="block">Connector that implements the interfaces of both the Platform and Server Metadata Security Access Connectors.</div>
+</div>
+<div class="col-first odd-row-color"><a href="connectors/package-summary.html">org.odpi.openmetadata.metadatasecurity.connectors</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="properties/package-summary.html">org.odpi.openmetadata.metadatasecurity.properties</a></div>
+<div class="col-first even-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.metadatasecurity.ffdc</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="samples/package-summary.html">org.odpi.openmetadata.metadatasecurity.samples</a></div>
+<div class="col-first odd-row-color"><a href="properties/package-summary.html">org.odpi.openmetadata.metadatasecurity.properties</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="server/package-summary.html">org.odpi.openmetadata.metadatasecurity.server</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -87,37 +89,32 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataAssetSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataAssetSecurity</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataElementSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataElementSecurity</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">OpenMetadataAssetSecurity is able to intercede as the zones are set up in an asset and
- validates what a user is allowed to do with to Assets (often using the zone values).</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OpenMetadataConnectionSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataConnectionSecurity</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
-<div class="block">OpenMetadataConnectionSecurity defines the interface of a security connector that is validating whether a specific
- user should be given access to a specific Connection object.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataGlossarySecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataGlossarySecurity</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">OpenMetadataGlossarySecurity assures the access to glossary content.</div>
+<div class="block">Provides the API for a security connector that implements security rules based on the elements being accessed.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OpenMetadataPlatformSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataPlatformSecurity</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">OpenMetadataPlatformSecurity provides the interface for a security connector that validates whether a calling
  user can access any service on an OMAG Server Platform.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataServerSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataServerSecurity</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataRepositorySecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataRepositorySecurity</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">OpenMetadataRepositorySecurity defines security checks for accessing and maintaining open metadata types
+ and instances in the local repository.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OpenMetadataServerSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataServerSecurity</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">OpenMetadataServerSecurity provides the root interface for a connector that validates access to Open
  Metadata services and instances for a specific user.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OpenMetadataServiceSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataServiceSecurity</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataServiceSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataServiceSecurity</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
 <div class="block">OpenMetadataServiceSecurity provides the interface for a plugin connector that validates whether a calling
  user can access a specific metadata service.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="OpenMetadataUserSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataUserSecurity</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="OpenMetadataUserSecurity.html" title="interface in org.odpi.openmetadata.metadatasecurity">OpenMetadataUserSecurity</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">This interface is used to authenticate a user and return the properties known about them that can be included in
  the resulting JWT token.</div>
 </div>

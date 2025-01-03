@@ -113,18 +113,22 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CHANGE_ASSET_MEMBERSHIP" class="member-name-link">CHANGE_ASSET_MEMBERSHIP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The user may update the zone membership of an asset in this zone..</div>
+<div class="block">The user may update the zone membership of an asset in this zone.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DELETE_ASSETS" class="member-name-link">DELETE_ASSETS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CREATE_ASSETS" class="member-name-link">CREATE_ASSETS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The user may change the metadata description of the asset.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DELETE_ASSETS" class="member-name-link">DELETE_ASSETS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user may remove the asset from the catalog (archive, soft-delete or purge).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#READ_ASSETS" class="member-name-link">READ_ASSETS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The user may read assets in the zone (supportedZones).</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#UPDATE_ASSETS" class="member-name-link">UPDATE_ASSETS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#READ_ASSETS" class="member-name-link">READ_ASSETS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The user may read assets in the zone.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UPDATE_ASSETS" class="member-name-link">UPDATE_ASSETS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The user may change the metadata description of the asset.</div>
 </div>
 </div>
@@ -196,7 +200,14 @@ the order they are declared.</div>
 <section class="detail" id="READ_ASSETS">
 <h3>READ_ASSETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ZoneAccessType.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">ZoneAccessType</a></span>&nbsp;<span class="element-name">READ_ASSETS</span></div>
-<div class="block">The user may read assets in the zone (supportedZones).</div>
+<div class="block">The user may read assets in the zone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_ASSETS">
+<h3>CREATE_ASSETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ZoneAccessType.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">ZoneAccessType</a></span>&nbsp;<span class="element-name">CREATE_ASSETS</span></div>
+<div class="block">The user may change the metadata description of the asset.</div>
 </section>
 </li>
 <li>
@@ -217,7 +228,7 @@ the order they are declared.</div>
 <section class="detail" id="CHANGE_ASSET_MEMBERSHIP">
 <h3>CHANGE_ASSET_MEMBERSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ZoneAccessType.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.users">ZoneAccessType</a></span>&nbsp;<span class="element-name">CHANGE_ASSET_MEMBERSHIP</span></div>
-<div class="block">The user may update the zone membership of an asset in this zone..</div>
+<div class="block">The user may update the zone membership of an asset in this zone.</div>
 </section>
 </li>
 </ul>

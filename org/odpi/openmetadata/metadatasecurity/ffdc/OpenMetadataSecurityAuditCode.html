@@ -115,38 +115,6 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ASSET_ACTIVITY_DELETE" class="member-name-link">ASSET_ACTIVITY_DELETE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0055 - User {0} deleted {1} asset {2} during operation {3} of service {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ASSET_ACTIVITY_READ" class="member-name-link">ASSET_ACTIVITY_READ</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0050 - User {0} retrieved {1} asset {2} during operation {3} of service {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ASSET_ACTIVITY_READ_ATTACHMENT" class="member-name-link">ASSET_ACTIVITY_READ_ATTACHMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0051 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ASSET_ACTIVITY_SEARCH" class="member-name-link">ASSET_ACTIVITY_SEARCH</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0056 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ASSET_ACTIVITY_SEARCH_ATTACHMENT" class="member-name-link">ASSET_ACTIVITY_SEARCH_ATTACHMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0057 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ASSET_ACTIVITY_UPDATE" class="member-name-link">ASSET_ACTIVITY_UPDATE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0054 - User {0} updated {1} asset {2} during operation {3} of service {4}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#ASSET_ACTIVITY_UPDATE_ATTACHMENT" class="member-name-link">ASSET_ACTIVITY_UPDATE_ATTACHMENT</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0052 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#ASSET_ACTIVITY_UPDATE_FEEDBACK" class="member-name-link">ASSET_ACTIVITY_UPDATE_FEEDBACK</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0053 - User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}</div>
-</div>
 <div class="col-first even-row-color"><code><a href="#FAILED_TO_RETRIEVE_USER" class="member-name-link">FAILED_TO_RETRIEVE_USER</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; message was {2}</div>
@@ -155,9 +123,9 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-SECURITY-0014 - User {0} is not authorized to change asset {1} because it has missing properties: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_GLOSSARY" class="member-name-link">NULL_GLOSSARY</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_ANCHOR" class="member-name-link">NULL_ANCHOR</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the glossary is null</div>
+<div class="block">OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the anchor is null</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#PLATFORM_INITIALIZING" class="member-name-link">PLATFORM_INITIALIZING</a></code></div>
 <div class="col-last odd-row-color">
@@ -175,29 +143,29 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-SECURITY-0004 - The Open Metadata Security Service {0} for server {1} is shutting down</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ASSET_ACCESS" class="member-name-link">UNAUTHORIZED_ASSET_ACCESS</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ADD_FEEDBACK" class="member-name-link">UNAUTHORIZED_ADD_FEEDBACK</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to access asset {1}</div>
+<div class="block">OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to asset {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ASSET_CHANGE" class="member-name-link">UNAUTHORIZED_ASSET_CHANGE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ANCHOR_ACCESS" class="member-name-link">UNAUTHORIZED_ANCHOR_ACCESS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ASSET_CHANGE" class="member-name-link">UNAUTHORIZED_ASSET_CHANGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-SECURITY-0013 - User {0} is not authorized to change asset {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_ASSET_CREATE" class="member-name-link">UNAUTHORIZED_ASSET_CREATE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0012 - User {0} is not authorized to create an asset of type {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ASSET_FEEDBACK" class="member-name-link">UNAUTHORIZED_ASSET_FEEDBACK</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ASSET_CREATE" class="member-name-link">UNAUTHORIZED_ASSET_CREATE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to asset {1}</div>
+<div class="block">OPEN-METADATA-SECURITY-0012 - User {0} is not authorized to create an asset of type {1}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_CONNECTION_ACCESS" class="member-name-link">UNAUTHORIZED_CONNECTION_ACCESS</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-SECURITY-0010 - User {0} is not authorized to use connection {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_GLOSSARY_ACCESS" class="member-name-link">UNAUTHORIZED_GLOSSARY_ACCESS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNAUTHORIZED_ELEMENT_ACCESS" class="member-name-link">UNAUTHORIZED_ELEMENT_ACCESS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on glossary {2}</div>
+<div class="block">OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on {2} element {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNAUTHORIZED_INSTANCE_ACCESS" class="member-name-link">UNAUTHORIZED_INSTANCE_ACCESS</a></code></div>
 <div class="col-last odd-row-color">
@@ -353,9 +321,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_ASSET_FEEDBACK">
-<h3>UNAUTHORIZED_ASSET_FEEDBACK</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ASSET_FEEDBACK</span></div>
+<section class="detail" id="UNAUTHORIZED_ADD_FEEDBACK">
+<h3>UNAUTHORIZED_ADD_FEEDBACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ADD_FEEDBACK</span></div>
 <div class="block">OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to asset {1}</div>
 </section>
 </li>
@@ -374,10 +342,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_ASSET_ACCESS">
-<h3>UNAUTHORIZED_ASSET_ACCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ASSET_ACCESS</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to access asset {1}</div>
+<section class="detail" id="UNAUTHORIZED_ANCHOR_ACCESS">
+<h3>UNAUTHORIZED_ANCHOR_ACCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ANCHOR_ACCESS</span></div>
+<div class="block">OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}</div>
 </section>
 </li>
 <li>
@@ -437,17 +405,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="UNAUTHORIZED_GLOSSARY_ACCESS">
-<h3>UNAUTHORIZED_GLOSSARY_ACCESS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_GLOSSARY_ACCESS</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on glossary {2}</div>
+<section class="detail" id="UNAUTHORIZED_ELEMENT_ACCESS">
+<h3>UNAUTHORIZED_ELEMENT_ACCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">UNAUTHORIZED_ELEMENT_ACCESS</span></div>
+<div class="block">OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on {2} element {3}</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_GLOSSARY">
-<h3>NULL_GLOSSARY</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">NULL_GLOSSARY</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the glossary is null</div>
+<section class="detail" id="NULL_ANCHOR">
+<h3>NULL_ANCHOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">NULL_ANCHOR</span></div>
+<div class="block">OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the anchor is null</div>
 </section>
 </li>
 <li>
@@ -462,62 +430,6 @@ the order they are declared.</div>
 <h3>FAILED_TO_RETRIEVE_USER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">FAILED_TO_RETRIEVE_USER</span></div>
 <div class="block">OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; message was {2}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_READ">
-<h3>ASSET_ACTIVITY_READ</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_READ</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0050 - User {0} retrieved {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_READ_ATTACHMENT">
-<h3>ASSET_ACTIVITY_READ_ATTACHMENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_READ_ATTACHMENT</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0051 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_UPDATE_ATTACHMENT">
-<h3>ASSET_ACTIVITY_UPDATE_ATTACHMENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_UPDATE_ATTACHMENT</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0052 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_UPDATE_FEEDBACK">
-<h3>ASSET_ACTIVITY_UPDATE_FEEDBACK</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_UPDATE_FEEDBACK</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0053 - User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_UPDATE">
-<h3>ASSET_ACTIVITY_UPDATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_UPDATE</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0054 - User {0} updated {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_DELETE">
-<h3>ASSET_ACTIVITY_DELETE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_DELETE</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0055 - User {0} deleted {1} asset {2} during operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_SEARCH">
-<h3>ASSET_ACTIVITY_SEARCH</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_SEARCH</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0056 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="ASSET_ACTIVITY_SEARCH_ATTACHMENT">
-<h3>ASSET_ACTIVITY_SEARCH_ATTACHMENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataSecurityAuditCode.html" title="enum class in org.odpi.openmetadata.metadatasecurity.ffdc">OpenMetadataSecurityAuditCode</a></span>&nbsp;<span class="element-name">ASSET_ACTIVITY_SEARCH_ATTACHMENT</span></div>
-<div class="block">OPEN-METADATA-SECURITY-0057 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}</div>
 </section>
 </li>
 <li>

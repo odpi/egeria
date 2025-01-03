@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -74,11 +70,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="../package-summary.html">org.odpi.openmetadata.metadatasecurity</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../connectors/package-summary.html">org.odpi.openmetadata.metadatasecurity.connectors</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../ffdc/package-summary.html">org.odpi.openmetadata.metadatasecurity.ffdc</a></div>
+<div class="col-first odd-row-color"><a href="../accessconnector/package-summary.html">org.odpi.openmetadata.metadatasecurity.accessconnector</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Connector that implements the interfaces of both the Platform and Server Metadata Security Access Connectors.</div>
+</div>
+<div class="col-first even-row-color"><a href="../connectors/package-summary.html">org.odpi.openmetadata.metadatasecurity.connectors</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../samples/package-summary.html">org.odpi.openmetadata.metadatasecurity.samples</a></div>
+<div class="col-first odd-row-color"><a href="../ffdc/package-summary.html">org.odpi.openmetadata.metadatasecurity.ffdc</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="../server/package-summary.html">org.odpi.openmetadata.metadatasecurity.server</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -87,67 +85,13 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
-<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
+<div class="caption"><span>Classes</span></div>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Asset.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Asset</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Asset is a set of properties that describes an open metadata asset.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AssetAuditHeader.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">AssetAuditHeader</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">AssetAuditHeader provides details of the audit header for a specific asset</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ConfidenceGovernanceClassification.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">ConfidenceGovernanceClassification</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ConfidenceGovernanceClassification defines the level of confidence that should be placed in the accuracy of related data items.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConfidentialityGovernanceClassification.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">ConfidentialityGovernanceClassification</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">ConfidentialityGovernanceClassification defines the level of confidentiality of related data items.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Connection.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Connection</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Connection is a set of properties that describes an open metadata asset.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CriticalityGovernanceClassification.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">CriticalityGovernanceClassification</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">CriticalityGovernanceClassification defines how critical the related data items are to the organization.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Glossary.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Glossary</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">GlossaryProperties is a class for representing a generic glossary.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GovernanceClassificationBase.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">GovernanceClassificationBase</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">GovernanceClassificationBase defines the common properties for the governance action classifications.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ImpactGovernanceClassification.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">ImpactGovernanceClassification</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ImpactGovernanceClassification defines how much of an impact a particular situation is to the operation of the organization.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataUserAccount.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserAccount</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">OpenMetadataUserAccount extends OpenMetadataUserDetails with properties that should not leave the server.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataUserDetails.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">OpenMetadataUserDetails</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">OpenMetadataUserDetails holds details of a particular user that can be shared between security services.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Referenceable.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">Referenceable</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Referenceable is a set of properties that describes an open metadata referencable object.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ReferenceableStatus.html" title="enum class in org.odpi.openmetadata.metadatasecurity.properties">ReferenceableStatus</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
-<div class="block">The ReferenceableStatus enum defines the status of an instance (classification, relationship or an entity) in the metadata collection.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RetentionGovernanceClassification.html" title="class in org.odpi.openmetadata.metadatasecurity.properties">RetentionGovernanceClassification</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">RetentionGovernanceClassification defines the retention requirements for related data items.</div>
-</div>
+<div class="block">OpenMetadataUserAccount extends UserAccount with properties that should not leave the server.</div>
 </div>
 </div>
 </div>
