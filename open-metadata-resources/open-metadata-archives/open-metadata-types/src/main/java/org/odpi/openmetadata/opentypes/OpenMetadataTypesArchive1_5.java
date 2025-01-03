@@ -5,6 +5,7 @@ package org.odpi.openmetadata.opentypes;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -214,16 +215,8 @@ public class OpenMetadataTypesArchive1_5
      */
     private RelationshipDef getProcessHierarchyRelationship()
     {
-        final String guid            = "70dbbda3-903f-49f7-9782-32b503c43e0e";
-        final String name            = "ProcessHierarchy";
-        final String description     = "A hierarchical relationship between processes.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -231,12 +224,11 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.PROCESS.typeName;
         final String                     end1AttributeName            = "parentProcess";
         final String                     end1AttributeDescription     = "The more abstract or higher-level process.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -247,12 +239,11 @@ public class OpenMetadataTypesArchive1_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.PROCESS.typeName;
         final String                     end2AttributeName            = "childProcess";
         final String                     end2AttributeDescription     = "The more detailed or lower-level process.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -265,15 +256,10 @@ public class OpenMetadataTypesArchive1_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Enum            = "ProcessContainmentType";
-        final String attribute1Name            = "containmentType";
-        final String attribute1Description     = "The type of containment that exists between the related processes.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute(attribute1Enum,
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute(ProcessContainmentType.getOpenTypeName(),
+                                                         OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                                         OpenMetadataProperty.CONTAINMENT_TYPE.description,
+                                                         OpenMetadataProperty.CONTAINMENT_TYPE.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -301,17 +287,12 @@ public class OpenMetadataTypesArchive1_5
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID.name,
-                                                           OpenMetadataProperty.ANCHOR_GUID.description,
-                                                           OpenMetadataProperty.ANCHOR_GUID.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

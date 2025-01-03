@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalGlossaryLinkElement
+public class ExternalGlossaryLinkElement implements MetadataElement
 {
     private ElementHeader                  elementHeader  = null;
     private ExternalGlossaryLinkProperties linkProperties = null;
@@ -54,6 +54,7 @@ public class ExternalGlossaryLinkElement
      *
      * @return element header object
      */
+    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -65,6 +66,7 @@ public class ExternalGlossaryLinkElement
      *
      * @param elementHeader element header object
      */
+    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;

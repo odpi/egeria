@@ -800,6 +800,7 @@ public class AssetOwnerRESTServices
                                            relationshipTypeName,
                                            false,
                                            false,
+                                           handler.getSupportedZones(),
                                            requestBody.getEffectiveTime(),
                                            methodName);
             }
@@ -813,6 +814,7 @@ public class AssetOwnerRESTServices
                                            relationshipTypeName,
                                            false,
                                            false,
+                                           handler.getSupportedZones(),
                                            null,
                                            methodName);
             }
@@ -1322,17 +1324,10 @@ public class AssetOwnerRESTServices
                                                   null,
                                                   assetGUID,
                                                   assetGUIDParameterName,
-                                                  OpenMetadataType.ASSET.typeName,
                                                   schemaTypeGUID,
                                                   schemaTypeGUIDParameterName,
-                                                  OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
-                                                  false,
-                                                  false,
-                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                   OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                  OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                   null,
-                                                  new Date(),
                                                   methodName);
         }
 

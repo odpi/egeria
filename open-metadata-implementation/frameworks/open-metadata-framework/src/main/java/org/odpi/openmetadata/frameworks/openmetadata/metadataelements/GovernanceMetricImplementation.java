@@ -102,7 +102,7 @@ public class GovernanceMetricImplementation extends GovernanceMetricElement
         {
             return true;
         }
-        if (! (objectToCompare instanceof GovernanceMetricImplementation))
+        if (! (objectToCompare instanceof GovernanceMetricImplementation that))
         {
             return false;
         }
@@ -110,7 +110,6 @@ public class GovernanceMetricImplementation extends GovernanceMetricElement
         {
             return false;
         }
-        GovernanceMetricImplementation that = (GovernanceMetricImplementation) objectToCompare;
         return Objects.equals(implementations, that.implementations);
     }
 

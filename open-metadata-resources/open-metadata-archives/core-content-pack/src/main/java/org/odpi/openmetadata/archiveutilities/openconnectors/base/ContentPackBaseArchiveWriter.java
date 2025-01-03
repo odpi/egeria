@@ -1200,7 +1200,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         Map<String, String> additionalProperties = new HashMap<>();
 
-        additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, associatedTypeName);
+        additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, associatedTypeName);
 
         String validValueGUID = this.archiveHelper.addValidValue(null,
                                                                  parentSetGUID,
@@ -1393,12 +1393,12 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 integrationConnectorDefinition.getRefreshTimeInterval(),
                                                                 integrationConnectorDefinition.getGUID());
 
-                archiveHelper.addITProfileToAsset(integrationConnectorDefinition.getGUID(),
-                                                  integrationConnectorDefinition.getConnectorUserId(),
-                                                  integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()) + ":ActorProfile",
-                                                  integrationConnectorDefinition.getConnectorName(),
-                                                  integrationConnectorDefinition.getDescription(),
-                                                  null);
+                archiveHelper.addITProfile(integrationConnectorDefinition.getGUID(),
+                                           integrationConnectorDefinition.getConnectorUserId(),
+                                           integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()) + ":ActorProfile",
+                                           integrationConnectorDefinition.getConnectorName(),
+                                           integrationConnectorDefinition.getDescription(),
+                                           null);
 
                 if (integrationConnectorDefinition.getDeployedImplementationTypes() != null)
                 {
@@ -1453,6 +1453,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                               null,
                                               null,
                                               null,
+                                              governanceEngineDefinition.getUserId(),
                                               null,
                                               null);
         }

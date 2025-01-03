@@ -869,7 +869,6 @@ public enum OpenMetadataType
                                "faa47e2b-4987-4ad8-bc39-5a4f91f9658c",
                                "An engine capable of creating new data sets by dynamically combining data from one or more data stores or data sets."),
 
-
     /**
      * Defines a capability that manages metadata about assets.
      */
@@ -887,6 +886,15 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
                                "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
                                "A capability that supports a store of files organized into a hierarchy of file folders."),
+
+    /**
+     * Identifies a software server capability as a manager of a collection of files and folders.
+     */
+    FILE_MANAGER_CLASSIFICATION("eadec807-02f0-4d6f-911c-261eddd0c2f5",
+                               "FileManager",
+                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                               "f126a519-bbae-4b2a-9e88-0c9ebf4494a9",
+                               "Identifies a software server capability as a manager of a collection of files and folders."),
 
     /**
      * A system that stores descriptions of individuals and their roles/interests in an organization.
@@ -916,13 +924,121 @@ public enum OpenMetadataType
                         "A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts."),
 
     /**
-     * f3f69251-adb1-4042-9d95-70082f95a028
+     * Identifies a server capability that is distributing events from a topic to its subscriber list.
+     */
+    NOTIFICATION_MANAGER("3e7502a7-396a-4737-a106-378c9c94c105",
+                        "NotificationManager",
+                        OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                        "6a6ce1e2-7d09-47c7-a996-6ac839ca4ae8",
+                        "Identifies a server capability that is distributing events from a topic to its subscriber list."),
+
+    /**
+     * Identifies a software capability as a manager of controlled documents and related media.
+     */
+    CONTENT_COLLECTION_MANAGER("dbde6a5b-fc89-4b04-969a-9dc09a60ebd7",
+                               "ContentCollectionManager",
+                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                               "8cb201bf-4213-48cd-bf13-412b1a14e1fc",
+                               "Identifies a software capability as a manager of controlled documents and related media."),
+
+    /**
+     * Defines a capability that provides externally callable functions to other services.
      */
     SOFTWARE_SERVICE("f3f69251-adb1-4042-9d95-70082f95a028",
                      "SoftwareService",
                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                     "18db6f5d-d1c0-453b-a55a-b0aa2ba1a78f",
-                     ""),
+                     "b3c83676-88a3-49a5-84d0-15c735dfcd91",
+                     "Defines a capability that provides externally callable functions to other services."),
+
+    /**
+     * Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts.
+     */
+    ENTERPRISE_ACCESS_LAYER("39444bf9-638e-4124-a5f9-1b8f3e1b008b",
+                            "EnterpriseAccessLayer",
+                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                            "c1dfc168-f8cb-4cd5-b6fe-9d2dcbab638c",
+                            "Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts."),
+
+    /**
+     * A capability enabling a server to access an open metadata repository cohort.
+     */
+    COHORT_MEMBER("42063797-a78a-4720-9353-52026c75f667",
+                  "CohortMember",
+                  OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                  "02a99f36-8a58-4c40-834e-47df456bae31",
+                  "A capability enabling a server to access an open metadata repository cohort."),
+
+    /**
+     * A group of collaborating open metadata repositories.
+     */
+    METADATA_REPOSITORY_COHORT("43e7dca2-c7b4-4cdf-a1ea-c9d4f7093893",
+                               "MetadataRepositoryCohort",
+                               OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                               "d14c995b-95f0-4ab1-99d7-5cc1b417123d",
+                               "A group of collaborating open metadata repositories."),
+
+    /**
+     * A metadata repository's registration with an open metadata cohort.
+     */
+    METADATA_COHORT_PEER_RELATIONSHIP("954cdba1-3d69-4db1-bf0e-d59fd2c25a27",
+                                      "MetadataCohortPeer",
+                                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                                      "e962cc4c-d673-46c7-b17d-8fa009cebd85",
+                                      "A metadata repository's registration with an open metadata cohort."),
+
+    /**
+     * Defines a capability that exchanges metadata between servers.
+     */
+    METADATA_INTEGRATION_SERVICE("92f7fe27-cd2f-441c-a084-156821aa5bca",
+                                 "MetadataIntegrationService",
+                                 OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                                 "1dbc4ce0-d3ed-4246-a53e-470cb49a12ba",
+                                 "Defines a capability that exchanges metadata between servers."),
+
+    /**
+     * Defines a capability that provides access to stored metadata.
+     */
+    METADATA_ACCESS_SERVICE("0bc3a16a-e8ed-4ad0-a302-0773365fdef0",
+                            "MetadataAccessService",
+                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                            "4fd9838d-8ad1-4f25-a573-4320c54a8e85",
+                            "Defines a capability that provides access to stored metadata."),
+
+    /**
+     * Defines a capability that provides services that delegate to a hosted engine.
+     */
+    ENGINE_HOSTING_SERVICES("90880f0b-c7a3-4d1d-93cc-0b877f27cd33",
+                            "EngineHostingService",
+                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                            "61d24feb-bffc-4429-ac6d-098d1d3ac961",
+                            "Defines a capability that provides services that delegate to a hosted engine."),
+
+    /**
+     * Defines a capability that provides user interfaces access to digital resources.
+     */
+    USER_VIEW_SERVICE("1f83fc7c-75bb-491d-980d-ff9a6f80ae02",
+                      "UserViewService",
+                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                      "3aa18b40-aa95-4bd0-94bd-25280ee611b3",
+                      "Defines a capability that provides user interfaces access to digital resources."),
+
+    /**
+     * Provides access to a metadata repository - either local or remote.
+     */
+    METADATA_REPOSITORY_SERVICE("27891e52-1255-4a33-98a2-377717a25334",
+                                "MetadataRepositoryService",
+                                OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                                "0457d94e-f6f9-4169-b1fc-4ff081cec5d0",
+                                "Provides access to a metadata repository - either local or remote."),
+
+    /**
+     * Provides security services - classifications identify specific capabilities.
+     */
+    SECURITY_SERVICE("2df2069f-6475-400c-bf8c-6d2072a55d47",
+                     "SecurityService",
+                     OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
+                     "c1294981-bfac-421f-8649-73e10ca87bec",
+                     "Provides security services - classifications identify specific capabilities."),
 
     /**
      * Interconnectivity for systems.
@@ -1743,13 +1859,32 @@ public enum OpenMetadataType
 
 
     /**
-     * Description for how data is organized and represented in a data store.
+     * Identifies the scope of the data stored in the digital resource(s).
+     */
+    DATA_SCOPE_CLASSIFICATION("22f996d0-c4b7-433a-af0b-6a3e9478e488",
+                              "DataScope",
+                              OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                              "b734ba5c-ce2c-4b02-b54d-9232db2f1c51",
+                              "Identifies the scope of the data stored in the digital resource(s)."),
+
+
+    /**
+     * Description for how data is organized and represented in a data store. (Deprecated)
      */
     DATA_STORE_ENCODING_CLASSIFICATION("f08e48b5-6b66-40f5-8ff6-c2bfe527330b",
                                        "DataStoreEncoding",
                                        OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                                        "327553db-b35b-49cc-8435-d2c665f5e260",
-                                       "Description for how data is organized and represented in a data store."),
+                                       "Description for how data is organized and represented in a data store. (Deprecated)"),
+
+    /**
+     * Description for how data is organized and represented in a data asset.
+     */
+    DATA_ASSET_ENCODING_CLASSIFICATION("3f6a1513-d3ea-4666-b5fd-c76477b0245e",
+                                       "DataAssetEncoding",
+                                       OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+                                       "6899c5aa-e815-4404-948c-52fc0188cf1e",
+                                       "Description for how data is organized and represented in a data asset."),
 
     /**
      * A data source that provides a constant stream of data, such as a sensor monitoring the environment.
@@ -1768,15 +1903,6 @@ public enum OpenMetadataType
                                            OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                                            "64b044b3-f765-447a-aca7-5f72d0f3f9d0",
                                            "The assets that provides data for a data set."),
-
-    /**
-     * Description for how data is organized and represented in a data asset.
-     */
-    DATA_ASSET_ENCODING_CLASSIFICATION("3f6a1513-d3ea-4666-b5fd-c76477b0245e",
-                                       "DataAssetEncoding",
-                                       OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
-                                       "6899c5aa-e815-4404-948c-52fc0188cf1e",
-                                       "Description for how data is organized and represented in a data asset."),
 
     /**
      * A callable interface running at an endpoint.
@@ -1859,6 +1985,60 @@ public enum OpenMetadataType
                      OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
                      "ab03dfea-cfa7-4ab2-96db-ac6cb894f242",
                      "A child process that runs for a short period of time compared to its parent process."),
+
+    /**
+     * A hierarchical relationship between processes.
+     */
+    PROCESS_HIERARCHY_RELATIONSHIP("70dbbda3-903f-49f7-9782-32b503c43e0e",
+                                   "ProcessHierarchy",
+                                   OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                                   "bc7ee6c0-8130-42c4-a27f-476ebea2c108",
+                                   "A hierarchical relationship between processes."),
+
+    /**
+     * An interface where data flows in and/or out of a process.
+     */
+    PORT("e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C",
+         "Port",
+         OpenMetadataWikiPages.MODEL_0217_PORTS,
+         "e4abcf2e-62c5-4370-b7e3-c6478900312b",
+         "An interface where data flows in and/or out of a process."),
+
+    /**
+     * A port for a composed process whose implementation comes from the port linked via a port delegation relationship.
+     */
+    PORT_ALIAS("DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5",
+               "PortAlias",
+               OpenMetadataWikiPages.MODEL_0217_PORTS,
+               "bbb9d111-01f9-4a28-974d-80ac22985fdf",
+               "A port for a composed process whose implementation comes from the port linked via a port delegation relationship."),
+
+    /**
+     * A port with a concrete implementation.
+     */
+    PORT_IMPLEMENTATION("ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E",
+                        "PortImplementation",
+                        OpenMetadataWikiPages.MODEL_0217_PORTS,
+                        "1415862a-bcde-42f7-b9ad-44be29ae8c60",
+                        "A port with a concrete implementation."),
+
+    /**
+     * A link between a process and one of its ports.
+     */
+    PROCESS_PORT_RELATIONSHIP("fB4E00CF-37e4-88CE-4a94-233BAdB84DA2",
+                              "ProcessPort",
+                              OpenMetadataWikiPages.MODEL_0217_PORTS,
+                              "9584078c-8a28-4852-bd9b-699d20385b6f",
+                              "A link between a process and one of its ports."),
+
+    /**
+     * A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed.
+     */
+    PORT_DELEGATION_RELATIONSHIP("98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E",
+                                 "PortDelegation",
+                                 OpenMetadataWikiPages.MODEL_0217_PORTS,
+                                 "7a820388-49f6-4843-aa68-a2eda5501386",
+                                 "A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed."),
 
     /**
      * A description of a folder (directory) in a file system.
@@ -2133,22 +2313,22 @@ public enum OpenMetadataType
                                 "Defines destination information for the log of activity associated with an element."),
 
     /**
-     * 0921c83f-b2db-4086-a52c-0d10e52ca078
+     * A data store.
      */
     DATABASE("0921c83f-b2db-4086-a52c-0d10e52ca078",
              "Database",
              OpenMetadataWikiPages.MODEL_0224_DATABASES,
              "735bb7f4-342c-4830-a8e9-6c56ec5f9e50",
-             ""),
+             "A data store."),
 
     /**
-     * 6a28e242-4eca-4664-81cb-e2096d769568
+     * A data store organized to facilitate a relational data model.
      */
     RELATIONAL_DATABASE("6a28e242-4eca-4664-81cb-e2096d769568",
                         "RelationalDatabase",
                         OpenMetadataWikiPages.MODEL_0224_DATABASES,
                         "36e696b2-6795-4f53-9867-baaa4d50800e",
-                        ""),
+                        "A data store organized to facilitate a relational data model."),
 
     /**
      * A collection of database tables and views running in a database server.
@@ -2168,6 +2348,41 @@ public enum OpenMetadataType
                    "ff9fced9-daaf-4512-97c1-88381ffe05aa",
                    "A tabular data source (typically a database table) that is an asset in its own right."),
 
+    /**
+     * A data store containing metadata.
+     */
+    METADATA_REPOSITORY("c40397bd-eab0-4b2e-bffb-e7fa0f93a5a9",
+                        "MetadataRepository",
+                        OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                        "6e816783-17d2-43cf-88c9-2aef7aafc62e",
+                        "A data store containing metadata."),
+
+    /**
+     * A data store containing cohort membership registration details.
+     */
+    COHORT_REGISTRY_STORE("2bfdcd0d-68bb-42c3-ae75-e9fb6c3dff70",
+                          "CohortRegistryStore",
+                          OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                          "5f3920a6-32db-4ddf-a81b-08a62b981f62",
+                          "A data store containing cohort membership registration details."),
+
+    /**
+     * A data set containing metadata.
+     */
+    METADATA_COLLECTION("ea3b15af-ed0e-44f7-91e4-bdb299dd4976",
+                        "MetadataCollection",
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
+                        "84d14b66-1c9b-4dd9-92c1-07c31ed4cbc7",
+                        "A data set containing metadata."),
+
+    /**
+     * The local metadata collection associated with a cohort peer.
+     */
+    COHORT_MEMBER_METADATA_COLLECTION_RELATIONSHIP("8b9dd3ea-057b-4709-9b42-f16098523907",
+                                                   "CohortMemberMetadataCollection",
+                                                   OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
+                                                   "9f3a29eb-8ff2-4891-ac2a-1e0c7a64b837",
+                                                   "The local metadata collection associated with a cohort peer."),
 
     /**
      * A file containing compressed files.  These files may be organized into a directory (folder) structure.
@@ -2205,6 +2420,23 @@ public enum OpenMetadataType
                        "4aa6aae8-a0d6-4e05-8b93-6bab1962c3a6",
                        "A data set containing authentication and related security information."),
 
+    /**
+     * A data set containing code values and their translations.
+     */
+    REFERENCE_CODE_TABLE("201f48c5-4e4b-41dc-9c5f-0bc9742190cf",
+                         "ReferenceCodeTable",
+                         OpenMetadataWikiPages.MODEL_0230_CODE_TABLES,
+                         "6b3023b5-0795-4346-b950-cfeaee9a7334",
+                         "A data set containing code values and their translations."),
+
+    /**
+     * A data set containing mappings between code values from different data sets.
+     */
+    REFERENCE_CODE_MAPPING_TABLE("9c6ec0c6-0b26-4414-bffe-089144323213",
+                                 "ReferenceCodeMappingTable",
+                                 OpenMetadataWikiPages.MODEL_0230_CODE_TABLES,
+                                 "0f16856a-7be3-404e-bf01-282b0ce122a4",
+                                 "A data set containing mappings between code values from different data sets."),
 
     /**
      * An asset supported by data virtualization technology.
@@ -2225,6 +2457,32 @@ public enum OpenMetadataType
                      "b6a9209c-de82-4357-8e03-447f904814e0",
                      "A virtual asset that can be called as a table through a SQL-like API."),
 
+    /**
+     * A template for generating report.
+     */
+    DEPLOYED_REPORT_TYPE("ed53a480-e6d4-44f1-aac7-3fac60bbb00e",
+                         "DeployedReportType",
+                         OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                         "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
+                         "A template for generating report."),
+
+    /**
+     * A collection if data items that describe a situation.  This is an instance of a report.
+     */
+    DEPLOYED_REPORT("e9077f4f-955b-4d7b-b1f7-12ee769ff0c3",
+                    "DeployedReport",
+                    OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                    "c01207de-0f57-491a-9377-84b80317c81e",
+                    "A collection if data items that describe a situation.  This is an instance of a report."),
+
+    /**
+     * A collection of data items used to request activity.
+     */
+    FORM("8078e3d1-0c63-4ace-aafa-68498b39ccd6",
+         "Form",
+         OpenMetadataWikiPages.MODEL_0239_REPORTS,
+         "18ae6f80-98de-4f05-8684-426a90523834",
+         "A collection of data items used to request activity."),
 
     /**
      * A packaged and deployed analytics model.
@@ -3502,16 +3760,6 @@ public enum OpenMetadataType
     public static final String NAME_PATTERN_PROPERTY_NAME = "namePattern";       /* from DataFieldValues classification */
 
     /**
-     * 22f996d0-c4b7-433a-af0b-6a3e9478e488
-     */
-    public static final String DATA_SCOPE_CLASSIFICATION_GUID = "22f996d0-c4b7-433a-af0b-6a3e9478e488";
-
-    /**
-     * DataScope
-     */
-    public static final String DATA_SCOPE_CLASSIFICATION_NAME = "DataScope";
-
-    /**
      * minLongitude
      */
     public static final String MIN_LONGITUDE_PROPERTY_NAME = "minLongitude";
@@ -3540,292 +3788,6 @@ public enum OpenMetadataType
      * maxHeight
      */
     public static final String MAX_HEIGHT_PROPERTY_NAME = "maxHeight";
-
-
-    /**
-     * 48ac9028-45dd-495d-b3e1-622685b54a01
-     */
-    public static final String FOLDER_HIERARCHY_TYPE_GUID = "48ac9028-45dd-495d-b3e1-622685b54a01";  /* from Area 2 */
-
-    /**
-     * FolderHierarchy
-     */
-    public static final String FOLDER_HIERARCHY_TYPE_NAME = "FolderHierarchy";
-
-    /**
-     * 4cb88900-1446-4eb6-acea-29cd9da45e63
-     */
-    public static final String NESTED_FILE_TYPE_GUID = "4cb88900-1446-4eb6-acea-29cd9da45e63";  /* from Area 2 */
-
-    /**
-     * NestedFile
-     */
-    public static final String NESTED_FILE_TYPE_NAME = "NestedFile";
-
-    /**
-     * 970a3405-fde1-4039-8249-9aa5f56d5151
-     */
-    public static final String LINKED_FILE_TYPE_GUID = "970a3405-fde1-4039-8249-9aa5f56d5151";  /* from Area 2 */
-
-    /**
-     * LinkedFile
-     */
-    public static final String LINKED_FILE_TYPE_NAME = "LinkedFile";
-
-
-
-    /**
-     * cee3a190-fc8d-4e53-908a-f1b9689581e0
-     */
-    public static final String LINKED_MEDIA_TYPE_GUID = "cee3a190-fc8d-4e53-908a-f1b9689581e0";  /* from Area 2 */
-
-    /**
-     * LinkedMedia - End1 = MediaFile; End 2 = MediaFile
-     */
-    public static final String LINKED_MEDIA_TYPE_NAME = "LinkedMedia";
-
-
-
-
-    /**
-     * delimiterCharacter
-     */
-    public static final String DELIMITER_CHARACTER_PROPERTY_NAME = "delimiterCharacter";                   /* from CSVFile entity */
-
-    /**
-     * quoteCharacter
-     */
-    public static final String QUOTE_CHARACTER_PROPERTY_NAME = "quoteCharacter";                       /* from CSVFile entity */
-
-
-    /**
-     * cab5ba1d-cfd3-4fca-857d-c07711fc4157
-     */
-    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
-
-    /**
-     * FileSystem - attaches to SoftwareCapability - typically DataManager
-     */
-    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
-    /* SoftwareCapability */
-
-    /**
-     * format
-     */
-    public static final String FORMAT_PROPERTY_NAME = "format";                /* from FileSystem */
-
-    /**
-     * encryption
-     */
-    public static final String ENCRYPTION_PROPERTY_NAME = "encryption";            /* from FileSystem */
-
-    /**
-     * eadec807-02f0-4d6f-911c-261eddd0c2f5
-     */
-    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_GUID = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
-
-    /**
-     * FileManager - attaches to SoftwareCapability - typically DataManager
-     */
-    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_NAME = "FileManager";
-
-    /**
-     * 3e7502a7-396a-4737-a106-378c9c94c1057
-     */
-    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_GUID = "3e7502a7-396a-4737-a106-378c9c94c1057";
-
-    /**
-     * NotificationManager - attaches to SoftwareCapability
-     */
-    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_NAME = "NotificationManager";
-
-    /**
-     * 39444bf9-638e-4124-a5f9-1b8f3e1b008b
-     */
-    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_GUID = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
-
-    /**
-     * EnterpriseAccessLayer - inherits from SoftwareServerCapability
-     */
-    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_NAME = "EnterpriseAccessLayer";
-
-    /**
-     * topicRoot
-     */
-    public static final String TOPIC_ROOT_PROPERTY_NAME = "topicRoot";            /* from EnterpriseAccessLayer */
-
-    /**
-     * accessedMetadataCollectionId
-     */
-    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME = "accessedMetadataCollectionId"; /* from EnterpriseAccessLayer */
-
-    /**
-     * 42063797-a78a-4720-9353-52026c75f667
-     */
-    public static final String COHORT_MEMBER_TYPE_GUID = "42063797-a78a-4720-9353-52026c75f667";
-
-    /**
-     * CohortMember - inherits from SoftwareServerCapability
-     */
-    public static final String COHORT_MEMBER_TYPE_NAME = "CohortMember";
-
-    /**
-     * protocolVersion
-     */
-    public static final String PROTOCOL_VERSION_PROPERTY_NAME = "protocolVersion";            /* from CohortMember */
-
-
-    /**
-     * bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e
-     */
-    public static final String TOPIC_SUBSCRIBERS_TYPE_GUID = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";  /* from Area 2 */
-
-    /**
-     * TopicSubscribers - End1 = SubscriberList; End 2 = Topic
-     */
-    public static final String TOPIC_SUBSCRIBERS_TYPE_NAME = "TopicSubscribers";
-
-
-    /**
-     * 68d7b905-6438-43be-88cf-5de027b4aaaf
-     */
-    public static final String INFORMATION_VIEW_TYPE_GUID = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
-
-    /**
-     * InformationView - inherits from DataSet
-     */
-    public static final String INFORMATION_VIEW_TYPE_NAME = "InformationView";
-
-    /**
-     * 8078e3d1-0c63-4ace-aafa-68498b39ccd6
-     */
-    public static final String FORM_TYPE_GUID = "8078e3d1-0c63-4ace-aafa-68498b39ccd6";  /* from Area 2 */
-
-    /**
-     * Form - inherits from DataSet
-     */
-    public static final String FORM_TYPE_NAME = "Form";
-
-    /**
-     * e9077f4f-955b-4d7b-b1f7-12ee769ff0c3
-     */
-    public static final String DEPLOYED_REPORT_TYPE_GUID = "e9077f4f-955b-4d7b-b1f7-12ee769ff0c3";  /* from Area 2 */
-
-    /**
-     * DeployedReport - inherits from DataSet
-     */
-    public static final String DEPLOYED_REPORT_TYPE_NAME = "DeployedReport";
-
-    /**
-     * id
-     */
-    public static final String ID_PROPERTY_NAME = "id";                                    /* from DeployedReport entity */
-
-    /**
-     * createdTime
-     */
-    public static final String CREATED_TIME_PROPERTY_NAME = "createdTime";                            /* from DeployedReport entity */
-
-    /**
-     * lastModifiedTime
-     */
-    public static final String LAST_MODIFIED_TIME_PROPERTY_NAME = "lastModifiedTime";                      /* from DeployedReport entity */
-
-    /**
-     * lastModifier
-     */
-    public static final String LAST_MODIFIER_PROPERTY_NAME = "lastModifier";                          /* from DeployedReport entity */
-
-
-    /**
-     * 70dbbda3-903f-49f7-9782-32b503c43e0e
-     */
-    public static final String PROCESS_HIERARCHY_TYPE_GUID = "70dbbda3-903f-49f7-9782-32b503c43e0e";  /* from Area 2 */
-
-    /**
-     * ProcessHierarchy - End1 = Process - parent; End 2 = Process - child
-     */
-    public static final String PROCESS_HIERARCHY_TYPE_NAME = "ProcessHierarchy";
-
-    /**
-     * 1bb4b908-7983-4802-a2b5-91b095552ee9
-     */
-    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID = "1bb4b908-7983-4802-a2b5-91b095552ee9";
-
-    /**
-     * ProcessContainmentType
-     */
-    public static final String PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME = "ProcessContainmentType";                /* from Area 2 */
-
-    /**
-     * containmentType
-     */
-    public static final String CONTAINMENT_TYPE_PROPERTY_NAME = "containmentType";               /* from ProcessHierarchy relationship */
-
-    /**
-     * e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C
-     */
-    public static final String PORT_TYPE_GUID = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";  /* from Area 2 */
-
-    /**
-     * Port - inherits from Referenceable
-     */
-    public static final String PORT_TYPE_NAME = "Port";
-
-    /**
-     * b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3
-     */
-    public static final String PORT_TYPE_ENUM_TYPE_GUID = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
-
-    /**
-     * PortType
-     */
-    public static final String PORT_TYPE_ENUM_TYPE_NAME = "PortType";                              /* from Area 2 */
-
-    /**
-     * portType
-     */
-    public static final String PORT_TYPE_PROPERTY_NAME = "portType";                              /* from Port entity */
-
-    /**
-     * DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5
-     */
-    public static final String PORT_ALIAS_TYPE_GUID = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";  /* from Area 2 */
-
-    /**
-     * PortAlias - inherits from Port
-     */
-    public static final String PORT_ALIAS_TYPE_NAME = "PortAlias";
-
-    /**
-     * ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E
-     */
-    public static final String PORT_IMPLEMENTATION_TYPE_GUID = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";  /* from Area 2 */
-
-    /**
-     * PortImplementation - inherits from Port
-     */
-    public static final String PORT_IMPLEMENTATION_TYPE_NAME = "PortImplementation";
-
-    /**
-     * fB4E00CF-37e4-88CE-4a94-233BAdB84DA2
-     */
-    public static final String PROCESS_PORT_TYPE_GUID = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";  /* from Area 2 */
-
-    /**
-     * ProcessPort - End1 = Process; End 2 = Port
-     */
-    public static final String PROCESS_PORT_TYPE_NAME = "ProcessPort";
-
-    /**
-     * 98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E
-     */
-    public static final String PORT_DELEGATION_TYPE_GUID = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";  /* from Area 2 */
-
-    /**
-     * PortDelegation - End1 = Port delegating from; End 2 = Port delegating to
-     */
-    public static final String PORT_DELEGATION_TYPE_NAME = "PortDelegation";
 
 
     /* ============================================================================================================================*/

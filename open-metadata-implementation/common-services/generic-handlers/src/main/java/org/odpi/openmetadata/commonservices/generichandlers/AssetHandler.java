@@ -1595,32 +1595,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
          */
         if (organizationGUID != null)
         {
-            this.validateAnchorForEntity(userId,
-                                         organizationGUID,
-                                         organizationGUIDParameterName,
-                                         OpenMetadataType.ORGANIZATION_TYPE_NAME,
-                                         true,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         supportedZones,
-                                         effectiveFrom,
-                                         methodName);
+            this.validateEntityAndAnchorForRead(userId,
+                                                organizationGUID,
+                                                organizationGUIDParameterName,
+                                                OpenMetadataType.ORGANIZATION_TYPE_NAME,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                supportedZones,
+                                                effectiveFrom,
+                                                methodName);
         }
 
         if (businessCapabilityGUID != null)
         {
-            this.validateAnchorForEntity(userId,
-                                         businessCapabilityGUID,
-                                         businessCapabilityGUIDParameterName,
-                                         OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
-                                         true,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         supportedZones,
-                                         effectiveFrom,
-                                         methodName);
+            this.validateEntityAndAnchorForRead(userId,
+                                                businessCapabilityGUID,
+                                                businessCapabilityGUIDParameterName,
+                                                OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
+                                                true,
+                                                false,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                supportedZones,
+                                                effectiveFrom,
+                                                methodName);
         }
 
         AssetBuilder builder = new AssetBuilder(repositoryHelper, serviceName, serverName);

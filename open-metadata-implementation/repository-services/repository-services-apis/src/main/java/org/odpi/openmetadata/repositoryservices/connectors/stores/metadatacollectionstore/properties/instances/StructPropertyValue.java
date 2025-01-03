@@ -57,6 +57,7 @@ public class StructPropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new StructPropertyValue(this);
@@ -68,6 +69,7 @@ public class StructPropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (attributes != null)
@@ -84,6 +86,7 @@ public class StructPropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (attributes != null)

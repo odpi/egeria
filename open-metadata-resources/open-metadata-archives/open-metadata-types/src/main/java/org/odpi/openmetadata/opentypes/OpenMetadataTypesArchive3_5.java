@@ -437,7 +437,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "NotificationManager";
+        final String typeName = OpenMetadataType.NOTIFICATION_MANAGER.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

@@ -42,9 +42,19 @@ public enum OpenMetadataProperty
     CREATED_BY("createdBy", DataType.STRING.getName(), "UserId that created this instance.", "peterprofile", "5c9c9c94-b738-4203-b592-527801877f07"),
 
     /**
+     * Time when this instance was created.
+     */
+    CREATE_TIME("createTime", DataType.DATE.getName(), "Time when this instance was created.", null, "5376d9a4-ad82-43cc-8d37-9247643418d8"),
+
+    /**
      * UserId that updated this instance.
      */
     UPDATED_BY("updatedBy", DataType.STRING.getName(), "UserId that updated this instance.", "erinoverview", "6fcbf02d-3d3b-4739-9209-51a02779393b"),
+
+    /**
+     * Time when this instance was last updated.
+     */
+    UPDATE_TIME("updateTime", DataType.DATE.getName(), "Time when this instance was last updated.", null, "3cefe85f-4904-411f-9afd-546c0a9ba016"),
 
     /**
      * The date/time that this instance should start to be used (null means it can be used from creationTime).
@@ -69,7 +79,7 @@ public enum OpenMetadataProperty
     /**
      * Name of an open metadata type. (Use only for ordering results).
      */
-    OPEN_METADATA_TYPE_NAME("openMetadataTypeName", DataType.STRING.getName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712"),
+    OPEN_METADATA_TYPE_NAME("typeName", DataType.STRING.getName(), "Name of an open metadata type.", "Asset", "a7eabe8c-d0c6-4785-86b3-f2bc310ec712"),
 
 
     /* ======================================================
@@ -79,17 +89,7 @@ public enum OpenMetadataProperty
     /**
      * Unique identifier of an open metadata entity, classification or relationship.
      */
-    TYPE_NAME("typeName", DataType.STRING.getName(), "Unique name of an open metadata entity,classification or relationship.", "Asset", "7c5a7e83-2709-4789-b014-d23082a659bd"),
-
-    /**
-     * Time that an instance was created.
-     */
-    CREATE_TIME("createTime", DataType.DATE.getName(), "Time that an instance was created.", null, "433f573a-0044-4943-a8ee-78102ae2fb32"),
-
-    /**
-     * Last time that an instance was updated.
-     */
-    UPDATE_TIME("updateTime", DataType.DATE.getName(), "Last time that an instance was updated.", null, "6b94347b-f692-4c44-9c61-d050d9758c54"),
+    INSTANCE_METADATA_TYPE_NAME("instanceMetadataTypeName", DataType.STRING.getName(), "Name of the metadata data type extracted from an instance.", "JPEG", "7c5a7e83-2709-4789-b014-d23082a659bd"),
 
     /**
      * Timestamp when the archive occurred or was detected.
@@ -1482,6 +1482,9 @@ public enum OpenMetadataProperty
      */
     OPERATING_SYSTEM_PATCH_LEVEL("operatingSystemPatchLevel", DataType.STRING.getName(), "Level of patches applied to the operating system.", null, "6fdda5ad-488a-477d-a1cc-33bb8267ef4b"),
 
+    /**
+     * The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.
+     */
     MEMBER_ROLE("memberRole", DataType.STRING.getName(), "The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.", null, "9c143e06-6a8c-47ba-acf6-28a87fef4f2b"),
     /**
      * Preferred pronouns to use when addressing this person.
@@ -1840,6 +1843,70 @@ public enum OpenMetadataProperty
      */
     HOPS("hops", DataType.MAP_STRING_INT.getName(), "The number of hops along the lineage graph to the ultimate source organized by type of element.", null, "4bcc1f8e-ebef-4a6e-adbe-65d3932104e7"),
 
+    /**
+     * Root of topic names used by the Open Metadata access Services (OMASs).
+     */
+    TOPIC_ROOT("topicRoot", DataType.STRING.getName(), "Root of topic names used by the Open Metadata Access Services (OMASs).", null, "78db859f-2335-4fe4-8af5-442a641bfd66"),
+
+    /**
+     * Name of the topic(s) used to exchange registration, type definitions and metadata instances between the members of the open metadata repository cohort.
+     */
+    COHORT_TOPICS("cohortTopics", DataType.ARRAY_STRING.getName(), "Name of the topic(s) used to exchange registration, type definitions and metadata instances between the members of the open metadata repository cohort.", null, "2c1e2c5f-7f67-42b3-86d2-ad28de83a3fa"),
+
+    /**
+     * Unique identifier for the metadata collection accessed through this enterprise access layer.
+     */
+    ENTERPRISE_METADATA_COLLECTION_ID("enterpriseMetadataCollectionId", DataType.STRING.getName(), "Unique identifier for the metadata collection accessed through this enterprise access layer.", "40af7dbc-e9f4-46de-92a5-65e97fd8fd58", "40af7dbc-e9f4-46de-92a5-65e97fd8fd58"),
+
+    /**
+     * Unique identifier for a collection of metadata managed by a repository.
+     */
+    MANAGED_METADATA_COLLECTION_ID("managedMetadataCollectionId", DataType.STRING.getName(), "Unique identifier for a collection of metadata managed by a repository.", "844dbf4b-7446-4610-9777-698d05473feb", "844dbf4b-7446-4610-9777-698d05473feb"),
+
+    /**
+     * Date first registered with the cohort.
+     */
+    REGISTRATION_DATE("registrationDate", DataType.DATE.getName(), "Date first registered with the cohort.", null, "04bba48e-27f0-4c2e-af99-3208906a1c68"),
+
+    /**
+     * Version number of the protocol supported by the cohort registry.
+     */
+    PROTOCOL_VERSION("protocolVersion", DataType.STRING.getName(), "Version number of the protocol supported by the cohort registry.", null, "67fbbf35-ed67-4c50-b8d5-9eb03f6afbd5"),
+
+    /**
+     * Id of report.
+     */
+    ID("id", DataType.STRING.getName(), "Id of report.", null, "3dd6fb02-e375-40ca-97bb-24af0142887f"),
+
+    /**
+     * Author of the report.
+     */
+    AUTHOR("author", DataType.STRING.getName(), "Author of the report.", null, "e121d939-cd79-49cb-aa3e-d05b99c64b8a"),
+
+    /**
+     * Report create time.
+     */
+    CREATED_TIME("createdTime", DataType.DATE.getName(), "Report create time.", null, "aa1b747d-77fd-46d6-bc4b-1e383fc41991"),
+
+    /**
+     * Report last modified time.
+     */
+    LAST_MODIFIED_TIME("lastModifiedTime", DataType.DATE.getName(), "Report last modified time.", null, "02d1f052-55ea-4b4c-845f-40d0ce5204e4"),
+
+    /**
+     * UserId of the report last modifier.
+     */
+    LAST_MODIFIER("lastModifier", DataType.STRING.getName(), "UserId of the report last modifier.", null, "22bab62c-e4bf-41fe-bf0c-8d11cb611119"),
+
+    /**
+     * The containment relationship between two processes: the parent and one of its children.
+     */
+    CONTAINMENT_TYPE("containmentType", ProcessContainmentType.getOpenTypeName(), ProcessContainmentType.getOpenTypeDescription(), ProcessContainmentType.OWNED.getName(), ProcessContainmentType.getOpenTypeDescriptionGUID()),
+
+    /**
+     * Descriptor for a port that indicates the direction that data is flowing.
+     */
+    PORT_TYPE("portType", PortType.getOpenTypeName(), PortType.getOpenTypeDescription(), PortType.INOUT_PORT.getName(), PortType.getOpenTypeDescriptionGUID()),
 
     ;
 

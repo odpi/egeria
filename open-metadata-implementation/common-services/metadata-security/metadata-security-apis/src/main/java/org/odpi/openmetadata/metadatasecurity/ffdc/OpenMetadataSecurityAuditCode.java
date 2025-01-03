@@ -92,11 +92,11 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     /**
      * OPEN-METADATA-SECURITY-0008 - User {0} is not authorized to attach feedback to asset {1}
      */
-    UNAUTHORIZED_ASSET_FEEDBACK("OPEN-METADATA-SECURITY-0008",
-              AuditLogRecordSeverityLevel.SECURITY,
-             "User {0} is not authorized to attach feedback to asset {1}",
-             "The security service detected an unauthorized change to an asset.",
-             "Review the security policies and settings to determine if this access should be allowed or not." +
+    UNAUTHORIZED_ADD_FEEDBACK("OPEN-METADATA-SECURITY-0008",
+                              AuditLogRecordSeverityLevel.SECURITY,
+                              "User {0} is not authorized to attach feedback to asset {1}",
+                              "The security service detected an unauthorized change to an asset.",
+                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
@@ -120,13 +120,13 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to access asset {1}
+     * OPEN-METADATA-SECURITY-0011 - User {0} is not authorized to issue operation {1} on {2} anchor element {3}
      */
-    UNAUTHORIZED_ASSET_ACCESS("OPEN-METADATA-SECURITY-0011",
-                             AuditLogRecordSeverityLevel.SECURITY,
-                             "User {0} is not authorized to access asset {1}",
-                             "The security service detected an unauthorized access to an asset.",
-                             "Review the security policies and settings to determine if this access should be allowed or not." +
+    UNAUTHORIZED_ANCHOR_ACCESS("OPEN-METADATA-SECURITY-0011",
+                               AuditLogRecordSeverityLevel.SECURITY,
+                               "User {0} is not authorized to issue operation {1} on {2} anchor element {3}",
+                               "The security service detected an unauthorized access to a member of the anchor element.",
+                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
@@ -209,23 +209,23 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on glossary {2}
+     * OPEN-METADATA-SECURITY-0020 - User {0} is not authorized to issue operation {1} on {2} element {3}
      */
-    UNAUTHORIZED_GLOSSARY_ACCESS("OPEN-METADATA-SECURITY-0020",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to issue operation {1} on glossary {2}",
-                              "The security service detected an unauthorized access to a glossary.",
-                              "Review the security policies and settings to determine if this access to a glossary should be allowed or not." +
+    UNAUTHORIZED_ELEMENT_ACCESS("OPEN-METADATA-SECURITY-0020",
+                                AuditLogRecordSeverityLevel.SECURITY,
+                                "User {0} is not authorized to issue operation {1} on {2} element {3}",
+                                "The security service detected an unauthorized access to an element.",
+                                "Review the security policies and settings to determine if this access to the element should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
     /**
-     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the glossary is null
+     * OPEN-METADATA-SECURITY-0021 - User {0} is not authorized to issue operation {1} because the anchor is null
      */
-    NULL_GLOSSARY("OPEN-METADATA-SECURITY-0021",
-                              AuditLogRecordSeverityLevel.SECURITY,
-                              "User {0} is not authorized to issue operation {1} because the glossary is null",
-                              "The system is unable to process a request from the user because the glossary element is not correctly anchored on a glossary.",
-                              "The request fails with a UserNotAuthorizedException exception. Add the anchor relationship of the glossary element to its glossary and corresponding Anchors classification.  When both are in place, re-run the request."),
+    NULL_ANCHOR("OPEN-METADATA-SECURITY-0021",
+                AuditLogRecordSeverityLevel.SECURITY,
+                "User {0} is not authorized to issue operation {1} because the element's anchor is null",
+                "The system is unable to process a request from the user because the element is not correctly anchored.",
+                "The request fails with a UserNotAuthorizedException exception. Add the Anchors classification and re-run the request."),
 
     /**
      * OPEN-METADATA-SECURITY-0022 - User {0} is not recognized
@@ -236,7 +236,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                  "The security service has received a request from an unknown user.",
                  "Track down the source of the request and either add the user to the user directory or prevent the user from accessing again."),
 
-
     /**
      * OPEN-METADATA-SECURITY-0023 - Exception {0} occurred when retrieving user {1}; message was {2}
      */
@@ -245,81 +244,6 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                  "Exception {0} occurred when retrieving user {1}; message was {2}",
                  "An exception occurred when the security service tried to retrieve a user account.",
                  "Use the information in the exception to determine the cause of this error.  The user will not be granted access to the open metadata ecosystem."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0050 - User {0} retrieved {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_READ("OPEN-METADATA-SECURITY-0050",
-                  AuditLogRecordSeverityLevel.ACTIVITY,
-                  "User {0} retrieved {1} asset {2} during operation {3} of service {4}",
-                  "This message is used to capture user requests to receive an asset.",
-                  "No action is required, but this message can be used to capture user activity information."),
-
-
-    /**
-     * OPEN-METADATA-SECURITY-0051 - User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_READ_ATTACHMENT("OPEN-METADATA-SECURITY-0051",
-                        AuditLogRecordSeverityLevel.ACTIVITY,
-                        "User {0} retrieved an attachment to {1} asset {2} during operation {3} of service {4}",
-                        "This message is used to capture user requests to receive full details about an asset.",
-                        "No action is required, but this message can be used to capture user activity information about the use of assets."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0052 - User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_UPDATE_ATTACHMENT("OPEN-METADATA-SECURITY-0052",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated an attachment to {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to build out the knowledge for an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to curation of an asset."),
-
-
-    /**
-     * OPEN-METADATA-SECURITY-0053 - User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_UPDATE_FEEDBACK("OPEN-METADATA-SECURITY-0053",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated feedback related to {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to maintain feedback on an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to the maintenance of feedback attached to an asset."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0054 - User {0} updated {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_UPDATE("OPEN-METADATA-SECURITY-0054",
-                                   AuditLogRecordSeverityLevel.ACTIVITY,
-                                   "User {0} updated {1} asset {2} during operation {3} of service {4}",
-                                   "This message is used to capture user requests to update an asset.",
-                                   "No action is required, but this message can be used to capture user activity information related to asset updates."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0055 - User {0} deleted {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_DELETE("OPEN-METADATA-SECURITY-0055",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} deleted {1} asset {2} during operation {3} of service {4}",
-                          "This message is used to capture user requests to delete an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset deletion."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0056 - User {0} retrieved {1} asset {2} during search operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_SEARCH("OPEN-METADATA-SECURITY-0056",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} retrieved {1} asset {2} during search operation {3} of service {4}",
-                          "This message is used to capture user requests to retrieve an asset as part of a search request.  The asset may not be the caller's choice.",
-                          "No action is required, but this message can be used to capture user activity information relating to the assets being retrieved through searches."),
-
-    /**
-     * OPEN-METADATA-SECURITY-0057 - User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_SEARCH_ATTACHMENT("OPEN-METADATA-SECURITY-0057",
-                                     AuditLogRecordSeverityLevel.ACTIVITY,
-                                     "User {0} retrieved an attachment to {1} asset {2} during search operation {3} of service {4}",
-                                     "This message is used to capture user requests to retrieve part of an asset as part of a search request.  This asset may not be the caller's choice.",
-                                     "No action is required, but this message can be used to capture user activity information relating to the attachments of an asset assets being retrieved through searches."),
-
 
     /**
      * OPEN-METADATA-SECURITY-0099 - The security connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}
@@ -410,7 +334,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
     @Override
     public String toString()
     {
-        return "OpenMetadataSecurityAuditCode{" +
+        return "OpenMetadataObservabilityAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +
                 ", logMessage='" + logMessage + '\'' +

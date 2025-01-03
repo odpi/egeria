@@ -52,6 +52,7 @@ public enum RelationalTableMetric implements SurveyMetric
      *
      * @return name
      */
+    @Override
     public String getPropertyName()
     {
         return propertyName;
@@ -63,6 +64,7 @@ public enum RelationalTableMetric implements SurveyMetric
      *
      * @return data type name
      */
+    @Override
     public String getDataType()
     {
         return dataType;
@@ -74,6 +76,7 @@ public enum RelationalTableMetric implements SurveyMetric
      *
      * @return string name
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -85,6 +88,7 @@ public enum RelationalTableMetric implements SurveyMetric
      *
      * @return text
      */
+    @Override
     public String getDescription()
     {
         return description;

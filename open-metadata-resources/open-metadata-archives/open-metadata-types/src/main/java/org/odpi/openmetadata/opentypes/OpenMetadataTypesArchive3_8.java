@@ -298,35 +298,15 @@ public class OpenMetadataTypesArchive3_8
 
     private EntityDef addMetadataRepositoryServiceEntity()
     {
-        final String guid            = "27891e52-1255-4a33-98a2-377717a25334";
-        final String name            = "MetadataRepositoryService";
-        final String description     = "Provides access to a metadata repository - either local or remote.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_REPOSITORY_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
 
 
     private EntityDef addSecurityServiceEntity()
     {
-        final String guid            = "2df2069f-6475-400c-bf8c-6d2072a55d47";
-        final String name            = "SecurityService";
-        final String description     = "Provides security services - classifications identify specific capabilities.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
 
 

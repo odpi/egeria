@@ -60,12 +60,10 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         super.start();
 
         defaultExcludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionProperties.getConfigurationProperties(),
-                                                                      null);
+                                                                      connectionProperties.getConfigurationProperties());
 
         defaultIncludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                      connectionProperties.getConfigurationProperties(),
-                                                                      null);
+                                                                      connectionProperties.getConfigurationProperties());
     }
 
 

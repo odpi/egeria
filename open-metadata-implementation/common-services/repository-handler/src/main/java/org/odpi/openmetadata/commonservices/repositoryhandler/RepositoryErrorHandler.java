@@ -982,6 +982,47 @@ public class RepositoryErrorHandler
 
 
     /**
+     * Throw an exception if multiple relationships are returned when not expected.
+     *
+     * @param entityGUID  unique identifier for the anchor entity
+     * @param entityTypeName  name of the entity's type
+     * @param relationshipTypeName expected type of relationship
+     * @param attachedEntities list of entities returned
+     * @param methodName  name of the method making the call
+     *
+     * @throws PropertyServerException unexpected response from property server
+     */
+    public void handleAmbiguousAttachedEntities(String             entityGUID,
+                                                String             entityTypeName,
+                                                String             relationshipTypeName,
+                                                List<EntityDetail> attachedEntities,
+                                                String             methodName) throws PropertyServerException
+    {
+        List<String>  attachedEntityGUIDs = new ArrayList<>();
+
+        if (attachedEntities != null)
+        {
+            for (EntityDetail  attachedEntity: attachedEntities)
+            {
+                if (attachedEntity != null)
+                {
+                    attachedEntityGUIDs.add(attachedEntity.getGUID());
+                }
+            }
+        }
+
+        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(relationshipTypeName,
+                                                                                                                       entityTypeName,
+                                                                                                                       entityGUID,
+                                                                                                                       attachedEntityGUIDs.toString(),
+                                                                                                                       methodName,
+                                                                                                                       serverName),
+                                          this.getClass().getName(),
+                                          methodName);
+    }
+
+
+    /**
      * Throw an exception if multiple entities are returned when not expected.
      *
      * @param name  requested name for the entity

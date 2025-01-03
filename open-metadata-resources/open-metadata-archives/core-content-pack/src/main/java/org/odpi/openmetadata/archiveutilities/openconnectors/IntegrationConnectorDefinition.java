@@ -24,7 +24,6 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatal
 import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 
@@ -174,7 +173,7 @@ public enum IntegrationConnectorDefinition
                           "Synchronizes metadata information about the contents of catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
                           OSSUnityCatalogInsideCatalogSyncProvider.class.getName(),
                           "UnityCatalogInsideCatalogSynchronizer",
-                          "ossuccatcatnpa",
+                          "uccatcatnpa",
                           null,
                           null,
                           null,
@@ -187,7 +186,7 @@ public enum IntegrationConnectorDefinition
                          "Synchronizes metadata about the catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
                          OSSUnityCatalogServerSyncProvider.class.getName(),
                          "UnityCatalogServerSynchronizer",
-                         "ossuccatnpa",
+                         "ucservernpa",
                          null,
                          null,
                          getUCServerConfigProperties(),

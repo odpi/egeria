@@ -62,7 +62,7 @@ public class RESTCallToken
     RESTCallToken(String serviceName, String serverName, String methodName)
     {
         this.serviceName = serviceName;
-        this.userId      = userId;
+        this.userId      = null;
         this.methodName  = methodName;
 
         this.watch = StopWatch.createStarted();

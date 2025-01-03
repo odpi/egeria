@@ -255,7 +255,7 @@ public class OpenIntegrationHandler
                                                                                                   OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_GUID,
                                                                                                   OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_NAME,
                                                                                                   OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
-                                                                                                  null,
+                                                                                                  (String)null,
                                                                                                   null,
                                                                                                   2,
                                                                                                   null,

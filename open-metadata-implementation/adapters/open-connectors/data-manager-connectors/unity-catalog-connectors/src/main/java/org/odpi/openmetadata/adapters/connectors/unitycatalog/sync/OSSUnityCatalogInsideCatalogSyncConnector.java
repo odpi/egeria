@@ -79,35 +79,25 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
         }
 
         this.defaultExcludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
         this.defaultIncludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
         this.defaultExcludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_TABLE_NAMES.getName(),
-                                                                            connectionProperties.getConfigurationProperties(),
-                                                                            null);
+                                                                            connectionProperties.getConfigurationProperties());
         this.defaultIncludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_TABLE_NAMES.getName(),
-                                                                            connectionProperties.getConfigurationProperties(),
-                                                                            null);
+                                                                            connectionProperties.getConfigurationProperties());
         this.defaultExcludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_FUNCTION_NAMES.getName(),
-                                                                               connectionProperties.getConfigurationProperties(),
-                                                                               null);
+                                                                               connectionProperties.getConfigurationProperties());
         this.defaultIncludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_FUNCTION_NAMES.getName(),
-                                                                               connectionProperties.getConfigurationProperties(),
-                                                                               null);
+                                                                               connectionProperties.getConfigurationProperties());
         this.defaultExcludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_VOLUME_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
         this.defaultIncludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
         this.defaultExcludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_MODEL_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
         this.defaultIncludeModelNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_MODEL_NAMES.getName(),
-                                                                             connectionProperties.getConfigurationProperties(),
-                                                                             null);
+                                                                             connectionProperties.getConfigurationProperties());
     }
 
 

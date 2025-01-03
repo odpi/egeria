@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
 import java.util.Date;
@@ -140,18 +141,6 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
 
 
     /**
-     * Retrieve a secret from the secrets store.
-     *
-     * @param secretsCollectionName name of collection
-     * @param secretName name of the secret.
-     * @return secret
-     * @throws ConnectorCheckedException there is a problem with the connector
-     */
-    abstract public String getSecret(String secretsCollectionName,
-                                     String secretName) throws ConnectorCheckedException;
-
-
-    /**
      * Retrieve the refresh time from the secrets store.
      *
      * @return how long the secrets can be cached - 0 means indefinitely
@@ -167,7 +156,10 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * @return associated user details or null
      * @throws ConnectorCheckedException there is a problem with the connector
      */
-    abstract public UserAccount getUser(String userId) throws ConnectorCheckedException;
+    public UserAccount getUser(String userId) throws ConnectorCheckedException
+    {
+        return null;
+    }
 
 
     /**
@@ -176,5 +168,33 @@ public abstract class SecretsStoreConnector extends ConnectorBase implements Aud
      * @return map of userIds to user details
      * @throws ConnectorCheckedException there is a problem with the connector
      */
-    abstract public Map<String, UserAccount> getUsers() throws ConnectorCheckedException;
+    public Map<String, UserAccount> getUsers() throws ConnectorCheckedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Look up a particular named list in the collection.
+     *
+     * @param listName name of a list
+     * @return corresponding named list or null
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    public NamedList getNamedList(String listName) throws  ConnectorCheckedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Return all of the known named lists in this collection
+     *
+     * @return map of named lists in this collection
+     * @throws ConnectorCheckedException there is a problem with the connector
+     */
+    public Map<String, NamedList> getNamedLists() throws ConnectorCheckedException
+    {
+        return null;
+    }
 }

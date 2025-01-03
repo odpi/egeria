@@ -1426,7 +1426,7 @@ public class SchemaManagerRESTServices
                                                            OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
                                                            OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                            null,
-                                                           OpenMetadataType.PORT_TYPE_NAME,
+                                                           OpenMetadataType.PORT.typeName,
                                                            1,
                                                            null,
                                                            null,

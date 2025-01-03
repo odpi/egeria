@@ -37,7 +37,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
     private static final String ENUM_TYPE_NAME  = "ProcessContainmentType";
 
     private static final String ENUM_DESCRIPTION = "The containment relationship between two processes: the parent and one of its children.";
-    private static final String ENUM_DESCRIPTION_GUID = "2bf66b58-0d73-4a6b-8194-009d1af25b86";
+    private static final String ENUM_DESCRIPTION_GUID = "bb3cd2b2-d3c9-449c-b2f7-39db7d217caf";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS;
     private final String descriptionGUID;
 
@@ -72,6 +72,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -80,6 +81,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -88,6 +90,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 
@@ -96,6 +99,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
      *
      * @return  guid
      */
+    @Override
     public  String getDescriptionGUID()
     {
         return descriptionGUID;
@@ -107,6 +111,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
      *
      * @return boolean
      */
+    @Override
     public boolean isDefault()
     {
         return false;
@@ -169,7 +174,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                OpenMetadataProperty.CONTAINMENT_TYPE.name,
                                                 null,
                                                 name);
     }
@@ -183,7 +188,7 @@ public enum ProcessContainmentType implements OpenMetadataEnum
     public String getCategory()
     {
         return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                           OpenMetadataProperty.CONTAINMENT_TYPE.name,
                                            null);
     }
 

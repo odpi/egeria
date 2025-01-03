@@ -278,6 +278,32 @@ public enum GovernanceServerAuditCode implements AuditLogMessageSet
                       "This is part of the normal operation of the service.  No action is required if this action is expected " +
                               "beyond verifying that the requested action is correctly shutdown."),
 
+    /**
+     * OMAS-GOVERNANCE-SERVER-0024 - The Governance Server Open Metadata Access Service (OMAS) has sent a watch dog event of type {0}
+     * for instance {1} of type {2}
+     */
+    OUT_TOPIC_WATCHDOG_EVENT("OMAS-GOVERNANCE-SERVER-0024",
+                             AuditLogRecordSeverityLevel.EVENT,
+                             "The Governance Server Open Metadata Access Service (OMAS) has sent a watch dog event of type {0} for instance {1} of type {2}",
+                             "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
+                                     "configuration.  This message is to create a record of the events that are being published.",
+                             "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
+                                     "Check that each connected governance server receives this event and updates its configuration if " +
+                                     "the change affects their operation."),
+
+
+    /**
+     * OMAS-GOVERNANCE-SERVER-0017 - The Governance Server Open Metadata Access Service (OMAS) sent a metadata change event to listening
+     * Open Watchdog Governance Action Services: {0}
+     */
+    WATCHDOG_EVENT("OMAS-GOVERNANCE-SERVER-0017",
+                   AuditLogRecordSeverityLevel.EVENT,
+                   "The Governance Server Open Metadata Access Service (OMAS) sent a metadata change event to listening Open Watchdog Governance Action Services: {0}",
+                   "The access service sends out metadata change events when metadata instances change (with the exception of metadata " +
+                           "associated with processing governance services).  These events are passed to listening Open Watchdog Governance Action Services " +
+                           "as long as the event matches the criteria that where specified when the listener was registered.",
+                   "This is part of the normal operation of the service.  Verify that these events are being received by the " +
+                           "watchdog governance action services."),
     ;
 
 

@@ -66,6 +66,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new PrimitivePropertyValue(this);
@@ -77,6 +78,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public  String valueAsString()
     {
         return primitiveValue == null ? "<null>" : primitiveValue.toString();
@@ -88,6 +90,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public  Object valueAsObject()
     {
         return primitiveValue;

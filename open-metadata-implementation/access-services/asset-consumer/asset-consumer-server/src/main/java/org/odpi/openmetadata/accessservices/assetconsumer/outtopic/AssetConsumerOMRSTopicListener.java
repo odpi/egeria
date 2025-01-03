@@ -734,17 +734,17 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     fullEntity = entity;
 
-                    assetHandler.validateAnchorForEntity(userId,
-                                                         fullEntity.getType().getTypeDefName(),
-                                                         fullEntity,
-                                                         guidParameterName,
-                                                         false,
-                                                         false,
-                                                         true,
-                                                         false,
-                                                         supportedZones,
-                                                         effectiveTime,
-                                                         methodName);
+                    assetHandler.validateEntityAndAnchorForRead(userId,
+                                                                fullEntity.getType().getTypeDefName(),
+                                                                fullEntity,
+                                                                guidParameterName,
+                                                                false,
+                                                                false,
+                                                                true,
+                                                                false,
+                                                                supportedZones,
+                                                                effectiveTime,
+                                                                methodName);
                 }
             }
             else if (entityProxy != null)

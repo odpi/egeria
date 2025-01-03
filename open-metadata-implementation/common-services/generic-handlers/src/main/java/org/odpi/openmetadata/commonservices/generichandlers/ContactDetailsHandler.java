@@ -107,7 +107,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                         OpenMetadataType.CONTACT_DETAILS.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,
@@ -207,17 +207,10 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                profileGUID,
                                                profileGUIDParameterName,
-                                               OpenMetadataType.ACTOR_PROFILE.typeName,
                                                contactMethodGUID,
                                                contactMethodGUIDParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 

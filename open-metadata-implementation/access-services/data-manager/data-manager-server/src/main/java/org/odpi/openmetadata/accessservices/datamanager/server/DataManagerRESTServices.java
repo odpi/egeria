@@ -179,7 +179,7 @@ public class DataManagerRESTServices
                                                                   requestBody.getExternalSourceGUID(),
                                                                   requestBody.getExternalSourceName(),
                                                                   OpenMetadataType.DATA_MANAGER.typeName,
-                                                                  OpenMetadataType.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.FILE_MANAGER_CLASSIFICATION.typeName,
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getResourceName(),
                                                                   requestBody.getResourceDescription(),

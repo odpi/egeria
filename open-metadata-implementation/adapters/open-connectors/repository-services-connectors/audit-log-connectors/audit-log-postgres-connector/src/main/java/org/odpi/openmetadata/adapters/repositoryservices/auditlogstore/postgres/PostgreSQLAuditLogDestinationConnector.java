@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
@@ -36,16 +37,16 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     private static final Logger log = LoggerFactory.getLogger(PostgreSQLAuditLogDestinationConnector.class);
 
 
-    private static final String ASSET_ACTIVITY_CREATE            = "OMAG-GENERIC-HANDLERS-0026";
-    private static final String ASSET_ACTIVITY_READ              = "OPEN-METADATA-SECURITY-0050";
-    private static final String ASSET_ACTIVITY_READ_ATTACHMENT   = "OPEN-METADATA-SECURITY-0051";
-    private static final String ASSET_ACTIVITY_UPDATE_ATTACHMENT = "OPEN-METADATA-SECURITY-0052";
-    private static final String ASSET_ACTIVITY_UPDATE_FEEDBACK   = "OPEN-METADATA-SECURITY-0053";
-    private static final String ASSET_ACTIVITY_UPDATE            = "OPEN-METADATA-SECURITY-0054";
-    private static final String ASSET_ACTIVITY_DELETE            = "OPEN-METADATA-SECURITY-0055";
-    private static final String ASSET_ACTIVITY_SEARCH            = "OPEN-METADATA-SECURITY-0056";
-    private static final String ASSET_ACTIVITY_SEARCH_ATTACHMENT = "OPEN-METADATA-SECURITY-0057";
-    private static final String USER_REQUEST_ACTIVITY            = "OMAG-MULTI-TENANT-0003";
+    private static final String ASSET_ACTIVITY_CREATE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_READ              = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_READ_ATTACHMENT   = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_READ_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE_ATTACHMENT = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE_FEEDBACK   = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE_FEEDBACK.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_UPDATE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_UPDATE.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_DELETE            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_DELETE.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_SEARCH            = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH.getMessageDefinition().getMessageId();
+    private static final String ASSET_ACTIVITY_SEARCH_ATTACHMENT = OpenMetadataObservabilityAuditCode.ASSET_ACTIVITY_SEARCH_ATTACHMENT.getMessageDefinition().getMessageId();
+    private static final String USER_REQUEST_ACTIVITY            = OpenMetadataObservabilityAuditCode.USER_REQUEST_ACTIVITY.getMessageDefinition().getMessageId();
 
 
      private String                connectorName      = null;
@@ -181,95 +182,122 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
                 if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.ACTIVITY.getOrdinal())
                 {
-                    switch (logRecord.getMessageId())
+                    if (ASSET_ACTIVITY_CREATE.equals(logRecord.getMessageId()))
                     {
-                        case ASSET_ACTIVITY_CREATE -> syncAssetActivity(logRecord.getThreadId(),
-                                                                        logRecord.getOriginatorProperties().get("serverName"),
-                                                                        logRecord.getTimeStamp(),
-                                                                        "Asset Create",
-                                                                        logRecord.getMessageParameters()[2],
-                                                                        logRecord.getMessageParameters()[1],
-                                                                        logRecord.getMessageParameters()[3],
-                                                                        logRecord.getMessageParameters()[4],
-                                                                        logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_READ -> syncAssetActivity(logRecord.getThreadId(),
-                                                                      logRecord.getOriginatorProperties().get("serverName"),
-                                                                      logRecord.getTimeStamp(),
-                                                                      "Asset Read",
-                                                                      logRecord.getMessageParameters()[2],
-                                                                      logRecord.getMessageParameters()[1],
-                                                                      logRecord.getMessageParameters()[3],
-                                                                      logRecord.getMessageParameters()[4],
-                                                                      logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_READ_ATTACHMENT -> syncAssetActivity(logRecord.getThreadId(),
-                                                                                 logRecord.getOriginatorProperties().get("serverName"),
-                                                                                 logRecord.getTimeStamp(),
-                                                                                 "Asset Read Attachment",
-                                                                                 logRecord.getMessageParameters()[2],
-                                                                                 logRecord.getMessageParameters()[1],
-                                                                                 logRecord.getMessageParameters()[3],
-                                                                                 logRecord.getMessageParameters()[4],
-                                                                                 logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_UPDATE_ATTACHMENT -> syncAssetActivity(logRecord.getThreadId(),
-                                                                                   logRecord.getOriginatorProperties().get("serverName"),
-                                                                                   logRecord.getTimeStamp(),
-                                                                                   "Asset Update Attachment",
-                                                                                   logRecord.getMessageParameters()[2],
-                                                                                   logRecord.getMessageParameters()[1],
-                                                                                   logRecord.getMessageParameters()[3],
-                                                                                   logRecord.getMessageParameters()[4],
-                                                                                   logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_UPDATE_FEEDBACK -> syncAssetActivity(logRecord.getThreadId(),
-                                                                                 logRecord.getOriginatorProperties().get("serverName"),
-                                                                                 logRecord.getTimeStamp(),
-                                                                                 "Asset Feedback",
-                                                                                 logRecord.getMessageParameters()[2],
-                                                                                 logRecord.getMessageParameters()[1],
-                                                                                 logRecord.getMessageParameters()[3],
-                                                                                 logRecord.getMessageParameters()[4],
-                                                                                 logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_UPDATE -> syncAssetActivity(logRecord.getThreadId(),
-                                                                        logRecord.getOriginatorProperties().get("serverName"),
-                                                                        logRecord.getTimeStamp(),
-                                                                        "Asset Update",
-                                                                        logRecord.getMessageParameters()[2],
-                                                                        logRecord.getMessageParameters()[1],
-                                                                        logRecord.getMessageParameters()[3],
-                                                                        logRecord.getMessageParameters()[4],
-                                                                        logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_DELETE -> syncAssetActivity(logRecord.getThreadId(),
-                                                                        logRecord.getOriginatorProperties().get("serverName"),
-                                                                        logRecord.getTimeStamp(),
-                                                                        "Asset Delete",
-                                                                        logRecord.getMessageParameters()[2],
-                                                                        logRecord.getMessageParameters()[1],
-                                                                        logRecord.getMessageParameters()[3],
-                                                                        logRecord.getMessageParameters()[4],
-                                                                        logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_SEARCH -> syncAssetActivity(logRecord.getThreadId(),
-                                                                        logRecord.getOriginatorProperties().get("serverName"),
-                                                                        logRecord.getTimeStamp(),
-                                                                        "Asset Search",
-                                                                        logRecord.getMessageParameters()[2],
-                                                                        logRecord.getMessageParameters()[1],
-                                                                        logRecord.getMessageParameters()[3],
-                                                                        logRecord.getMessageParameters()[4],
-                                                                        logRecord.getMessageParameters()[0]);
-                        case ASSET_ACTIVITY_SEARCH_ATTACHMENT -> syncAssetActivity(logRecord.getThreadId(),
-                                                                                   logRecord.getOriginatorProperties().get("serverName"),
-                                                                                   logRecord.getTimeStamp(),
-                                                                                   "Asset Search Attachment",
-                                                                                   logRecord.getMessageParameters()[2],
-                                                                                   logRecord.getMessageParameters()[1],
-                                                                                   logRecord.getMessageParameters()[3],
-                                                                                   logRecord.getMessageParameters()[4],
-                                                                                   logRecord.getMessageParameters()[0]);
-                        case USER_REQUEST_ACTIVITY -> syncAPICall(logRecord.getThreadId(),
-                                                                  logRecord.getMessageParameters()[3],
-                                                                  logRecord.getMessageParameters()[0],
-                                                                  logRecord.getMessageParameters()[1],
-                                                                  logRecord.getMessageParameters()[2],
-                                                                  logRecord.getTimeStamp());
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Create",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_READ.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Read",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_READ_ATTACHMENT.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Read Attachment",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_UPDATE_ATTACHMENT.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Update Attachment",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_UPDATE_FEEDBACK.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Feedback",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_UPDATE.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Update",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_DELETE.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Delete",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_SEARCH.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Search",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (ASSET_ACTIVITY_SEARCH_ATTACHMENT.equals(logRecord.getMessageId()))
+                    {
+                        syncAssetActivity(logRecord.getThreadId(),
+                                          logRecord.getOriginatorProperties().get("serverName"),
+                                          logRecord.getTimeStamp(),
+                                          "Asset Search Attachment",
+                                          logRecord.getMessageParameters()[2],
+                                          logRecord.getMessageParameters()[1],
+                                          logRecord.getMessageParameters()[3],
+                                          logRecord.getMessageParameters()[4],
+                                          logRecord.getMessageParameters()[0]);
+                    }
+                    else if (USER_REQUEST_ACTIVITY.equals(logRecord.getMessageId()))
+                    {
+                        syncAPICall(logRecord.getThreadId(),
+                                    logRecord.getMessageParameters()[3],
+                                    logRecord.getMessageParameters()[0],
+                                    logRecord.getMessageParameters()[1],
+                                    logRecord.getMessageParameters()[2],
+                                    logRecord.getTimeStamp());
                     }
                 }
                 else

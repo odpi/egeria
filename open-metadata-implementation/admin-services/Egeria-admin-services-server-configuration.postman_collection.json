@@ -365,7 +365,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider\"\n    }\n}"
+									"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider\"\n    }\n}"
 								},
 								"url": {
 									"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/security/connection",

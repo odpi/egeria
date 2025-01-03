@@ -2243,9 +2243,9 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TYPE_NAME.name,
-                                                           OpenMetadataProperty.TYPE_NAME.description,
-                                                           OpenMetadataProperty.TYPE_NAME.descriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.INSTANCE_METADATA_TYPE_NAME.name,
+                                                           OpenMetadataProperty.INSTANCE_METADATA_TYPE_NAME.description,
+                                                           OpenMetadataProperty.INSTANCE_METADATA_TYPE_NAME.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
                                                            OpenMetadataProperty.DESCRIPTION.description,

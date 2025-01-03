@@ -7,6 +7,7 @@ package org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.users.NamedList;
 import org.odpi.openmetadata.frameworks.connectors.properties.users.UserAccount;
 
 import java.util.Map;
@@ -16,7 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SecretsCollection stores a collection or properties that are used to connect to a particular digital resource.
+ * SecretsCollection stores a collection or properties that are used to connect to a particular digital resource,
+ * or support a specific type of security service.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,6 +29,7 @@ public class SecretsCollection
     private Map<String, String>      secrets             = null;
     private TokenAPI                 tokenAPI            = null;
     private Map<String, UserAccount> users               = null;
+    private Map<String, NamedList>   namedLists          = null;
 
 
     /**
@@ -126,6 +129,30 @@ public class SecretsCollection
 
 
     /**
+     * Return the named lists in this collection.  The named lists can represent organization units,
+     * security groups and roles.
+     *
+     * @return map of named lists
+     */
+    public Map<String, NamedList> getNamedLists()
+    {
+        return namedLists;
+    }
+
+
+    /**
+     * Set up the named lists in this collection.  The named lists can represent organization units,
+     * security groups and roles.
+     *
+     * @param namedLists map of named lists
+     */
+    public void setNamedLists(Map<String, NamedList> namedLists)
+    {
+        this.namedLists = namedLists;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -135,11 +162,13 @@ public class SecretsCollection
     {
         return "SecretsCollection{" +
                 "refreshTimeInterval=" + refreshTimeInterval +
-                ", users=" + users +
                 ", secrets=" + secrets +
                 ", tokenAPI=" + tokenAPI +
+                ", users=" + users +
+                ", namedLists=" + namedLists +
                 '}';
     }
+
 
 
     /**
@@ -157,7 +186,8 @@ public class SecretsCollection
         return refreshTimeInterval == that.refreshTimeInterval &&
                 Objects.equals(users, that.users) &&
                 Objects.equals(secrets, that.secrets) &&
-                Objects.equals(tokenAPI, that.tokenAPI);
+                Objects.equals(tokenAPI, that.tokenAPI) &&
+                Objects.equals(namedLists, that.namedLists);
     }
 
     /**
@@ -168,6 +198,6 @@ public class SecretsCollection
     @Override
     public int hashCode()
     {
-        return Objects.hash(refreshTimeInterval, users, secrets, tokenAPI);
+        return Objects.hash(refreshTimeInterval, users, secrets, tokenAPI, namedLists);
     }
 }

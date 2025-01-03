@@ -61,7 +61,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
-    public InstancePropertyValue cloneFromSubclass() {
+    public InstancePropertyValue cloneFromSubclass()
+    {
         return new ArrayPropertyValue(this);
     }
 
@@ -71,6 +72,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (arrayValues != null)
@@ -87,6 +89,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (arrayValues != null)

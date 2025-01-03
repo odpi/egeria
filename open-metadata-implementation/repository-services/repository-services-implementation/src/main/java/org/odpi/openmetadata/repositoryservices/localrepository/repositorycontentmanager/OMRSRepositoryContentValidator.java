@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
@@ -4218,6 +4219,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      */
     @Override
     public boolean verifyMatchingInstancePropertyValues(SearchProperties    matchProperties,
+                                                        String              guid,
                                                         InstanceAuditHeader instanceHeader,
                                                         InstanceProperties  instanceProperties) throws InvalidParameterException
     {
@@ -4231,18 +4233,142 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         for (PropertyCondition condition : conditions)
         {
             // Simplest way: this will also short-circuit to true immediately if nested conditions is null
-            boolean matchesNested = verifyMatchingInstancePropertyValues(condition.getNestedConditions(), instanceHeader, instanceProperties);
+            boolean matchesNested = verifyMatchingInstancePropertyValues(condition.getNestedConditions(), guid, instanceHeader, instanceProperties);
+            boolean                    matchesProperties = true;
+
             String propertyName = condition.getProperty();
-            InstancePropertyValue testValue = condition.getValue();
+            InstancePropertyValue testValue   = condition.getValue();
             InstancePropertyValue actualValue = null;
-            if (instanceProperties != null)
+            PropertyComparisonOperator operator = condition.getOperator();
+
+            if (OpenMetadataProperty.GUID.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(guid);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.METADATA_COLLECTION_ID.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getMetadataCollectionId());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.METADATA_COLLECTION_NAME.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getMetadataCollectionName());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.INSTANCE_PROVENANCE_TYPE.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getInstanceProvenanceType().getName());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.CREATED_BY.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getCreatedBy());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.CREATE_TIME.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getCreateTime());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.UPDATED_BY.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getUpdatedBy());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.UPDATE_TIME.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getUpdateTime());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (OpenMetadataProperty.EFFECTIVE_FROM_TIME.name.equals(propertyName))
+            {
+                if (instanceProperties != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitivePropertyValue.setPrimitiveValue(instanceProperties.getEffectiveFromTime());
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+                    actualValue = primitivePropertyValue;
+                }
+            }
+            else if (OpenMetadataProperty.EFFECTIVE_TO_TIME.name.equals(propertyName))
+            {
+                if (instanceProperties != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitivePropertyValue.setPrimitiveValue(instanceProperties.getEffectiveToTime());
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+
+                    actualValue = primitivePropertyValue;
+                }
+            }
+            else if (OpenMetadataProperty.VERSION.name.equals(propertyName))
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+                primitivePropertyValue.setPrimitiveValue(instanceHeader.getUpdateTime());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
+
+                actualValue = primitivePropertyValue;
+            }
+            else if (instanceProperties != null)
             {
                 actualValue = instanceProperties.getPropertyValue(propertyName);
             }
-            boolean matchesProperties = true;
-            BigDecimal testBD = getNumericRepresentation(testValue);
+
+            BigDecimal testBD   = getNumericRepresentation(testValue);
             BigDecimal actualBD = getNumericRepresentation(actualValue);
-            PropertyComparisonOperator operator = condition.getOperator();
 
             /*
              * When the nested branch is complete, operator will be null (along
@@ -4284,7 +4410,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         // The value to test against must be a list (ArrayTypePropertyValue)
                         if (testValue instanceof ArrayPropertyValue)
                         {
-                            ArrayPropertyValue apv = (ArrayPropertyValue) testValue;
+                            ArrayPropertyValue apv    = (ArrayPropertyValue) testValue;
                             InstanceProperties values = apv.getArrayValues();
                             if (values == null)
                             {
@@ -4297,7 +4423,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                 matchesProperties = false;
                                 while (names.hasNext() && !matchesProperties)
                                 {
-                                    String index = names.next();
+                                    String                index        = names.next();
                                     InstancePropertyValue oneTestValue = values.getPropertyValue(index);
                                     if (oneTestValue != null)
                                     {
@@ -4348,6 +4474,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         break;
                 }
             }
+
             conditionMatchCount += (matchesNested && matchesProperties) ? 1 : 0;
         }
         // TODO: we may want to move this into the loop above to short-circuit (for performance)
@@ -4409,7 +4536,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     if (classificationName.equals(classification.getName()))
                     {
-                        classificationMatches = verifyMatchingInstancePropertyValues(properties, entity, classification.getProperties());
+                        classificationMatches = verifyMatchingInstancePropertyValues(properties, null, classification, classification.getProperties());
                     }
                 }
                 matchingClassificationCount += (isClassified && classificationMatches) ? 1 : 0;

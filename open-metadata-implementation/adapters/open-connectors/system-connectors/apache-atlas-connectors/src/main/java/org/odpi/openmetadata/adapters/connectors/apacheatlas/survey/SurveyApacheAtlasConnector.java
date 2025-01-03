@@ -955,7 +955,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                                 OpenMetadataProperty.NAME.name,
                                                                                 endDef.getName());
             linkProperties = propertyHelper.addStringProperty(linkProperties,
-                                                              OpenMetadataProperty.TYPE_NAME.name,
+                                                              OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
                                                               endDef.getType());
 
             linkProperties = propertyHelper.addStringProperty(linkProperties,

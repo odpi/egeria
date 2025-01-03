@@ -137,6 +137,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      * 
      * @return string
      */
+    @Override
     public String getDeployedImplementationType()
     {
         return deployedImplementationType;
@@ -148,6 +149,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      *
      * @return deployed implementation type enum
      */
+    @Override
     public DeployedImplementationTypeDefinition getIsATypeOf()
     {
         return isATypeOf;
@@ -158,6 +160,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      * 
      * @return string
      */
+    @Override
     public String getAssociatedTypeName()
     {
         return associatedTypeName;
@@ -169,6 +172,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      *
      * @return string
      */
+    @Override
     public String getAssociatedClassification()
     {
         return associatedClassification;
@@ -180,6 +184,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      *
      * @return string
      */
+    @Override
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(associatedTypeName,
@@ -194,6 +199,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      *
      * @return string
      */
+    @Override
     public String getCategory()
     {
         return constructValidValueCategory(associatedTypeName,
@@ -207,6 +213,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      * 
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -218,6 +225,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      *
      * @return string url
      */
+    @Override
     public String getWikiLink()
     {
         return wikiLink;

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.connectors.outtopic
 import org.odpi.openmetadata.accessservices.governanceserver.events.*;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
@@ -289,6 +290,41 @@ public class GovernanceServerOutTopicPublisher
             }
         }
     }
+
+
+    /**
+     * Publish an event for Open Watchdog Governance Action Services.
+     *
+     * @param watchdogGovernanceEvent GAF defined watchdog event
+     */
+    void publishWatchdogEvent(WatchdogGovernanceEvent watchdogGovernanceEvent)
+    {
+        final String methodName = "publishWatchdogEvent";
+
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                WatchdogGovernanceServiceEvent newEvent = new WatchdogGovernanceServiceEvent();
+
+                newEvent.setEventType(GovernanceServerEventType.WATCHDOG_GOVERNANCE_SERVICE_EVENT);
+                newEvent.settWatchdogGovernanceEvent(watchdogGovernanceEvent);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceServerAuditCode.WATCHDOG_EVENT.getMessageDefinition(watchdogGovernanceEvent.getEventType().getName()));
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
+
 
     /**
      * Log any exceptions that have come from the publishing process.

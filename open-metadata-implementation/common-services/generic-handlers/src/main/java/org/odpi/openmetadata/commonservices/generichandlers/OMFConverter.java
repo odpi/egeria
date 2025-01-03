@@ -793,13 +793,13 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.PORT_TYPE.name,
                                                                      instanceProperties,
                                                                      methodName);
 
             for (PortType portType : PortType.values())
             {
-                if (portType.getOpenTypeOrdinal() == ordinal)
+                if (portType.getOrdinal() == ordinal)
                 {
                     return portType;
                 }

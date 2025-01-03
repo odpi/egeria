@@ -117,6 +117,7 @@ public enum ElementOriginCategory implements OpenMetadataEnum
      *
      * @return int code for the origin
      */
+    @Override
     public int getOrdinal()
     {
         return originCode;
@@ -128,6 +129,7 @@ public enum ElementOriginCategory implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName()
     {
         return originName;
@@ -139,6 +141,7 @@ public enum ElementOriginCategory implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription()
     {
         return originDescription;

@@ -52,6 +52,7 @@ public class EnumTypePropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
+    @Override
     public PropertyValue cloneFromSubclass()
     {
         return new EnumTypePropertyValue(this);
@@ -63,6 +64,7 @@ public class EnumTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
+    @Override
     public  String valueAsString()
     {
         return symbolicName == null ? "<null>" : symbolicName;
@@ -74,6 +76,7 @@ public class EnumTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
+    @Override
     public  Object valueAsObject()
     {
         return symbolicName;

@@ -57,6 +57,7 @@ public class MapPropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new MapPropertyValue(this);
@@ -68,6 +69,7 @@ public class MapPropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (mapValues != null)
@@ -84,6 +86,7 @@ public class MapPropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (mapValues != null)

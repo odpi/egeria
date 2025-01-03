@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -83,15 +84,15 @@ public class PortBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.PORT_TYPE.name,
+                                                                    PortType.getOpenTypeGUID(),
+                                                                    PortType.getOpenTypeName(),
                                                                     portType,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, PortType.getOpenTypeName());
         }
 
         return properties;

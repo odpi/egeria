@@ -1405,12 +1405,14 @@ public interface OMRSRepositoryValidator
      * Determine if the instance properties match the property-based conditions.
      *
      * @param matchProperties  the property-based conditions to match.
+     * @param guid unique identifier of the element (may be null if call is for classification.)
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @return boolean flag indicating whether the two sets of properties match
      * @throws InvalidParameterException invalid search criteria
      */
     boolean verifyMatchingInstancePropertyValues(SearchProperties    matchProperties,
+                                                 String              guid,
                                                  InstanceAuditHeader instanceHeader,
                                                  InstanceProperties  instanceProperties) throws InvalidParameterException;
 

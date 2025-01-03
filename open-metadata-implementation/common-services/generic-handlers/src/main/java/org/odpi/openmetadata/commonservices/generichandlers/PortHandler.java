@@ -122,7 +122,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        String typeName = OpenMetadataType.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -130,7 +130,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.PORT_TYPE_NAME,
+                                                                   OpenMetadataType.PORT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -177,17 +177,10 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                processGUID,
                                                processGUIDParameterName,
-                                               OpenMetadataType.PROCESS.typeName,
                                                portGUID,
                                                portGUIDParameterName,
-                                               OpenMetadataType.PORT_TYPE_NAME,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
-                                               OpenMetadataType.PROCESS_PORT_TYPE_GUID,
-                                               OpenMetadataType.PROCESS_PORT_TYPE_NAME,
+                                               OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeGUID,
                                                null,
-                                               effectiveTime,
                                                methodName);
         }
 
@@ -247,7 +240,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.PORT_TYPE_NAME;
+        String typeName = OpenMetadataType.PORT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -255,7 +248,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
         
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.PORT_TYPE_NAME,
+                                                                   OpenMetadataType.PORT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -335,12 +328,12 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   OpenMetadataType.PROCESS.typeName,
                                   portGUID,
                                   portGUIDParameterName,
-                                  OpenMetadataType.PORT_TYPE_NAME,
+                                  OpenMetadataType.PORT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PROCESS_PORT_TYPE_GUID,
-                                  OpenMetadataType.PROCESS_PORT_TYPE_NAME,
+                                  OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -391,12 +384,12 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataType.PROCESS.typeName,
                                       portGUID,
                                       portGUIDParameterName,
-                                      OpenMetadataType.PORT_TYPE_GUID,
-                                      OpenMetadataType.PORT_TYPE_NAME,
+                                      OpenMetadataType.PORT.typeGUID,
+                                      OpenMetadataType.PORT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PROCESS_PORT_TYPE_GUID,
-                                      OpenMetadataType.PROCESS_PORT_TYPE_NAME,
+                                      OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -445,15 +438,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   portOneGUID,
                                   portOneGUIDParameterName,
-                                  OpenMetadataType.PORT_TYPE_NAME,
+                                  OpenMetadataType.PORT.typeName,
                                   portTwoGUID,
                                   portTwoGUIDParameterName,
-                                  OpenMetadataType.PORT_TYPE_NAME,
+                                  OpenMetadataType.PORT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PORT_DELEGATION_TYPE_GUID,
-                                  OpenMetadataType.PORT_DELEGATION_TYPE_NAME,
+                                  OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -501,15 +494,15 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       portOneGUID,
                                       portOneGUIDParameterName,
-                                      OpenMetadataType.PORT_TYPE_NAME,
+                                      OpenMetadataType.PORT.typeName,
                                       portTwoGUID,
                                       portTwoGUIDParameterName,
-                                      OpenMetadataType.PORT_TYPE_GUID,
-                                      OpenMetadataType.PORT_TYPE_NAME,
+                                      OpenMetadataType.PORT.typeGUID,
+                                      OpenMetadataType.PORT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PORT_DELEGATION_TYPE_GUID,
-                                      OpenMetadataType.PORT_DELEGATION_TYPE_NAME,
+                                      OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -557,7 +550,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   externalSourceName,
                                   portGUID,
                                   portGUIDParameterName,
-                                  OpenMetadataType.PORT_TYPE_NAME,
+                                  OpenMetadataType.PORT.typeName,
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
@@ -613,7 +606,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       externalSourceName,
                                       portGUID,
                                       portGUIDParameterName,
-                                      OpenMetadataType.PORT_TYPE_NAME,
+                                      OpenMetadataType.PORT.typeName,
                                       schemaTypeGUID,
                                       schemaTypeGUIDParameterName,
                                       OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
@@ -661,8 +654,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     portGUID,
                                     portGUIDParameterName,
-                                    OpenMetadataType.PORT_TYPE_GUID,
-                                    OpenMetadataType.PORT_TYPE_NAME,
+                                    OpenMetadataType.PORT.typeGUID,
+                                    OpenMetadataType.PORT.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -707,8 +700,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.PORT_TYPE_GUID,
-                              OpenMetadataType.PORT_TYPE_NAME,
+                              OpenMetadataType.PORT.typeGUID,
+                              OpenMetadataType.PORT.typeName,
                               null,
                               null,
                               SequencingOrder.CREATION_DATE_RECENT,
@@ -758,9 +751,9 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         processGUID,
                                         processGUIDParameterName,
                                         OpenMetadataType.PROCESS.typeName,
-                                        OpenMetadataType.PROCESS_PORT_TYPE_GUID,
-                                        OpenMetadataType.PROCESS_PORT_TYPE_NAME,
-                                        OpenMetadataType.PORT_TYPE_NAME,
+                                        OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PORT.typeName,
                                         null,
                                         null,
                                         2,
@@ -811,10 +804,10 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getAttachedElements(userId,
                                         portGUID,
                                         portGUIDParameterName,
-                                        OpenMetadataType.PORT_TYPE_NAME,
-                                        OpenMetadataType.PORT_DELEGATION_TYPE_GUID,
-                                        OpenMetadataType.PORT_DELEGATION_TYPE_NAME,
-                                        OpenMetadataType.PORT_TYPE_NAME,
+                                        OpenMetadataType.PORT.typeName,
+                                        OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PORT.typeName,
                                         null,
                                         null,
                                         1,
@@ -861,10 +854,10 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<B> results = this.getAttachedElements(userId,
                                                    portGUID,
                                                    portGUIDParameterName,
-                                                   OpenMetadataType.PORT_TYPE_NAME,
-                                                   OpenMetadataType.PORT_DELEGATION_TYPE_GUID,
-                                                   OpenMetadataType.PORT_DELEGATION_TYPE_NAME,
-                                                   OpenMetadataType.PORT_TYPE_NAME,
+                                                   OpenMetadataType.PORT.typeName,
+                                                   OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                   OpenMetadataType.PORT.typeName,
                                                    null,
                                                    null,
                                                    2,
@@ -889,7 +882,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
         else
         {
-            throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_BEANS_FOUND.getMessageDefinition(OpenMetadataType.PORT_TYPE_NAME,
+            throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_BEANS_FOUND.getMessageDefinition(OpenMetadataType.PORT.typeName,
                                                                                                                  methodName,
                                                                                                                  results.toString(),
                                                                                                                  portGUID,
@@ -940,8 +933,8 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.PORT_TYPE_GUID,
-                                    OpenMetadataType.PORT_TYPE_NAME,
+                                    OpenMetadataType.PORT.typeGUID,
+                                    OpenMetadataType.PORT.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -990,7 +983,7 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return this.getBeanFromRepository(userId,
                                           portGUID,
                                           portGUIDParameterName,
-                                          OpenMetadataType.PORT_TYPE_NAME,
+                                          OpenMetadataType.PORT.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

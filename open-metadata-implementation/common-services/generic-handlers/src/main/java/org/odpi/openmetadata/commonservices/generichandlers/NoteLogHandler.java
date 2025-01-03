@@ -166,17 +166,10 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                parentGUID,
                                                parentGUIDParameterName,
-                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                noteLogGUID,
                                                noteLogGUIDParameter,
-                                               OpenMetadataType.NOTE_LOG.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
                                                builder.getRelationshipInstanceProperties(methodName),
-                                               effectiveFrom,
                                                methodName);
         }
 
@@ -311,7 +304,6 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                                       relationships,
                                                       methodName);
         }
-
     }
 
 
@@ -408,7 +400,7 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
                                         OpenMetadataType.NOTE_LOG.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,
@@ -467,7 +459,7 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
                                         OpenMetadataType.NOTE_LOG.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,

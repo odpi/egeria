@@ -299,16 +299,8 @@ public class OpenMetadataTypesArchive2_0
 
     private ClassificationDef getFileManagerClassification()
     {
-        final String guid            = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
-        final String name            = "FileManager";
-        final String description     = "Identifies a software server capability as a manager of a collection of files and folders.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.FILE_MANAGER_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                   false);
     }
@@ -342,16 +334,8 @@ public class OpenMetadataTypesArchive2_0
 
     private ClassificationDef getContentCollectionManagerClassification()
     {
-        final String guid            = "dbde6a5b-fc89-4b04-969a-9dc09a60ebd7";
-        final String name            = "ContentCollectionManager";
-        final String description     = "Identifies a software server capability as a manager of controlled documents and related media.";
-        final String descriptionGUID = null;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.CONTENT_COLLECTION_MANAGER,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
                                                   false);
     }

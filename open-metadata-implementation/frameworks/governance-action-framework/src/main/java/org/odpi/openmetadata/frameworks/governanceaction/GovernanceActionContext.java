@@ -1582,8 +1582,8 @@ public class GovernanceActionContext implements GovernanceContext,
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
         ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
-                                                                                  OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                                                  OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                                  OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                                                                  ProcessContainmentType.getOpenTypeName(),
                                                                                   ProcessContainmentType.OWNED.getName());
 
         return openMetadataClient.createMetadataElementInStore(userId,
@@ -1596,7 +1596,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                properties,
                                                                parentGUID,
-                                                               OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                               OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                                relationshipProperties,
                                                                true);
     }
@@ -1642,8 +1642,8 @@ public class GovernanceActionContext implements GovernanceContext,
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
-                                                                                  OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                                                  OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                                  OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                                                                  ProcessContainmentType.getOpenTypeName(),
                                                                                   ProcessContainmentType.OWNED.getName());
 
         return openMetadataClient.createMetadataElementInStore(userId,
@@ -1656,7 +1656,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                properties,
                                                                parentGUID,
-                                                               OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                               OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
                                                                relationshipProperties,
                                                                true);
     }
@@ -1693,12 +1693,12 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName);
         properties = propertyHelper.addEnumProperty(properties,
-                                                    OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
-                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME,
+                                                    OpenMetadataProperty.PORT_TYPE.name,
+                                                    PortType.getOpenTypeName(),
                                                     portType.getName());
 
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                               OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME,
+                                                               OpenMetadataType.PORT_IMPLEMENTATION.typeName,
                                                                ElementStatus.ACTIVE,
                                                                null,
                                                                processGUID,
@@ -1707,7 +1707,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                null,
                                                                properties,
                                                                processGUID,
-                                                               OpenMetadataType.PROCESS_PORT_TYPE_NAME,
+                                                               OpenMetadataType.PROCESS_PORT_RELATIONSHIP.typeName,
                                                                null,
                                                                true);
     }

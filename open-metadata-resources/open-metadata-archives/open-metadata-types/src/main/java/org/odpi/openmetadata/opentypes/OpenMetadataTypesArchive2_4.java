@@ -745,9 +745,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "OperatingPlatform";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OPERATING_PLATFORM.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -803,93 +801,34 @@ public class OpenMetadataTypesArchive2_4
         this.archiveBuilder.addEntityDef(addUserViewServiceEntity());
     }
 
-
     private EntityDef addSoftwareServiceEntity()
     {
-        final String guid            = "f3f69251-adb1-4042-9d95-70082f95a028";
-        final String name            = "SoftwareService";
-        final String description     = "Defines a capability that provides externally callable functions to other services.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareServerCapability";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
     }
-
 
     private EntityDef addMetadataIntegrationServiceEntity()
     {
-        final String guid            = "92f7fe27-cd2f-441c-a084-156821aa5bca";
-        final String name            = "MetadataIntegrationService";
-        final String description     = "Defines a capability that exchanges metadata between servers.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_INTEGRATION_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
-
 
     private EntityDef addMetadataAccessServiceEntity()
     {
-        final String guid            = "0bc3a16a-e8ed-4ad0-a302-0773365fdef0";
-        final String name            = "MetadataAccessService";
-        final String description     = "Defines a capability that provides access to stored metadata.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_ACCESS_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
-
 
     private EntityDef addEngineHostingServiceEntity()
     {
-        final String guid            = "90880f0b-c7a3-4d1d-93cc-0b877f27cd33";
-        final String name            = "EngineHostingService";
-        final String description     = "Defines a capability that provides services that delegate to a hosted engine.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ENGINE_HOSTING_SERVICES,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
 
     private EntityDef addUserViewServiceEntity()
     {
-        final String guid            = "1f83fc7c-75bb-491d-980d-ff9a6f80ae02";
-        final String name            = "UserViewService";
-        final String description     = "Defines a capability that provides user interfaces access to digital resources.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SoftwareService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.USER_VIEW_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
     }
 
 
@@ -3275,9 +3214,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "CohortMember";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COHORT_MEMBER.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -3286,18 +3223,8 @@ public class OpenMetadataTypesArchive2_4
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute2Name            = "protocolVersion";
-        final String attribute2Description     = "Version number of the protocol supported by the cohort registry.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-
-        properties.add(property);
-
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROTOCOL_VERSION));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

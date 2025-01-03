@@ -191,14 +191,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                                 "Validate that the status change is valid."),
 
 
-    /**
-     * OMAG-GENERIC-HANDLERS-0026 - User {0} created {1} asset {2} during operation {3} of service {4}
-     */
-    ASSET_ACTIVITY_CREATE("OMAG-GENERIC-HANDLERS-0026",
-                          AuditLogRecordSeverityLevel.ACTIVITY,
-                          "User {0} created {1} asset {2} during operation {3} of service {4}",
-                          "This message is used to capture user requests to create an asset.",
-                          "No action is required, but this message can be used to capture user activity information related to asset creation."),
+
 
     /**
      * OMAG-GENERIC-HANDLERS-0027 - Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request
@@ -212,13 +205,13 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
 
 
     /**
-     * OMAG-GENERIC-HANDLERS-0028 - Governance engine with {0} userId has successfully claimed engine action {1}
+     * OMAG-GENERIC-HANDLERS-0028 - Method {0} was unable to receive list of entities due to a {1} exception with message {2}
      */
-    FAILED_TO_RETRIEVE_ANCHOR_ENTITIES("OMAG-GENERIC-HANDLERS-0028",
-                            AuditLogRecordSeverityLevel.INFO,
-                            "Method {0} was unable to receive anchor entities due to a {1} exception with message {2}",
-                            "The generic handlers were unable to perform a bulk retrieval of the anchor entities.  They will be retrieved individually.",
-                            "The bulk retrieval is more efficient.  However, one or more of the repositories in use may not support this request.  " +
+    FAILED_TO_RETRIEVE_ENTITIES("OMAG-GENERIC-HANDLERS-0028",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "Method {0} was unable to receive list of entities due to a {1} exception with message {2}",
+                                "The generic handlers were unable to perform a bulk retrieval of the entities.  They will be retrieved individually.",
+                                "The bulk retrieval is more efficient.  However, one or more of the repositories in use may not support this request.  " +
                                                "The individual retrieval still provides the same security protection - it is just slower to execute."),
 
     ;

@@ -216,6 +216,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      *
      * @return string name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -227,6 +228,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      *
      * @return analysis step name
      */
+    @Override
     public String getAnalysisStep()
     {
         return analysisStepName;
@@ -238,6 +240,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      *
      * @return type name
      */
+    @Override
     public String getOpenMetadataTypeName()
     {
         return openMetadataTypeName;
@@ -249,6 +252,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      *
      * @return text
      */
+    @Override
     public String getSummary()
     {
         return summary;
@@ -260,6 +264,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      *
      * @return text
      */
+    @Override
     public String getExplanation()
     {
         return explanation;

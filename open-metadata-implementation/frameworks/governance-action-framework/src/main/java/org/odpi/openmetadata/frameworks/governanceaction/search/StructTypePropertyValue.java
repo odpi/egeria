@@ -54,6 +54,7 @@ public class StructTypePropertyValue extends PropertyValue
      *
      * @return subclass of PropertyValue
      */
+    @Override
     public PropertyValue cloneFromSubclass()
     {
         return new StructTypePropertyValue(this);
@@ -65,6 +66,7 @@ public class StructTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         if (attributes != null)
@@ -81,6 +83,7 @@ public class StructTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         if (attributes != null)

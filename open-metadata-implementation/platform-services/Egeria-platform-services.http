@@ -24,7 +24,7 @@ Content-Type: application/json
 	    "class": "Connection",
 	    "connectorType": {
 	        "class": "ConnectorType",
-	        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider"
+	        "connectorProviderClassName": "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider"
 	    }
     }
 }
@@ -118,7 +118,7 @@ Content-Type: application/json
 ###
 # @name Query a connector
 # Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider
+GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/connector-types/org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider
 
 ###
 # @name Shutdown server

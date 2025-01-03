@@ -584,6 +584,7 @@ public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
                                 OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
                                 forLineage,
                                 forDuplicateProcessing,
+                                supportedZones,
                                 effectiveTime,
                                 methodName);
     }

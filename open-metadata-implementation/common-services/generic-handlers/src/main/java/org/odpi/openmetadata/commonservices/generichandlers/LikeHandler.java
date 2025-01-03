@@ -112,7 +112,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
                                         OpenMetadataType.LIKE.typeName,
-                                        null,
+                                        (String)null,
                                         null,
                                         0,
                                         null,
@@ -205,17 +205,10 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                elementGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                likeGUID,
                                                likeGUIDParameterName,
-                                               OpenMetadataType.LIKE.typeName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeGUID,
-                                               OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
                                                builder.getRelationshipInstanceProperties(methodName),
-                                               effectiveTime,
                                                methodName);
         }
     }

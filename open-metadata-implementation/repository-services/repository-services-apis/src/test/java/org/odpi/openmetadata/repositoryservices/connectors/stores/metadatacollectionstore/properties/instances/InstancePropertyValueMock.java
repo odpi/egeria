@@ -56,6 +56,7 @@ public class InstancePropertyValueMock extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public String valueAsString()
     {
         return "PropertyValue";
@@ -67,16 +68,19 @@ public class InstancePropertyValueMock extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public Object valueAsObject()
     {
         return "PropertyObject";
     }
+
 
     /**
      * Delegate the process of cloning to the subclass.
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new InstancePropertyValueMock(this);

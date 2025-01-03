@@ -1324,6 +1324,7 @@ public class IntegrationGroupConfigurationHandler
                                                              instanceProperties,
                                                              false,
                                                              false,
+                                                             integrationGroupHandler.getSupportedZones(),
                                                              new Date(),
                                                              methodName);
     }
@@ -1470,6 +1471,7 @@ public class IntegrationGroupConfigurationHandler
                                                    OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                    false,
                                                    false,
+                                                   serviceSupportedZones,
                                                    new Date(),
                                                    methodName);
     }

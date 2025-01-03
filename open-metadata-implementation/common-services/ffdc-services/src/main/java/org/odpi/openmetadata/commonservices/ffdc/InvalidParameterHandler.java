@@ -241,6 +241,33 @@ public class InvalidParameterHandler
 
 
     /**
+     * Throw an exception if the supplied object is null
+     *
+     * @param object         object to validate
+     * @param nameParameter  name of the parameter that passed the object.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the object is null
+     */
+    public void throwInvalidParameter(Object object,
+                                      String nameParameter,
+                                      String methodName) throws InvalidParameterException
+    {
+        if (object != null)
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.INVALID_PARAMETER.getMessageDefinition(object.toString(), nameParameter, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                nameParameter);
+        }
+        else
+        {
+            validateObject(null, nameParameter, methodName);
+        }
+    }
+
+
+    /**
      * Throw an exception if the supplied enum is null
      *
      * @param enumValue  enum value to validate

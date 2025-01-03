@@ -1193,7 +1193,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
                                         OpenMetadataType.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,

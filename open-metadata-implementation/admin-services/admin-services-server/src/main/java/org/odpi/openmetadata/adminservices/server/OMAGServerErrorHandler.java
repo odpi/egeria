@@ -467,8 +467,6 @@ public class OMAGServerErrorHandler
                                                     this.getClass().getName(),
                                                     methodName);
         }
-
-        tryConnection(connection, methodName);
     }
 
 
@@ -480,7 +478,7 @@ public class OMAGServerErrorHandler
      * @throws OMAGInvalidParameterException the connection is null
      */
     public void validatePlatformConnection(Connection connection,
-                                           String methodName) throws OMAGInvalidParameterException
+                                           String     methodName) throws OMAGInvalidParameterException
     {
         if (connection == null)
         {
@@ -488,41 +486,8 @@ public class OMAGServerErrorHandler
                                                     this.getClass().getName(),
                                                     methodName);
         }
-
-        tryConnection(connection, methodName);
     }
 
-
-    /**
-     * Check that the connection is valid
-     *
-     * @param connection  connection passed on the request
-     * @param methodName  method called
-     * @throws OMAGInvalidParameterException the connection is null
-     */
-    private void tryConnection(Connection connection,
-                               String     methodName) throws OMAGInvalidParameterException
-    {
-
-        try
-        {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            connectorBroker.getConnector(connection);
-        }
-        catch (ConnectionCheckedException | ConnectorCheckedException  error)
-        {
-            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONNECTION.getMessageDefinition(methodName,
-                                                                                                           connection.toString(),
-                                                                                                           error.getClass().getName(),
-                                                                                                           error.getMessage(),
-                                                                                                           error.getReportedSystemAction(),
-                                                                                                           error.getReportedUserAction()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    error);
-        }
-    }
 
     /**
      * Validate that an essential OMAG server configuration property has been set.

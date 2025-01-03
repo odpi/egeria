@@ -37,7 +37,7 @@ public class ConfigMetadataServerSample
 
     private static final int   maxPageSize = 100;
 
-    private static final String securityConnectorProvider = "org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider";
+    private static final String securityConnectorProvider = "org.odpi.openmetadata.metadatasecurity.accessconnector.OpenMetadataAccessSecurityProvider";
 
     private static final String[] supportedZones = { "quarantine", "clinical-trials", "research", "data-lake", "trash-can" };
     private static final String[] defaultZones   = { "quarantine" };

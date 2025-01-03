@@ -51,7 +51,7 @@ public class CreateConnectionTest
     private final static String endpointDisplayName          = "Endpoint displayName";
     private final static String endpointDescription          = "Endpoint description";
 
-
+    private static final String connectorTypeQName = "Egeria:ResourceConnector:DataFile";
     private static final String connectorTypeName = "Basic File Store Connector";
     private static final String connectorTypeGUID = "ba213761-f5f5-4cf5-a95f-6150aef09e0b";
     private static final String connectorTypeDescription = "Connector supports reading of Files.";  private final static String connectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider";
@@ -695,7 +695,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeProperties from Retrieve)");
             }
 
-            if (! connectorTypeName.equals(retrievedConnectorType.getQualifiedName()))
+            if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedConnectorType);
             }
@@ -736,7 +736,7 @@ public class CreateConnectionTest
             retrievedElement = connectorTypeList.get(0);
             retrievedConnectorType = retrievedElement.getConnectorTypeProperties();
 
-            if (! connectorTypeName.equals(retrievedConnectorType.getQualifiedName()))
+            if (! connectorTypeQName.equals(retrievedConnectorType.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedConnectorType);
             }
@@ -770,7 +770,7 @@ public class CreateConnectionTest
                             throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong connector type returned for connection: " + connectorType.getGUID() + "rather than " + connectorTypeGUID + ")");
                         }
 
-                        if (! connectorTypeName.equals(connectorType.getUniqueName()))
+                        if (! connectorTypeQName.equals(connectorType.getUniqueName()))
                         {
                             throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong connector type Qualified Name returned for connection: " + connectorType.getUniqueName() + "rather than " + endpointName + ")");
                         }
@@ -811,7 +811,7 @@ public class CreateConnectionTest
                                   String                  connectionGUID,
                                   String                  userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "createConnectorType";
+        final String activityName = "addConnectorType";
 
         try
         {

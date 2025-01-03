@@ -211,17 +211,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                eventTypeListGUID,
                                                eventTypeListGUIDParameterName,
-                                               OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
                                                eventTypeGUID,
                                                eventTypeGUIDParameterName,
-                                               OpenMetadataType.EVENT_TYPE_TYPE_NAME,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               supportedZones,
                                                OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
                                                methodName);
         }
 
@@ -329,17 +322,10 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            eventTypeListGUID,
                                            eventTypeListGUIDParameterName,
-                                           OpenMetadataType.EVENT_TYPE_LIST_TYPE_NAME,
                                            eventTypeGUID,
                                            eventTypeGUIDParameterName,
-                                           OpenMetadataType.EVENT_TYPE_TYPE_NAME,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           supportedZones,
                                            OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                           OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                            null,
-                                           effectiveTime,
                                            methodName);
 
         return eventTypeGUID;

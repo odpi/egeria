@@ -60,6 +60,7 @@ public class EnumPropertyValue extends InstancePropertyValue
      *
      * @return subclass of InstancePropertyValue
      */
+    @Override
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new EnumPropertyValue(this);
@@ -71,6 +72,7 @@ public class EnumPropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
+    @Override
     public  String valueAsString()
     {
         return symbolicName == null ? "<null>" : symbolicName;
@@ -82,6 +84,7 @@ public class EnumPropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
+    @Override
     public  Object valueAsObject()
     {
         return symbolicName;

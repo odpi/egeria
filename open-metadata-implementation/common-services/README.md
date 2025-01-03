@@ -13,8 +13,10 @@ and error handling.  It can but used by clients and server-side services.
 [Open Metadata and Governance (OMAG) Server](https://egeria-project.org/concepts/omag-server) instances
 running in an [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).
 
+* **[Metadata Observability](metadata-observability)** - enables the gathering of observability data.
+
 * **[Metadata Security](metadata-security)** - supports authorization of access to OMAG Services and specific
-metadata instances.
+    metadata instances.
 
 * **[Generic Handlers](generic-handlers)** - supports the management of specific types of open metadata elements.
 The generic handlers provide services to translate OMAS requests built around that service's private beans into calls

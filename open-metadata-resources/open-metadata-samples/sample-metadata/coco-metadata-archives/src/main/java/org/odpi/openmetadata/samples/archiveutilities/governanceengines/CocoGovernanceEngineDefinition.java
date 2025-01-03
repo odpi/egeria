@@ -17,6 +17,7 @@ public enum CocoGovernanceEngineDefinition
                            "ClinicalTrials@CocoPharmaceuticals",
                            "Clinical Trials Engine",
                            "Manages the set up and operation of clinical trials at Coco Pharmaceuticals.",
+                           "clinicaltrialsengine",
                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName),
 
     /**
@@ -26,6 +27,7 @@ public enum CocoGovernanceEngineDefinition
                          "AssetQuality@CocoPharmaceuticals",
                          "Asset Quality Survey Action Engine",
                          "Assess the quality of a digital resource identified by the asset in the request.",
+                         "assetqualityengine",
                          OpenMetadataType.SURVEY_ACTION_ENGINE.typeName),
 
     ;
@@ -36,14 +38,21 @@ public enum CocoGovernanceEngineDefinition
     private final String name;
     private final String displayName;
     private final String description;
+    private final String userId;
     private final String type;
 
-    CocoGovernanceEngineDefinition(String guid, String name, String displayName, String description, String type)
+    CocoGovernanceEngineDefinition(String guid,
+                                   String name,
+                                   String displayName,
+                                   String description,
+                                   String userId,
+                                   String type)
     {
         this.guid        = guid;
         this.name        = name;
         this.displayName = displayName;
         this.description = description;
+        this.userId      = userId;
         this.type        = type;
     }
 
@@ -88,6 +97,17 @@ public enum CocoGovernanceEngineDefinition
     public String getDescription()
     {
         return description;
+    }
+
+
+    /**
+     * Return the userId ofr the engine.
+     *
+     * @return string name
+     */
+    public String getUserId()
+    {
+        return userId;
     }
 
 

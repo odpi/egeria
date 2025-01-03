@@ -580,6 +580,7 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                                 OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                 forLineage,
                                 forDuplicateProcessing,
+                                supportedZones,
                                 effectiveTime,
                                 methodName);
     }

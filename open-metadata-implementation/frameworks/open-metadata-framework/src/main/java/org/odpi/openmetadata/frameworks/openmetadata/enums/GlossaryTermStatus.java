@@ -102,6 +102,7 @@ public enum GlossaryTermStatus implements OpenMetadataEnum
      *
      * @return int key pattern code
      */
+    @Override
     public int getOrdinal()
     {
         return ordinal;
@@ -125,6 +126,7 @@ public enum GlossaryTermStatus implements OpenMetadataEnum
      *
      * @return String default name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -136,6 +138,7 @@ public enum GlossaryTermStatus implements OpenMetadataEnum
      *
      * @return String default description
      */
+    @Override
     public String getDescription()
     {
         return description;

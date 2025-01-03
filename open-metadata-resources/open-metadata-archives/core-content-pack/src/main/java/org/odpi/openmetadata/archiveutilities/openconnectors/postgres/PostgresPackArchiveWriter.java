@@ -3,23 +3,14 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.postgres;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * PostgresPackArchiveWriter creates an open metadata archive that includes the connector type

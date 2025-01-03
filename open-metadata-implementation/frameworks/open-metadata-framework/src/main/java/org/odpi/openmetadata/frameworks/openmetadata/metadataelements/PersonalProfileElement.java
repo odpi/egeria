@@ -56,6 +56,7 @@ public class PersonalProfileElement implements MetadataElement
      *
      * @return element header object
      */
+    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -67,6 +68,7 @@ public class PersonalProfileElement implements MetadataElement
      *
      * @param elementHeader element header object
      */
+    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;

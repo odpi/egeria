@@ -403,7 +403,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                         OpenMetadataType.GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
-                                        null,
+                                        (String)null,
                                         null,
                                         2,
                                         null,

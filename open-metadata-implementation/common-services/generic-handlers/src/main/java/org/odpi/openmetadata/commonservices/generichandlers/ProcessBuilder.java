@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -182,9 +183,9 @@ public class ProcessBuilder extends AssetBuilder
         {
             return repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                               null,
-                                                              OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                              OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
-                                                              OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                              OpenMetadataProperty.CONTAINMENT_TYPE.name,
+                                                              ProcessContainmentType.getOpenTypeGUID(),
+                                                              ProcessContainmentType.getOpenTypeName(),
                                                               processContainmentOrdinal,
                                                               methodName);
         }

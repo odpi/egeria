@@ -110,6 +110,7 @@ public enum RetentionBasis implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -118,6 +119,7 @@ public enum RetentionBasis implements OpenMetadataEnum
      *
      * @return String name
      */
+    @Override
     public String getName() { return name; }
 
 
@@ -126,6 +128,7 @@ public enum RetentionBasis implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 
@@ -134,6 +137,7 @@ public enum RetentionBasis implements OpenMetadataEnum
      *
      * @return  guid
      */
+    @Override
     public  String getDescriptionGUID()
     {
         return descriptionGUID;
@@ -145,6 +149,7 @@ public enum RetentionBasis implements OpenMetadataEnum
      *
      * @return boolean
      */
+    @Override
     public boolean isDefault()
     {
         return isDefault;

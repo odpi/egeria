@@ -90,7 +90,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.FORM_TYPE_NAME;
+                String typeName = OpenMetadataType.FORM.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -202,8 +202,8 @@ public class DisplayApplicationRESTServices
                                                                handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                templateGUID,
                                                                templateGUIDParameterName,
-                                                               OpenMetadataType.FORM_TYPE_GUID,
-                                                               OpenMetadataType.FORM_TYPE_NAME,
+                                                               OpenMetadataType.FORM.typeGUID,
+                                                               OpenMetadataType.FORM.typeName,
                                                                requestBody.getQualifiedName(),
                                                                qualifiedNameParameterName,
                                                                requestBody.getDisplayName(),
@@ -288,7 +288,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.FORM_TYPE_NAME;
+                String typeName = OpenMetadataType.FORM.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -481,8 +481,8 @@ public class DisplayApplicationRESTServices
                                                requestBody.getExternalSourceName(),
                                                formGUID,
                                                formGUIDParameterName,
-                                               OpenMetadataType.FORM_TYPE_GUID,
-                                               OpenMetadataType.FORM_TYPE_NAME,
+                                               OpenMetadataType.FORM.typeGUID,
+                                               OpenMetadataType.FORM.typeName,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
@@ -540,8 +540,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
                 List<FormElement> formAssets = handler.findAssets(userId,
-                                                                  OpenMetadataType.FORM_TYPE_GUID,
-                                                                  OpenMetadataType.FORM_TYPE_NAME,
+                                                                  OpenMetadataType.FORM.typeGUID,
+                                                                  OpenMetadataType.FORM.typeName,
                                                                   requestBody.getSearchString(),
                                                                   searchStringParameterName,
                                                                   startFrom,
@@ -607,8 +607,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
                 List<FormElement> formAssets = handler.getAssetsByName(userId,
-                                                                       OpenMetadataType.FORM_TYPE_GUID,
-                                                                       OpenMetadataType.FORM_TYPE_NAME,
+                                                                       OpenMetadataType.FORM.typeGUID,
+                                                                       OpenMetadataType.FORM.typeName,
                                                                        requestBody.getName(),
                                                                        nameParameterName,
                                                                        startFrom,
@@ -679,7 +679,7 @@ public class DisplayApplicationRESTServices
                                                                        OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.FORM_TYPE_NAME,
+                                                                       OpenMetadataType.FORM.typeName,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -740,7 +740,7 @@ public class DisplayApplicationRESTServices
             FormElement formAsset = handler.getBeanFromRepository(userId,
                                                                   guid,
                                                                   guidParameterName,
-                                                                  OpenMetadataType.FORM_TYPE_NAME,
+                                                                  OpenMetadataType.FORM.typeName,
                                                                   false,
                                                                   false,
                                                                   new Date(),
@@ -794,7 +794,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_REPORT.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -810,12 +810,12 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getId() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.ID_PROPERTY_NAME, requestBody.getId());
+                    extendedProperties.put(OpenMetadataProperty.ID.name, requestBody.getId());
                 }
 
                 if (requestBody.getAuthor() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
+                    extendedProperties.put(OpenMetadataProperty.AUTHOR.name, requestBody.getAuthor());
                 }
 
                 if (requestBody.getUrl() != null)
@@ -825,17 +825,17 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getCreateTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
+                    extendedProperties.put(OpenMetadataProperty.CREATED_TIME.name, requestBody.getCreateTime());
                 }
 
                 if (requestBody.getLastModifiedTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
+                    extendedProperties.put(OpenMetadataProperty.LAST_MODIFIED_TIME.name, requestBody.getLastModifiedTime());
                 }
 
                 if (requestBody.getLastModifier() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
+                    extendedProperties.put(OpenMetadataProperty.LAST_MODIFIER.name, requestBody.getLastModifier());
                 }
 
                 if (extendedProperties.isEmpty())
@@ -871,7 +871,7 @@ public class DisplayApplicationRESTServices
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                  reportGUID,
                                                  reportGUIDParameterName,
-                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                  false,
                                                  false,
                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -959,8 +959,8 @@ public class DisplayApplicationRESTServices
                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                  templateGUID,
                                                                  templateGUIDParameterName,
-                                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
-                                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                                 OpenMetadataType.DEPLOYED_REPORT.typeGUID,
+                                                                 OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                                  requestBody.getQualifiedName(),
                                                                  qualifiedNameParameterName,
                                                                  requestBody.getDisplayName(),
@@ -984,7 +984,7 @@ public class DisplayApplicationRESTServices
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                  reportGUID,
                                                  reportGUIDParameterName,
-                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                  false,
                                                  false,
                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -1050,7 +1050,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_REPORT.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1066,12 +1066,12 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getId() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.ID_PROPERTY_NAME, requestBody.getId());
+                    extendedProperties.put(OpenMetadataProperty.ID.name, requestBody.getId());
                 }
 
                 if (requestBody.getAuthor() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
+                    extendedProperties.put(OpenMetadataProperty.AUTHOR.name, requestBody.getAuthor());
                 }
 
                 if (requestBody.getUrl() != null)
@@ -1081,17 +1081,17 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getCreateTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
+                    extendedProperties.put(OpenMetadataProperty.CREATED_TIME.name, requestBody.getCreateTime());
                 }
 
                 if (requestBody.getLastModifiedTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
+                    extendedProperties.put(OpenMetadataProperty.LAST_MODIFIED_TIME.name, requestBody.getLastModifiedTime());
                 }
 
                 if (requestBody.getLastModifier() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
+                    extendedProperties.put(OpenMetadataProperty.LAST_MODIFIER.name, requestBody.getLastModifier());
                 }
 
                 if (extendedProperties.isEmpty())
@@ -1285,8 +1285,8 @@ public class DisplayApplicationRESTServices
                                                requestBody.getExternalSourceName(),
                                                reportGUID,
                                                reportGUIDParameterName,
-                                               OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
-                                               OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                               OpenMetadataType.DEPLOYED_REPORT.typeGUID,
+                                               OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
@@ -1344,8 +1344,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
                 List<ReportElement> reportAssets = handler.findAssets(userId,
-                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
-                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      OpenMetadataType.DEPLOYED_REPORT.typeGUID,
+                                                                      OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                                       requestBody.getSearchString(),
                                                                       searchStringParameterName,
                                                                       startFrom,
@@ -1411,8 +1411,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
                 List<ReportElement> reportAssets = handler.getAssetsByName(userId,
-                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
-                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           OpenMetadataType.DEPLOYED_REPORT.typeGUID,
+                                                                           OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                                            requestBody.getName(),
                                                                            nameParameterName,
                                                                            startFrom,
@@ -1483,7 +1483,7 @@ public class DisplayApplicationRESTServices
                                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                            OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                                            OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                                            null,
                                                                            null,
                                                                            0,
@@ -1544,7 +1544,7 @@ public class DisplayApplicationRESTServices
             ReportElement reportAsset = handler.getBeanFromRepository(userId,
                                                                       guid,
                                                                       guidParameterName,
-                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      OpenMetadataType.DEPLOYED_REPORT.typeName,
                                                                       false,
                                                                       false,
                                                                       new Date(),
@@ -1746,7 +1746,7 @@ public class DisplayApplicationRESTServices
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                  queryGUID,
                                                  queryGUIDParameterName,
-                                                 OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataType.INFORMATION_VIEW.typeName,
                                                  false,
                                                  false,
                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,

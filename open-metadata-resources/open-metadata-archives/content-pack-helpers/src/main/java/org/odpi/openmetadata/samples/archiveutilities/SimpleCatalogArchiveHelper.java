@@ -1581,22 +1581,22 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a new IT profile.
      *
-     * @param assetGUID unique identifier of asset to connect the profile to
-     * @param userId userId of the asset
+     * @param infrastructureGUID unique identifier of asset/software capability to connect the profile to
+     * @param userId userId of the asset/software capability
      * @param qualifiedName qualified name of profile
      * @param name display name (preferred name of individual)
      * @param description description (eg job description)
      * @param additionalProperties are there any additional properties to add
      * @return unique identifier of the new profile
      */
-    public  String addITProfileToAsset(String              assetGUID,
-                                       String              userId,
-                                       String              qualifiedName,
-                                       String              name,
-                                       String              description,
-                                       Map<String, String> additionalProperties)
+    public  String addITProfile(String              infrastructureGUID,
+                                String              userId,
+                                String              qualifiedName,
+                                String              name,
+                                String              description,
+                                Map<String, String> additionalProperties)
     {
-        final String methodName = "addITProfileToAsset";
+        final String methodName = "addITProfile";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
@@ -1611,15 +1611,15 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(profile);
 
-        if (assetGUID != null)
+        if (infrastructureGUID != null)
         {
-            EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+            EntityDetail itEntity = archiveBuilder.getEntity(infrastructureGUID);
 
-            EntityProxy end1 = archiveHelper.getEntityProxy(assetEntity);
+            EntityProxy end1 = archiveHelper.getEntityProxy(itEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(profile);
 
             archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
-                                                                         idToGUIDMap.getGUID(assetGUID + "_to_" + profile.getGUID() + "_it_infrastructure_profile_relationship"),
+                                                                         idToGUIDMap.getGUID(infrastructureGUID + "_to_" + profile.getGUID() + "_it_infrastructure_profile_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
@@ -4864,15 +4864,15 @@ public class SimpleCatalogArchiveHelper
                                                       String              methodName)
     {
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
-                                                                                                OpenMetadataType.FORMAT_PROPERTY_NAME,
+                                                                                                OpenMetadataProperty.FORMAT.name,
                                                                                                 format, methodName);
 
         classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
-                                                                             OpenMetadataType.ENCRYPTION_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.ENCRYPTION.name,
                                                                              encryption, methodName);
 
 
-        return archiveHelper.getClassification(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+        return archiveHelper.getClassification(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
                                                classificationProperties,
                                                InstanceStatus.ACTIVE);
     }

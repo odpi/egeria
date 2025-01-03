@@ -887,7 +887,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                           null,
                                                                           placeholderProperties,
                                                                           parentGUID,
-                                                                          OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                          OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                                           null,
                                                                           true);
         }
@@ -902,7 +902,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                      null,
                                                                      destinationFileProperties,
                                                                      parentGUID,
-                                                                     OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                     OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                                      null,
                                                                      true);
         }
@@ -958,7 +958,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         RelatedMetadataElementList relatedMetadataElementList
                 = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                       2,
-                                                                                      OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                                      OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
                                                                                       0,
                                                                                       0);
 

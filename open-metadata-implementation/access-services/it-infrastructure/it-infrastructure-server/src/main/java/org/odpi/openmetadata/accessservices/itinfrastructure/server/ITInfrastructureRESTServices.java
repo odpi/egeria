@@ -3355,6 +3355,7 @@ public class ITInfrastructureRESTServices
                                                                                   methodName),
                                                  false,
                                                  false,
+                                                 handler.getSupportedZones(),
                                                  new Date(),
                                                  methodName);
         }
@@ -3409,6 +3410,7 @@ public class ITInfrastructureRESTServices
                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                        false,
                                        false,
+                                       handler.getSupportedZones(),
                                        null,
                                        methodName);
         }

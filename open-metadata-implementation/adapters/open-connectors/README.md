@@ -32,6 +32,9 @@ and repository-service-connectors.
 assessing and acting on governance issues detected in the metadata ecosystem.
 These connectors support the [Governance Action Framework (GAF)](../../frameworks/governance-action-framework).
 
+* **[metadata-security-connectors](metadata-security-connectors)** manage the 
+authorization of requests to Egeria's services.
+
 * **[integration-connectors](integration-connectors)** contains governance actions for assessing and acting on
 governance issues detected in the metadata ecosystem.
 

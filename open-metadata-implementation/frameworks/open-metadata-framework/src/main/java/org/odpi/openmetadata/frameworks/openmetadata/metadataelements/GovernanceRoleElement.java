@@ -59,6 +59,7 @@ public class GovernanceRoleElement  implements MetadataElement
      *
      * @return element header object
      */
+    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -70,6 +71,7 @@ public class GovernanceRoleElement  implements MetadataElement
      *
      * @param elementHeader element header object
      */
+    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;

@@ -407,17 +407,10 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                    externalSourceName,
                                                                    databaseSchemaTypeGUID,
                                                                    displaySchemaTypeGUIDParameterName,
-                                                                   OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                    dataContainerGUID,
                                                                    dataContainerGUIDParameterName,
-                                                                   OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing,
-                                                                   supportedZones,
                                                                    OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                    null,
-                                                                   effectiveTime,
                                                                    methodName);
                 return dataContainerGUID;
             }
