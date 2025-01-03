@@ -546,7 +546,7 @@ storage.backend=berkeleyje
 # Default:    (no default value)
 # Data Type:  String
 # Mutability: LOCAL
-storage.directory=../../../egeria-install/egeria-omag-5.2-SNAPSHOT/data/servers/Metadata_Server/repository/graph/berkeley
+storage.directory=../../../egeria-install/egeria-omag-5.2/data/servers/Metadata_Server/repository/graph/berkeley
 
 # The indexing backend used to extend and optimize JanusGraph's query
 # functionality. This setting is optional.  JanusGraph can use multiple
@@ -573,7 +573,7 @@ index.search.backend=lucene
 # Default:    (no default value)
 # Data Type:  String
 # Mutability: MASKABLE
-index.search.directory=../../../egeria-install/egeria-omag-5.2-SNAPSHOT/data/servers/Metadata_Server/repository/graph/searchindex
+index.search.directory=../../../egeria-install/egeria-omag-5.2/data/servers/Metadata_Server/repository/graph/searchindex
 ```
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
