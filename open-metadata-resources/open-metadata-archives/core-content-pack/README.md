@@ -15,6 +15,7 @@ This module implements a utility to build the technology-specific [open metadata
 
 These archives contain the metadata descriptions for each of the connectors supplied by Egeria, along with associated templates and reference data.
 
+Full details of the contents of these archives can be found in the [Content Pack Catalog](https://egeria-project.org/content-packs/).
 
 ----
 
