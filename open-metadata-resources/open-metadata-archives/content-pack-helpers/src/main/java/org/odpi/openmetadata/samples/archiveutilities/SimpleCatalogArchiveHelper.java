@@ -2379,7 +2379,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ZONE_NAME_PROPERTY_NAME, zoneName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SCOPE_PROPERTY_NAME, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CRITERIA_PROPERTY_NAME, criteria, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
@@ -2615,7 +2615,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SUBJECT_AREA_NAME_PROPERTY_NAME, subjectAreaName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SCOPE_PROPERTY_NAME, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
@@ -2748,7 +2748,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end1GUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end2GUID));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.SCOPE_PROPERTY_NAME, scope, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SCOPE.name, scope, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ORGANIZATIONAL_CAPABILITY_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_organizational_capability_relationship"),
@@ -5160,7 +5160,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.LANGUAGE_PROPERTY_NAME, language, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LANGUAGE.name, language, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
@@ -5168,10 +5168,10 @@ public class SimpleCatalogArchiveHelper
 
         if (scope != null)
         {
-            Classification  canonicalVocabClassification = archiveHelper.getClassification(OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+            Classification  canonicalVocabClassification = archiveHelper.getClassification(OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName,
                                                                                            archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                                                                                      null,
-                                                                                                                                     OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                                                                                     OpenMetadataProperty.SCOPE.name,
                                                                                                                                      scope,
                                                                                                                                      methodName),
                                                                                            InstanceStatus.ACTIVE);
@@ -5182,12 +5182,12 @@ public class SimpleCatalogArchiveHelper
         String guid = idToGUIDMap.getGUID(qualifiedName);
 
         Classification anchorClassification = this.getAnchorClassification(guid,
-                                                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                                           OpenMetadataType.GLOSSARY.typeName,
+                                                                           OpenMetadataType.GLOSSARY.typeName,
                                                                            methodName);
         classifications.add(anchorClassification);
 
-        EntityDetail  glossaryEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_TYPE_NAME,
+        EntityDetail  glossaryEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY.typeName,
                                                                      guid,
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -5206,7 +5206,7 @@ public class SimpleCatalogArchiveHelper
             classifications = new ArrayList<>();
             classifications.add(anchorClassification);
 
-            EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(OpenMetadataType.EXTERNAL_GLOSSARY_LINK_TYPE_NAME,
+            EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(OpenMetadataType.EXTERNAL_GLOSSARY_LINK.typeName,
                                                                              idToGUIDMap.getGUID(externalLinkQualifiedName),
                                                                              properties,
                                                                              InstanceStatus.ACTIVE,
@@ -5217,7 +5217,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(glossaryEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(externalLinkEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP.typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName + "_externally_sourced_link_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
@@ -5318,7 +5318,7 @@ public class SimpleCatalogArchiveHelper
 
         if (isRootCategory)
         {
-            Classification  rootCategoryClassification = archiveHelper.getClassification(OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME,
+            Classification  rootCategoryClassification = archiveHelper.getClassification(OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION.typeName,
                                                                                          null,
                                                                                          InstanceStatus.ACTIVE);
 
@@ -5326,11 +5326,11 @@ public class SimpleCatalogArchiveHelper
         }
 
         classifications.add(this.getAnchorClassification(glossaryGUID,
-                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                         OpenMetadataType.GLOSSARY.typeName,
+                                                         OpenMetadataType.GLOSSARY.typeName,
                                                          methodName));
 
-        EntityDetail  categoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+        EntityDetail  categoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_CATEGORY.typeName,
                                                                      idToGUIDMap.getGUID(qualifiedName),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -5341,7 +5341,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(categoryEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(qualifiedName + "_category_anchor_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -5453,7 +5453,7 @@ public class SimpleCatalogArchiveHelper
         if (isContext)
         {
             InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, contextDescription, methodName);
-            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataType.SCOPE_PROPERTY_NAME, contextScope, methodName);
+            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataProperty.SCOPE.name, contextScope, methodName);
 
             Classification  newClassification = archiveHelper.getClassification(OpenMetadataType.CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME,
                                                                                 classificationProperties,
@@ -5463,11 +5463,11 @@ public class SimpleCatalogArchiveHelper
         }
 
         classifications.add(this.getAnchorClassification(glossaryGUID,
-                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                         OpenMetadataType.GLOSSARY.typeName,
+                                                         OpenMetadataType.GLOSSARY.typeName,
                                                          methodName));
 
-        EntityDetail  termEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+        EntityDetail  termEntity = archiveHelper.getEntityDetail(OpenMetadataType.GLOSSARY_TERM.typeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
@@ -5478,7 +5478,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(termEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_ANCHOR.typeName,
                                                                      idToGUIDMap.getGUID(qualifiedName + "_term_anchor_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -5505,7 +5505,7 @@ public class SimpleCatalogArchiveHelper
                     /*
                      * Note properties set to ACTIVE - if you need different properties use addTermToCategory
                      */
-                    archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+                    archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION.typeName,
                                                                                  idToGUIDMap.getGUID(qualifiedName + "_category_" + categoryId + "_term_categorization_relationship"),
                                                                                  categorizationProperties,
                                                                                  InstanceStatus.ACTIVE,
@@ -5531,7 +5531,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentCategoryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(childCategoryGUID));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATEGORY_HIERARCHY_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATEGORY_HIERARCHY_LINK_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(parentCategoryGUID + "_to_" + childCategoryGUID + "_category_hierarchy_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -5671,7 +5671,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name, GlossaryTermRelationshipStatus.getOpenTypeGUID(), GlossaryTermRelationshipStatus.getOpenTypeName(), termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TERM_CATEGORIZATION.typeName,
                                                                      idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_term_categorization_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -5705,9 +5705,9 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataType.LAST_VERIFIED_PROPERTY_NAME, lastVerified, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LAST_VERIFIED.name, lastVerified, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LIBRARY_CATEGORY_REFERENCE_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LIBRARY_CATEGORY_REFERENCE.typeName,
                                                                      idToGUIDMap.getGUID(categoryGUID + "_to_" + externalGlossaryLinkGUID + "_library_category_reference_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -5743,7 +5743,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataType.LAST_VERIFIED_PROPERTY_NAME, lastVerified, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LAST_VERIFIED.name, lastVerified, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LIBRARY_TERM_REFERENCE.typeName,
                                                                      idToGUIDMap.getGUID(termGUID + "_to_" + externalGlossaryLinkGUID + "_library_term_reference_relationship"),

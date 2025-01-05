@@ -4125,7 +4125,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.LANGUAGE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.LANGUAGE.name,
                                                          instanceProperties,
                                                          methodName);
         }

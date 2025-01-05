@@ -2562,6 +2562,97 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
     /**
+     * A collection of related glossary terms.
+     */
+    GLOSSARY("36f66863-9726-4b41-97ee-714fd0dc6fe4",
+             "Glossary",
+             OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
+             "a4b5347b-f9af-4669-bcc9-67eeb70fa6ed",
+             "A collection of related glossary terms."),
+
+    /**
+     * The location of a glossary stored outside the open metadata ecosystem.
+     */
+    EXTERNAL_GLOSSARY_LINK("183d2935-a950-4d74-b246-eac3664b5a9d",
+                           "ExternalGlossaryLink",
+                           OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
+                           "dc807f35-522d-45f2-9a0d-f5bc4567a75e",
+                           "The location of a glossary stored outside the open metadata ecosystem."),
+
+    /**
+     * Identifies a glossary that is organized as a taxonomy.
+     */
+    TAXONOMY_CLASSIFICATION("37116c51-e6c9-4c37-942e-35d48c8c69a0",
+                            "Taxonomy",
+                            OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
+                            "9a0562c5-7654-46c7-a216-0c85e7027562",
+                            "Identifies a glossary that is organized as a taxonomy."),
+
+    /**
+     * Identifies a glossary that contains unique terms with consistent granularity.
+     */
+    CANONICAL_VOCABULARY_CLASSIFICATION("33ad3da2-0910-47be-83f1-daee018a4c05",
+                                        "CanonicalVocabulary",
+                                        OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
+                                        "dd3c036e-e254-4337-9b71-b0db08b287b8",
+                                        "Identifies a glossary that contains unique terms with consistent granularity."),
+
+    /**
+     * Link between an open metadata glossary and a related glossary stored outside of the open metadata ecosystem.
+     */
+    EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP("7786a39c-436b-4538-acc7-d595b5856add",
+                                             "ExternallySourcedGlossary",
+                                             OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
+                                             "1b2136b8-089a-456e-b84a-f2d3e4620137",
+                                             "Link between an open metadata glossary and a related glossary stored outside of the open metadata ecosystem."),
+
+    /**
+     * A collection of related glossary terms.
+     */
+    GLOSSARY_CATEGORY("e507485b-9b5a-44c9-8a28-6967f7ff3672",
+                      "GlossaryCategory",
+                      OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                      "99d1bb1b-222a-4981-8704-a67e6d95b6e7",
+                      "A collection of related glossary terms."),
+
+    /**
+     * A category that is at the top of a category hierarchy.
+     */
+    ROOT_CATEGORY_CLASSIFICATION("1d0fec82-7444-4e4c-abd4-4765bb855ce3",
+                                 "RootCategory",
+                                 OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                                 "6fdb9bca-47e4-4c22-ad70-d087a655104f",
+                                 "A category that is at the top of a category hierarchy."),
+
+    /**
+     * Connects a glossary category with its owning glossary.
+     */
+    CATEGORY_ANCHOR_RELATIONSHIP("c628938e-815e-47db-8d1c-59bb2e84e028",
+                                 "CategoryAnchor",
+                                 OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                                 "d6ddb8da-2e7e-474f-b6b1-ea2695440a5b",
+                                 "Connects a glossary category with its owning glossary."),
+
+    /**
+     * Relationship between two glossary categories used to create nested categories.
+     */
+    CATEGORY_HIERARCHY_LINK_RELATIONSHIP("71e4b6fb-3412-4193-aff3-a16eccd87e8e",
+                                         "CategoryHierarchyLink",
+                                         OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                                         "33c98f7e-4db7-4757-b68f-750dcdd132e0",
+                                         "Relationship between two glossary categories used to create nested categories."),
+
+    /**
+     * Links a glossary category to a corresponding category in an external glossary.
+     */
+    LIBRARY_CATEGORY_REFERENCE("3da21cc9-3cdc-4d87-89b5-c501740f00b2",
+                               "LibraryCategoryReference",
+                               OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
+                               "295198e7-b0ed-49dc-97e0-5fd0fb4a843b",
+                               "Links a glossary category to a corresponding category in an external glossary."),
+
+
+    /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.
      */
     GLOSSARY_TERM("0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a",
@@ -2664,6 +2755,15 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
                                "12f769eb-f0a1-4d21-8afb-e005cc6ca2c5",
                                "Defines how critical the related data items are to the organization."),
+
+    /**
+     * Identifies an element as part of a subject area definition.
+     */
+    SUBJECT_AREA_CLASSIFICATION("480e6993-35c5-433a-b50b-0f5c4063fb5d",
+                                "SubjectArea",
+                                OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
+                                "11857716-4f6c-4a31-bf4b-e99ac09ba0f5",
+                                "Identifies an element as part of a subject area definition."),
 
     /**
      * Who is responsible for making decisions on the management and governance of this element.
@@ -3794,50 +3894,6 @@ public enum OpenMetadataType
     /* Area 3 - Glossary                                                                                                           */
     /* ============================================================================================================================*/
 
-    public static final String GLOSSARY_TYPE_GUID = "36f66863-9726-4b41-97ee-714fd0dc6fe4";
-    public static final String GLOSSARY_TYPE_NAME = "Glossary";               /* from Area 3 */
-    /* Referenceable */
-
-    public static final String LANGUAGE_PROPERTY_NAME = "language";      /* from Glossary entity*/
-
-    public static final String TAXONOMY_CLASSIFICATION_TYPE_GUID = "37116c51-e6c9-4c37-942e-35d48c8c69a0";
-    public static final String TAXONOMY_CLASSIFICATION_TYPE_NAME = "Taxonomy";               /* from Area 3 */
-
-    public static final String ORGANIZING_PRINCIPLE_PROPERTY_NAME = "organizingPrinciple";  /* from Taxonomy classification */
-
-    public static final String CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID = "33ad3da2-0910-47be-83f1-daee018a4c05";
-    public static final String CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME = "CanonicalVocabulary";               /* from Area 3 */
-
-    public static final String SCOPE_PROPERTY_NAME = "scope";  /* from CanonicalVocabulary classification */
-
-    public static final String EXTERNAL_GLOSSARY_LINK_TYPE_GUID = "183d2935-a950-4d74-b246-eac3664b5a9d";
-    public static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME = "ExternalGlossaryLink";               /* from Area 3 */
-    /* ExternalReference */
-
-    public static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_GUID = "7786a39c-436b-4538-acc7-d595b5856add";
-    public static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME = "ExternallySourcedGlossary";     /* from Area 3 */
-
-    public static final String GLOSSARY_CATEGORY_TYPE_GUID = "e507485b-9b5a-44c9-8a28-6967f7ff3672";
-    public static final String GLOSSARY_CATEGORY_TYPE_NAME = "GlossaryCategory";       /* from Area 3 */
-    /* Referenceable */
-
-    public static final String ROOT_CATEGORY_CLASSIFICATION_TYPE_GUID = "1d0fec82-7444-4e4c-abd4-4765bb855ce3";
-    public static final String ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME = "RootCategory";
-
-    public static final String CATEGORY_ANCHOR_TYPE_GUID = "c628938e-815e-47db-8d1c-59bb2e84e028";
-    public static final String CATEGORY_ANCHOR_TYPE_NAME = "CategoryAnchor";     /* from Area 3 */
-
-    public static final String CATEGORY_HIERARCHY_TYPE_GUID = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
-    public static final String CATEGORY_HIERARCHY_TYPE_NAME = "CategoryHierarchyLink";     /* from Area 3 */
-
-    public static final String LIBRARY_CATEGORY_REFERENCE_TYPE_GUID = "3da21cc9-3cdc-4d87-89b5-c501740f00b2e";
-    public static final String LIBRARY_CATEGORY_REFERENCE_TYPE_NAME = "LibraryCategoryReference";     /* from Area 3 */
-
-    public static final String LAST_VERIFIED_PROPERTY_NAME = "lastVerified";       /* from LibraryCategoryReference and LibraryTermReference entity */
-
-    public static final String GLOSSARY_TERM_TYPE_GUID = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
-    public static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";           /* from Area 3 */
-    /* Referenceable */
 
     public static final String CONTROLLED_GLOSSARY_TERM_TYPE_GUID = "c04e29b2-2d66-48fc-a20d-e59895de6040";
     public static final String CONTROLLED_GLOSSARY_TERM_TYPE_NAME = "ControlledGlossaryTerm";           /* from Area 3 */
@@ -3850,10 +3906,6 @@ public enum OpenMetadataType
     public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID = "361fa044-e703-404c-bb83-9402f9221f54";
     public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME = "StagingGlossary";       /* from Area 3 */
     /* Glossary */
-
-    public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
-    public static final String TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME = "TermRelationshipStatus";     /* from Area 3 */
-
 
     public static final String RELATED_TERM_RELATIONSHIP_GUID = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
     public static final String RELATED_TERM_RELATIONSHIP_NAME = "RelatedTerm";
@@ -3882,12 +3934,6 @@ public enum OpenMetadataType
     public static final String USED_IN_CONTEXT_RELATIONSHIP_GUID = "2dc524d2-e29f-4186-9081-72ea956c75de";
     public static final String USED_IN_CONTEXT_RELATIONSHIP_NAME = "UsedInContext";
 
-
-    public static final String TERM_ANCHOR_TYPE_GUID = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
-    public static final String TERM_ANCHOR_TYPE_NAME = "TermAnchor";     /* from Area 3 */
-
-    public static final String TERM_CATEGORIZATION_TYPE_GUID = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
-    public static final String TERM_CATEGORIZATION_TYPE_NAME = "TermCategorization";     /* from Area 3 */
 
     public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_GUID = "9d725a07-4abf-4939-a268-419d200b69c2";
     public static final String ABSTRACT_CONCEPT_CLASSIFICATION_TYPE_NAME = "AbstractConcept";   /* from Area 3 */
@@ -3924,7 +3970,6 @@ public enum OpenMetadataType
 
 
     public static final String USER_DEFINED_STATUS_PROPERTY_NAME   = "userDefinedStatus";
-    public static final String CREATED_BY_PROPERTY_NAME            = "createdBy";
 
 
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID = "58520015-ce6e-47b7-a1fd-864030544819";

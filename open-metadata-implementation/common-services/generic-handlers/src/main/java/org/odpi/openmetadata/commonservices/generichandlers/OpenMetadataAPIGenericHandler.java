@@ -2261,7 +2261,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
          */
         if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName))||
             (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ROOT_SCHEMA_TYPE.typeName)) ||
-            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GLOSSARY_TYPE_NAME)))
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GLOSSARY.typeName)))
         {
             if (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName))
             {
@@ -2411,8 +2411,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         String glossaryGUID = this.getEntityGUIDByValue(localServerUserId,
                                                         SupplementaryPropertiesValidValues.GLOSSARY_NAME,
                                                         SupplementaryPropertiesValidValues.GLOSSARY_PARAMETER_NAME,
-                                                        OpenMetadataType.GLOSSARY_TYPE_GUID,
-                                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                        OpenMetadataType.GLOSSARY.typeGUID,
+                                                        OpenMetadataType.GLOSSARY.typeName,
                                                         qualifiedNamePropertyNamesList,
                                                         null,
                                                         null,
@@ -2444,8 +2444,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                       methodName);
 
             glossaryGUID = repositoryHandler.createEntity(localServerUserId,
-                                                          OpenMetadataType.GLOSSARY_TYPE_GUID,
-                                                          OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                          OpenMetadataType.GLOSSARY.typeGUID,
+                                                          OpenMetadataType.GLOSSARY.typeName,
                                                           null,
                                                           null,
                                                           properties,

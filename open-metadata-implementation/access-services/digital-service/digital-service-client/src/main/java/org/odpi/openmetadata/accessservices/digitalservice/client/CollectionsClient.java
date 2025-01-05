@@ -1342,10 +1342,6 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                               collectionMembershipProperties.getConfidence());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CREATED_BY_PROPERTY_NAME,
-                                                                 collectionMembershipProperties.getCreatedBy());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.STEWARD.name,
                                                                  collectionMembershipProperties.getSteward());
 

@@ -1483,9 +1483,9 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     glossaryTermGUID,
-                                                                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                                                                    OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
-                                                                                    OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
+                                                                                    OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                    OpenMetadataType.TERM_ANCHOR.typeGUID,
+                                                                                    OpenMetadataType.TERM_ANCHOR.typeName,
                                                                                     1,
                                                                                     null,
                                                                                     null,
@@ -1554,9 +1554,9 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     glossaryCategoryGUID,
-                                                                                    OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                                    OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
-                                                                                    OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
+                                                                                    OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                                                                    OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeName,
                                                                                     1,
                                                                                     null,
                                                                                     null,
@@ -1675,7 +1675,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }

@@ -115,7 +115,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.GLOSSARY_TYPE_NAME;
+        String typeName = OpenMetadataType.GLOSSARY.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -123,7 +123,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                                   OpenMetadataType.GLOSSARY.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -202,8 +202,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
 
         builder.setAnchors(userId,
                            null,
-                           OpenMetadataType.GLOSSARY_TYPE_NAME,
-                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                           OpenMetadataType.GLOSSARY.typeName,
+                           OpenMetadataType.GLOSSARY.typeName,
                            methodName);
 
         return this.createBeanFromTemplate(userId,
@@ -211,8 +211,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.GLOSSARY_TYPE_GUID,
-                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY.typeGUID,
+                                           OpenMetadataType.GLOSSARY.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
@@ -280,7 +280,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.GLOSSARY_TYPE_NAME;
+        String typeName = OpenMetadataType.GLOSSARY.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -288,7 +288,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                                   OpenMetadataType.GLOSSARY.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -364,7 +364,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
-                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY.typeName,
                                            OpenMetadataType.EDITING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataType.EDITING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
                                            builder.getEditingGlossaryProperties(description, methodName),
@@ -412,7 +412,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
-                                                OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY.typeName,
                                                 OpenMetadataType.EDITING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataType.EDITING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
@@ -463,7 +463,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
-                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY.typeName,
                                            OpenMetadataType.STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataType.STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
                                            builder.getStagingGlossaryProperties(description, methodName),
@@ -511,7 +511,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
-                                                OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY.typeName,
                                                 OpenMetadataType.STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataType.STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME,
                                                 forLineage,
@@ -562,9 +562,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
-                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                           OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY.typeName,
+                                           OpenMetadataType.TAXONOMY_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName,
                                            builder.getTaxonomyProperties(organizingPrinciple, methodName),
                                            false,
                                            forLineage,
@@ -610,9 +610,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
-                                                OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.TAXONOMY_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataType.GLOSSARY.typeName,
+                                                OpenMetadataType.TAXONOMY_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -661,9 +661,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            glossaryGUID,
                                            glossaryGUIDParameterName,
-                                           OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                           OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.GLOSSARY.typeName,
+                                           OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName,
                                            builder.getCanonicalVocabularyProperties(scope, methodName),
                                            false,
                                            forLineage,
@@ -706,9 +706,9 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                 externalSourceName,
                                                 glossaryGUID,
                                                 glossaryGUIDParameterName,
-                                                OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.CANONICAL_VOCAB_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.GLOSSARY.typeName,
+                                                OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -752,8 +752,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     glossaryGUID,
                                     glossaryGUIDParameterName,
-                                    OpenMetadataType.GLOSSARY_TYPE_GUID,
-                                    OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                    OpenMetadataType.GLOSSARY.typeGUID,
+                                    OpenMetadataType.GLOSSARY.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -798,8 +798,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.GLOSSARY_TYPE_GUID,
-                              OpenMetadataType.GLOSSARY_TYPE_NAME,
+                              OpenMetadataType.GLOSSARY.typeGUID,
+                              OpenMetadataType.GLOSSARY.typeName,
                               null,
                               null,
                               SequencingOrder.CREATION_DATE_RECENT,
@@ -853,8 +853,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.GLOSSARY_TYPE_GUID,
-                                    OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                    OpenMetadataType.GLOSSARY.typeGUID,
+                                    OpenMetadataType.GLOSSARY.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -903,7 +903,7 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                          OpenMetadataType.GLOSSARY.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
@@ -942,10 +942,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElement(userId,
                                        glossaryCategoryGUID,
                                        guidParameterName,
-                                       OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
-                                       OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID,
-                                       OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
-                                       OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                       OpenMetadataType.GLOSSARY_CATEGORY.typeName,
+                                       OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeGUID,
+                                       OpenMetadataType.CATEGORY_ANCHOR_RELATIONSHIP.typeName,
+                                       OpenMetadataType.GLOSSARY.typeName,
                                        1,
                                        null,
                                        null,
@@ -989,10 +989,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
         return this.getAttachedElement(userId,
                                        glossaryTermGUID,
                                        guidParameterName,
-                                       OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                       OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
-                                       OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
-                                       OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                       OpenMetadataType.TERM_ANCHOR.typeGUID,
+                                       OpenMetadataType.TERM_ANCHOR.typeName,
+                                       OpenMetadataType.GLOSSARY.typeName,
                                        1,
                                        null,
                                        null,

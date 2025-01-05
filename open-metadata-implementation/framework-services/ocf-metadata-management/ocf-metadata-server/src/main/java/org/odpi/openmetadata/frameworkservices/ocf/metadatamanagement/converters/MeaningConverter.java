@@ -62,7 +62,7 @@ public class MeaningConverter<B> extends OMFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.GLOSSARY_TERM_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.GLOSSARY_TERM.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

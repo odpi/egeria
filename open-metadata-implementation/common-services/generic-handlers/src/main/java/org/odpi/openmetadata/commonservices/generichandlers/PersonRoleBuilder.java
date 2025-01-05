@@ -171,7 +171,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SCOPE.name,
                                                                   scope,
                                                                   methodName);
 
