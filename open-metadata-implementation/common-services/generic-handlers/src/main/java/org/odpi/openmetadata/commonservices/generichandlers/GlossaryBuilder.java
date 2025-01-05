@@ -89,8 +89,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.GLOSSARY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY.typeGUID,
+              OpenMetadataType.GLOSSARY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -120,8 +120,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.GLOSSARY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY.typeGUID,
+              OpenMetadataType.GLOSSARY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -143,8 +143,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
                     String               serviceName,
                     String               serverName)
     {
-        super(OpenMetadataType.GLOSSARY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_TYPE_NAME,
+        super(OpenMetadataType.GLOSSARY.typeGUID,
+              OpenMetadataType.GLOSSARY.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -177,7 +177,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LANGUAGE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LANGUAGE.name,
                                                                   language,
                                                                   methodName);
 
@@ -263,7 +263,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.ORGANIZING_PRINCIPLE_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.ORGANIZING_PRINCIPLE.name,
                                                                       organizingPrinciple,
                                                                       methodName);
 
@@ -291,7 +291,7 @@ public class GlossaryBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.SCOPE.name,
                                                                       scope,
                                                                       methodName);
 

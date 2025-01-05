@@ -1919,28 +1919,6 @@ public abstract class OpenMetadataConverterBase<B>
         return null;
     }
 
-    /**
-     * Extract and delete the createdBy property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeCreatedBy(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeCreatedBy";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.CREATED_BY_PROPERTY_NAME,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
 
     /**
      * Extract and delete the mappingProperties property from the supplied element properties.
@@ -4424,7 +4402,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.LANGUAGE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.LANGUAGE.name,
                                                        elementProperties,
                                                        methodName);
         }

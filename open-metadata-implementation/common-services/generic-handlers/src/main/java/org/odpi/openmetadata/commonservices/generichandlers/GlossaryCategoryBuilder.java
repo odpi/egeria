@@ -46,8 +46,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
+              OpenMetadataType.GLOSSARY_CATEGORY.typeName,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -77,8 +77,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
+              OpenMetadataType.GLOSSARY_CATEGORY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -100,8 +100,8 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+        super(OpenMetadataType.GLOSSARY_CATEGORY.typeGUID,
+              OpenMetadataType.GLOSSARY_CATEGORY.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -125,7 +125,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -134,7 +134,7 @@ public class GlossaryCategoryBuilder extends ReferenceableBuilder
         }
         catch (Exception error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION.typeName);
         }
     }
 

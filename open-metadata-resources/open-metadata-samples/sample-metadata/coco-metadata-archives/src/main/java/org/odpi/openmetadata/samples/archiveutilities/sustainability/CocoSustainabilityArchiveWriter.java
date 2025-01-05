@@ -194,8 +194,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addExternalReference(null,
                                                    glossaryTermGUID,
-                                                   OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                   OpenMetadataType.GLOSSARY.typeName,
                                                    "ExternalReference:" + glossaryTermDefinition.getName(),
                                                    null,
                                                    null,

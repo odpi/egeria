@@ -519,12 +519,6 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CREATED_BY_PROPERTY_NAME,
-                                                                  createdBy,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
                                                                   OpenMetadataProperty.STEWARD.name,
                                                                   steward,
                                                                   methodName);

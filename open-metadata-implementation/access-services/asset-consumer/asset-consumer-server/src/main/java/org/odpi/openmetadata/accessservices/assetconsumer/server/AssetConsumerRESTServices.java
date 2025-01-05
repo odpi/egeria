@@ -2161,7 +2161,7 @@ public class AssetConsumerRESTServices
             List<EntityDetail> attachedEntities = handler.getAttachedEntities(userId,
                                                                               termGUID,
                                                                               guidParameterName,
-                                                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                              OpenMetadataType.GLOSSARY_TERM.typeName,
                                                                               OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
                                                                               OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                                                               OpenMetadataType.REFERENCEABLE.typeName,

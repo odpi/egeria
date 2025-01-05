@@ -74,7 +74,7 @@ public class CollectionMemberConverter<B> extends OpenMetadataConverterBase<B>
                     ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
                     membershipProperties.setMembershipRationale(this.removeMembershipRationale(elementProperties));
-                    membershipProperties.setCreatedBy(this.removeCreatedBy(elementProperties));
+                    membershipProperties.setCreatedBy(relatedMetadataElement.getVersions().getCreatedBy());
                     membershipProperties.setExpression(this.removeExpression(elementProperties));
                     membershipProperties.setConfidence(this.removeConfidence(elementProperties));
                     membershipProperties.setSteward(this.removeSteward(elementProperties));

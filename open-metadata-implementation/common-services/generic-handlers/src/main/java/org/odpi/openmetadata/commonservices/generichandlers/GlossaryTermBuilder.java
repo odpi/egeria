@@ -39,8 +39,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                         String               serviceName,
                         String               serverName)
     {
-        super(OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+        super(OpenMetadataType.GLOSSARY_TERM.typeGUID,
+              OpenMetadataType.GLOSSARY_TERM.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -145,8 +145,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
-              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+              OpenMetadataType.GLOSSARY_TERM.typeGUID,
+              OpenMetadataType.GLOSSARY_TERM.typeName,
               extendedProperties,
               initialStatus,
               repositoryHelper,
@@ -272,7 +272,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SCOPE.name,
                                                                   scope,
                                                                   methodName);
 
@@ -314,8 +314,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
                                                                     OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                                                    OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                    GlossaryTermRelationshipStatus.getOpenTypeGUID(),
+                                                                    GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                                     relationshipStatus,
                                                                     methodName);
         }

@@ -2521,7 +2521,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                   OpenMetadataType.REFERENCEABLE.typeName,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
-                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -2621,11 +2621,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CREATED_BY_PROPERTY_NAME,
-                                                                  createdBy,
-                                                                  methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
                                                                   OpenMetadataProperty.STEWARD.name,
                                                                   steward,
                                                                   methodName);
@@ -2643,7 +2638,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                   OpenMetadataType.REFERENCEABLE.typeName,
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
-                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                  OpenMetadataType.GLOSSARY_TERM.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -2700,8 +2695,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                       OpenMetadataType.REFERENCEABLE.typeName,
                                       glossaryTermGUID,
                                       glossaryTermGUIDParameter,
-                                      OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
-                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM.typeGUID,
+                                      OpenMetadataType.GLOSSARY_TERM.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
@@ -2745,7 +2740,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                UserNotAuthorizedException
     {
         String startingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
-        String resultingTypeName = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
+        String resultingTypeName = OpenMetadataType.GLOSSARY_TERM.typeName;
 
         if (suppliedStartingTypeName != null)
         {
@@ -2810,7 +2805,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        String startingTypeName = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
+        String startingTypeName = OpenMetadataType.GLOSSARY_TERM.typeName;
         String resultingTypeName  = OpenMetadataType.REFERENCEABLE.typeName;
 
         if (suppliedResultingTypeName != null)

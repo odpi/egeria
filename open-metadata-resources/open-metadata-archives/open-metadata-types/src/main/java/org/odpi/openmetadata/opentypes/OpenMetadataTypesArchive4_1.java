@@ -422,7 +422,6 @@ public class OpenMetadataTypesArchive4_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-
     private void update0320CategoryHierarchy()
     {
         this.archiveBuilder.addClassificationDef(getRootCategoryClassification());
@@ -430,19 +429,9 @@ public class OpenMetadataTypesArchive4_1
 
     private ClassificationDef getRootCategoryClassification()
     {
-        final String guid            = "1d0fec82-7444-4e4c-abd4-4765bb855ce3";
-        final String name            = "RootCategory";
-        final String description     = "A category that is at the top of a category hierarchy";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "GlossaryCategory";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_CATEGORY_CLASSIFICATION,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_CATEGORY.typeName),
                                                   false);
     }
 
@@ -480,12 +469,8 @@ public class OpenMetadataTypesArchive4_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -512,12 +497,8 @@ public class OpenMetadataTypesArchive4_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);
 

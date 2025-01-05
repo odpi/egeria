@@ -1901,12 +1901,32 @@ public enum OpenMetadataProperty
     /**
      * The containment relationship between two processes: the parent and one of its children.
      */
-    CONTAINMENT_TYPE("containmentType", ProcessContainmentType.getOpenTypeName(), ProcessContainmentType.getOpenTypeDescription(), ProcessContainmentType.OWNED.getName(), ProcessContainmentType.getOpenTypeDescriptionGUID()),
+    CONTAINMENT_TYPE("containmentType", ProcessContainmentType.getOpenTypeName(), ProcessContainmentType.getOpenTypeDescription(), ProcessContainmentType.OWNED.getName(), "563319e1-d17a-4b7b-ac78-393e5986bd38"),
 
     /**
      * Descriptor for a port that indicates the direction that data is flowing.
      */
-    PORT_TYPE("portType", PortType.getOpenTypeName(), PortType.getOpenTypeDescription(), PortType.INOUT_PORT.getName(), PortType.getOpenTypeDescriptionGUID()),
+    PORT_TYPE("portType", PortType.getOpenTypeName(), PortType.getOpenTypeDescription(), PortType.INOUT_PORT.getName(), "aa4efd6d-eba5-4d94-b728-6ec16ead4230"),
+
+    /**
+     * Natural language used in the glossary.
+     */
+    LANGUAGE("language", DataType.STRING.getName(), "Natural language used in the glossary.", "English", "0f6bde2f-0456-4c32-a1ef-5b7fbe9aafe3"),
+
+    /**
+     * Characteristics that influence the organization of the taxonomy.
+     */
+    ORGANIZING_PRINCIPLE("organizingPrinciple", DataType.STRING.getName(), "Characteristics that influence the organization of the taxonomy.", "Alphabetical", "980250ab-c0e1-4cdb-851e-b6622d68fb41"),
+
+    /**
+     * Date when this reference was last checked.
+     */
+    LAST_VERIFIED("lastVerified", DataType.DATE.getName(), "Date when this reference was last checked.", null, "bc5280ed-bd1c-4874-870c-7bc4fefebad3"),
+
+    /**
+     * Status of the relationship.
+     */
+    STATUS("status", GlossaryTermRelationshipStatus.getOpenTypeName(), "Status of the relationship.",  GlossaryTermRelationshipStatus.ACTIVE.getName(), "b46a1425-b307-4706-bc3d-c1c2d4adfbfd"),
 
     ;
 
