@@ -120,6 +120,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
                     bean.setExternalIdentifier(this.removeIdentifier(instanceProperties));
+                    bean.setExternalInstanceTypeName(this.removeIdentifierTypeName(instanceProperties));
                     bean.setKeyPattern(this.removeKeyPattern(instanceProperties));
                     bean.setExternalInstanceCreatedBy(this.removeExternalInstanceCreatedBy(instanceProperties));
                     bean.setExternalInstanceCreationTime(this.removeExternalInstanceCreationTime(instanceProperties));

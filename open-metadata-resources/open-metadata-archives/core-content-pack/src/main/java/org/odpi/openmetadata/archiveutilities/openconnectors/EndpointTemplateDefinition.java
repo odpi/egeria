@@ -112,6 +112,7 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
         return "V1.0";
     }
 
+
     /**
      * Return the supported deployed implementation for this template.
      *
@@ -121,6 +122,18 @@ public enum EndpointTemplateDefinition implements TemplateDefinition
     public DeployedImplementationTypeDefinition getDeployedImplementationType()
     {
         return deployedImplementationType;
+    }
+
+
+    /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    @Override
+    public String getElementVersionIdentifier()
+    {
+        return PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
     }
 
 

@@ -83,7 +83,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
          */
         for (UnityCatalogTemplateType templateType : UnityCatalogTemplateType.values())
         {
-            templateProperties.put(templateType.getTemplateName(), templateType.getDefaultTemplateGUID());
+            templateProperties.put(templateType.getTemplateName(), templateType.getTemplateGUID());
         }
 
         /*

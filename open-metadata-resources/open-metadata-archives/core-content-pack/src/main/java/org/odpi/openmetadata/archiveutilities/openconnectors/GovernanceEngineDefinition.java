@@ -166,6 +166,18 @@ public enum GovernanceEngineDefinition
                             "apachekafkagovernanceengine",
                             OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                              ContentPackDefinition.APACHE_KAFKA_CONTENT_PACK),
+
+
+    /**
+     * Provides specialist governance services to enable observations on the activity and content of the open metadata ecosystem.
+     */
+    NANNY_GOVERNANCE_ENGINE("fc729eb7-c0e5-4aef-8f80-c1d64478cd3b",
+                            "MetadataObservability",
+                            "Metadata Observability Governance Engine",
+                            "Provides specialist governance services to enable observations on the activity and content of the open metadata ecosystem.",
+                            "observabilitygovernanceengine",
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            ContentPackDefinition.NANNY_CONTENT_PACK),
     ;
 
 

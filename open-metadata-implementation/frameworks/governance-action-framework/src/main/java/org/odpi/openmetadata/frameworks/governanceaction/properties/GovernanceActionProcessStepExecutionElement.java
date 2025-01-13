@@ -26,6 +26,7 @@ public class GovernanceActionProcessStepExecutionElement
     private ElementHeader                          elementHeader         = null;
     private GovernanceActionProcessStepExecution   processStepProperties = null;
     private Map<String, List<Map<String, String>>> specification        = null;
+    private String                                 mermaidSpecification = null;
 
 
     /**
@@ -49,6 +50,7 @@ public class GovernanceActionProcessStepExecutionElement
             elementHeader         = template.getElementHeader();
             processStepProperties = template.getProcessStepProperties();
             specification         = template.getSpecification();
+            mermaidSpecification  = template.getMermaidSpecification();
         }
     }
 
@@ -65,6 +67,7 @@ public class GovernanceActionProcessStepExecutionElement
             elementHeader         = template.getElementHeader();
             processStepProperties = new GovernanceActionProcessStepExecution(template.getProcessStepProperties());
             specification         = template.getSpecification();
+            mermaidSpecification  = template.getMermaidSpecification();
         }
     }
 
@@ -81,6 +84,7 @@ public class GovernanceActionProcessStepExecutionElement
             elementHeader         = template.getElementHeader();
             processStepProperties = new GovernanceActionProcessStepExecution(template);
             specification         = null;
+            mermaidSpecification  = null;
         }
     }
 
@@ -152,6 +156,28 @@ public class GovernanceActionProcessStepExecutionElement
 
 
     /**
+     * Return the mermaid string used to render a specification.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidSpecification()
+    {
+        return mermaidSpecification;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidSpecification string in Mermaid markdown
+     */
+    public void setMermaidSpecification(String mermaidSpecification)
+    {
+        this.mermaidSpecification = mermaidSpecification;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -159,10 +185,11 @@ public class GovernanceActionProcessStepExecutionElement
     @Override
     public String toString()
     {
-        return "GovernanceActionProcessStepElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", processStepProperties=" + processStepProperties +
-                       ", specification=" + specification +
+        return "GovernanceActionProcessStepExecutionElement{" +
+                "elementHeader=" + elementHeader +
+                ", processStepProperties=" + processStepProperties +
+                ", specification=" + specification +
+                ", mermaidSpecification='" + mermaidSpecification + '\'' +
                 '}';
     }
 
@@ -191,7 +218,8 @@ public class GovernanceActionProcessStepExecutionElement
         GovernanceActionProcessStepExecutionElement that = (GovernanceActionProcessStepExecutionElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(processStepProperties, that.processStepProperties) &&
-                Objects.equals(specification, that.specification);
+                Objects.equals(specification, that.specification) &&
+                Objects.equals(mermaidSpecification, that.mermaidSpecification);
     }
 
 
@@ -203,6 +231,6 @@ public class GovernanceActionProcessStepExecutionElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processStepProperties, specification);
+        return Objects.hash(super.hashCode(), elementHeader, processStepProperties, specification, mermaidSpecification);
     }
 }

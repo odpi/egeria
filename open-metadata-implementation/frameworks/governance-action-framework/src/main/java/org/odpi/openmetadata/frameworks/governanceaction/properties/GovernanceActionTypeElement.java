@@ -27,6 +27,7 @@ public class GovernanceActionTypeElement
     private ElementHeader                          elementHeader        = null;
     private GovernanceActionTypeProperties         actionTypeProperties = null;
     private Map<String, List<Map<String, String>>> specification        = null;
+    private String                                 mermaidSpecification = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class GovernanceActionTypeElement
             elementHeader        = template.getElementHeader();
             actionTypeProperties = template.getActionTypeProperties();
             specification        = template.getSpecification();
+            mermaidSpecification = template.getMermaidSpecification();
         }
     }
 
@@ -120,6 +122,28 @@ public class GovernanceActionTypeElement
 
 
     /**
+     * Return the mermaid string used to render a specification.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidSpecification()
+    {
+        return mermaidSpecification;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidSpecification string in Mermaid markdown
+     */
+    public void setMermaidSpecification(String mermaidSpecification)
+    {
+        this.mermaidSpecification = mermaidSpecification;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -131,8 +155,10 @@ public class GovernanceActionTypeElement
                 "elementHeader=" + elementHeader +
                 ", actionTypeProperties=" + actionTypeProperties +
                 ", specification=" + specification +
+                ", mermaidSpecification='" + mermaidSpecification + '\'' +
                 '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -158,7 +184,8 @@ public class GovernanceActionTypeElement
         GovernanceActionTypeElement that = (GovernanceActionTypeElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(actionTypeProperties, that.actionTypeProperties) &&
-                Objects.equals(specification, that.specification);
+                Objects.equals(specification, that.specification) &&
+                Objects.equals(mermaidSpecification, that.mermaidSpecification);
     }
 
 
@@ -170,6 +197,6 @@ public class GovernanceActionTypeElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, specification);
+        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, specification, mermaidSpecification);
     }
 }

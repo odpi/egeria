@@ -10,13 +10,12 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.provision.Provisio
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
@@ -114,6 +113,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("UnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_UC_SERVER,
+                                                          SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
@@ -121,6 +121,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("UnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_UC_SERVER,
+                                                           SoftwareServerTemplateDefinition.UNITY_CATALOG_SERVER_TEMPLATE,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
@@ -135,6 +136,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                           UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_DB_UC_SERVER,
+                                                          SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_UC_SERVER,
                                                           GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE,
@@ -142,6 +144,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("DatabricksUnityCatalogServer",
                                                            UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_DB_UC_SERVER,
+                                                           SoftwareServerTemplateDefinition.DATABRICKS_UC_SERVER_TEMPLATE,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_UC_SERVER,
                                                            GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
@@ -156,26 +159,31 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogCatalog",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
+                                                                UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE,
                                                                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogSchema",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
+                                                                UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE,
                                                                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogVolume",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
+                                                                UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE,
                                                                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogTable",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
+                                                                UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE,
                                                                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getQualifiedName());
         this.createProvisionUnityCatalogGovernanceActionProcess("UnityCatalogFunction",
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(),
                                                                 RequestTypeDefinition.PROVISION_UC,
+                                                                UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE,
                                                                 GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE,
                                                                 UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getQualifiedName());
 
@@ -198,6 +206,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     protected void createProvisionUnityCatalogGovernanceActionProcess(String                     technologyName,
                                                                       String                     technologyType,
                                                                       RequestTypeDefinition      provisionRequestType,
+                                                                      TemplateDefinition         createTemplate,
                                                                       GovernanceEngineDefinition provisionEngineDefinition,
                                                                       String                     supportedElementQualifiedName)
     {
@@ -214,6 +223,14 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                       null,
                                                                       null);
 
+
+        List<RequestParameterType> supportedRequestParameters = null;
+
+        if (createTemplate != null)
+        {
+            supportedRequestParameters = this.getRequestTypeDefinition(createTemplate.getPlaceholders());
+        }
+
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -222,7 +239,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                         "Create the new element",
                                                                         "Create a " + technologyType + " element in the correct metadata collection so that it is provisioned into unity catalog.",
                                                                         0,
-                                                                        null,
+                                                                        supportedRequestParameters,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -262,7 +279,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addOSSUCCatalogCatalogTemplate()
     {
         final String methodName = "addOSSUCCatalogCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG;
 
@@ -305,7 +322,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCSchemaCatalogTemplate()
     {
         final String methodName = "addOSSUCSchemaCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA;
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -351,7 +368,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCVolumeCatalogTemplate()
     {
         final String methodName = "addUCVolumeCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_VOLUME;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -440,7 +457,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCTableCatalogTemplate()
     {
         final String methodName = "addUCTableCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_TABLE;
         String                               fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -524,7 +541,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCFunctionCatalogTemplate()
     {
         final String methodName = "addUCFunctionCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -571,7 +588,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCRegisteredModelCatalogTemplate()
     {
         final String methodName = "addUCRegisteredModelCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
@@ -618,7 +635,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
     private void addUCModelVersionCatalogTemplate()
     {
         final String methodName = "addUCModelVersionCatalogTemplate";
-        final String guid       = UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getDefaultTemplateGUID();
+        final String guid       = UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getTemplateGUID();
 
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_REGISTERED_MODEL_VERSION;
         String                     fullName                             = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."

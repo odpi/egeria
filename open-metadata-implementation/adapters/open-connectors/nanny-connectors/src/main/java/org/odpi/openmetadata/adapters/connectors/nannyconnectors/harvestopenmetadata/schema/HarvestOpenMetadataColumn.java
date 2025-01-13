@@ -157,6 +157,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     DUE_TIME                     ("due_time", ColumnType.DATE, "When should action be complete?", false),
     COMPLETION_TIME              ("completion_time", ColumnType.DATE, "When was action completed?", false),
     TO_DO_STATUS                 ("to_do_status", ColumnType.STRING, "What is the status of this action", true),
+    TO_DO_TYPE                   ("to_do_type", ColumnType.STRING, "What is the type of this action", false),
     TO_DO_SOURCE_GUID            ("to_do_source_guid", ColumnType.STRING, "Unique identifier for the source of the ToDo", false),
     TO_DO_SOURCE_TYPE            ("to_do_source_type", ColumnType.STRING, "Open metadata type for the source of the ToDo", false),
     LAST_REVIEW_TIME             ("last_review_time", ColumnType.DATE, "The last time that the ToDo was reviewed", false),
@@ -182,7 +183,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     PROJECT_STATUS               ("project_status", ColumnType.STRING, "What is the status of this project", false),
     PROJECT_PHASE                ("project_phase", ColumnType.STRING, "What is the phase of this project", false),
     PROJECT_HEALTH               ("project_health", ColumnType.STRING, "What is the health of this project", false),
-    PARENT_PROJECT_GUID          ("parent_project_guid", ColumnType.STRING, "Unique identifier for the parent of this project", false),
+    PARENT_GUID                  ("parent_guid", ColumnType.STRING, "Unique identifier for the parent of this element", false),
 
 
     ASSIGNED_ACTOR_GUID          ("assigned_actor_guid", ColumnType.STRING, "Unique identifier for the actor assigned to action the ToDo", true),
@@ -196,6 +197,18 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
 
 
     COLLECTION_GUID              ("collection_guid", ColumnType.STRING, "Unique identifier for a collection", true),
+    MEMBER_TYPES                 ("member_types", ColumnType.STRING, "List of types of the members", true),
+
+
+    PRODUCT_STATUS               ("product_status", ColumnType.STRING, "The status of the digital product.", false),
+    PRODUCT_NAME                 ("product_name", ColumnType.STRING, "The display name of the product.", false),
+    PRODUCT_TYPE                 ("product_type", ColumnType.STRING, "The type (category) of the digital product.", false),
+    INTRODUCTION_DATE            ("introduction_date", ColumnType.DATE, "The data when the product was first made available.", false),
+    MATURITY                     ("maturity", ColumnType.STRING, "The level of maturity of the product.", false),
+    SERVICE_LIFE                 ("service_life", ColumnType.STRING, "Product service policy.", false),
+    CURRENT_VERSION              ("current_version", ColumnType.STRING, "Version identifier of the current version", false),
+    NEXT_VERSION                 ("next_version", ColumnType.DATE, "Expected date of the next version.", false),
+    WITHDRAW_DATE                ("withdraw_date", ColumnType.DATE, "Planned withdrawal date for the product.", false),
 
 
     CLASSIFICATIONS              ("classifications", ColumnType.STRING, "List of classifications associated with the element", false),

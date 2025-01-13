@@ -339,6 +339,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                       this.getExternalIdentifierProperties(volumeInfo,
                                                                            volumeInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
+                                                                           "volume",
                                                                            volumeInfo.getVolume_id(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -406,6 +407,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                           this.getExternalIdentifierProperties(volumeInfo,
                                                                                volumeInfo.getSchema_name(),
                                                                                UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
+                                                                               "volume",
                                                                                volumeInfo.getVolume_id(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }

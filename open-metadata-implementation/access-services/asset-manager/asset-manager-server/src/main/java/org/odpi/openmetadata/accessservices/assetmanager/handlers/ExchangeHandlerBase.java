@@ -311,6 +311,7 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getExternalIdentifierUsage(),
                                                                   correlationProperties.getExternalIdentifierSource(),
                                                                   correlationProperties.getMappingProperties(),
+                                                                  correlationProperties.getExternalInstanceTypeName(),
                                                                   correlationProperties.getExternalInstanceCreatedBy(),
                                                                   correlationProperties.getExternalInstanceCreationTime(),
                                                                   correlationProperties.getExternalInstanceLastUpdatedBy(),

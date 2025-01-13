@@ -347,6 +347,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                           "catalog",
                                                                            catalogInfo.getId(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -418,6 +419,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                                           this.getExternalIdentifierProperties(catalogInfo,
                                                                                null,
                                                                                UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                               "catalog",
                                                                                catalogInfo.getId(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }

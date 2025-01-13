@@ -42,6 +42,14 @@ public enum OMAGConnectorErrorCode implements ExceptionMessageSet
              "The connector is unable to contact the OMAG Server.",
              "The server's name is configured in the connector's connection additionalProperties in the serverName property."),
 
+    /**
+     * EGERIA-CONNECTOR-400-003 - Egeria connector {0} has been configured without a userId needed to call the OMAG Server Platform.
+     */
+    NULL_CLIENT_USER_ID(400, "OMAG-CONNECTORS-400-002",
+                     "Egeria connector {0} has been configured without a userId needed to call the OMAG Server Platform.",
+                     "The connector is not authorized to contact the OMAG Server Platform.",
+                     "The userId is configured in the connector's connection userId property."),
+
 
     /**
      * EGERIA-CONNECTOR-500-001 - The {0} Egeria connector received an unexpected exception {1} during method {2}; the error message was: {3}

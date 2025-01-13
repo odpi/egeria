@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres;
 
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc.JDBCErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +20,21 @@ public class PostgreSQLSchemaDDL
     private final String                schemaDescription;
     private final List<PostgreSQLTable> tables;
 
-    public PostgreSQLSchemaDDL(String schemaName, String schemaDescription, List<PostgreSQLTable> tables)
+    public PostgreSQLSchemaDDL(String                schemaName,
+                               String                schemaDescription,
+                               List<PostgreSQLTable> tables) throws InvalidParameterException
     {
+        if (schemaName == null)
+        {
+            final String actionDescription = "Manage PostgreSQL Database Definitions";
+            final String parameterName = "schemaName";
+
+            throw new InvalidParameterException(JDBCErrorCode.NULL_SCHEMA_NAME.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                parameterName);
+        }
+
         this.schemaName        = schemaName;
         this.schemaDescription = schemaDescription;
         this.tables            = tables;

@@ -113,6 +113,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the integration connector
      * @param displayName display name for the integration connector
      * @param description description about the integration connector
+     * @param userId userId to use when calling external services
      * @param additionalProperties any other properties
      *
      * @return id for the integration connector
@@ -122,6 +123,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                           String              qualifiedName,
                                           String              displayName,
                                           String              description,
+                                          String              userId,
                                           String              endpointAddress,
                                           Map<String, String> additionalProperties)
     {
@@ -193,7 +195,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             String connectionGUID = super.addConnection(qualifiedName + "_implementation",
                                                         displayName + " Integration Connector Provider Implementation",
                                                         "Connection for integration connector: " + qualifiedName,
-                                                        null,
+                                                        userId,
                                                         null,
                                                         null,
                                                         null,
@@ -1480,50 +1482,50 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
         }
 
-        EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
+        EntityDetail typeEntity = archiveHelper.getEntityDetail(actionTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
                                                                  entityClassifications);
 
-        archiveBuilder.addEntity(assetEntity);
+        archiveBuilder.addEntity(typeEntity);
 
-        addSupportedRequestParameters(assetEntity.getGUID(),
+        addSupportedRequestParameters(typeEntity.getGUID(),
                                       actionTypeName,
                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                       supportedRequestParameters);
 
-        addSupportedActionTargets(assetEntity.getGUID(),
+        addSupportedActionTargets(typeEntity.getGUID(),
                                   actionTypeName,
                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedActionTargets);
 
-        addSupportedAnalysisSteps(assetEntity.getGUID(),
+        addSupportedAnalysisSteps(typeEntity.getGUID(),
                                   actionTypeName,
                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedAnalysisSteps);
 
-        addProducedAnnotationTypes(assetEntity.getGUID(),
+        addProducedAnnotationTypes(typeEntity.getGUID(),
                                    actionTypeName,
                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                    supportedAnnotationTypes);
 
-        addProducedRequestParameters(assetEntity.getGUID(),
+        addProducedRequestParameters(typeEntity.getGUID(),
                                      actionTypeName,
                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                      producedRequestParameters);
 
-        addProducedActionTargets(assetEntity.getGUID(),
+        addProducedActionTargets(typeEntity.getGUID(),
                                  actionTypeName,
                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                  producedActionTargets);
 
-        addProducedGuards(assetEntity.getGUID(),
+        addProducedGuards(typeEntity.getGUID(),
                           actionTypeName,
                           OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                           producedGuards);
 
-        return assetEntity.getGUID();
+        return typeEntity.getGUID();
     }
 
 
@@ -1604,50 +1606,50 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
         }
 
-        EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
+        EntityDetail stepEntity = archiveHelper.getEntityDetail(actionTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
                                                                  entityClassifications);
 
-        archiveBuilder.addEntity(assetEntity);
+        archiveBuilder.addEntity(stepEntity);
 
-        addSupportedRequestParameters(assetEntity.getGUID(),
+        addSupportedRequestParameters(stepEntity.getGUID(),
                                       actionTypeName,
                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                       supportedRequestParameters);
 
-        addSupportedActionTargets(assetEntity.getGUID(),
+        addSupportedActionTargets(stepEntity.getGUID(),
                                   actionTypeName,
                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedActionTargets);
 
-        addSupportedAnalysisSteps(assetEntity.getGUID(),
+        addSupportedAnalysisSteps(stepEntity.getGUID(),
                                   actionTypeName,
                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedAnalysisSteps);
 
-        addProducedAnnotationTypes(assetEntity.getGUID(),
+        addProducedAnnotationTypes(stepEntity.getGUID(),
                                    actionTypeName,
                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                    supportedAnnotationTypes);
 
-        addProducedRequestParameters(assetEntity.getGUID(),
+        addProducedRequestParameters(stepEntity.getGUID(),
                                      actionTypeName,
                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                      producedRequestParameters);
 
-        addProducedActionTargets(assetEntity.getGUID(),
+        addProducedActionTargets(stepEntity.getGUID(),
                                  actionTypeName,
                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                  producedActionTargets);
 
-        addProducedGuards(assetEntity.getGUID(),
+        addProducedGuards(stepEntity.getGUID(),
                           actionTypeName,
                           OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                           producedGuards);
 
-        return assetEntity.getGUID();
+        return stepEntity.getGUID();
     }
 
 

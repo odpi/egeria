@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.nanny;
 
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
 import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
@@ -61,23 +62,25 @@ public class NannyPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         super.createRequestTypes(ContentPackDefinition.NANNY_CONTENT_PACK);
 
-        this.createAndHarvestToAssetGovernanceActionProcess("HarvestSurveyToPostgreSQLDatabaseSchema",
-                                                            OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
+        this.createAndHarvestToAssetGovernanceActionProcess("HarvestSurveyReports",
+                                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                             RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
+                                                            PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE,
                                                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                             RequestTypeDefinition.HARVEST_SURVEYS,
-                                                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                                                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
+                                                            GovernanceEngineDefinition.NANNY_GOVERNANCE_ENGINE,
+                                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName());
 
-        this.createAndHarvestToAssetGovernanceActionProcess("HarvestOpenMetadataToPostgreSQLDatabaseSchema",
+        this.createAndHarvestToAssetGovernanceActionProcess("HarvestOpenMetadataEcosystem",
                                                             OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                             RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
+                                                            PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE,
                                                             GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                             RequestTypeDefinition.HARVEST_OPEN_METADATA,
-                                                            GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                                                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
+                                                            GovernanceEngineDefinition.NANNY_GOVERNANCE_ENGINE,
+                                                            PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName());
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public enum SoftwareServerTemplateDefinition implements TemplateDefinition
 {
-    POSTGRES_SERVER_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SERVER_TEMPLATE.getDefaultTemplateGUID(),
+    POSTGRES_SERVER_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SERVER_TEMPLATE.getTemplateGUID(),
                              PostgresDeployedImplementationType.POSTGRESQL_SERVER,
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
                              "Database Management System (DBMS)",
@@ -74,7 +74,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                           PlaceholderProperty.getSecretServerPlaceholderPropertyTypes(),
                           ContentPackDefinition.APACHE_ATLAS_CONTENT_PACK),
 
-    UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.OSS_UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
+    UNITY_CATALOG_SERVER_TEMPLATE(UnityCatalogTemplateType.OSS_UC_SERVER_TEMPLATE.getTemplateGUID(),
                                   UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                                   DeployedImplementationType.REST_API_MANAGER,
                                   "Unity Catalog REST API",
@@ -92,7 +92,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
                                   UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes(),
                                   ContentPackDefinition.UNITY_CATALOG_CONTENT_PACK),
 
-    DATABRICKS_UC_SERVER_TEMPLATE(UnityCatalogTemplateType.DB_UC_SERVER_TEMPLATE.getDefaultTemplateGUID(),
+    DATABRICKS_UC_SERVER_TEMPLATE(UnityCatalogTemplateType.DB_UC_SERVER_TEMPLATE.getTemplateGUID(),
                                   UnityCatalogDeployedImplementationType.DB_UNITY_CATALOG_SERVER,
                                   DeployedImplementationType.REST_API_MANAGER,
                                   "Databricks Unity Catalog REST API",
@@ -275,6 +275,19 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     {
         return deployedImplementationType;
     }
+
+
+    /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    @Override
+    public String getElementVersionIdentifier()
+    {
+        return PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
+    }
+
 
 
     /**

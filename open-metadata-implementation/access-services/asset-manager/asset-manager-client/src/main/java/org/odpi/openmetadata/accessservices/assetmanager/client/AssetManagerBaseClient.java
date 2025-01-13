@@ -359,6 +359,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param externalIdentifierName name of property for the external identifier in the external asset manager
+     * @param externalIdentifierTypeName the type of element described by this external identifier in the external asset manager
      * @param externalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
      * @param externalIdentifierSource component that issuing this request.
      * @param externalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
@@ -370,6 +371,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
     protected MetadataCorrelationProperties getCorrelationProperties(String              assetManagerGUID,
                                                                      String              assetManagerName,
                                                                      String              externalIdentifier,
+                                                                     String              externalIdentifierTypeName,
                                                                      String              externalIdentifierName,
                                                                      String              externalIdentifierUsage,
                                                                      String              externalIdentifierSource,
@@ -389,6 +391,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                 correlationProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
                 correlationProperties.setExternalIdentifier(externalIdentifier);
                 correlationProperties.setExternalIdentifierName(externalIdentifierName);
+                correlationProperties.setExternalInstanceTypeName(externalIdentifierTypeName);
                 correlationProperties.setExternalIdentifierUsage(externalIdentifierUsage);
                 correlationProperties.setExternalIdentifierSource(externalIdentifierSource);
                 correlationProperties.setKeyPattern(externalIdentifierKeyPattern);

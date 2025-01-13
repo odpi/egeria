@@ -320,6 +320,7 @@ public class AssetManagerTestBase
      * @param glossaryLanguage language used in the glossary
      * @param glossaryExternalIdentifier external identifier used in third party technology
      * @param glossaryExternalIdentifierName name of external identifier used in third party technology
+     * @param glossaryExternalIdentifierType type of external identifier used in third party technology
      * @param glossaryExternalIdentifierUsage usage of external identifier used in third party technology
      * @param glossaryExternalIdentifierSource source of external identifier used in third party technology
      * @param glossaryExternalIdentifierKeyPattern key pattern for external identifier used in third party technology
@@ -339,6 +340,7 @@ public class AssetManagerTestBase
                                  String                 glossaryUsage,
                                  String                 glossaryLanguage,
                                  String                 glossaryExternalIdentifier,
+                                 String                 glossaryExternalIdentifierType,
                                  String                 glossaryExternalIdentifierName,
                                  String                 glossaryExternalIdentifierUsage,
                                  String                 glossaryExternalIdentifierSource,
@@ -359,6 +361,7 @@ public class AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(glossaryExternalIdentifier);
             externalIdentifierProperties.setExternalIdentifierName(glossaryExternalIdentifierName);
+            externalIdentifierProperties.setExternalInstanceTypeName(glossaryExternalIdentifierType);
             externalIdentifierProperties.setExternalIdentifierUsage(glossaryExternalIdentifierUsage);
             externalIdentifierProperties.setExternalIdentifierSource(glossaryExternalIdentifierSource);
             externalIdentifierProperties.setKeyPattern(glossaryExternalIdentifierKeyPattern);

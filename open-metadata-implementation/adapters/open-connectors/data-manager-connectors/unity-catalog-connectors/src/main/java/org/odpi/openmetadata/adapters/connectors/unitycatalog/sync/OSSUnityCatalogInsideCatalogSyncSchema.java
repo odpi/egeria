@@ -304,6 +304,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                       this.getExternalIdentifierProperties(schemaInfo,
                                                                            schemaInfo.getName(),
                                                                            PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                           "schema",
                                                                            schemaInfo.getSchema_id(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -371,6 +372,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                           this.getExternalIdentifierProperties(schemaInfo,
                                                                                schemaInfo.getName(),
                                                                                PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                               "schema",
                                                                                schemaInfo.getSchema_id(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }

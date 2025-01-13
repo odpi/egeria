@@ -83,9 +83,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      */
     public OSSUnityCatalogInsideCatalogSyncBase(String                                 connectorName,
                                                 CatalogIntegratorContext               context,
-                                                String catalogName,
+                                                String                                 catalogName,
                                                 String                                 catalogGUID,
-                                                String catalogQualifiedName,
+                                                String                                 catalogQualifiedName,
                                                 Map<String, String>                    ucFullNameToEgeriaGUID,
                                                 PermittedSynchronization               targetPermittedSynchronization,
                                                 OSSUnityCatalogResourceConnector       ucConnector,
@@ -224,11 +224,16 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      *
      * @param ucElement values from Unity Catalog element
      * @param schemaName name of the schema
+     * @param elementName element type (from UC)
+     * @param elementType element type (from UC)
+     * @param id element id (from UC)
+     * @param instanceSynchronizationDirection direction the metadata is flowing
      * @return external identifier properties
      */
     protected ExternalIdentifierProperties getExternalIdentifierProperties(ElementBase              ucElement,
                                                                            String                   schemaName,
                                                                            String                   elementName,
+                                                                           String                   elementType,
                                                                            String                   id,
                                                                            PermittedSynchronization instanceSynchronizationDirection)
     {
@@ -236,6 +241,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         externalIdentifierProperties.setExternalIdentifier(id);
         externalIdentifierProperties.setExternalIdentifierSource(UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
+        externalIdentifierProperties.setExternalInstanceTypeName(elementType);
         externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucElement.getCreated_at()));
         externalIdentifierProperties.setExternalInstanceCreatedBy(ucElement.getCreated_by());
         externalIdentifierProperties.setExternalInstanceLastUpdateTime(new Date(ucElement.getUpdated_at()));

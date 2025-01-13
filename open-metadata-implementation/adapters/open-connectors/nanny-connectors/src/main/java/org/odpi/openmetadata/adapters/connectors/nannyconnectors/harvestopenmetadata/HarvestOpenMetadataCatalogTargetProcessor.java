@@ -258,7 +258,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
             startFrom = 0;
-            List<OpenMetadataElement> roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE.typeName,
+            List<OpenMetadataElement> roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.ACTOR_ROLE.typeName,
                                                                                              null,
                                                                                              null,
                                                                                              null,
@@ -278,7 +278,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
 
-                roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PERSON_ROLE.typeName,
+                roleElements = openMetadataAccess.findMetadataElements(OpenMetadataType.ACTOR_ROLE.typeName,
                                                                        null,
                                                                        null,
                                                                        null,
@@ -341,9 +341,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     if (personRoleAppointment != null)
                     {
-                        syncRoleToUser(this.getUserIdentityForRole(personRoleAppointment.getElementGUIDAtEnd2(),
-                                                                   personRoleAppointment.getElementGUIDAtEnd1()),
-                                       personRoleAppointment);
+                        syncRoleToProfile(this.getUserIdentityForRole(personRoleAppointment.getElementGUIDAtEnd2(),
+                                                                      personRoleAppointment.getElementGUIDAtEnd1()),
+                                          personRoleAppointment);
                     }
                 }
 
@@ -356,6 +356,106 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                      null,
                                                                                                      startFrom,
                                                                                                      openMetadataAccess.getMaxPagingSize());
+            }
+
+            startFrom = 0;
+            List<OpenMetadataElement> projectElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PROJECT.typeName,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                null,
+                                                                                                startFrom,
+                                                                                                openMetadataAccess.getMaxPagingSize());
+
+            while (projectElements != null)
+            {
+                for (OpenMetadataElement projectElement : projectElements)
+                {
+                    processProject(projectElement);
+                }
+
+                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+
+                projectElements = openMetadataAccess.findMetadataElements(OpenMetadataType.PROJECT.typeName,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          startFrom,
+                                                                          openMetadataAccess.getMaxPagingSize());
+            }
+
+
+            startFrom = 0;
+            List<OpenMetadataElement> communityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COMMUNITY.typeName,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  startFrom,
+                                                                                                  openMetadataAccess.getMaxPagingSize());
+
+            while (communityElements != null)
+            {
+                for (OpenMetadataElement communityElement : communityElements)
+                {
+                    processCommunity(communityElement);
+                }
+
+                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+
+                communityElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COMMUNITY.typeName,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            startFrom,
+                                                                            openMetadataAccess.getMaxPagingSize());
+            }
+
+            startFrom = 0;
+            List<OpenMetadataElement> collectionElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COLLECTION.typeName,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  null,
+                                                                                                  startFrom,
+                                                                                                  openMetadataAccess.getMaxPagingSize());
+
+            while (collectionElements != null)
+            {
+                for (OpenMetadataElement collectionElement : collectionElements)
+                {
+                    processCollection(collectionElement);
+                }
+
+                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+
+                collectionElements = openMetadataAccess.findMetadataElements(OpenMetadataType.COLLECTION.typeName,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            startFrom,
+                                                                            openMetadataAccess.getMaxPagingSize());
             }
         }
         catch (Exception error)
@@ -435,24 +535,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         else
         {
             return defaultUserIdentityForRole;
-        }
-    }
-
-
-    /**
-     * Process the incoming asset if it is still available.
-     * 
-     * @param elementHeader incoming element from event
-     */
-    private void processDataAsset(ElementHeader elementHeader)
-    {
-        try
-        {
-            processDataAsset(dataAssetExchangeService.getDataAssetByGUID(elementHeader.getGUID(), null));
-        }
-        catch (Exception error)
-        {
-            // Ignore error as the element has probably been deleted.
         }
     }
 
@@ -879,7 +961,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 averageRatings = totalStars / numberOfRatings;
             }
 
-            syncCollaborationActivity(elementHeader.getGUID(), numberOfComments, numberOfRatings, averageRatings, numberOfTags, numberOfLikes);
+            syncCollaborationActivity(elementHeader.getGUID(), elementHeader.getType().getTypeName(), numberOfComments, numberOfRatings, averageRatings, numberOfTags, numberOfLikes);
         }
         catch (Exception error)
         {
@@ -1096,36 +1178,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
     /**
-     * Process a userIdentity.
-     *
-     * @param elementHeader user Identity header
-     */
-    private void processUserIdentity(ElementHeader elementHeader)
-    {
-        final String methodName = "processUserIdentity";
-
-        try
-        {
-            OpenMetadataElement userIdentity = openMetadataAccess.getMetadataElementByGUID(elementHeader.getGUID());
-
-            if (userIdentity != null)
-            {
-                processUserIdentity(userIdentity);
-            }
-        }
-        catch (Exception error)
-        {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
-        }
-    }
-
-
-    /**
      * Extract information about a catalogued user identity.
      *
      * @param userIdentityElement retrieved element
@@ -1136,9 +1188,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            String departmentId = null;
-            String locationGUID = null;
-            String organizationName = null;
+            syncUserIdentity(userIdentityElement);
+
             RelatedMetadataElement profileElement = null;
 
             RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(userIdentityElement.getElementGUID(),
@@ -1161,20 +1212,53 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (profileElement != null)
             {
-                locationGUID = getAssociatedProfileLocation(profileElement.getElement().getElementGUID());
-                departmentId = getAssociatedDepartment(profileElement.getElement().getElementGUID());
+                syncUserToProfile(userIdentityElement, profileElement);
+                syncActorProfile(profileElement);
 
-                if (departmentId != null)
+                if (propertyHelper.isTypeOf(profileElement, OpenMetadataType.PERSON.typeName))
                 {
-                    organizationName = getAssociatedOrganizationName(departmentId);
+                    String organizationName = null;
+                    String locationGUID = getAssociatedProfileLocation(profileElement.getElement().getElementGUID());
+                    String departmentId = getAssociatedDepartment(profileElement.getElement().getElementGUID());
+
+                    if (departmentId != null)
+                    {
+                        organizationName = getAssociatedOrganizationName(departmentId);
+                    }
+
+                    syncPerson(profileElement,
+                               departmentId,
+                               locationGUID,
+                               organizationName);
+                }
+
+                RelatedMetadataElement contributionRecord = null;
+
+                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(profileElement.getElement().getElementGUID(),
+                                                                                        1,
+                                                                                        OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName,
+                                                                                        0,
+                                                                                        openMetadataAccess.getMaxPagingSize());
+
+                if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+                {
+                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+                    {
+                        if (relatedMetadataElement != null)
+                        {
+                            contributionRecord = relatedMetadataElement;
+                            break;
+                        }
+                    }
+                }
+
+                if (contributionRecord != null)
+                {
+                    syncContribution(profileElement.getElement().getElementGUID(),
+                                     profileElement.getElement().getType().getTypeName(),
+                                     contributionRecord);
                 }
             }
-
-            syncUserIdentity(userIdentityElement,
-                             profileElement,
-                             departmentId,
-                             locationGUID,
-                             organizationName);
         }
         catch (Exception error)
         {
@@ -1189,30 +1273,212 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
     /**
-     * Extract information about a catalogued to do.
+     * Extract information about a catalogued project.
      *
-     * @param elementHeader retrieved element
+     * @param projectElement retrieved element
      */
-    private void processToDo(ElementHeader elementHeader)
+    private void processProject(OpenMetadataElement    projectElement)
     {
-        final String methodName = "processToDo";
+        final String methodName = "processProject";
 
         try
         {
-            OpenMetadataElement toDoElement = openMetadataAccess.getMetadataElementByGUID(elementHeader.getGUID());
+            RelatedMetadataElement parentProjectElement = null;
 
-            if (toDoElement != null)
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                                               2,
+                                                                                                               OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                                                                                               0,
+                                                                                                               openMetadataAccess.getMaxPagingSize());
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
             {
-                processToDo(toDoElement);
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        parentProjectElement = relatedMetadataElement;
+                        break;
+                    }
+                }
+            }
+
+            syncProject(projectElement, parentProjectElement);
+
+            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                    2,
+                                                                                    OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    openMetadataAccess.getMaxPagingSize());
+
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                syncActorAssignments(projectElement, relatedMetadataElements.getElementList());
+            }
+
+            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(projectElement.getElementGUID(),
+                                                                                    2,
+                                                                                    OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    openMetadataAccess.getMaxPagingSize());
+
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                syncActorAssignments(projectElement, relatedMetadataElements.getElementList());
             }
         }
         catch (Exception error)
         {
             auditLog.logException(methodName,
                                   HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()),
+                                  error);
+        }
+    }
+
+
+    /**
+     * Extract information about a catalogued community.
+     *
+     * @param communityElement retrieved element
+     */
+    private void processCommunity(OpenMetadataElement    communityElement)
+    {
+        final String methodName = "processCommunity";
+
+        try
+        {
+            syncCommunity(communityElement);
+
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(communityElement.getElementGUID(),
+                                                                                    2,
+                                                                                    OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    openMetadataAccess.getMaxPagingSize());
+
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                syncActorAssignments(communityElement, relatedMetadataElements.getElementList());
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()),
+                                  error);
+        }
+    }
+
+
+
+    /**
+     * Extract information about a catalogued collection.
+     *
+     * @param collectionElement retrieved element
+     */
+    private void processCollection(OpenMetadataElement collectionElement)
+    {
+        final String methodName = "processCollection";
+
+        try
+        {
+            RelatedMetadataElement parentProjectElement = null;
+
+            RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                                               2,
+                                                                                                               OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                               0,
+                                                                                                               openMetadataAccess.getMaxPagingSize());
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        parentProjectElement = relatedMetadataElement;
+                        break;
+                    }
+                }
+            }
+
+            long numberOfMembers = 0;
+            Set<String> memberTypeSet = new HashSet<>();
+            String memberTypes = null;
+
+            int startFrom = 0;
+            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                    1,
+                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                    startFrom,
+                                                                                    openMetadataAccess.getMaxPagingSize());
+
+            while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                for (RelatedMetadataElement memberElement : relatedMetadataElements.getElementList())
+                {
+                    if (memberElement != null)
+                    {
+                        numberOfMembers++;
+                        memberTypeSet.add(memberElement.getElement().getType().getTypeName());
+                    }
+                }
+
+                startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
+
+                relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(collectionElement.getElementGUID(),
+                                                                                        1,
+                                                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                        startFrom,
+                                                                                        openMetadataAccess.getMaxPagingSize());
+            }
+
+            if (! memberTypeSet.isEmpty())
+            {
+                StringBuilder typeString = new StringBuilder();
+                boolean       firstElement = true;
+
+                for (String typeName : memberTypeSet)
+                {
+                    if (firstElement)
+                    {
+                        firstElement = false;
+                    }
+                    else
+                    {
+                        typeString.append(":");
+                    }
+
+                    typeString.append(typeName);
+                }
+
+                memberTypes = typeString.toString();
+            }
+
+            syncCollection(collectionElement, parentProjectElement, numberOfMembers, memberTypes);
+
+            AttachedClassification classification = propertyHelper.getClassification(collectionElement, OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName);
+
+            if (classification != null)
+            {
+                syncDigitalProduct(collectionElement, classification.getClassificationProperties());
+            }
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         methodName,
+                                                                                                         error.getMessage()),
                                   error);
         }
     }
@@ -1230,7 +1496,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         try
         {
             RelatedMetadataElement toDoSourceElement = null;
-            RelatedMetadataElement actionAssignmentElement = null;
+            RelatedMetadataElement sponsorElement = null;
 
             RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                                                  2,
@@ -1252,7 +1518,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
                                                                                     2,
-                                                                                    OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
                                                                                     0,
                                                                                     openMetadataAccess.getMaxPagingSize());
 
@@ -1262,13 +1528,25 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     if (relatedMetadataElement != null)
                     {
-                        actionAssignmentElement = relatedMetadataElement;
+                        sponsorElement = relatedMetadataElement;
                         break;
                     }
                 }
             }
 
-            syncToDo(toDoElement, toDoSourceElement, actionAssignmentElement);
+            syncToDo(toDoElement, toDoSourceElement, sponsorElement);
+
+            relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(toDoElement.getElementGUID(),
+                                                                                    2,
+                                                                                    OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                    0,
+                                                                                    openMetadataAccess.getMaxPagingSize());
+
+
+            if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
+            {
+                syncActorAssignments(toDoElement, relatedMetadataElements.getElementList());
+            }
         }
         catch (Exception error)
         {
@@ -1643,36 +1921,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
 
     /**
-     * Process a glossary received in an event.
-     *
-     * @param glossaryHeader glossary header
-     */
-    private void processGlossary(ElementHeader glossaryHeader)
-    {
-        final String methodName = "processGlossary";
-
-        try
-        {
-            GlossaryElement glossary = glossaryExchangeService.getGlossaryByGUID(glossaryHeader.getGUID(), null);
-
-            if (glossary != null)
-            {
-                processGlossary(glossary);
-            }
-        }
-        catch (Exception error)
-        {
-            auditLog.logException(methodName,
-                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                      error.getClass().getName(),
-                                                                                                      methodName,
-                                                                                                      error.getMessage()),
-                                  error);
-        }
-    }
-
-
-    /**
      * Add information to the glossary table.
      *
      * @param glossary glossary information
@@ -1922,131 +2170,135 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                           String           tags,
                                                           String           semanticAssignmentTermGUID)
     {
-        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
-
-        ElementHeader       elementHeader       = dataAssetElement.getElementHeader();
-        DataAssetProperties dataAssetProperties = dataAssetElement.getDataAssetProperties();
-
-        processUserIds(elementHeader.getVersions(), elementHeader.getOrigin());
-
-        int confidentiality = 0;
-        int criticality     = 0;
-        int confidence      = 0;
-
-        if (elementHeader != null)
+        if (dataAssetElement != null)
         {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, elementHeader.getGUID());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementHeader.getType().getTypeName());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.METADATA_COLLECTION_ID, elementHeader.getOrigin().getHomeMetadataCollectionId());
+            Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
+            ElementHeader       elementHeader       = dataAssetElement.getElementHeader();
+            DataAssetProperties dataAssetProperties = dataAssetElement.getDataAssetProperties();
 
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, elementHeader.getVersions().getCreatedBy());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, new java.sql.Timestamp(elementHeader.getVersions().getCreateTime().getTime()));
-            if (elementHeader.getVersions().getUpdateTime() != null)
+            if (elementHeader != null)
             {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, new java.sql.Timestamp(elementHeader.getVersions().getUpdateTime().getTime()));
-            }
-            else
-            {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, new java.sql.Timestamp(elementHeader.getVersions().getCreateTime().getTime()));
-            }
-            if (elementHeader.getVersions().getUpdatedBy() != null)
-            {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getUpdatedBy());
-            }
-            else
-            {
+                processUserIds(elementHeader.getVersions(), elementHeader.getOrigin());
+
+                int confidentiality = 0;
+                int criticality     = 0;
+                int confidence      = 0;
+
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, elementHeader.getGUID());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementHeader.getType().getTypeName());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.METADATA_COLLECTION_ID, elementHeader.getOrigin().getHomeMetadataCollectionId());
+
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, elementHeader.getVersions().getCreatedBy());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, new java.sql.Timestamp(elementHeader.getVersions().getCreateTime().getTime()));
+
+                if (elementHeader.getVersions().getUpdateTime() != null)
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, new java.sql.Timestamp(elementHeader.getVersions().getUpdateTime().getTime()));
+                }
+                else
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, new java.sql.Timestamp(elementHeader.getVersions().getCreateTime().getTime()));
+                }
+                if (elementHeader.getVersions().getUpdatedBy() != null)
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getUpdatedBy());
+                }
+                else
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
+                }
+
+                if ((elementHeader.getVersions().getMaintainedBy() != null) && (!elementHeader.getVersions().getMaintainedBy().isEmpty()))
+                {
+                    StringBuilder userString = new StringBuilder(":");
+
+                    for (String user : elementHeader.getVersions().getMaintainedBy())
+                    {
+                        userString.append(user).append(":");
+                    }
+
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, userString.toString());
+                }
+                else
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, ":" + elementHeader.getVersions().getCreatedBy() + ":");
+                }
+
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
-            }
 
-            if ((elementHeader.getVersions().getMaintainedBy() != null) && (! elementHeader.getVersions().getMaintainedBy().isEmpty()))
-            {
-                StringBuilder userString = new StringBuilder(":");
-
-                for (String user : elementHeader.getVersions().getMaintainedBy())
+                if (elementHeader.getClassifications() != null)
                 {
-                    userString.append(user).append(":");
+                    for (ElementClassification classification : elementHeader.getClassifications())
+                    {
+                        if (OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
+                        {
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ZONE_NAMES, this.getZoneNames(classification.getClassificationProperties()));
+                        }
+                        else if (OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                        {
+                            // todo need to check this is a guid
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+                        }
+                        else if (OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
+                        {
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.ORGANIZATION.name, 80));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), "businessCapability", 80));
+                        }
+                        else if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                        {
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ARCHIVED, classification.getVersions().getCreateTime());
+                        }
+                        else if (OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                        {
+                            this.getStatusIdentifier(classification.getClassificationProperties());
+                        }
+                        else if (OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                        {
+                            this.getStatusIdentifier(classification.getClassificationProperties());
+                        }
+                        else if (OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
+                        {
+                            this.getStatusIdentifier(classification.getClassificationProperties());
+                        }
+                    }
                 }
 
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, userString.toString());
-            }
-            else
-            {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MAINTAINED_BY, ":" + elementHeader.getVersions().getCreatedBy() + ":");
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, confidentiality);
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, criticality);
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, confidence);
             }
 
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, elementHeader.getVersions().getCreatedBy());
-
-
-            if (elementHeader.getClassifications() != null)
+            if (dataAssetProperties != null)
             {
-                for (ElementClassification classification : elementHeader.getClassifications())
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_NAME,        dataAssetProperties.getResourceName());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_DESCRIPTION, dataAssetProperties.getResourceDescription());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER,   dataAssetProperties.getVersionIdentifier());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME,       dataAssetProperties.getQualifiedName());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPLOYED_IMPLEMENTATION_TYPE, dataAssetProperties.getDeployedImplementationType());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME,         dataAssetProperties.getDisplayName());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION,  dataAssetProperties.getDisplayDescription());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY,      dataAssetProperties.getDisplaySummary());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION,         dataAssetProperties.getAbbreviation());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE,                dataAssetProperties.getUsage());
+                if (dataAssetProperties.getAdditionalProperties() != null)
                 {
-                    if (OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
-                    {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ZONE_NAMES, this.getZoneNames(classification.getClassificationProperties()));
-                    }
-                    else if (OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                    {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
-                    }
-                    else if (OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
-                    {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(),OpenMetadataProperty.ORGANIZATION.name, 80));
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), "businessCapability", 80));
-                    }
-                    else if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                    {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ARCHIVED, classification.getVersions().getCreateTime());
-                    }
-                    else if (OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                    {
-                        this.getStatusIdentifier(classification.getClassificationProperties());
-                    }
-                    else if (OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                    {
-                        this.getStatusIdentifier(classification.getClassificationProperties());
-                    }
-                    else if (OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName.equals(classification.getClassificationName()))
-                    {
-                        this.getStatusIdentifier(classification.getClassificationProperties());
-                    }
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, dataAssetProperties.getAdditionalProperties().toString());
                 }
             }
 
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LICENSE_TYPE_GUID, associatedLicenceGUID);
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_LOCATION_GUID, associatedResourceLocationGUID);
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TAGS, tags);
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, semanticAssignmentTermGUID);
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
+
+            return openMetadataRecord;
         }
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL, confidentiality);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CRITICALITY_LEVEL, criticality);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CONFIDENCE_LEVEL, confidence);
-
-
-        if (dataAssetProperties != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_NAME,        dataAssetProperties.getResourceName());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_DESCRIPTION, dataAssetProperties.getResourceDescription());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER,           dataAssetProperties.getVersionIdentifier());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME,         dataAssetProperties.getDisplayName());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION,  dataAssetProperties.getDisplayDescription());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME,       dataAssetProperties.getQualifiedName());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY,      dataAssetProperties.getDisplaySummary());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION,              dataAssetProperties.getAbbreviation());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE,               dataAssetProperties.getUsage());
-            if (dataAssetProperties.getAdditionalProperties() != null)
-            {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, dataAssetProperties.getAdditionalProperties().toString());
-            }
-        }
-
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LICENSE_TYPE_GUID, associatedLicenceGUID);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESOURCE_LOCATION_GUID, associatedResourceLocationGUID);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TAGS, tags);
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, semanticAssignmentTermGUID);
-
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
-
-        return openMetadataRecord;
+        return null;
     }
 
 
@@ -2204,15 +2456,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             if (metadataCorrelationHeader.getExternalInstanceCreatedBy() != null)
             {
-                syncUserId(metadataCorrelationHeader.getExternalInstanceCreatedBy(),
-                           metadataCorrelationHeader.getExternalScopeGUID(),
-                           this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceCreatedBy()));
+                syncExternalUserId(metadataCorrelationHeader.getExternalInstanceCreatedBy(),
+                                   metadataCorrelationHeader.getExternalScopeGUID(),
+                                   this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceCreatedBy()));
             }
             if (metadataCorrelationHeader.getExternalInstanceLastUpdatedBy() != null)
             {
-                syncUserId(metadataCorrelationHeader.getExternalInstanceLastUpdatedBy(),
-                           metadataCorrelationHeader.getExternalScopeGUID(),
-                           this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceLastUpdatedBy()));
+                syncExternalUserId(metadataCorrelationHeader.getExternalInstanceLastUpdatedBy(),
+                                   metadataCorrelationHeader.getExternalScopeGUID(),
+                                   this.getAssociatedUserIdentity(metadataCorrelationHeader.getExternalInstanceLastUpdatedBy()));
             }
             if (metadataCorrelationHeader.getLastSynchronized() != null)
             {
@@ -2221,9 +2473,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_IDENTIFIER, metadataCorrelationHeader.getExternalIdentifier());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, metadataCorrelationHeader.getExternalInstanceLastUpdatedBy());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, metadataCorrelationHeader.getExternalInstanceLastUpdateTime());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, metadataCorrelationHeader.getExternalInstanceCreationTime());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_BY, metadataCorrelationHeader.getExternalInstanceCreatedBy());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION, metadataCorrelationHeader.getExternalInstanceVersion());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, metadataCorrelationHeader.getExternalInstanceCreationTime());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME, metadataCorrelationHeader.getExternalInstanceTypeName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, metadataCorrelationHeader.getMappingProperties().toString());
         }
 
@@ -2475,6 +2728,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Process the correlation properties for an element retrieved from the open metadata ecosystem.
      *
      * @param elementGUID unique identifier of the related element
+     * @param elementTypeName type of related element
      * @param numberOfComments number of attached comments
      * @param numberOfRatings number of attached ratings/reviews
      * @param aveRating average star rating
@@ -2482,6 +2736,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param numberOfLikes number of attached likes
      */
     private void syncCollaborationActivity(String elementGUID,
+                                           String elementTypeName,
                                            int    numberOfComments,
                                            int    numberOfRatings,
                                            int    aveRating,
@@ -2501,6 +2756,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                             HarvestOpenMetadataTable.COLLABORATION_ACTIVITY.getColumnNameTypeMap());
 
                 Map<String, JDBCDataValue> openMetadataRecord = this.getCollaborationActivityDataValues(elementGUID,
+                                                                                                        elementTypeName,
                                                                                                         numberOfComments,
                                                                                                         numberOfRatings,
                                                                                                         aveRating,
@@ -2529,6 +2785,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Convert the description of a specific location into columns for the location table.
      *
      * @param elementGUID unique identifier of the related element
+     * @param elementTypeName type of related element
      * @param numberOfComments number of attached comments
      * @param numberOfRatings number of attached ratings/reviews
      * @param averageRating average star rating
@@ -2537,6 +2794,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @return columns
      */
     private Map<String, JDBCDataValue> getCollaborationActivityDataValues(String elementGUID,
+                                                                          String elementTypeName,
                                                                           int    numberOfComments,
                                                                           int    numberOfRatings,
                                                                           int    averageRating,
@@ -2546,6 +2804,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ELEMENT_GUID, elementGUID);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, elementTypeName);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NUM_COMMENTS, numberOfComments);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NUM_RATINGS, numberOfRatings);
@@ -2568,18 +2827,18 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     {
         String metadataCollectionId = elementOrigin.getHomeMetadataCollectionId();
 
-        syncUserId(elementVersions.getCreatedBy(), metadataCollectionId, getAssociatedUserIdentity(elementVersions.getCreatedBy()));
+        syncExternalUserId(elementVersions.getCreatedBy(), metadataCollectionId, getAssociatedUserIdentity(elementVersions.getCreatedBy()));
 
         if (elementVersions.getUpdatedBy() != null)
         {
-            syncUserId(elementVersions.getUpdatedBy(), metadataCollectionId, getAssociatedUserIdentity(elementVersions.getUpdatedBy()));
+            syncExternalUserId(elementVersions.getUpdatedBy(), metadataCollectionId, getAssociatedUserIdentity(elementVersions.getUpdatedBy()));
         }
 
         if (elementVersions.getMaintainedBy() != null)
         {
             for (String userId : elementVersions.getMaintainedBy())
             {
-                syncUserId(userId, metadataCollectionId, getAssociatedUserIdentity(userId));
+                syncExternalUserId(userId, metadataCollectionId, getAssociatedUserIdentity(userId));
             }
         }
     }
@@ -2651,9 +2910,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param metadataCollectionId unique identifier of the metadata collection
      * @param userIdentityGUID unique identifier of the corresponding user identity entity
      */
-    private void syncUserId(String userId,
-                            String metadataCollectionId,
-                            String userIdentityGUID)
+    private void syncExternalUserId(String userId,
+                                    String metadataCollectionId,
+                                    String userIdentityGUID)
     {
         final String methodName = "syncUserId";
 
@@ -2663,9 +2922,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 Map<String, JDBCDataValue> openMetadataRecord = this.getExternalUserDataValues(userId,
                                                                                                metadataCollectionId,
-                                                                                               userIdentityGUID,
-                                                                                               null,
-                                                                                               null);
+                                                                                               userIdentityGUID);
 
                 databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.EXTERNAL_USER.getTableName(), openMetadataRecord);
             }
@@ -2688,31 +2945,17 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param userId unique identifier of the attached element
      * @param metadataCollectionId unique identifier of the metadata collection
      * @param userIdentityGUID unique identifier of the corresponding user identity entity
-     * @param startDate when did the certification start?
-     * @param endDate when does the certification end; null for indefinitely
      * @return columns
      */
     private Map<String, JDBCDataValue> getExternalUserDataValues(String userId,
                                                                  String metadataCollectionId,
-                                                                 String userIdentityGUID,
-                                                                 Date   startDate,
-                                                                 Date   endDate)
+                                                                 String userIdentityGUID)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.METADATA_COLLECTION_ID, metadataCollectionId);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_SCOPE_GUID, metadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_USER_ID, userId);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userIdentityGUID);
-
-        if (startDate != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.START_TIMESTAMP, new java.sql.Timestamp(startDate.getTime()));
-        }
-
-        if (endDate != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.END_TIMESTAMP, new java.sql.Timestamp(endDate.getTime()));
-        }
 
         return openMetadataRecord;
     }
@@ -2806,6 +3049,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.END_TIMESTAMP, new java.sql.Timestamp(endDate.getTime()));
         }
 
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
+
         return openMetadataRecord;
     }
 
@@ -2874,9 +3119,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     /**
      * Process information about a specific user's contribution.
      *
+     * @param profileGUID unique identifier of the attached element
+     * @param profileTypeName type of profile
      * @param contribution details of a specific contribution
      */
-    private void syncContribution(String                 userGUID,
+    private void syncContribution(String                 profileGUID,
+                                  String                 profileTypeName,
                                   RelatedMetadataElement contribution)
     {
         final String methodName = "syncContribution";
@@ -2887,15 +3135,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             {
                 Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.CONTRIBUTION.getTableName(),
                                                                                             HarvestOpenMetadataColumn.USER_IDENTITY_GUID.getColumnName(),
-                                                                                            userGUID,
+                                                                                            profileGUID,
                                                                                             HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
                                                                                             HarvestOpenMetadataTable.CONTRIBUTION.getColumnNameTypeMap());
 
-                Map<String, JDBCDataValue> openMetadataRecord = this.getContributionDataValues(userGUID,
+                Map<String, JDBCDataValue> openMetadataRecord = this.getContributionDataValues(profileGUID,
+                                                                                               profileTypeName,
                                                                                                propertyHelper.getLongProperty(connectorName,
-                                                                                                                               "karmaPoints",
-                                                                                                                               contribution.getElement().getElementProperties(),
-                                                                                                                               methodName));
+                                                                                                                              OpenMetadataProperty.KARMA_POINTS.name,
+                                                                                                                              contribution.getElement().getElementProperties(),
+                                                                                                                              methodName));
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
                 {
@@ -2918,16 +3167,19 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     /**
      * Convert the contributions of a specific user into columns for the contributions table.
      *
-     * @param userGUID unique identifier of the attached element
+     * @param profileGUID unique identifier of the attached element
+     * @param profileTypeName type of profile
      * @param karmaPoints amount of activity from user
      * @return columns
      */
-    private Map<String, JDBCDataValue> getContributionDataValues(String userGUID,
+    private Map<String, JDBCDataValue> getContributionDataValues(String profileGUID,
+                                                                 String profileTypeName,
                                                                  long   karmaPoints)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userGUID);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROFILE_GUID, profileGUID);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, profileTypeName);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.KARMA_POINTS, karmaPoints);
 
@@ -3009,9 +3261,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_GUID, schemaAttributeElement.getElementHeader().getGUID());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_NAME, schemaAttributeElement.getSchemaAttributeProperties().getDisplayName());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_TYPE, schemaAttributeElement.getSchemaAttributeProperties().getDataType());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION_IDENTIFIER, Long.toString(schemaAttributeElement.getElementHeader().getVersions().getVersion()));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, schemaAttributeElement.getSchemaAttributeProperties().getDescription());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, glossaryTermGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.HAS_PROFILE, hasProfile);
         if (schemaAttributeElement.getElementHeader().getClassifications() != null)
         {
@@ -3023,8 +3276,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 }
             }
         }
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, assetQualifiedName);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID, glossaryTermGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSET_GUID, assetGUID);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, assetQualifiedName);
 
         return openMetadataRecord;
     }
@@ -3035,11 +3289,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Process information about a specific department (team) in the organization.
      *
      * @param parentDepartmentGUID unique identifier of the parent department
-     * @param manager unique identifier of manager's profile
+     * @param managerProfileGUID unique identifier of manager's profile
      * @param department details of a specific department
      */
-    private void syncDepartment(String                 parentDepartmentGUID,
-                                String                 manager,
+    private void syncDepartment(String              parentDepartmentGUID,
+                                String              managerProfileGUID,
                                 OpenMetadataElement department)
     {
         final String methodName = "syncDepartment";
@@ -3054,7 +3308,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                             HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
                                                                                             HarvestOpenMetadataTable.DEPARTMENT.getColumnNameTypeMap());
 
-                Map<String, JDBCDataValue> openMetadataRecord = this.getDepartmentDataValues(parentDepartmentGUID, manager, department);
+                Map<String, JDBCDataValue> openMetadataRecord = this.getDepartmentDataValues(parentDepartmentGUID, managerProfileGUID, department);
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
                 {
@@ -3078,12 +3332,12 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Convert the contributions of a specific user into columns for the contributions table.
      *
      * @param parentDepartmentGUID unique identifier of the parent department
-     * @param manager unique identifier of manager's profile
+     * @param managerProfileGUID unique identifier of manager's profile
      * @param department details of a specific department
      * @return columns
      */
     private Map<String, JDBCDataValue> getDepartmentDataValues(String              parentDepartmentGUID,
-                                                               String              manager,
+                                                               String              managerProfileGUID,
                                                                OpenMetadataElement department)
     {
         final String methodName = "getDepartmentDataValues";
@@ -3092,11 +3346,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_GUID, department.getElementGUID());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                                  OpenMetadataProperty.NAME.name,
-                                                                                                                  department.getElementProperties(),
-                                                                                                                  methodName));
+                                                                                                                      OpenMetadataProperty.NAME.name,
+                                                                                                                      department.getElementProperties(),
+                                                                                                                      methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_IDENTIFIER, propertyHelper.getStringProperty(connectorName,
+                                                                                                                            OpenMetadataProperty.IDENTIFIER.name,
+                                                                                                                            department.getElementProperties(),
+                                                                                                                            methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MANAGER_PROFILE_GUID, manager);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MANAGER_PROFILE_GUID, managerProfileGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PARENT_DEPARTMENT_GUID, parentDepartmentGUID);
 
         return openMetadataRecord;
@@ -3199,31 +3457,27 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, new java.sql.Timestamp(elementHeader.getVersions().getCreateTime().getTime()));
             }
 
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getClassifications(elementHeader.getClassifications()));
+
             if ((elementHeader.getClassifications() != null) && (! elementHeader.getClassifications().isEmpty()))
             {
-                StringBuilder classifications = new StringBuilder(":");
-
                 for (ElementClassification classification : elementHeader.getClassifications())
                 {
-                    classifications.append(classification.getClassificationName()).append(":");
-
                     if (classification.getClassificationName().equals(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName))
                     {
                         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
                         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(classification.getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
                     }
                 }
-
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, classifications.toString());
             }
         }
 
         if (glossaryProperties != null)
         {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, glossaryProperties.getQualifiedName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, glossaryProperties.getDisplayName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, glossaryProperties.getDescription());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.GLOSSARY_LANGUAGE, glossaryProperties.getLanguage());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, glossaryProperties.getQualifiedName());
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE, glossaryProperties.getUsage());
             if (glossaryProperties.getAdditionalProperties() != null)
             {
@@ -3239,6 +3493,54 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
 
         return openMetadataRecord;
+    }
+
+
+    /**
+     * Build up a string representing the classifications attached to an element.
+     *
+     * @param classifications details of the element
+     * @return string or null
+     */
+    private String getClassifications(List<ElementClassification> classifications)
+    {
+        if ((classifications != null) && (! classifications.isEmpty()))
+        {
+            StringBuilder classificationList = new StringBuilder(":");
+
+            for (ElementClassification classification : classifications)
+            {
+                classificationList.append(classification.getClassificationName()).append(":");
+            }
+
+            return classificationList.toString();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Build up a string representing the classifications attached to an element.
+     *
+     * @param classifications details of the element
+     * @return string or null
+     */
+    private String getAttachedClassifications(List<AttachedClassification> classifications)
+    {
+        if ((classifications != null) && (! classifications.isEmpty()))
+        {
+            StringBuilder classificationList = new StringBuilder(":");
+
+            for (AttachedClassification classification : classifications)
+            {
+                classificationList.append(classification.getClassificationName()).append(":");
+            }
+
+            return classificationList.toString();
+        }
+
+        return null;
     }
 
 
@@ -3330,6 +3632,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     switch (classification.getClassificationName())
                     {
+                        // todo - add to OpenMetadataType enum
                         case "Ownership" ->
                         {
                             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID,
@@ -3512,10 +3815,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param userGUID unique identifier of associated user identify
      * @param personRoleAppointment relationship information
      */
-    private void syncRoleToUser(String                   userGUID,
-                                OpenMetadataRelationship personRoleAppointment)
+    private void syncRoleToProfile(String                   userGUID,
+                                   OpenMetadataRelationship personRoleAppointment)
     {
-        final String methodName = "syncRoleToUser";
+        final String methodName = "syncRoleToProfile";
 
         if (personRoleAppointment != null)
         {
@@ -3527,7 +3830,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                             HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
                                                                                             HarvestOpenMetadataTable.ROLE_TO_PROFILE.getColumnNameTypeMap());
 
-                Map<String, JDBCDataValue> openMetadataRecord = this.getRoleToUserDataValues(userGUID, personRoleAppointment);
+                Map<String, JDBCDataValue> openMetadataRecord = this.getRoleToProfileDataValues(userGUID, personRoleAppointment);
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
                 {
@@ -3554,14 +3857,15 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param personRoleAppointment relationship information
      * @return columns
      */
-    private Map<String, JDBCDataValue> getRoleToUserDataValues(String                   userGUID,
-                                                               OpenMetadataRelationship personRoleAppointment)
+    private Map<String, JDBCDataValue> getRoleToProfileDataValues(String                   userGUID,
+                                                                  OpenMetadataRelationship personRoleAppointment)
     {
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ROLE_GUID, personRoleAppointment.getElementGUIDAtEnd2());
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RELATIONSHIP_GUID, personRoleAppointment.getRelationshipGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROFILE_GUID, personRoleAppointment.getElementGUIDAtEnd1());
 
         if (personRoleAppointment.getEffectiveFromTime() != null)
         {
@@ -3579,17 +3883,16 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     }
 
 
-
     /**
      * Process a user identity and profile retrieved from the open metadata ecosystem.
      *
      * @param toDoElement to do information
-     * @param toDoSourceElements  source of the to do
-     * @param actionAssignmentElements actor responsible for completing the work - may be null
+     * @param toDoSourceElement  source of the to do
+     * @param sponsorElement actor sponsoring the work - may be null
      */
     private void syncToDo(OpenMetadataElement    toDoElement,
-                          RelatedMetadataElement toDoSourceElements,
-                          RelatedMetadataElement actionAssignmentElements)
+                          RelatedMetadataElement toDoSourceElement,
+                          RelatedMetadataElement sponsorElement)
     {
         final String methodName = "syncToDo";
 
@@ -3604,8 +3907,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                             HarvestOpenMetadataTable.TO_DO.getColumnNameTypeMap());
 
                 Map<String, JDBCDataValue> openMetadataRecord = this.getToDoDataValues(toDoElement,
-                                                                                       toDoSourceElements,
-                                                                                       actionAssignmentElements);
+                                                                                       toDoSourceElement,
+                                                                                       sponsorElement);
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
                 {
@@ -3630,18 +3933,19 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      *
      * @param toDoElement to do information
      * @param toDoSourceElement  source of the to do
-     * @param actionAssignmentElement actor responsible for completing the work - may be null
+     * @param sponsorElement actor sponsoring the work - may be null
      * @return columns
      */
     private Map<String, JDBCDataValue> getToDoDataValues(OpenMetadataElement    toDoElement,
                                                          RelatedMetadataElement toDoSourceElement,
-                                                         RelatedMetadataElement actionAssignmentElement)
+                                                         RelatedMetadataElement sponsorElement)
     {
         final String methodName = "getToDoDataValues";
 
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TO_DO_GUID, toDoElement.getElementGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, toDoElement.getType().getTypeName());
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, propertyHelper.getStringProperty(connectorName,
                                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -3653,15 +3957,20 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                          toDoElement.getElementProperties(),
                                                                                                          methodName));
 
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                                   toDoElement.getElementProperties(),
+                                                                                                                   methodName));
+
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, propertyHelper.getDateProperty(connectorName,
                                                                                                         OpenMetadataProperty.CREATION_TIME.name,
                                                                                                         toDoElement.getElementProperties(),
                                                                                                         methodName));
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, propertyHelper.getStringProperty(connectorName,
-                                                                                                      OpenMetadataProperty.TO_DO_TYPE.name,
-                                                                                                      toDoElement.getElementProperties(),
-                                                                                                      methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TO_DO_TYPE, propertyHelper.getStringProperty(connectorName,
+                                                                                                                 OpenMetadataProperty.TO_DO_TYPE.name,
+                                                                                                                 toDoElement.getElementProperties(),
+                                                                                                                 methodName));
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRIORITY, propertyHelper.getIntProperty(connectorName,
                                                                                                    OpenMetadataProperty.PRIORITY.name,
@@ -3694,11 +4003,510 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.TO_DO_SOURCE_TYPE, toDoSourceElement.getElement().getType().getTypeName());
         }
 
-        if (actionAssignmentElement != null)
+        if (sponsorElement != null)
         {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_ACTOR_GUID, actionAssignmentElement.getElement().getElementGUID());
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_ACTOR_TYPE, actionAssignmentElement.getElement().getType().getTypeName());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SPONSOR_GUID, sponsorElement.getElement().getElementGUID());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SPONSOR_TYPE, sponsorElement.getElement().getType().getTypeName());
         }
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Process a project description retrieved from the open metadata ecosystem.
+     *
+     * @param projectElement to do information
+     * @param parentProjectElement  source of the to do
+     */
+    private void syncProject(OpenMetadataElement    projectElement,
+                             RelatedMetadataElement parentProjectElement)
+    {
+        final String methodName = "syncProject";
+
+        if (projectElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.PROJECT.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.PROJECT_GUID.getColumnName(),
+                                                                                            projectElement.getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.PROJECT.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getProjectDataValues(projectElement, parentProjectElement);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.PROJECT.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a project description from the open metadata ecosystem to database columns.
+     *
+     * @param projectElement project information
+     * @param parentProjectElement  optional parent
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getProjectDataValues(OpenMetadataElement    projectElement,
+                                                            RelatedMetadataElement parentProjectElement)
+    {
+        final String methodName = "getProjectDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROJECT_GUID, projectElement.getElementGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, projectElement.getType().getTypeName());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                     projectElement.getElementProperties(),
+                                                                                                                     methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROJECT_IDENTIFIER, propertyHelper.getStringProperty(connectorName,
+                                                                                                                         OpenMetadataProperty.IDENTIFIER.name,
+                                                                                                                         projectElement.getElementProperties(),
+                                                                                                                         methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   projectElement.getElementProperties(),
+                                                                                                                   methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                                  projectElement.getElementProperties(),
+                                                                                                                  methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, propertyHelper.getDateProperty(connectorName,
+                                                                                                                  OpenMetadataProperty.START_DATE.name,
+                                                                                                                  projectElement.getElementProperties(),
+                                                                                                                  methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getAttachedClassifications(projectElement.getClassifications()));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROJECT_PHASE, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.PROJECT_PHASE.name,
+                                                                                                                     projectElement.getElementProperties(),
+                                                                                                                     methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROJECT_STATUS, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.PROJECT_STATUS.name,
+                                                                                                                     projectElement.getElementProperties(),
+                                                                                                                     methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROJECT_HEALTH, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.PROJECT_HEALTH.name,
+                                                                                                                     projectElement.getElementProperties(),
+                                                                                                                     methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRIORITY, propertyHelper.getIntProperty(connectorName,
+                                                                                                            OpenMetadataProperty.PRIORITY.name,
+                                                                                                            projectElement.getElementProperties(),
+                                                                                                            methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DUE_TIME, propertyHelper.getDateProperty(connectorName,
+                                                                                                             OpenMetadataProperty.PLANNED_END_DATE.name,
+                                                                                                             projectElement.getElementProperties(),
+                                                                                                             methodName));
+
+        if (parentProjectElement != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PARENT_GUID, parentProjectElement.getElement().getElementGUID());
+        }
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Process a community description retrieved from the open metadata ecosystem.
+     *
+     * @param communityElement community information
+     */
+    private void syncCommunity(OpenMetadataElement    communityElement)
+    {
+        final String methodName = "syncCommunity";
+
+        if (communityElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.COMMUNITY.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.COMMUNITY_GUID.getColumnName(),
+                                                                                            communityElement.getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.COMMUNITY.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getCommunityDataValues(communityElement);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.COMMUNITY.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a community description from the open metadata ecosystem to database columns.
+     *
+     * @param communityElement community information
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getCommunityDataValues(OpenMetadataElement    communityElement)
+    {
+        final String methodName = "getCommunityDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.COMMUNITY_GUID, communityElement.getElementGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, communityElement.getType().getTypeName());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                     communityElement.getElementProperties(),
+                                                                                                                     methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   communityElement.getElementProperties(),
+                                                                                                                   methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                                  communityElement.getElementProperties(),
+                                                                                                                  methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, communityElement.getVersions().getCreateTime());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getAttachedClassifications(communityElement.getClassifications()));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MISSION, propertyHelper.getStringProperty(connectorName,
+                                                                                                              OpenMetadataProperty.MISSION.name,
+                                                                                                              communityElement.getElementProperties(),
+                                                                                                              methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Process a user identity and profile retrieved from the open metadata ecosystem.
+     *
+     * @param workElement type of work
+     * @param assignedActors  assigned actors
+     */
+    private void syncActorAssignments(OpenMetadataElement          workElement,
+                                      List<RelatedMetadataElement> assignedActors)
+    {
+        final String methodName = "syncActorAssignments";
+
+        if (workElement != null)
+        {
+            if (assignedActors != null)
+            {
+                for (RelatedMetadataElement assignedActor: assignedActors)
+                {
+                    if (assignedActor != null)
+                    {
+                        try
+                        {
+                            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.ACTOR_ASSIGNMENTS.getTableName(),
+                                                                                                        HarvestOpenMetadataColumn.RELATIONSHIP_GUID.getColumnName(),
+                                                                                                        assignedActor.getRelationshipGUID(),
+                                                                                                        HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                                        HarvestOpenMetadataTable.ACTOR_ASSIGNMENTS.getColumnNameTypeMap());
+
+                            Map<String, JDBCDataValue> openMetadataRecord = this.getActorAssignmentDataValues(workElement, assignedActor);
+
+                            if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                            {
+                                databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.ACTOR_ASSIGNMENTS.getTableName(), openMetadataRecord);
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logException(methodName,
+                                                  HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                         error.getClass().getName(),
+                                                                                                                         methodName,
+                                                                                                                         error.getMessage()),
+                                                  error);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Convert a user identity and profile from the open metadata ecosystem to database columns.
+     *
+     * @param workElement to do information
+     * @param assignedActor actor assigned to do the work
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getActorAssignmentDataValues(OpenMetadataElement    workElement,
+                                                                    RelatedMetadataElement assignedActor)
+    {
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RELATIONSHIP_GUID, assignedActor.getRelationshipGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, assignedActor.getType().getTypeName());
+
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_WORK_GUID, workElement.getElementGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_WORK_TYPE, workElement.getType().getTypeName());
+
+        if (assignedActor.getElement() != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_ACTOR_GUID, assignedActor.getElement().getElementGUID());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ASSIGNED_ACTOR_TYPE, assignedActor.getElement().getType().getTypeName());
+        }
+
+        if (assignedActor.getEffectiveFromTime() != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.START_TIMESTAMP, assignedActor.getEffectiveFromTime());
+        }
+
+        if (assignedActor.getEffectiveToTime() != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.END_TIMESTAMP, assignedActor.getEffectiveToTime());
+        }
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Process a collection description retrieved from the open metadata ecosystem.
+     *
+     * @param collectionElement collection information
+     * @param parentCollectionElement optional parent
+     * @param numberOfMembers count of the members of the collection
+     * @param memberTypes list of the different type names found in the members
+     */
+    private void syncCollection(OpenMetadataElement    collectionElement,
+                                RelatedMetadataElement parentCollectionElement,
+                                long                   numberOfMembers,
+                                String                 memberTypes)
+    {
+        final String methodName = "syncCollection";
+
+        if (collectionElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.COLLECTION.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.COLLECTION_GUID.getColumnName(),
+                                                                                            collectionElement.getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.COLLECTION.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getCollectionDataValues(collectionElement,
+                                                                                             parentCollectionElement,
+                                                                                             numberOfMembers,
+                                                                                             memberTypes);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.COLLECTION.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a collection description from the open metadata ecosystem to database columns.
+     *
+     * @param collectionElement collection information
+     * @param parentCollectionElement optional parent
+     * @param numberOfMembers count of the members of the collection
+     * @param memberTypes list of the different type names found in the members
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getCollectionDataValues(OpenMetadataElement    collectionElement,
+                                                               RelatedMetadataElement parentCollectionElement,
+                                                               long                   numberOfMembers,
+                                                               String                 memberTypes)
+    {
+        final String methodName = "getCollectionDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.COLLECTION_GUID, collectionElement.getElementGUID());
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, collectionElement.getType().getTypeName());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                     collectionElement.getElementProperties(),
+                                                                                                                     methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.NAME.name,
+                                                                                                                   collectionElement.getElementProperties(),
+                                                                                                                   methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                  OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                                  collectionElement.getElementProperties(),
+                                                                                                                  methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, collectionElement.getVersions().getCreateTime());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CLASSIFICATIONS, this.getAttachedClassifications(collectionElement.getClassifications()));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NUM_LINKED_ELEMENTS, numberOfMembers);
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MEMBER_TYPES, memberTypes);
+
+        if (parentCollectionElement != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PARENT_GUID, parentCollectionElement.getElement().getElementGUID());
+        }
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
+
+        return openMetadataRecord;
+    }
+
+
+
+    /**
+     * Process a collection description retrieved from the open metadata ecosystem.
+     *
+     * @param collectionElement collection information
+     * @param digitalProductProperties properties from the DigitalProduct classification
+     */
+    private void syncDigitalProduct(OpenMetadataElement collectionElement,
+                                    ElementProperties   digitalProductProperties)
+    {
+        final String methodName = "syncDigitalProduct";
+
+        if (collectionElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.DIGITAL_PRODUCT.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.COLLECTION_GUID.getColumnName(),
+                                                                                            collectionElement.getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.DIGITAL_PRODUCT.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getDigitalProductDataValues(collectionElement, digitalProductProperties);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.DIGITAL_PRODUCT.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a collection description from the open metadata ecosystem to database columns.
+     *
+     * @param collectionElement collection information
+     * @param digitalProductProperties properties from the DigitalProduct classification
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getDigitalProductDataValues(OpenMetadataElement collectionElement,
+                                                                   ElementProperties   digitalProductProperties)
+    {
+        final String methodName = "getDigitalProductDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.COLLECTION_GUID, collectionElement.getElementGUID());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_STATUS, propertyHelper.getStringProperty(connectorName,
+                                                                                                                     OpenMetadataProperty.PRODUCT_STATUS.name,
+                                                                                                                     digitalProductProperties,
+                                                                                                                     methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.PRODUCT_NAME.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PRODUCT_TYPE, propertyHelper.getStringProperty(connectorName,
+                                                                                                                  OpenMetadataProperty.PRODUCT_TYPE.name,
+                                                                                                                  digitalProductProperties,
+                                                                                                                  methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.INTRODUCTION_DATE, propertyHelper.getDateProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.INTRODUCTION_DATE.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.MATURITY, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.MATURITY.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SERVICE_LIFE, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.SERVICE_LIFE.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CURRENT_VERSION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.CURRENT_VERSION.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NEXT_VERSION, propertyHelper.getDateProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.NEXT_VERSION_DATE.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.WITHDRAW_DATE, propertyHelper.getDateProperty(connectorName,
+                                                                                                                   OpenMetadataProperty.WITHDRAW_DATE.name,
+                                                                                                                   digitalProductProperties,
+                                                                                                                   methodName));
+
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new Date().getTime());
 
@@ -3710,16 +4518,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Process a user identity and profile retrieved from the open metadata ecosystem.
      *
      * @param userIdentifyElement user identity information
-     * @param personElement  person profile element
-     * @param departmentGUID primary team
-     * @param locationGUID unique identifier of the location where the person is associated with (ProfileLocation)
-     * @param organizationName display name of the organization - from traversing the team hierarchy
      */
-    private void syncUserIdentity(OpenMetadataElement    userIdentifyElement,
-                                  RelatedMetadataElement personElement,
-                                  String                 departmentGUID,
-                                  String                 locationGUID,
-                                  String                 organizationName)
+    private void syncUserIdentity(OpenMetadataElement    userIdentifyElement)
     {
         final String methodName = "syncUserIdentity";
 
@@ -3733,11 +4533,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                             HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
                                                                                             HarvestOpenMetadataTable.USER_IDENTITY.getColumnNameTypeMap());
 
-                Map<String, JDBCDataValue> openMetadataRecord = this.getUserIdentityDataValues(userIdentifyElement,
-                                                                                               personElement,
-                                                                                               departmentGUID,
-                                                                                               locationGUID,
-                                                                                               organizationName);
+                Map<String, JDBCDataValue> openMetadataRecord = this.getUserIdentityDataValues(userIdentifyElement);
 
                 if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
                 {
@@ -3761,19 +4557,96 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Convert a user identity and profile from the open metadata ecosystem to database columns.
      *
      * @param userIdentifyElement user identity information
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getUserIdentityDataValues(OpenMetadataElement    userIdentifyElement)
+    {
+        final String methodName = "getUserIdentityDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userIdentifyElement.getElementGUID());
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_ID, propertyHelper.getStringProperty(connectorName,
+                                                                                                    OpenMetadataProperty.USER_ID.name,
+                                                                                                    userIdentifyElement.getElementProperties(),
+                                                                                                    methodName));
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISTINGUISHED_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                               OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                                                                               userIdentifyElement.getElementProperties(),
+                                                                                                               methodName));
+
+        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
+
+        return openMetadataRecord;
+    }
+
+
+
+    /**
+     * Process a user identity and profile retrieved from the open metadata ecosystem.
+     *
+     * @param personElement  person profile element
+     * @param departmentGUID primary team
+     * @param locationGUID unique identifier of the location where the person is associated with (ProfileLocation)
+     * @param organizationName display name of the organization - from traversing the team hierarchy
+     */
+    private void syncPerson(RelatedMetadataElement personElement,
+                            String                 departmentGUID,
+                            String                 locationGUID,
+                            String                 organizationName)
+    {
+        final String methodName = "syncUserIdentity";
+
+        if (personElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.PERSON.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.PROFILE_GUID.getColumnName(),
+                                                                                            personElement.getElement().getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.PERSON.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getPersonDataValues(personElement,
+                                                                                         departmentGUID,
+                                                                                         locationGUID,
+                                                                                         organizationName);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.PERSON.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a user identity and profile from the open metadata ecosystem to database columns.
+     *
      * @param personElement  person profile element
      * @param departmentGUID primary team
      * @param locationGUID unique identifier of the location where the person is associated with (ProfileLocation)
      * @param organizationName display name of the organization - from traversing the team hierarchy
      * @return columns
      */
-    private Map<String, JDBCDataValue> getUserIdentityDataValues(OpenMetadataElement    userIdentifyElement,
-                                                                 RelatedMetadataElement personElement,
-                                                                 String                 departmentGUID,
-                                                                 String                 locationGUID,
-                                                                 String                 organizationName)
+    private Map<String, JDBCDataValue> getPersonDataValues(RelatedMetadataElement personElement,
+                                                           String                 departmentGUID,
+                                                           String                 locationGUID,
+                                                           String                 organizationName)
     {
-        final String methodName = "getUserIdentityDataValues";
+        final String methodName = "getPersonDataValues";
 
         Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
 
@@ -3782,32 +4655,22 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROFILE_GUID, personElement.getElement().getElementGUID());
 
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EMPLOYEE_NUMBER, propertyHelper.getStringProperty(connectorName,
-                                                                                                                "employeeNumber",
-                                                                                                                personElement.getElement().getElementProperties(),
-                                                                                                                methodName));
+                                                                                                                          OpenMetadataProperty.EMPLOYEE_NUMBER.name,
+                                                                                                                          personElement.getElement().getElementProperties(),
+                                                                                                                          methodName));
 
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PREFERRED_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                               "name",
-                                                                                                               personElement.getElement().getElementProperties(),
-                                                                                                               methodName));
+                                                                                                                         OpenMetadataProperty.NAME.name,
+                                                                                                                         personElement.getElement().getElementProperties(),
+                                                                                                                         methodName));
 
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RESIDENT_COUNTRY, propertyHelper.getStringProperty(connectorName,
-                                                                                                                 "residentCountry",
-                                                                                                                 personElement.getElement().getElementProperties(),
-                                                                                                                 methodName));
+                                                                                                                           OpenMetadataProperty.RESIDENT_COUNTRY.name,
+                                                                                                                           personElement.getElement().getElementProperties(),
+                                                                                                                           methodName));
 
         }
 
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userIdentifyElement.getElementGUID());
-
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_ID, propertyHelper.getStringProperty(connectorName,
-                                                                                                    "userId",
-                                                                                                    userIdentifyElement.getElementProperties(),
-                                                                                                    methodName));
-        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISTINGUISHED_NAME, propertyHelper.getStringProperty(connectorName,
-                                                                                                               "distinguishedName",
-                                                                                                               userIdentifyElement.getElementProperties(),
-                                                                                                               methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DEPARTMENT_GUID, departmentGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LOCATION_GUID, locationGUID);
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORGANIZATION_NAME, organizationName);
@@ -3816,6 +4679,165 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         return openMetadataRecord;
     }
+
+
+
+
+    /**
+     * Process a user identity and profile retrieved from the open metadata ecosystem.
+     *
+     * @param userIdentifyElement user identity information
+     * @param personElement  person profile element
+     */
+    private void syncUserToProfile(OpenMetadataElement    userIdentifyElement,
+                                   RelatedMetadataElement personElement)
+    {
+        final String methodName = "syncUserToProfile";
+
+        if (userIdentifyElement != null)
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.USER_TO_PROFILE.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.RELATIONSHIP_GUID.getColumnName(),
+                                                                                            userIdentifyElement.getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.USER_TO_PROFILE.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getUserToProfileDataValues(userIdentifyElement, personElement);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.USER_TO_PROFILE.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a user identity and profile from the open metadata ecosystem to database columns.
+     *
+     * @param userIdentifyElement user identity information
+     * @param profileElement   profile element
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getUserToProfileDataValues(OpenMetadataElement    userIdentifyElement,
+                                                                  RelatedMetadataElement profileElement)
+    {
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        if ((profileElement != null) && (userIdentifyElement != null))
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.RELATIONSHIP_GUID, profileElement.getRelationshipGUID());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROFILE_GUID, profileElement.getElement().getElementGUID());
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USER_IDENTITY_GUID, userIdentifyElement.getElementGUID());
+
+            if (profileElement.getEffectiveFromTime() != null)
+            {
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.START_TIMESTAMP, new java.sql.Timestamp(profileElement.getEffectiveFromTime().getTime()));
+            }
+
+            if (profileElement.getEffectiveToTime() != null)
+            {
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.END_TIMESTAMP, new java.sql.Timestamp(profileElement.getEffectiveToTime().getTime()));
+            }
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
+        }
+
+
+        return openMetadataRecord;
+    }
+
+
+    /**
+     * Process a person profile retrieved from the open metadata ecosystem.
+     *
+     * @param personElement  person profile element
+     */
+    private void syncActorProfile(RelatedMetadataElement personElement)
+    {
+        final String methodName = "syncActorProfile";
+
+        if ((personElement != null) )
+        {
+            try
+            {
+                Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestOpenMetadataTable.ACTOR_PROFILE.getTableName(),
+                                                                                            HarvestOpenMetadataColumn.PROFILE_GUID.getColumnName(),
+                                                                                            personElement.getElement().getElementGUID(),
+                                                                                            HarvestOpenMetadataColumn.SYNC_TIME.getColumnName(),
+                                                                                            HarvestOpenMetadataTable.ACTOR_PROFILE.getColumnNameTypeMap());
+
+                Map<String, JDBCDataValue> openMetadataRecord = this.getActorProfileDataValues(personElement);
+
+                if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME.getColumnName()))
+                {
+                    databaseClient.insertRowIntoTable(HarvestOpenMetadataTable.ACTOR_PROFILE.getTableName(), openMetadataRecord);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      HarvestOpenMetadataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
+     * Convert a person profile from the open metadata ecosystem to database columns.
+     *
+     * @param personElement  person profile element
+     * @return columns
+     */
+    private Map<String, JDBCDataValue> getActorProfileDataValues(RelatedMetadataElement personElement)
+    {
+        final String methodName = "getActorProfileDataValues";
+
+        Map<String, JDBCDataValue> openMetadataRecord = new HashMap<>();
+
+        if (personElement != null)
+        {
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.PROFILE_GUID, personElement.getElement().getElementGUID());
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OPEN_METADATA_TYPE, personElement.getElement().getType().getTypeName());
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.QUALIFIED_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                         personElement.getElement().getElementProperties(),
+                                                                                                                         methodName));
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName,
+                                                                                                                       OpenMetadataProperty.NAME.name,
+                                                                                                                       personElement.getElement().getElementProperties(),
+                                                                                                                       methodName));
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName,
+                                                                                                                      OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                                      personElement.getElement().getElementProperties(),
+                                                                                                                      methodName));
+
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.SYNC_TIME, new java.sql.Timestamp(new Date().getTime()));
+        }
+
+        return openMetadataRecord;
+    }
+
 
 
     /**
@@ -3944,6 +4966,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         if (latestStoredRecord == null)
         {
             return true;
+        }
+
+        if ((openMetadataRecord == null) || (openMetadataRecord.isEmpty()))
+        {
+            return false;
         }
 
         for (String columnName : latestStoredRecord.keySet())

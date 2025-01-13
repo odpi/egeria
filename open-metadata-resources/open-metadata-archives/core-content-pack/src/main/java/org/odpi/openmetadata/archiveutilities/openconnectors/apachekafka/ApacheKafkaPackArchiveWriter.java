@@ -6,10 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaDeploy
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -95,6 +92,7 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("ApacheKafkaServer",
                                                           KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_KAFKA_SERVER,
+                                                          SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE,
                                                           GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_KAFKA_SERVER,
                                                           GovernanceEngineDefinition.KAFKA_SURVEY_ENGINE,
@@ -102,6 +100,7 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("ApacheKafkaServer",
                                                            KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_KAFKA_SERVER,
+                                                           SoftwareServerTemplateDefinition.KAFKA_SERVER_TEMPLATE,
                                                            GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_KAFKA_SERVER,
                                                            GovernanceEngineDefinition.KAFKA_GOVERNANCE_ENGINE,

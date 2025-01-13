@@ -21,6 +21,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 {
     private String identifier                     = null;
     private int    keyPattern                     = 0;
+    private String externalInstanceTypeName       = null;
     private String externalInstanceCreatedBy      = null;
     private Date   externalInstanceCreationTime   = null;
     private String externalInstanceLastUpdatedBy  = null;
@@ -52,6 +53,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
      *
      * @param identifier the identifier from the external technology
      * @param keyPattern identifier from the external party
+     * @param externalInstanceTypeName the type name of the instance in the external system
      * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
      * @param externalInstanceCreationTime the date/time when the instance in the external system was created
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
@@ -63,6 +65,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
      */
     ExternalIdentifierBuilder(String               identifier,
                               int                  keyPattern,
+                              String               externalInstanceTypeName,
                               String               externalInstanceCreatedBy,
                               Date                 externalInstanceCreationTime,
                               String               externalInstanceLastUpdatedBy,
@@ -81,6 +84,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         this.identifier = identifier;
         this.keyPattern = keyPattern;
+        this.externalInstanceTypeName = externalInstanceTypeName;
         this.externalInstanceCreatedBy = externalInstanceCreatedBy;
         this.externalInstanceCreationTime = externalInstanceCreationTime;
         this.externalInstanceLastUpdatedBy = externalInstanceLastUpdatedBy;
@@ -121,6 +125,12 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             throw new InvalidParameterException(error, OpenMetadataProperty.KEY_PATTERN.name);
         }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME.name,
+                                                                  externalInstanceTypeName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

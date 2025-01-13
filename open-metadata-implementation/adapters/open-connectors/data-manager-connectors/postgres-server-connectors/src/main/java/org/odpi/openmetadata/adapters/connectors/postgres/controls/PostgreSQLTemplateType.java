@@ -3,6 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +17,15 @@ import java.util.Map;
  * TemplateTypeEnum characterises the type of templates supported by an integration connector.  It should be copied
  * by developers of an integration connector to help populate the supportedTemplates property of its provider.
  */
-public enum PostgreSQLTemplateType
+public enum PostgreSQLTemplateType implements TemplateDefinition
 {
     POSTGRES_SERVER_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
                              "Create a " + PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName() + " asset.",
                              PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
                            false,
                              "542134e6-b9ce-4dce-8aef-22e8daf34fdb",
+                           PostgresDeployedImplementationType.POSTGRESQL_SERVER,
+                           PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes(),
                            null),
 
     POSTGRES_DATABASE_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
@@ -26,6 +33,8 @@ public enum PostgreSQLTemplateType
                                PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
                                false,
                                "3d398b3f-7ae6-4713-952a-409f3dea8520",
+                               PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
+                               PostgresPlaceholderProperty.getPostgresDatabasePlaceholderPropertyTypes(),
                                null),
 
     POSTGRES_SCHEMA_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
@@ -33,6 +42,8 @@ public enum PostgreSQLTemplateType
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
                              false,
                              "82a5417c-d882-4271-8444-4c6a996a8bfc",
+                             PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
+                             PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              null),
     ;
 
@@ -69,6 +80,10 @@ public enum PostgreSQLTemplateType
      */
     private final Map<String, String> otherPropertyValues;
 
+    private final PostgresDeployedImplementationType deployedImplementationType;
+
+    private final List<PlaceholderPropertyType>        placeholderPropertyTypes;
+
 
     /**
      * Constructor for Enum
@@ -78,29 +93,47 @@ public enum PostgreSQLTemplateType
      * @param templateDescription deployed implementation type for the linked element
      * @param required is this template required bu the connector
      * @param defaultTemplateGUID is there a default template
+     * @param deployedImplementationType       deployed implementation type for the technology
+     * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      * @param otherPropertyValues other values
      */
-    PostgreSQLTemplateType(String              templateName,
-                           String              templateDescription,
-                           String              typeName,
-                           boolean             required,
-                           String              defaultTemplateGUID,
-                           Map<String, String> otherPropertyValues)
+    PostgreSQLTemplateType(String                             templateName,
+                           String                             templateDescription,
+                           String                             typeName,
+                           boolean                            required,
+                           String                             defaultTemplateGUID,
+                           PostgresDeployedImplementationType deployedImplementationType,
+                           List<PlaceholderPropertyType>      placeholderPropertyTypes,
+                           Map<String, String>                otherPropertyValues)
     {
-        this.templateName        = templateName;
-        this.templateDescription = templateDescription;
-        this.typeName            = typeName;
-        this.required            = required;
-        this.defaultTemplateGUID = defaultTemplateGUID;
-        this.otherPropertyValues = otherPropertyValues;
+        this.templateName               = templateName;
+        this.templateDescription        = templateDescription;
+        this.typeName                   = typeName;
+        this.required                   = required;
+        this.defaultTemplateGUID        = defaultTemplateGUID;
+        this.deployedImplementationType = deployedImplementationType;
+        this.placeholderPropertyTypes   = placeholderPropertyTypes;
+        this.otherPropertyValues        = otherPropertyValues;
     }
 
+
+    /**
+     * Return the unique identifier of the template.
+     *
+     * @return name
+     */
+    @Override
+    public String getTemplateGUID()
+    {
+        return defaultTemplateGUID;
+    }
 
     /**
      * Return the name of the template.
      *
      * @return name
      */
+    @Override
     public String getTemplateName()
     {
         return templateName;
@@ -112,9 +145,70 @@ public enum PostgreSQLTemplateType
      *
      * @return description
      */
+    @Override
     public String getTemplateDescription()
     {
         return templateDescription;
+    }
+
+
+    /**
+     * Return the version identifier for the template classification.
+     *
+     * @return string
+     */
+    @Override
+    public String getTemplateVersionIdentifier()
+    {
+        return "V1.0";
+    }
+
+
+    /**
+     * Return the supported deployed implementation for this template.
+     *
+     * @return enum
+     */
+    @Override
+    public DeployedImplementationTypeDefinition getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    @Override
+    public String getElementVersionIdentifier()
+    {
+        return PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
+    }
+
+
+    /**
+     * Return the list of placeholders supported by this template.
+     *
+     * @return list of placeholder types
+     */
+    @Override
+    public List<PlaceholderPropertyType> getPlaceholders()
+    {
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Return the list of attributes that should be supplied by the caller using this template.
+     *
+     * @return list of replacement attributes
+     */
+    @Override
+    public List<ReplacementAttributeType> getReplacementAttributes()
+    {
+        return null;
     }
 
 
@@ -137,17 +231,6 @@ public enum PostgreSQLTemplateType
     public boolean getRequired()
     {
         return required;
-    }
-
-
-    /**
-     * Return the unique identifier of the default template to use with this connector - this is optional.
-     *
-     * @return string
-     */
-    public String getDefaultTemplateGUID()
-    {
-        return defaultTemplateGUID;
     }
 
 

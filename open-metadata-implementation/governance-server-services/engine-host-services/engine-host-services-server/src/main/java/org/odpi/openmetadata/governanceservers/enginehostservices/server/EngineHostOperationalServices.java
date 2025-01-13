@@ -581,10 +581,10 @@ public class EngineHostOperationalServices
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                    AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName()));
+                                                                                                    AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName()));
 
             throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
-                                                                                                                          AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName()),
+                                                                                                                          AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }
@@ -611,10 +611,10 @@ public class EngineHostOperationalServices
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                            AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName()));
+                                                                                                            AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName()));
 
             throw new OMAGConfigurationErrorException(EngineHostServicesErrorCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,
-                                                                                                                                  AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName()),
+                                                                                                                                  AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName()),
                                                       this.getClass().getName(),
                                                       methodName);
         }

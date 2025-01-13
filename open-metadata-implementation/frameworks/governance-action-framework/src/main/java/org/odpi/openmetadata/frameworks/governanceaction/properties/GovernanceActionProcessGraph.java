@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,6 +26,7 @@ public class GovernanceActionProcessGraph
     private FirstGovernanceActionProcessStepElement           firstProcessStep        = null;
     private List<GovernanceActionProcessStepExecutionElement> nextProcessSteps        = null;
     private List<NextGovernanceActionProcessStepLink>         processStepLinks        = null;
+    private String                                            mermaidGraph            = null;
 
 
     /**
@@ -48,6 +50,7 @@ public class GovernanceActionProcessGraph
             this.firstProcessStep        = template.getFirstProcessStep();
             this.nextProcessSteps        = template.getNextProcessSteps();
             this.processStepLinks        = template.getProcessStepLinks();
+            this.mermaidGraph            = template.getMermaidGraph();
         }
     }
 
@@ -140,6 +143,29 @@ public class GovernanceActionProcessGraph
     }
 
 
+
+    /**
+     * Return the mermaid string used to render a graph.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidGraph string in Mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -150,9 +176,10 @@ public class GovernanceActionProcessGraph
     {
         return "GovernanceActionProcessGraph{" +
                 "governanceActionProcess=" + governanceActionProcess +
-                ", firstProcessStep" + firstProcessStep +
-                ", NextProcessSteps=" + nextProcessSteps +
+                ", firstProcessStep=" + firstProcessStep +
+                ", nextProcessSteps=" + nextProcessSteps +
                 ", processStepLinks=" + processStepLinks +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
 
@@ -172,7 +199,8 @@ public class GovernanceActionProcessGraph
         return Objects.equals(governanceActionProcess, that.governanceActionProcess) &&
                 Objects.equals(firstProcessStep, that.firstProcessStep) &&
                 Objects.equals(nextProcessSteps, that.nextProcessSteps) &&
-                Objects.equals(processStepLinks, that.processStepLinks);
+                Objects.equals(processStepLinks, that.processStepLinks) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -184,6 +212,6 @@ public class GovernanceActionProcessGraph
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceActionProcess, firstProcessStep, nextProcessSteps, processStepLinks);
+        return Objects.hash(governanceActionProcess, firstProcessStep, nextProcessSteps, processStepLinks, mermaidGraph);
     }
 }

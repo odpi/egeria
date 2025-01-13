@@ -23,7 +23,7 @@ public class GovernanceServerOutTopicClientConnector extends OpenMetadataTopicLi
 {
     private static final Logger log = LoggerFactory.getLogger(GovernanceServerOutTopicClientConnector.class);
 
-    private List<GovernanceServerEventListener> internalEventListeners = new ArrayList<>();
+    private final List<GovernanceServerEventListener> internalEventListeners = new ArrayList<>();
 
 
     /**

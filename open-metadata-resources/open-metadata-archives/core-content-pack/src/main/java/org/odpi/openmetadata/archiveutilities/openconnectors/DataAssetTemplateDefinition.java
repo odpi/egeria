@@ -4,18 +4,24 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsStoreProvider;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +32,11 @@ import java.util.Map;
  */
 public enum DataAssetTemplateDefinition implements TemplateDefinition
 {
-    POSTGRES_DATABASE_TEMPLATE(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getDefaultTemplateGUID(),
+    POSTGRES_DATABASE_TEMPLATE(PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE.getTemplateGUID(),
                                PostgresDeployedImplementationType.POSTGRESQL_DATABASE,
                                PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
                                PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                               PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
-                               PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                                new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
                                "jdbc:postgresql://" +
                                        PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
@@ -45,20 +49,18 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                PostgresPlaceholderProperty.getPostgresDatabasePlaceholderPropertyTypes(),
                                ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
-    POSTGRES_SCHEMA_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getDefaultTemplateGUID(),
+    POSTGRES_SCHEMA_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID(),
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
-                             PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
+                             PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
                              PlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                             PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
-                             PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                              new JDBCResourceConnectorProvider().getConnectorType().getGUID(),
                              "jdbc:postgresql://" +
                                      PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                      PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
                                      PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                             null,
+                             getPostgresSchemaConfigurationProperties(),
                              SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
                              new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
                              PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
@@ -66,7 +68,60 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                              PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              ContentPackDefinition.POSTGRES_CONTENT_PACK),
 
+    KAFKA_TOPIC_TEMPLATE(KafkaTemplateType.KAFKA_TOPIC_TEMPLATE.getTemplateGUID(),
+                         DeployedImplementationType.APACHE_KAFKA_TOPIC,
+                         KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getPlaceholder(),
+                         PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                         PlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder() + ":inOut",
+                         new KafkaOpenMetadataTopicProvider().getConnectorType().getGUID(),
+                         KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder(),
+                         getKafkaConfigurationProperties(),
+                         SecretsStorePurpose.REST_BASIC_AUTHENTICATION.getName(),
+                         new YAMLSecretsStoreProvider().getConnectorType().getGUID(),
+                         PlaceholderProperty.SECRETS_STORE.getPlaceholder(),
+                         null,
+                         KafkaPlaceholderProperty.getKafkaTopicPlaceholderPropertyTypes(),
+                         ContentPackDefinition.CORE_CONTENT_PACK),
+
     ;
+
+
+    /**
+     * Build the configuration properties for a kafka topic.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getKafkaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+        Map<String, String> bootstrapServersProperties = new HashMap<>();
+
+        bootstrapServersProperties.put("bootstrap.servers",
+                                       PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                               PlaceholderProperty.PORT_NUMBER.getPlaceholder());
+
+        configurationProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
+        configurationProperties.put("producer", bootstrapServersProperties);
+        configurationProperties.put("consumer", bootstrapServersProperties);
+
+        return configurationProperties;
+    }
+
+
+    /**
+     * Build the configuration properties for a kafka topic.
+     *
+     * @return configuration properties
+     */
+    private static Map<String, Object> getPostgresSchemaConfigurationProperties()
+    {
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_NAME.getName(), PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder());
+        configurationProperties.put(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder());
+
+        return configurationProperties;
+    }
 
 
     private final String                               guid;
@@ -74,8 +129,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     private final String                               assetName;
     private final String                               assetDescription;
     private final String                               serverName;
-    private final String                               password;
-    private final String                               userId;
     private final String                               connectorTypeGUID;
     private final String                               networkAddress;
     private final Map<String, Object>                  configurationProperties;
@@ -95,8 +148,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
      * @param assetName name for the asset
      * @param assetDescription description
      * @param serverName optional server name
-     * @param userId userId for the connection
-     * @param password password for the connection
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
      * @param secretsStorePurpose              type of authentication information provided by the secrets store
@@ -112,8 +163,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
                                 String                               assetName,
                                 String                               assetDescription,
                                 String                               serverName,
-                                String                               userId,
-                                String                               password,
                                 String                               connectorTypeGUID,
                                 String                               networkAddress,
                                 Map<String, Object>                  configurationProperties,
@@ -129,8 +178,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
         this.assetName                     = assetName;
         this.assetDescription              = assetDescription;
         this.serverName                    = serverName;
-        this.userId                        = userId;
-        this.password                       = password;
         this.connectorTypeGUID             = connectorTypeGUID;
         this.networkAddress                = networkAddress;
         this.configurationProperties       = configurationProperties;
@@ -216,6 +263,18 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
 
 
     /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    @Override
+    public String getElementVersionIdentifier()
+    {
+        return PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
+    }
+
+
+    /**
      * Return the name of the asset.
      *
      * @return enum
@@ -244,28 +303,6 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     public String getServerName()
     {
         return serverName;
-    }
-
-
-    /**
-     * Return the password.
-     *
-     * @return string
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-
-
-    /**
-     * Return the user id for the connection.
-     *
-     * @return string
-     */
-    public String getUserId()
-    {
-        return userId;
     }
 
 

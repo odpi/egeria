@@ -153,12 +153,47 @@ public class OpenMetadataTypesArchive
          * Pull the types from previous releases.
          */
         previousTypes.getOriginalTypes();
+
+        /*
+         * New types for this release
+         */
+        this.update0017ExternalIds();
     }
 
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * 0118 Actor Roles and related updates
+     */
+    private void update0017ExternalIds()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateExternalId());
+    }
+
+    private TypeDefPatch updateExternalId()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME));
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
 
     /*

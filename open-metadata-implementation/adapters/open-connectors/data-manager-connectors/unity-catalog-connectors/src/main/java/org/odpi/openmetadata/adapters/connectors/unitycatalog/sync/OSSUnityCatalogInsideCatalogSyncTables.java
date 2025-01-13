@@ -340,6 +340,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                       this.getExternalIdentifierProperties(tableInfo,
                                                                            tableInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                           "table",
                                                                            tableInfo.getTable_id(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -413,6 +414,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                           this.getExternalIdentifierProperties(tableInfo,
                                                                                tableInfo.getSchema_name(),
                                                                                UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                               "table",
                                                                                tableInfo.getTable_id(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }

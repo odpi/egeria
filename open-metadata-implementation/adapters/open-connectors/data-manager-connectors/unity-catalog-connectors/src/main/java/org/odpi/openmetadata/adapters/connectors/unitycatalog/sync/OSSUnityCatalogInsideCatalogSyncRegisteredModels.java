@@ -334,6 +334,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                       this.getExternalIdentifierProperties(modelInfo,
                                                                            modelInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.MODEL_NAME.getName(),
+                                                                           "model",
                                                                            modelInfo.getId(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -400,6 +401,7 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
                                           this.getExternalIdentifierProperties(modelInfo,
                                                                                modelInfo.getSchema_name(),
                                                                                UnityCatalogPlaceholderProperty.MODEL_NAME.getName(),
+                                                                               "model",
                                                                                modelInfo.getId(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }
