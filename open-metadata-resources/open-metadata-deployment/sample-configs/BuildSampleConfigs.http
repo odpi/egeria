@@ -237,6 +237,12 @@ Content-Type: application/json
       "engineId": "e107c6ea-7fbe-407b-b51f-e35a488ef49d",
       "engineQualifiedName": "ApacheKafkaGovernance",
       "engineUserId": "apachekafkagovernanceengine"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "67676a0a-cf44-48b9-bedd-09b0870071b9",
+      "engineQualifiedName": "MetadataObservability",
+      "engineUserId": "observabilitygovernanceengine"
     }
   ],
   "omagserverPlatformRootURL": "~{egeriaEndpoint}~",

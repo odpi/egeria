@@ -113,6 +113,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierUsage usage information from the connector/client supplying the identifier
      * @param identifierSource name of the connector/client supplying the identifier
      * @param identifierMappingProperties additional properties to help with the synchronization
+     * @param externalInstanceTypeName the type name of the instance in the external system
      * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
      * @param externalInstanceCreationTime the date/time when the instance in the external system was created
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
@@ -149,6 +150,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                         String              identifierUsage,
                                         String              identifierSource,
                                         Map<String, String> identifierMappingProperties,
+                                        String              externalInstanceTypeName,
                                         String              externalInstanceCreatedBy,
                                         Date                externalInstanceCreationTime,
                                         String              externalInstanceLastUpdatedBy,
@@ -196,6 +198,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             externalIdGUID = createExternalIdentifier(userId,
                                                       identifier,
                                                       identifierKeyPattern,
+                                                      externalInstanceTypeName,
                                                       externalInstanceCreatedBy,
                                                       externalInstanceCreationTime,
                                                       externalInstanceLastUpdatedBy,
@@ -237,6 +240,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                      externalIdGUIDParameterName,
                                      identifier,
                                      identifierKeyPattern,
+                                     externalInstanceTypeName,
                                      externalInstanceCreatedBy,
                                      externalInstanceCreationTime,
                                      externalInstanceLastUpdatedBy,
@@ -899,6 +903,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param userId calling user
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
+     * @param externalInstanceTypeName the type name of the instance in the external system
      * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
      * @param externalInstanceCreationTime the date/time when the instance in the external system was created
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
@@ -928,6 +933,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     private String createExternalIdentifier(String       userId,
                                             String       identifier,
                                             int          identifierKeyPattern,
+                                            String       externalInstanceTypeName,
                                             String       externalInstanceCreatedBy,
                                             Date         externalInstanceCreationTime,
                                             String       externalInstanceLastUpdatedBy,
@@ -954,6 +960,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
+                                                                          externalInstanceTypeName,
                                                                           externalInstanceCreatedBy,
                                                                           externalInstanceCreationTime,
                                                                           externalInstanceLastUpdatedBy,
@@ -1008,6 +1015,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdGUID unique identifier of the
      * @param identifier identifier from the third party technology
      * @param identifierKeyPattern key pattern that defines the logic used to maintain the identifier
+     * @param externalInstanceTypeName the type name of the instance in the external system
      * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
      * @param externalInstanceCreationTime the date/time when the instance in the external system was created
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
@@ -1030,6 +1038,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                           String       externalIdGUIDParameterName,
                                           String       identifier,
                                           int          identifierKeyPattern,
+                                          String       externalInstanceTypeName,
                                           String       externalInstanceCreatedBy,
                                           Date         externalInstanceCreationTime,
                                           String       externalInstanceLastUpdatedBy,
@@ -1047,6 +1056,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
+                                                                           externalInstanceTypeName,
                                                                           externalInstanceCreatedBy,
                                                                           externalInstanceCreationTime,
                                                                           externalInstanceLastUpdatedBy,

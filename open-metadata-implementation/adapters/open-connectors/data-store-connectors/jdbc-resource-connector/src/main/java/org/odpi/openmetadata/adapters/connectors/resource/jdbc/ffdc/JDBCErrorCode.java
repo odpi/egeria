@@ -42,6 +42,14 @@ public enum JDBCErrorCode implements ExceptionMessageSet
              "Update the 'jdbcDriverManagerClassName' configuration property in this connector's connection.  This property is only needed for unusual databases.  It may also be worth trying the connector without this property to see if the driver is well known to your JDBC implementation."),
 
     /**
+     * JDBC-RESOURCE-CONNECTOR-400-003 - Connection has been configured without the schema name of the database
+     */
+    NULL_SCHEMA_NAME(400, "JDBC-RESOURCE-CONNECTOR-400-003",
+             "Connection has been configured without the schema name of the database",
+             "The connector is unable to start because the configuration properties have a null databaseSchema property.",
+             "Update the connection's configuration properties to include the schema name needed to connect to the desired database schema."),
+
+    /**
      * JDBC-RESOURCE-CONNECTOR-500-001 - The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "JDBC-RESOURCE-CONNECTOR-500-001",
@@ -65,6 +73,7 @@ public enum JDBCErrorCode implements ExceptionMessageSet
                          "The JDBC resource connector for database {0} received an unexpected SQL exception from request \"{1}\" during method {2}; the error message was: {3}",
                          "The connector is unable to process the current request because the database returned an unexpected error.",
                          "Use the details from the SQL error message and the SQL request to determine the cause of the error and retry the request once it is resolved."),
+
 
     ;
 

@@ -3,11 +3,9 @@
 package org.odpi.openmetadata.archiveutilities.openconnectors.postgres;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
-import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -92,6 +90,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("PostgreSQLServer",
                                                           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_POSTGRES_SERVER,
+                                                          SoftwareServerTemplateDefinition.POSTGRES_SERVER_TEMPLATE,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_POSTGRES_SERVER,
                                                           GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
@@ -100,6 +99,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("PostgreSQLServer",
                                                            PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_POSTGRES_SERVER,
+                                                           SoftwareServerTemplateDefinition.POSTGRES_SERVER_TEMPLATE,
                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                            RequestTypeDefinition.CATALOG_POSTGRES_SERVER,
                                                            GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
@@ -115,6 +115,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("PostgreSQLDatabase",
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_POSTGRES_DB,
+                                                          PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.SURVEY_POSTGRES_DATABASE,
                                                           GovernanceEngineDefinition.POSTGRES_SURVEY_ENGINE,
@@ -124,6 +125,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_POSTGRES_DB,
+                                                          PostgreSQLTemplateType.POSTGRES_DATABASE_TEMPLATE,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.CATALOG_POSTGRES_DATABASE,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
@@ -140,6 +142,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName(),
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_POSTGRES_SCHEMA,
+                                                          PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,
                                                           RequestTypeDefinition.CATALOG_POSTGRES_SCHEMA,
                                                           GovernanceEngineDefinition.POSTGRES_GOVERNANCE_ENGINE,

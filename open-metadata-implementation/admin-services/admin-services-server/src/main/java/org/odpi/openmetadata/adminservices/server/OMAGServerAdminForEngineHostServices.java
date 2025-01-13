@@ -29,7 +29,7 @@ import java.util.*;
 public class OMAGServerAdminForEngineHostServices
 {
     private static final String serviceName    = GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName();
-    private static final String accessService  = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceName();
+    private static final String accessService  = AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceName();
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForEngineHostServices.class),
                                                                             CommonServicesDescription.ADMINISTRATION_SERVICES.getServiceName());

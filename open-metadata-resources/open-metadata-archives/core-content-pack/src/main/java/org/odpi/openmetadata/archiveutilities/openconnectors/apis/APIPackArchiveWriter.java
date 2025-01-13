@@ -9,7 +9,6 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBas
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
-import java.util.Date;
 
 /**
  * APIPackArchiveWriter creates an open metadata archive that includes the connector type

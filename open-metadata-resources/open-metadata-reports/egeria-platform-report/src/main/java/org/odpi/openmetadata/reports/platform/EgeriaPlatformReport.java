@@ -484,7 +484,7 @@ public class EgeriaPlatformReport
 
                     currentDetails.setPartnerService(configuration.getEngineHostServicesConfig().getOMAGServerName(),
                                                      configuration.getEngineHostServicesConfig().getOMAGServerPlatformRootURL(),
-                                                     AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName());
+                                                     AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceFullName());
 
                     if (configuration.getEngineHostServicesConfig().getEngineServiceConfigs() != null)
                     {

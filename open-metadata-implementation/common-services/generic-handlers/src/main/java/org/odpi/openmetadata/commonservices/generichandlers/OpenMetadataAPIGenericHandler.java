@@ -13905,9 +13905,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
         List<Relationship> refDataRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                            elementGUID,
+                                                                                           elementTypeName,
                                                                                            OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeGUID,
                                                                                            OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                            2,
                                                                                            null,
                                                                                            null,

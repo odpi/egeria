@@ -9,6 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.mermaid.GovernanceActionProcessMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.SpecificationMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -371,6 +373,13 @@ public class OpenGovernanceRESTServices
                                                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                                       supportedZones));
 
+                    if (element.getSpecification() != null)
+                    {
+                        SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                          element.getActionTypeProperties().getDisplayName(),
+                                                                                                                          element.getSpecification());
+                        element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+                    }
                     results.add(element);
                 }
                 else
@@ -505,6 +514,14 @@ public class OpenGovernanceRESTServices
                                                               elementGUIDParameterName,
                                                               OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                                               supportedZones));
+
+            if (element.getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                  element.getActionTypeProperties().getDisplayName(),
+                                                                                                                  element.getSpecification());
+                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+            }
 
             response.setElement(element);
         }
@@ -1007,6 +1024,14 @@ public class OpenGovernanceRESTServices
                                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                       supportedZones));
 
+                    if (element.getSpecification() != null)
+                    {
+                        SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                          element.getProcessProperties().getDisplayName(),
+                                                                                                                          element.getSpecification());
+                        element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+                    }
+
                     results.add(element);
                 }
                 else
@@ -1141,6 +1166,14 @@ public class OpenGovernanceRESTServices
                                                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                               supportedZones));
 
+            if (element.getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                  element.getProcessProperties().getDisplayName(),
+                                                                                                                  element.getSpecification());
+                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+            }
+
             response.setElement(element);
         }
         catch (Exception error)
@@ -1168,10 +1201,10 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
-                                                                                String                   serviceURLMarker,
-                                                                                String                   userId,
-                                                                                String                   processGUID,
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String             serverName,
+                                                                                String             serviceURLMarker,
+                                                                                String             userId,
+                                                                                String             processGUID,
                                                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
@@ -1187,10 +1220,10 @@ public class OpenGovernanceRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<GovernanceActionProcessElement> processHandler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
             EngineActionHandler<EngineActionElement> engineActionHandler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
-            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement>
-                    handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
-                                                                                    serverName,
-                                                                                    methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId, serverName, methodName);
+            MetadataElementHandler<OpenMetadataElement> openHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
 
             GovernanceActionProcessGraph governanceActionProcessGraph = new GovernanceActionProcessGraph();
 
@@ -1202,7 +1235,7 @@ public class OpenGovernanceRESTServices
                                                                                                              OpenMetadataType.PROCESS.typeName,
                                                                                                              false,
                                                                                                              false,
-                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                             supportedZones,
                                                                                                              requestBody.getEffectiveTime(),
                                                                                                              methodName));
             }
@@ -1214,9 +1247,23 @@ public class OpenGovernanceRESTServices
                                                                                                              OpenMetadataType.PROCESS.typeName,
                                                                                                              false,
                                                                                                              false,
-                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                             supportedZones,
                                                                                                              new Date(),
                                                                                                              methodName));
+            }
+
+            governanceActionProcessGraph.getGovernanceActionProcess().setSpecification(handler.getSpecification(userId,
+                                                                                                                governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getGUID(),
+                                                                                                                processGUIDParameterName,
+                                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                                supportedZones));
+
+            if (governanceActionProcessGraph.getGovernanceActionProcess().getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getGUID(),
+                                                                                                                  governanceActionProcessGraph.getGovernanceActionProcess().getProcessProperties().getDisplayName(),
+                                                                                                                  governanceActionProcessGraph.getGovernanceActionProcess().getSpecification());
+                governanceActionProcessGraph.getGovernanceActionProcess().setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
             }
 
             String processTypeName = governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getType().getTypeName();
@@ -1253,7 +1300,7 @@ public class OpenGovernanceRESTServices
                                         firstProcessStepGUID,
                                         governanceActionProcessGraph,
                                         processedGUIDs,
-                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                        supportedZones,
                                         invalidParameterHandler.getMaxPagingSize());
                 }
                 else if (OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName.equals(processTypeName))
@@ -1263,12 +1310,16 @@ public class OpenGovernanceRESTServices
                                         firstProcessStepGUID,
                                         governanceActionProcessGraph,
                                         processedGUIDs,
-                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                        supportedZones,
                                         invalidParameterHandler.getMaxPagingSize());
                 }
             }
 
+            GovernanceActionProcessMermaidGraphBuilder graphBuilder = new GovernanceActionProcessMermaidGraphBuilder(governanceActionProcessGraph);
+            governanceActionProcessGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+
             response.setElement(governanceActionProcessGraph);
+
         }
         catch (Exception error)
         {
@@ -1931,6 +1982,15 @@ public class OpenGovernanceRESTServices
                                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                       supportedZones));
 
+                    if (element.getSpecification() != null)
+                    {
+                        SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                          element.getProcessStepProperties().getDisplayName(),
+                                                                                                                          element.getSpecification());
+                        element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+                    }
+
+
                     results.add(element);
                 }
                 else
@@ -2064,6 +2124,14 @@ public class OpenGovernanceRESTServices
                                                               elementGUIDParameterName,
                                                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                               supportedZones));
+
+            if (element.getSpecification() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
+                                                                                                                  element.getProcessStepProperties().getDisplayName(),
+                                                                                                                  element.getSpecification());
+                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
+            }
 
             response.setElement(element);
         }

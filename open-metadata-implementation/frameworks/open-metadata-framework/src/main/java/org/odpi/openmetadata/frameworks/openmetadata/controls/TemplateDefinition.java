@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
 import java.util.List;
@@ -52,6 +51,14 @@ public interface TemplateDefinition
      * @return enum
      */
     DeployedImplementationTypeDefinition getDeployedImplementationType();
+
+
+    /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    String getElementVersionIdentifier();
 
 
     /**

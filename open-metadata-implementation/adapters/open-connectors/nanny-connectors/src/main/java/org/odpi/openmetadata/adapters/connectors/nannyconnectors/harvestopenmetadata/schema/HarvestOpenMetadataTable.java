@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmet
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLForeignKey;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLTable;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
 
 import java.util.*;
 
@@ -24,6 +25,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   HarvestOpenMetadataColumn.ASSET_GUID},
           new HarvestOpenMetadataColumn[]{
                   HarvestOpenMetadataColumn.OPEN_METADATA_TYPE,
+                  HarvestOpenMetadataColumn.METADATA_COLLECTION_ID,
                   HarvestOpenMetadataColumn.RESOURCE_NAME,
                   HarvestOpenMetadataColumn.RESOURCE_DESCRIPTION,
                   HarvestOpenMetadataColumn.VERSION_IDENTIFIER,
@@ -44,7 +46,6 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL,
                   HarvestOpenMetadataColumn.CONFIDENCE_LEVEL,
                   HarvestOpenMetadataColumn.CRITICALITY_LEVEL,
-                  HarvestOpenMetadataColumn.METADATA_COLLECTION_ID,
                   HarvestOpenMetadataColumn.LICENSE_TYPE,
                   HarvestOpenMetadataColumn.CREATION_TIME,
                   HarvestOpenMetadataColumn.CREATION_BY,
@@ -116,6 +117,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
     /**
      * Types of known context events.
      */
+    // todo
     CONTEXT_EVENT_TYPE("om_context_event_type",
                        "Types of known context events.",
                        new HarvestOpenMetadataColumn[]{
@@ -129,6 +131,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
     /**
      * Known context events.
      */
+    // todo
     CONTEXT_EVENT("om_context_event",
                   "Known context events.",
                   new HarvestOpenMetadataColumn[]{
@@ -179,8 +182,10 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                                    HarvestOpenMetadataColumn.LAST_UPDATED_BY,
                                    HarvestOpenMetadataColumn.LAST_UPDATE_TIME,
                                    HarvestOpenMetadataColumn.VERSION,
+                                   HarvestOpenMetadataColumn.EGERIA_OWNED,
                                    HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME,
-                                   HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES}),
+                                   HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES
+    }),
 
 
     /**
@@ -200,6 +205,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                        HarvestOpenMetadataColumn.CONFIDENTIALITY_LEVEL,
                        HarvestOpenMetadataColumn.SEMANTIC_TERM_GUID,
                        HarvestOpenMetadataColumn.ASSET_GUID,
+                       HarvestOpenMetadataColumn.QUALIFIED_NAME
                }),
 
 
@@ -277,8 +283,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
     LOCATION("om_location",
              "Descriptions of locations defined in open metadata.",
              new HarvestOpenMetadataColumn[]{
-                     HarvestOpenMetadataColumn.LOCATION_GUID,
-                     HarvestOpenMetadataColumn.SYNC_TIME},
+                     HarvestOpenMetadataColumn.LOCATION_GUID},
              new HarvestOpenMetadataColumn[]{
                      HarvestOpenMetadataColumn.LOCATION_NAME,
                      HarvestOpenMetadataColumn.OPEN_METADATA_TYPE}),
@@ -334,7 +339,8 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
          new HarvestOpenMetadataColumn[]{
                  HarvestOpenMetadataColumn.ROLE_GUID,
                  HarvestOpenMetadataColumn.SYNC_TIME},
-         new HarvestOpenMetadataColumn[]{HarvestOpenMetadataColumn.ROLE_NAME,
+         new HarvestOpenMetadataColumn[]{
+                 HarvestOpenMetadataColumn.ROLE_NAME,
                  HarvestOpenMetadataColumn.OPEN_METADATA_TYPE,
                  HarvestOpenMetadataColumn.HEADCOUNT}),
 
@@ -349,6 +355,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                          HarvestOpenMetadataColumn.SYNC_TIME},
                  new HarvestOpenMetadataColumn[]{
                          HarvestOpenMetadataColumn.ROLE_GUID,
+                         HarvestOpenMetadataColumn.USER_IDENTITY_GUID,
                          HarvestOpenMetadataColumn.PROFILE_GUID,
                          HarvestOpenMetadataColumn.START_TIMESTAMP,
                          HarvestOpenMetadataColumn.END_TIMESTAMP}),
@@ -390,6 +397,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   HarvestOpenMetadataColumn.SYNC_TIME},
           new HarvestOpenMetadataColumn[]{
                   HarvestOpenMetadataColumn.QUALIFIED_NAME,
+                  HarvestOpenMetadataColumn.TO_DO_TYPE,
                   HarvestOpenMetadataColumn.DISPLAY_NAME,
                   HarvestOpenMetadataColumn.DESCRIPTION,
                   HarvestOpenMetadataColumn.CREATION_TIME,
@@ -414,8 +422,9 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                   new HarvestOpenMetadataColumn[]{
                           HarvestOpenMetadataColumn.USER_IDENTITY_GUID,
                           HarvestOpenMetadataColumn.SYNC_TIME},
-                  new HarvestOpenMetadataColumn[]{HarvestOpenMetadataColumn.USER_ID,
-                  HarvestOpenMetadataColumn.DISTINGUISHED_NAME}),
+                  new HarvestOpenMetadataColumn[]{
+                          HarvestOpenMetadataColumn.USER_ID,
+                          HarvestOpenMetadataColumn.DISTINGUISHED_NAME}),
 
 
     /**
@@ -427,7 +436,6 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                    HarvestOpenMetadataColumn.PROFILE_GUID,
                    HarvestOpenMetadataColumn.SYNC_TIME},
            new HarvestOpenMetadataColumn[]{
-                   HarvestOpenMetadataColumn.USER_ID,
                    HarvestOpenMetadataColumn.EMPLOYEE_NUMBER,
                    HarvestOpenMetadataColumn.PREFERRED_NAME,
                    HarvestOpenMetadataColumn.ORGANIZATION_NAME,
@@ -462,7 +470,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                          HarvestOpenMetadataColumn.RELATIONSHIP_GUID,
                          HarvestOpenMetadataColumn.SYNC_TIME},
                  new HarvestOpenMetadataColumn[]{
-                         HarvestOpenMetadataColumn.ROLE_GUID,
+                         HarvestOpenMetadataColumn.PROFILE_GUID,
                          HarvestOpenMetadataColumn.USER_IDENTITY_GUID,
                          HarvestOpenMetadataColumn.START_TIMESTAMP,
                          HarvestOpenMetadataColumn.END_TIMESTAMP}),
@@ -478,6 +486,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                     HarvestOpenMetadataColumn.SYNC_TIME},
             new HarvestOpenMetadataColumn[]{
                     HarvestOpenMetadataColumn.QUALIFIED_NAME,
+                    HarvestOpenMetadataColumn.PROJECT_IDENTIFIER,
                     HarvestOpenMetadataColumn.DISPLAY_NAME,
                     HarvestOpenMetadataColumn.DESCRIPTION,
                     HarvestOpenMetadataColumn.CREATION_TIME,
@@ -485,11 +494,11 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                     HarvestOpenMetadataColumn.CLASSIFICATIONS,
                     HarvestOpenMetadataColumn.PRIORITY,
                     HarvestOpenMetadataColumn.DUE_TIME,
-                    HarvestOpenMetadataColumn.COMPLETION_TIME,
                     HarvestOpenMetadataColumn.PROJECT_PHASE,
                     HarvestOpenMetadataColumn.PROJECT_STATUS,
-                    HarvestOpenMetadataColumn.PROJECT_HEALTH
-    }),
+                    HarvestOpenMetadataColumn.PROJECT_HEALTH,
+                    HarvestOpenMetadataColumn.PARENT_GUID
+            }),
 
 
 
@@ -545,8 +554,30 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                       HarvestOpenMetadataColumn.CREATION_TIME,
                       HarvestOpenMetadataColumn.OPEN_METADATA_TYPE,
                       HarvestOpenMetadataColumn.CLASSIFICATIONS,
-                      HarvestOpenMetadataColumn.NUM_LINKED_ELEMENTS
+                      HarvestOpenMetadataColumn.NUM_LINKED_ELEMENTS,
+                      HarvestOpenMetadataColumn.MEMBER_TYPES,
+                      HarvestOpenMetadataColumn.PARENT_GUID
               }),
+
+    /**
+     * Details of collections in use in open metadata.
+     */
+    DIGITAL_PRODUCT("om_digital_product",
+               "Details of the digital products in open metadata.",
+               new HarvestOpenMetadataColumn[]{
+                       HarvestOpenMetadataColumn.COLLECTION_GUID,
+                       HarvestOpenMetadataColumn.SYNC_TIME},
+               new HarvestOpenMetadataColumn[]{
+                       HarvestOpenMetadataColumn.PRODUCT_STATUS,
+                       HarvestOpenMetadataColumn.PRODUCT_NAME,
+                       HarvestOpenMetadataColumn.PRODUCT_TYPE,
+                       HarvestOpenMetadataColumn.INTRODUCTION_DATE,
+                       HarvestOpenMetadataColumn.MATURITY,
+                       HarvestOpenMetadataColumn.SERVICE_LIFE,
+                       HarvestOpenMetadataColumn.CURRENT_VERSION,
+                       HarvestOpenMetadataColumn.NEXT_VERSION,
+                       HarvestOpenMetadataColumn.WITHDRAW_DATE
+               }),
 
     ;
 

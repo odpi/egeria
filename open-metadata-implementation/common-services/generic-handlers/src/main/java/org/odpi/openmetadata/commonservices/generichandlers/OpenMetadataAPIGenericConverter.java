@@ -1739,6 +1739,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the externalInstanceTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeIdentifierTypeName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIdentifierTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the externalInstanceCreatedBy property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

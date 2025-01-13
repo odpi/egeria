@@ -4,9 +4,6 @@ package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -125,6 +122,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
                     bean.setExternalIdentifier(this.removeIdentifier(instanceProperties));
+                    bean.setExternalInstanceTypeName(this.removeIdentifierTypeName(instanceProperties));
                     bean.setKeyPattern(this.removeKeyPattern(instanceProperties));
                     bean.setExternalInstanceCreatedBy(this.removeExternalInstanceCreatedBy(instanceProperties));
                     bean.setExternalInstanceCreationTime(this.removeExternalInstanceCreationTime(instanceProperties));

@@ -950,6 +950,11 @@ public enum OpenMetadataProperty
     IDENTIFIER("identifier", DataType.STRING.getName(), "Identifier used in an external system.", null, "2f831c53-0c71-4e03-92ed-20a899ed771f"),
 
     /**
+     * The type name of the instance in the external system.
+     */
+    EXT_INSTANCE_TYPE_NAME("externalInstanceTypeName", DataType.STRING.getName(), "The type name of the instance in the external system.", null, "bcc3de39-b8d7-4a33-8f70-601fa8c2e9cc"),
+
+    /**
      * The username of the person or process that created the instance in the external system.
      */
     EXT_INSTANCE_CREATED_BY("externalInstanceCreatedBy", DataType.STRING.getName(), "The username of the person or process that created the instance in the external system.", null, "480a57d1-7300-4691-ad8b-540d97ef0870"),

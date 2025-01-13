@@ -36,7 +36,7 @@ import java.util.*;
 public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegratorConnector implements ITInfrastructureEventListener
 {
     List<PlatformDetails> monitoredPlatforms = new ArrayList<>();
-    String                clientUserId = "garygeeke";
+    String                clientUserId = null;
 
 
     final IntegrationDaemonProvider    integrationDaemonProvider    = new IntegrationDaemonProvider();
@@ -87,6 +87,12 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
         if (connectionProperties.getUserId() != null)
         {
             clientUserId = connectionProperties.getUserId();
+        }
+        else
+        {
+            throw new ConnectorCheckedException(OMAGConnectorErrorCode.NULL_CLIENT_USER_ID.getMessageDefinition(connectorName),
+                                                this.getClass().getName(),
+                                                methodName);
         }
 
         try
@@ -271,12 +277,12 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
                 }
                 catch (Exception error)
                 {
-                    auditLog.logException(methodName,
-                                          OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                           error.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           error.getMessage()),
-                                          error);
+                    super.logExceptionRecord(methodName,
+                                             OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              methodName,
+                                                                                                              error.getMessage()),
+                                             error);
                 }
             }
         }
@@ -285,10 +291,8 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
 
     /**
      * This is the point where the platforms are queried for servers.
-     *
-     * @throws Exception unable to connector to platform
      */
-    private synchronized void processPlatforms() throws Exception
+    private synchronized void processPlatforms()
     {
         final String methodName = "processPlatforms";
 
@@ -296,118 +300,130 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
         {
             if (platformDetails != null)
             {
-                OMAGServerPlatformProperties platformProperties = platformDetails.platformConnector.getPlatformReport();
-
-                if (platformProperties.getOMAGServers() != null)
+                try
                 {
-                    Map<String, OMAGServerProperties> knownServerMap = new HashMap<>();
-                    List<String>                      processedServers = new ArrayList<>();
+                    OMAGServerPlatformProperties platformProperties = platformDetails.platformConnector.getPlatformReport();
 
-                    /*
-                     * Extract the known servers into a map for convenient processing.
-                     */
-                    for (OMAGServerProperties omagServerProperties : platformProperties.getOMAGServers())
+                    if (platformProperties.getOMAGServers() != null)
                     {
-                        if (omagServerProperties != null)
-                        {
-                            knownServerMap.put(omagServerProperties.getServerName(), omagServerProperties);
-                        }
-                    }
+                        Map<String, OMAGServerProperties> knownServerMap   = new HashMap<>();
+                        List<String>                      processedServers = new ArrayList<>();
 
-                    /*
-                     * Compare the known servers with the servers linked from the platform in the metadata server.
-                     * These are assumed to be correct and are added to the processed server list,
-                     */
-                    int startFrom = 0;
-                    List<DeploymentElement> deployedSoftwareServers = super.getContext().getDeployedITAssets(platformDetails.platformGUID,
-                                                                                                               new Date(),
-                                                                                                               startFrom,
-                                                                                                               super.getContext().getMaxPageSize());
-
-                    while (deployedSoftwareServers != null)
-                    {
-                        for (DeploymentElement deploymentElement : deployedSoftwareServers)
+                        /*
+                         * Extract the known servers into a map for convenient processing.
+                         */
+                        for (OMAGServerProperties omagServerProperties : platformProperties.getOMAGServers())
                         {
-                            if ((deploymentElement != null) &&
-                                    (deploymentElement.getAssetElement() != null) &&
-                                    (deploymentElement.getAssetElement().getProperties() != null) &&
-                                    (deploymentElement.getAssetElement().getProperties().getName() != null))
+                            if (omagServerProperties != null)
                             {
-                                OMAGServerProperties omagServerProperties = knownServerMap.get(deploymentElement.getAssetElement().getProperties().getName());
-
-                                if (omagServerProperties != null)
-                                {
-                                    processedServers.add(deploymentElement.getAssetElement().getProperties().getName());
-                                }
+                                knownServerMap.put(omagServerProperties.getServerName(), omagServerProperties);
                             }
                         }
 
-                        startFrom = startFrom + super.getContext().getMaxPageSize();
-                        deployedSoftwareServers = super.getContext().getDeployedITAssets(platformDetails.platformGUID,
-                                                                                         new Date(),
-                                                                                         startFrom,
-                                                                                         super.getContext().getMaxPageSize());
-                    }
+                        /*
+                         * Compare the known servers with the servers linked from the platform in the metadata server.
+                         * These are assumed to be correct and are added to the processed server list,
+                         */
+                        int startFrom = 0;
+                        List<DeploymentElement> deployedSoftwareServers = super.getContext().getDeployedITAssets(platformDetails.platformGUID,
+                                                                                                                 new Date(),
+                                                                                                                 startFrom,
+                                                                                                                 super.getContext().getMaxPageSize());
 
-                    /*
-                     * Now do through the known servers that were not linked to the platform.
-                     */
-                    for (OMAGServerProperties omagServerProperties : knownServerMap.values())
-                    {
-                        if (omagServerProperties != null)
+                        while (deployedSoftwareServers != null)
                         {
-                            String qualifiedName = this.getServerQualifiedName(omagServerProperties.getServerId(), omagServerProperties.getServerName());
-
-                            if (! processedServers.contains(omagServerProperties.getServerName()))
+                            for (DeploymentElement deploymentElement : deployedSoftwareServers)
                             {
-                                /*
-                                 * This is a new server.  Has it been catalogued before - maybe with a different platform?
-                                 */
-                                String matchingServerGUID = null;
-
-                                List<SoftwareServerElement> softwareServerElements = super.getContext().getSoftwareServersByName(qualifiedName,
-                                                                                                                                 null,
-                                                                                                                                 0,
-                                                                                                                                 0);
-
-                                if (softwareServerElements != null)
+                                if ((deploymentElement != null) &&
+                                        (deploymentElement.getAssetElement() != null) &&
+                                        (deploymentElement.getAssetElement().getProperties() != null) &&
+                                        (deploymentElement.getAssetElement().getProperties().getName() != null))
                                 {
-                                    for (SoftwareServerElement softwareServerElement : softwareServerElements)
+                                    OMAGServerProperties omagServerProperties = knownServerMap.get(deploymentElement.getAssetElement().getProperties().getName());
+
+                                    if (omagServerProperties != null)
                                     {
-                                        if (softwareServerElement != null)
-                                        {
-                                            matchingServerGUID = softwareServerElement.getElementHeader().getGUID();
-                                            break;
-                                        }
+                                        processedServers.add(deploymentElement.getAssetElement().getProperties().getName());
                                     }
                                 }
+                            }
 
-                                /*
-                                 * This server has not been catalogued before.
-                                 */
-                                if (matchingServerGUID == null)
+                            startFrom               = startFrom + super.getContext().getMaxPageSize();
+                            deployedSoftwareServers = super.getContext().getDeployedITAssets(platformDetails.platformGUID,
+                                                                                             new Date(),
+                                                                                             startFrom,
+                                                                                             super.getContext().getMaxPageSize());
+                        }
+
+                        /*
+                         * Now do through the known servers that were not linked to the platform.
+                         */
+                        for (OMAGServerProperties omagServerProperties : knownServerMap.values())
+                        {
+                            if (omagServerProperties != null)
+                            {
+                                String qualifiedName = this.getServerQualifiedName(omagServerProperties.getServerId(), omagServerProperties.getServerName());
+
+                                if (!processedServers.contains(omagServerProperties.getServerName()))
                                 {
-                                    matchingServerGUID = catalogServer(omagServerProperties, platformProperties);
+                                    /*
+                                     * This is a new server.  Has it been catalogued before - maybe with a different platform?
+                                     */
+                                    String matchingServerGUID = null;
 
+                                    List<SoftwareServerElement> softwareServerElements = super.getContext().getSoftwareServersByName(qualifiedName,
+                                                                                                                                     null,
+                                                                                                                                     0,
+                                                                                                                                     0);
+
+                                    if (softwareServerElements != null)
+                                    {
+                                        for (SoftwareServerElement softwareServerElement : softwareServerElements)
+                                        {
+                                            if (softwareServerElement != null)
+                                            {
+                                                matchingServerGUID = softwareServerElement.getElementHeader().getGUID();
+                                                break;
+                                            }
+                                        }
+                                    }
 
                                     /*
-                                     * The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}
+                                     * This server has not been catalogued before.
                                      */
-                                    auditLog.logMessage(methodName,
-                                                          OMAGConnectorAuditCode.NEW_SERVER.getMessageDefinition(connectorName,
-                                                                                                                 omagServerProperties.getServerType(),
-                                                                                                                 matchingServerGUID,
-                                                                                                                 omagServerProperties.getServerName(),
-                                                                                                                 platformProperties.getPlatformURLRoot()));
-                                }
+                                    if (matchingServerGUID == null)
+                                    {
+                                        matchingServerGUID = catalogServer(omagServerProperties, platformProperties);
 
-                                /*
-                                 * Now connect the server to the platform
-                                 */
-                                super.getContext().deployITAsset(matchingServerGUID, platformDetails.platformGUID, null);
+
+                                        /*
+                                         * The {0} integration connector has created a new {1} server element {2} for server {3} on platform {4}
+                                         */
+                                        auditLog.logMessage(methodName,
+                                                            OMAGConnectorAuditCode.NEW_SERVER.getMessageDefinition(connectorName,
+                                                                                                                   omagServerProperties.getServerType(),
+                                                                                                                   matchingServerGUID,
+                                                                                                                   omagServerProperties.getServerName(),
+                                                                                                                   platformProperties.getPlatformURLRoot()));
+                                    }
+
+                                    /*
+                                     * Now connect the server to the platform
+                                     */
+                                    super.getContext().deployITAsset(matchingServerGUID, platformDetails.platformGUID, null);
+                                }
                             }
                         }
                     }
+                }
+                catch (Exception error)
+                {
+                    super.logExceptionRecord(methodName,
+                                             OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName + ":" + platformDetails.platformDisplayName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              methodName,
+                                                                                                              error.getMessage()),
+                                             error);
                 }
             }
         }

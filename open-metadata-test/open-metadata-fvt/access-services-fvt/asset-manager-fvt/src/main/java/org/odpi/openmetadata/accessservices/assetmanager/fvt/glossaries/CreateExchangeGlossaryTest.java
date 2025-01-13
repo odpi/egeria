@@ -45,11 +45,13 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
     private final static String     externalGlossaryIdentifier           = "TestExternalIdentifier";
     private final static String     externalGlossaryIdentifierName       = "TestExternalIdentifierName";
+    private final static String     externalGlossaryIdentifierType       = "TestExternalIdentifierType";
     private final static String     externalGlossaryIdentifierUsage      = "TestExternalIdentifierUsage";
     private final static KeyPattern externalGlossaryIdentifierKeyPattern = KeyPattern.CALLERS_KEY;
     private final static String     externalGlossaryIdentifierSource     = "TestExternalIdentifierSource";
 
     private final static String     externalCategoryIdentifier           = "TestExternalCategoryIdentifier";
+    private final static String     externalCategoryIdentifierType       = "TestExternalCategoryIdentifierType";
     private final static String     externalCategoryIdentifierName       = "TestExternalCategoryIdentifierName";
     private final static String     externalCategoryIdentifierUsage      = "TestExternalCategoryIdentifierUsage";
     private final static KeyPattern externalCategoryIdentifierKeyPattern = KeyPattern.RECYCLED_KEY;
@@ -58,6 +60,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
     private final static String     externalTermIdentifier           = "TestExternalTermIdentifier";
     private final static String     externalTermIdentifierName       = "TestExternalTermIdentifierName";
+    private final static String     externalTermIdentifierType       = "TestExternalTermIdentifierType";
     private final static String     externalTermIdentifierUsage      = "TestExternalTermIdentifierUsage";
     private final static KeyPattern externalTermIdentifierKeyPattern = null;
     private final static String     externalTermIdentifierSource     = "TestExternalTermIdentifierSource";
@@ -155,6 +158,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
                                                    glossaryUsage,
                                                    glossaryLanguage,
                                                    externalGlossaryIdentifier,
+                                                   externalGlossaryIdentifierType,
                                                    externalGlossaryIdentifierName,
                                                    externalGlossaryIdentifierUsage,
                                                    externalGlossaryIdentifierSource,
@@ -354,6 +358,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalCategoryIdentifier);
             externalIdentifierProperties.setExternalIdentifierName(externalCategoryIdentifierName);
+            externalIdentifierProperties.setExternalInstanceTypeName(externalCategoryIdentifierType);
             externalIdentifierProperties.setExternalIdentifierUsage(externalCategoryIdentifierUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalCategoryIdentifierSource);
             externalIdentifierProperties.setKeyPattern(externalCategoryIdentifierKeyPattern);
@@ -541,6 +546,7 @@ public class CreateExchangeGlossaryTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalTermIdentifier);
             externalIdentifierProperties.setExternalIdentifierName(externalTermIdentifierName);
+            externalIdentifierProperties.setExternalInstanceTypeName(externalTermIdentifierType);
             externalIdentifierProperties.setExternalIdentifierUsage(externalTermIdentifierUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalTermIdentifierSource);
             externalIdentifierProperties.setKeyPattern(externalTermIdentifierKeyPattern);

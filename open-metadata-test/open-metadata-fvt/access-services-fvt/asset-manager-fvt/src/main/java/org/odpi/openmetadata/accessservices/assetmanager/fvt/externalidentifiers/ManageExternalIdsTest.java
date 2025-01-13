@@ -42,12 +42,14 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
     private final static String     externalGlossaryIdentifierOne           = "TestExternalIdentifierOne";
     private final static String     externalGlossaryIdentifierOneName       = "TestExternalIdentifierOneName";
+    private final static String     externalGlossaryIdentifierOneType       = "TestExternalIdentifierOneType";
     private final static String     externalGlossaryIdentifierOneUsage      = "TestExternalIdentifierOneUsage";
     private final static String     externalGlossaryIdentifierOneSource     = "TestExternalIdentifierOneSource";
     private final static KeyPattern externalGlossaryIdentifierOneKeyPattern = KeyPattern.AGGREGATE_KEY;
 
     private final static String     externalGlossaryIdentifierTwo           = "TestExternalIdentifierTwo";
     private final static String     externalGlossaryIdentifierTwoName       = "TestExternalIdentifierTwoName";
+    private final static String     externalGlossaryIdentifierTwoType       = "TestExternalIdentifierTwoType";
     private final static String     externalGlossaryIdentifierTwoUsage      = "TestExternalIdentifierTwoUsage";
     private final static String     externalGlossaryIdentifierTwoSource     = "TestExternalIdentifierTwoSource";
     private final static KeyPattern externalGlossaryIdentifierTwoKeyPattern = KeyPattern.MIRROR_KEY;
@@ -149,6 +151,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                    glossaryUsage,
                                                    glossaryLanguage,
                                                    externalGlossaryIdentifierOne,
+                                                   externalGlossaryIdentifierOneType,
                                                    externalGlossaryIdentifierOneName,
                                                    externalGlossaryIdentifierOneUsage,
                                                    externalGlossaryIdentifierOneSource,
@@ -200,6 +203,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             if (! externalGlossaryIdentifierOneName.equals(correlationHeader.getExternalIdentifierName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name)");
+            }
+
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type)");
             }
 
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))
@@ -292,6 +300,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                    glossaryUsage,
                                                    glossaryLanguage,
                                                    externalGlossaryIdentifierOne,
+                                                   externalGlossaryIdentifierOneType,
                                                    externalGlossaryIdentifierOneName,
                                                    externalGlossaryIdentifierOneUsage,
                                                    externalGlossaryIdentifierOneSource,
@@ -307,6 +316,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierTwo);
             externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoName);
+            externalIdentifierProperties.setExternalInstanceTypeName(externalGlossaryIdentifierTwoType);
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
             externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierTwoKeyPattern);
@@ -367,6 +377,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name of Two)");
             }
 
+            if (! externalGlossaryIdentifierTwoType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type of Two)");
+            }
+
             if (! externalGlossaryIdentifierTwoUsage.equals(correlationHeader.getExternalIdentifierUsage()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier usage of Two)");
@@ -424,6 +439,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             if (! externalGlossaryIdentifierOneName.equals(correlationHeader.getExternalIdentifierName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name)");
+            }
+
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type)");
             }
 
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))
@@ -534,6 +554,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                    glossaryUsage,
                                                    glossaryLanguage,
                                                    externalGlossaryIdentifierOne,
+                                                   externalGlossaryIdentifierOneType,
                                                    externalGlossaryIdentifierOneName,
                                                    externalGlossaryIdentifierOneUsage,
                                                    externalGlossaryIdentifierOneSource,
@@ -550,6 +571,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierOne);
             externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierOneName);
+            externalIdentifierProperties.setExternalInstanceTypeName(externalGlossaryIdentifierOneType);
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierOneUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierOneSource);
             externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierOneKeyPattern);
@@ -610,6 +632,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name of Two)");
             }
 
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type of Two)");
+            }
+
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier usage of Two)");
@@ -668,6 +695,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             if (! externalGlossaryIdentifierOneName.equals(correlationHeader.getExternalIdentifierName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name)");
+            }
+
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type)");
             }
 
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))
@@ -774,6 +806,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                    glossaryUsage,
                                                    glossaryLanguage,
                                                    externalGlossaryIdentifierOne,
+                                                   externalGlossaryIdentifierOneType,
                                                    externalGlossaryIdentifierOneName,
                                                    externalGlossaryIdentifierOneUsage,
                                                    externalGlossaryIdentifierOneSource,
@@ -790,6 +823,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierTwo);
             externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoName);
+            externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoType);
             externalIdentifierProperties.setSynchronizationDirection(PermittedSynchronization.BOTH_DIRECTIONS);
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
@@ -884,6 +918,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                       glossaryUsage,
                                                       glossaryLanguage,
                                                       externalGlossaryIdentifierOne,
+                                                      externalGlossaryIdentifierOneType,
                                                       externalGlossaryIdentifierOneName,
                                                       externalGlossaryIdentifierOneUsage,
                                                       externalGlossaryIdentifierOneSource,
@@ -902,6 +937,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                                                       glossaryTwoUsage,
                                                       glossaryTwoLanguage,
                                                       externalGlossaryIdentifierOne,
+                                                      externalGlossaryIdentifierOneType,
                                                       externalGlossaryIdentifierOneName,
                                                       externalGlossaryIdentifierOneUsage,
                                                       externalGlossaryIdentifierOneSource,
@@ -960,6 +996,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name)");
             }
 
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type)");
+            }
+
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier usage)");
@@ -1015,6 +1056,11 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             if (! externalGlossaryIdentifierOneName.equals(correlationHeader.getExternalIdentifierName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier name)");
+            }
+
+            if (! externalGlossaryIdentifierOneType.equals(correlationHeader.getExternalInstanceTypeName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad external identifier type)");
             }
 
             if (! externalGlossaryIdentifierOneUsage.equals(correlationHeader.getExternalIdentifierUsage()))

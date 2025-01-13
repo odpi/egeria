@@ -27,8 +27,9 @@ public class ExternalIdentifierProperties
     private PermittedSynchronization permittedSynchronization   = null;
     private String                   synchronizationDescription = null;
     private String                   externalIdentifier             = null;
-    private String                   externalIdentifierName         = null;
-    private String                   externalIdentifierUsage        = null;
+    private String externalIdentifierName   = null;
+    private String externalInstanceTypeName = null;
+    private String externalIdentifierUsage  = null;
     private String                   externalIdentifierSource       = null;
     private KeyPattern               keyPattern                     = null;
     private String                   externalInstanceCreatedBy      = null;
@@ -59,8 +60,9 @@ public class ExternalIdentifierProperties
             permittedSynchronization   = template.getSynchronizationDirection();
             synchronizationDescription = template.getSynchronizationDescription();
             externalIdentifier = template.getExternalIdentifier();
-            externalIdentifierName = template.getExternalIdentifierName();
-            externalIdentifierUsage = template.getExternalIdentifierUsage();
+            externalIdentifierName   = template.getExternalIdentifierName();
+            externalInstanceTypeName = template.getExternalInstanceTypeName();
+            externalIdentifierUsage  = template.getExternalIdentifierUsage();
             externalIdentifierSource = template.getExternalIdentifierSource();
             keyPattern = template.getKeyPattern();
             externalInstanceCreatedBy = template.getExternalInstanceCreatedBy();
@@ -158,6 +160,28 @@ public class ExternalIdentifierProperties
     public void setExternalIdentifierName(String externalIdentifierName)
     {
         this.externalIdentifierName = externalIdentifierName;
+    }
+
+
+    /**
+     * Return the type of element described by this external identifier in the external system.
+     *
+     * @return string
+     */
+    public String getExternalInstanceTypeName()
+    {
+        return externalInstanceTypeName;
+    }
+
+
+    /**
+     * Set up the type of element described by this external identifier in the external system.
+     *
+     * @param externalInstanceTypeName string
+     */
+    public void setExternalInstanceTypeName(String externalInstanceTypeName)
+    {
+        this.externalInstanceTypeName = externalInstanceTypeName;
     }
 
 
@@ -372,20 +396,21 @@ public class ExternalIdentifierProperties
     public String toString()
     {
         return "ExternalIdentifierProperties{" +
-                       "permittedSynchronization=" + permittedSynchronization +
-                       ", synchronizationDescription='" + synchronizationDescription + '\'' +
-                       ", externalIdentifier='" + externalIdentifier + '\'' +
-                       ", externalIdentifierName='" + externalIdentifierName + '\'' +
-                       ", externalIdentifierUsage='" + externalIdentifierUsage + '\'' +
-                       ", externalIdentifierSource='" + externalIdentifierSource + '\'' +
-                       ", keyPattern=" + keyPattern +
-                       ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +
-                       ", externalInstanceCreationTime=" + externalInstanceCreationTime +
-                       ", externalInstanceLastUpdatedBy='" + externalInstanceLastUpdatedBy + '\'' +
-                       ", externalInstanceLastUpdateTime='" + externalInstanceLastUpdateTime + '\'' +
-                       ", externalInstanceVersion=" + externalInstanceVersion +
-                       ", mappingProperties=" + mappingProperties +
-                       '}';
+                "permittedSynchronization=" + permittedSynchronization +
+                ", synchronizationDescription='" + synchronizationDescription + '\'' +
+                ", externalIdentifier='" + externalIdentifier + '\'' +
+                ", externalIdentifierName='" + externalIdentifierName + '\'' +
+                ", externalIdentifierTypeName='" + externalInstanceTypeName + '\'' +
+                ", externalIdentifierUsage='" + externalIdentifierUsage + '\'' +
+                ", externalIdentifierSource='" + externalIdentifierSource + '\'' +
+                ", keyPattern=" + keyPattern +
+                ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +
+                ", externalInstanceCreationTime=" + externalInstanceCreationTime +
+                ", externalInstanceLastUpdatedBy='" + externalInstanceLastUpdatedBy + '\'' +
+                ", externalInstanceLastUpdateTime=" + externalInstanceLastUpdateTime +
+                ", externalInstanceVersion=" + externalInstanceVersion +
+                ", mappingProperties=" + mappingProperties +
+                '}';
     }
 
 
@@ -398,23 +423,23 @@ public class ExternalIdentifierProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         ExternalIdentifierProperties that = (ExternalIdentifierProperties) objectToCompare;
-        return getSynchronizationDirection() == that.getSynchronizationDirection() &&
-                       Objects.equals(getSynchronizationDescription(), that.getSynchronizationDescription()) &&
-                       Objects.equals(getExternalIdentifier(), that.getExternalIdentifier()) &&
-                       Objects.equals(getExternalIdentifierName(), that.getExternalIdentifierName()) &&
-                       Objects.equals(getExternalIdentifierUsage(), that.getExternalIdentifierUsage()) &&
-                       Objects.equals(getExternalIdentifierSource(), that.getExternalIdentifierSource()) &&
-                       getKeyPattern() == that.getKeyPattern() &&
-                       Objects.equals(getMappingProperties(), that.getMappingProperties());
+        return externalInstanceVersion == that.externalInstanceVersion &&
+                permittedSynchronization == that.permittedSynchronization &&
+                Objects.equals(synchronizationDescription, that.synchronizationDescription) &&
+                Objects.equals(externalIdentifier, that.externalIdentifier) &&
+                Objects.equals(externalIdentifierName, that.externalIdentifierName) &&
+                Objects.equals(externalInstanceTypeName, that.externalInstanceTypeName) &&
+                Objects.equals(externalIdentifierUsage, that.externalIdentifierUsage) &&
+                Objects.equals(externalIdentifierSource, that.externalIdentifierSource) &&
+                keyPattern == that.keyPattern &&
+                Objects.equals(externalInstanceCreatedBy, that.externalInstanceCreatedBy) &&
+                Objects.equals(externalInstanceCreationTime, that.externalInstanceCreationTime) &&
+                Objects.equals(externalInstanceLastUpdatedBy, that.externalInstanceLastUpdatedBy) &&
+                Objects.equals(externalInstanceLastUpdateTime, that.externalInstanceLastUpdateTime) &&
+                Objects.equals(mappingProperties, that.mappingProperties);
     }
 
 
@@ -426,7 +451,10 @@ public class ExternalIdentifierProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(permittedSynchronization, synchronizationDescription, externalIdentifier, externalIdentifierName, externalIdentifierUsage,
-                            externalIdentifierSource, keyPattern, mappingProperties);
+        return Objects.hash(permittedSynchronization, synchronizationDescription, externalIdentifier,
+                            externalIdentifierName, externalInstanceTypeName, externalIdentifierUsage,
+                            externalIdentifierSource, keyPattern, externalInstanceCreatedBy,
+                            externalInstanceCreationTime, externalInstanceLastUpdatedBy,
+                            externalInstanceLastUpdateTime, externalInstanceVersion, mappingProperties);
     }
 }

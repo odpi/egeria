@@ -5,10 +5,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.GovernanceEngineDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.IntegrationGroupDefinition;
-import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -94,6 +91,7 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndSurveyServerGovernanceActionProcess("ApacheAtlasServer",
                                                           AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                           RequestTypeDefinition.CREATE_ATLAS_SERVER,
+                                                          SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE,
                                                           GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                           RequestTypeDefinition.SURVEY_ATLAS_SERVER,
                                                           GovernanceEngineDefinition.ATLAS_SURVEY_ENGINE,
@@ -102,6 +100,7 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createAndCatalogServerGovernanceActionProcess("ApacheAtlasServer",
                                                            AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType(),
                                                            RequestTypeDefinition.CREATE_ATLAS_SERVER,
+                                                           SoftwareServerTemplateDefinition.APACHE_ATLAS_TEMPLATE,
                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,
                                                            RequestTypeDefinition.CATALOG_ATLAS_SERVER,
                                                            GovernanceEngineDefinition.ASSET_ONBOARDING_ENGINE,

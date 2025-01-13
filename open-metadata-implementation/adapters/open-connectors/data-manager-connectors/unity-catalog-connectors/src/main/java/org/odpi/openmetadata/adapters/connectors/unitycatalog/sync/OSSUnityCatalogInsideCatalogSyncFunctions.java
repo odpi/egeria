@@ -334,6 +334,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                       this.getExternalIdentifierProperties(functionInfo,
                                                                            functionInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                                                           "function",
                                                                            functionInfo.getFunction_id(),
                                                                            PermittedSynchronization.FROM_THIRD_PARTY));
 
@@ -407,6 +408,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                           this.getExternalIdentifierProperties(functionInfo,
                                                                                functionInfo.getSchema_name(),
                                                                                UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                                                               "function",
                                                                                functionInfo.getFunction_id(),
                                                                                PermittedSynchronization.TO_THIRD_PARTY));
         }

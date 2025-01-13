@@ -29,8 +29,8 @@ public class HarvestOpenMetadataProvider extends IntegrationConnectorProvider
      * Descriptive information about the connector for the connector type and audit log.
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Catalog:HarvestOpenMetadata";
-    private static final String connectorDisplayName   = "Harvest Open Metadata Integration Connector";
-    private static final String connectorDescription   = "Connector publishes insights about a deployed metadata catalog to a database.";
+    private static final String connectorDisplayName   = "Harvest Open Metadata Ecosystem Integration Connector";
+    private static final String connectorDescription   = "Connector publishes insights about the usage and activity in an open metadata ecosystem.";
     private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/harvest-open-metadata/";
 
     /*

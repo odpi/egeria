@@ -298,14 +298,14 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
     /**
-     * Supply the governance engine definitions to the engine hosts and the and integration group definitions to the integration daemons.
+     * Supply the governance engine definitions to the engine hosts and the integration group definitions to the integration daemons.
      */
     GOVERNANCE_SERVER_OMAS           (227,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Governance Server",
                                       "Governance Server OMAS",
                                       "governance-server",
-                                      "Supply the governance engine definitions to the engine hosts and the and integration group definitions to the integration daemons.",
+                                      "Supply the governance engine definitions to the engine hosts and the integration group definitions to the integration daemons.",
                                       "https://egeria-project.org/services/omas/governance-server/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),

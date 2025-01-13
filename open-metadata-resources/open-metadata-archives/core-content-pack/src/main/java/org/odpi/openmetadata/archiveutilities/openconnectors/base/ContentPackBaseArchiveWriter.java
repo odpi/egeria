@@ -6,10 +6,12 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.Eg
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssociationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -90,7 +92,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         final String methodName = "createDataFileCatalogTemplate";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType()  + ":" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
-        String               versionIdentifier  = "V1.0";
+        String               versionIdentifier  = PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -399,6 +401,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                     templateDefinition.getSoftwareCapabilityType(),
                                                     templateDefinition.getSoftwareCapabilityName(),
                                                     templateDefinition.getServerName(),
+                                                    templateDefinition.getElementVersionIdentifier(),
                                                     templateDefinition.getServerDescription(),
                                                     templateDefinition.getUserId(),
                                                     templateDefinition.getConnectorTypeGUID(),
@@ -427,12 +430,12 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
             {
                 createDataAssetCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                               templateDefinition.getTemplateVersionIdentifier(),
                                                templateDefinition.getDeployedImplementationType(),
                                                templateDefinition.getAssetName(),
                                                templateDefinition.getAssetDescription(),
                                                templateDefinition.getServerName(),
-                                               templateDefinition.getUserId(),
-                                               templateDefinition.getPassword(),
+                                               templateDefinition.getElementVersionIdentifier(),
                                                templateDefinition.getConnectorTypeGUID(),
                                                templateDefinition.getNetworkAddress(),
                                                templateDefinition.getConfigurationProperties(),
@@ -460,6 +463,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param softwareCapabilityType           type of the associated capability
      * @param softwareCapabilityName           name for the associated capability
      * @param serverName                       name for the server
+     * @param serverVersionIdentifier          server version identifier
      * @param description                      description for the server
      * @param userId                           userId for the connection
      * @param connectorTypeGUID                connector type to link to the connection
@@ -480,6 +484,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                        DeployedImplementationTypeDefinition softwareCapabilityType,
                                                        String                               softwareCapabilityName,
                                                        String                               serverName,
+                                                       String                               serverVersionIdentifier,
                                                        String                               description,
                                                        String                               userId,
                                                        String                               connectorTypeGUID,
@@ -516,7 +521,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   serverName,
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(), 
+                                                  serverVersionIdentifier,
                                                   description,
                                                   null,
                                                   extendedProperties,
@@ -896,13 +901,13 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * The template consists of an asset linked to a connection, that is in turn linked
      * to the supplied connector type and an endpoint, along with a nested secrets store
      *
-     * @param guid fixed unique identifier
+     * @param templateGUID fixed unique identifier
+     * @param templateVersion version of the template
      * @param deployedImplementationType deployed implementation type for the technology
      * @param assetName name for the asset
      * @param assetDescription description
      * @param serverName optional server name
-     * @param userId userId for the connection
-     * @param password password for the connection
+     * @param versionIdentifier version identifier
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
      * @param configurationProperties  additional properties for the connection
@@ -912,13 +917,13 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
-    protected void createDataAssetCatalogTemplate(String                               guid,
+    protected void createDataAssetCatalogTemplate(String                               templateGUID,
+                                                  String                               templateVersion,
                                                   DeployedImplementationTypeDefinition deployedImplementationType,
                                                   String                               assetName,
                                                   String                               assetDescription,
                                                   String                               serverName,
-                                                  String                               userId,
-                                                  String                               password,
+                                                  String                               versionIdentifier,
                                                   String                               connectorTypeGUID,
                                                   String                               networkAddress,
                                                   Map<String, Object>                  configurationProperties,
@@ -941,7 +946,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName + ":" + assetName;
         }
 
-        String               versionIdentifier = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications = new ArrayList<>();
 
@@ -949,9 +953,9 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    null, "V1.0", null, methodName));
+                                                                    null, templateVersion, null, methodName));
 
-        archiveHelper.setGUID(qualifiedName, guid);
+        archiveHelper.setGUID(qualifiedName, templateGUID);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   assetName,
@@ -960,7 +964,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                   null,
                                                   extendedProperties,
                                                   classifications);
-        assert(guid.equals(assetGUID));
+        assert(templateGUID.equals(assetGUID));
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
@@ -978,8 +982,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
                                                          serverName + " connection",
                                                          null,
-                                                         userId,
-                                                         password,
+                                                         null,
+                                                         null,
                                                          null,
                                                          null,
                                                          configurationProperties,
@@ -996,8 +1000,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                          qualifiedName + ":Connection",
                                                          serverName + " connection",
                                                          null,
-                                                         userId,
-                                                         password,
+                                                         null,
+                                                         null,
                                                          null,
                                                          null,
                                                          configurationProperties,
@@ -1044,115 +1048,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                 null,
                                                 secretsStoreConnectionGUID);
         }
-
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
-
-        archiveHelper.addReplacementAttributes(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               OpenMetadataType.ASSET.typeName,
-                                               replacementAttributeTypes);
-
-        archiveHelper.addPlaceholderProperties(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               OpenMetadataType.ASSET.typeName,
-                                               placeholderPropertyTypes);
-    }
-
-
-
-    /**
-     * Create a template for a type of asset and link it to the associated deployed implementation type.
-     * The template consists of an asset linked to a connection, that is in turn linked
-     * to the supplied connector type and an endpoint,
-     *
-     * @param guid fixed unique identifier
-     * @param deployedImplementationType deployed implementation type for the technology
-     * @param assetName name for the asset
-     * @param assetDescription description
-     * @param serverName optional server name
-     * @param userId userId for the connection
-     * @param password password for the connection
-     * @param connectorTypeGUID connector type to link to the connection
-     * @param networkAddress network address for the endpoint
-     * @param configurationProperties  additional properties for the connection
-     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
-     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
-     */
-    protected void createDataAssetCatalogTemplate(String                         guid,
-                                                  DeployedImplementationTypeDefinition  deployedImplementationType,
-                                                  String                         assetName,
-                                                  String                         assetDescription,
-                                                  String                         serverName,
-                                                  String                         userId,
-                                                  String                         password,
-                                                  String                         connectorTypeGUID,
-                                                  String                         networkAddress,
-                                                  Map<String, Object>            configurationProperties,
-                                                  List<ReplacementAttributeType> replacementAttributeTypes,
-                                                  List<PlaceholderPropertyType>  placeholderPropertyTypes)
-    {
-        final String methodName = "createDataAssetCatalogTemplate";
-
-        String               qualifiedName;
-
-        if (serverName == null)
-        {
-            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + assetName;
-        }
-        else
-        {
-            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName + ":" + assetName;
-        }
-
-        String               versionIdentifier = "V1.0";
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-
-        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    null, "V1.0", null, methodName));
-
-        archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  assetName,
-                                                  versionIdentifier,
-                                                  assetDescription,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
-        assert(guid.equals(assetGUID));
-
-        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                        deployedImplementationType.getAssociatedTypeName(),
-                                                        OpenMetadataType.ASSET.typeName,
-                                                        qualifiedName + ":Endpoint",
-                                                        assetName + " endpoint",
-                                                        null,
-                                                        networkAddress,
-                                                        null,
-                                                        null);
-
-        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                            assetName + " connection",
-                                                            null,
-                                                            userId,
-                                                            password,
-                                                            null,
-                                                            null,
-                                                            configurationProperties,
-                                                            null,
-                                                            connectorTypeGUID,
-                                                            endpointGUID,
-                                                            assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 
@@ -1382,6 +1277,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                     integrationConnectorDefinition.getQualifiedName(integrationGroupDefinition.getQualifiedName()),
                                                                     integrationConnectorDefinition.getDisplayName(),
                                                                     integrationConnectorDefinition.getDescription(),
+                                                                    integrationConnectorDefinition.getConnectorUserId(),
                                                                     integrationConnectorDefinition.getEndpointAddress(),
                                                                     null);
                 assert (integrationConnectorDefinition.getGUID().equals(guid));
@@ -1656,6 +1552,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param assetType name for the asset type (no spaces)
      * @param technologyType value for deployed implementation type
      * @param createRequestType request type used to create the server's metadata element
+     * @param createTemplate details of the template to use
      * @param createEngineDefinition engine to call for the create operation
      * @param surveyRequestType request type to run the survey
      * @param surveyEngineDefinition survey engine
@@ -1664,6 +1561,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     protected void createAndSurveyServerGovernanceActionProcess(String                     assetType,
                                                                 String                     technologyType,
                                                                 RequestTypeDefinition      createRequestType,
+                                                                TemplateDefinition         createTemplate,
                                                                 GovernanceEngineDefinition createEngineDefinition,
                                                                 RequestTypeDefinition      surveyRequestType,
                                                                 GovernanceEngineDefinition surveyEngineDefinition,
@@ -1682,6 +1580,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                       null,
                                                                       null);
 
+        List<RequestParameterType> supportedRequestParameters = null;
+
+        if (createTemplate != null)
+        {
+            supportedRequestParameters = this.getRequestTypeDefinition(createTemplate.getPlaceholders());
+        }
+
+        archiveHelper.addSupportedRequestParameters(processGUID,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeName,
+                                                    supportedRequestParameters);
+
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -1690,7 +1600,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         "Create the asset entity",
                                                                         "Create the description of the " + technologyType,
                                                                         0,
-                                                                        null,
+                                                                        supportedRequestParameters,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -1780,12 +1690,49 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
 
     /**
+     * Convert a list of placeholder variables into a list request parameters - to create the specification for a
+     * governance action process or governance action type.
+     *
+     * @param placeholderPropertyTypes placeholder properties used by the template
+     * @return list of request parameter definitions
+     */
+    protected List<RequestParameterType> getRequestTypeDefinition(List<PlaceholderPropertyType> placeholderPropertyTypes)
+    {
+        if (placeholderPropertyTypes != null)
+        {
+            List<RequestParameterType> requestParameterTypes = new ArrayList<>();
+
+            for (PlaceholderPropertyType placeholderPropertyType : placeholderPropertyTypes)
+            {
+                if (placeholderPropertyType != null)
+                {
+                    RequestParameterType requestParameterType = new RequestParameterType();
+
+                    requestParameterType.setName(placeholderPropertyType.getName());
+                    requestParameterType.setDataType(placeholderPropertyType.getDataType());
+                    requestParameterType.setDescription(placeholderPropertyType.getDescription());
+                    requestParameterType.setExample(placeholderPropertyType.getExample());
+                    requestParameterType.setRequired(placeholderPropertyType.getRequired());
+                    requestParameterType.setOtherPropertyValues(placeholderPropertyType.getOtherPropertyValues());
+
+                    requestParameterTypes.add(requestParameterType);
+                }
+            }
+
+            return requestParameterTypes;
+        }
+
+        return null;
+    }
+
+    /**
      * Create a two-step governance action process that creates a metadata element for a particular type of server
      * and then adds it as a catalog target for an appropriate integration connector.
      *
      * @param serverType name for the server type (no spaces)
      * @param technologyType value for deployed implementation type
      * @param createRequestType request type used to create the server's metadata element
+     * @param createTemplate details of the template to use
      * @param createEngineDefinition governance action engine
      * @param catalogRequestType request type to run the survey
      * @param catalogEngineDefinition governance action engine
@@ -1794,6 +1741,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     protected void createAndCatalogServerGovernanceActionProcess(String                     serverType,
                                                                  String                     technologyType,
                                                                  RequestTypeDefinition      createRequestType,
+                                                                 TemplateDefinition         createTemplate,
                                                                  GovernanceEngineDefinition createEngineDefinition,
                                                                  RequestTypeDefinition      catalogRequestType,
                                                                  GovernanceEngineDefinition catalogEngineDefinition,
@@ -1804,6 +1752,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                      technologyType,
                                                      "catalog",
                                                      createRequestType,
+                                                     createTemplate,
                                                      createEngineDefinition,
                                                      catalogRequestType,
                                                      catalogEngineDefinition,
@@ -1819,6 +1768,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param openMetadataType open metadata type name for the created asset
      * @param technologyType value for deployed implementation type
      * @param createRequestType request type used to create the server's metadata element
+     * @param createTemplate details of the template to use
      * @param createEngineDefinition governance action engine
      * @param catalogRequestType request type to run the survey
      * @param catalogEngineDefinition governance action engine
@@ -1828,6 +1778,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 String                     openMetadataType,
                                                                 String                     technologyType,
                                                                 RequestTypeDefinition      createRequestType,
+                                                                TemplateDefinition         createTemplate,
                                                                 GovernanceEngineDefinition createEngineDefinition,
                                                                 RequestTypeDefinition      catalogRequestType,
                                                                 GovernanceEngineDefinition catalogEngineDefinition,
@@ -1838,6 +1789,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                      technologyType,
                                                      "catalog",
                                                      createRequestType,
+                                                     createTemplate,
                                                      createEngineDefinition,
                                                      catalogRequestType,
                                                      catalogEngineDefinition,
@@ -1853,6 +1805,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param openMetadataType open metadata type name for the created asset
      * @param technologyType value for deployed implementation type
      * @param createRequestType request type used to create the server's metadata element
+     * @param createTemplate details of the template to use
      * @param createEngineDefinition governance action engine
      * @param catalogRequestType request type to run the survey
      * @param catalogEngineDefinition governance action engine
@@ -1862,6 +1815,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                   String                     openMetadataType,
                                                                   String                     technologyType,
                                                                   RequestTypeDefinition      createRequestType,
+                                                                  TemplateDefinition         createTemplate,
                                                                   GovernanceEngineDefinition createEngineDefinition,
                                                                   RequestTypeDefinition      catalogRequestType,
                                                                   GovernanceEngineDefinition catalogEngineDefinition,
@@ -1872,6 +1826,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                      technologyType,
                                                      "harvest",
                                                      createRequestType,
+                                                     createTemplate,
                                                      createEngineDefinition,
                                                      catalogRequestType,
                                                      catalogEngineDefinition,
@@ -1885,8 +1840,11 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * and then adds it as a catalog target for an appropriate integration connector.
      *
      * @param assetType name for the server type (no spaces)
+     * @param openMetadataType type of the element to create
      * @param technologyType value for deployed implementation type
+     * @param actionName nme to use for the action
      * @param createRequestType request type used to create the server's metadata element
+     * @param createTemplate details of the template to use
      * @param createEngineDefinition governance action engine
      * @param catalogRequestType request type to run the survey
      * @param catalogEngineDefinition governance action engine
@@ -1897,6 +1855,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 String                     technologyType,
                                                                 String                     actionName,
                                                                 RequestTypeDefinition      createRequestType,
+                                                                TemplateDefinition         createTemplate,
                                                                 GovernanceEngineDefinition createEngineDefinition,
                                                                 RequestTypeDefinition      catalogRequestType,
                                                                 GovernanceEngineDefinition catalogEngineDefinition,
@@ -1915,6 +1874,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                       null,
                                                                       null);
 
+        List<RequestParameterType> supportedRequestParameters = null;
+
+        if (createTemplate != null)
+        {
+            supportedRequestParameters = this.getRequestTypeDefinition(createTemplate.getPlaceholders());
+        }
+
+        archiveHelper.addSupportedRequestParameters(processGUID,
+                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeName,
+                                                    supportedRequestParameters);
+
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -1923,7 +1894,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         "Create the " + openMetadataType + " entity",
                                                                         "Create the description of the " + technologyType,
                                                                         0,
-                                                                        null,
+                                                                        supportedRequestParameters,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -1948,7 +1919,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                         OpenMetadataType.ASSET.typeName,
                                                                         assetType + ":CreateAsCatalogTarget:Step2",
-                                                                        "Connect new asset to integration connector.",
+                                                                        "Connect new asset to integration connector",
                                                                         "Connect the asset entity for the " + technologyType + " to the appropriate integration connector.",
                                                                         0,
                                                                         null,
@@ -1982,6 +1953,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             false);
         }
     }
+
 
 
 

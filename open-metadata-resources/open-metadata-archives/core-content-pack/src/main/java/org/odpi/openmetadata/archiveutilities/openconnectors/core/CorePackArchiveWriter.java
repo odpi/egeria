@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.core;
 
-import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -790,6 +789,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addFileTemplates();
         this.addEndpointCatalogTemplates();
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
+        this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
 
         for (EgeriaSoftwareServerTemplateDefinition templateDefinition : EgeriaSoftwareServerTemplateDefinition.values())
         {
@@ -802,6 +802,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                 templateDefinition.getSoftwareCapabilityType(),
                                                 templateDefinition.getSoftwareCapabilityName(),
                                                 templateDefinition.getServerName(),
+                                                templateDefinition.getElementVersionIdentifier(),
                                                 templateDefinition.getServerDescription(),
                                                 templateDefinition.getUserId(),
                                                 templateDefinition.getConnectorTypeGUID(),
@@ -817,8 +818,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();
         this.addUNIXFileSystemTemplate();
-        this.addKafkaTopicCatalogTemplate();
-
         this.addDefaultOMAGServerPlatform();
 
 
@@ -1226,7 +1225,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         DeployedImplementationTypeDefinition softwareCapabilityType = DeployedImplementationType.USER_AUTHENTICATION_MANAGER;
         String softwareCapabilityName = "User Token Manager";
         String serverName = "Default Local OMAG Server Platform";
-        String userId = "garygeeke";
+        String userId = "defaultplatformnpa";
         String connectorTypeGUID = provider.getConnectorType().getGUID();
         String networkAddress = "https://localhost:9443";
 
@@ -1363,45 +1362,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                 null,
                                                 PlaceholderProperty.getFileSystemPlaceholderPropertyTypes());
     }
-
-
-
-    /**
-     * Create a catalog template for a Kafka topic
-     */
-    private void addKafkaTopicCatalogTemplate()
-    {
-        final String guid = "ea8f81c9-c59c-47de-9525-7cc59d1251e5";
-
-        KafkaOpenMetadataTopicProvider provider = new KafkaOpenMetadataTopicProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = KafkaPlaceholderProperty.getKafkaTopicPlaceholderPropertyTypes();
-
-        Map<String, Object> configurationProperties = new HashMap<>();
-        Map<String, String> bootstrapServersProperties = new HashMap<>();
-
-        bootstrapServersProperties.put("bootstrap.servers",
-                                       PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                               PlaceholderProperty.PORT_NUMBER.getPlaceholder());
-
-        configurationProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
-        configurationProperties.put("producer", bootstrapServersProperties);
-        configurationProperties.put("consumer", bootstrapServersProperties);
-
-        this.createDataAssetCatalogTemplate(guid,
-                                            DeployedImplementationType.APACHE_KAFKA_TOPIC,
-                                            KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getPlaceholder(),
-                                            PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                            PlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder() + ":inOut",
-                                            null,
-                                            null,
-                                            provider.getConnectorType().getGUID(),
-                                            KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder(),
-                                            configurationProperties,
-                                            null,
-                                            placeholderPropertyTypes);
-    }
-
 
 
     /**

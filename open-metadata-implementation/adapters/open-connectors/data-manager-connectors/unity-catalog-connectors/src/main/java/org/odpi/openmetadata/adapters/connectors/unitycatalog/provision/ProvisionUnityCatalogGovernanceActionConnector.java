@@ -154,23 +154,23 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends Provisioning
 
         if (UnityCatalogDeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType().equals(deployedImplementationType))
         {
-            templateGUID = UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getDefaultTemplateGUID();
+            templateGUID = UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getTemplateGUID();
         }
         else if (UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
         {
-            templateGUID = UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getDefaultTemplateGUID();
+            templateGUID = UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getTemplateGUID();
         }
         else if (UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType().equals(deployedImplementationType))
         {
-            templateGUID = UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getDefaultTemplateGUID();
+            templateGUID = UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getTemplateGUID();
         }
         else if (UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(deployedImplementationType))
         {
-            templateGUID = UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getDefaultTemplateGUID();
+            templateGUID = UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getTemplateGUID();
         }
         else if ((UnityCatalogDeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType().equals(deployedImplementationType)))
         {
-            templateGUID = UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getDefaultTemplateGUID();
+            templateGUID = UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getTemplateGUID();
         }
         else
         {

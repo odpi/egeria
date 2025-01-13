@@ -153,6 +153,7 @@ public class OMAGServerPlatform
     {
         return () ->
         {
+            log.info("Platform release: version 5.3-SNAPSHOT");
             log.info("Working directory is: " + System.getProperty("user.dir"));
 
             if (!strictSSL)

@@ -23,9 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessElement
 {
-    private ElementHeader                          elementHeader     = null;
-    private GovernanceActionProcessProperties      processProperties = null;
-    private Map<String, List<Map<String, String>>> specification     = null;
+    private ElementHeader                          elementHeader        = null;
+    private GovernanceActionProcessProperties      processProperties    = null;
+    private Map<String, List<Map<String, String>>> specification        = null;
+    private String                                 mermaidSpecification = null;
 
 
     /**
@@ -46,9 +47,10 @@ public class GovernanceActionProcessElement
     {
         if (template != null)
         {
-            elementHeader     = template.getElementHeader();
-            processProperties = template.getProcessProperties();
-            specification     = template.getSpecification();
+            elementHeader        = template.getElementHeader();
+            processProperties    = template.getProcessProperties();
+            specification        = template.getSpecification();
+            mermaidSpecification = template.getMermaidSpecification();
         }
     }
 
@@ -118,6 +120,28 @@ public class GovernanceActionProcessElement
 
 
     /**
+     * Return the mermaid string used to render a specification.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getMermaidSpecification()
+    {
+        return mermaidSpecification;
+    }
+
+
+    /**
+     * Set up mermaid string used to render a graph.
+     *
+     * @param mermaidSpecification string in Mermaid markdown
+     */
+    public void setMermaidSpecification(String mermaidSpecification)
+    {
+        this.mermaidSpecification = mermaidSpecification;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -126,9 +150,10 @@ public class GovernanceActionProcessElement
     public String toString()
     {
         return "GovernanceActionProcessElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", processProperties=" + processProperties +
-                       ", specification=" + specification +
+                "elementHeader=" + elementHeader +
+                ", processProperties=" + processProperties +
+                ", specification=" + specification +
+                ", mermaidSpecification='" + mermaidSpecification + '\'' +
                 '}';
     }
 
@@ -157,7 +182,8 @@ public class GovernanceActionProcessElement
         GovernanceActionProcessElement that = (GovernanceActionProcessElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(processProperties, that.processProperties) &&
-                Objects.equals(specification, that.specification);
+                Objects.equals(specification, that.specification) &&
+                Objects.equals(mermaidSpecification, that.mermaidSpecification);
     }
 
 
@@ -169,6 +195,6 @@ public class GovernanceActionProcessElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processProperties, specification);
+        return Objects.hash(super.hashCode(), elementHeader, processProperties, specification, mermaidSpecification);
     }
 }

@@ -84,7 +84,6 @@ public abstract class AtlasIntegrationModuleBase
 
 
     private final static String atlasGUIDPropertyName         = "atlasGUID";
-    private final static String atlasTypeMappingPropertyName  = "atlasType";
     private final static String atlasNameMappingPropertyName  = "atlasName";
     private final static String egeriaNameMappingPropertyName = "lastKnownEgeriaDisplayName";
     private final static String modulePropertyName            = "originator";
@@ -584,6 +583,7 @@ public abstract class AtlasIntegrationModuleBase
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
         externalIdentifierProperties.setExternalIdentifier(atlasGUID);
         externalIdentifierProperties.setExternalIdentifierName(atlasGUIDPropertyName);
+        externalIdentifierProperties.setExternalInstanceTypeName(atlasTypeName);
         externalIdentifierProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
         externalIdentifierProperties.setExternalIdentifierSource(connectorName);
         externalIdentifierProperties.setExternalInstanceCreatedBy(externalInstanceCreatedBy);
@@ -596,11 +596,6 @@ public abstract class AtlasIntegrationModuleBase
         Map<String, String> mappingProperties = new HashMap<>();
 
         mappingProperties.put(modulePropertyName, connectorName + ":" + moduleName);
-
-        if (atlasTypeName != null)
-        {
-            mappingProperties.put(atlasTypeMappingPropertyName, atlasTypeName);
-        }
 
         if (atlasName != null)
         {

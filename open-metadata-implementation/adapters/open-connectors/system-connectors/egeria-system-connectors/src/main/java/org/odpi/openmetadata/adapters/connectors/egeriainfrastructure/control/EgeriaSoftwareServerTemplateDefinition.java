@@ -316,6 +316,18 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
 
 
     /**
+     * Return the value to use in the element that describes its version.
+     *
+     * @return version identifier placeholder
+     */
+    @Override
+    public String getElementVersionIdentifier()
+    {
+        return PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder();
+    }
+
+
+    /**
      * Return the type of associated capability.
      *
      * @return enum
