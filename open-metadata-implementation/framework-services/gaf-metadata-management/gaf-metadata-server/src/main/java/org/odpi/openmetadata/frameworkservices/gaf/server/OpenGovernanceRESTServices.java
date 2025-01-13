@@ -1221,7 +1221,6 @@ public class OpenGovernanceRESTServices
             AssetHandler<GovernanceActionProcessElement> processHandler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
             EngineActionHandler<EngineActionElement> engineActionHandler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
             GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId, serverName, methodName);
-            MetadataElementHandler<OpenMetadataElement> openHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
             List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
 

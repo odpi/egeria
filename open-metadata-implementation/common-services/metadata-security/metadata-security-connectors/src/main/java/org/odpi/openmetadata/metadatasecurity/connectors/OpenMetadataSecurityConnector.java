@@ -83,17 +83,19 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
      * unauthorized access.
      *
      * @param userId calling user
+     * @param requestType type of request
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
     protected void throwUnauthorizedPlatformAccess(String   userId,
+                                                   String   requestType,
                                                    String   methodName) throws UserNotAuthorizedException
     {
-        AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, serverRootURL);
+        AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, requestType, serverRootURL);
 
         this.logRecord(methodName, messageDefinition);
 
-        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, serverRootURL),
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, requestType, serverRootURL),
                                              this.getClass().getName(),
                                              methodName,
                                              userId);
@@ -589,8 +591,9 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserForNewServer";
+        final String requestType = "NewServer";
 
-        throwUnauthorizedPlatformAccess(userId, methodName);
+        throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }
 
 
@@ -604,8 +607,9 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserAsOperatorForPlatform";
+        final String requestType = "Operator";
 
-        throwUnauthorizedPlatformAccess(userId, methodName);
+        throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }
 
 
@@ -619,8 +623,9 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
         final String methodName = "validateUserAsInvestigatorForPlatform";
+        final String requestType = "Investigator";
 
-        throwUnauthorizedPlatformAccess(userId, methodName);
+        throwUnauthorizedPlatformAccess(userId, requestType, methodName);
     }
 
 
