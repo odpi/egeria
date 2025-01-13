@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../archiveutilities/openconnectors/DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></code>, <code><a href="../../../adapters/connectors/egeriainfrastructure/control/EgeriaSoftwareServerTemplateDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control">EgeriaSoftwareServerTemplateDefinition</a></code>, <code><a href="../../../archiveutilities/openconnectors/EndpointTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">EndpointTemplateDefinition</a></code>, <code><a href="../../../archiveutilities/openconnectors/SoftwareServerTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">SoftwareServerTemplateDefinition</a></code></dd>
+<dd><code><a href="../../../archiveutilities/openconnectors/DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></code>, <code><a href="../../../adapters/connectors/egeriainfrastructure/control/EgeriaSoftwareServerTemplateDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control">EgeriaSoftwareServerTemplateDefinition</a></code>, <code><a href="../../../archiveutilities/openconnectors/EndpointTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">EndpointTemplateDefinition</a></code>, <code><a href="../../../adapters/connectors/apachekafka/control/KafkaTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaTemplateType</a></code>, <code><a href="../../../adapters/connectors/postgres/controls/PostgreSQLTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgreSQLTemplateType</a></code>, <code><a href="../../../archiveutilities/openconnectors/SoftwareServerTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">SoftwareServerTemplateDefinition</a></code>, <code><a href="../../../adapters/connectors/unitycatalog/controls/UnityCatalogTemplateType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogTemplateType</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">TemplateDefinition</span></div>
@@ -98,34 +98,39 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the supported deployed implementation for this template.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPlaceholders()" class="member-name-link">getPlaceholders</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getElementVersionIdentifier()" class="member-name-link">getElementVersionIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the value to use in the element that describes its version.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getPlaceholders()" class="member-name-link">getPlaceholders</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of placeholders supported by this template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ReplacementAttributeType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">ReplacementAttributeType</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getReplacementAttributes()" class="member-name-link">getReplacementAttributes</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ReplacementAttributeType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">ReplacementAttributeType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getReplacementAttributes()" class="member-name-link">getReplacementAttributes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of attributes that should be supplied by the caller using this template.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateDescription()" class="member-name-link">getTemplateDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateDescription()" class="member-name-link">getTemplateDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the description to go in the template classification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateGUID()" class="member-name-link">getTemplateGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateGUID()" class="member-name-link">getTemplateGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the unique identifier of the template.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateName()" class="member-name-link">getTemplateName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateName()" class="member-name-link">getTemplateName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the name to go in the template classification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateVersionIdentifier()" class="member-name-link">getTemplateVersionIdentifier</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTemplateVersionIdentifier()" class="member-name-link">getTemplateVersionIdentifier</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the version identifier for the template classification.</div>
 </div>
 </div>
@@ -194,6 +199,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getElementVersionIdentifier()">
+<h3>getElementVersionIdentifier</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getElementVersionIdentifier</span>()</div>
+<div class="block">Return the value to use in the element that describes its version.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>version identifier placeholder</dd>
 </dl>
 </section>
 </li>

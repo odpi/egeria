@@ -108,10 +108,12 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#POSTGRES_DATABASE_TEMPLATE" class="member-name-link">POSTGRES_DATABASE_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#KAFKA_TOPIC_TEMPLATE" class="member-name-link">KAFKA_TOPIC_TEMPLATE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRES_SCHEMA_TEMPLATE" class="member-name-link">POSTGRES_SCHEMA_TEMPLATE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#POSTGRES_DATABASE_TEMPLATE" class="member-name-link">POSTGRES_DATABASE_TEMPLATE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#POSTGRES_SCHEMA_TEMPLATE" class="member-name-link">POSTGRES_SCHEMA_TEMPLATE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -157,14 +159,14 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="block">Return the supported deployed implementation for this template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetworkAddress()" class="member-name-link">getNetworkAddress</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementVersionIdentifier()" class="member-name-link">getElementVersionIdentifier</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the endpoint address.</div>
+<div class="block">Return the value to use in the element that describes its version.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPassword()" class="member-name-link">getPassword</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetworkAddress()" class="member-name-link">getNetworkAddress</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the password.</div>
+<div class="block">Return the endpoint address.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/openmetadata/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderPropertyType</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholders()" class="member-name-link">getPlaceholders</a>()</code></div>
@@ -222,23 +224,18 @@ implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.ht
 <div class="block">Return the version identifier for the template classification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserId()" class="member-name-link">getUserId</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the user id for the connection.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">JSON-style toString</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -272,6 +269,12 @@ the order they are declared.</div>
 <section class="detail" id="POSTGRES_SCHEMA_TEMPLATE">
 <h3>POSTGRES_SCHEMA_TEMPLATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">POSTGRES_SCHEMA_TEMPLATE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="KAFKA_TOPIC_TEMPLATE">
+<h3>KAFKA_TOPIC_TEMPLATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a></span>&nbsp;<span class="element-name">KAFKA_TOPIC_TEMPLATE</span></div>
 </section>
 </li>
 </ul>
@@ -390,6 +393,19 @@ not permitted.)</div>
 </section>
 </li>
 <li>
+<section class="detail" id="getElementVersionIdentifier()">
+<h3>getElementVersionIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getElementVersionIdentifier</span>()</div>
+<div class="block">Return the value to use in the element that describes its version.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../frameworks/openmetadata/controls/TemplateDefinition.html#getElementVersionIdentifier()">getElementVersionIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>version identifier placeholder</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getAssetName()">
 <h3>getAssetName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAssetName</span>()</div>
@@ -416,28 +432,6 @@ not permitted.)</div>
 <h3>getServerName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerName</span>()</div>
 <div class="block">Return the name of the server where this asset resides.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getPassword()">
-<h3>getPassword</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPassword</span>()</div>
-<div class="block">Return the password.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUserId()">
-<h3>getUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUserId</span>()</div>
-<div class="block">Return the user id for the connection.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>

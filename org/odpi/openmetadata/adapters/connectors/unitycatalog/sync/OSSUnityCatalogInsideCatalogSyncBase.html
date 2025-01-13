@@ -211,9 +211,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert the long value returned by UC into a date (or null).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;instanceSynchronizationDirection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -536,11 +537,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)">
+<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)">
 <h3>getExternalIdentifierProperties</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></span>&nbsp;<span class="element-name">getExternalIdentifierProperties</span><wbr><span class="parameters">(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
  <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;instanceSynchronizationDirection)</span></div>
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
@@ -548,6 +550,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>ucElement</code> - values from Unity Catalog element</dd>
 <dd><code>schemaName</code> - name of the schema</dd>
+<dd><code>elementName</code> - element type (from UC)</dd>
+<dd><code>elementType</code> - element type (from UC)</dd>
+<dd><code>id</code> - element id (from UC)</dd>
+<dd><code>instanceSynchronizationDirection</code> - direction the metadata is flowing</dd>
 <dt>Returns:</dt>
 <dd>external identifier properties</dd>
 </dl>

@@ -129,16 +129,20 @@ implements <a href="../../../../../frameworks/auditlog/messagesets/ExceptionMess
 <div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-500-002 - The JDBC resource connector detected a missing value for column {0} during method {1} in mapper {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_SCHEMA_NAME" class="member-name-link">NULL_SCHEMA_NAME</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">JDBC-RESOURCE-CONNECTOR-400-003 - Connection has been configured without the schema name of the database</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_URL" class="member-name-link">NULL_URL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the database</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-500-001 - The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_SQL_EXCEPTION" class="member-name-link">UNEXPECTED_SQL_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_SQL_EXCEPTION" class="member-name-link">UNEXPECTED_SQL_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">JDBC-RESOURCE-CONNECTOR-500-003 - The JDBC resource connector for database {0} received an unexpected SQL exception  from request '{1}' during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -213,6 +217,13 @@ the order they are declared.</div>
 <h3>BAD_DRIVER_MANAGER_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCErrorCode</a></span>&nbsp;<span class="element-name">BAD_DRIVER_MANAGER_CLASS</span></div>
 <div class="block">JDBC-RESOURCE-CONNECTOR-400-002 - The JDBC resource connector for database {0} has been configured with an invalid DriverManager class name of {1} in its connection {2}: ClassNotFoundException message is {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NULL_SCHEMA_NAME">
+<h3>NULL_SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="JDBCErrorCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc">JDBCErrorCode</a></span>&nbsp;<span class="element-name">NULL_SCHEMA_NAME</span></div>
+<div class="block">JDBC-RESOURCE-CONNECTOR-400-003 - Connection has been configured without the schema name of the database</div>
 </section>
 </li>
 <li>
