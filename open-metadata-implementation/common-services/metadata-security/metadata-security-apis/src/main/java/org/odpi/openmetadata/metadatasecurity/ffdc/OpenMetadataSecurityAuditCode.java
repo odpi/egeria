@@ -63,7 +63,7 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
      */
     UNAUTHORIZED_PLATFORM_ACCESS("OPEN-METADATA-SECURITY-0005",
              AuditLogRecordSeverityLevel.SECURITY,
-             "User {0} is not authorized to issue a request to this OMAG Server Platform",
+             "User {0} is not authorized to issue a {1} request to OMAG Server Platform {2}",
              "The security service detected an unauthorized access to an OMAG Server Platform.",
              "Review the security policies and settings to determine if this access should be allowed or not." +
                                         "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
