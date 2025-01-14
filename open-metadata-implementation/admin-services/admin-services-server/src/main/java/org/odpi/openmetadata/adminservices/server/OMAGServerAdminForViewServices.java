@@ -74,7 +74,7 @@ public class OMAGServerAdminForViewServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of View Services configured in this server.
@@ -158,7 +158,7 @@ public class OMAGServerAdminForViewServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of View Services configured in this server.
@@ -283,7 +283,7 @@ public class OMAGServerAdminForViewServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             List<ViewServiceConfig> currentList = serverConfig.getViewServicesConfig();
 

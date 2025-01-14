@@ -78,7 +78,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Access Services configured in this server.
@@ -157,7 +157,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Access Services configured in this server.
@@ -725,7 +725,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             List<AccessServiceConfig> currentList = serverConfig.getAccessServicesConfig();
 
@@ -862,7 +862,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceURLMarker, propertyName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
 
             if (configuredAccessServices != null)
@@ -944,7 +944,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
             List<AccessServiceConfig>  configuredAccessServices = serverConfig.getAccessServicesConfig();
 
             if (configuredAccessServices != null)
