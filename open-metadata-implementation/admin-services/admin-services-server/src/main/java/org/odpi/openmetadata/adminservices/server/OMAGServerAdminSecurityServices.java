@@ -115,7 +115,7 @@ public class OMAGServerAdminSecurityServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             response.setConnection(serverConfig.getServerSecurityConnection());
         }
