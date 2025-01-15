@@ -485,7 +485,7 @@ public class OMAGServerAdminForEngineHostServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerParameterName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             List<EngineServiceConfig> currentList = null;
             EngineHostServicesConfig  engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
@@ -553,7 +553,7 @@ public class OMAGServerAdminForEngineHostServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Engine Services configured in this server.
@@ -1161,7 +1161,7 @@ public class OMAGServerAdminForEngineHostServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Engine Services configured in this server.

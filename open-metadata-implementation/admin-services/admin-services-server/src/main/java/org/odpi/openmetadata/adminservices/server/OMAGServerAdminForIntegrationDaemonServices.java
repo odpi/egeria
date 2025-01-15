@@ -71,7 +71,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Integration Services configured in this server.
@@ -426,7 +426,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of View Services configured in this server.
@@ -508,7 +508,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Integration Services configured in this server.
@@ -564,7 +564,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(serviceURLMarker, serviceURLMarkerParameterName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             List<IntegrationServiceConfig> currentList = serverConfig.getIntegrationServicesConfig();
 
@@ -1083,7 +1083,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, false, methodName);
 
             /*
              * Get the list of Integration Groups and Services configured in this server.

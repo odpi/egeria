@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = GovernanceServiceConfigurationEvent.class, name = "GovernanceServiceConfigurationEvent"),
-        @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
         @JsonSubTypes.Type(value = EngineActionEvent.class, name = "EngineActionEvent")
 })
 public class GovernanceEngineConfigurationEvent extends GovernanceServerEvent

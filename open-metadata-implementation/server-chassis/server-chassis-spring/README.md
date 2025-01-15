@@ -31,7 +31,7 @@ java -jar build/libs/server-chassis-spring-*-SNAPSHOT.jar --omag.server-config-f
 
  :: Powered by Spring Boot (v3.1.1) ::
 
-2023-09-07T10:08:05.779+02:00  INFO 4334 --- [           main] o.o.o.s.springboot.OMAGServer            : Starting OMAGServer using Java 17.0.8 with PID 4334 (/Developer/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-5.2.jar started by DEVELOPER in /Developer/egeria/open-metadata-implementation/server-chassis/server-chassis-spring)
+2023-09-07T10:08:05.779+02:00  INFO 4334 --- [           main] o.o.o.s.springboot.OMAGServer            : Starting OMAGServer using Java 17.0.8 with PID 4334 (/Developer/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/build/libs/server-chassis-spring-5.2.1.jar started by DEVELOPER in /Developer/egeria/open-metadata-implementation/server-chassis/server-chassis-spring)
 2023-09-07T10:08:05.781+02:00  INFO 4334 --- [           main] o.o.o.s.springboot.OMAGServer            : No active profile set, falling back to 1 default profile: "default"
 2023-09-07T10:08:07.435+02:00  INFO 4334 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9080 (http)
 2023-09-07T10:08:07.444+02:00  INFO 4334 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]

@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent"),
+        @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
         @JsonSubTypes.Type(value = IntegrationGroupConfigurationEvent.class, name = "IntegrationGroupConfigurationEvent"),
         @JsonSubTypes.Type(value = IntegrationConnectorConfigurationEvent.class, name = "IntegrationConnectorConfigurationEvent"),
 })
