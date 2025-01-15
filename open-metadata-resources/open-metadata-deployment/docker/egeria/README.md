@@ -35,7 +35,7 @@ This is the Dockerfile we use to publish the official images. It works by utiliz
 
 To use this
  * Run a full egeria build with `./gradlew build` from the project root
- * Run `mkdir -p open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly && cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-5.2-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly` - replacing the version label as appropriate
+ * Run `mkdir -p open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly && cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-5.2.1-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly` - replacing the version label as appropriate
  * Run `docker build -t egeria:myversion -f Dockerfile .` in this directory to create the image
 
 
@@ -54,7 +54,7 @@ The following additional arguments are allowed
 |------------|---------|-----------|--------------------------------------------|---------------------------------------------------------------------------------------------------|
 | runimg     | No      | Yes       | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for building egeria                                                          |
 | buildimg   | No      | Yes       | registry.access.redhat.com/ubi9/openjdk-17 | Container image used for runtime ie launching egeria                                              |
-| version    | Yes     | Yes       | 5.2                               | Version string - must be correct so that the right jar file gets launched. Do not rely on default |
+| version    | Yes     | Yes       | 5.2.1                                      | Version string - must be correct so that the right jar file gets launched. Do not rely on default |
 | srcurl     | No      | Yes       | https://github.com/odpi/egeria             | Specifies url of github repo to clone                                                             |
 | srcref     | No      | Yes       | main                                       | Specifies branch, or tag of code within the repo                                                  |
 | buildparms | No      | Yes       | build -x test -x javadoc                   | Gradle invocation to build egeria                                                                 |
@@ -167,7 +167,7 @@ With that in place we can now run our docker image, this time making use of the 
 $ docker run -p 9443:9443 -v source=egeria-data,target=/deployments/data odpi/egeria:latest 
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/platform/omag-server-platform-5.2.jar
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/platform/omag-server-platform-5.2.1.jar
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -237,7 +237,7 @@ you may need to create another job to retrieve the required libraries or content
 
 Use the egeria image as a base, for example begin your custom Dockerfile with
 
-`FROM odpi/egeria:5.2`
+`FROM odpi/egeria:5.2.1`
 
 Then add in the files you need, as well as customize the LOADER_PATH variable ie
 `COPY myextralib.jar /deployments/platform/lib`

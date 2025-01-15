@@ -50,8 +50,11 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String actionDescription = "Connector starting";
 
-        logRecord(actionDescription,
-                  OpenMetadataSecurityAuditCode.SERVICE_INITIALIZING.getMessageDefinition(connectorName, serverName));
+        if (auditLog != null)
+        {
+            logRecord(actionDescription,
+                      OpenMetadataSecurityAuditCode.SERVICE_INITIALIZING.getMessageDefinition(connectorName, serverName));
+        }
     }
 
 
@@ -62,8 +65,11 @@ public class OpenMetadataSecurityConnector extends ConnectorBase implements Audi
     {
         final String actionDescription = "disconnecting connector";
 
-        logRecord(actionDescription,
-                  OpenMetadataSecurityAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(connectorName, serverName));
+        if (auditLog != null)
+        {
+            logRecord(actionDescription,
+                      OpenMetadataSecurityAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(connectorName, serverName));
+        }
     }
 
 

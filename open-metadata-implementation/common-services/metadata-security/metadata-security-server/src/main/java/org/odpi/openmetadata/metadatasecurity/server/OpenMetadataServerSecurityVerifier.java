@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataElementSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
@@ -66,10 +67,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws InvalidParameterException the connection is invalid
      */
-    synchronized public  void registerSecurityValidator(String                                                                    localServerUserId,
-                                                        String                                                                    serverName,
-                                                        AuditLog                                                                  auditLog,
-                                                        org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
+    synchronized public  void registerSecurityValidator(String     localServerUserId,
+                                                        String     serverName,
+                                                        AuditLog   auditLog,
+                                                        Connection connection) throws InvalidParameterException
     {
         OpenMetadataSecurityConnector connector;
 

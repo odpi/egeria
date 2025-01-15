@@ -591,7 +591,7 @@ public class OMAGServerAdminStoreServices
      *
      * @param userId     calling user
      * @param serverName name of the server
-     * @param adminCall  flag to indicate whether the
+     * @param adminCall  flag to indicate whether the call requires serverAdministrator access
      * @param methodName method requesting the server details
      * @return configuration properties
      * @throws OMAGInvalidParameterException problem with the configuration file

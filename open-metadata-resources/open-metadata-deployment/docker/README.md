@@ -34,7 +34,7 @@ In this example:
 
 ## Limitations
 
-- All docker builds will currently set the tag (version) to be the same as the maven version (eg. 5.2). This
+- All docker builds will currently set the tag (version) to be the same as the maven version (eg. 5.2.1). This
     means that when testing it is imperative to always force-pull fresh images, or an old version may be used. For
     example, when using kubernetes ensure `imagePullPolicy = 'Always'`. Previously every single change was versioned,
     but this led to significant overhead in storage as well as constant changes in the source code just to do a rebuild.
