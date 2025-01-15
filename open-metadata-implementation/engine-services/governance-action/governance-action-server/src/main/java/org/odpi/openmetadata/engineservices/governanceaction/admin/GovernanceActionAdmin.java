@@ -46,7 +46,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                            String                              localServerUserId,
                            String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceConfigurationClient configurationClient,
+                           GovernanceConfigurationClient       configurationClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {
@@ -112,7 +112,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                                       governanceEngineRESTClient,
                                                                                       maxPageSize,
                                                                                       auditLog,
-                                                                                      localServerId);
+                                                                                      localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
 
             eventClient.registerListener(localServerUserId, new GovernanceServerOutTopicListener(governanceEngineMap, auditLog));
         }

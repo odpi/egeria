@@ -151,7 +151,7 @@ public class EngineHostOperationalServices
                                                                                       restClient,
                                                                                       maxPageSize,
                                                                                       auditLog,
-                                                                                      localServerId);
+                                                                                      localServerId + localServerName);
 
             /*
              * This is the client used to retrieve configuration and the client used to manage governance action entities
