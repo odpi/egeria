@@ -129,7 +129,7 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DEFAULT_VALUE.name,
                                                                   defaultValue,
                                                                   methodName);
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,

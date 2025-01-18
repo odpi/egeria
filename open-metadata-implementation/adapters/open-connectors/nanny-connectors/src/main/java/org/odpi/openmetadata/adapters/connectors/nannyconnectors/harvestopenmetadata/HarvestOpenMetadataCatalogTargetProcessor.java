@@ -835,7 +835,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElementList relatedElements = openMetadataAccess.getRelatedMetadataElements(elementGUID,
                                                                                                          1,
-                                                                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
+                                                                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                          0,
                                                                                                          openMetadataAccess.getMaxPagingSize());
 

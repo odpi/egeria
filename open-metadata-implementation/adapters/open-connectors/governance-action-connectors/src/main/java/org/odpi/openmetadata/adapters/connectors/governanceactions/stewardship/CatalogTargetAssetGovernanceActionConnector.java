@@ -104,14 +104,14 @@ public class CatalogTargetAssetGovernanceActionConnector extends GeneralGovernan
                                                                                    methodName);
 
                 ElementProperties catalogTargetProperties = propertyHelper.addStringProperty(null,
-                                                                                             OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                                             OpenMetadataProperty.CATALOG_TARGET_NAME.name,
                                                                                              serverName);
 
                 catalogTargetProperties = propertyHelper.addMapProperty(catalogTargetProperties,
                                                                         OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                         this.combineProperties());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                                       integrationConnector.getTargetElement().getElementGUID(),
                                                                                       newAssetGUID,
                                                                                       null,

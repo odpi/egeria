@@ -528,7 +528,13 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         }
         else if (DataType.MAP_STRING_OBJECT.getName().equals(propertyDefinition.type))
         {
-            return getMapStringStringTypeDefAttribute(propertyDefinition.name,
+            return getMapStringObjectTypeDefAttribute(propertyDefinition.name,
+                                                      propertyDefinition.description,
+                                                      propertyDefinition.descriptionGUID);
+        }
+        else if (DataType.MAP_STRING_ARRAY_STRING.getName().equals(propertyDefinition.type))
+        {
+            return getMapStringObjectTypeDefAttribute(propertyDefinition.name,
                                                       propertyDefinition.description,
                                                       propertyDefinition.descriptionGUID);
         }

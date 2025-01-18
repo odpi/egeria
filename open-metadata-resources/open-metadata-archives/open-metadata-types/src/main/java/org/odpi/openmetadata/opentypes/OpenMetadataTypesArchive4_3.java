@@ -196,10 +196,8 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -221,10 +219,8 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -257,18 +253,12 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATED_BY);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_VERSION);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATED_BY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_VERSION));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -301,12 +291,9 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEMBER_ROLE);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEMBER_ROLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -338,12 +325,9 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESIDENT_COUNTRY);
-        properties.add(property);
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TIME_ZONE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESIDENT_COUNTRY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TIME_ZONE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -376,10 +360,8 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -436,10 +418,8 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -472,10 +452,8 @@ public class OpenMetadataTypesArchive4_3
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

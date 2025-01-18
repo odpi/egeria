@@ -1185,7 +1185,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                                     attributeDef.getTypeName());
 
         classificationProperties = propertyHelper.addStringProperty(classificationProperties,
-                                                                    OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.DEFAULT_VALUE.name,
                                                                     attributeDef.getDefaultValue());
 
         initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,

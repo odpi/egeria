@@ -454,7 +454,7 @@ public class IntegrationGroupConfigurationHandler
 
         Map<String, Object> extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataType.USES_BLOCKING_CALLS_PROPERTY_NAME, usesBlockingCalls);
+        extendedProperties.put(OpenMetadataProperty.USES_BLOCKING_CALLS.name, usesBlockingCalls);
 
         String assetGUID = integrationConnectorHandler.createAssetInRepository(userId,
                                                                                null,
@@ -646,8 +646,8 @@ public class IntegrationGroupConfigurationHandler
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      integrationConnectorGUID,
                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeGUID,
+                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                                                      1,
                                                                                      null,
                                                                                      null,
@@ -846,19 +846,19 @@ public class IntegrationGroupConfigurationHandler
 
         repositoryHelper.addStringPropertyToInstance(serviceName,
                                                      instanceProperties,
-                                                     OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
+                                                     OpenMetadataProperty.CONNECTOR_NAME.name,
                                                      connectorName,
                                                      methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.CONNECTOR_USER_ID.name,
                                                                           connectorUserId,
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                           metadataSourceQualifiedName,
                                                                           methodName);
 
@@ -870,13 +870,13 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
                                                                         refreshTimeInterval,
                                                                         methodName);
 
         instanceProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataType.STOP_DATE_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.STOP_DATE.name,
                                                                         stopDate,
                                                                         methodName);
 
@@ -887,8 +887,8 @@ public class IntegrationGroupConfigurationHandler
                 instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                 instanceProperties,
                                                                                 OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
-                                                                                OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
-                                                                                OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
+                                                                                PermittedSynchronization.getOpenTypeGUID(),
+                                                                                PermittedSynchronization.getOpenTypeName(),
                                                                                 permittedSynchronization.getOrdinal(),
                                                                                 methodName);
             }
@@ -910,8 +910,8 @@ public class IntegrationGroupConfigurationHandler
                                                      false,
                                                      false,
                                                      serviceSupportedZones,
-                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                      instanceProperties,
                                                      null,
                                                      null,
@@ -953,8 +953,8 @@ public class IntegrationGroupConfigurationHandler
                                                                                              integrationConnectorGUID,
                                                                                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                              integrationGroupGUID,
-                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeGUID,
+                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                                                              1,
                                                                                              null,
                                                                                              null,
@@ -1011,8 +1011,8 @@ public class IntegrationGroupConfigurationHandler
                                                                                       integrationGroupGUID,
                                                                                       integrationGroupGUIDParameter,
                                                                                       OpenMetadataType.INTEGRATION_GROUP.typeName,
-                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeGUID,
+                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                                                       null,
                                                                                       OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                       2,
@@ -1088,8 +1088,8 @@ public class IntegrationGroupConfigurationHandler
                                                          false,
                                                          false,
                                                          serviceSupportedZones,
-                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeGUID,
+                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                          new Date(),
                                                          methodName);
     }
@@ -1131,19 +1131,19 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.CATALOG_TARGET_NAME.name,
                                                                           properties.getCatalogTargetName(),
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.CONNECTION_NAME.name,
                                                                           properties.getConnectionName(),
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
-                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.TEMPLATES.name,
                                                                              properties.getTemplateProperties(),
                                                                              methodName);
 
@@ -1155,7 +1155,7 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                           properties.getMetadataSourceQualifiedName(),
                                                                           methodName);
 
@@ -1208,8 +1208,8 @@ public class IntegrationGroupConfigurationHandler
                                                                  false,
                                                                  false,
                                                                  serviceSupportedZones,
-                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeGUID,
+                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                  instanceProperties,
                                                                  new Date(),
                                                                  methodName);
@@ -1249,19 +1249,19 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.CATALOG_TARGET_NAME.name,
                                                                           properties.getCatalogTargetName(),
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.CONNECTION_NAME.name,
                                                                           properties.getConnectionName(),
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
-                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.TEMPLATES.name,
                                                                              properties.getTemplateProperties(),
                                                                              methodName);
 
@@ -1273,7 +1273,7 @@ public class IntegrationGroupConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                           properties.getMetadataSourceQualifiedName(),
                                                                           methodName);
 
@@ -1319,7 +1319,7 @@ public class IntegrationGroupConfigurationHandler
                                                              null,
                                                              relationshipGUID,
                                                              guidParameter,
-                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                              true,
                                                              instanceProperties,
                                                              false,
@@ -1358,7 +1358,7 @@ public class IntegrationGroupConfigurationHandler
         Relationship relationship = integrationGroupHandler.getAttachmentLink(userId,
                                                                               relationshipGUID,
                                                                               guidParameter,
-                                                                              OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                              OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                               new Date(),
                                                                               methodName);
 
@@ -1406,8 +1406,8 @@ public class IntegrationGroupConfigurationHandler
                                                                                       integrationConnectorGUID,
                                                                                       integrationConnectorGUIDParameter,
                                                                                       OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeGUID,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                                       null,
                                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                       2,
@@ -1468,7 +1468,7 @@ public class IntegrationGroupConfigurationHandler
                                                    null,
                                                    relationshipGUID,
                                                    parameterName,
-                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                    false,
                                                    false,
                                                    serviceSupportedZones,

@@ -204,11 +204,12 @@ public class IntegrationGroupHandler
             this.integrationGroupGUID       = null;
             this.integrationGroupProperties = null;
 
-            throw new PropertyServerException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_GROUP_CONFIG.getMessageDefinition(integrationGroupName,
-                                                                                                                                       configurationClient.getConfigurationServerName(),
-                                                                                                                                       serverName),
-                                              this.getClass().getName(),
-                                              methodName);
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_INTEGRATION_GROUP_CONFIG.getMessageDefinition(integrationGroupName,
+                                                                                                                                         configurationClient.getConfigurationServerName(),
+                                                                                                                                         serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                integrationGroupName);
         }
         else
         {

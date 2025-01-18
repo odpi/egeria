@@ -303,14 +303,12 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(parentGUID, parentGUID);
             integrationReportWriter.reportElementUpdate(parentGUID);
 
             if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0))
             {
                 for (String folderGUID : nestedFolderGUIDs)
                 {
-                    integrationReportWriter.setAnchor(folderGUID, folderGUID);
                     integrationReportWriter.reportElementCreation(folderGUID);
                 }
             }
@@ -339,8 +337,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(folderGUID, folderGUID);
-            integrationReportWriter.setAnchor(fileSystemGUID, fileSystemGUID);
             integrationReportWriter.reportElementUpdate(fileSystemGUID);
             integrationReportWriter.reportElementUpdate(folderGUID);
         }
@@ -363,14 +359,6 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         filesAndFoldersClient.detachTopLevelFolder(userId, externalSourceGUID, externalSourceName, fileSystemGUID, folderGUID);
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setAnchor(folderGUID, folderGUID);
-            integrationReportWriter.setAnchor(fileSystemGUID, fileSystemGUID);
-            integrationReportWriter.reportElementUpdate(fileSystemGUID);
-            integrationReportWriter.reportElementUpdate(folderGUID);
-        }
     }
 
 
@@ -401,11 +389,10 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                     dataFileProperties,
                                                                                     connectorProviderName);
 
-        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        if ((nestedFolderGUIDs != null) && (!nestedFolderGUIDs.isEmpty()) && (integrationReportWriter != null))
         {
             for (String folderGUID : nestedFolderGUIDs)
             {
-                integrationReportWriter.setAnchor(folderGUID, folderGUID);
                 integrationReportWriter.reportElementCreation(folderGUID);
             }
         }
@@ -441,11 +428,10 @@ public class FilesIntegratorContext extends IntegrationContext
                                                                                                 templateGUID,
                                                                                                 templateProperties);
 
-        if ((nestedFolderGUIDs != null) && (nestedFolderGUIDs.size() > 0) && (integrationReportWriter != null))
+        if ((nestedFolderGUIDs != null) && (!nestedFolderGUIDs.isEmpty()) && (integrationReportWriter != null))
         {
             for (String folderGUID : nestedFolderGUIDs)
             {
-                integrationReportWriter.setAnchor(folderGUID, folderGUID);
                 integrationReportWriter.reportElementCreation(folderGUID);
             }
         }
@@ -480,7 +466,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
             integrationReportWriter.reportElementUpdate(dataFileGUID);
         }
     }
@@ -509,7 +494,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
             integrationReportWriter.reportElementDelete(dataFileGUID);
         }
     }
@@ -534,7 +518,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFileGUID, dataFileGUID);
             integrationReportWriter.reportElementDelete(dataFileGUID);
         }
     }
@@ -573,7 +556,6 @@ public class FilesIntegratorContext extends IntegrationContext
         {
             for (String folderGUID : nestedFolderGUIDs)
             {
-                integrationReportWriter.setAnchor(folderGUID, folderGUID);
                 integrationReportWriter.reportElementCreation(folderGUID);
             }
         }
@@ -613,7 +595,6 @@ public class FilesIntegratorContext extends IntegrationContext
         {
             for (String folderGUID : nestedFolderGUIDs)
             {
-                integrationReportWriter.setAnchor(folderGUID, folderGUID);
                 integrationReportWriter.reportElementCreation(folderGUID);
             }
         }
@@ -648,7 +629,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
             integrationReportWriter.reportElementUpdate(dataFolderGUID);
         }
     }
@@ -682,7 +662,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
             integrationReportWriter.reportElementUpdate(dataFolderGUID);
         }
     }
@@ -707,7 +686,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
             integrationReportWriter.reportElementDelete(dataFolderGUID);
         }
     }
@@ -733,9 +711,7 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(folderGUID, folderGUID);
             integrationReportWriter.reportElementUpdate(folderGUID);
-            integrationReportWriter.setAnchor(fileGUID, fileGUID);
             integrationReportWriter.reportElementUpdate(fileGUID);
         }
     }
@@ -762,9 +738,7 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(folderGUID, folderGUID);
             integrationReportWriter.reportElementUpdate(folderGUID);
-            integrationReportWriter.setAnchor(fileGUID, fileGUID);
             integrationReportWriter.reportElementUpdate(fileGUID);
         }
     }
@@ -1350,7 +1324,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
             integrationReportWriter.reportElementUpdate(endOneGUID);
         }
     }
@@ -1610,11 +1583,6 @@ public class FilesIntegratorContext extends IntegrationContext
         else
         {
             filesAndFoldersClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
-        }
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setParent(schemaTypeGUID, schemaAttributeGUID);
         }
     }
 
@@ -2000,7 +1968,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -2025,7 +1992,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -2052,7 +2018,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -2077,7 +2042,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -2489,7 +2453,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }
@@ -2514,7 +2477,6 @@ public class FilesIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }

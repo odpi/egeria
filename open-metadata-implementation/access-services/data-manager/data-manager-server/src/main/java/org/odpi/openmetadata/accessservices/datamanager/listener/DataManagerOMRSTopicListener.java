@@ -279,7 +279,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONNECTION_TO_ASSET_RELATIONSHIP.typeName)) ||

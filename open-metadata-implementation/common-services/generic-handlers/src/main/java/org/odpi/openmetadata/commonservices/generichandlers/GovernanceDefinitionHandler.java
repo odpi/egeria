@@ -139,7 +139,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -147,7 +147,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -269,7 +269,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -277,7 +277,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -590,8 +590,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     definitionGUID,
                                     definitionGUIDParameterName,
-                                    OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_GUID,
-                                    OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                    OpenMetadataType.GOVERNANCE_DEFINITION.typeGUID,
+                                    OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -635,7 +635,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -643,7 +643,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -695,7 +695,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -703,7 +703,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -767,7 +767,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                  methodName);
         }
 
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -775,7 +775,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -869,7 +869,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.TITLE.name);
 
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -877,7 +877,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1007,7 +1007,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME;
+        String typeName = OpenMetadataType.GOVERNANCE_DEFINITION.typeName;
 
         if (governanceDefinitionTypeName != null)
         {
@@ -1240,7 +1240,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                          OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
@@ -1283,7 +1283,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                            guidParameterName,
                                                            null,
                                                            null,
-                                                           OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            supportedZones,
@@ -1295,7 +1295,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
             List<Relationship> relationships = this.getAllAttachmentLinks(userId,
                                                                           guid,
                                                                           guidParameterName,
-                                                                          OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                          OpenMetadataType.GOVERNANCE_DEFINITION.typeName,
                                                                           null,
                                                                           null,
                                                                           SequencingOrder.CREATION_DATE_RECENT,

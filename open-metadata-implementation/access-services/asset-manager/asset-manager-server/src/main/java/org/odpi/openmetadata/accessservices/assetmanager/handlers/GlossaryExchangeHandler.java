@@ -2372,7 +2372,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(initialStatus, initialStatusParameterName, methodName);
         invalidParameterHandler.validateName(glossaryTermProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+        String typeName = OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName;
 
         if (glossaryTermProperties.getTypeName() != null)
         {
@@ -2418,7 +2418,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
             this.updateRevisionHistory(userId,
                                        glossaryTermGUID,
                                        glossaryTermProperties.getQualifiedName(),
-                                       OpenMetadataType.CONTROLLED_GLOSSARY_TERM_TYPE_NAME,
+                                       OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName,
                                        revisionHistoryTitle,
                                        updateDescription);
         }

@@ -19,6 +19,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceOperatorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
@@ -77,6 +79,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataContentForDataSetProperties.class, name = "DataContentForDataSetProperties"),
                 @JsonSubTypes.Type(value = DatabaseForeignKeyProperties.class, name = "DatabaseForeignKeyProperties"),
                 @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
+                @JsonSubTypes.Type(value = DependentContextEventProperties.class, name = "DependentContextEventProperties"),
                 @JsonSubTypes.Type(value = DeploymentProperties.class, name = "DeploymentProperties"),
                 @JsonSubTypes.Type(value = DigitalServiceDependencyProperties.class, name = "DigitalServiceDependencyProperties"),
                 @JsonSubTypes.Type(value = DigitalServiceOperatorProperties.class, name = "DigitalServiceOperatorProperties"),
@@ -103,6 +106,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProfileLocationProperties.class, name = "ProfileLocationProperties"),
                 @JsonSubTypes.Type(value = ProjectTeamProperties.class, name = "ProjectTeamProperties"),
                 @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
                 @JsonSubTypes.Type(value = ResourceListProperties.class, name = "ResourceListProperties"),
                 @JsonSubTypes.Type(value = SchemaAttributeRelationshipProperties.class, name = "SchemaAttributeRelationshipProperties"),
                 @JsonSubTypes.Type(value = SemanticAssignmentProperties.class, name = "SemanticAssignmentProperties"),

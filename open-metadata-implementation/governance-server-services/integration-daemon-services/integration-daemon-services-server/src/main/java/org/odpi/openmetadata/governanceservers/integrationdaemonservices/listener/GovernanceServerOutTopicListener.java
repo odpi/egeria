@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceSe
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationConnectorConfigurationEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationGroupConfigurationEvent;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 
@@ -95,6 +96,14 @@ public class GovernanceServerOutTopicListener extends GovernanceServerEventListe
                 try
                 {
                     groupHandler.refreshConfig();
+                }
+                catch (InvalidParameterException error)
+                {
+                    auditLog.logMessage(actionDescription,
+                                        IntegrationDaemonServicesAuditCode.GROUP_CHANGE_FAILED.getMessageDefinition(groupName,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                        event.toString());
                 }
                 catch (Exception error)
                 {

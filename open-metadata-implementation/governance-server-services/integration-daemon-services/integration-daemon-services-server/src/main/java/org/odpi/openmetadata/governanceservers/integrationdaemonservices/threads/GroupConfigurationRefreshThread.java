@@ -7,6 +7,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.thread
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
@@ -141,6 +142,14 @@ public class GroupConfigurationRefreshThread implements Runnable
                 try
                 {
                     groupHandler.refreshConfig();
+                }
+                catch (InvalidParameterException error)
+                {
+                    auditLog.logMessage(actionDescription,
+                                        IntegrationDaemonServicesAuditCode.INTEGRATION_GROUP_NO_CONFIG.getMessageDefinition(groupHandler.getIntegrationGroupName(),
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            error.getMessage()),
+                                        error.toString());
                 }
                 catch (Exception error)
                 {

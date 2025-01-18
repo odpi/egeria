@@ -146,7 +146,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((formGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementCreation(formGUID);
         }
 
@@ -180,7 +179,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((formGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementCreation(formGUID);
         }
 
@@ -209,7 +207,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementUpdate(formGUID);
         }
     }
@@ -234,7 +231,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementUpdate(formGUID);
         }
     }
@@ -259,7 +255,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementUpdate(formGUID);
         }
     }
@@ -284,7 +279,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(formGUID, formGUID);
             integrationReportWriter.reportElementDelete(formGUID);
         }
     }
@@ -401,7 +395,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((reportGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementCreation(reportGUID);
         }
 
@@ -435,7 +428,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((reportGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementCreation(reportGUID);
         }
 
@@ -464,7 +456,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementUpdate(reportGUID);
         }
     }
@@ -489,7 +480,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementUpdate(reportGUID);
         }
     }
@@ -514,7 +504,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementUpdate(reportGUID);
         }
     }
@@ -539,7 +528,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(reportGUID, reportGUID);
             integrationReportWriter.reportElementDelete(reportGUID);
         }
     }
@@ -656,7 +644,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((queryGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementCreation(queryGUID);
         }
 
@@ -690,7 +677,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((queryGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementCreation(queryGUID);
         }
 
@@ -719,7 +705,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementUpdate(queryGUID);
         }
     }
@@ -744,7 +729,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementUpdate(queryGUID);
         }
     }
@@ -769,7 +753,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementUpdate(queryGUID);
         }
     }
@@ -794,7 +777,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(queryGUID, queryGUID);
             integrationReportWriter.reportElementDelete(queryGUID);
         }
     }
@@ -920,7 +902,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((dataContainerGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(dataContainerGUID, parentElementGUID);
             integrationReportWriter.reportElementCreation(dataContainerGUID);
         }
 
@@ -957,7 +938,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((dataContainerGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(dataContainerGUID, parentElementGUID);
             integrationReportWriter.reportElementCreation(dataContainerGUID);
         }
 
@@ -1155,7 +1135,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((dataFieldGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(dataFieldGUID, parentElementGUID);
             integrationReportWriter.reportElementCreation(dataFieldGUID);
         }
 
@@ -1192,7 +1171,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if ((dataFieldGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(dataFieldGUID, parentElementGUID);
             integrationReportWriter.reportElementCreation(dataFieldGUID);
         }
 
@@ -1227,7 +1205,6 @@ public class DisplayIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(schemaTypeGUID, dataFieldGUID);
             integrationReportWriter.reportElementUpdate(dataFieldGUID);
         }
     }

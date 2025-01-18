@@ -261,24 +261,11 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING.name,
-                                                           OpenMetadataProperty.ENCODING.description,
-                                                           OpenMetadataProperty.ENCODING.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING_LANGUAGE.name,
-                                                           OpenMetadataProperty.ENCODING_LANGUAGE.description,
-                                                           OpenMetadataProperty.ENCODING_LANGUAGE.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING_DESCRIPTION.name,
-                                                           OpenMetadataProperty.ENCODING_DESCRIPTION.description,
-                                                           OpenMetadataProperty.ENCODING_DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ENCODING_PROPERTIES.name,
-                                                                    OpenMetadataProperty.ENCODING_PROPERTIES.description,
-                                                                    OpenMetadataProperty.ENCODING_PROPERTIES.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING_LANGUAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING_DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING_PROPERTIES));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -314,12 +301,8 @@ public class OpenMetadataTypesArchive5_1
 
     private EntityDef getVirtualRelationalTableEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeGUID,
-                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_VIEW.typeName),
-                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.description,
-                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.descriptionGUID,
-                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_RELATIONAL_TABLE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_VIEW.typeName));
     }
 
     /*
@@ -337,12 +320,8 @@ public class OpenMetadataTypesArchive5_1
 
     private EntityDef getGovernanceActionProcessInstanceEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.description,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.descriptionGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
     }
 
     private RelationshipDef getTargetForActionType()
@@ -386,12 +365,8 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                           OpenMetadataProperty.ACTION_TARGET_NAME.description,
-                                                           OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -440,12 +415,8 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME.name,
-                                                           OpenMetadataProperty.ACTION_TARGET_NAME.description,
-                                                           OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -469,12 +440,8 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS.name,
-                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.description,
-                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -533,7 +500,7 @@ public class OpenMetadataTypesArchive5_1
      */
     private TypeDefPatch updateCatalogTarget()
     {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -545,18 +512,9 @@ public class OpenMetadataTypesArchive5_1
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getEnumTypeDefAttribute(PermittedSynchronization.getOpenTypeName(),
-                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
-                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.description,
-                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute(DeleteMethod.getOpenTypeName(),
-                                                         OpenMetadataProperty.DELETE_METHOD.name,
-                                                         OpenMetadataProperty.DELETE_METHOD.description,
-                                                         OpenMetadataProperty.DELETE_METHOD.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

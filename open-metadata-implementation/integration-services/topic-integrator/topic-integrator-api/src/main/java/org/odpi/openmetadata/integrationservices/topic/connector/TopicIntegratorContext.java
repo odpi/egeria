@@ -467,7 +467,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if ((eventTypeGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(eventTypeGUID, topicGUID);
             integrationReportWriter.reportElementCreation(eventTypeGUID);
         }
 
@@ -518,7 +517,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if ((eventTypeGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(eventTypeGUID, topicGUID);
             integrationReportWriter.reportElementCreation(eventTypeGUID);
         }
 
@@ -1102,7 +1100,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
             integrationReportWriter.reportElementUpdate(endOneGUID);
         }
     }
@@ -1362,11 +1359,6 @@ public class TopicIntegratorContext extends IntegrationContext
         else
         {
             eventBrokerClient.setupSchemaType(userId, null, null, relationshipTypeName, schemaAttributeGUID, schemaTypeGUID);
-        }
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setParent(schemaTypeGUID, schemaAttributeGUID);
         }
     }
 
@@ -1750,7 +1742,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -1775,7 +1766,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -1802,7 +1792,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -1827,7 +1816,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -2239,7 +2227,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }
@@ -2264,7 +2251,6 @@ public class TopicIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }

@@ -94,49 +94,49 @@ public class IntegrationReportBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SERVER_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SERVER_NAME.name,
                                                                   daemonName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CONNECTOR_ID.name,
                                                                   connectorId,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CONNECTOR_NAME.name,
                                                                   connectorName,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.REFRESH_START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.REFRESH_START_DATE.name,
                                                                 refreshStartDate,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.REFRESH_COMPLETION_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.REFRESH_COMPLETION_DATE.name,
                                                                 refreshCompletionDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.CREATED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.CREATED_ELEMENTS.name,
                                                                        createdElements,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.UPDATED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.UPDATED_ELEMENTS.name,
                                                                        updatedElements,
                                                                        methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataType.DELETED_ELEMENTS_PROPERTY_NAME,
+                                                                       OpenMetadataProperty.DELETED_ELEMENTS.name,
                                                                        deletedElements,
                                                                        methodName);
 

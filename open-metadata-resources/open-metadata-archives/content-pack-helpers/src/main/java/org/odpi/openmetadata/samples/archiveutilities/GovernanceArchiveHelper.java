@@ -251,13 +251,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
         EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME, catalogTargetName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME, connectionName, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.CATALOG_TARGET_NAME.name, catalogTargetName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONNECTION_NAME.name, connectionName, methodName);
         properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONFIGURATION_PROPERTIES.name, configurationProperties, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.TEMPLATES_PROPERTY_NAME, templates, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TEMPLATES.name, templates, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name, metadataSourceQualifiedName, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(integrationConnectorGUID + "_to_" + targetElementGUID + "_catalog_target_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -314,6 +314,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param connectorUserId  userId for the connector to use (overrides the server's userId)
      * @param metadataSourceQualifiedName unique name of the metadata collection for anything catalogued by this connector
      * @param refreshTimeInterval how long (in minutes) between each refresh of the connector
+     * @param generateIntegrationReport should the integration connector produce integration reports when it refreshes?
      * @param integrationConnectorGUID unique identifier of the integration connector
      */
     public void addRegisteredIntegrationConnector(String              integrationGroupGUID,
@@ -321,6 +322,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   String              connectorUserId,
                                                   String              metadataSourceQualifiedName,
                                                   long                refreshTimeInterval,
+                                                  boolean             generateIntegrationReport,
                                                   String              integrationConnectorGUID)
     {
         final String methodName = "addRegisteredIntegrationConnector";
@@ -331,12 +333,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(groupEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(connectorEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME, connectorName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME, connectorUserId, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
-        properties = archiveHelper.addLongPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME, refreshTimeInterval, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.CONNECTOR_NAME.name, connectorName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CONNECTOR_USER_ID.name, connectorUserId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name, metadataSourceQualifiedName, methodName);
+        properties = archiveHelper.addLongPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFRESH_TIME_INTERVAL.name, refreshTimeInterval, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name, generateIntegrationReport, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(integrationGroupGUID + "_to_" + integrationConnectorGUID + "_" + connectorName + "_registered_integration_connector_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

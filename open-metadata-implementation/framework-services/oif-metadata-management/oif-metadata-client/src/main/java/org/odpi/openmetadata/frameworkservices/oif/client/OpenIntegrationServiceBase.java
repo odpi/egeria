@@ -242,7 +242,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
     {
         final String methodName              = "publishIntegrationReport";
         final String guidParameterName       = "elementGUID";
-            final String propertiesParameterName = "properties";
+        final String propertiesParameterName = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -255,6 +255,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                         urlTemplate,
                                         properties,
                                         serverName,
+                                        serviceURLMarker,
                                         userId,
                                         elementGUID);
     }

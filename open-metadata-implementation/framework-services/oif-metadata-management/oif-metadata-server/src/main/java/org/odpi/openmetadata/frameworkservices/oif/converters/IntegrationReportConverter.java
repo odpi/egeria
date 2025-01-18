@@ -75,35 +75,35 @@ public class IntegrationReportConverter<B> extends OMFConverter<B>
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                     reportProperties.setConnectorId(repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataType.CONNECTOR_ID_PROPERTY_NAME,
+                                                                                       OpenMetadataProperty.CONNECTOR_ID.name,
                                                                                        instanceProperties,
                                                                                        methodName));
                     reportProperties.setConnectorName(repositoryHelper.getStringProperty(serviceName,
-                                                                                         OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.CONNECTOR_NAME.name,
                                                                                          instanceProperties,
                                                                                          methodName));
                     reportProperties.setServerName(repositoryHelper.getStringProperty(serviceName,
-                                                                                      OpenMetadataType.SERVER_NAME_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.SERVER_NAME.name,
                                                                                       instanceProperties,
                                                                                       methodName));
                     reportProperties.setRefreshStartDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                          OpenMetadataType.REFRESH_START_DATE_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.REFRESH_START_DATE.name,
                                                                                           instanceProperties,
                                                                                           methodName));
                     reportProperties.setRefreshCompletionDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                               OpenMetadataType.REFRESH_COMPLETION_DATE_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.REFRESH_COMPLETION_DATE.name,
                                                                                                instanceProperties,
                                                                                                methodName));
                     reportProperties.setCreatedElements(repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                OpenMetadataType.CREATED_ELEMENTS_PROPERTY_NAME,
+                                                                                                OpenMetadataProperty.CREATED_ELEMENTS.name,
                                                                                                 instanceProperties,
                                                                                                 methodName));
                     reportProperties.setUpdatedElements(repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                OpenMetadataType.UPDATED_ELEMENTS_PROPERTY_NAME,
+                                                                                                OpenMetadataProperty.UPDATED_ELEMENTS.name,
                                                                                                 instanceProperties,
                                                                                                 methodName));
                     reportProperties.setDeletedElements(repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                                OpenMetadataType.DELETED_ELEMENTS_PROPERTY_NAME,
+                                                                                                OpenMetadataProperty.DELETED_ELEMENTS.name,
                                                                                                 instanceProperties,
                                                                                                 methodName));
                     reportProperties.setAdditionalProperties(repositoryHelper.getStringMapFromProperty(serviceName,

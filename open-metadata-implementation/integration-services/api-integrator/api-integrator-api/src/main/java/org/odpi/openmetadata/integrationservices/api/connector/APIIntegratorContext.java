@@ -391,12 +391,10 @@ public class APIIntegratorContext extends IntegrationContext
         {
             if ((apiProperties != null) && (apiProperties.getTypeName() != null))
             {
-                integrationReportWriter.setAnchor(apiGUID, apiGUID, apiProperties.getTypeName());
                 integrationReportWriter.reportElementCreation(apiGUID);
             }
             else
             {
-                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataType.DEPLOYED_API.typeName);
                 integrationReportWriter.reportElementCreation(apiGUID);
             }
         }
@@ -434,7 +432,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if ((apiGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
             integrationReportWriter.reportElementCreation(apiGUID);
         }
 
@@ -463,7 +460,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
             integrationReportWriter.reportElementUpdate(apiGUID);
         }
     }
@@ -488,7 +484,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
             integrationReportWriter.reportElementUpdate(apiGUID);
         }
     }
@@ -513,7 +508,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
             integrationReportWriter.reportElementUpdate(apiGUID);
         }
     }
@@ -538,7 +532,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
             integrationReportWriter.reportElementDelete(apiGUID);
         }
     }
@@ -669,8 +662,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if ((apiOperationGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
-            integrationReportWriter.setAnchor(apiOperationGUID, apiGUID);
             integrationReportWriter.reportElementCreation(apiOperationGUID);
         }
 
@@ -719,8 +710,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if ((apiOperationGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(apiGUID, apiGUID);
-            integrationReportWriter.setAnchor(apiOperationGUID, apiGUID);
             integrationReportWriter.reportElementCreation(apiOperationGUID);
         }
 
@@ -889,7 +878,7 @@ public class APIIntegratorContext extends IntegrationContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createAPIParameterList(String                     apiOperationGUID,
-                                         APIParameterListType parameterListType,
+                                         APIParameterListType       parameterListType,
                                          APIParameterListProperties properties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -912,11 +901,6 @@ public class APIIntegratorContext extends IntegrationContext
                                                                            apiOperationGUID,
                                                                            parameterListType,
                                                                            properties);
-        }
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setParent(apiParameterListGUID, apiOperationGUID);
         }
 
         return apiParameterListGUID;
@@ -969,7 +953,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(apiParameterListGUID, apiOperationGUID);
             integrationReportWriter.reportElementCreation(apiParameterListGUID);
         }
 
@@ -1161,7 +1144,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(apiParameterGUID, schemaElementGUID);
             integrationReportWriter.reportElementCreation(apiParameterGUID);
         }
 
@@ -1211,7 +1193,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(apiParameterGUID, schemaElementGUID);
             integrationReportWriter.reportElementCreation(apiParameterGUID);
         }
 
@@ -1243,11 +1224,6 @@ public class APIIntegratorContext extends IntegrationContext
         else
         {
             apiManagerClient.setupSchemaType(userId, null, null, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
-        }
-
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setParent(schemaTypeGUID, apiParameterGUID);
         }
     }
 
@@ -1824,7 +1800,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(endTwoGUID, endOneGUID);
             integrationReportWriter.reportElementUpdate(endOneGUID);
         }
     }
@@ -2039,7 +2014,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }
@@ -2064,7 +2038,6 @@ public class APIIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }

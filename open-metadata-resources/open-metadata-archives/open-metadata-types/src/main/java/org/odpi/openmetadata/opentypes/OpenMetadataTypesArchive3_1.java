@@ -860,7 +860,7 @@ public class OpenMetadataTypesArchive3_1
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeGUID,
                                                  OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION_TYPE_NAME),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_DEFINITION.typeName),
                                                  OpenMetadataType.DATA_PROCESSING_PURPOSE.description,
                                                  OpenMetadataType.DATA_PROCESSING_PURPOSE.descriptionGUID,
                                                  OpenMetadataType.DATA_PROCESSING_PURPOSE.wikiURL);

@@ -64,31 +64,31 @@ public class RegisteredIntegrationConnectorConverter
 
                 bean.setConnectorId(registrationRelationship.getGUID());
                 registrationProperties.setConnectorName(repositoryHelper.getStringProperty(serviceName,
-                                                                                           OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
+                                                                                           OpenMetadataProperty.CONNECTOR_NAME.name,
                                                                                            instanceProperties,
                                                                                            methodName));
                 registrationProperties.setConnectorUserId(repositoryHelper.getStringProperty(serviceName,
-                                                                                             OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME,
+                                                                                             OpenMetadataProperty.CONNECTOR_USER_ID.name,
                                                                                              instanceProperties,
                                                                                              methodName));
                 registrationProperties.setMetadataSourceQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                                                         OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                         OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                                                          instanceProperties,
                                                                                                          methodName));
                 registrationProperties.setStartDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                     OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.START_DATE.name,
                                                                                      instanceProperties,
                                                                                      methodName));
                 registrationProperties.setRefreshTimeInterval(repositoryHelper.getLongProperty(serviceName,
-                                                                                               OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
                                                                                                instanceProperties,
                                                                                                methodName));
                 registrationProperties.setStopDate(repositoryHelper.getDateProperty(serviceName,
-                                                                                    OpenMetadataType.STOP_DATE_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.STOP_DATE.name,
                                                                                     instanceProperties,
                                                                                     methodName));
                 registrationProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                         OpenMetadataType.GENERATE_INTEGRATION_REPORT_PROPERTY_NAME,
+                                                                                                         OpenMetadataProperty.GENERATE_INTEGRATION_REPORT.name,
                                                                                                          instanceProperties,
                                                                                                          methodName));
 
