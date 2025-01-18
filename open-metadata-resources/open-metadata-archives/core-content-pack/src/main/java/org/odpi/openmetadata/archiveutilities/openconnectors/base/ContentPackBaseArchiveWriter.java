@@ -1287,6 +1287,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                 integrationConnectorDefinition.getConnectorUserId(),
                                                                 integrationConnectorDefinition.getMetadataSourceQualifiedName(),
                                                                 integrationConnectorDefinition.getRefreshTimeInterval(),
+                                                                true,
                                                                 integrationConnectorDefinition.getGUID());
 
                 archiveHelper.addITProfile(integrationConnectorDefinition.getGUID(),

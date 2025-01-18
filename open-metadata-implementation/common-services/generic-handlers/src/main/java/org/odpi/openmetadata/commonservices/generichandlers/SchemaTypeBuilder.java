@@ -500,13 +500,13 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_DEPRECATED.name,
                                                                    isDeprecated,
                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.AUTHOR_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.AUTHOR.name,
                                                                   author,
                                                                   methodName);
 
@@ -530,19 +530,19 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DATA_TYPE.name,
                                                                   dataType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DEFAULT_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DEFAULT_VALUE.name,
                                                                   defaultValue,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.FIXED_VALUE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FIXED_VALUE.name,
                                                                   fixedValue,
                                                                   methodName);
         return properties;

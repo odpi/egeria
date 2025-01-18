@@ -352,7 +352,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       OperationalStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(OperationalStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.DELETE_METHOD.name,
                                       DeleteMethod.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DeleteMethod.values())));
@@ -424,7 +424,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       GlossaryTermActivityType.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermActivityType.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
+        addOpenMetadataEnumValidNames(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
                                       GlossaryTermAssignmentStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermAssignmentStatus.values())));
@@ -439,7 +439,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       GlossaryTermRelationshipStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.USED_IN_CONTEXT.typeName,
+        addOpenMetadataEnumValidNames(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                       GlossaryTermRelationshipStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
@@ -475,12 +475,12 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       PermittedSynchronization.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                       PermittedSynchronization.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                       PermittedSynchronization.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));

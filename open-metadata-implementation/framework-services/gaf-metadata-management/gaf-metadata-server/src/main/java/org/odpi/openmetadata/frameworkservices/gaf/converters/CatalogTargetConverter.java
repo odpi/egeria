@@ -67,19 +67,19 @@ public class CatalogTargetConverter<B> extends OMFConverter<B>
                     bean.setRelationshipGUID(relationship.getGUID());
                     bean.setRelationshipVersions(super.getElementVersions(relationship));
                     bean.setCatalogTargetName(repositoryHelper.getStringProperty(serviceName,
-                                                                                 OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.CATALOG_TARGET_NAME.name,
                                                                                  relationship.getProperties(),
                                                                                  methodName));
                     bean.setMetadataSourceQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                                           OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                           OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
                     bean.setConnectionName(repositoryHelper.getStringProperty(serviceName,
-                                                                              OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.CONNECTION_NAME.name,
                                                                               relationship.getProperties(),
                                                                               methodName));
                     bean.setTemplateProperties(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                         OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.TEMPLATES.name,
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                     bean.setConfigurationProperties(repositoryHelper.getMapFromProperty(serviceName,

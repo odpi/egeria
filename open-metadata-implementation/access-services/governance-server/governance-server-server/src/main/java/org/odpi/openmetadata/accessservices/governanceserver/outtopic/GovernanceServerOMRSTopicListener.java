@@ -378,7 +378,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME))
+                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName))
                 {
                     EntityProxy integrationConnectorEntityProxy = relationship.getEntityTwoProxy();
 
@@ -394,7 +394,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
                 }
                 else if (repositoryHelper.isTypeOf(sourceName,
                                                    type.getTypeDefName(),
-                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME))
+                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName))
                 {
                     EntityProxy integrationConnectorEntityProxy = relationship.getEntityOneProxy();
 

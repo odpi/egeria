@@ -176,7 +176,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
         }
         else
         {
-            typeName = OpenMetadataType.CONTROLLED_GLOSSARY_TERM_TYPE_NAME;
+            typeName = OpenMetadataType.CONTROLLED_GLOSSARY_TERM.typeName;
         }
 
         TypeDef glossaryTypeDef = invalidParameterHandler.validateTypeDefName(typeName,
@@ -2580,8 +2580,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                         OpenMetadataType.GLOSSARY_TERM.typeName,
                                         (String)null,
                                         null,

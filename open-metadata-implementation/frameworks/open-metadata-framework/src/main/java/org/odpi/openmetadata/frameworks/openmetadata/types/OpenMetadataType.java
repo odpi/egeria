@@ -1526,13 +1526,22 @@ public enum OpenMetadataType
 
 
     /**
-     * Identifies the sponsor that requires the action (To Do) to be completed.
+     * Identifies the sponsor that requires the action to be completed.
      */
     ACTION_SPONSOR_RELATIONSHIP("aca1277b-bf1c-42f5-9b3b-fbc2c9047325",
                                 "ActionSponsor",
                                 OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
                                 "c3d68cbc-9e1e-4820-8647-cdf29a64fb2b",
-                                "Identifies the sponsor that requires the action (ToDo) to be completed."),
+                                "Identifies the sponsor that requires the action to be completed."),
+
+    /**
+     * Identifies the cause that requires the action to be completed.
+     */
+    ACTIONS_RELATIONSHIP("aba0e7e5-c3c6-40ad-8a46-fc4793d76906",
+                                "Actions",
+                                OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+                                "91071319-9737-423b-8e26-6e133e082045",
+                                "Identifies the cause that requires the action to be completed."),
 
     /**
      * A person who has been assigned to complete the to do (action).
@@ -2697,27 +2706,120 @@ public enum OpenMetadataType
                                         "1e2296b4-f7c5-45d0-9fa4-de5f27e68bef",
                                         "Identifies that this glossary term describes an activity."),
 
+
+    /**
+     * Characterizations of a collection of data values.
+     */
+    DATA_FIELD_VALUES_CLASSIFICATION("740e76e1-77b4-4426-ad52-d0a4ed15fff9",
+                                        "DataFieldValues",
+                                        OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
+                                        "697126ea-977d-48c7-aadd-7c52d6463466",
+                                        "Characterizations of a collection of data values."),
+
     /**
      * Link between glossary terms where on describes the context where the other one is valid to use.
      */
-    USED_IN_CONTEXT("2dc524d2-e29f-4186-9081-72ea956c75de",
-                    "UsedInContext",
-                    OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
-                    "27226e7d-c7b3-4eaf-b1ff-bf38445a857f",
-                    "Link between glossary terms where on describes the context where the other one is valid to use."),
+    USED_IN_CONTEXT_RELATIONSHIP("2dc524d2-e29f-4186-9081-72ea956c75de",
+                                 "UsedInContext",
+                                 OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
+                                 "27226e7d-c7b3-4eaf-b1ff-bf38445a857f",
+                                 "Link between glossary terms where on describes the context where the other one is valid to use."),
 
     /**
      * Links a glossary term to another element such as an asset or schema element to define its meaning.
      */
-    SEMANTIC_ASSIGNMENT("e6670973-645f-441a-bec7-6f5570345b92",
-                        "SemanticAssignment",
-                        OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
-                        "6b98085b-b70b-49cd-98e2-e87474d27e69",
-                        "Links a glossary term to another element such as an asset or schema element to define its meaning."),
+    SEMANTIC_ASSIGNMENT_RELATIONSHIP("e6670973-645f-441a-bec7-6f5570345b92",
+                                     "SemanticAssignment",
+                                     OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
+                                     "6b98085b-b70b-49cd-98e2-e87474d27e69",
+                                     "Links a glossary term to another element such as an asset or schema element to define its meaning."),
+
+    /**
+     * Defines an inheritance relationship between two spine objects.
+     */
+    TERM_IS_A_TYPE_OF_RELATIONSHIP("71f83296-2007-46a5-a4c7-919a7c4a12f5",
+                                   "TermISATYPEOFRelationship",
+                                   OpenMetadataWikiPages.MODEL_0380_SPINE_OBJECTS,
+                                   "b7e9f8a2-de9b-4d1f-a5d1-61b0dfd22df9",
+                                   "Defines an inheritance relationship between two spine objects."),
+
+    /**
+     * Defines a glossary term that is developed through a controlled workflow.
+     */
+    CONTROLLED_GLOSSARY_TERM("c04e29b2-2d66-48fc-a20d-e59895de6040",
+                             "ControlledGlossaryTerm",
+                             OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                             "513dbb8e-94fa-4764-b29e-e08e2cc7b4af",
+                             "Defines a glossary term that is developed through a controlled workflow."),
+
+    /**
+     * A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary
+     */
+    EDITING_GLOSSARY_CLASSIFICATION("173614ba-c582-4ecc-8fcc-cde5fb664548",
+                                    "EditingGlossary",
+                                    OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                                    "b324d53e-382a-41c7-bc7d-a71693242d1b",
+                                    "A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary"),
+
+    /**
+     * A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary.
+     */
+    STAGING_GLOSSARY_CLASSIFICATION("361fa044-e703-404c-bb83-9402f9221f54",
+                                    "StagingGlossary",
+                                    OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                                    "cc0e0ed5-70cb-4228-abff-eddd93dd15c6",
+                                    "A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary."),
 
     /* ============================================================================================================================*/
     /* Area 4 - Governance                                                                                                         */
     /* ============================================================================================================================*/
+
+    /**
+     * Defines an aspect of the governance program.
+     */
+    GOVERNANCE_DEFINITION("578a3500-9ad3-45fe-8ada-e4e9572c37c8",
+                          "GovernanceDefinition",
+                          OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
+                          "8f4f3146-0c21-4754-b2d3-41e04c519226",
+                          "Defines an aspect of the governance program."),
+
+    /**
+     * Identifies that a project is rolling out capability to support the governance program.
+     */
+    GOVERNANCE_PROJECT_CLASSIFICATION("37142317-4125-4046-9514-71dc5031563f",
+                                      "GovernanceProject",
+                                      OpenMetadataWikiPages.MODEL_0417_GOVERNANCE_PROJECTS,
+                                      "b35e995c-94b5-46eb-bd29-99d51ab294be",
+                                      "Identifies that a project is rolling out capability to support the governance program."),
+
+
+    /**
+     * An implementation of a governance capability.
+     */
+    GOVERNANCE_CONTROL("c794985e-a10b-4b6c-9dc2-6b2e0a2901d3",
+                       "GovernanceControl",
+                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                       "e4de161c-7403-424a-a618-5f06bbf08a2c",
+                       "An implementation of a governance capability."),
+
+    /**
+     * A governance control that is implemented using technology.
+     */
+    TECHNICAL_CONTROL("d8f6eb5b-36f0-49bd-9b25-bf16f370d1ec",
+                       "TechnicalControl",
+                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                       "7b107e29-bb2c-491d-891c-e292371d716c",
+                       "A governance control that is implemented using technology."),
+
+    /**
+     * A governance control that is implemented using organization structure, training, roles manual procedures and reviews.
+     */
+    ORGANIZATIONAL_CONTROL("befa1458-79b8-446a-b813-536700e60fa8",
+                       "OrganizationalControl",
+                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                       "ae48c751-4574-451e-9999-703259507819",
+                       "A governance control that is implemented using organization structure, training, roles manual procedures and reviews."),
+
 
     /**
      * Defines the level of confidentiality of related data items.
@@ -2764,6 +2866,35 @@ public enum OpenMetadataType
                                 OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
                                 "11857716-4f6c-4a31-bf4b-e99ac09ba0f5",
                                 "Identifies an element as part of a subject area definition."),
+
+
+    /**
+     * Defines labels and properties used by a security engine.
+     */
+    SECURITY_TAGS_CLASSIFICATION("a0b07a86-9fd3-40ca-bb9b-fe83c6981deb",
+                                "SecurityTags",
+                                OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                "01a03f5d-027c-462f-bf30-a11b755b168e",
+                                "Defines labels and properties used by a security engine."),
+
+    /**
+     * A technical control that defines who has access to the attached element.
+     */
+    SECURITY_ACCESS_CONTROL("f53bd594-5f75-4cf9-9f77-f5c35396590e",
+                            "SecurityAccessControl",
+                            OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                            "bf14cd7b-9417-4904-9a91-528d6ad6b7ba",
+                            "A technical control that defines who has access to the attached element."),
+
+
+    /**
+     * Links a security access control to a security group.
+     */
+    ASSOCIATED_GROUP_RELATIONSHIP("e47a19d0-7e12-4cf7-9ad7-50856da7faa2",
+                                  "AssociatedGroup",
+                                  OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                  "",
+                                  "Links a security access control to a security group."),
 
     /**
      * Who is responsible for making decisions on the management and governance of this element.
@@ -2964,6 +3095,42 @@ public enum OpenMetadataType
                           "A definition to control the execution of an integration connector."),
 
     /**
+     * A link between an integration group and an integration connector that is part of the group.
+     */
+    REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP("7528bcd4-ae4c-47d0-a33f-4aeebbaa92c2",
+                                                  "RegisteredIntegrationConnector",
+                                                  OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                                                  "8abc960c-af48-4e4e-91ae-df43481b8bb0",
+                                                  "A link between an integration group and an integration connector that is part of the group."),
+
+    /**
+     * Identifies an element that an integration connector is to work with.
+     */
+    CATALOG_TARGET_RELATIONSHIP("bc5a5eb1-881b-4055-aa2c-78f314282ac2",
+                                "CatalogTarget",
+                                OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                                "0e976ec0-1a01-49a4-85f2-49b96b4203df",
+                                "Identifies an element that an integration connector is to work with."),
+
+    /**
+     * Details of the metadata changes made by the execution of the refresh() method by an integration connector.
+     */
+    INTEGRATION_REPORT("b8703d3f-8668-4e6a-bf26-27db1607220d",
+                    "IntegrationReport",
+                    OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
+                    "Details of the metadata changes made by the execution of the refresh() method by an integration connector."),
+
+    /**
+     * Links an integration report to the anchor entity it describes.
+     */
+    RELATED_INTEGRATION_REPORT("83d12156-f8f3-4b4b-b31b-18c140df9aa3",
+                               "RelatedIntegrationReport",
+                               OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                               "7f392793-3c12-4c18-be92-233d9f152a84",
+                               "Links an integration report to the anchor entity it describes."),
+
+    /**
      * A description of an adverse situation or activity.
      */
     INCIDENT_REPORT("072f252b-dea7-4b88-bb2e-8f741c9ca7f6e",
@@ -2971,6 +3138,150 @@ public enum OpenMetadataType
                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
                     "56c76116-1b1c-447c-b74d-ff860a2e41c6",
                     "A description of an adverse situation or activity."),
+
+    /**
+     * A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period.
+     */
+    CONTEXT_EVENT("63d2e056-2f39-40ad-b13b-fe5d8a82d6c6",
+                  "ContextEvent",
+                  OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                  "a4d2329e-3fa0-4165-a784-e9fcc32e646f",
+                  "A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period."),
+
+    /**
+     * Link to evidence that the context event has occurred, started or is expected can appear as alerts/notification or incidents that people have raised.
+     */
+    CONTEXT_EVENT_EVIDENCE_RELATIONSHIP("410ab118-a880-4b6a-950d-dada0363c50e",
+                                        "ContextEventEvidence",
+                                        OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                        "8a52bd3a-172e-46db-b362-038e4ff0edbf",
+                                        "Link to evidence that the context event has occurred, started or is expected can appear as alerts/notification or incidents that people have raised."),
+
+    /**
+     * Link between a parent context event and its children.
+     */
+    DEPENDENT_CONTEXT_EVENT_RELATIONSHIP("3ad9d182-f0d5-4216-abe3-8dd641d0e37b",
+                                         "DependentContextEvent",
+                                         OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                         "20aa9631-0ea3-4692-b464-a214495ecfd9",
+                                         "Link between a parent context event and its children."),
+
+    /**
+     * Link between context events that are impacting one another in some way.
+     */
+    RELATED_CONTEXT_EVENT_RELATIONSHIP("a94db527-7e1c-4f45-914e-a49dc009a305",
+                                       "RelatedContextEvent",
+                                       OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                       "f54937ff-7062-47d9-be68-a030461d7eaa",
+                                       "Link between context events that are impacting one another in some way."),
+
+    /**
+     * Defines a collection of related context events.
+     */
+    CONTEXT_EVENT_COLLECTION_CLASSIFICATION("a4f037c6-abad-4957-bd3d-1adb3279f274",
+                                            "ContextEventCollection",
+                                            OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                            "61a8ff8a-9425-4aaf-bea9-9ac5129d9be1",
+                                            "Defines a collection of related context events."),
+
+    /**
+     * Links a ContextEvent entity to Referenceable entities that describe resources that are impacted by the event.
+     */
+    CONTEXT_EVENT_IMPACT_RELATIONSHIP("335f421f-357a-41dd-a365-1c0aa1226ed9",
+                                      "ContextEventImpact",
+                                      OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                      "006f5649-b20e-4de2-a2f6-a8fc061d8285",
+                                      "Links a ContextEvent entity to Referenceable entities that describe resources that are impacted by the event."),
+
+    /**
+     * Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event.
+     */
+    CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP("f1f407cc-9047-487d-9ce3-aa892cf39711",
+                                                    "ContextEventForTimelineEffects",
+                                                    OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
+                                                    "e13e03a3-4421-464c-829b-1aba11a119b9",
+                                                    "Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event."),
+
+    /**
+     * An agreement between parties.
+     */
+    AGREEMENT("88886b53-c839-48fa-bcfa-83ebcf8abbb5",
+              "Agreement",
+              OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+              "58fe2ef2-bbab-4bb1-8327-8325fb4f213c",
+              "An agreement between parties."),
+
+    /**
+     * A detailed description of the effect of some data processing.
+     */
+    DATA_PROCESSING_DESCRIPTION("685f91fb-c74b-437b-a9b6-c5e557c6d3b2",
+                                "DataProcessingDescription",
+                                OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                "3c1d6681-5ef6-404a-8876-4ad6d9b48e37",
+                                "A detailed description of the effect of some data processing."),
+
+    /**
+     * Expected outcome, service or value from processing.
+     */
+    DATA_PROCESSING_PURPOSE("9062df4c-9f4a-4012-a67a-968d7a3f4bcf",
+                            "DataProcessingPurpose",
+                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                            "596481bd-0771-406b-8dd2-bac9487bf565",
+                            "Expected outcome, service or value from processing."),
+
+    /**
+     * Description of the processing on a single target item.
+     */
+    DATA_PROCESSING_ACTION("7f53928f-9148-4710-ad37-47633f33cb08",
+                           "DataProcessingActionProperties",
+                           OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                           "85954b5a-ef3e-4bf7-94a6-ce7a24153ef6",
+                           "Description of the processing on a single target item."),
+
+    /**
+     * Relationship relates data processing descriptions with purposes (outcomes).
+     */
+    PERMITTED_PROCESSING_RELATIONSHIP("b472a2ec-f419-4d3f-86fb-e9d97365f961",
+                                      "PermittedProcessing",
+                                      OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                      "0cf13128-42c3-4d22-a3c6-c3ab70f7ae43",
+                                      "Relationship relates data processing descriptions with purposes (outcomes)."),
+
+    /**
+     * Relationship identifying the proposes that processes/people have permission to process data for.
+     */
+    APPROVED_PURPOSE_RELATIONSHIP("33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3",
+                                  "ApprovedPurpose",
+                                  OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                  "f39090c4-c4bb-4594-8a9d-e9d43f3bdb1a",
+                                  "Relationship identifying the proposes that processes/people have permission to process data for."),
+
+    /**
+     * Relationship identifying the individual actions in a data processing description.
+     */
+    DETAILED_PROCESSING_ACTION_RELATIONSHIP("0ac0e793-6727-45d2-9403-06bd19d9ce2e",
+                                            "DetailedProcessingAction",
+                                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                            "11d4a348-15ab-4520-b5cc-ddfe9c88559d",
+                                            "Relationship identifying the individual actions in a data processing description."),
+
+    /**
+     * Relationship identifying the processing being performed by processes or people.
+     */
+    DATA_PROCESSING_SPECIFICATION_RELATIONSHIP("1dfdec0f-f206-4db7-bac8-ec344205fb3c",
+                                               "DataProcessingSpecification",
+                                               OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                               "21ba7de7-62ff-442c-aa97-84b8ac4d6291",
+                                               "Relationship identifying the processing being performed by processes or people."),
+
+    /**
+     * Relationship identifying the actions being performed on data.
+     */
+    DATA_PROCESSING_TARGET_RELATIONSHIP("6ad18aa4-f5fc-47e7-99e1-80acfc536c9a",
+                                        "DataProcessingTarget",
+                                        OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                        "bb2dfb94-fa8e-4e01-83a2-8a8558fa8515",
+                                        "Relationship identifying the actions being performed on data."),
 
 
     /* ============================================================================================================================*/
@@ -3368,80 +3679,6 @@ public enum OpenMetadataType
                                       "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
                                       "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
 
-    /**
-     * A detailed description of the effect of some data processing.
-     */
-    DATA_PROCESSING_DESCRIPTION("685f91fb-c74b-437b-a9b6-c5e557c6d3b2",
-                                "DataProcessingDescription",
-                                OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                "3c1d6681-5ef6-404a-8876-4ad6d9b48e37",
-                                "A detailed description of the effect of some data processing."),
-
-    /**
-     * Expected outcome, service or value from processing.
-     */
-    DATA_PROCESSING_PURPOSE("9062df4c-9f4a-4012-a67a-968d7a3f4bcf",
-                            "DataProcessingPurpose",
-                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                            "596481bd-0771-406b-8dd2-bac9487bf565",
-                            "Expected outcome, service or value from processing."),
-
-    /**
-     * Description of the processing on a single target item.
-     */
-    DATA_PROCESSING_ACTION("7f53928f-9148-4710-ad37-47633f33cb08",
-                           "DataProcessingActionProperties",
-                           OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                           "85954b5a-ef3e-4bf7-94a6-ce7a24153ef6",
-                           "Description of the processing on a single target item."),
-
-    /**
-     * Relationship relates data processing descriptions with purposes (outcomes).
-     */
-    PERMITTED_PROCESSING_RELATIONSHIP("b472a2ec-f419-4d3f-86fb-e9d97365f961",
-                                      "PermittedProcessing",
-                                      OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                      "0cf13128-42c3-4d22-a3c6-c3ab70f7ae43",
-                                      "Relationship relates data processing descriptions with purposes (outcomes)."),
-
-    /**
-     * Relationship identifying the proposes that processes/people have permission to process data for.
-     */
-    APPROVED_PURPOSE_RELATIONSHIP("33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3",
-                                  "ApprovedPurpose",
-                                  OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                  "f39090c4-c4bb-4594-8a9d-e9d43f3bdb1a",
-                                  "Relationship identifying the proposes that processes/people have permission to process data for."),
-
-    /**
-     * Relationship identifying the individual actions in a data processing description.
-     */
-    DETAILED_PROCESSING_ACTION_RELATIONSHIP("0ac0e793-6727-45d2-9403-06bd19d9ce2e",
-                                            "DetailedProcessingAction",
-                                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                            "11d4a348-15ab-4520-b5cc-ddfe9c88559d",
-                                            "Relationship identifying the individual actions in a data processing description."),
-
-    /**
-     * Relationship identifying the processing being performed by processes or people.
-     */
-    DATA_PROCESSING_SPECIFICATION_RELATIONSHIP("1dfdec0f-f206-4db7-bac8-ec344205fb3c",
-                                               "DataProcessingSpecification",
-                                               OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                               "21ba7de7-62ff-442c-aa97-84b8ac4d6291",
-                                               "Relationship identifying the processing being performed by processes or people."),
-
-    /**
-     * Relationship identifying the actions being performed on data.
-     */
-    DATA_PROCESSING_TARGET_RELATIONSHIP("6ad18aa4-f5fc-47e7-99e1-80acfc536c9a",
-                                        "DataProcessingTarget",
-                                        OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
-                                        "bb2dfb94-fa8e-4e01-83a2-8a8558fa8515",
-                                        "Relationship identifying the actions being performed on data."),
-
-
-
     /* ============================================================================================================================*/
     /* Area 6 - Metadata Surveys                                                                                                   */
     /* ============================================================================================================================*/
@@ -3545,6 +3782,15 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                           "772b7c96-0838-4b96-8547-6e581b93e8d2",
                           "A collection of properties about a data field, or number of data fields, in an Asset."),
+
+    /**
+     * Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).
+     */
+    LINKED_DATA_FIELD_RELATIONSHIP("cca4b116-4490-44c4-84e1-535231ae46a1",
+               "LinkedDataField",
+               OpenMetadataWikiPages.MODEL_0616_DATA_FIELD_MODELLING,
+               "ade3a815-ab55-472e-b7e3-dbe1d68f29d3",
+               "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema)."),
 
     /**
      * Additional information to augment an annotation.
@@ -3713,6 +3959,32 @@ public enum OpenMetadataType
     /* Area 7 - Lineage and Data Products                                                                                          */
     /* ============================================================================================================================*/
 
+    /**
+     * A business function implemented using IT.
+     */
+    DIGITAL_SERVICE("f671e1fc-b204-4ee6-a4e2-da1633ecf50e",
+                    "DigitalService",
+                    OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
+                    "e98c1a6f-138b-4b8f-9e48-631bf3cdac44",
+                    "A business function implemented using technology."),
+
+    /**
+     * Relationship identifying dependencies between digital services.
+     */
+    DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP("e8303911-ba1c-4640-974e-c4d57ee1b310",
+                                            "DigitalServiceDependency",
+                                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
+                                            "db671b3f-3468-4b6c-bdde-23244f5f001a",
+                                            "Relationship identifying dependencies between digital services."),
+
+    /**
+     * A digital product that is maintained by a digital service.
+     */
+    DIGITAL_SERVICE_PRODUCT_RELATIONSHIP("51465a59-c785-406d-929c-def34596e9af",
+                                         "DigitalServiceProduct",
+                                         OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
+                                         "355fb25a-12d3-458a-889e-5f9aa31cfdff",
+                                         "A digital product that is maintained by a digital service."),
 
     /**
      * Identifies an element that represents a digital product.
@@ -3723,6 +3995,69 @@ public enum OpenMetadataType
                                    "6751673f-a4e7-4b64-84e4-4c59163d0102",
                                    "Identifies an element that represents a digital product."),
 
+    /**
+     * A specialized agreement that represents a subscription to a digital service or digital product.
+     */
+    DIGITAL_SUBSCRIPTION("ad6ed361-af14-458f-8fb7-d4c11baa45d2",
+                         "DigitalSubscription",
+                         OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
+                         "71fe7c8b-d1de-4090-8b18-1855cb8f89b3",
+                         "A specialized agreement that represents a subscription to a digital service or digital product."),
+
+    /**
+     * The link between a digital subscriber and the subscription details.
+     */
+    DIGITAL_SUBSCRIBER_RELATIONSHIP("567cc4e7-ef89-4d36-af0d-3cb4fe9b8cf4",
+                                    "DigitalSubscriber",
+                                    OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
+                                    "60dac0a2-8326-4321-ad88-92b343ef89d2",
+                                    "The link between a digital subscriber and the subscription details."),
+
+    /**
+     * Relationship identifying the organizations responsible for operating the digital services.
+     */
+    DIGITAL_SERVICE_OPERATOR_RELATIONSHIP("79ac27f6-be9c-489f-a7c2-b9add0bf705c",
+                                          "DigitalServiceOperator",
+                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
+                                          "ffbeafae-228b-45d2-8270-378ba73916ff",
+                                          "Relationship identifying the organizations responsible for operating the digital services."),
+
+    /**
+     * Relationship identifying the digital services supporting each business capability.
+     */
+    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
+                                 "DigitalSupport",
+                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
+                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
+                                 "Relationship identifying the digital services supporting each business capability."),
+
+    /**
+     * Relationship identifying the individual responsible for each digital service.
+     */
+    DIGITAL_SERVICE_MANAGEMENT_RELATIONSHIP("91ff7542-c275-4cd3-b367-97eec3360422",
+                                            "DigitalServiceManagement",
+                                            OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
+                                            "ee3fd1ff-0c81-4862-a29d-57b6c4175cce",
+                                            "Relationship identifying the individual responsible for each digital service."),
+
+    /**
+     * Person managing a digital service.
+     */
+    DIGITAL_SERVICE_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
+                             "DigitalServiceManager",
+                             OpenMetadataWikiPages.MODEL_0715_DIGITAL_SERVICE_OWNERSHIP,
+                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
+                             "Person managing a digital service."),
+
+
+    /**
+     * Connection between two solution ports that shows how data flows.
+     */
+    SOLUTION_LINKING_WIRE("892a3d1c-cfb8-431d-bd59-c4d38833bfb0",
+                          "SolutionLinkingWire",
+                          OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                          "9a207086-ce67-4419-a6c0-bcdd478648c3",
+                          "Connection between two solution ports that shows how data flows."),
 
     /**
      * Shows that data flows in one direction from one element to another.
@@ -3825,87 +4160,9 @@ public enum OpenMetadataType
 
 
     /* ============================================================================================================================*/
-    /* Area 2 - Assets                                                                                                             */
-    /* ============================================================================================================================*/
-
-
-    /**
-     * 740e76e1-77b4-4426-ad52-d0a4ed15fff9
-     */
-    public static final String DATA_FIELD_VALUES_CLASSIFICATION_GUID = "740e76e1-77b4-4426-ad52-d0a4ed15fff9";
-
-    /**
-     * DataFieldValues
-     */
-    public static final String DATA_FIELD_VALUES_CLASSIFICATION_NAME = "DataFieldValues";
-
-    /**
-     * defaultValue
-     */
-    public static final String DEFAULT_VALUE_PROPERTY_NAME = "defaultValue";      /* from DataFieldValues classification */
-
-    /**
-     * sampleValues
-     */
-    public static final String SAMPLE_VALUES_PROPERTY_NAME = "sampleValues";      /* from DataFieldValues classification */
-
-    /**
-     * dataPattern
-     */
-    public static final String DATA_PATTERN_PROPERTY_NAME = "dataPattern";       /* from DataFieldValues classification */
-
-    /**
-     * namePattern
-     */
-    public static final String NAME_PATTERN_PROPERTY_NAME = "namePattern";       /* from DataFieldValues classification */
-
-    /**
-     * minLongitude
-     */
-    public static final String MIN_LONGITUDE_PROPERTY_NAME = "minLongitude";
-
-    /**
-     * minLatitude
-     */
-    public static final String MIN_LATITUDE_PROPERTY_NAME = "minLatitude";
-
-    /**
-     * maxLongitude
-     */
-    public static final String MAX_LONGITUDE_PROPERTY_NAME = "maxLongitude";
-
-    /**
-     * maxLatitude
-     */
-    public static final String MAX_LATITUDE_PROPERTY_NAME = "maxLatitude";
-
-    /**
-     * minHeight
-     */
-    public static final String MIN_HEIGHT_PROPERTY_NAME = "minHeight";
-
-    /**
-     * maxHeight
-     */
-    public static final String MAX_HEIGHT_PROPERTY_NAME = "maxHeight";
-
-
-    /* ============================================================================================================================*/
     /* Area 3 - Glossary                                                                                                           */
     /* ============================================================================================================================*/
 
-
-    public static final String CONTROLLED_GLOSSARY_TERM_TYPE_GUID = "c04e29b2-2d66-48fc-a20d-e59895de6040";
-    public static final String CONTROLLED_GLOSSARY_TERM_TYPE_NAME = "ControlledGlossaryTerm";           /* from Area 3 */
-    /* GlossaryTerm */
-
-    public static final String EDITING_GLOSSARY_CLASSIFICATION_TYPE_GUID = "173614ba-c582-4ecc-8fcc-cde5fb664548";
-    public static final String EDITING_GLOSSARY_CLASSIFICATION_TYPE_NAME = "EditingGlossary";           /* from Area 3 */
-    /* Glossary */
-
-    public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_GUID = "361fa044-e703-404c-bb83-9402f9221f54";
-    public static final String STAGING_GLOSSARY_CLASSIFICATION_TYPE_NAME = "StagingGlossary";       /* from Area 3 */
-    /* Glossary */
 
     public static final String RELATED_TERM_RELATIONSHIP_GUID = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
     public static final String RELATED_TERM_RELATIONSHIP_NAME = "RelatedTerm";
@@ -4001,11 +4258,6 @@ public enum OpenMetadataType
 
     /* GovernanceRole */
 
-    public static final String GOVERNANCE_DEFINITION_TYPE_GUID = "578a3500-9ad3-45fe-8ada-e4e9572c37c8";
-    public static final String GOVERNANCE_DEFINITION_TYPE_NAME = "GovernanceDefinition";
-    /* Referenceable */
-
-
 
     public static final String GOVERNANCE_RESPONSIBILITY_TYPE_GUID = "89a76b24-deb8-45bf-9304-a578a610326f";
     public static final String GOVERNANCE_RESPONSIBILITY_TYPE_NAME = "GovernanceResponsibility";
@@ -4059,13 +4311,8 @@ public enum OpenMetadataType
     public static final String ATTRIBUTE_NAME_PROPERTY_NAME             = "attributeName";             /* from ReferenceValueAssignment relationship */
     public static final String RATIONALE_PROPERTY_NAME                  = "rationale";                 /* from GovernanceResponse, GovernanceImplementation relationship */
 
-    public static final String GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_GUID = "37142317-4125-4046-9514-71dc5031563f";
-    public static final String GOVERNANCE_PROJECT_CLASSIFICATION_TYPE_NAME = "GovernanceProject";
-    /* Attached to Project */
-
 
     public static final String LEVEL_IDENTIFIER_PROPERTY_NAME    = "levelIdentifier";           /* from many governance entities and classifications */
-
 
 
     public static final String RETENTION_ASSOCIATED_GUID_PROPERTY_NAME = "associatedGUID";
@@ -4076,12 +4323,6 @@ public enum OpenMetadataType
     public static final String SECURITY_GROUP_TYPE_NAME = "SecurityGroup";
     /* TechnicalControl */
     public static final String GROUPS_PROPERTY_NAME                               = "groups";
-
-    public static final String SECURITY_TAGS_CLASSIFICATION_TYPE_GUID = "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
-    public static final String SECURITY_TAGS_CLASSIFICATION_TYPE_NAME = "SecurityTags";
-    public static final String SECURITY_LABELS_PROPERTY_NAME          = "securityLabels";
-    public static final String SECURITY_PROPERTIES_PROPERTY_NAME      = "securityProperties";
-    public static final String ACCESS_GROUPS_PROPERTY_NAME            = "accessGroups";
 
 
     public static final String ZONE_TYPE_GUID = "290a192b-42a7-449a-935a-269ca62cfdac";
@@ -4244,44 +4485,7 @@ public enum OpenMetadataType
 
     public static final String REQUEST_SOURCE_NAME_PROPERTY_NAME = "requestSourceName"; /* from GovernanceActionRequestSource relationship */
 
-    public static final String ACTION_TARGET_NAME_PROPERTY_NAME = "actionTargetName"; /* from TargetForAction relationship */
 
-
-    public static final String USES_BLOCKING_CALLS_PROPERTY_NAME = "usesBlockingCalls";     /* from IntegrationConnector entity */
-
-    public static final String REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID = "7528bcd4-ae4c-47d0-a33f-4aeebbaa92c2";
-    public static final String REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME = "RegisteredIntegrationConnector";
-    /* End1 = IntegrationGroup; End 2 = IntegrationConnector */
-
-    public static final String CONNECTOR_NAME_PROPERTY_NAME                 = "connectorName";  /* from RegisteredIntegrationConnector relationship */
-    public static final String CONNECTOR_USER_ID_PROPERTY_NAME              = "connectorUserId";/* from RegisteredIntegrationConnector  relationship */
-    public static final String METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME = "metadataSourceQualifiedName";  /* from RegisteredIntegrationConnector relationship */
-    public static final String TEMPLATES_PROPERTY_NAME                      = "templates";  /* from RegisteredIntegrationConnector relationship */
-    public static final String CONNECTION_NAME_PROPERTY_NAME                = "connectionName";  /* from RegisteredIntegrationConnector relationship */
-    public static final String STOP_DATE_PROPERTY_NAME                      = "stopDate";       /* from RegisteredIntegrationConnector relationship */
-    public static final String REFRESH_TIME_INTERVAL_PROPERTY_NAME          = "refreshTimeInterval"; /* from RegisteredIntegrationConnector relationship */
-    public static final String GENERATE_INTEGRATION_REPORT_PROPERTY_NAME    = "generateIntegrationReport"; /* from RegisteredIntegrationConnector relationship */
-
-    public static final String CATALOG_TARGET_RELATIONSHIP_TYPE_GUID = "bc5a5eb1-881b-4055-aa2c-78f314282ac2";
-    public static final String CATALOG_TARGET_RELATIONSHIP_TYPE_NAME = "CatalogTarget";
-    /* End1 = IntegrationConnector; End 2 = OpenMetadataRoot */
-
-    public static final String CATALOG_TARGET_NAME_PROPERTY_NAME = "catalogTargetName";     /* from CatalogTarget relationship */
-
-    public static final String INTEGRATION_REPORT_TYPE_GUID = "b8703d3f-8668-4e6a-bf26-27db1607220d";
-    public static final String INTEGRATION_REPORT_TYPE_NAME = "IntegrationReport";
-
-    public static final String SERVER_NAME_PROPERTY_NAME             = "serverName";             /* from IntegrationReport entity */
-    public static final String CONNECTOR_ID_PROPERTY_NAME            = "connectorId";            /* from IntegrationReport entity */
-    public static final String REFRESH_START_DATE_PROPERTY_NAME      = "refreshStartDate";       /* from IntegrationReport entity */
-    public static final String REFRESH_COMPLETION_DATE_PROPERTY_NAME = "refreshCompletionDate";  /* from IntegrationReport entity */
-    public static final String CREATED_ELEMENTS_PROPERTY_NAME        = "createdElements";        /* from IntegrationReport entity */
-    public static final String UPDATED_ELEMENTS_PROPERTY_NAME        = "updatedElements";        /* from IntegrationReport entity */
-    public static final String DELETED_ELEMENTS_PROPERTY_NAME        = "deletedElements";        /* from IntegrationReport entity */
-
-    public static final String RELATED_INTEGRATION_REPORT_TYPE_GUID = "83d12156-f8f3-4b4b-b31b-18c140df9aa3";
-    public static final String RELATED_INTEGRATION_REPORT_TYPE_NAME = "RelatedIntegrationReport";
-    /* End1 = OpenMetadataRoot; End 2 = IntegrationReport */
 
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID = "e55062b2-907f-44bd-9831-255642285731";
     public static final String KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME = "KnownDuplicate";
@@ -4298,50 +4502,6 @@ public enum OpenMetadataType
     public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME = "ConsolidatedDuplicateLink";
     /* End1 = Referenceable (Detected Duplicate); End 2 = Referenceable (Result) */
 
-    public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_GUID = "a9d4f64b-fa24-4eb8-8bf6-308926ef2c14";
-    public static final String INCIDENT_REPORT_STATUS_ENUM_TYPE_NAME = "IncidentReportStatus";
-    public static final int    RAISED_INCIDENT_ORDINAL               = 0;
-    public static final int    REVIEWED_INCIDENT_ORDINAL             = 1;
-    public static final int    VALIDATED_INCIDENT_ORDINAL            = 2;
-    public static final int    RESOLVED_INCIDENT_ORDINAL             = 3;
-    public static final int    INVALID_INCIDENT_ORDINAL              = 4;
-    public static final int    IGNORED_INCIDENT_ORDINAL              = 5;
-    public static final int    OTHER_INCIDENT_ORDINAL                = 99;
-
-    public static final String INCIDENT_CLASSIFIER_TYPE_GUID = "361158c0-ade1-4c92-a6a7-64f7ac39b87d";
-    public static final String INCIDENT_CLASSIFIER_TYPE_NAME = "IncidentClassifier";
-    /* Referenceable */
-
-    public static final String INCIDENT_CLASSIFIER_SET_TYPE_GUID = "361158c0-ade1-4c92-a6a7-64f7ac39b87d";
-    public static final String INCIDENT_CLASSIFIER_SET_TYPE_NAME = "IncidentClassifierSet";
-    /* Collection */
-
-    public static final String CLASSIFIER_LABEL_PROPERTY_NAME       = "classifierLabel";       /* from IncidentClassifier entity */
-    public static final String CLASSIFIER_IDENTIFIER_PROPERTY_NAME  = "classifierIdentifier";  /* from IncidentClassifier entity */
-    public static final String CLASSIFIER_NAME_PROPERTY_NAME        = "classifierName";        /* from IncidentClassifier entity */
-    public static final String CLASSIFIER_DESCRIPTION_PROPERTY_NAME = "classifierDescription"; /* from IncidentClassifier entity */
-
-
-    public static final String INCIDENT_REPORT_TYPE_GUID = "072f252b-dea7-4b88-bb2e-8f741c9ca7f6e";
-    public static final String INCIDENT_REPORT_TYPE_NAME = "IncidentReport";
-    /* Referenceable */
-
-    public static final String BACKGROUND_PROPERTY_NAME      = "background";     /* from IncidentReport entity */
-    public static final String INCIDENT_STATUS_PROPERTY_NAME = "incidentStatus"; /* from IncidentReport entity */
-
-    public static final String INCIDENT_ORIGINATOR_TYPE_GUID = "e490772e-c2c5-445a-aea6-1aab3499a76c";
-    public static final String INCIDENT_ORIGINATOR_TYPE_NAME = "IncidentOriginator";
-    /* End1 = Referenceable; End 2 = IncidentReport */
-
-    public static final String IMPACTED_RESOURCE_TYPE_GUID = "0908e153-e0fd-499c-8a30-5ea8b81395cd";
-    public static final String IMPACTED_RESOURCE_TYPE_NAME = "ImpactedResource";
-    /* End1 = Referenceable; End 2 = IncidentReport */
-
-    public static final String SEVERITY_LEVEL_IDENTIFIER_PROPERTY_NAME = "severityLevelIdentifier";       /* from Certification relationship */
-
-    public static final String INCIDENT_DEPENDENCY_TYPE_GUID = "017be6a8-0037-49d8-af5d-c45c41f25e0b";
-    public static final String INCIDENT_DEPENDENCY_TYPE_NAME = "IncidentDependency";
-    /* End1 = IncidentReport; End 2 = IncidentReport */
 
     public static final String CERTIFICATION_TYPE_TYPE_GUID = "97f9ffc9-e2f7-4557-ac12-925257345eea";
     public static final String CERTIFICATION_TYPE_TYPE_NAME = "CertificationType";

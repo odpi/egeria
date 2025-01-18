@@ -125,10 +125,10 @@ public class IntegrationContext
         {
             this.integrationReportWriter = new IntegrationReportWriter(serverName,
                                                                        connectorId,
+                                                                       integrationConnectorGUID,
                                                                        connectorName,
                                                                        userId,
-                                                                       openIntegrationClient,
-                                                                       openMetadataStoreClient);
+                                                                       openIntegrationClient);
         }
         else
         {
@@ -607,63 +607,6 @@ public class IntegrationContext
         if (integrationReportWriter != null)
         {
             integrationReportWriter.startRecording();
-        }
-    }
-
-
-    /**
-     * Save the relationship between an element and its anchor.  This is called by the methods of the context that
-     * create, update, archive or delete elements.
-     *
-     * @param elementGUID unique identifier of the element
-     * @param anchorGUID unique identifier of the associated anchor
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    protected void reportAnchorGUID(String elementGUID,
-                                    String anchorGUID) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setAnchor(elementGUID, anchorGUID);
-        }
-    }
-
-
-    /**
-     * Save the relationship between an element and its anchor.  This is called by the methods of the context that
-     * create, update, archive or delete elements.
-     *
-     * @param elementGUID unique identifier of the element
-     * @param anchorGUID unique identifier of the associated anchor
-     * @param anchorTypeName type name of the associated anchor
-     */
-    protected void reportAnchorGUID(String elementGUID,
-                                    String anchorGUID,
-                                    String anchorTypeName)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setAnchor(elementGUID, anchorGUID, anchorTypeName);
-        }
-    }
-
-
-    /**
-     * Attempt to use the parent's GUID to discover the relationship between an element and its anchor.  This is used to identify
-     * which report that the element should be reported under.
-     *
-     * @param elementGUID unique identifier of the element
-     * @param parentGUID unique identifier of the associated parent
-     */
-    protected void reportParentGUID(String elementGUID, String parentGUID)
-    {
-        if (integrationReportWriter != null)
-        {
-            integrationReportWriter.setParent(elementGUID, parentGUID);
         }
     }
 

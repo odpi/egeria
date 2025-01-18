@@ -350,7 +350,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                  */
                 try
                 {
-                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME + ":" + catalogTarget.getRelationshipGUID(),
+                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + ":" + catalogTarget.getRelationshipGUID(),
                                                                                     fileFolderElement.getFileFolderProperties().getPathName(),
                                                                                     catalogTarget.getRelationshipGUID(),
                                                                                     catalogTarget.getDeleteMethod(),

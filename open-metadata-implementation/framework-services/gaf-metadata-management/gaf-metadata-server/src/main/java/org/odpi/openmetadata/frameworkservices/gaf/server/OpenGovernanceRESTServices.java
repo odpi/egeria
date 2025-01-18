@@ -1254,7 +1254,7 @@ public class OpenGovernanceRESTServices
             governanceActionProcessGraph.getGovernanceActionProcess().setSpecification(handler.getSpecification(userId,
                                                                                                                 governanceActionProcessGraph.getGovernanceActionProcess().getElementHeader().getGUID(),
                                                                                                                 processGUIDParameterName,
-                                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                                OpenMetadataType.PROCESS.typeName,
                                                                                                                 supportedZones));
 
             if (governanceActionProcessGraph.getGovernanceActionProcess().getSpecification() != null)

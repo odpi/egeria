@@ -116,7 +116,7 @@ public enum DataType implements OpenMetadataEnum
     MAP_STRING_DATE(16, "9d09ac67-d3b5-4c5b-b8bf-e9140ae06877", "map<string,date>", "A map from string value to date value.", false),
 
     /**
-     * A map from string value to date value.
+     * A map from string value to object value.
      */
     MAP_STRING_OBJECT(17, "9a99ee58-f18f-432c-b2ac-f5fb99a78690", "map<string,object>", "A map from string value to object value.", false),
 
@@ -126,9 +126,14 @@ public enum DataType implements OpenMetadataEnum
     SHORT(18, "142d1d09-9caf-415c-95e5-115f27679d26", "short", "Short", false),
 
     /**
+     * A map from string value to an array of strings
+     */
+    MAP_STRING_ARRAY_STRING(19, "f5fb27f1-06c7-4ea5-98c6-c45a37231b35", "map<string, array<string>>", "A map from string value to an array of strings", false),
+    /**
      * A generic data type.
      */
     OBJECT(99, "0441e0c1-96f0-4887-a038-72c7437628a1", "Other", "An unknown data type.", false),
+
 
     ;
 

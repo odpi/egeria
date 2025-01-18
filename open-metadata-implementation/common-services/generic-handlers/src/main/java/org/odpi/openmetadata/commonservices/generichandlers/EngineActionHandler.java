@@ -1855,7 +1855,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                      null,
-                                                                                                     OpenMetadataType.ACTION_TARGET_NAME_PROPERTY_NAME,
+                                                                                                     OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                                                      actionTargetName,
                                                                                                      methodName);
 

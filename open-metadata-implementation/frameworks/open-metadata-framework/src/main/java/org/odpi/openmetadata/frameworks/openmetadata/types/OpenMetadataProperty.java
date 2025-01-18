@@ -439,9 +439,24 @@ public enum OpenMetadataProperty
     DATA_TYPE("dataType", DataType.STRING.getName(), "The name of a primitive data type.", null, "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
 
     /**
-     * The default value of a primitive data type.
+     * Value that is used when an instance of the data field is created.
      */
-    DEFAULT_VALUE("defaultValue", DataType.STRING.getName(), "The default value of a primitive data type.", null, "e2ac5648-054c-492f-9818-bb1c55554bd6"),
+    DEFAULT_VALUE("defaultValue", DataType.STRING.getName(), "Value that is used when an instance of the data field is created.", null, "e2ac5648-054c-492f-9818-bb1c55554bd6"),
+
+    /**
+     * List of sample values for the data field.
+     */
+    SAMPLE_VALUES("sampleValues", DataType.ARRAY_STRING.getName(), "List of sample values for the data field.", null, "70eaf827-ed11-41c0-a5a2-1b6c247475a5"),
+
+    /**
+     * A regular expression that characterizes the values in the data field.
+     */
+    DATA_PATTERN("dataPattern", DataType.ARRAY_STRING.getName(), "A regular expression that characterizes the values in the data field.", null, "bea19c2c-7a41-464d-852a-8fbfb821c208"),
+
+    /**
+     * A regular expression that characterizes the name of the data field.
+     */
+    NAME_PATTERN("namePattern", DataType.ARRAY_STRING.getName(), "A regular expression that characterizes the name of the data field.", null, "e5cf2938-d1c9-4a09-bf40-76d0431b6c1a"),
 
     /**
      * The value of a literal data type.
@@ -452,6 +467,26 @@ public enum OpenMetadataProperty
      * Position of the element in a collection of relationships.
      */
     POSITION("position", DataType.INT.getName(), "Position of the element in a collection of relationships.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae"),
+
+    /**
+     * Minimum length of the data value (zero means unlimited).
+     */
+    MINIMUM_LENGTH("minimumLength", DataType.INT.getName(), "Minimum length of the data value (zero means unlimited).", null, "c7b61891-759f-425c-b0f8-268374e7d72a"),
+
+    /**
+     * Number of significant digits before the decimal point (zero means it is an integer).
+     */
+    SIGNIFICANT_DIGITS("significantDigits", DataType.INT.getName(), "Number of significant digits before the decimal point (zero means it is an integer).", null, "c7b61891-759f-425c-b0f8-268374e7d72a"),
+
+    /**
+     * Accepts null values or not.
+     */
+    IS_NULLABLE("isNullable", DataType.BOOLEAN.getName(), "Accepts null values or not.", null, "6e66ed4e-bc2e-446b-a884-d358044730e7"),
+
+    /**
+     * Number of digits after the decimal point.
+     */
+    PRECISION("precision", DataType.INT.getName(), "Number of digits after the decimal point.", null, "45992a6f-096a-4ec2-a14f-886cb5467070"),
 
     /**
      * Minimum number of allowed instances.
@@ -512,6 +547,11 @@ public enum OpenMetadataProperty
      * Date of the review.
      */
     REVIEW_DATE("reviewDate", DataType.DATE.getName(), "Date of the review.", null, "7c19aa3a-5fbe-4455-928d-3330b21b22dd"),
+
+    /**
+     * Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.
+     */
+    USER_DEFINED_STATUS("userDefinedStatus", DataType.STRING.getName(), "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.", null, "ff8797aa-8e7c-414a-8987-ca56ff77ad21"),
 
     /**
      * User identifier for the steward performing the review.
@@ -586,7 +626,7 @@ public enum OpenMetadataProperty
     /**
      * Visible version identifier.
      */
-    PUBLISH_VERSION_ID("publishVersionIdentifier", DataType.STRING.getName(), "Visible version identifier.", "V1.2", "cae42a1b-f752-4ca9-8d26-96829b2f591d"),
+    PUBLISH_VERSION_ID("publishVersionIdentifier", DataType.STRING.getName(), "Visible version identifier controlled by the author.", "V1.2", "cae42a1b-f752-4ca9-8d26-96829b2f591d"),
 
     /**
      * Is this value required?
@@ -639,9 +679,9 @@ public enum OpenMetadataProperty
     SCHEMA_TYPE("schemaType", DataType.STRING.getName(), "Type name for the discovered schema.", null, "6a68d174-fd29-49ef-aa4b-26205dbebb58"),
 
     /**
-     * Length of the data field.
+     * Length of the data field (zero means unlimited).
      */
-    LENGTH("length", DataType.INT.getName(), "Length of the data field.", null, "35a17811-1635-4ab1-9a15-0f79bc771a27"),
+    LENGTH("length", DataType.INT.getName(), "Length of the data field (zero means unlimited).", null, "35a17811-1635-4ab1-9a15-0f79bc771a27"),
 
     /**
      * Potential classification names and properties as JSON.
@@ -1191,7 +1231,6 @@ public enum OpenMetadataProperty
      */
     STATUS_IDENTIFIER("statusIdentifier", DataType.INT.getName(), GovernanceClassificationStatus.getOpenTypeDescription(), Integer.toString(GovernanceClassificationStatus.VALIDATED.getOrdinal()), "8279602a-c86d-4cf7-b66d-1ea98b75c491"),
 
-
     /**
      * Defines the suggested order that data values in this data item should be sorted by.
      */
@@ -1656,6 +1695,9 @@ public enum OpenMetadataProperty
      */
     IS_CASE_SENSITIVE("isCaseSensitive", DataType.BOOLEAN.getName(), "Is this valid value case-sensitive, or should the values match irrespective of case?", "true", "999d6f38-b244-44da-91f9-53694a25c174"),
 
+    /**
+     * This element may still be used but is flagged that it will be removed at some point in the future.
+     */
     IS_DEPRECATED("isDeprecated", DataType.BOOLEAN.getName(),"This element may still be used but is flagged that it will be removed at some point in the future.", "false", "bf8e38f8-d841-4c7b-990a-26d701713bd0"),
 
     /**
@@ -1691,7 +1733,22 @@ public enum OpenMetadataProperty
     /**
      * Relative importance of this governance definition compared to its peers.
      */
-    IMPORTANCE("importance", null, "Relative importance of this definition compared to its peers.", null, "dfae7171-34a5-4460-bb61-4219454155db"),
+    IMPORTANCE("importance", DataType.STRING.getName(), "Relative importance of this definition compared to its peers.", null, "dfae7171-34a5-4460-bb61-4219454155db"),
+
+    /**
+     * Impact on the organization, people and services when adopting the recommendation in this governance definition.
+     */
+    IMPLICATIONS("implications", DataType.ARRAY_STRING.getName(), "Impact on the organization, people and services when adopting the recommendation in this governance definition.", null, "42d1d144-b81c-412e-bfc2-14ffbff089de"),
+
+    /**
+     * Expected outcomes.
+     */
+    OUTCOMES("outcomes", DataType.ARRAY_STRING.getName(), "Expected outcomes.", null, "15a6e909-00c9-464c-acf7-05c774b786b3"),
+
+    /**
+     * Actual results.
+     */
+    RESULTS("results", DataType.ARRAY_STRING.getName(), "Actual results.", null, "cb9ed4e0-bb5f-4ab9-95be-38c3d59517d8"),
 
     /**
      * When the requested action needs to be completed.
@@ -1933,6 +1990,226 @@ public enum OpenMetadataProperty
      */
     STATUS("status", GlossaryTermRelationshipStatus.getOpenTypeName(), "Status of the relationship.",  GlossaryTermRelationshipStatus.ACTIVE.getName(), "b46a1425-b307-4706-bc3d-c1c2d4adfbfd"),
 
+    /**
+     * When does the entry refer to.
+     */
+    TIMELINE_ENTRY_DATE("timelineEntryDate", DataType.DATE.getName(), "When does the entry refer to.", null, "b04d9a3f-cdfe-44cf-91b3-504873af09f2"),
+
+    /**
+     * Describes the entry in the timeline.
+     */
+    TIMELINE_ENTRY_DESCRIPTION("timelineEntryDescription", DataType.DATE.getName(), "Describes the entry in the timeline.", null, "afc023fc-60ea-4ffb-bb2f-17612960e408"),
+
+    /**
+     * How severe is the impact on the resource?
+     */
+    SEVERITY_LEVEL_IDENTIFIER("severityLevelIdentifier", DataType.INT.getName(), "How severe is the impact on the resource?", null, "2f549dab-9938-46fc-b35d-9773231bffd9"),
+
+    /**
+     * Describes the expected effects of the event on the organization.
+     */
+    EVENT_EFFECT("eventEffect", DataType.STRING.getName(), "Describes the expected effects of the event on the organization.", null, "6ce8112d-55da-44c0-a9de-668cfb67b368"),
+
+    /**
+     * Describes the type/category of event.  Valid values for this attribute can be managed in a valid metadata value set.
+     */
+    CONTEXT_EVENT_TYPE("contextEventType", DataType.STRING.getName(), "Describes the type/category of event.  Valid values for this attribute can be managed in a valid metadata value set.", null, "05ddaeb1-bc67-46c8-bf44-7ffb6054d67f"),
+
+    /**
+     * Provides a planned date/time when the event should start.
+     */
+    PLANNED_START_DATE("plannedStartDate", DataType.DATE.getName(), "Provides a planned date/time when the event should start.", null, "43bdc270-4f2b-4fa9-a897-561940cd1d6a"),
+
+    /**
+     * Provides a definitive date/time when the event did start.
+     */
+    ACTUAL_START_DATE("actualStartDate", DataType.DATE.getName(), "Provides a definitive date/time when the event did start.", null, "0190f608-84f0-43d5-b0a6-18dac1eeaefd"),
+
+    /**
+     * Defines, in milliseconds, the length of time that the event is expected to last.
+     */
+    PLANNED_DURATION("plannedDuration", DataType.LONG.getName(), "Defines, in milliseconds, the length of time that the event is expected to last.", null, ""),
+
+    /**
+     * Defines, in milliseconds, the length of time that the event did last.
+     */
+    ACTUAL_DURATION("actualDuration", DataType.LONG.getName(), "Defines, in milliseconds, the length of time that the event did last.", null, "a68e8d73-e36c-47cb-946a-13f40233121d"),
+
+    /**
+     * Defines, in milliseconds, how frequently the event is expected to repeat.
+     */
+    REPEAT_INTERVAL("repeatInterval", DataType.LONG.getName(), "Defines, in milliseconds, how frequently the event is expected to repeat.", null, "815c6947-137f-4c6e-9459-b2179339acb3"),
+
+    /**
+     * Provides an expected date/time when the event is complete.
+     */
+    PLANNED_COMPLETION_DATE("plannedCompletionDate", DataType.DATE.getName(), "Provides an expected date/time when the event is complete.", null, "1643e955-e2d6-4ea0-871a-d1f351ee58eb"),
+
+    /**
+     * Provides a date/time when the event did complete.
+     */
+    ACTUAL_COMPLETION_DATE("actualCompletionDate", DataType.DATE.getName(), "Provides a date/time when the event did complete.", null, "f48ddf01-cafd-4c37-af5c-bc075c3649db"),
+
+    /**
+     * Provides a value to use in the starting effective dates for entities, relationships and classifications whose effectivity is triggered by this context event.
+     */
+    REFERENCE_EFFECTIVE_FROM("referenceEffectiveFrom", DataType.DATE.getName(), "Provides a value to use in the starting effective dates for entities, relationships and classifications whose effectivity is triggered by this context event.", null, "866f0c0b-ed24-4567-af7e-d1db6cd07691"),
+
+    /**
+     * Provides a value to use in the ending effective dates for entities, relationships and classifications whose effectivity is ended by this context event.
+     */
+    REFERENCE_EFFECTIVE_TO("referenceEffectiveTo", DataType.DATE.getName(), "Provides a value to use in the ending effective dates for entities, relationships and classifications whose effectivity is ended by this context event.", null, "0c05a464-34a3-4c4c-82fe-17259d3f4e9e"),
+
+    /**
+     * Map of template name to qualified name of parent element in associated catalog template.
+     */
+    TEMPLATES("templates", DataType.MAP_STRING_STRING.getName(), "Map of template name to qualified name of parent element in associated catalog template.", null, "b87eccc4-764b-40c3-aa4b-69d8c9aaed71"),
+
+    /**
+     * Name of connection to use to access the associated resource.  If this is null, the connection for the asset associated with the catalog target is used.  The asset may be the catalog target itself or the catalog target's anchor.
+     */
+    CONNECTION_NAME("connectionName", DataType.STRING.getName(), "Name of connection to use to access the associated resource.  If this is null, the connection for the asset associated with the catalog target is used.  The asset may be the catalog target itself or the catalog target's anchor.", null, "88bef8a2-a23a-433e-ad37-c4e640397ea8"),
+
+    /**
+     * Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.
+     */
+    METADATA_SOURCE_QUALIFIED_NAME("metadataSourceQualifiedName", DataType.STRING.getName(), "Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.", null, "5538fcb0-b3d9-4870-8d1f-1d2752c75255"),
+
+    /**
+     * If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.
+     */
+    MIN_LONGITUDE("minLongitude", DataType.FLOAT.getName(), "If the data is bound by an area, this is the longitude for bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "9d1694e3-2197-49d4-b651-8d6ab0b8bc42"),
+
+    /**
+     * If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.
+     */
+    MIN_LATITUDE("minLatitude", DataType.FLOAT.getName(), "If the data is bound by an area, this is the latitude for the bottom-left corner of the bounding box (BBOX) for the area covered by the data.", null, "ea7134ed-bb6d-4b1f-b938-48ae8f5686ac"),
+
+    /**
+     * If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data.
+     */
+    MAX_LONGITUDE("maxLongitude", DataType.FLOAT.getName(), "If the data is bound by an area, this is the longitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "5e379349-632c-40c8-8125-694e339c475d"),
+
+    /**
+     * If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.
+     */
+    MAX_LATITUDE("maxLatitude", DataType.FLOAT.getName(), "If the data is bound by an area, this is the latitude for top-right corner of the bounding box (BBOX) for the area covered by the data.", null, "bce87e2b-603f-449a-9c90-15ca3d2bda81"),
+
+    /**
+     * If the height above ground is relevant, this is the lowest height that the data covers.
+     */
+    MIN_HEIGHT("minHeight", DataType.FLOAT.getName(), "If the height above ground is relevant, this is the lowest height that the data covers.", null, "33309620-ca7a-4aa3-a8d0-f98175e82672"),
+
+    /**
+     * If the height above ground is relevant, this is the highest height that the data covers.
+     */
+    MAX_HEIGHT("maxHeight", DataType.FLOAT.getName(), "", null, "cd188a84-17b7-410a-8aba-6195141268ec"),
+
+    /**
+     * If the data is bound by time, this is the start time.
+     */
+    DATA_COLLECTION_START_TIME("dataCollectionStartTime", DataType.DATE.getName(), "If the data is bound by time, this is the start time.", null, "f0e16621-0a71-40df-8679-0117c6ee2ecd"),
+
+    /**
+     * If the data is bound by time, this is the end time.
+     */
+    DATA_COLLECTION_END_TIME("dataCollectionEndTime", DataType.DATE.getName(), "If the data is bound by time, this is the end time.", null, "f216c3c4-247e-425b-9186-5c0d6a242d77"),
+
+
+    /**
+     * Labels that apply to the referenceable.
+     */
+    SECURITY_LABELS("securityLabels", DataType.ARRAY_STRING.getName(), "Labels that apply to the referenceable.", null, "28498a17-7d50-4d7c-b26d-3dbbebac614d"),
+
+    /**
+     * Properties that apply to the referenceable.
+     */
+    SECURITY_PROPERTIES("securityProperties", DataType.MAP_STRING_STRING.getName(), "Properties that apply to the referenceable.", null, "0d36a7b3-95f8-42bf-836b-4abd4a376ffc"),
+
+    /**
+     * Map of access groups.
+     */
+    ACCESS_GROUPS("accessGroups", DataType.MAP_STRING_ARRAY_STRING.getName(), "Map of access groups.", null, "1b1f3661-8630-488d-89cd-b9692fad160d"),
+
+    /**
+     * Description of how this governance control should be implemented.
+     */
+    IMPLEMENTATION_DESCRIPTION("implementationDescription", DataType.STRING.getName(), "Description of how this governance control should be implemented.", null, "cebf5cd8-60a2-402c-9216-b13ba16279d5"),
+
+    /**
+     * Name of the integration connector for logging purposes.
+     */
+    CONNECTOR_NAME("connectorName", DataType.STRING.getName(), "Name of the integration connector for logging purposes.", null, "8b854658-5de0-4218-ba7e-9b23ee40adda"),
+
+    /**
+     * Unique identifier of the integration connector deployment.
+     */
+    CONNECTOR_ID("connectorId", DataType.STRING.getName(), "Unique identifier of the integration connector deployment.", null, "0f5ebc8d-9909-43ca-8148-d1b29f8de5f1"),
+
+    /**
+     * Name of the integration daemon where the integration connector is/was running.
+     */
+    SERVER_NAME("serverName", DataType.STRING.getName(), "Name of the integration daemon where the integration connector is/was running.", null, "a27047a9-5587-4bfd-b604-ddec605c03c6"),
+
+    /**
+     * Date/time when the refresh() call was made.
+     */
+    REFRESH_START_DATE("refreshStartDate", DataType.DATE.getName(), "Date/time when the refresh() call was made.", null, "4ef3b7e4-bfaa-4353-a451-7e999ec1d38c"),
+
+    /**
+     * Date/time when the integration connector returned from the refresh() call.
+     */
+    REFRESH_COMPLETION_DATE("refreshCompletionDate", DataType.DATE.getName(), "Date/time when the integration connector returned from the refresh() call.", null, "27a3a734-75e1-412b-8de4-9b8293234f1a"),
+
+    /**
+     * List of elements that were created.
+     */
+    CREATED_ELEMENTS("createdElements", DataType.ARRAY_STRING.getName(), "List of elements that were created.", null, "3aa69721-eced-45be-a0d9-939b28649e8e"),
+
+    /**
+     * List of elements that were updated.
+     */
+    UPDATED_ELEMENTS("updatedElements", DataType.ARRAY_STRING.getName(), "List of elements that were updated.", null, "47fcc6f3-fe38-4517-bd71-ffbd96d95157"),
+
+    /**
+     * List of elements that were deleted.
+     */
+    DELETED_ELEMENTS("deletedElements", DataType.ARRAY_STRING.getName(), "List of elements that were deleted.", null, "4a3aeffa-a747-407e-b03b-f4c5826026d9"),
+
+    /**
+     * Symbolic name of the catalog target to describe the remote system/service being connected to.
+     */
+    CATALOG_TARGET_NAME("catalogTargetName", DataType.STRING.getName(), "Symbolic name of the catalog target to describe the remote system/service being connected to.", null, "bd3579c1-46c8-4eac-92e1-351bc77000f5"),
+
+    /**
+     * UserId for the integration connector to use when working with open metadata.  The default userId comes from the hosting server if this value is blank.
+     */
+    CONNECTOR_USER_ID("connectorUserId", DataType.STRING.getName(), "UserId for the integration connector to use when working with open metadata.  The default userId comes from the hosting server if this value is blank.", null, "b0919bbe-e91e-4fc6-a9fe-80a674f7dbf7"),
+
+    /**
+     * Describes how frequently the integration connector should run - in minutes.
+     */
+    REFRESH_TIME_INTERVAL("refreshTimeInterval", DataType.LONG.getName(), "Describes how frequently the integration connector should run - in minutes.", null, "d261dc24-a26f-460f-808d-11b586c8ca7a"),
+
+    /**
+     * Latest time that the connector can run.
+     */
+    STOP_DATE("stopDate",DataType.DATE.getName(), "Latest time that the connector can run.", null, "ec798c83-660d-400e-8fa8-00dc8634fe24"),
+
+    /**
+     * Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)
+     */
+    GENERATE_INTEGRATION_REPORT("generateIntegrationReport", DataType.BOOLEAN.getName(), "Should the integration daemon create integration reports based on the integration connector's activity? (Default is true.)", null, "61f01f63-2e2d-47d0-9ea7-a95c0d561194"),
+
+    /**
+     * The name of the attribute that the reference data assignment represents.
+     */
+    ATTRIBUTE_NAME("attributeName", DataType.STRING.getName(), "The name of the attribute that the reference data assignment represents.", null, "be67948d-b0c2-457d-9897-41757cc2c6d1"),
+
+    /**
+     * The type of agreement - values typically defined in a valid value set.
+     */
+    AGREEMENT_TYPE("agreementType", DataType.STRING.getName(), "The type of agreement - values typically defined in a valid metadata set.", null, "d994edef-90e1-4899-b814-e30dafa77944"),
     ;
 
 

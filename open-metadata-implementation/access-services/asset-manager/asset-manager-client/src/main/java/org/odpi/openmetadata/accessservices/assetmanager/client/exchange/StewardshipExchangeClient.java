@@ -1088,7 +1088,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         final String methodName = "getSecurityTaggedElements";
 
         return super.getClassifiedElements(userId,
-                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName,
                                            null,
                                            startFrom,
                                            pageSize,
@@ -1748,7 +1748,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         return super.getRelatedElements(userId,
                                         glossaryTermGUID,
                                         2,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,

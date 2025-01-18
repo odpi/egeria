@@ -993,13 +993,13 @@ public class OpenMetadataAccessSecurityConnector extends OpenMetadataSecurityCon
         {
             InstanceProperties securityTags = repositoryHelper.getClassificationProperties(serviceName,
                                                                                            classifications,
-                                                                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
+                                                                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName,
                                                                                            methodName);
 
             if (securityTags != null)
             {
                 Map<String, List<String>> accessGroups = repositoryHelper.getStringArrayStringMapFromProperty(serviceName,
-                                                                                                              OpenMetadataType.ACCESS_GROUPS_PROPERTY_NAME,
+                                                                                                              OpenMetadataProperty.ACCESS_GROUPS.name,
                                                                                                               securityTags,
                                                                                                               methodName);
 

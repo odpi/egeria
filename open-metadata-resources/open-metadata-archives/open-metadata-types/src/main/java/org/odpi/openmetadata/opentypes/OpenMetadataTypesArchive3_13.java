@@ -735,41 +735,20 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getAgreementEntity()
     {
-        final String guid            = "88886b53-c839-48fa-bcfa-83ebcf8abbb5";
-        final String name            = "Agreement";
-        final String description     = "An agreement between parties.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.AGREEMENT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "agreementType";
-        final String attribute1Description     = "The type of agreement - values typically defined in a valid value set.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AGREEMENT_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
+
         return entityDef;
     }
 
@@ -1100,18 +1079,8 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getDigitalSubscriptionEntity()
     {
-        final String guid            = "ad6ed361-af14-458f-8fb7-d4c11baa45d2";
-        final String name            = "DigitalSubscription";
-        final String description     = "A specialized agreement that represents a subscription to a digital service or digital product.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Agreement";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_SUBSCRIPTION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName));
 
         /*
          * Build the attributes
@@ -1143,16 +1112,8 @@ public class OpenMetadataTypesArchive3_13
 
     private RelationshipDef getDigitalSubscriberRelationship()
     {
-        final String guid            = "567cc4e7-ef89-4d36-af0d-3cb4fe9b8cf4";
-        final String name            = "DigitalSubscriber";
-        final String description     = "The link between a digital subscriber and the subscription details.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DIGITAL_SUBSCRIBER_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1174,12 +1135,11 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DigitalSubscription";
         final String                     end2AttributeName            = "digitalSubscriptions";
         final String                     end2AttributeDescription     = "The digital subscriptions in use by the subscriber.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

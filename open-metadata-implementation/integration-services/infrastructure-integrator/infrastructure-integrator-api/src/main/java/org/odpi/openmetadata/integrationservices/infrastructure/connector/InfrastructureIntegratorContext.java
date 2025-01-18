@@ -225,7 +225,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        return hostManagerClient.createHost(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, hostProperties);
+        String hostGUID = hostManagerClient.createHost(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, hostProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(hostGUID);
+        }
+
+        return hostGUID;
     }
 
 
@@ -246,7 +253,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return hostManagerClient.createHostFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String hostGUID = hostManagerClient.createHostFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(hostGUID);
+        }
+
+        return hostGUID;
     }
 
 
@@ -268,6 +282,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                  PropertyServerException
     {
         hostManagerClient.updateHost(userId, externalSourceGUID, externalSourceName, hostGUID, isMergeUpdate, hostProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(hostGUID);
+        }
     }
 
 
@@ -332,6 +351,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                     PropertyServerException
     {
         hostManagerClient.publishHost(userId, hostGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(hostGUID);
+        }
     }
 
 
@@ -351,6 +375,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                      PropertyServerException
     {
         hostManagerClient.withdrawHost(userId, hostGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(hostGUID);
+        }
     }
 
 
@@ -368,6 +397,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                    PropertyServerException
     {
         hostManagerClient.removeHost(userId, externalSourceGUID, externalSourceName, hostGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(hostGUID);
+        }
     }
 
 
@@ -513,7 +547,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, platformProperties);
+        String platformGUID = platformManagerClient.createSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, platformProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(platformGUID);
+        }
+
+        return platformGUID;
     }
 
 
@@ -534,7 +575,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String platformGUID = platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(platformGUID);
+        }
+
+        return platformGUID;
     }
 
 
@@ -557,6 +605,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         platformManagerClient.updateSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, platformGUID, isMergeUpdate, platformProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(platformGUID);
+        }
     }
 
 
@@ -576,6 +629,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                           PropertyServerException
     {
         platformManagerClient.publishSoftwareServerPlatform(userId, platformGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(platformGUID);
+        }
     }
 
 
@@ -596,6 +654,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         platformManagerClient.withdrawSoftwareServerPlatform(userId, platformGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(platformGUID);
+        }
     }
 
 
@@ -614,6 +677,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         platformManagerClient.removeSoftwareServerPlatform(userId, externalSourceGUID, externalSourceName, platformGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(platformGUID);
+        }
     }
 
 
@@ -735,7 +803,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        return serverManagerClient.createSoftwareServer(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, softwareServerProperties);
+        String softwareServerGUID = serverManagerClient.createSoftwareServer(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, softwareServerProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(softwareServerGUID);
+        }
+
+        return softwareServerGUID;
     }
 
 
@@ -757,7 +832,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                  PropertyServerException
 
     {
-        return serverManagerClient.createSoftwareServerFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String softwareServerGUID = serverManagerClient.createSoftwareServerFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(softwareServerGUID);
+        }
+
+        return softwareServerGUID;
     }
 
 
@@ -779,6 +861,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                PropertyServerException
     {
         serverManagerClient.updateSoftwareServer(userId, externalSourceGUID, externalSourceName, softwareServerGUID, isMergeUpdate, softwareServerProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(softwareServerGUID);
+        }
     }
 
 
@@ -798,6 +885,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                         PropertyServerException
     {
         serverManagerClient.publishSoftwareServer(userId, softwareServerGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(softwareServerGUID);
+        }
     }
 
 
@@ -817,6 +909,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                          PropertyServerException
     {
         serverManagerClient.withdrawSoftwareServer(userId, softwareServerGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(softwareServerGUID);
+        }
     }
 
 
@@ -834,6 +931,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         serverManagerClient.removeSoftwareServer(userId, externalSourceGUID, externalSourceName, softwareServerGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(softwareServerGUID);
+        }
     }
 
 
@@ -1148,7 +1250,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapability(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, classificationName, capabilityProperties);
+        String capabilityGUID = capabilityManagerClient.createSoftwareCapability(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, classificationName, capabilityProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(capabilityGUID);
+        }
+
+        return capabilityGUID;
     }
 
 
@@ -1169,7 +1278,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String capabilityGUID = capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(capabilityGUID);
+        }
+
+        return capabilityGUID;
     }
 
 
@@ -1191,9 +1307,12 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                    PropertyServerException
     {
         capabilityManagerClient.updateSoftwareCapability(userId, externalSourceGUID, externalSourceName, capabilityGUID, isMergeUpdate, capabilityProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(capabilityGUID);
+        }
     }
-
-
 
 
     /**
@@ -1274,6 +1393,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         capabilityManagerClient.removeSoftwareCapability(userId, externalSourceGUID, externalSourceName, capabilityGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(capabilityGUID);
+        }
     }
 
 
@@ -1612,7 +1736,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return dataAssetManagerClient.createDataAsset(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, dataAssetProperties);
+        String assetGUID = dataAssetManagerClient.createDataAsset(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, dataAssetProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(assetGUID);
+        }
+
+        return assetGUID;
     }
 
 
@@ -1635,7 +1766,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                             PropertyServerException
 
     {
-        return dataAssetManagerClient.createDataAssetFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String assetGUID = dataAssetManagerClient.createDataAssetFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(assetGUID);
+        }
+
+        return assetGUID;
     }
 
 
@@ -1657,6 +1795,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                 PropertyServerException
     {
         dataAssetManagerClient.updateDataAsset(userId, externalSourceGUID, externalSourceName, assetGUID, isMergeUpdate, dataAssetProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(assetGUID);
+        }
     }
 
 
@@ -1679,6 +1822,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         dataAssetManagerClient.setDataAssetAsReferenceData(userId, externalSourceGUID, externalSourceName, assetGUID, effectiveFrom, effectiveTo);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(assetGUID);
+        }
     }
 
 
@@ -1698,6 +1846,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                            PropertyServerException
     {
         dataAssetManagerClient.clearDataAssetAsReferenceData(userId, externalSourceGUID, externalSourceName, assetGUID, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(assetGUID);
+        }
     }
 
 
@@ -1718,6 +1871,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         dataAssetManagerClient.publishDataAsset(userId, assetGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(assetGUID);
+        }
     }
 
 
@@ -1738,6 +1896,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         dataAssetManagerClient.withdrawDataAsset(userId, assetGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(assetGUID);
+        }
     }
 
 
@@ -1756,6 +1919,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                          PropertyServerException
     {
         dataAssetManagerClient.removeDataAsset(userId, externalSourceGUID, externalSourceName, assetGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(assetGUID);
+        }
     }
 
 
@@ -1880,7 +2048,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return processManagerClient.createProcess(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, processStatus, processProperties);
+        String processGUID = processManagerClient.createProcess(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, processStatus, processProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(processGUID);
+        }
+
+        return processGUID;
     }
 
 
@@ -1902,7 +2077,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                           PropertyServerException
 
     {
-        return processManagerClient.createProcessFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+        String processGUID = processManagerClient.createProcessFromTemplate(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(processGUID);
+        }
+
+        return processGUID;
     }
 
 
@@ -1925,6 +2107,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         processManagerClient.updateProcess(userId, externalSourceGUID, externalSourceName, processGUID, isMergeUpdate, processProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(processGUID);
+        }
     }
 
 
@@ -1944,6 +2131,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                         PropertyServerException
     {
         processManagerClient.updateProcessStatus(userId, externalSourceGUID, externalSourceName, processGUID, processStatus);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(processGUID);
+        }
     }
 
 
@@ -2007,9 +2199,13 @@ public class InfrastructureIntegratorContext extends IntegrationContext
     public void publishProcess(String processGUID) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
-
     {
         processManagerClient.publishProcess(userId, processGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(processGUID);
+        }
     }
 
 
@@ -2030,6 +2226,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
 
     {
         processManagerClient.withdrawProcess(userId, processGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(processGUID);
+        }
     }
 
 
@@ -2047,6 +2248,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                          PropertyServerException
     {
         processManagerClient.removeProcess(userId, externalSourceGUID, externalSourceName, processGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(processGUID);
+        }
     }
 
 
@@ -2216,6 +2422,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                   PropertyServerException
     {
         processManagerClient.setBusinessSignificant(userId, externalSourceGUID, externalSourceName, elementGUID, effectiveFrom, effectiveTo);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -2235,6 +2446,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                       PropertyServerException
     {
         processManagerClient.clearBusinessSignificant(userId, externalSourceGUID, externalSourceName, elementGUID, effectiveTime);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(elementGUID);
+        }
     }
 
 
@@ -2252,12 +2468,12 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupDataFlow(String              dataSupplierGUID,
-                                String              dataConsumerGUID,
+    public String setupDataFlow(String             dataSupplierGUID,
+                                String             dataConsumerGUID,
                                 DataFlowProperties properties,
-                                Date                effectiveTime) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                Date               effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
 
     {
         return processManagerClient.setupDataFlow(userId, externalSourceGUID, externalSourceName, externalSourceIsHome, dataSupplierGUID, dataConsumerGUID, properties, effectiveTime);
@@ -2842,7 +3058,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        return connectionManagerClient.createConnection(userId, externalSourceGUID, externalSourceName, connectionProperties);
+        String connectionGUID = connectionManagerClient.createConnection(userId, externalSourceGUID, externalSourceName, connectionProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -2863,7 +3086,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return connectionManagerClient.createConnectionFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        String connectionGUID = connectionManagerClient.createConnectionFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(connectionGUID);
+        }
+
+        return connectionGUID;
     }
 
 
@@ -2886,6 +3116,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                    PropertyServerException
     {
         connectionManagerClient.updateConnection(userId, externalSourceGUID, externalSourceName, connectionGUID, isMergeUpdate, connectionProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectionGUID);
+        }
     }
 
 
@@ -3063,6 +3298,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                PropertyServerException
     {
         connectionManagerClient.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(connectionGUID);
+        }
     }
 
 
@@ -3155,7 +3395,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return endpointManagerClient.createEndpoint(userId, null, null, infrastructureGUID, endpointProperties);
+        String endpointGUID = endpointManagerClient.createEndpoint(userId, null, null, infrastructureGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -3180,7 +3427,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return endpointManagerClient.createEndpointFromTemplate(userId, null, null, infrastructureGUID, networkAddress, templateGUID, templateProperties);
+        String endpointGUID = endpointManagerClient.createEndpointFromTemplate(userId, null, null, infrastructureGUID, networkAddress, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(endpointGUID);
+        }
+
+        return endpointGUID;
     }
 
 
@@ -3203,9 +3457,12 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                              PropertyServerException
     {
         endpointManagerClient.updateEndpoint(userId, externalSourceGUID, externalSourceName, isMergeUpdate, endpointGUID, endpointProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(endpointGUID);
+        }
     }
-
-
 
 
     /**
@@ -3222,6 +3479,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                            PropertyServerException
     {
         endpointManagerClient.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(endpointGUID);
+        }
     }
 
 
@@ -3360,7 +3622,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return connectorTypeManagerClient.createConnectorType(userId, externalSourceGUID, externalSourceName, connectorTypeProperties);
+        String connectorTypeGUID = connectorTypeManagerClient.createConnectorType(userId, externalSourceGUID, externalSourceName, connectorTypeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectorTypeGUID);
+        }
+
+        return connectorTypeGUID;
     }
 
 
@@ -3381,7 +3650,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return connectorTypeManagerClient.createConnectorTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+        String connectorTypeGUID = connectorTypeManagerClient.createConnectorTypeFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectorTypeGUID);
+        }
+
+        return connectorTypeGUID;
     }
 
 
@@ -3404,6 +3680,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                             PropertyServerException
     {
         connectorTypeManagerClient.updateConnectorType(userId, externalSourceGUID, externalSourceName, isMergeUpdate, connectorTypeGUID, connectorTypeProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(connectorTypeGUID);
+        }
     }
 
 
@@ -3421,6 +3702,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                      PropertyServerException
     {
         connectorTypeManagerClient.removeConnectorType(userId, externalSourceGUID, externalSourceName, connectorTypeGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(connectorTypeGUID);
+        }
     }
 
 
@@ -3540,6 +3826,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                        PropertyServerException
     {
         itProfileManagerClient.updateITProfile(userId, externalSourceGUID, externalSourceName, itProfileGUID, isMergeUpdate, properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(itProfileGUID);
+        }
     }
 
 
@@ -3557,6 +3848,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                              PropertyServerException
     {
         itProfileManagerClient.deleteITProfile(userId, externalSourceGUID, externalSourceName, itProfileGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(itProfileGUID);
+        }
     }
 
 
@@ -3577,7 +3873,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
-        return itProfileManagerClient.addContactMethod(userId, externalSourceGUID, externalSourceName, itProfileGUID, properties);
+        String contactMethodGUID = itProfileManagerClient.addContactMethod(userId, externalSourceGUID, externalSourceName, itProfileGUID, properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(contactMethodGUID);
+        }
+
+        return contactMethodGUID;
     }
 
 
@@ -3595,6 +3898,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                       UserNotAuthorizedException
     {
         itProfileManagerClient.deleteContactMethod(userId, externalSourceGUID, externalSourceName, contactMethodGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(contactMethodGUID);
+        }
     }
 
 
@@ -3771,7 +4079,14 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        return itProfileManagerClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
+        String userIdentityGUID = itProfileManagerClient.createUserIdentity(userId, externalSourceGUID, externalSourceName, newIdentity);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementCreation(userIdentityGUID);
+        }
+
+        return userIdentityGUID;
     }
 
 
@@ -3793,6 +4108,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                              UserNotAuthorizedException
     {
         itProfileManagerClient.updateUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID, isMergeUpdate, properties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementUpdate(userIdentityGUID);
+        }
     }
 
 
@@ -3811,6 +4131,11 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                                                    UserNotAuthorizedException
     {
         itProfileManagerClient.deleteUserIdentity(userId, externalSourceGUID, externalSourceName, userIdentityGUID);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.reportElementDelete(userIdentityGUID);
+        }
     }
 
 

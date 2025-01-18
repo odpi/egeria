@@ -177,9 +177,7 @@ public class OpenMetadataTypesArchive4_2
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -188,34 +186,11 @@ public class OpenMetadataTypesArchive4_2
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "userDefinedStatus";
-        final String attribute1Description     = "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
-        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
-        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
-        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
-        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
-                                                           OpenMetadataProperty.NOTES.description,
-                                                           OpenMetadataProperty.NOTES.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
 
         typeDefPatch.setPropertyDefinitions(properties);
 

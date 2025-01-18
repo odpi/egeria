@@ -174,7 +174,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseGUID != null) &&(integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementCreation(databaseGUID);
         }
 
@@ -203,7 +202,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementCreation(databaseGUID);
         }
 
@@ -231,7 +229,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
         }
     }
@@ -258,7 +255,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
         }
     }
@@ -283,7 +279,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
         }
     }
@@ -308,7 +303,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
         }
     }
@@ -335,7 +329,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementDelete(databaseGUID);
         }
     }
@@ -358,7 +351,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseGUID, databaseGUID);
             integrationReportWriter.reportElementDelete(databaseGUID);
         }
     }
@@ -481,7 +473,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseSchemaGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
             integrationReportWriter.reportElementCreation(databaseSchemaGUID);
         }
@@ -518,7 +509,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseSchemaGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseGUID);
             integrationReportWriter.reportElementCreation(databaseSchemaGUID);
         }
@@ -552,7 +542,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
         }
     }
@@ -584,7 +573,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
         }
     }
@@ -609,7 +597,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
         }
     }
@@ -634,7 +621,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementUpdate(databaseSchemaGUID);
         }
     }
@@ -661,7 +647,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementDelete(databaseSchemaGUID);
         }
     }
@@ -684,7 +669,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseSchemaGUID, databaseSchemaGUID);
             integrationReportWriter.reportElementDelete(databaseSchemaGUID);
         }
     }
@@ -832,8 +816,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
-            integrationReportWriter.setAnchor(schemaTypeGUID, databaseAssetGUID);
             integrationReportWriter.reportElementUpdate(databaseAssetGUID);
         }
     }
@@ -864,8 +846,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
-            integrationReportWriter.setAnchor(databaseTableGUID, databaseAssetGUID);
             integrationReportWriter.reportElementCreation(databaseTableGUID);
         }
 
@@ -901,8 +881,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseTableGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseAssetGUID, databaseAssetGUID);
-            integrationReportWriter.setAnchor(databaseTableGUID, databaseAssetGUID);
             integrationReportWriter.reportElementCreation(databaseTableGUID);
         }
 
@@ -935,7 +913,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseTableGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseTableGUID, databaseSchemaTypeGUID);
             integrationReportWriter.reportElementCreation(databaseTableGUID);
         }
 
@@ -1192,7 +1169,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseViewGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseViewGUID, databaseAssetGUID);
             integrationReportWriter.reportElementCreation(databaseViewGUID);
         }
 
@@ -1228,7 +1204,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseViewGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseViewGUID, databaseAssetGUID);
             integrationReportWriter.reportElementCreation(databaseViewGUID);
         }
 
@@ -1261,7 +1236,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseViewGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setAnchor(databaseViewGUID, databaseSchemaTypeGUID);
             integrationReportWriter.reportElementCreation(databaseViewGUID);
         }
 
@@ -1525,7 +1499,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseColumnGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(databaseColumnGUID, databaseTableGUID);
             integrationReportWriter.reportElementCreation(databaseColumnGUID);
         }
 
@@ -1561,7 +1534,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if ((databaseColumnGUID != null) && (integrationReportWriter != null))
         {
-            integrationReportWriter.setParent(databaseColumnGUID, databaseTableGUID);
             integrationReportWriter.reportElementCreation(databaseColumnGUID);
         }
 
@@ -2087,7 +2059,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -2112,7 +2083,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setParent(embeddedConnectionGUID, connectionGUID);
             integrationReportWriter.reportElementUpdate(embeddedConnectionGUID);
         }
     }
@@ -2139,7 +2109,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -2164,7 +2133,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(connectionGUID, assetGUID);
             integrationReportWriter.reportElementUpdate(connectionGUID);
         }
     }
@@ -2576,7 +2544,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }
@@ -2601,7 +2568,6 @@ public class DatabaseIntegratorContext extends IntegrationContext
 
         if (integrationReportWriter != null)
         {
-            integrationReportWriter.setAnchor(validValueMemberGUID, validValueSetGUID);
             integrationReportWriter.reportElementUpdate(validValueSetGUID);
         }
     }
