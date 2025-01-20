@@ -1746,7 +1746,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="sDJ0hUHdvvhFCNn0eYsb" name="solution-components">
-    <mxGraphModel dx="2901" dy="1267" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2528" dy="1104" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1892,7 +1892,7 @@
           <mxGeometry x="618" y="825" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="p79f9EVHTzLSiiD5oxnm-58" value="Each segment is the&lt;div&gt;responsibility of different&lt;/div&gt;&lt;div&gt;people/teams&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="780" y="85" width="150" height="60" as="geometry" />
+          <mxGeometry x="1700" y="280" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="p79f9EVHTzLSiiD5oxnm-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="p79f9EVHTzLSiiD5oxnm-59" target="p79f9EVHTzLSiiD5oxnm-62">
           <mxGeometry relative="1" as="geometry" />
@@ -1927,7 +1927,7 @@
         <mxCell id="p79f9EVHTzLSiiD5oxnm-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="p79f9EVHTzLSiiD5oxnm-62" target="p79f9EVHTzLSiiD5oxnm-64">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="p79f9EVHTzLSiiD5oxnm-62" value="Treatment Efficacy&lt;div&gt;Evidence Database&lt;/div&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+        <mxCell id="p79f9EVHTzLSiiD5oxnm-62" value="Treatment Efficacy&lt;div&gt;Evidence&lt;/div&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
           <mxGeometry x="1380" y="430" width="170" height="60" as="geometry" />
         </mxCell>
         <mxCell id="p79f9EVHTzLSiiD5oxnm-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="p79f9EVHTzLSiiD5oxnm-64" target="p79f9EVHTzLSiiD5oxnm-65">
