@@ -243,6 +243,8 @@ include(':open-metadata-implementation:view-services:template-manager:template-m
 include(':open-metadata-implementation:view-services:template-manager:template-manager-spring')
 include(':open-metadata-implementation:view-services:security-officer:security-officer-server')
 include(':open-metadata-implementation:view-services:security-officer:security-officer-spring')
+include(':open-metadata-implementation:view-services:solution-architect:solution-architect-server')
+include(':open-metadata-implementation:view-services:solution-architect:solution-architect-spring')
 include(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-server')
 include(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-spring')
 include(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-api')

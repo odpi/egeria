@@ -29,7 +29,7 @@ import java.util.regex.PatternSyntaxException;
 
 
 /**
- * CSVSurveyService is a survey action service implementation for analysing CSV Files to
+ * CocoClinicalTrialCertifyWeeklyMeasurementsService is a survey action service implementation for analysing CSV Files to
  * columns and profile the data in them.
  */
 public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyActionServiceConnector

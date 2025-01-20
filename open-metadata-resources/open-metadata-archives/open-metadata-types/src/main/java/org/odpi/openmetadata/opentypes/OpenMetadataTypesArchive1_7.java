@@ -1531,51 +1531,18 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getInformationSupplyChainEntity()
     {
-        final String guid = "fa6de61d-98cb-48c4-b21f-ab7186235fd4";
-
-        final String name            = "InformationSupplyChain";
-        final String description     = "A description of a managed flow of information between multiple systems.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "scope";
-        final String attribute3Description     = "Breadth of applicability of the information supply chain to the organization.";
-        final String attribute3DescriptionGUID = null;
-
-        final String attribute4Name            = "purposes";
-        final String attribute4Description     = "Reasons to have this information supply chain.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute4Name,
-                                                                attribute4Description,
-                                                                attribute4DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -1600,60 +1567,19 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getInformationSupplyChainSegmentEntity()
     {
-        final String guid = "6d9980b2-5c0b-4314-8d8d-9fa45f8904d1";
-
-        final String name            = "InformationSupplyChainSegment";
-        final String description     = "A section of an information supply chain that has common characteristics.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "scope";
-        final String attribute3Description     = "Breadth of applicability of this segment to the organization.";
-        final String attribute3DescriptionGUID = null;
-
-        final String attribute4Name            = "integrationStyle";
-        final String attribute4Description     = "Mechanism to flow data along the segment.";
-        final String attribute4DescriptionGUID = null;
-
-        final String attribute5Name            = "estimatedVolumetrics";
-        final String attribute5Description     = "Properties that describe the expected volumes of data flowing through this segment.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute5Name,
-                                                                    attribute5Description,
-                                                                    attribute5DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTEGRATION_STYLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ESTIMATED_VOLUMETRICS));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -1678,17 +1604,8 @@ public class OpenMetadataTypesArchive1_7
 
     private RelationshipDef getInformationSupplyChainCompositionRelationship()
     {
-        final String guid = "fcdccfa3-e9f0-4543-8720-1958799fb6dc";
-
-        final String name            = "InformationSupplyChainComposition";
-        final String description     = "Relationship identifying the segments in an information supply chain.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1696,12 +1613,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "InformationSupplyChain";
         final String                     end1AttributeName            = "informationSupplyChains";
         final String                     end1AttributeDescription     = "Owning information supply chain.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -1712,12 +1628,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "InformationSupplyChainSegment";
         final String                     end2AttributeName            = "segments";
         final String                     end2AttributeDescription     = "A role performed by this person.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -1728,6 +1643,7 @@ public class OpenMetadataTypesArchive1_7
     }
 
 
+    /* Deprecated in later release */
     private RelationshipDef getInformationSupplyChainImplementationRelationship()
     {
         final String guid = "94715275-0520-43e9-81fe-4fe8ec3d8f3a";
@@ -1786,9 +1702,7 @@ public class OpenMetadataTypesArchive1_7
 
     private void add0730SolutionComponents()
     {
-
         this.archiveBuilder.addEntityDef(getSolutionComponentEntity());
-
         this.archiveBuilder.addRelationshipDef(getSolutionCompositionRelationship());
         this.archiveBuilder.addRelationshipDef(getSolutionComponentImplementationRelationship());
     }
@@ -1796,42 +1710,17 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getSolutionComponentEntity()
     {
-        final String guid = "b83f3d42-f3f7-4155-ae65-58fb44ea7644";
-
-        final String name            = "SolutionComponent";
-        final String description     = "Description of a well-defined capability within a solution.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_COMPONENT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "versionNumber";
-        final String attribute3Description     = "Version number (major.minor) of the component.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -1856,17 +1745,8 @@ public class OpenMetadataTypesArchive1_7
 
     private RelationshipDef getSolutionCompositionRelationship()
     {
-        final String guid = "2a9e56c3-bcf6-41de-bbe9-1e63b81d3114";
-
-        final String name            = "SolutionComposition";
-        final String description     = "Relationship showing the nesting structure of solution components.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1874,12 +1754,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SolutionComponent";
         final String                     end1AttributeName            = "usedInSolutionComponents";
         final String                     end1AttributeDescription     = "The solution components that embed this component.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_COMPONENT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -1890,12 +1769,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SolutionComponent";
         final String                     end2AttributeName            = "nestedSolutionComponents";
         final String                     end2AttributeDescription     = "The sub-parts of this solution component.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_COMPONENT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -1906,6 +1784,7 @@ public class OpenMetadataTypesArchive1_7
     }
 
 
+    /* deprecated in later release */
     private RelationshipDef getSolutionComponentImplementationRelationship()
     {
         final String guid = "d0dd0ac7-01f4-48e0-ae4d-4f7268573fa8";
@@ -2188,8 +2067,7 @@ public class OpenMetadataTypesArchive1_7
         TypeDefAttribute       property;
 
         final String attribute1Name            = "informationSupplyChainSegmentGUIDs";
-        final String attribute1Description     = "Unique identifier of information supply chain segments that this wire belongs to " +
-                "(typically only one).";
+        final String attribute1Description     = "Unique identifier of information supply chain segments that this wire belongs to.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
@@ -2323,40 +2201,17 @@ public class OpenMetadataTypesArchive1_7
 
     private EntityDef getSolutionBlueprintEntity()
     {
-        final String guid = "4aa47799-5128-4eeb-bd72-e357b49f8bfe";
-
-        final String name            = "SolutionBlueprint";
-        final String description     = "Collection of solution components that make up a digital service.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOLUTION_BLUEPRINT,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute3Name            = "versionNumber";
-        final String attribute3Description     = "Version number (major.minor) of the solution.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
-                                                           OpenMetadataProperty.DISPLAY_NAME.description,
-                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -2381,17 +2236,8 @@ public class OpenMetadataTypesArchive1_7
 
     private RelationshipDef getSolutionBlueprintCompositionRelationship()
     {
-        final String guid = "f1ae975f-f11a-467b-8c7a-b023081e4712";
-
-        final String name            = "SolutionBlueprintComposition";
-        final String description     = "Link between a solution blueprint and a solution component.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -2399,12 +2245,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SolutionBlueprint";
         final String                     end1AttributeName            = "usedInSolutionBlueprints";
         final String                     end1AttributeDescription     = "The solutions where this component features.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_BLUEPRINT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -2415,12 +2260,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SolutionComponent";
         final String                     end2AttributeName            = "containsSolutionComponents";
         final String                     end2AttributeDescription     = "List of solution components that make up the solution.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_COMPONENT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -2431,12 +2275,9 @@ public class OpenMetadataTypesArchive1_7
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

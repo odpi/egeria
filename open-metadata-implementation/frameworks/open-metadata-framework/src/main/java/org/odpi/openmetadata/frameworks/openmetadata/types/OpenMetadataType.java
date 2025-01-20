@@ -3212,6 +3212,15 @@ public enum OpenMetadataType
               "An agreement between parties."),
 
     /**
+     * An actor identified in an agreement.
+     */
+    AGREEMENT_ACTOR("1c811d0b-e9ce-44af-b6ed-133e73322e32",
+              "AgreementActor",
+              OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
+              "0a124f2b-ce46-4138-bccd-e298fda475e4",
+              "An actor identified in an agreement."),
+
+    /**
      * A detailed description of the effect of some data processing.
      */
     DATA_PROCESSING_DESCRIPTION("685f91fb-c74b-437b-a9b6-c5e557c6d3b2",
@@ -4049,6 +4058,80 @@ public enum OpenMetadataType
                              "6057d7a8-4b7f-4d37-95dd-513c131c7381",
                              "Person managing a digital service."),
 
+    /**
+     * A description of a managed flow of information between multiple systems.
+     */
+    INFORMATION_SUPPLY_CHAIN("fa6de61d-98cb-48c4-b21f-ab7186235fd4",
+                             "InformationSupplyChain",
+                             OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
+                             "aebbe57c-ebe6-48ff-bfd1-ce76f16f86b2",
+                             "A description of a managed flow of information between multiple systems."),
+
+    /**
+     * A section of an information supply chain that has common characteristics and typically a common owner.
+     */
+    INFORMATION_SUPPLY_CHAIN_SEGMENT("6d9980b2-5c0b-4314-8d8d-9fa45f8904d1",
+                                     "InformationSupplyChainSegment",
+                                     OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
+                                     "dddcf2ef-7ba2-4838-adca-fdf6b9468761",
+                                     "A section of an information supply chain that has common characteristics and typically a common owner."),
+
+    /**
+     * Relationship identifying the segments belonging to an information supply chain.
+     */
+    INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP("fcdccfa3-e9f0-4543-8720-1958799fb6dc",
+                                                      "InformationSupplyChainComposition",
+                                                      OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
+                                                      "4eef2329-66cd-48ed-9e07-3c64cee41e8c",
+                                                      "Relationship identifying the segments belonging to an information supply chain."),
+
+    /**
+     * Relationship identifying the flow between segments in an information supply chain.
+     */
+    INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP("207e5130-ab7c-4048-9249-a63a43c13d60",
+                                               "InformationSupplyChainLink",
+                                               OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
+                                               "cbac3fcc-b685-4e99-abb3-d1a14061ffee",
+                                               "Relationship identifying the flow between segments in an information supply chain."),
+
+
+    /**
+     * Description of a well-defined capability within a solution.
+     */
+    SOLUTION_COMPONENT("b83f3d42-f3f7-4155-ae65-58fb44ea7644",
+                       "SolutionComponent",
+                       OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
+                       "ff30e402-2f52-4dbf-85af-9d7ba0267fa8",
+                       "Description of a well-defined capability within a solution."),
+
+    /**
+     * Relationship showing the nesting structure of solution components.
+     */
+    SOLUTION_COMPOSITION_RELATIONSHIP("2a9e56c3-bcf6-41de-bbe9-1e63b81d3114",
+                                      "SolutionComposition",
+                                      OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
+                                      "13594adb-47c6-49f2-80ac-565641588772",
+                                      "Relationship showing the nesting structure of solution components."),
+
+    /**
+     * An actor role that is designed for interacting with a solution.
+     */
+    SOLUTION_ACTOR_ROLE("cb3e6866-9ab5-4d95-9921-ff1b9fbe4d29",
+                        "SolutionActorRole",
+                        OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
+                        "44582ded-a6a2-4750-b428-c0a3bd021c7a",
+                        "An actor role that is designed for interacting with a solution."),
+
+
+    /**
+     * An actor that is interacting with the solution component.
+     */
+    SOLUTION_COMPONENT_ACTOR_RELATIONSHIP("b6722d63-9924-4877-82b0-f9207cd78174",
+                                          "SolutionComponentActor",
+                                          OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
+                                          "a148f1d4-adcf-4a6b-934f-d5c74b91c8f0",
+                                          "An actor that is interacting with the solution component."),
+
 
     /**
      * Connection between two solution ports that shows how data flows.
@@ -4058,6 +4141,34 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                           "9a207086-ce67-4419-a6c0-bcdd478648c3",
                           "Connection between two solution ports that shows how data flows."),
+
+    /**
+     * Identifies a step in the refinement of digital components and artifacts from design to concrete implementation.
+     */
+    IMPLEMENTED_BY_RELATIONSHIP("28f63c94-aaef-4c84-98f7-d77aa605272e",
+                                "ImplementedBy",
+                                OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                "0aaa89b5-e05a-4b63-ba13-e05e91bd339b",
+                                "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation."),
+
+    /**
+     * Collection of solution components that make up a solution or digital service.
+     */
+    SOLUTION_BLUEPRINT("4aa47799-5128-4eeb-bd72-e357b49f8bfe",
+                       "SolutionBlueprint",
+                       OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                       "92042d1e-3717-4343-b111-72a0aaa7f63e",
+                       "Collection of solution components that make up a solution or digital service."),
+
+    /**
+     * Link between a solution blueprint and a solution component.
+     */
+    SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP("f1ae975f-f11a-467b-8c7a-b023081e4712",
+                                                "SolutionBlueprintComposition",
+                                                OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
+                                                "fc4c9bea-a93e-47d7-b812-25eae2fc4e65",
+                                                "Link between a solution blueprint and a solution component."),
+
 
     /**
      * Shows that data flows in one direction from one element to another.

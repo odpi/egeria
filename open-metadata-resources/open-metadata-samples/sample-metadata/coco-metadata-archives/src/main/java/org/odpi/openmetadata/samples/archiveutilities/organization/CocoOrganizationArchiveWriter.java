@@ -480,16 +480,16 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.addTeamStructureRelationship(superTeamQName, deptDefinition.getQualifiedName(), true);
 
             String leadershipRoleQName = "TeamLeader:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_LEADER.typeName,
-                                        leadershipRoleQName,
-                                        leadershipRoleQName,
-                                        null,
-                                        null,
-                                        null,
-                                        true,
-                                        1,
-                                        null,
-                                        null);
+            archiveHelper.addActorRole(OpenMetadataType.TEAM_LEADER.typeName,
+                                       leadershipRoleQName,
+                                       leadershipRoleQName,
+                                       null,
+                                       null,
+                                       null,
+                                       true,
+                                       1,
+                                       null,
+                                       null);
 
             archiveHelper.addTeamLeadershipRelationship(leadershipRoleQName, deptDefinition.getQualifiedName(), null);
 
@@ -504,16 +504,16 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
             }
 
             String membershipRoleQName = "TeamMembers:" + deptDefinition.getQualifiedName();
-            archiveHelper.addPersonRole(OpenMetadataType.TEAM_MEMBER.typeName,
-                                        membershipRoleQName,
-                                        membershipRoleQName,
-                                        null,
-                                        null,
-                                        null,
-                                        false,
-                                        0,
-                                        null,
-                                        null);
+            archiveHelper.addActorRole(OpenMetadataType.TEAM_MEMBER.typeName,
+                                       membershipRoleQName,
+                                       membershipRoleQName,
+                                       null,
+                                       null,
+                                       null,
+                                       false,
+                                       0,
+                                       null,
+                                       null);
 
             archiveHelper.addTeamMembershipRelationship(membershipRoleQName, deptDefinition.getQualifiedName(), null);
 

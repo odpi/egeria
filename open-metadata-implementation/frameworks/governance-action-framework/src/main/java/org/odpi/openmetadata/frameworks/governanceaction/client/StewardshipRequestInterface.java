@@ -8,6 +8,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -86,4 +91,34 @@ public interface StewardshipRequestInterface
                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;
+
+
+    /**
+     * Create a new context event
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier for the context event's anchor element
+     * @param parentContextEvents which context events should be linked as parents (guid->relationship properties)
+     * @param childContextEvents which context events should be linked as children (guid->relationship properties)
+     * @param relatedContextEvents which context events should be linked as related (guid->relationship properties)
+     * @param impactedElements which elements are impacted by this context event (guid->relationship properties)
+     * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->effectivity dates)
+     * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs-> effectivity dates)
+     * @param contextEventProperties properties for the context event itself
+     * @return guid of the new context event
+     * @throws InvalidParameterException one of the properties are invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    String registerContextEvent(String                                       userId,
+                                String                                       anchorGUID,
+                                Map<String, DependentContextEventProperties> parentContextEvents,
+                                Map<String, DependentContextEventProperties> childContextEvents,
+                                Map<String, RelatedContextEventProperties>   relatedContextEvents,
+                                Map<String, ContextEventImpactProperties>    impactedElements,
+                                Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
+                                Map<String, RelationshipProperties>          contextEventEvidenceGUIDs,
+                                ContextEventProperties                       contextEventProperties) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 }

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+
 /**
  * The ScopeDefinition is used to define the different scope of responsibility assigned to an individual, term, person or activity.
  */
@@ -44,6 +46,11 @@ public enum ScopeDefinition
     WITHIN_PROJECT ("Within Project","Within the project."),
 
     /**
+     * Within the solution.
+     */
+    WITHIN_SOLUTION ("Within Solution","Within the solution."),
+
+    /**
      * Within the local site.
      */
     WITHIN_SITE ("Within Site","Within the local site."),
@@ -57,6 +64,9 @@ public enum ScopeDefinition
      * Just for the individual.
      */
     INDIVIDUAL ("Individual","Just for the individual."),
+
+    TEMPLATE_PLACEHOLDER(PlaceholderProperty.SCOPE.getPlaceholder(), PlaceholderProperty.SCOPE.getName()),
+
     ;
 
     public static final String validValueSetName         = "Scope";

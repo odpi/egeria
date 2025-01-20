@@ -84,6 +84,10 @@ The view services are as follows:
 
   The Security Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.
 
+* **[Solution Architect](solution-architect)** - maintain the metadata about information supply chains and solution components.
+
+  The Solution Architect OMVS is a REST API designed to support user interfaces (UIs) relating to the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.
+
 * **[Template Manager](template-manager)** - locate and maintain templates.
 
   The Template Manager OMVS is a REST API designed to support user interfaces (UIs) that support the management of templates that are used when creating new metadata.

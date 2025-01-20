@@ -504,7 +504,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
 
         String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                       qualifiedName,
-                                                                      "Onboard Landing Area Files For Teddy Bear Drop Foot Project",
+                                                                      "Onboard Landing Area Files For Clinical Trial Project",
                                                                       "V1.0",
                                                                       """
                                                                               Ensures that new files added to the landing are correctly catalogued in the data lake.

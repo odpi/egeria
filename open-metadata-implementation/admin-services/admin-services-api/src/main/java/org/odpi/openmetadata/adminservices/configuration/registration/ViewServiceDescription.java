@@ -364,6 +364,18 @@ public enum ViewServiceDescription
                        "https://egeria-project.org/services/omvs/notification-manager/overview/",
                        AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName()),
 
+    /**
+     * Manages the definitions of information supply chains and solution components.
+     */
+    SOLUTION_ARCHITECT (829,
+                          ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                          "Solution Architect",
+                          "Solution Architect OMVS",
+                          "solution-architect",
+                          "Manages the definitions of information supply chains and solution components.",
+                          "https://egeria-project.org/services/omvs/solution-architect/overview/",
+                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
+
     ;
 
 

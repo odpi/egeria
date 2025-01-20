@@ -288,16 +288,16 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String leaderRoleQName = "Leader: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
-                                            leaderRoleQName,
-                                            "Community Leader",
-                                            null,
-                                            null,
-                                            "Community",
-                                            false,
-                                            0,
-                                            null,
-                                            null);
+                archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
+                                           leaderRoleQName,
+                                           "Community Leader",
+                                           null,
+                                           null,
+                                           "Community",
+                                           false,
+                                           0,
+                                           null,
+                                           null);
 
                 archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), leaderRoleQName, CommunityMembershipType.LEADER.getOrdinal());
 
@@ -311,16 +311,16 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 String memberRoleQName = "Member: " + communityDefinition.getQualifiedName();
 
-                archiveHelper.addPersonRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
-                                            memberRoleQName,
-                                            "CommunityMember",
-                                            null,
-                                            null,
-                                            "Community",
-                                            false,
-                                            0,
-                                            null,
-                                            null);
+                archiveHelper.addActorRole(OpenMetadataType.COMMUNITY_MEMBER.typeName,
+                                           memberRoleQName,
+                                           "CommunityMember",
+                                           null,
+                                           null,
+                                           "Community",
+                                           false,
+                                           0,
+                                           null,
+                                           null);
 
                 archiveHelper.addCommunityMembershipRelationship(communityDefinition.getQualifiedName(), memberRoleQName, CommunityMembershipType.CONTRIBUTOR.getOrdinal());
 
@@ -432,16 +432,16 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
 
             String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
 
-            archiveHelper.addPersonRole(OpenMetadataType.PROJECT_MANAGER.typeName,
-                                        projectManagerQName,
-                                        projectDefinition.getIdentifier() + ":ProjectManager",
-                                        projectDefinition.getDisplayName() + " project manager",
-                                        null,
-                                        null,
-                                        true,
-                                        1,
-                                        null,
-                                        null);
+            archiveHelper.addActorRole(OpenMetadataType.PROJECT_MANAGER.typeName,
+                                       projectManagerQName,
+                                       projectDefinition.getIdentifier() + ":ProjectManager",
+                                       projectDefinition.getDisplayName() + " project manager",
+                                       null,
+                                       null,
+                                       true,
+                                       1,
+                                       null,
+                                       null);
 
             archiveHelper.addProjectManagementRelationship(projectDefinition.getQualifiedName(),
                                                            projectManagerQName);
