@@ -755,16 +755,8 @@ public class OpenMetadataTypesArchive3_13
 
     private RelationshipDef getAgreementActorRelationship()
     {
-        final String guid            = "1c811d0b-e9ce-44af-b6ed-133e73322e32";
-        final String name            = "AgreementActor";
-        final String description     = "An actor identified in an agreement.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.AGREEMENT_ACTOR,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -772,12 +764,11 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Agreement";
         final String                     end1AttributeName            = "relatedAgreements";
         final String                     end1AttributeDescription     = "The agreements that include the actor.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -802,16 +793,8 @@ public class OpenMetadataTypesArchive3_13
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "actorName";
-        final String attribute1Description     = "Name used to identify a specific actor in the agreement.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTOR_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

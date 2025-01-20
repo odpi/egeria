@@ -195,7 +195,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
                                                                                                                                        startFrom,
                                                                                                                                        governanceContext.getMaxPageSize());
 
-        if (existingCertifications == null)
+        if ((existingCertifications == null) || (existingCertifications.getElementList() == null))
         {
             PersonContactDetails custodianContactDetails = super.getContactDetailsForPersonGUID(custodianGUID);
 

@@ -1202,24 +1202,24 @@ public class SimpleCatalogArchiveHelper
      * @param extendedProperties any additional properties associated with a subtype
      * @return unique identifier of the new profile
      */
-    public  String addPersonRole(String              suppliedTypeName,
-                                 String              qualifiedName,
-                                 String              identifier,
-                                 String              name,
-                                 String              description,
-                                 String              scope,
-                                 boolean             setHeadCount,
-                                 int                 headCount,
-                                 Map<String, String> additionalProperties,
-                                 Map<String, Object> extendedProperties)
+    public  String addActorRole(String              suppliedTypeName,
+                                String              qualifiedName,
+                                String              identifier,
+                                String              name,
+                                String              description,
+                                String              scope,
+                                boolean             setHeadCount,
+                                int                 headCount,
+                                Map<String, String> additionalProperties,
+                                Map<String, Object> extendedProperties)
     {
-        final String methodName = "addPersonRole";
+        final String methodName = "addActorRole";
 
         String typeName = suppliedTypeName;
 
         if (typeName == null)
         {
-            typeName = OpenMetadataType.PERSON_ROLE.typeName;
+            typeName = OpenMetadataType.ACTOR_ROLE.typeName;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -1279,13 +1279,13 @@ public class SimpleCatalogArchiveHelper
                                      Map<String, String> additionalProperties,
                                      Map<String, Object> extendedProperties)
     {
-        final String methodName = "addPersonRole";
+        final String methodName = "addGovernanceRole";
 
         String typeName = suppliedTypeName;
 
         if (typeName == null)
         {
-            typeName = OpenMetadataType.PERSON_ROLE.typeName;
+            typeName = OpenMetadataType.GOVERNANCE_ROLE_TYPE_NAME;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -3754,6 +3754,47 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+    /**
+     * Create an Ownership classification containing the supplied properties.
+     *
+     * @param owner owner
+     * @param typeName owner typeName
+     * @param propertyName owner propertyName
+     * @return classification
+     */
+    public Classification getOwnershipClassification(String              owner,
+                                                     String              typeName,
+                                                     String              propertyName)
+    {
+        final String methodName = "getOwnershipClassification";
+
+        InstanceProperties instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                          null,
+                                                                                          OpenMetadataProperty.OWNER.name,
+                                                                                          owner,
+                                                                                          methodName);
+
+        instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataProperty.OWNER_TYPE_NAME.name,
+                                                                       typeName,
+                                                                       methodName);
+
+        instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataProperty.OWNER_PROPERTY_NAME.name,
+                                                                       propertyName,
+                                                                       methodName);
+
+
+        return archiveHelper.getClassification(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
+                                               instanceProperties,
+                                               InstanceStatus.ACTIVE);
+    }
+
+
+
     /**
      * Create the top level schema type for an asset.
      *
@@ -4913,6 +4954,33 @@ public class SimpleCatalogArchiveHelper
         return archiveHelper.getClassification(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
                                                classificationProperties, InstanceStatus.ACTIVE);
     }
+
+
+
+    /**
+     * Add a Template classification to an entity.
+     *
+     * @param elementGUID guid to attach it to
+     * @param templateName name of template
+     * @param templateDescription description of template
+     * @param versionIdentifier identifier of the template
+     * @param additionalProperties additional properties
+     * @param methodName calling method
+     */
+    public void addTemplateClassification(String              elementGUID,
+                                          String              templateName,
+                                          String              templateDescription,
+                                          String              versionIdentifier,
+                                          Map<String, String> additionalProperties,
+                                          String              methodName)
+    {
+        EntityDetail entity = archiveBuilder.getEntity(elementGUID);
+        EntityProxy entityProxy = archiveHelper.getEntityProxy(entity);
+        Classification tempateClassification = this.getTemplateClassification(templateName, templateDescription, versionIdentifier, additionalProperties, methodName);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, tempateClassification));
+    }
+
 
 
     /**
@@ -6804,13 +6872,455 @@ public class SimpleCatalogArchiveHelper
                                                String classificationName,
                                                String deployedImplementationType)
     {
-        final String methodName = "addServerPurposeClassification";
-
         EntityDetail   assetEntity    = this.archiveBuilder.getEntity(elementGUID);
         EntityProxy    entityProxy    = this.archiveHelper.getEntityProxy(assetEntity);
 
         Classification classification = this.getServerPurposeClassification(classificationName, deployedImplementationType);
 
         this.archiveBuilder.addClassification(this.archiveHelper.getClassificationEntityExtension(entityProxy, classification));
+    }
+
+
+    /**
+     * Add a new information supply chain.
+     *
+     * @param suppliedTypeName type name
+     * @param qualifiedName qualified name
+     * @param name display name
+     * @param description description
+     * @param scope scope of responsibilities
+     * @param purposes why is it needed
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addInformationSupplyChain(String              suppliedTypeName,
+                                             String              qualifiedName,
+                                             String              name,
+                                             String              description,
+                                             String              scope,
+                                             List<String>        purposes,
+                                             Map<String, String> additionalProperties,
+                                             Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addInformationSupplyChain";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PURPOSES.name, purposes, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, methodName));
+
+        EntityDetail entity = archiveHelper.getEntityDetail(typeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            classifications);
+
+        archiveBuilder.addEntity(entity);
+
+        return entity.getGUID();
+    }
+
+
+    /**
+     * Add a new information supply chain segment.
+     *
+     * @param informationSupplyChainGUID owning information supply chain
+     * @param suppliedTypeName type name to use
+     * @param qualifiedName qualified name
+     * @param name display name
+     * @param description description
+     * @param scope scope of responsibilities
+     * @param integrationStyle how is it implemented
+     * @param estimatedVolumetrics estimated volumetrics
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addInformationSupplyChainSegment(String              informationSupplyChainGUID,
+                                                    String              suppliedTypeName,
+                                                    String              qualifiedName,
+                                                    String              name,
+                                                    String              description,
+                                                    String              scope,
+                                                    String              integrationStyle,
+                                                    Map<String, String> estimatedVolumetrics,
+                                                    String              owner,
+                                                    String              ownerTypeName,
+                                                    String              ownerPropertyName,
+                                                    Map<String, String> additionalProperties,
+                                                    Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addInformationSupplyChainSegment";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.INTEGRATION_STYLE.name, integrationStyle, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name, estimatedVolumetrics, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_SEGMENT.typeName, methodName));
+
+        if (owner != null)
+        {
+            classifications.add(this.getOwnershipClassification(owner, ownerTypeName, ownerPropertyName));
+        }
+
+        EntityDetail entity = archiveHelper.getEntityDetail(typeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            classifications);
+
+        archiveBuilder.addEntity(entity);
+
+        if (informationSupplyChainGUID != null)
+        {
+            addInformationSupplyChainComposition(informationSupplyChainGUID, entity.getGUID());
+        }
+
+        return entity.getGUID();
+    }
+
+
+
+    /**
+     * Link an element to its implementation
+     *
+     * @param derivedFromGUID guid of element that the implementation is derived from
+     * @param implementedByGUID guid of the element that described the implementation
+     * @param designStep process that created the implementation
+     * @param role role performed by the implementation
+     * @param transformation transformation used to create the implementation
+     * @param description description of the implementation
+     */
+    public void addImplementedByRelationship(String derivedFromGUID,
+                                             String implementedByGUID,
+                                             String designStep,
+                                             String role,
+                                             String transformation,
+                                             String description)
+    {
+        final String methodName = "addImplementedByRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(derivedFromGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(implementedByGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESIGN_STEP.name, designStep, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ROLE.name, role, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TRANSFORMATION.name, transformation, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(derivedFromGUID + "_to_" + implementedByGUID + "_implemented_by_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link an information supply chain to one of its segments
+     *
+     * @param informationSupplyChainGUID guid of information supply chain
+     * @param segmentGUID guid of the segment
+
+     */
+    public void addInformationSupplyChainComposition(String informationSupplyChainGUID,
+                                                     String segmentGUID)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(informationSupplyChainGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(segmentGUID));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(informationSupplyChainGUID + "_to_" + segmentGUID + "_information_supply_chain_composition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link an element to its implementation
+     *
+     * @param supplyFromGUID guid of first segment
+     * @param supplyToGUID guid of follow-on segment
+     * @param description description of the link
+     */
+    public void addInformationSupplyChainLinkRelationship(String supplyFromGUID,
+                                                          String supplyToGUID,
+                                                          String description)
+    {
+        final String methodName = "addInformationSupplyChainLinkRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(supplyFromGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(supplyToGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(supplyFromGUID + "_to_" + supplyToGUID + "_information_supply_chain_link_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Add a new solution blueprint.
+     *
+     * @param suppliedTypeName type name to use
+     * @param qualifiedName qualified name
+     * @param name display name
+     * @param description description
+     * @param versionIdentifier versionIdentifier
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addSolutionBlueprint(String              suppliedTypeName,
+                                        String              qualifiedName,
+                                        String              name,
+                                        String              description,
+                                        String              versionIdentifier,
+                                        Map<String, String> additionalProperties,
+                                        Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addSolutionBlueprint";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = OpenMetadataType.SOLUTION_BLUEPRINT.typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_BLUEPRINT.typeName, methodName));
+
+        EntityDetail entity = archiveHelper.getEntityDetail(typeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            classifications);
+
+        archiveBuilder.addEntity(entity);
+
+        return entity.getGUID();
+    }
+
+
+
+    /**
+     * Add a new solution component.
+     *
+     * @param solutionBlueprintGUID owning blueprint
+     * @param suppliedTypeName type name to use
+     * @param qualifiedName qualified name
+     * @param name display name
+     * @param description description
+     * @param versionIdentifier versionIdentifier
+     * @param componentType type of component
+     * @param roleInSolution role this component takes in the solution
+     * @param roleInSolutionDescription description of the role in the solution
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addSolutionComponent(String              solutionBlueprintGUID,
+                                        String              suppliedTypeName,
+                                        String              qualifiedName,
+                                        String              name,
+                                        String              description,
+                                        String              versionIdentifier,
+                                        String              componentType,
+                                        String              roleInSolution,
+                                        String              roleInSolutionDescription,
+                                        Map<String, String> additionalProperties,
+                                        Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addSolutionComponent";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = OpenMetadataType.SOLUTION_COMPONENT.typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name, componentType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_COMPONENT.typeName, methodName));
+
+        EntityDetail entity = archiveHelper.getEntityDetail(typeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            classifications);
+
+        archiveBuilder.addEntity(entity);
+
+        if (solutionBlueprintGUID != null)
+        {
+            addSolutionBlueprintCompositionRelationship(solutionBlueprintGUID, entity.getGUID(), roleInSolution, roleInSolutionDescription);
+        }
+
+        return entity.getGUID();
+    }
+
+
+
+    /**
+     * Link a solution blueprint to one of its components
+     *
+     * @param solutionBlueprintGUID guid of blueprint
+     * @param solutionComponentGUID guid of component
+     * @param role role of the component in the solution
+     * @param description description of the role in the solution
+     */
+    public void addSolutionBlueprintCompositionRelationship(String solutionBlueprintGUID,
+                                                            String solutionComponentGUID,
+                                                            String role,
+                                                            String description)
+    {
+        final String methodName = "addISolutionBlueprintCompositionRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionBlueprintGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponentGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ROLE.name, role, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(solutionBlueprintGUID + "_to_" + solutionComponentGUID + "_solution_blueprint_composition_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link solutions components to show data/control flow.
+     *
+     * @param solutionComponent1GUID guid of component at end 1
+     * @param solutionComponent2GUID guid of component at end 2
+     * @param informationSupplyChainSegmentGUIDs optional list of information supply chain segments that his link is part of
+     */
+    public void addSolutionLinkingWireRelationship(String       solutionComponent1GUID,
+                                                   String       solutionComponent2GUID,
+                                                   List<String> informationSupplyChainSegmentGUIDs)
+    {
+        final String methodName = "addSolutionLinkingWireRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent1GUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent2GUID));
+
+        InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name, informationSupplyChainSegmentGUIDs, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_LINKING_WIRE.typeName,
+                                                                     idToGUIDMap.getGUID(solutionComponent1GUID + "_to_" + solutionComponent2GUID + "_solution_linking_wire_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link an element to its actor
+     *
+     * @param solutionActorGUID guid of blueprint
+     * @param solutionComponentGUID guid of component
+     * @param role role of the component in the solution
+     * @param description description of the role in the solution
+     */
+    public void addSolutionComponentActorRelationship(String solutionActorGUID,
+                                                      String solutionComponentGUID,
+                                                      String role,
+                                                      String description)
+    {
+        final String methodName = "addSolutionComponentActorRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionActorGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponentGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ROLE.name, role, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(solutionActorGUID + "_to_" + solutionComponentGUID + "_solution_component_actor_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link an information supply chain to one of its segments
+     *
+     * @param parentSolutionComponentGUID guid of parent
+     * @param childSolutionComponentGUID guid of the child
+
+     */
+    public void addSolutionCompositionRelationship(String parentSolutionComponentGUID,
+                                                   String childSolutionComponentGUID)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentSolutionComponentGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(childSolutionComponentGUID));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(parentSolutionComponentGUID + "_to_" + childSolutionComponentGUID + "_solution_composition_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
     }
 }

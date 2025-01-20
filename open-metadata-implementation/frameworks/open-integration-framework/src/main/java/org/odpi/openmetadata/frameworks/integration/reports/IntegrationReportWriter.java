@@ -105,9 +105,9 @@ public class IntegrationReportWriter
                 report.setRefreshStartDate(startDate);
                 report.setRefreshCompletionDate(completionDate);
                 report.setAdditionalProperties(additionalProperties);
-                report.setCreatedElements(new ArrayList<>(createdElements));
-                report.setUpdatedElements(new ArrayList<>(updatedElements));
-                report.setDeletedElements(new ArrayList<>(deletedElements));
+                report.setCreatedElements(getReportElements(createdElements));
+                report.setUpdatedElements(getReportElements(updatedElements));
+                report.setDeletedElements(getReportElements(deletedElements));
 
                 openIntegrationClient.publishIntegrationReport(userId, integrationConnectorGUID, report);
             }
@@ -116,6 +116,33 @@ public class IntegrationReportWriter
         startRecording();
     }
 
+
+    /**
+     * Converts a set into a list.  This should not be required by using the ArrayList constructor returns an
+     * java.lang.ArrayIndexOutOfBoundsException exception.
+     *
+     * @param elementGUIDs set of element GUIDs.
+     * @return list of guids
+     */
+    private List<String> getReportElements(Set<String> elementGUIDs)
+    {
+        if (elementGUIDs != null && !elementGUIDs.isEmpty())
+        {
+            List<String> guids = new ArrayList<>();
+
+            for (String guid : elementGUIDs)
+            {
+                if (guid != null)
+                {
+                    guids.add(guid);
+                }
+            }
+
+            return guids;
+        }
+
+        return null;
+    }
 
     /**
      * Set whether an integration report should be assembled and published.

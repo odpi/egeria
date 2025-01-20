@@ -8,8 +8,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.SolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
@@ -267,12 +269,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
             {
                 setUpCertificationType(clinicalTrialProjectGUID, hospitalCertificationTypeGUID);
 
-
                 String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":nominate-hospital",
                                                                                          "Nominate Hospital",
                                                                                          "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
                                                                                          genericHospitalNominationGUID,
                                                                                          governanceContext.getRequestParameters());
+
+                addSolutionComponentRelationship(SolutionComponent.NOMINATE_HOSPITAL.getGUID(), nominateHospitalGUID);
 
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.CUSTODIAN.getName(), custodianGUID);
@@ -285,6 +288,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         genericHospitalCertificationGUID,
                                                                                         governanceContext.getRequestParameters());
 
+                addSolutionComponentRelationship(SolutionComponent.CERTIFY_HOSPITAL.getGUID(), certifyHospitalGUID);
+
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CUSTODIAN.getName(), custodianGUID);
@@ -295,6 +300,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
                                                                                         genericHospitalOnboardingGUID,
                                                                                         governanceContext.getRequestParameters());
+
+                addSolutionComponentRelationship(SolutionComponent.ONBOARD_HOSPITAL.getGUID(), onboardHospitalGUID);
 
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
@@ -310,14 +317,12 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                              genericSetUpDataLakeGUID,
                                                                                              governanceContext.getRequestParameters());
 
+                addSolutionComponentRelationship(SolutionComponent.SET_UP_DATA_LAKE_FOLDER.getGUID(), setUpDataLakeProcessGUID);
 
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.STEWARD.getName(), stewardGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName(), lastUpdateConnectorGUID);
                 addActionTargetToProcess(setUpDataLakeProcessGUID, CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName(), onboardHospitalGUID);
-
-
-
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -343,6 +348,31 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                 methodName,
                                                 error);
         }
+    }
+
+
+    /**
+     * Set up the ImplementedBy relationship.
+     *
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param implementationGUID unique identifier of the newly set up governance action process
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private void addSolutionComponentRelationship(String solutionComponentGUID,
+                                                  String implementationGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.DESIGN_STEP.name,
+                                                                        this.getClass().getName());
+
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                              solutionComponentGUID,
+                                                                              implementationGUID,
+                                                                              null,
+                                                                              null,
+                                                                              properties);
     }
 
 

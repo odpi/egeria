@@ -14,6 +14,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClie
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
@@ -4396,6 +4401,365 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         }
 
         return toDoGUID;
+    }
+
+
+    /**
+     * Create a new context event
+     *
+     * @param userId calling user
+     * @param anchorGUID unique identifier for the context event's anchor element
+     * @param parentContextEvents which context events should be linked as parents (guid->relationship properties)
+     * @param childContextEvents which context events should be linked as children (guid->relationship properties)
+     * @param relatedContextEvents which context events should be linked as related (guid->relationship properties)
+     * @param impactedElements which elements are impacted by this context event (guid->relationship properties)
+     * @param effectedDataResourceGUIDs which data resources are effected by this context event (asset guid->relationship properties)
+     * @param contextEventEvidenceGUIDs which elements provide evidence that the context event is happening (element GUIDs)
+     * @param contextEventProperties properties for the context event itself
+     * @return guid of the new context event
+     * @throws InvalidParameterException one of the properties are invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    @Override
+    public String registerContextEvent(String                                       userId,
+                                       String                                       anchorGUID,
+                                       Map<String, DependentContextEventProperties> parentContextEvents,
+                                       Map<String, DependentContextEventProperties> childContextEvents,
+                                       Map<String, RelatedContextEventProperties>   relatedContextEvents,
+                                       Map<String, ContextEventImpactProperties>    impactedElements,
+                                       Map<String, RelationshipProperties>          effectedDataResourceGUIDs,
+                                       Map<String, RelationshipProperties>          contextEventEvidenceGUIDs,
+                                       ContextEventProperties                       contextEventProperties) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        final String methodName = "registerContextEvent";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        /*
+         * The qualified name is needed.
+         */
+        if (contextEventProperties == null)
+        {
+            propertyHelper.validateMandatoryName(null, qualifiedNameParameterName, methodName);
+            // not reached
+            return null;
+        }
+        else
+        {
+            propertyHelper.validateMandatoryName(contextEventProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+            /*
+             * Create the to do entity
+             */
+            ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            contextEventProperties.getQualifiedName());
+
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, contextEventProperties.getName());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, contextEventProperties.getEventDescription());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.CONTEXT_EVENT_TYPE.name, contextEventProperties.getContextEventType());
+            properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.EVENT_EFFECT.name, contextEventProperties.getEventEffect());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_START_DATE.name, contextEventProperties.getPlannedStartDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_START_DATE.name, contextEventProperties.getActualStartDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.PLANNED_COMPLETION_DATE.name, contextEventProperties.getPlannedCompletionDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name, contextEventProperties.getActualCompletionDate());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_FROM.name, contextEventProperties.getReferenceEffectiveFrom());
+            properties = propertyHelper.addDateProperty(properties, OpenMetadataProperty.REFERENCE_EFFECTIVE_TO.name, contextEventProperties.getReferenceEffectiveTo());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.PLANNED_DURATION.name, contextEventProperties.getPlannedDuration());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.ACTUAL_DURATION.name, contextEventProperties.getActualDuration());
+            properties = propertyHelper.addLongProperty(properties, OpenMetadataProperty.REPEAT_INTERVAL.name, contextEventProperties.getRepeatInterval());
+            properties = propertyHelper.addStringMapProperty(properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, contextEventProperties.getAdditionalProperties());
+
+            boolean isOwnAnchor = (anchorGUID == null);
+
+            String contextEventGUID = this.createMetadataElementInStore(userId,
+                                                                        OpenMetadataType.CONTEXT_EVENT.typeName,
+                                                                        ElementStatus.ACTIVE,
+                                                                        null,
+                                                                        anchorGUID,
+                                                                        isOwnAnchor,
+                                                                        contextEventProperties.getEffectiveFrom(),
+                                                                        contextEventProperties.getEffectiveTo(),
+                                                                        properties,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        true);
+
+            if (contextEventGUID != null)
+            {
+                if (parentContextEvents != null)
+                {
+                    for (String guid : parentContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            DependentContextEventProperties suppliedRelationshipProperties = parentContextEvents.get(guid);
+                            
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                          OpenMetadataProperty.DESCRIPTION.name,
+                                                                                          suppliedRelationshipProperties.getDescription());
+
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedRelationshipProperties.getEffectiveFrom(),
+                                                                  suppliedRelationshipProperties.getEffectiveTo(),
+                                                                  relationshipProperties,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+
+                if (childContextEvents != null)
+                {
+                    for (String guid : childContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            DependentContextEventProperties suppliedRelationshipProperties = childContextEvents.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                            OpenMetadataProperty.DESCRIPTION.name,
+                                                                                                            suppliedRelationshipProperties.getDescription());
+
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  contextEventGUID,
+                                                                  guid,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedRelationshipProperties.getEffectiveFrom(),
+                                                                  suppliedRelationshipProperties.getEffectiveTo(),
+                                                                  relationshipProperties,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.DEPENDENT_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  contextEventGUID,
+                                                                  guid,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+
+                if (relatedContextEvents != null)
+                {
+                    for (String guid : relatedContextEvents.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelatedContextEventProperties suppliedRelationshipProperties = relatedContextEvents.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties relationshipProperties = propertyHelper.addIntProperty(null,
+                                                                                                         OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                                                         suppliedRelationshipProperties.getStatusIdentifier());
+
+                                relationshipProperties = propertyHelper.addIntProperty(relationshipProperties,
+                                                                                       OpenMetadataProperty.CONFIDENCE.name,
+                                                                                       suppliedRelationshipProperties.getConfidence());
+
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.STEWARD.name,
+                                                                                          suppliedRelationshipProperties.getSteward());
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                                                          suppliedRelationshipProperties.getStewardTypeName());
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                                                          suppliedRelationshipProperties.getStewardPropertyName());
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.SOURCE.name,
+                                                                                          suppliedRelationshipProperties.getSource());
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.NOTES.name,
+                                                                                          suppliedRelationshipProperties.getNotes());
+
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedRelationshipProperties.getEffectiveFrom(),
+                                                                  suppliedRelationshipProperties.getEffectiveTo(),
+                                                                  relationshipProperties,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.RELATED_CONTEXT_EVENT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+
+                if (impactedElements != null)
+                {
+                    for (String guid : impactedElements.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            ContextEventImpactProperties suppliedRelationshipProperties = impactedElements.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                ElementProperties relationshipProperties = propertyHelper.addIntProperty(null,
+                                                                                                         OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER.name,
+                                                                                                         suppliedRelationshipProperties.getSeverityLevelIdentifier());
+                                relationshipProperties = propertyHelper.addStringProperty(relationshipProperties,
+                                                                                          OpenMetadataProperty.DESCRIPTION.name,
+                                                                                          suppliedRelationshipProperties.getDescription());
+
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedRelationshipProperties.getEffectiveFrom(),
+                                                                  suppliedRelationshipProperties.getEffectiveTo(),
+                                                                  relationshipProperties,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_IMPACT_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+
+                if (effectedDataResourceGUIDs != null)
+                {
+                    for (String guid : effectedDataResourceGUIDs.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelationshipProperties suppliedRelationshipProperties = effectedDataResourceGUIDs.get(guid);
+
+                            if (suppliedRelationshipProperties != null)
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedRelationshipProperties.getEffectiveFrom(),
+                                                                  suppliedRelationshipProperties.getEffectiveTo(),
+                                                                  null,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_FOR_TIMELINE_EFFECTS_RELATIONSHIP.typeName,
+                                                                  guid,
+                                                                  contextEventGUID,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+
+                if (contextEventEvidenceGUIDs != null)
+                {
+                    for (String guid : contextEventEvidenceGUIDs.keySet())
+                    {
+                        if (guid != null)
+                        {
+                            RelationshipProperties suppliedProperties = contextEventEvidenceGUIDs.get(guid);
+
+                            if (suppliedProperties != null)
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName,
+                                                                  contextEventGUID,
+                                                                  guid,
+                                                                  false,
+                                                                  false,
+                                                                  suppliedProperties.getEffectiveFrom(),
+                                                                  suppliedProperties.getEffectiveTo(),
+                                                                  null,
+                                                                  new Date());
+                            }
+                            else
+                            {
+                                this.createRelatedElementsInStore(userId,
+                                                                  OpenMetadataType.CONTEXT_EVENT_EVIDENCE_RELATIONSHIP.typeName,
+                                                                  contextEventGUID,
+                                                                  guid,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  new Date());
+                            }
+                        }
+                    }
+                }
+            }
+
+            return contextEventGUID;
+        }
     }
 
 

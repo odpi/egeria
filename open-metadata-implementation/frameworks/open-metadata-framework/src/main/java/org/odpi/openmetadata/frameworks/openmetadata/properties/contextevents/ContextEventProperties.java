@@ -120,6 +120,7 @@ public class ContextEventProperties extends SupplementaryProperties
      *
      * @return display name
      */
+    @Override
     public String getDisplayName()
     {
         if (displayName == null)
@@ -181,6 +182,7 @@ public class ContextEventProperties extends SupplementaryProperties
      *
      * @return description
      */
+    @Override
     public String getDisplayDescription()
     {
         if (displayDescription == null)

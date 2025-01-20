@@ -2210,6 +2210,51 @@ public enum OpenMetadataProperty
      * The type of agreement - values typically defined in a valid value set.
      */
     AGREEMENT_TYPE("agreementType", DataType.STRING.getName(), "The type of agreement - values typically defined in a valid metadata set.", null, "d994edef-90e1-4899-b814-e30dafa77944"),
+
+    /**
+     * The type of solution component - for example, is it a process, of file or database.
+     */
+    SOLUTION_COMPONENT_TYPE("solutionComponentType", DataType.STRING.getName(), "The type of solution component - for example, is it a process, of file or database.", "Governance Action Process", "2455eae0-911c-48a5-aa60-eb5e8c90fd22"),
+
+    /**
+     * The reasons why some processing is occurring or some data is retained
+     */
+    PURPOSES("purposes", DataType.ARRAY_STRING.getName(), "The reasons why some processing is occurring or some data is retained", null, "33abef8e-5a15-43ca-9d44-2c191792f8dd"),
+
+    /**
+     * Mechanism to flow data and control along the segment.
+     */
+    INTEGRATION_STYLE("integrationStyle",  DataType.STRING.getName(), "Mechanism to flow data and control along the segment.", null, "be8d6edd-d405-40b4-b270-c80d7dcf5a60"),
+
+    /**
+     * Properties that describe the expected volumes of data flowing through this segment.
+     */
+    ESTIMATED_VOLUMETRICS("estimatedVolumetrics", DataType.MAP_STRING_STRING.getName(), "Properties that describe the expected volumes of data flowing through this segment.", null, "4ef715ca-fa9b-49fe-9c8e-7dbc7769f9c0"),
+
+    /**
+     * Name used to identify a specific actor in the agreement.
+     */
+    ACTOR_NAME("actorName", DataType.STRING.getName(), "Name used to identify a specific actor in the agreement.", null, "4ec49806-b114-4580-9fac-dfdf26b62211"),
+
+    /**
+     * Process that created the refinement.
+     */
+    DESIGN_STEP("designStep", DataType.STRING.getName(), "Process that created the refinement.", null, "80574eeb-0213-45e3-b6ca-07504d126b00"),
+
+    /**
+     * Role that this artifact plays in implementing the abstract representation.
+     */
+    ROLE("role", DataType.STRING.getName(), "Role that this artifact plays in implementing the abstract representation.", null, "3c148d09-8383-4f64-8adc-57a03a45ac14"),
+
+    /**
+     * Transformation process used to create the refinement.
+     */
+    TRANSFORMATION("transformation", DataType.STRING.getName(), "Transformation process used to create the refinement.", null, "b2fa3b21-a298-4007-992f-07b3215ba698"),
+
+    /**
+     * Unique identifier of information supply chain segments that this wire belongs to.
+     */
+    INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS("informationSupplyChainSegmentGUIDs", DataType.ARRAY_STRING.getName(), "Unique identifier of information supply chain segments that this wire belongs to.", null, "71916c51-d9f7-431b-b697-528f3ba2dc80"),
     ;
 
 

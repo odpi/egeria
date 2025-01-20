@@ -1387,16 +1387,8 @@ public class OpenMetadataTypesArchive3_11
 
     private RelationshipDef getImplementedByRelationship()
     {
-        final String guid            = "28f63c94-aaef-4c84-98f7-d77aa605272e";
-        final String name            = "ImplementedBy";
-        final String description     = "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1433,34 +1425,11 @@ public class OpenMetadataTypesArchive3_11
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        final String attribute1Name            = "designStep";
-        final String attribute1Description     = "Process that created the refinement.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "role";
-        final String attribute2Description     = "Role that this artifact plays in implementing the abstract representation.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "transformation";
-        final String attribute3Description     = "Transformation process used to create the refinement.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESIGN_STEP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TRANSFORMATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

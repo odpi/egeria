@@ -925,9 +925,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "AgreementActor";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.AGREEMENT_ACTOR.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -948,16 +946,8 @@ public class OpenMetadataTypesArchive4_0
 
     private RelationshipDef getInformationSupplyChainLinkRelationship()
     {
-        final String guid            = "207e5130-ab7c-4048-9249-a63a43c13d60";
-        final String name            = "InformationSupplyChainLink";
-        final String description     = "A link between two related information supply chain segments -or to their source or destination.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -995,12 +985,8 @@ public class OpenMetadataTypesArchive4_0
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
-                                                           OpenMetadataProperty.DESCRIPTION.description,
-                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
-        properties.add(property);
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 

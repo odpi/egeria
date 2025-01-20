@@ -80,12 +80,28 @@ public enum PlaceholderProperty
                  "This file contains a week's worth of patient data for the Teddy Bear Drop Foot clinical trial."),
 
     /**
-     * The description of the element to help a consumer understand its content and purpose.
+     * The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.
      */
     VERSION_IDENTIFIER ("versionIdentifier",
-                 "The string identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
+                 "The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
                  DataType.STRING.getName(),
                  "V1.0"),
+
+    /**
+     * What is the scope of influence of this element?
+     */
+    SCOPE("scope",
+          "What is the scope of influence of this element?",
+          DataType.STRING.getName(),
+          "Company-wide"),
+
+    /**
+     * What is the mechanism/approach used to exchange data/control?
+     */
+    INTEGRATION_STYLE("integrationStyle",
+          "What is the mechanism/approach used to exchange data/control?",
+          DataType.STRING.getName(),
+          "Data Pipeline"),
 
     /**
      * The description of the element to help a consumer understand its content and purpose.

@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
@@ -49,6 +51,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         String clinicalTrialId                  = null;
         String clinicalTrialName                = null;
+        String clinicalTrialGUID                = null;
         String projectGUID                      = null;
         String hospitalGUID                     = null;
         String hospitalName                     = null;
@@ -81,6 +84,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                     {
                         if (CocoClinicalTrialActionTarget.PROJECT.getName().equals(actionTargetElement.getActionTargetName()))
                         {
+                            clinicalTrialGUID = actionTargetElement.getTargetElement().getElementGUID();
+
                             clinicalTrialId = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
                                                                                OpenMetadataProperty.IDENTIFIER.name,
                                                                                actionTargetElement.getTargetElement().getElementProperties(),
@@ -137,7 +142,6 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                  * These value are passed on - they are extracted here to provide validation.
                  */
                 dataLakePathName = governanceContext.getRequestParameters().get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
-                newFileProcessName = governanceContext.getRequestParameters().get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName());
             }
 
             if (clinicalTrialId == null || clinicalTrialName == null || hospitalName == null ||
@@ -146,6 +150,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                     landingAreaDirectoryTemplateGUID==null || landingAreaDirectoryTemplateGUID.isBlank() ||
                     landingAreaPathName==null || landingAreaPathName.isBlank() ||
                     dataLakePathName == null || dataLakePathName.isBlank() ||
+                    newFileProcessName == null || newFileProcessName.isBlank() ||
                     dataLakeFileTemplateGUID == null || dataLakeFileTemplateGUID.isBlank() ||
                     onboardingProcessGUID == null || stewardGUID == null || integrationConnectorGUID == null || hospitalCertificationTypeGUID == null || dataQualityCertificationTypeGUID == null)
             {
@@ -266,6 +271,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                dataQualityCertificationTypeGUID);
 
                 /*
+                 * Create the context event for the data lake folder
+                 */
+                this.addContextEventToDataLakeFolder(dataLakePathName, clinicalTrialGUID, clinicalTrialId, clinicalTrialName, hospitalName);
+
+                /*
                  * Add the catalog target for the new landing are folder and template.
                  */
                 this.startMonitoringLandingArea(landingAreaFolderGUID,
@@ -303,6 +313,54 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 error.getClass().getName(),
                                                 methodName,
                                                 error);
+        }
+    }
+
+
+    /**
+     * Set up a context event for the destination folder to indicate that data is coming from a new source.
+     *
+     * @param dataLakePathName directory name where the data will be located.
+     * @param clinicalTrialGUID unique identifier of the clinical trial (project) element
+     * @param clinicalTrialId clinical trial identifier
+     * @param clinicalTrialName clinical trial name
+     * @param hospitalName name of the newly certified hospital
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    private void addContextEventToDataLakeFolder(String              dataLakePathName,
+                                                 String              clinicalTrialGUID,
+                                                 String              clinicalTrialId,
+                                                 String              clinicalTrialName,
+                                                 String              hospitalName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        String dataLakeFolderGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(dataLakePathName, OpenMetadataProperty.PATH_NAME.name);
+
+        if (dataLakeFolderGUID != null)
+        {
+            Map<String, RelationshipProperties> effectedDataSources = new HashMap<>();
+            ContextEventProperties              contextEventProperties = new ContextEventProperties();
+            String                              contextEventName = "Hospital " + hospitalName + " ready to onboard data into clinical trial " + clinicalTrialId + ": " + clinicalTrialName;
+
+            contextEventProperties.setQualifiedName("ContextEvent:" + contextEventName);
+            contextEventProperties.setName(contextEventName);
+            contextEventProperties.setEventEffect("Data from a new hospital will be incorporated in the measurements data sets.");
+            contextEventProperties.setContextEventType("NewDataFeed");
+            contextEventProperties.setActualStartDate(new Date());
+
+            effectedDataSources.put(dataLakeFolderGUID, new RelationshipProperties());
+
+            governanceContext.registerContextEvent(clinicalTrialGUID,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   effectedDataSources,
+                                                   null,
+                                                   contextEventProperties);
         }
     }
 
@@ -552,7 +610,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
      * @param clinicalTrialId business identifier of the clinical trial project
      * @param clinicalTrialName display name of the project
      * @param hospitalContactDetails name and email of the person from the hospital that is the hospital's coordinator for the trial
-     * @return qualifiedName of template
+     * @return  template
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
