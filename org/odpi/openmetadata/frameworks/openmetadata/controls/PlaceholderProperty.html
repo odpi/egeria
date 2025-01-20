@@ -186,31 +186,39 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The host IP address or domain name.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LAST_ACCESSED_DATE" class="member-name-link">LAST_ACCESSED_DATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#LAST_UPDATE_DATE" class="member-name-link">LAST_UPDATE_DATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#INTEGRATION_STYLE" class="member-name-link">INTEGRATION_STYLE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What is the mechanism/approach used to exchange data/control?</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LAST_ACCESSED_DATE" class="member-name-link">LAST_ACCESSED_DATE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#LAST_UPDATE_DATE" class="member-name-link">LAST_UPDATE_DATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The date that the file was created.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The number of the port to use to connect to a service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROGRAMMING_LANGUAGE" class="member-name-link">PROGRAMMING_LANGUAGE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PROGRAMMING_LANGUAGE" class="member-name-link">PROGRAMMING_LANGUAGE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The programming language used to encode the file.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RECEIVED_DATE" class="member-name-link">RECEIVED_DATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RECEIVED_DATE" class="member-name-link">RECEIVED_DATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The date/time that the data/resource was received.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ROOT_SCHEMA_TYPE_QUALIFIED_NAME" class="member-name-link">ROOT_SCHEMA_TYPE_QUALIFIED_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ROOT_SCHEMA_TYPE_QUALIFIED_NAME" class="member-name-link">ROOT_SCHEMA_TYPE_QUALIFIED_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The unique (qualified) name of a root schema type to describe the data schema (structure/specification) that this element works with.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The name of the schema being catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCOPE" class="member-name-link">SCOPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">What is the scope of influence of this element?</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SECRETS_STORE" class="member-name-link">SECRETS_STORE</a></code></div>
 <div class="col-last odd-row-color">
@@ -230,7 +238,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#VERSION_IDENTIFIER" class="member-name-link">VERSION_IDENTIFIER</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The description of the element to help a consumer understand its content and purpose.</div>
+<div class="block">The string version identifier for the element.</div>
 </div>
 </div>
 </section>
@@ -472,7 +480,21 @@ the order they are declared.</div>
 <section class="detail" id="VERSION_IDENTIFIER">
 <h3>VERSION_IDENTIFIER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PlaceholderProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderProperty</a></span>&nbsp;<span class="element-name">VERSION_IDENTIFIER</span></div>
-<div class="block">The description of the element to help a consumer understand its content and purpose.</div>
+<div class="block">The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCOPE">
+<h3>SCOPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PlaceholderProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderProperty</a></span>&nbsp;<span class="element-name">SCOPE</span></div>
+<div class="block">What is the scope of influence of this element?</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INTEGRATION_STYLE">
+<h3>INTEGRATION_STYLE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PlaceholderProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.controls">PlaceholderProperty</a></span>&nbsp;<span class="element-name">INTEGRATION_STYLE</span></div>
+<div class="block">What is the mechanism/approach used to exchange data/control?</div>
 </section>
 </li>
 <li>

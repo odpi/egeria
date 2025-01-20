@@ -786,6 +786,7 @@ org.odpi.openmetadata.samples.archiveutilities.organization
 org.odpi.openmetadata.samples.archiveutilities.sustainability
 org.odpi.openmetadata.samples.archiveutilities.types
 org.odpi.openmetadata.samples.governanceactions.clinicaltrials
+org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata
 org.odpi.openmetadata.samples.governanceactions.ffdc
 org.odpi.openmetadata.serverchassis.springboot
 org.odpi.openmetadata.serverchassis.springboot.config
@@ -912,6 +913,10 @@ org.odpi.openmetadata.viewservices.securityofficer.admin
 org.odpi.openmetadata.viewservices.securityofficer.ffdc
 org.odpi.openmetadata.viewservices.securityofficer.server
 org.odpi.openmetadata.viewservices.securityofficer.server.spring
+org.odpi.openmetadata.viewservices.solutionarchitect.admin
+org.odpi.openmetadata.viewservices.solutionarchitect.ffdc
+org.odpi.openmetadata.viewservices.solutionarchitect.server
+org.odpi.openmetadata.viewservices.solutionarchitect.server.spring
 org.odpi.openmetadata.viewservices.templatemanager.admin
 org.odpi.openmetadata.viewservices.templatemanager.ffdc
 org.odpi.openmetadata.viewservices.templatemanager.rest
