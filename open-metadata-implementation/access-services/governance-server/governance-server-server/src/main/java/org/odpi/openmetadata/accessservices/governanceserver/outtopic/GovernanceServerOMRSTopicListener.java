@@ -1079,10 +1079,11 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        if ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
-                (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
-                (processIntegrationConnectorEvent(sourceName, entity, methodName)) ||
-                (processEngineActionEvent(sourceName, entity, methodName)))
+        if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(classification.getName())) &&
+                ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
+                 (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
+                 (processIntegrationConnectorEvent(sourceName, entity, methodName)) ||
+                 (processEngineActionEvent(sourceName, entity, methodName))))
         {
             auditLog.logMessage(methodName, GovernanceServerAuditCode.INTERESTING_EVENT.getMessageDefinition(entity.getGUID()));
         }
@@ -1115,9 +1116,10 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent(proxy)";
 
-        if ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
-            (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
-            (processIntegrationConnectorEvent(sourceName, entity, methodName)))
+        if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(classification.getName())) &&
+                ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
+                 (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
+                 (processIntegrationConnectorEvent(sourceName, entity, methodName))))
         {
             auditLog.logMessage(methodName, GovernanceServerAuditCode.INTERESTING_EVENT.getMessageDefinition(entity.getGUID()));
         }
@@ -1223,10 +1225,11 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        if ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
+        if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(classification.getName())) &&
+                ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
                 (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
                 (processIntegrationConnectorEvent(sourceName, entity, methodName)) ||
-                (processEngineActionEvent(sourceName, entity, methodName)))
+                (processEngineActionEvent(sourceName, entity, methodName))))
         {
             auditLog.logMessage(methodName, GovernanceServerAuditCode.INTERESTING_EVENT.getMessageDefinition(entity.getGUID()));
         }
@@ -1261,9 +1264,10 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        if ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
+        if ((!OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName.equals(classification.getName())) &&
+                ((processGovernanceEngineEvent(sourceName, entity, methodName)) ||
                 (processIntegrationGroupEvent(sourceName, entity, methodName)) ||
-                (processIntegrationConnectorEvent(sourceName, entity, methodName)))
+                (processIntegrationConnectorEvent(sourceName, entity, methodName))))
         {
             auditLog.logMessage(methodName, GovernanceServerAuditCode.INTERESTING_EVENT.getMessageDefinition(entity.getGUID()));
         }

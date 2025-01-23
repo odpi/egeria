@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 
 import java.util.Objects;
 
@@ -15,14 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * PersonRoleResponse is the response structure used on the OMAS REST API calls that return a
- * PersonRoleElement object as a response.
+ * ActorRoleElement object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonRoleResponse extends FFDCResponseBase
 {
-    private PersonRoleElement element = null;
+    private ActorRoleElement element = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class PersonRoleResponse extends FFDCResponseBase
      *
      * @return details of person role
      */
-    public PersonRoleElement getElement()
+    public ActorRoleElement getElement()
     {
         return element;
     }
@@ -66,7 +66,7 @@ public class PersonRoleResponse extends FFDCResponseBase
      *
      * @param element details of person role
      */
-    public void setElement(PersonRoleElement element)
+    public void setElement(ActorRoleElement element)
     {
         this.element = element;
     }

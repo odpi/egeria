@@ -4432,7 +4432,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a GET REST call that returns a PersonRoleElement in a response object.
+     * Issue a GET REST call that returns a ActorRoleElement in a response object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate  REST API call URL template with place-holders for the parameters.

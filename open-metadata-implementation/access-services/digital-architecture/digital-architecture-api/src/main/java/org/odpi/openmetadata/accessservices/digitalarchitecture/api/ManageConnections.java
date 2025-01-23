@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ManageConnections provides methods to define connections and their supporting objects
- *
+ * ManageConnections provides methods to define connections and their supporting objects.
  * The interface supports the following types of objects
  *
  * <ul>
@@ -261,7 +260,7 @@ public interface ManageConnections
 
 
     /**
-     * Retrieve the list of asset metadata elements that contain the search string.
+     * Retrieve the list of connections metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param userId calling user

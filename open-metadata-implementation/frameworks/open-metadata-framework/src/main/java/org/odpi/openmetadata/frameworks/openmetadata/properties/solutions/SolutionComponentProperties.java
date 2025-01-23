@@ -20,9 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
-    private String version     = null;
+    private String displayName           = null;
+    private String description           = null;
+    private String version               = null;
+    private String solutionComponentType = null;
 
     /**
      * Default constructor
@@ -47,12 +48,13 @@ public class SolutionComponentProperties extends ReferenceableProperties
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
             this.version = template.getVersion();
+            this.solutionComponentType = template.getSolutionComponentType();
         }
     }
 
 
     /**
-     * Return the display name for this asset (normally a shortened for of the qualified name).
+     * Return the display name for this asset (normally a shortened form of the qualified name).
      *
      * @return string name
      */
@@ -63,7 +65,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the display name for this asset (normally a shortened for of the qualified name).
+     * Set up the display name for this asset (normally a shortened form of the qualified name).
      *
      * @param displayName string name
      */
@@ -118,6 +120,28 @@ public class SolutionComponentProperties extends ReferenceableProperties
 
 
     /**
+     * Return the type of the component.
+     *
+     * @return string
+     */
+    public String getSolutionComponentType()
+    {
+        return solutionComponentType;
+    }
+
+
+    /**
+     * Set up the type of the component.
+     *
+     * @param solutionComponentType string
+     */
+    public void setSolutionComponentType(String solutionComponentType)
+    {
+        this.solutionComponentType = solutionComponentType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -129,6 +153,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
+                ", solutionComponentType='" + solutionComponentType + '\'' +
                 "} " + super.toString();
     }
 
@@ -155,7 +180,8 @@ public class SolutionComponentProperties extends ReferenceableProperties
             return false;
         }
         return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(solutionComponentType, that.solutionComponentType) &&
                        Objects.equals(version, that.version);
     }
 
@@ -168,6 +194,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, version);
+        return Objects.hash(super.hashCode(), displayName, description, solutionComponentType, version);
     }
 }

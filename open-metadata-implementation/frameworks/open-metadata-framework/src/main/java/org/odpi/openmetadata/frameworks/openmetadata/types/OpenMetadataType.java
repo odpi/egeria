@@ -4136,11 +4136,48 @@ public enum OpenMetadataType
     /**
      * Connection between two solution ports that shows how data flows.
      */
-    SOLUTION_LINKING_WIRE("892a3d1c-cfb8-431d-bd59-c4d38833bfb0",
-                          "SolutionLinkingWire",
-                          OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
-                          "9a207086-ce67-4419-a6c0-bcdd478648c3",
-                          "Connection between two solution ports that shows how data flows."),
+    SOLUTION_LINKING_WIRE_RELATIONSHIP("892a3d1c-cfb8-431d-bd59-c4d38833bfb0",
+                                       "SolutionLinkingWire",
+                                       OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                       "9a207086-ce67-4419-a6c0-bcdd478648c3",
+                                       "Connection between two solution ports that shows how data flows."),
+
+    /**
+     * An external endpoint for a solution component.
+     */
+    SOLUTION_PORT("62ef448c-d4c1-4c94-a565-5e5625f6a57b",
+                  "SolutionPortElement",
+                  OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                  "7cef363f-9ea0-4f0b-9a86-145eb280be09",
+                  "An external endpoint for a solution component."),
+
+    /**
+     * Link between a solution component and its ports.
+     */
+    SOLUTION_COMPONENT_PORT_RELATIONSHIP("5652d03a-f6c9-411a-a3e4-f490d3856b64",
+                                         "SolutionComponentPort",
+                                         OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                         "f92d07cf-5c73-455d-890e-d2e856ea8467",
+                                         "Link between a solution component and its ports."),
+
+    /**
+     * Aligns ports from nested components with the parent's.
+     */
+    SOLUTION_PORT_DELEGATION_RELATIONSHIP("8335e6ed-fd86-4000-9bc5-5203062f28ba",
+                                          "SolutionPortDelegation",
+                                          OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                          "eb2de5b6-bf82-43cc-a50c-fc6588cd2a46",
+                                          "Aligns ports from nested components with the parent's."),
+
+    /**
+     * Identifies the structure of data passed through a solution port.
+     */
+    SOLUTION_PORT_SCHEMA_RELATIONSHIP("bf02c703-57a2-4ab7-b6db-f49b57b05985",
+                                      "SolutionPortSchema",
+                                      OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
+                                      "63e2ac1e-394f-47f6-87a6-7ae4ebed0887",
+                                      "Identifies the structure of data passed through a solution port."),
+
 
     /**
      * Identifies a step in the refinement of digital components and artifacts from design to concrete implementation.
@@ -5057,7 +5094,7 @@ public enum OpenMetadataType
 
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
     public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";
-    /* End1 = SolutionPort; End 2 = SchemaType */
+    /* End1 = SolutionPortElement; End 2 = SchemaType */
 
 
     public static final String BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID = "085febdd-f129-4f4b-99aa-01f3e6294e9f";

@@ -4,10 +4,9 @@ package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AgreementRoleAppointee;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleHistory;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -149,8 +148,8 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    PersonRoleElement getPersonRoleByGUID(String userId,
-                                          String personRoleGUID) throws UserNotAuthorizedException,
+    ActorRoleElement getPersonRoleByGUID(String userId,
+                                         String personRoleGUID) throws UserNotAuthorizedException,
                                                                         InvalidParameterException,
                                                                         PropertyServerException;
 
@@ -165,8 +164,8 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    PersonRoleHistory getPersonRoleHistoryByGUID(String userId,
-                                                 String personRoleGUID) throws InvalidParameterException,
+    ActorRoleHistory getPersonRoleHistoryByGUID(String userId,
+                                                String personRoleGUID) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException;
 
@@ -186,8 +185,8 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getPersonRoleByQualifiedName(String userId,
-                                                         String qualifiedName) throws UserNotAuthorizedException,
+    List<ActorRoleElement> getPersonRoleByQualifiedName(String userId,
+                                                        String qualifiedName) throws UserNotAuthorizedException,
                                                                                       InvalidParameterException,
                                                                                       PropertyServerException;
 
@@ -206,10 +205,10 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getPersonRolesByTitle(String userId,
-                                                  String title,
-                                                  int    startFrom,
-                                                  int    pageSize) throws UserNotAuthorizedException,
+    List<ActorRoleElement> getPersonRolesByTitle(String userId,
+                                                 String title,
+                                                 int    startFrom,
+                                                 int    pageSize) throws UserNotAuthorizedException,
                                                                           InvalidParameterException,
                                                                           PropertyServerException;
 
@@ -227,10 +226,10 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<PersonRoleAppointee> getDigitalServiceManagers(String userId,
-                                                        String digitalServiceGUID,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    List<ActorRoleAppointee> getDigitalServiceManagers(String userId,
+                                                       String digitalServiceGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException;
 

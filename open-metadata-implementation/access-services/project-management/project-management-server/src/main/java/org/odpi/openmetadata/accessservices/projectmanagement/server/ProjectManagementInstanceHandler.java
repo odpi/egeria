@@ -105,9 +105,9 @@ class ProjectManagementInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    PersonRoleHandler<PersonRoleElement> getPersonRoleHandler(String userId,
-                                                              String serverName,
-                                                              String serviceOperationName) throws InvalidParameterException,
+    PersonRoleHandler<ActorRoleElement> getPersonRoleHandler(String userId,
+                                                             String serverName,
+                                                             String serviceOperationName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {

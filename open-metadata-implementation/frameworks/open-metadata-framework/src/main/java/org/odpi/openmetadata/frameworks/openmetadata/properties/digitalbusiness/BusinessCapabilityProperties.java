@@ -75,7 +75,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the display name for this asset (normally a shortened for of the qualified name).
+     * Return the display name for this asset (normally a shortened form of the qualified name).
      *
      * @return string name
      */
@@ -86,7 +86,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the display name for this asset (normally a shortened for of the qualified name).
+     * Set up the display name for this asset (normally a shortened form of the qualified name).
      *
      * @param displayName string name
      */

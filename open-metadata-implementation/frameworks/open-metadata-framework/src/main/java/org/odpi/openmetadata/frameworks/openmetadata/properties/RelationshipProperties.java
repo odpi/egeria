@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainLink;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
@@ -31,6 +32,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Exter
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermCategorization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
@@ -46,6 +48,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseForeignKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CapabilityDeploymentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 
 import java.util.Date;
@@ -94,6 +97,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GlossaryTermRelationship.class, name = "GlossaryTermRelationship"),
                 @JsonSubTypes.Type(value = GovernanceDefinitionMetricProperties.class, name = "GovernanceDefinitionMetricProperties"),
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
+                @JsonSubTypes.Type(value = ImplementedByProperties.class, name = "ImplementedByProperties"),
+                @JsonSubTypes.Type(value = InformationSupplyChainLinkProperties.class, name = "InformationSupplyChainLinkProperties"),
                 @JsonSubTypes.Type(value = LicenseProperties.class, name = "LicenseProperties"),
                 @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
                 @JsonSubTypes.Type(value = NestedLocationProperties.class, name = "NestedLocationProperties"),

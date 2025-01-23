@@ -417,7 +417,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE.typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

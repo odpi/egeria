@@ -18,6 +18,79 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
+###
+# =====================================================================================================================
+# Review Solutions
 
+###
+# group: Review
+# @name findInformationSupplyChains
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+# https://egeria-project.org/concepts/information-supply-chain
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+# group: Review
+# @name findSolutionBlueprints
+# Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
+# https://egeria-project.org/concepts/solution-blueprint
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+###
+# group: Review
+# @name findSolutionRoles
+# Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
+# https://egeria-project.org/concepts/actor
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+###
+# group: Review
+# @name findSolutionComponents
+# Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
+# https://egeria-project.org/concepts/solution-components
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+###
+
+@solutionComponentGUID=add guid here
+
+###
+# group: Review
+# @name getSolutionComponentImplementations
+# Retrieve the list of metadata elements that are associated with the solution component via the ImplementedBy relationship.
+# https://egeria-project.org/concepts/solution-components
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/implementations?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
 
 

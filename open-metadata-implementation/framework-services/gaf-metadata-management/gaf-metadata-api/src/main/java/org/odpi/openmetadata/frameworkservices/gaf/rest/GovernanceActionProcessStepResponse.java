@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceActionProcessStepElementResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
+ * GovernanceActionProcessStepElementResponse is the response structure used on the open metadata REST API calls that returns a
  * GovernanceActionProcessStep element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -58,14 +58,7 @@ public class GovernanceActionProcessStepResponse extends OMAGGAFAPIResponse
      */
     public GovernanceActionProcessStepElement getElement()
     {
-        if (element == null)
-        {
-            return null;
-        }
-        else
-        {
-            return element;
-        }
+        return element;
     }
 
 

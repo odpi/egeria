@@ -28,8 +28,8 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
     private final GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
     private final UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
     private final ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
-    private final ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
-    private final PersonRoleHandler<PersonRoleElement>              personRoleHandler;
+    private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
+    private final PersonRoleHandler<ActorRoleElement>      personRoleHandler;
 
 
     /**
@@ -137,7 +137,7 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
                                                              auditLog);
 
         this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName,serverName),
-                                                         PersonRoleElement.class,
+                                                         ActorRoleElement.class,
                                                          serviceName,
                                                          serverName,
                                                          invalidParameterHandler,
@@ -238,7 +238,7 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public PersonRoleHandler<PersonRoleElement> getPersonRoleHandler() throws PropertyServerException
+    public PersonRoleHandler<ActorRoleElement> getPersonRoleHandler() throws PropertyServerException
     {
         final String methodName = "getPersonRoleHandler";
 

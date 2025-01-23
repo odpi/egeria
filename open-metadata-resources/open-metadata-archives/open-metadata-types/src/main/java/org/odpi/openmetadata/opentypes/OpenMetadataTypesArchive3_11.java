@@ -650,31 +650,20 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.PROJECT_STATUS.name;
-        final String attribute1Description     = OpenMetadataProperty.PROJECT_STATUS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.PROJECT_STATUS.descriptionGUID;
+
         final String attribute2Name            = "status";
         final String attribute2Description     = "(Deprecated) Short description on current status of the project.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataProperty.IDENTIFIER.name;
-        final String attribute3Description     = OpenMetadataProperty.IDENTIFIER.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.IDENTIFIER.descriptionGUID;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PROJECT_STATUS.name,
-                                                           OpenMetadataProperty.PROJECT_STATUS.description,
-                                                           OpenMetadataProperty.PROJECT_STATUS.descriptionGUID);
-        properties.add(property);
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_STATUS));
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1Name);
-        properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.IDENTIFIER.name,
-                                                           OpenMetadataProperty.IDENTIFIER.description,
-                                                           OpenMetadataProperty.IDENTIFIER.descriptionGUID);
+        property.setReplacedByAttribute(OpenMetadataProperty.PROJECT_STATUS.name);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -1481,16 +1470,8 @@ public class OpenMetadataTypesArchive3_11
 
     private RelationshipDef getSolutionPortSchemaRelationship()
     {
-        final String guid            = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
-        final String name            = "SolutionPortSchema";
-        final String description     = "Identifies the structure of data passed through a solution port.";
-        final String descriptionGUID = null;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOLUTION_PORT_SCHEMA_RELATIONSHIP,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1498,12 +1479,11 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SolutionPort";
         final String                     end1AttributeName            = "describesSolutionPortData";
         final String                     end1AttributeDescription     = "Port that uses the schema type.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_PORT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -1526,6 +1506,7 @@ public class OpenMetadataTypesArchive3_11
 
         return relationshipDef;
     }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

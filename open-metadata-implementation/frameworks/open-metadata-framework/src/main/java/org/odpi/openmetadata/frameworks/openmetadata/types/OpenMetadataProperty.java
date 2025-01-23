@@ -1032,7 +1032,7 @@ public enum OpenMetadataProperty
     /**
      * Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.
      */
-    PERMITTED_SYNCHRONIZATION("permittedSynchronization", "PermittedSynchronization", "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.", null, "45f5f2fc-17ec-4f02-8d7a-8cfe8f1557fe"),
+    PERMITTED_SYNCHRONIZATION("permittedSynchronization", PermittedSynchronization.getOpenTypeName(), "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.", null, "45f5f2fc-17ec-4f02-8d7a-8cfe8f1557fe"),
 
     /**
      * Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.
@@ -2255,6 +2255,12 @@ public enum OpenMetadataProperty
      * Unique identifier of information supply chain segments that this wire belongs to.
      */
     INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS("informationSupplyChainSegmentGUIDs", DataType.ARRAY_STRING.getName(), "Unique identifier of information supply chain segments that this wire belongs to.", null, "71916c51-d9f7-431b-b697-528f3ba2dc80"),
+
+    /**
+     * Which way is data flowing?
+     */
+    DIRECTION("direction", SolutionPortDirection.getOpenTypeName(), "Which way is data flowing?", SolutionPortDirection.INPUT.getName(), "0c42037e-0e69-40dc-b8f8-d9ccd4a0d315"),
+
     ;
 
 
