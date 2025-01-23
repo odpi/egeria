@@ -431,7 +431,6 @@ org.odpi.openmetadata.commonservices.multitenant
 org.odpi.openmetadata.commonservices.multitenant.ffdc
 org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders
-org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters
 org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers
 org.odpi.openmetadata.commonservices.repositoryhandler
 org.odpi.openmetadata.conformance.beans
@@ -550,6 +549,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
 org.odpi.openmetadata.frameworks.openmetadata.properties.feedback
 org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries
 org.odpi.openmetadata.frameworks.openmetadata.properties.governance
+org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains
 org.odpi.openmetadata.frameworks.openmetadata.properties.lineage
 org.odpi.openmetadata.frameworks.openmetadata.properties.locations
 org.odpi.openmetadata.frameworks.openmetadata.properties.projects

@@ -1632,13 +1632,29 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">An actor that is interacting with the solution component.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOLUTION_COMPOSITION_RELATIONSHIP" class="member-name-link">SOLUTION_COMPOSITION_RELATIONSHIP</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SOLUTION_COMPONENT_PORT_RELATIONSHIP" class="member-name-link">SOLUTION_COMPONENT_PORT_RELATIONSHIP</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Link between a solution component and its ports.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SOLUTION_COMPOSITION_RELATIONSHIP" class="member-name-link">SOLUTION_COMPOSITION_RELATIONSHIP</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Relationship showing the nesting structure of solution components.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOLUTION_LINKING_WIRE" class="member-name-link">SOLUTION_LINKING_WIRE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOLUTION_LINKING_WIRE_RELATIONSHIP" class="member-name-link">SOLUTION_LINKING_WIRE_RELATIONSHIP</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Connection between two solution ports that shows how data flows.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SOLUTION_PORT" class="member-name-link">SOLUTION_PORT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">An external endpoint for a solution component.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SOLUTION_PORT_DELEGATION_RELATIONSHIP" class="member-name-link">SOLUTION_PORT_DELEGATION_RELATIONSHIP</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Aligns ports from nested components with the parent's.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SOLUTION_PORT_SCHEMA_RELATIONSHIP" class="member-name-link">SOLUTION_PORT_SCHEMA_RELATIONSHIP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Identifies the structure of data passed through a solution port.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SOURCE_CODE_FILE" class="member-name-link">SOURCE_CODE_FILE</a></code></div>
 <div class="col-last even-row-color">
@@ -6586,10 +6602,38 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="SOLUTION_LINKING_WIRE">
-<h3>SOLUTION_LINKING_WIRE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_LINKING_WIRE</span></div>
+<section class="detail" id="SOLUTION_LINKING_WIRE_RELATIONSHIP">
+<h3>SOLUTION_LINKING_WIRE_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_LINKING_WIRE_RELATIONSHIP</span></div>
 <div class="block">Connection between two solution ports that shows how data flows.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOLUTION_PORT">
+<h3>SOLUTION_PORT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_PORT</span></div>
+<div class="block">An external endpoint for a solution component.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOLUTION_COMPONENT_PORT_RELATIONSHIP">
+<h3>SOLUTION_COMPONENT_PORT_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_COMPONENT_PORT_RELATIONSHIP</span></div>
+<div class="block">Link between a solution component and its ports.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOLUTION_PORT_DELEGATION_RELATIONSHIP">
+<h3>SOLUTION_PORT_DELEGATION_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_PORT_DELEGATION_RELATIONSHIP</span></div>
+<div class="block">Aligns ports from nested components with the parent's.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SOLUTION_PORT_SCHEMA_RELATIONSHIP">
+<h3>SOLUTION_PORT_SCHEMA_RELATIONSHIP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SOLUTION_PORT_SCHEMA_RELATIONSHIP</span></div>
+<div class="block">Identifies the structure of data passed through a solution port.</div>
 </section>
 </li>
 <li>
