@@ -1389,7 +1389,7 @@ public class SecurityManagerRESTServices
 
         try
         {
-            PersonRoleHandler<PersonRoleElement>     roleHandler    = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+            PersonRoleHandler<ActorRoleElement>      roleHandler    = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
             ActorProfileHandler<ActorProfileElement> profileHandler = instanceHandler.getActorProfileHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
@@ -1592,7 +1592,7 @@ public class SecurityManagerRESTServices
 
         try
         {
-            PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+            PersonRoleHandler<ActorRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getPersonRoleByGUID(userId,
@@ -1644,7 +1644,7 @@ public class SecurityManagerRESTServices
 
         try
         {
-            PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+            PersonRoleHandler<ActorRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.getPersonRolesByName(userId,
@@ -1697,7 +1697,7 @@ public class SecurityManagerRESTServices
 
         try
         {
-            PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
+            PersonRoleHandler<ActorRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElements(handler.findPersonRoles(userId,

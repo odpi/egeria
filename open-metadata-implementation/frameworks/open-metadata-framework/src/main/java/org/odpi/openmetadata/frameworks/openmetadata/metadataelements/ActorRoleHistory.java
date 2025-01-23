@@ -14,12 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonRoleHistory is the bean used to return a role definition and its appointees over time.
+ * ActorRoleHistory is the bean used to return a role definition and its appointees over time.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonRoleHistory extends PersonRoleAppointee
+public class ActorRoleHistory extends ActorRoleAppointee
 {
     private List<Appointee> predecessors = null;
     private List<Appointee> successors   = null;
@@ -27,7 +27,7 @@ public class PersonRoleHistory extends PersonRoleAppointee
     /**
      * Default constructor
      */
-    public PersonRoleHistory()
+    public ActorRoleHistory()
     {
         super();
     }
@@ -38,7 +38,7 @@ public class PersonRoleHistory extends PersonRoleAppointee
      *
      * @param template object to copy
      */
-    public PersonRoleHistory(PersonRoleHistory template)
+    public ActorRoleHistory(ActorRoleHistory template)
     {
         super(template);
 
@@ -55,7 +55,7 @@ public class PersonRoleHistory extends PersonRoleAppointee
      *
      * @param template object to copy
      */
-    public PersonRoleHistory(PersonRoleElement template)
+    public ActorRoleHistory(ActorRoleElement template)
     {
         super(template);
     }
@@ -114,7 +114,7 @@ public class PersonRoleHistory extends PersonRoleAppointee
     @Override
     public String toString()
     {
-        return "PersonRoleHistory{" +
+        return "ActorRoleHistory{" +
                 "predecessors=" + predecessors +
                 ", successors=" + successors +
                 "} " + super.toString();
@@ -142,7 +142,7 @@ public class PersonRoleHistory extends PersonRoleAppointee
         {
             return false;
         }
-        PersonRoleHistory that = (PersonRoleHistory) objectToCompare;
+        ActorRoleHistory that = (ActorRoleHistory) objectToCompare;
         return Objects.equals(predecessors, that.predecessors) &&
                        Objects.equals(successors, that.successors);
     }

@@ -7264,7 +7264,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name, informationSupplyChainSegmentGUIDs, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_LINKING_WIRE.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(solutionComponent1GUID + "_to_" + solutionComponent2GUID + "_solution_linking_wire_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

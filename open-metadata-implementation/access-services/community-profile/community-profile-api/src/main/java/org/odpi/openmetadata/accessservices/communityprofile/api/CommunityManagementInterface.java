@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommunityElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
@@ -238,10 +238,10 @@ public interface CommunityManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getRolesForCommunity(String userId,
-                                                 String communityGUID,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
+    List<ActorRoleElement> getRolesForCommunity(String userId,
+                                                String communityGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException;
 

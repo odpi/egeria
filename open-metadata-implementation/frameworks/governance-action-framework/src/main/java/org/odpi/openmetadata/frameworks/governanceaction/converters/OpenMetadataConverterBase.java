@@ -201,11 +201,11 @@ public abstract class OpenMetadataConverterBase<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-    public B getNewComplexBean(Class<B>                      beanClass,
-                               OpenMetadataElement           primaryElement,
-                               List<OpenMetadataElement>     supplementaryEntities,
+    public B getNewComplexBean(Class<B>                       beanClass,
+                               OpenMetadataElement            primaryElement,
+                               List<OpenMetadataElement>      supplementaryEntities,
                                List<OpenMetadataRelationship> relationships,
-                               String                        methodName) throws PropertyServerException
+                               String                         methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewComplexBean(with supplementary entities)";
 

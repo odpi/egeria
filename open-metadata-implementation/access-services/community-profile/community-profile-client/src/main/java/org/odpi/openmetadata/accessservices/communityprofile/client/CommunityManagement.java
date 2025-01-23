@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommunityElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 
@@ -480,10 +480,10 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getRolesForCommunity(String userId,
-                                                        String communityGUID,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getRolesForCommunity(String userId,
+                                                       String communityGUID,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {

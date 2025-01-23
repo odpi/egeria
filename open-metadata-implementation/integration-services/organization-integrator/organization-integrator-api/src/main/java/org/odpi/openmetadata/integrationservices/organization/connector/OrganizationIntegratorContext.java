@@ -633,9 +633,9 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public PersonRoleElement getPersonRoleByGUID(String personRoleGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public ActorRoleElement getPersonRoleByGUID(String personRoleGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         return organizationClient.getPersonRoleByGUID(userId, personRoleGUID);
     }
@@ -654,9 +654,9 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleElement> getPersonRolesByName(String name,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getPersonRolesByName(String name,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
@@ -677,9 +677,9 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleElement> getLeadershipRolesForTeam(String teamGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getLeadershipRolesForTeam(String teamGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -700,9 +700,9 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleElement> getMembershipRolesForTeam(String teamGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getMembershipRolesForTeam(String teamGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -723,9 +723,9 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<PersonRoleElement> findPersonRoles(String searchString,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> findPersonRoles(String searchString,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {

@@ -7,8 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 
 import java.util.Date;
@@ -530,8 +530,8 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    PersonRoleElement getPersonRoleByGUID(String userId,
-                                          String personRoleGUID) throws InvalidParameterException,
+    ActorRoleElement getPersonRoleByGUID(String userId,
+                                         String personRoleGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
 
@@ -550,10 +550,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getPersonRolesByName(String userId,
-                                                 String name,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
+    List<ActorRoleElement> getPersonRolesByName(String userId,
+                                                String name,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException;
 
@@ -572,10 +572,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getLeadershipRolesForTeam(String userId,
-                                                      String teamGUID,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
+    List<ActorRoleElement> getLeadershipRolesForTeam(String userId,
+                                                     String teamGUID,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 
@@ -594,10 +594,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleElement> getMembershipRolesForTeam(String userId,
-                                                      String teamGUID,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
+    List<ActorRoleElement> getMembershipRolesForTeam(String userId,
+                                                     String teamGUID,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 
@@ -616,10 +616,10 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<PersonRoleElement> findPersonRoles(String userId,
-                                            String searchString,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
+    List<ActorRoleElement> findPersonRoles(String userId,
+                                           String searchString,
+                                           int    startFrom,
+                                           int    pageSize) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException;
 }

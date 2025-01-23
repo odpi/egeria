@@ -26,8 +26,8 @@ public class PersonalProfileUniverse extends PersonalProfileElement
     private ContributionRecordElement    contributionRecord = null;
     private List<ProfileIdentityElement> userIdentities     = null;
     private List<ContactMethodElement>   contactMethods     = null;
-    private List<ElementStub>            peers              = null;
-    private List<PersonRoleElement>      roles              = null;
+    private List<ElementStub>      peers = null;
+    private List<ActorRoleElement> roles = null;
 
     /**
      * Default constructor
@@ -181,7 +181,7 @@ public class PersonalProfileUniverse extends PersonalProfileElement
      *
      * @return list of stubs for linked elements
      */
-    public List<PersonRoleElement> getRoles()
+    public List<ActorRoleElement> getRoles()
     {
         return roles;
     }
@@ -192,7 +192,7 @@ public class PersonalProfileUniverse extends PersonalProfileElement
      *
      * @param roles list of stubs for linked elements
      */
-    public void setRoles(List<PersonRoleElement> roles)
+    public void setRoles(List<ActorRoleElement> roles)
     {
         this.roles = roles;
     }

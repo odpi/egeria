@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonRoleElement implements MetadataElement
+public class ActorRoleElement implements MetadataElement
 {
     private ElementHeader        elementHeader  = null;
     private PersonRoleProperties properties     = null;
@@ -29,7 +29,7 @@ public class PersonRoleElement implements MetadataElement
     /**
      * Default constructor
      */
-    public PersonRoleElement()
+    public ActorRoleElement()
     {
         super();
     }
@@ -40,7 +40,7 @@ public class PersonRoleElement implements MetadataElement
      *
      * @param template object to copy
      */
-    public PersonRoleElement(PersonRoleElement template)
+    public ActorRoleElement(ActorRoleElement template)
     {
         if (template != null)
         {
@@ -129,7 +129,7 @@ public class PersonRoleElement implements MetadataElement
     @Override
     public String toString()
     {
-        return "PersonRoleElement{" +
+        return "ActorRoleElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
                        ", relatedElement=" + relatedElement +
@@ -154,7 +154,7 @@ public class PersonRoleElement implements MetadataElement
         {
             return false;
         }
-        PersonRoleElement that = (PersonRoleElement) objectToCompare;
+        ActorRoleElement that = (ActorRoleElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
                        Objects.equals(relatedElement, that.relatedElement);

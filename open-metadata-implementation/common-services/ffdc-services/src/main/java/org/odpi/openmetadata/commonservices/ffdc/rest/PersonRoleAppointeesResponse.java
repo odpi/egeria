@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleAppointee;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonRoleAppointeesResponse extends FFDCResponseBase
 {
-    private List<PersonRoleAppointee> elements = null;
+    private List<ActorRoleAppointee> elements = null;
 
 
     /**
@@ -56,7 +56,7 @@ public class PersonRoleAppointeesResponse extends FFDCResponseBase
      *
      * @return unique identifier
      */
-    public List<PersonRoleAppointee> getElements()
+    public List<ActorRoleAppointee> getElements()
     {
         return elements;
     }
@@ -67,7 +67,7 @@ public class PersonRoleAppointeesResponse extends FFDCResponseBase
      *
      * @param elements - unique identifier
      */
-    public void setElements(List<PersonRoleAppointee> elements)
+    public void setElements(List<ActorRoleAppointee> elements)
     {
         this.elements = elements;
     }

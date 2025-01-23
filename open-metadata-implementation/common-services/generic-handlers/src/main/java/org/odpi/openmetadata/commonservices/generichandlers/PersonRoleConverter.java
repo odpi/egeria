@@ -3,10 +3,9 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -59,7 +58,7 @@ public class PersonRoleConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof PersonRoleElement bean)
+            if (returnBean instanceof ActorRoleElement bean)
             {
                 PersonRoleProperties roleProperties = new PersonRoleProperties();
 
@@ -131,7 +130,7 @@ public class PersonRoleConverter<B> extends OMFConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof PersonRoleElement bean)
+        if (returnBean instanceof ActorRoleElement bean)
         {
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));

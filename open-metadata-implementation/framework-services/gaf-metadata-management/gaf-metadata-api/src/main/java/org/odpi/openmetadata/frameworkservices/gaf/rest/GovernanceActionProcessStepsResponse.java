@@ -59,14 +59,7 @@ public class GovernanceActionProcessStepsResponse extends OMAGGAFAPIResponse
      */
     public List<GovernanceActionProcessStepElement> getElements()
     {
-        if (elements == null)
-        {
-            return null;
-        }
-        else
-        {
-            return elements;
-        }
+        return elements;
     }
 
 

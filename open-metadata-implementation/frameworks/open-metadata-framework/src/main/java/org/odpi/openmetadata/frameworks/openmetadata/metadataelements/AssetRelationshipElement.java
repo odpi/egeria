@@ -179,18 +179,18 @@ public class AssetRelationshipElement implements MetadataElement
      */
     public ElementStub getEnd2Element()
     {
-        return end1Element;
+        return end2Element;
     }
 
 
     /**
      * Set up the header of the end 2 entity.
      *
-     * @param platformElement  header
+     * @param end2Element  header
      */
-    public void setEnd2Element(ElementStub platformElement)
+    public void setEnd2Element(ElementStub end2Element)
     {
-        this.end1Element = platformElement;
+        this.end2Element = end2Element;
     }
 
 

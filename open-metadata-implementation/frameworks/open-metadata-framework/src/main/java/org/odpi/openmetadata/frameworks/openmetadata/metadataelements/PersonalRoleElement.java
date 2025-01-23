@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonalRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 
 import java.util.Objects;
 
@@ -21,9 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalRoleElement implements MetadataElement
 {
-    private ElementHeader          elementHeader  = null;
-    private PersonalRoleProperties properties     = null;
-    private RelatedElement         relatedElement = null;
+    private ElementHeader       elementHeader  = null;
+    private ActorRoleProperties properties     = null;
+    private RelatedElement      relatedElement = null;
 
 
     /**
@@ -80,7 +80,7 @@ public class PersonalRoleElement implements MetadataElement
      *
      * @return properties
      */
-    public PersonalRoleProperties getProperties()
+    public ActorRoleProperties getProperties()
     {
         return properties;
     }
@@ -91,7 +91,7 @@ public class PersonalRoleElement implements MetadataElement
      *
      * @param properties  properties
      */
-    public void setProperties(PersonalRoleProperties properties)
+    public void setProperties(ActorRoleProperties properties)
     {
         this.properties = properties;
     }

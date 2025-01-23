@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.solutionarchitect.server;
 
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.SolutionManager;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.TemplateManager;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -16,6 +18,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.SOLUTION_ARCHITECT;
 
+    private final SolutionManager solutionManager;
 
 
     /**
@@ -44,8 +47,17 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-
+        solutionManager = new SolutionManager(remoteServerName, remoteServerURL, maxPageSize);
     }
 
-
+    /**
+     * Return the template manager client.  This client is from the Digital Architecture OMAS and is for maintaining
+     * template classifications and associated specifications.
+     *
+     * @return client
+     */
+    public SolutionManager getSolutionManagerClient()
+    {
+        return solutionManager;
+    }
 }

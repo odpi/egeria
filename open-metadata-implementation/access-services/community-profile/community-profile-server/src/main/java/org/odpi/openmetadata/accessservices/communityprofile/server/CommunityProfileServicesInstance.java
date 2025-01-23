@@ -35,8 +35,8 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
     private final SoftwareCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
     private final UserIdentityHandler<UserIdentityElement>         userIdentityHandler;
     private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
-    private final PersonRoleHandler<PersonRoleElement>     personRoleHandler;
-    private final CollectionHandler<CollectionElement>                   collectionHandler;
+    private final PersonRoleHandler<ActorRoleElement>      personRoleHandler;
+    private final CollectionHandler<CollectionElement>     collectionHandler;
     private final CommunityHandler<CommunityElement>                     communityHandler;
     private final ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
     private final ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
@@ -139,7 +139,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                  auditLog);
 
             this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName, serverName),
-                                                             PersonRoleElement.class,
+                                                             ActorRoleElement.class,
                                                              serviceName,
                                                              serverName,
                                                              invalidParameterHandler,
@@ -385,7 +385,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public PersonRoleHandler<PersonRoleElement> getPersonRoleHandler() throws PropertyServerException
+    public PersonRoleHandler<ActorRoleElement> getPersonRoleHandler() throws PropertyServerException
     {
         final String methodName = "getPersonRoleHandler";
 

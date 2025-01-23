@@ -946,8 +946,8 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public PersonRoleElement getPersonRoleByGUID(String userId,
-                                                 String personRoleGUID) throws InvalidParameterException,
+    public ActorRoleElement getPersonRoleByGUID(String userId,
+                                                String personRoleGUID) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -984,10 +984,10 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getPersonRoleByName(String userId,
-                                                       String name,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getPersonRoleByName(String userId,
+                                                      String name,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -1033,10 +1033,10 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<PersonRoleElement> findPersonRole(String userId,
-                                                  String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> findPersonRole(String userId,
+                                                 String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {

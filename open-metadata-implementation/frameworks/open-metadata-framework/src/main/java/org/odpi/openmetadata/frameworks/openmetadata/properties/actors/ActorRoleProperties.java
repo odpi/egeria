@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonalRoleProperties provides a structure for describe a role assigned to a person.
+ * ActorRoleProperties provides a structure for describe a role assigned to a person.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalRoleProperties
+public class ActorRoleProperties
 {
     private String               qualifiedName = null; /* qualifiedName */
     private String               roleId        = null; /* identifier */
@@ -43,7 +42,7 @@ public class PersonalRoleProperties
     /**
      * Default constructor
      */
-    public PersonalRoleProperties()
+    public ActorRoleProperties()
     {
     }
 
@@ -53,7 +52,7 @@ public class PersonalRoleProperties
      *
      * @param template object to copy
      */
-    public PersonalRoleProperties(PersonalRoleProperties template)
+    public ActorRoleProperties(ActorRoleProperties template)
     {
         if (template != null)
         {
@@ -332,7 +331,7 @@ public class PersonalRoleProperties
     @Override
     public String toString()
     {
-        return "PersonalRoleProperties{" +
+        return "ActorRoleProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", roleId='" + roleId + '\'' +
                        ", scope='" + scope + '\'' +
@@ -365,7 +364,7 @@ public class PersonalRoleProperties
         {
             return false;
         }
-        PersonalRoleProperties that = (PersonalRoleProperties) objectToCompare;
+        ActorRoleProperties that = (ActorRoleProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(roleId, that.roleId) &&

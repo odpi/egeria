@@ -185,7 +185,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         /*
-         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         * Add the valid metadata values used in the projectPhase property of the Project entity.
          */
         String projectPhaseParentSetGUID = this.getParentSet(null,
                                                              OpenMetadataType.PROJECT.typeName,
@@ -215,7 +215,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
-         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         * Add the valid metadata values used in the projectHealth property of the Project entity.
          */
         String projectHealthParentSetGUID = this.getParentSet(null,
                                                               OpenMetadataType.PROJECT.typeName,
@@ -249,7 +249,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
-         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         * Add the valid metadata values used in the projectStatus property of the Project entity.
          */
         String projectStatusParentSetGUID = this.getParentSet(null,
                                                               OpenMetadataType.PROJECT.typeName,
@@ -279,34 +279,12 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
 
         /*
-         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         * Add the valid metadata values used in the collectionType property of the Collection entity.
          */
         String collectionTypeParentSetGUID = this.getParentSet(null,
                                                                OpenMetadataType.COLLECTION.typeName,
                                                                OpenMetadataProperty.COLLECTION_TYPE.name,
                                                                null);
-
-        for (AssociationType associationType : AssociationType.values())
-        {
-            this.archiveHelper.addValidValue(associationType.getDescriptionGUID(),
-                                             collectionTypeParentSetGUID,
-                                             collectionTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             associationType.getQualifiedName(),
-                                             associationType.getName(),
-                                             associationType.getDescription(),
-                                             associationType.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             "string",
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             associationType.getName(),
-                                             false,
-                                             false,
-                                             null);
-        }
-
 
         for (CollectionType collectionType : CollectionType.values())
         {
@@ -328,6 +306,69 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              false,
                                              null);
         }
+
+
+
+        /*
+         * Add the valid metadata values used in the portType property of the Port entity.
+         */
+        String portTypeParentSetGUID = this.getParentSet(null,
+                                                         OpenMetadataType.PORT.typeName,
+                                                         OpenMetadataProperty.PORT_TYPE.name,
+                                                         null);
+
+        for (PortType portType : PortType.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             portTypeParentSetGUID,
+                                             portTypeParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             portType.getQualifiedName(),
+                                             portType.getName(),
+                                             portType.getDescription(),
+                                             portType.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             portType.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+
+
+        /*
+         * Add the valid metadata values used in the collectionType property of the Collection entity.
+         */
+        String solutionPortDirectionParentSetGUID = this.getParentSet(null,
+                                                                      OpenMetadataType.SOLUTION_PORT.typeName,
+                                                                      OpenMetadataProperty.DIRECTION.name,
+                                                                      null);
+
+        for (SolutionPortDirection solutionPortDirection : SolutionPortDirection.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             solutionPortDirectionParentSetGUID,
+                                             solutionPortDirectionParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             solutionPortDirection.getQualifiedName(),
+                                             solutionPortDirection.getName(),
+                                             solutionPortDirection.getDescription(),
+                                             solutionPortDirection.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             solutionPortDirection.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
 
         /*
          * Add valid metadata values for open metadata types that have been reformatted.

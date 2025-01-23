@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.Projec
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectTeamMember;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -1005,10 +1005,10 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getProjectManagementRoles(String userId,
-                                                             String projectGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getProjectManagementRoles(String userId,
+                                                            String projectGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {

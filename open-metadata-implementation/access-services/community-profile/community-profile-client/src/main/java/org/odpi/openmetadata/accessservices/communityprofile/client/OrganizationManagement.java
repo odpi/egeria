@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 
 import java.util.Date;
@@ -1098,8 +1098,8 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public PersonRoleElement getPersonRoleByGUID(String userId,
-                                                 String personRoleGUID) throws InvalidParameterException,
+    public ActorRoleElement getPersonRoleByGUID(String userId,
+                                                String personRoleGUID) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -1136,10 +1136,10 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getPersonRolesByName(String userId,
-                                                        String name,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getPersonRolesByName(String userId,
+                                                       String name,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -1185,10 +1185,10 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getLeadershipRolesForTeam(String userId,
-                                                             String teamGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getLeadershipRolesForTeam(String userId,
+                                                            String teamGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -1227,10 +1227,10 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getMembershipRolesForTeam(String userId,
-                                                             String teamGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> getMembershipRolesForTeam(String userId,
+                                                            String teamGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -1270,10 +1270,10 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<PersonRoleElement> findPersonRoles(String userId,
-                                                   String searchString,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
+    public List<ActorRoleElement> findPersonRoles(String userId,
+                                                  String searchString,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {

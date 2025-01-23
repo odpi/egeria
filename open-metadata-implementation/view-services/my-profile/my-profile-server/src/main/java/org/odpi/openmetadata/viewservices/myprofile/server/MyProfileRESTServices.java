@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
@@ -111,16 +111,16 @@ public class MyProfileRESTServices extends TokenController
 
                 if (actorProfileElement.getPersonRoles() != null)
                 {
-                    List<PersonRoleElement> personRoles = new ArrayList<>();
+                    List<ActorRoleElement> personRoles = new ArrayList<>();
 
                     for (ElementStub personRoleStub : actorProfileElement.getPersonRoles())
                     {
-                        PersonRoleElement personRoleElement = client.getPersonRoleByGUID(userId,
-                                                                                         personRoleStub.getGUID());
+                        ActorRoleElement actorRoleElement = client.getPersonRoleByGUID(userId,
+                                                                                       personRoleStub.getGUID());
 
-                        if (personRoleElement != null)
+                        if (actorRoleElement != null)
                         {
-                            personRoles.add(personRoleElement);
+                            personRoles.add(actorRoleElement);
                         }
                     }
 

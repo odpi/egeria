@@ -10,14 +10,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AppointmentProperties;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonRoleAppointee is the bean used to return a role and current appointee(s).
+ * ActorRoleAppointee is the bean used to return a role and current appointee(s).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,10 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                  @JsonSubTypes.Type(value = PersonRoleHistory.class, name = "PersonRoleHistory"),
+                  @JsonSubTypes.Type(value = ActorRoleHistory.class, name = "ActorRoleHistory"),
                   @JsonSubTypes.Type(value = AgreementRoleAppointee.class, name = "AgreementRoleAppointee"),
               })
-public class PersonRoleAppointee extends PersonRoleElement
+public class ActorRoleAppointee extends ActorRoleElement
 {
     private AppointmentProperties appointmentProperties = null;
     private ActorProfileElement   profile           = null;
@@ -38,7 +37,7 @@ public class PersonRoleAppointee extends PersonRoleElement
     /**
      * Default constructor
      */
-    public PersonRoleAppointee()
+    public ActorRoleAppointee()
     {
         super();
     }
@@ -49,7 +48,7 @@ public class PersonRoleAppointee extends PersonRoleElement
      *
      * @param template object to copy
      */
-    public PersonRoleAppointee(PersonRoleAppointee template)
+    public ActorRoleAppointee(ActorRoleAppointee template)
     {
         super(template);
 
@@ -66,7 +65,7 @@ public class PersonRoleAppointee extends PersonRoleElement
      *
      * @param template object to copy
      */
-    public PersonRoleAppointee(PersonRoleElement template)
+    public ActorRoleAppointee(ActorRoleElement template)
     {
         super(template);
     }
@@ -124,7 +123,7 @@ public class PersonRoleAppointee extends PersonRoleElement
     @Override
     public String toString()
     {
-        return "PersonRoleAppointee{" +
+        return "ActorRoleAppointee{" +
                 ", appointmentProperties=" + appointmentProperties +
                 ", profile=" + profile +
                 "} " + super.toString();
@@ -152,7 +151,7 @@ public class PersonRoleAppointee extends PersonRoleElement
         {
             return false;
         }
-        PersonRoleAppointee that = (PersonRoleAppointee) objectToCompare;
+        ActorRoleAppointee that = (ActorRoleAppointee) objectToCompare;
         return Objects.equals(appointmentProperties, that.appointmentProperties) &&
                 Objects.equals(profile, that.profile);
     }

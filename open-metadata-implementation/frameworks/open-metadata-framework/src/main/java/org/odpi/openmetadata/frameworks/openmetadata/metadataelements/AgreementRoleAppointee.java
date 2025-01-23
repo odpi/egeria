@@ -15,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonRoleAppointee is the bean used to return a role and current appointee(s).
+ * ActorRoleAppointee is the bean used to return a role and current appointee(s).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AgreementRoleAppointee extends PersonRoleAppointee
+public class AgreementRoleAppointee extends ActorRoleAppointee
 {
     private AgreementRoleProperties agreementRoleProperties = null;
 
@@ -55,7 +55,7 @@ public class AgreementRoleAppointee extends PersonRoleAppointee
      *
      * @param template object to copy
      */
-    public AgreementRoleAppointee(PersonRoleElement template)
+    public AgreementRoleAppointee(ActorRoleElement template)
     {
         super(template);
     }
