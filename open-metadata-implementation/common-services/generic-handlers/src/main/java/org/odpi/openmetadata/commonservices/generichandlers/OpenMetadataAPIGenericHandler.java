@@ -4842,9 +4842,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
             {
                 this.validateEntityAndAnchorForRead(userId,
-                                                    entityProxyParameterName,
+                                                    connectToEntity.getType().getTypeDefName(),
                                                     connectToEntity,
-                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                    entityProxyParameterName,
                                                     false,
                                                     false,
                                                     forLineage,

@@ -607,18 +607,18 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), omagServerProperties.getDescription());
         placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), omagServerProperties.getUserId());
 
-        return openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                                    null,
-                                                                    true,
-                                                                    null,
-                                                                    null,
-                                                                    templateGUID,
-                                                                    null,
-                                                                    placeholderProperties,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    false);
+        return openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                                 null,
+                                                                 true,
+                                                                 null,
+                                                                 null,
+                                                                 templateGUID,
+                                                                 null,
+                                                                 placeholderProperties,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 false);
 
      /*   SoftwareServerProperties softwareServerProperties = this.getSoftwareServerProperties(omagServerProperties,
                                                                                              platformProperties.getPlatformOrigin());

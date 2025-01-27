@@ -182,6 +182,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                                    HarvestOpenMetadataColumn.LAST_UPDATED_BY,
                                    HarvestOpenMetadataColumn.LAST_UPDATE_TIME,
                                    HarvestOpenMetadataColumn.VERSION,
+                                   HarvestOpenMetadataColumn.OPEN_METADATA_TYPE,
                                    HarvestOpenMetadataColumn.EGERIA_OWNED,
                                    HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME,
                                    HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES
@@ -234,7 +235,7 @@ public enum HarvestOpenMetadataTable implements PostgreSQLTable
                           HarvestOpenMetadataColumn.EXTERNAL_SCOPE_GUID,
                           HarvestOpenMetadataColumn.EXTERNAL_USER_ID},
                   new HarvestOpenMetadataColumn[]{
-                          HarvestOpenMetadataColumn.USER_IDENTITY_GUID}),
+                          HarvestOpenMetadataColumn.LINKED_USER_IDENTITY_GUID}),
 
 
     /**

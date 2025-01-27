@@ -255,23 +255,23 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         if (templateGUID != null)
         {
-            ucSchemaGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                                catalogQualifiedName,
-                                                                                deployedImplementationType.getAssociatedTypeName(),
-                                                                                catalogGUID,
-                                                                                false,
-                                                                                null,
-                                                                                null,
-                                                                                templateGUID,
-                                                                                null,
-                                                                                this.getPlaceholderProperties(schemaInfo),
-                                                                                catalogGUID,
-                                                                                parentLinkTypeName,
-                                                                                propertyHelper.addEnumProperty(null,
-                                                                                                               OpenMetadataProperty.USE_TYPE.name,
-                                                                                                               ServerAssetUseType.getOpenTypeName(),
-                                                                                                               ServerAssetUseType.OWNS.getName()),
-                                                                                parentAtEnd1);
+            ucSchemaGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
+                                                                             catalogQualifiedName,
+                                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                                             catalogGUID,
+                                                                             false,
+                                                                             null,
+                                                                             null,
+                                                                             templateGUID,
+                                                                             null,
+                                                                             this.getPlaceholderProperties(schemaInfo),
+                                                                             catalogGUID,
+                                                                             parentLinkTypeName,
+                                                                             propertyHelper.addEnumProperty(null,
+                                                                                                            OpenMetadataProperty.USE_TYPE.name,
+                                                                                                            ServerAssetUseType.getOpenTypeName(),
+                                                                                                            ServerAssetUseType.OWNS.getName()),
+                                                                             parentAtEnd1);
         }
         else
         {

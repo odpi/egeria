@@ -51,7 +51,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
 
     POSTGRES_SCHEMA_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID(),
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
-                             PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                             PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                              PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
                              PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                              new JDBCResourceConnectorProvider().getConnectorType().getGUID(),

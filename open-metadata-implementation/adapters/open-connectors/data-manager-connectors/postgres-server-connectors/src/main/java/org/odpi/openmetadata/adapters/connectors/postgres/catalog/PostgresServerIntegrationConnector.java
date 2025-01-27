@@ -313,6 +313,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
             resultSet.close();
             preparedStatement.close();
+            jdbcConnection.commit();
         }
         catch (ConnectorCheckedException exception)
         {
@@ -389,18 +390,18 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 }
                 else
                 {
-                    String databaseGUID = openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
-                                                                                               databaseServerGUID,
-                                                                                               false,
-                                                                                               null,
-                                                                                               null,
-                                                                                               catalogTemplateName,
-                                                                                               null,
-                                                                                               placeholderProperties,
-                                                                                               databaseManagerGUID,
-                                                                                               OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                               serverAssetUseProperties,
-                                                                                               true);
+                    String databaseGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
+                                                                                            databaseServerGUID,
+                                                                                            false,
+                                                                                            null,
+                                                                                            null,
+                                                                                            catalogTemplateName,
+                                                                                            null,
+                                                                                            placeholderProperties,
+                                                                                            databaseManagerGUID,
+                                                                                            OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                            serverAssetUseProperties,
+                                                                                            true);
 
                     auditLog.logMessage(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
                                                                                                               qualifiedName,

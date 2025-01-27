@@ -17,6 +17,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     compileOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     compileOnly project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-api')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

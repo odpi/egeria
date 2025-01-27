@@ -584,18 +584,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         placeholderPropertyValues.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
         placeholderPropertyValues.put(PlaceholderProperty.DESCRIPTION.getName(), "Landing Area folder for" + hospitalName + "'s Teddy Bear Drop Foot clinical trial.");
 
-        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.FILE_FOLDER.typeName,
-                                                                                          null,
-                                                                                          true,
-                                                                                          null,
-                                                                                          null,
-                                                                                          landingAreaDirectoryTemplateGUID,
-                                                                                          null,
-                                                                                          placeholderPropertyValues,
-                                                                                          null,
-                                                                                          null,
-                                                                                          null,
-                                                                                          true);
+        return governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.FILE_FOLDER.typeName,
+                                                                                       null,
+                                                                                       true,
+                                                                                       null,
+                                                                                       null,
+                                                                                       landingAreaDirectoryTemplateGUID,
+                                                                                       null,
+                                                                                       placeholderPropertyValues,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       true);
 
     }
 
@@ -633,18 +633,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getName(), hospitalContactDetails.contactName);
         placeholderProperties.put(CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getName(), hospitalContactDetails.contactEmail);
 
-        String templateGUID = governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.CSV_FILE.typeName,
-                                                                                                         null,
-                                                                                                         true,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         rawTemplateGUID,
-                                                                                                         null,
-                                                                                                         placeholderProperties,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         null,
-                                                                                                         true);
+        String templateGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(OpenMetadataType.CSV_FILE.typeName,
+                                                                                                      null,
+                                                                                                      true,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      rawTemplateGUID,
+                                                                                                      null,
+                                                                                                      placeholderProperties,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      true);
 
         OpenMetadataElement templateElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(templateGUID);
 

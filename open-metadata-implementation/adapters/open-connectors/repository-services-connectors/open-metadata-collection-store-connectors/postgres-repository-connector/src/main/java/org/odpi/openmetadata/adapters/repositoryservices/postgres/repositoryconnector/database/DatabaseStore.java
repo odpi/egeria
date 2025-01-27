@@ -15,14 +15,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Manages the connection between the repository connector and the database
+ * Manages the connection between the repository connector and the database.
+ * Note, a single JDBC Connection can only be used from a single thread.
  */
 public class DatabaseStore
 {
     private final JDBCResourceConnector jdbcResourceConnector;
+    private final java.sql.Connection   jdbcConnection;
     private final String                repositoryName;
     private final OMRSRepositoryHelper  repositoryHelper;
 
@@ -37,13 +40,30 @@ public class DatabaseStore
      */
     public DatabaseStore(JDBCResourceConnector jdbcResourceConnector,
                          String                repositoryName,
-                         OMRSRepositoryHelper  repositoryHelper)
+                         OMRSRepositoryHelper  repositoryHelper) throws RepositoryErrorException
     {
+        final String methodName = "DatabaseStore";
+
         this.jdbcResourceConnector = jdbcResourceConnector;
         this.repositoryName        = repositoryName;
         this.repositoryHelper      = repositoryHelper;
 
         this.baseMapper = new BaseMapper(repositoryName);
+
+        try
+        {
+            this.jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
+        }
+        catch (SQLException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
     }
 
 
@@ -60,7 +80,8 @@ public class DatabaseStore
 
         try
         {
-            List<Map<String, JDBCDataValue>> controlTable = jdbcResourceConnector.getRows(RepositoryTable.CONTROL.getTableName(),
+            List<Map<String, JDBCDataValue>> controlTable = jdbcResourceConnector.getRows(jdbcConnection,
+                                                                                          RepositoryTable.CONTROL.getTableName(),
                                                                                           RepositoryTable.CONTROL.getColumnNameTypeMap());
 
             if (controlTable == null)
@@ -96,7 +117,8 @@ public class DatabaseStore
 
         try
         {
-             jdbcResourceConnector.insertRowIntoTable(RepositoryTable.CONTROL.getTableName(),
+             jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                      RepositoryTable.CONTROL.getTableName(),
                                                       controlMapper.getControlTableRow());
         }
         catch (PropertyServerException sqlException)
@@ -155,7 +177,8 @@ public class DatabaseStore
 
         try
         {
-            Map<String, JDBCDataValue> classificationRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.CLASSIFICATION.getTableName(),
+            Map<String, JDBCDataValue> classificationRow = jdbcResourceConnector.getMatchingRow(jdbcConnection,
+                                                                                                RepositoryTable.CLASSIFICATION.getTableName(),
                                                                                                 RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityGUID +
                                                                                                         "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "'" +
                                                                                                         getAsOfTimeClause(null),
@@ -172,7 +195,8 @@ public class DatabaseStore
                         "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version;
 
 
-                List<Map<String, JDBCDataValue>> classificationProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                List<Map<String, JDBCDataValue>> classificationProperties = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                                  RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                                                   whereClause,
                                                                                                                   RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
                 return new ClassificationMapper(classificationRow, classificationProperties, repositoryHelper, repositoryName);
@@ -214,7 +238,8 @@ public class DatabaseStore
         {
             String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.METADATA_COLLECTION_GUID.getColumnName() + " = '" + localMetadataCollectionId + "' " + this.getAsOfTimeClause(asOfTime) + ";";
 
-            List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
+            List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                     RepositoryTable.CLASSIFICATION.getTableName(),
                                                                                                      whereClause,
                                                                                                      RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
 
@@ -233,7 +258,8 @@ public class DatabaseStore
 
                         String classificationWhereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version + " and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "';";
 
-                        List<Map<String, JDBCDataValue>> classificationProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                        List<Map<String, JDBCDataValue>> classificationProperties = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                                                           classificationWhereClause,
                                                                                                                           RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
 
@@ -278,7 +304,8 @@ public class DatabaseStore
 
         try
         {
-            Map<String, JDBCDataValue> entityRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.ENTITY.getTableName(),
+            Map<String, JDBCDataValue> entityRow = jdbcResourceConnector.getMatchingRow(jdbcConnection,
+                                                                                        RepositoryTable.ENTITY.getTableName(),
                                                                                         RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
                                                                                         RepositoryTable.ENTITY.getColumnNameTypeMap());
 
@@ -313,7 +340,8 @@ public class DatabaseStore
 
         try
         {
-            Map<String, JDBCDataValue> relationshipRow = jdbcResourceConnector.getMatchingRow(RepositoryTable.RELATIONSHIP.getTableName(),
+            Map<String, JDBCDataValue> relationshipRow = jdbcResourceConnector.getMatchingRow(jdbcConnection,
+                                                                                              RepositoryTable.RELATIONSHIP.getTableName(),
                                                                                               RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" + getAsOfTimeClause(asOfTime),
                                                                                               RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
@@ -355,7 +383,8 @@ public class DatabaseStore
 
             if (classificationQueryBuilder == null)
             {
-                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
+                entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                   sqlEntityQuery + entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                    RepositoryTable.ENTITY.getColumnNameTypeMap());
             }
             else
@@ -365,7 +394,8 @@ public class DatabaseStore
                                                                                                 RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName())) +
                         " where " + classificationQueryBuilder.getAsOfTimeWhereClause();
 
-                entityRows = jdbcResourceConnector.getMatchingRows(sqlEntityQuery + " and " +
+                entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                   sqlEntityQuery + " and " +
                                                                            RepositoryColumn.INSTANCE_GUID.getColumnName(RepositoryTable.ENTITY.getTableName()) +
                                                                            " in (" + sqlClassificationQuery + ")" +
                                                                            entityQueryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
@@ -409,7 +439,8 @@ public class DatabaseStore
         String sqQuery = "select distinct * from " + RepositoryTable.RELATIONSHIP.getTableName() + " where " + queryBuilder.getAsOfTimeWhereClause();
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqQuery + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                      sqQuery + queryBuilder.getSequenceAndPaging(RepositoryTable.RELATIONSHIP.getTableName()),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
@@ -449,7 +480,9 @@ public class DatabaseStore
 
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(sqlQuery, RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                      sqlQuery,
+                                                                                                      RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
 
             if (relationshipRows != null)
             {
@@ -497,7 +530,8 @@ public class DatabaseStore
                 {
                     String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + versionObject;
 
-                    List<Map<String, JDBCDataValue>> entityProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                    List<Map<String, JDBCDataValue>> entityProperties = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                              RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
                                                                                                               whereClause,
                                                                                                               RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getColumnNameTypeMap());
 
@@ -552,7 +586,8 @@ public class DatabaseStore
 
                 String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + version;
 
-                List<Map<String, JDBCDataValue>> relationshipProperties = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+                List<Map<String, JDBCDataValue>> relationshipProperties = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                                RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
                                                                                                                 whereClause,
                                                                                                                 RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getColumnNameTypeMap());
 
@@ -604,7 +639,8 @@ public class DatabaseStore
                 queryBuilder.setGUIDList(entityGUIDs);
                 queryBuilder.setAsOfTime(asOfTime);
 
-                List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
+                List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                    RepositoryTable.ENTITY.getTableName(),
                                                                                                     queryBuilder.getAsOfTimeWhereClause() + queryBuilder.getSequenceAndPaging(RepositoryTable.ENTITY.getTableName()),
                                                                                                     RepositoryTable.ENTITY.getColumnNameTypeMap());
 
@@ -824,7 +860,8 @@ public class DatabaseStore
             /*
              * Retrieve the attribute rows and organize them by instance GUID.
              */
-            List<Map<String, JDBCDataValue>> attributeRows = jdbcResourceConnector.getMatchingRows(attributesTable.getTableName(),
+            List<Map<String, JDBCDataValue>> attributeRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                   attributesTable.getTableName(),
                                                                                                    instanceWhereClause.toString(),
                                                                                                    attributesTable.getColumnNameTypeMap());
 
@@ -878,7 +915,8 @@ public class DatabaseStore
             /*
              * Retrieve the rows of classifications for the requested entities at the requested time.
              */
-            List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION.getTableName(),
+            List<Map<String, JDBCDataValue>> classifications = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                     RepositoryTable.CLASSIFICATION.getTableName(),
                                                                                                      whereClause,
                                                                                                      RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
 
@@ -951,7 +989,8 @@ public class DatabaseStore
                  * Now we know which versions of each classification we need for each entity, we can retrieve all of the attributes for all of these entities.
                  * The returned rows are then organizes with their classification into mapperResultRowsMap.
                  */
-                List<Map<String, JDBCDataValue>> classificationAttributes = jdbcResourceConnector.getMatchingRows(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                List<Map<String, JDBCDataValue>> classificationAttributes = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                                  RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                                                                                   classificationWhereClause.toString(),
                                                                                                                   RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
 
@@ -1061,7 +1100,8 @@ public class DatabaseStore
 
         try
         {
-            List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.ENTITY.getTableName(),
+            List<Map<String, JDBCDataValue>> entityRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                RepositoryTable.ENTITY.getTableName(),
                                                                                                 RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
                                                                                                         getDateRangeClause(fromTime, toTime, oldestFirst),
                                                                                                 RepositoryTable.ENTITY.getColumnNameTypeMap());
@@ -1117,7 +1157,8 @@ public class DatabaseStore
 
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                      RepositoryTable.RELATIONSHIP.getTableName(),
                                                                                                       RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
                                                                                                               getDateRangeClause(fromTime, toTime, oldestFirst),
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
@@ -1233,10 +1274,12 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.insertRowIntoTable(RepositoryTable.ENTITY.getTableName(),
+            jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                     RepositoryTable.ENTITY.getTableName(),
                                                      entityMapper.getEntityTableRow());
 
-            jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+            jdbcResourceConnector.insertRowsIntoTable(jdbcConnection,
+                                                      RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
                                                       entityMapper.getEntityPropertiesTableRows());
 
             /*
@@ -1322,10 +1365,12 @@ public class DatabaseStore
                 /*
                  * The entity proxy is only added if there is no known entity.
                  */
-                jdbcResourceConnector.insertRowIntoTable(RepositoryTable.ENTITY.getTableName(),
+                jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                         RepositoryTable.ENTITY.getTableName(),
                                                          entityMapper.getEntityTableRow());
 
-                jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
+                jdbcResourceConnector.insertRowsIntoTable(jdbcConnection,
+                                                          RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName(),
                                                           entityMapper.getUniquePropertiesTableRows());
 
                 saveClassifications(entityMapper.getClassificationMappers());
@@ -1376,10 +1421,12 @@ public class DatabaseStore
         {
             try
             {
-                jdbcResourceConnector.insertRowIntoTable(RepositoryTable.CLASSIFICATION.getTableName(),
+                jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                         RepositoryTable.CLASSIFICATION.getTableName(),
                                                          classificationMapper.getClassificationTableRow());
 
-                jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                jdbcResourceConnector.insertRowsIntoTable(jdbcConnection,
+                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
                                                           classificationMapper.getClassificationPropertiesTableRows());
             }
             catch (PropertyServerException sqlException)
@@ -1415,10 +1462,12 @@ public class DatabaseStore
             this.addEntityProxyToStore(relationshipMapper.getEnd1Mapper());
             this.addEntityProxyToStore(relationshipMapper.getEnd2Mapper());
 
-            jdbcResourceConnector.insertRowIntoTable(RepositoryTable.RELATIONSHIP.getTableName(),
+            jdbcResourceConnector.insertRowIntoTable(jdbcConnection,
+                                                     RepositoryTable.RELATIONSHIP.getTableName(),
                                                      relationshipMapper.getRelationshipTableRow());
 
-            jdbcResourceConnector.insertRowsIntoTable(RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
+            jdbcResourceConnector.insertRowsIntoTable(jdbcConnection,
+                                                      RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName(),
                                                       relationshipMapper.getRelationshipPropertiesTableRows());
         }
         catch (PropertyServerException sqlException)
@@ -1448,7 +1497,8 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand("update " + RepositoryTable.ENTITY.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "update " + RepositoryTable.ENTITY.getTableName() +
                                                           " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityMapper.getEntityDetail().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + entityMapper.getEntityDetail().getVersion() + ";");
         }
@@ -1479,7 +1529,8 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand("update " + RepositoryTable.CLASSIFICATION.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "update " + RepositoryTable.CLASSIFICATION.getTableName() +
                                                           " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + classificationMapper.getEntityGUID() +
                                                           "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationMapper.getClassification().getName() +
@@ -1512,7 +1563,8 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand("update " + RepositoryTable.RELATIONSHIP.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "update " + RepositoryTable.RELATIONSHIP.getTableName() +
                                                           " set " + RepositoryColumn.VERSION_END_TIME.getColumnName() + " = '" + versionEndTime +
                                                           "' where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + relationshipMapper.getRelationship().getGUID() + "' and " + RepositoryColumn.VERSION.getColumnName() + " = " + relationshipMapper.getRelationship().getVersion() + ";");
         }
@@ -1543,7 +1595,8 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + entityGUID + "' and " + RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "';");
         }
         catch (PropertyServerException sqlException)
@@ -1574,7 +1627,8 @@ public class DatabaseStore
 
         try
         {
-            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(RepositoryTable.RELATIONSHIP.getTableName(),
+            List<Map<String, JDBCDataValue>> relationshipRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                      RepositoryTable.RELATIONSHIP.getTableName(),
                                                                                                       "(" + RepositoryColumn.END_1_GUID.getColumnName() + " = '" + guid +
                                                                                                       "' or " + RepositoryColumn.END_2_GUID.getColumnName() + " = '" + guid + "')",
                                                                                                       RepositoryTable.RELATIONSHIP.getColumnNameTypeMap());
@@ -1589,13 +1643,17 @@ public class DatabaseStore
                 }
             }
 
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.ENTITY.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.ENTITY.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.ENTITY_ATTRIBUTE_VALUE.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.CLASSIFICATION.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
         }
         catch (PropertyServerException sqlException)
@@ -1625,9 +1683,11 @@ public class DatabaseStore
 
         try
         {
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.RELATIONSHIP.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.RELATIONSHIP.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
-            jdbcResourceConnector.issueSQLCommand("delete from " + RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName() +
+            jdbcResourceConnector.issueSQLCommand(jdbcConnection,
+                                                  "delete from " + RepositoryTable.RELATIONSHIP_ATTRIBUTE_VALUE.getTableName() +
                                                           " where " + RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "';");
         }
         catch (PropertyServerException sqlException)
@@ -1640,5 +1700,29 @@ public class DatabaseStore
                                                methodName,
                                                sqlException);
         }
+    }
+
+
+    /**
+     * Free up the connection since the request is over.
+     *
+     * @throws RepositoryErrorException problem closing connection
+     */
+    public void disconnect() throws RepositoryErrorException
+    {
+        final String methodName = "disconnect";
+        try
+        {
+            jdbcConnection.commit();
+        }
+        catch (Exception sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);        }
     }
 }

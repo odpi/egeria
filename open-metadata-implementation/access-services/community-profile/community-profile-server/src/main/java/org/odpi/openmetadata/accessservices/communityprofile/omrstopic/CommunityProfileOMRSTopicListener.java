@@ -359,7 +359,9 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                 ElementStub endTwoElementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
 
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PEER_RELATIONSHIP.typeName)) ||
+                        (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
+                        (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
+                        (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PEER_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_LEADER.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_MEMBER.typeName)) ||

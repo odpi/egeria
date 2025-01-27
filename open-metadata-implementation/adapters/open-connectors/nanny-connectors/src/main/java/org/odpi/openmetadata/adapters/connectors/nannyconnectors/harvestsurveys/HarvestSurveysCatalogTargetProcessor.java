@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc.HarvestSurveysErrorCode;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema.HarvestSurveysColumn;
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema.HarvestSurveysTable;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLSchemaDDL;
@@ -36,6 +37,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMeasuremen
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.integrationservices.catalog.connector.ConnectorFactoryService;
 
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -55,7 +57,6 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     private final OpenMetadataAccess      openMetadataAccess;
     private final ConnectorFactoryService connectorFactoryService;
     private       JDBCResourceConnector   databaseClient     = null;
-    private       java.sql.Connection     databaseConnection = null;
 
 
     /**
@@ -84,7 +85,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         if (super.getCatalogTargetConnector() instanceof JDBCResourceConnector jdbcResourceConnector)
         {
             this.databaseClient = jdbcResourceConnector;
+            this.databaseClient.start();
+
             String schemaName = super.getStringConfigurationProperty(JDBCConfigurationProperty.DATABASE_SCHEMA.getName(), catalogTarget.getConfigurationProperties());
+            if (schemaName == null)
+            {
+                schemaName = super.getStringConfigurationProperty(PostgresPlaceholderProperty.SCHEMA_NAME.getName(), catalogTarget.getConfigurationProperties());
+            }
+
             loadDDL(databaseClient, schemaName);
         }
     }
@@ -101,15 +109,37 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "loadDDL";
 
+        java.sql.Connection databaseConnection = null;
+
         try
         {
+            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
+
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               "Survey records for a cohort of OMAG Servers.",
                                                                               HarvestSurveysTable.getTables());
-            jdbcResourceConnector.addDatabaseDefinitions(postgreSQLSchemaDDL.getDDLStatements());
+            jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, postgreSQLSchemaDDL.getDDLStatements());
+            databaseConnection.commit();
         }
         catch (Exception error)
         {
+            if (databaseConnection != null)
+            {
+                try
+                {
+                    databaseConnection.rollback();
+                }
+                catch (Exception  rollbackError)
+                {
+                    auditLog.logException(methodName,
+                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            rollbackError.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            rollbackError.getMessage()),
+                                          error);
+                }
+            }
+
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(schemaName,
                                                                                                                   error.getClass().getName(),
                                                                                                                   methodName,
@@ -136,11 +166,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     @Override
     public void refresh() throws ConnectorCheckedException
     {
+        java.sql.Connection databaseConnection = null;
+
         final String methodName = "refresh";
 
         try
         {
-            this.databaseConnection = databaseClient.getDataSource().getConnection();
+            databaseConnection = databaseClient.getDataSource().getConnection();
 
             int startFrom = 0;
             List<OpenMetadataElement> surveyReportElements = openMetadataAccess.findMetadataElements(OpenMetadataType.SURVEY_REPORT.typeName,
@@ -158,7 +190,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             {
                 for (OpenMetadataElement surveyReportElement : surveyReportElements)
                 {
-                    processSurveyReport(surveyReportElement);
+                    processSurveyReport(databaseConnection, surveyReportElement);
                 }
 
                 startFrom = startFrom + openMetadataAccess.getMaxPagingSize();
@@ -175,8 +207,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                openMetadataAccess.getMaxPagingSize());
             }
 
-            databaseConnection.close();
-            databaseConnection = null;
+            databaseConnection.commit();
         }
         catch (Exception error)
         {
@@ -191,19 +222,25 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             {
                 try
                 {
-                    databaseConnection.close();
+                    databaseConnection.rollback();
                 }
-                catch (Exception  closeError)
+                catch (Exception  rollbackError)
                 {
                     auditLog.logException(methodName,
                                           HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                              closeError.getClass().getName(),
+                                                                                                              rollbackError.getClass().getName(),
                                                                                                               methodName,
-                                                                                                              closeError.getMessage()),
+                                                                                                              rollbackError.getMessage()),
                                           error);
                 }
-                databaseConnection = null;
             }
+
+            auditLog.logException(methodName,
+                                  HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                    error.getClass().getName(),
+                                                                                                    methodName,
+                                                                                                    error.getMessage()),
+                                  error);
 
             throw new ConnectorCheckedException(HarvestSurveysErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                   error.getClass().getName(),
@@ -220,9 +257,11 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Extract information about a catalogued survey report.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportElement retrieved element
      */
-    private void processSurveyReport(OpenMetadataElement surveyReportElement) throws ConnectorCheckedException
+    private void processSurveyReport(java.sql.Connection databaseConnection,
+                                     OpenMetadataElement surveyReportElement) throws ConnectorCheckedException
     {
         final String methodName = "processSurveyReport";
 
@@ -292,25 +331,30 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                         openMetadataAccess.getMaxPagingSize());
             }
 
-            syncSurveyReport(surveyReportElement, relatedAsset, relatedEngineAction);
+            syncSurveyReport(databaseConnection, surveyReportElement, relatedAsset, relatedEngineAction);
 
-            processRequestForActionAnnotations(surveyReportElement.getElementGUID(),
+            processRequestForActionAnnotations(databaseConnection,
+                                               surveyReportElement.getElementGUID(),
                                                relatedAsset,
                                                relatedRequestForActionAnnotations);
 
-            processResourceProfileAnnotations(surveyReportElement.getElementGUID(),
+            processResourceProfileAnnotations(databaseConnection,
+                                              surveyReportElement.getElementGUID(),
                                               relatedAsset,
                                               relatedResourceProfileAnnotations);
 
-            processDataProfileLogAnnotations(surveyReportElement.getElementGUID(),
+            processDataProfileLogAnnotations(databaseConnection,
+                                             surveyReportElement.getElementGUID(),
                                              relatedAsset,
                                              relatedDataProfileLogAnnotations);
 
-            processDataSourceMeasurementsAnnotations(surveyReportElement.getElementGUID(),
+            processDataSourceMeasurementsAnnotations(databaseConnection,
+                                                     surveyReportElement.getElementGUID(),
                                                      relatedAsset,
                                                      relatedDataSourceMeasurementsAnnotations);
 
-            processOtherAnnotations(surveyReportElement.getElementGUID(),
+            processOtherAnnotations(databaseConnection,
+                                    surveyReportElement.getElementGUID(),
                                     relatedAsset,
                                     relatedOtherAnnotations);
         }
@@ -341,11 +385,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Add details of request for action annotations to the database.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param relatedAsset details of the asset for the resource that was surveyed
      * @param relatedRequestForActionAnnotations list of request for action annotations
      */
-    private void processRequestForActionAnnotations(String                       surveyReportGUID,
+    private void processRequestForActionAnnotations(java.sql.Connection          databaseConnection,
+                                                    String                       surveyReportGUID,
                                                     RelatedMetadataElement       relatedAsset,
                                                     List<RelatedMetadataElement> relatedRequestForActionAnnotations)
     {
@@ -355,7 +401,10 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             try
             {
-                List<RelatedMetadataElement> relatedSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
+                List<RelatedMetadataElement> relatedSubjects = this.syncAnnotation(databaseConnection,
+                                                                                   surveyReportGUID,
+                                                                                   relatedAnnotationElement.getElement(),
+                                                                                   relatedAsset);
                 List<RelatedMetadataElement> relatedActionTargets = null;
                 int startFrom = 0;
                 RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
@@ -389,7 +438,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                 for (RelatedMetadataElement relatedAnnotationSubject : relatedSubjects)
                 {
-                    syncRequestForAction(surveyReportGUID,
+                    syncRequestForAction(databaseConnection,
+                                         surveyReportGUID,
                                          relatedAnnotationElement.getElement(),
                                          relatedActionTargets,
                                          relatedAnnotationSubject);
@@ -411,11 +461,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Add details of data profile annotations to the database.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param relatedAsset details of the asset for the resource that was surveyed
      * @param relatedResourceProfileAnnotations list of request for action annotations
      */
-    private void processResourceProfileAnnotations(String                       surveyReportGUID,
+    private void processResourceProfileAnnotations(java.sql.Connection          databaseConnection,
+                                                   String                       surveyReportGUID,
                                                    RelatedMetadataElement       relatedAsset,
                                                    List<RelatedMetadataElement> relatedResourceProfileAnnotations)
     {
@@ -425,11 +477,15 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             try
             {
-                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
+                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(databaseConnection,
+                                                                                             surveyReportGUID,
+                                                                                             relatedAnnotationElement.getElement(),
+                                                                                             relatedAsset);
 
                 for (RelatedMetadataElement relatedAnnotationSubject : relatedAnnotationSubjects)
                 {
-                    syncResourceProfile(surveyReportGUID,
+                    syncResourceProfile(databaseConnection,
+                                        surveyReportGUID,
                                         relatedAnnotationElement.getElement(),
                                         relatedAnnotationSubject);
                 }
@@ -450,11 +506,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Add details of data profile log annotations to the database.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param relatedAsset details of the asset for the resource that was surveyed
      * @param relatedDataProfileLogAnnotations list of request for action annotations
      */
-    private void processDataProfileLogAnnotations(String                       surveyReportGUID,
+    private void processDataProfileLogAnnotations(java.sql.Connection          databaseConnection,
+                                                  String                       surveyReportGUID,
                                                   RelatedMetadataElement       relatedAsset,
                                                   List<RelatedMetadataElement> relatedDataProfileLogAnnotations)
     {
@@ -466,7 +524,10 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             try
             {
                 RelatedMetadataElement relatedLogFile = null;
-                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
+                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(databaseConnection,
+                                                                                             surveyReportGUID,
+                                                                                             relatedAnnotationElement.getElement(),
+                                                                                             relatedAsset);
                 int startFrom = 0;
                 RelatedMetadataElementList relatedMetadataElements = openMetadataAccess.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
                                                                                                                      1,
@@ -515,7 +576,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                         for (RelatedMetadataElement relatedAnnotationSubject : relatedAnnotationSubjects)
                         {
-                            syncValueProfile(surveyReportGUID,
+                            syncValueProfile(databaseConnection,
+                                             surveyReportGUID,
                                              relatedAnnotationElement.getElement(),
                                              relatedAnnotationSubject,
                                              measurementValues);
@@ -539,11 +601,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Add details of data source measurements annotations to the database.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param relatedAsset details of the asset for the resource that was surveyed
      * @param relatedDataSourceMeasurementsAnnotations list of request for action annotations
      */
-    private void processDataSourceMeasurementsAnnotations(String                       surveyReportGUID,
+    private void processDataSourceMeasurementsAnnotations(java.sql.Connection          databaseConnection,
+                                                          String                       surveyReportGUID,
                                                           RelatedMetadataElement       relatedAsset,
                                                           List<RelatedMetadataElement> relatedDataSourceMeasurementsAnnotations)
     {
@@ -553,13 +617,17 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             try
             {
-                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
+                List<RelatedMetadataElement> relatedAnnotationSubjects = this.syncAnnotation(databaseConnection,
+                                                                                             surveyReportGUID,
+                                                                                             relatedAnnotationElement.getElement(),
+                                                                                             relatedAsset);
 
 
 
                 for (RelatedMetadataElement relatedAnnotationSubject : relatedAnnotationSubjects)
                 {
-                    syncDataSourceMeasurements(surveyReportGUID,
+                    syncDataSourceMeasurements(databaseConnection,
+                                               surveyReportGUID,
                                                relatedAnnotationElement.getElement(),
                                                relatedAnnotationSubject);
                 }
@@ -584,7 +652,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @param relatedAsset details of the asset for the resource that was surveyed
      * @param relatedOtherAnnotations list of request for action annotations
      */
-    private void processOtherAnnotations(String                       surveyReportGUID,
+    private void processOtherAnnotations(java.sql.Connection          databaseConnection,
+                                         String                       surveyReportGUID,
                                          RelatedMetadataElement       relatedAsset,
                                          List<RelatedMetadataElement> relatedOtherAnnotations)
     {
@@ -594,7 +663,10 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         {
             try
             {
-                syncAnnotation(surveyReportGUID, relatedAnnotationElement.getElement(), relatedAsset);
+                syncAnnotation(databaseConnection,
+                               surveyReportGUID,
+                               relatedAnnotationElement.getElement(),
+                               relatedAsset);
             }
             catch (Exception error)
             {
@@ -625,14 +697,34 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
 
     /**
+     * Add the value and type to a record used to insert a row into a table.
+     *
+     * @param openMetadataRecord map containing the column details
+     * @param column column definition
+     * @param value value of the column
+     */
+    private void addDateValueToRow(Map<String, JDBCDataValue> openMetadataRecord,
+                                   HarvestSurveysColumn       column,
+                                   Date                       value)
+    {
+        if (value != null)
+        {
+            addValueToRow(openMetadataRecord, column, new java.sql.Timestamp(value.getTime()));
+        }
+    }
+
+
+    /**
      * Process information about a survey report.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportElement element describing the survey report
      * @param relatedAsset asset described in the report
      * @param relatedEngineAction details of the engine action that initiated the report
      */
-    private void syncSurveyReport(OpenMetadataElement    surveyReportElement,
+    private void syncSurveyReport(java.sql.Connection    databaseConnection,
+                                  OpenMetadataElement    surveyReportElement,
                                   RelatedMetadataElement relatedAsset,
                                   RelatedMetadataElement relatedEngineAction) throws ConnectorCheckedException
     {
@@ -644,7 +736,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                            relatedAsset,
                                                                                            relatedEngineAction);
 
-            databaseClient.insertRowIntoTable(HarvestSurveysTable.SURVEY_REPORT.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.SURVEY_REPORT.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -687,8 +779,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DISPLAY_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DISPLAY_NAME.name, surveyReportElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DESCRIPTION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.DESCRIPTION.name, surveyReportElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.PURPOSE, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.PURPOSE.name, surveyReportElement.getElementProperties(), methodName));
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.START_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.START_DATE.name, surveyReportElement.getElementProperties(), methodName));
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.END_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.COMPLETION_DATE.name, surveyReportElement.getElementProperties(), methodName));
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.START_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.START_DATE.name, surveyReportElement.getElementProperties(), methodName));
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.END_TIMESTAMP, propertyHelper.getDateProperty(connectorName, OpenMetadataProperty.COMPLETION_DATE.name, surveyReportElement.getElementProperties(), methodName));
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_GUID, relatedAsset.getElement().getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, relatedAsset.getElement().getType().getTypeName());
@@ -708,12 +800,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about an annotation.  A row is added to the annotation for each subject
      * (element linked with AssociatedAnnotation).
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param annotationElement element describing the annotation
      * @param relatedAsset asset described in the report
      * @return list of the associated subject elements for the annotation
      */
-    private List<RelatedMetadataElement> syncAnnotation(String                 surveyReportGUID,
+    private List<RelatedMetadataElement> syncAnnotation(java.sql.Connection    databaseConnection,
+                                                        String                 surveyReportGUID,
                                                         OpenMetadataElement    annotationElement,
                                                         RelatedMetadataElement relatedAsset) throws ConnectorCheckedException
     {
@@ -756,7 +850,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             {
                 Map<String, JDBCDataValue> openMetadataRecord = this.getAnnotationDataValues(surveyReportGUID, annotationElement, relatedAnnotationSubject);
 
-                databaseClient.insertRowIntoTable(HarvestSurveysTable.ANNOTATION.getTableName(), openMetadataRecord);
+                databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.ANNOTATION.getTableName(), openMetadataRecord);
             }
 
             return relatedAnnotationSubjects;
@@ -800,7 +894,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationElement.getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.OPEN_METADATA_TYPE, annotationElement.getType().getTypeName());
 
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_TYPE, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.ANNOTATION_TYPE.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUMMARY, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.SUMMARY.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.EXPLANATION, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.EXPLANATION.name, annotationElement.getElementProperties(), methodName));
@@ -820,12 +914,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about a request for action annotation.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier for the survey report
      * @param requestForActionAnnotation description of the annotation
      * @param relatedActionTargets details of the elements that describes where the action should take place
      * @param relatedAnnotationSubject element related via the associated annotation
      */
-    private void syncRequestForAction(String                       surveyReportGUID,
+    private void syncRequestForAction(java.sql.Connection          databaseConnection,
+                                      String                       surveyReportGUID,
                                       OpenMetadataElement          requestForActionAnnotation,
                                       List<RelatedMetadataElement> relatedActionTargets,
                                       RelatedMetadataElement       relatedAnnotationSubject) throws ConnectorCheckedException
@@ -838,7 +934,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                requestForActionAnnotation,
                                                                                                relatedAnnotationSubject);
 
-            databaseClient.insertRowIntoTable(HarvestSurveysTable.REQUEST_FOR_ACTION.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.REQUEST_FOR_ACTION.getTableName(), openMetadataRecord);
 
             String annotationType = propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.ANNOTATION_TYPE.name, requestForActionAnnotation.getElementProperties(), methodName);
 
@@ -851,14 +947,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                   relatedAnnotationSubject,
                                                                                   relatedActionTarget);
 
-                    databaseClient.insertRowIntoTable(HarvestSurveysTable.REQUEST_FOR_ACTION_TARGET.getTableName(), openMetadataRecord);
+                    databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.REQUEST_FOR_ACTION_TARGET.getTableName(), openMetadataRecord);
                 }
 
                 if (SurveyFolderAnnotationType.MISSING_REF_DATA.getName().equals(annotationType))
                 {
                     for (RelatedMetadataElement relatedActionTarget : relatedActionTargets)
                     {
-                        processFileClassifiers(surveyReportGUID, relatedActionTarget);
+                        processFileClassifiers(databaseConnection, surveyReportGUID, relatedActionTarget);
                     }
                 }
             }
@@ -889,7 +985,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
 
     /**
-     * Convert the description of a specific request ofr action annotation into columns for the sr_request_for_action table.
+     * Convert the description of a specific request for action annotation into columns for the sr_request_for_action table.
      *
      * @param surveyReportGUID unique identifier for the survey report
      * @param annotationElement description of the annotation
@@ -908,7 +1004,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationElement.getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, relatedAnnotationSubject.getElement().getElementGUID());
 
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTION_REQUEST_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.ACTION_REQUESTED.name, annotationElement.getElementProperties(), methodName));
 
         return openMetadataRecord;
@@ -939,7 +1035,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTION_REQUEST_GUID, relatedActionTarget.getRelationshipGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, relatedAnnotationSubject.getElement().getElementGUID());
 
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, annotationElement.getVersions().getCreateTime());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTION_REQUEST_NAME, propertyHelper.getStringProperty(connectorName, OpenMetadataProperty.ACTION_REQUESTED.name, annotationElement.getElementProperties(), methodName));
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTION_TARGET_GUID, relatedActionTarget.getElement().getElementGUID());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTION_TARGET_TYPE, relatedActionTarget.getElement().getType().getTypeName());
@@ -951,15 +1047,17 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Add details of the missing reference data to the database.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param actionTargetElement  details about the file that contains the missing reference data
      */
-    private void processFileClassifiers(String                       surveyReportGUID,
-                                        RelatedMetadataElement       actionTargetElement) throws UserNotAuthorizedException,
-                                                                                                 InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 ConnectionCheckedException,
-                                                                                                 ConnectorCheckedException
+    private void processFileClassifiers(java.sql.Connection    databaseConnection,
+                                        String                 surveyReportGUID,
+                                        RelatedMetadataElement actionTargetElement) throws UserNotAuthorizedException,
+                                                                                           InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           ConnectionCheckedException,
+                                                                                           ConnectorCheckedException
     {
         Connector connector = connectorFactoryService.getConnectorForAsset(actionTargetElement.getElement().getElementGUID(), auditLog);
 
@@ -971,7 +1069,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                 if ((recordValues != null) && (recordValues.size() > 1))
                 {
-                    syncFileClassifiers(surveyReportGUID,
+                    syncFileClassifiers(databaseConnection,
+                                        surveyReportGUID,
                                         recordValues.get(0),
                                         recordValues.get(1),
                                         recordValues.get(2),
@@ -988,6 +1087,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     /**
      * Process a user identity and profile retrieved from the open metadata ecosystem.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param fileName  details about the file that contains the missing reference data
      * @param fileExtension  details about the file that contains the missing reference data
@@ -997,20 +1097,22 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @param deployedImplementationType  details about the file that contains the missing reference data
      * @param encoding  details about the file that contains the missing reference data
      */
-    private void syncFileClassifiers(String surveyReportGUID,
-                                     String fileName,
-                                     String fileExtension,
-                                     String pathName,
-                                     String fileType,
-                                     String assetTypeName,
-                                     String deployedImplementationType,
-                                     String encoding) throws ConnectorCheckedException
+    private void syncFileClassifiers(java.sql.Connection databaseConnection,
+                                     String              surveyReportGUID,
+                                     String              fileName,
+                                     String              fileExtension,
+                                     String              pathName,
+                                     String              fileType,
+                                     String              assetTypeName,
+                                     String              deployedImplementationType,
+                                     String              encoding) throws ConnectorCheckedException
     {
         final String methodName = "syncFileClassifiers";
 
         try
         {
-            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(HarvestSurveysTable.MISSING_FILE_CLASSIFIERS.getTableName(),
+            Map<String, JDBCDataValue> latestStoredRecord = databaseClient.getLatestRow(databaseConnection,
+                                                                                        HarvestSurveysTable.MISSING_FILE_CLASSIFIERS.getTableName(),
                                                                                         HarvestSurveysColumn.PATHNAME.getColumnName(),
                                                                                         null,
                                                                                         HarvestSurveysColumn.SYNC_TIME.getColumnName(),
@@ -1027,7 +1129,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
             if (this.newInformation(latestStoredRecord, openMetadataRecord, HarvestSurveysColumn.SYNC_TIME.getColumnName()))
             {
-                databaseClient.insertRowIntoTable(HarvestSurveysTable.MISSING_FILE_CLASSIFIERS.getTableName(), openMetadataRecord);
+                databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.MISSING_FILE_CLASSIFIERS.getTableName(), openMetadataRecord);
             }
         }
         catch (Exception error)
@@ -1081,7 +1183,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ASSET_TYPE_NAME, assetType);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DEPLOYED_IMPLEMENTATION_TYPE, deployedImplementationType);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, encoding);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.SYNC_TIME, new Date().getTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.SYNC_TIME, new Date());
 
         return openMetadataRecord;
     }
@@ -1091,11 +1193,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about a data profile annotation.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param dataProfileAnnotation element representing the data profile annotation
      * @param relatedAnnotationSubject element related via the associated annotation
      */
-    private void syncResourceProfile(String                 surveyReportGUID,
+    private void syncResourceProfile(java.sql.Connection    databaseConnection,
+                                     String                 surveyReportGUID,
                                      OpenMetadataElement    dataProfileAnnotation,
                                      RelatedMetadataElement relatedAnnotationSubject) throws ConnectorCheckedException
     {
@@ -1110,7 +1214,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
             if (valueCount != null)
             {
-                syncValueProfile(surveyReportGUID,
+                syncValueProfile(databaseConnection,
+                                 surveyReportGUID,
                                  dataProfileAnnotation,
                                  relatedAnnotationSubject,
                                  valueCount);
@@ -1122,7 +1227,8 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                        dataProfileAnnotation.getElementProperties(),
                                                                                        methodName);
 
-                syncResourceProfile(surveyReportGUID,
+                syncResourceProfile(databaseConnection,
+                                    surveyReportGUID,
                                     dataProfileAnnotation,
                                     relatedAnnotationSubject,
                                     profileCount);
@@ -1153,12 +1259,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about a resource profile annotation.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param dataProfileAnnotation element representing the data profile annotation
      * @param relatedAnnotationSubject element related via the associated annotation
      * @param measurementValues map of measurement categories to measurement counts
      */
-    private void syncValueProfile(String                 surveyReportGUID,
+    private void syncValueProfile(java.sql.Connection    databaseConnection,
+                                  String                 surveyReportGUID,
                                   OpenMetadataElement    dataProfileAnnotation,
                                   RelatedMetadataElement relatedAnnotationSubject,
                                   Map<String, Integer>   measurementValues) throws ConnectorCheckedException
@@ -1202,7 +1310,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                    valueCountName,
                                                                                                    measurementValue);
 
-                    databaseClient.insertRowIntoTable(HarvestSurveysTable.PROFILE_MEASURES.getTableName(), openMetadataRecord);
+                    databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.PROFILE_MEASURES.getTableName(), openMetadataRecord);
                 }
             }
         }
@@ -1230,12 +1338,14 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about a resource profile annotation.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param dataProfileAnnotation element representing the data profile annotation
      * @param relatedAnnotationSubject element related via the associated annotation
      * @param measurementValues map of measurement categories to measurement counts
      */
-    private void syncResourceProfile(String                 surveyReportGUID,
+    private void syncResourceProfile(java.sql.Connection    databaseConnection,
+                                     String                 surveyReportGUID,
                                      OpenMetadataElement    dataProfileAnnotation,
                                      RelatedMetadataElement relatedAnnotationSubject,
                                      Map<String, Long>      measurementValues) throws ConnectorCheckedException
@@ -1281,7 +1391,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                       valueCountName,
                                                                                                       measurementValue);
 
-                    databaseClient.insertRowIntoTable(HarvestSurveysTable.PROFILE_MEASURES.getTableName(), openMetadataRecord);
+                    databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.PROFILE_MEASURES.getTableName(), openMetadataRecord);
                 }
             }
         }
@@ -1335,7 +1445,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, metadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
@@ -1376,7 +1486,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NUMERIC_VALUE, measurementValue);
@@ -1389,11 +1499,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Process information about a data source measurements annotation.  It is just inserted into the database.
      * Any existing record is overwritten.
      *
+     * @param databaseConnection  connection to the database
      * @param surveyReportGUID unique identifier of the survey report
      * @param dataSourceMeasurementsAnnotation element representing the data source measurements annotation
      * @param relatedAnnotationSubject element related via the associated annotation
      */
-    private void syncDataSourceMeasurements(String                 surveyReportGUID,
+    private void syncDataSourceMeasurements(java.sql.Connection    databaseConnection,
+                                            String                 surveyReportGUID,
                                             OpenMetadataElement    dataSourceMeasurementsAnnotation,
                                             RelatedMetadataElement relatedAnnotationSubject) throws ConnectorCheckedException
     {
@@ -1438,7 +1550,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                            dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
                                                                                                            fileMeasurement);
 
-                        databaseClient.insertRowIntoTable(HarvestSurveysTable.FILE_MEASUREMENTS.getTableName(), openMetadataRecord);
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.FILE_MEASUREMENTS.getTableName(), openMetadataRecord);
                     }
                     catch (Exception error)
                     {
@@ -1472,7 +1584,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                     dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
                                                                                                                     fileDirectoryMeasurement);
 
-                        databaseClient.insertRowIntoTable(HarvestSurveysTable.DIRECTORY_MEASUREMENTS.getTableName(), openMetadataRecord);
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.DIRECTORY_MEASUREMENTS.getTableName(), openMetadataRecord);
                     }
                     catch (Exception error)
                     {
@@ -1507,7 +1619,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                                        dataSourceMeasurementsAnnotation.getVersions().getCreateTime(),
                                                                                                                        relationalSchemaMeasurement);
 
-                        databaseClient.insertRowIntoTable(HarvestSurveysTable.RELATIONAL_DATA_MANAGER_MEASUREMENTS.getTableName(), openMetadataRecord);
+                        databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RELATIONAL_DATA_MANAGER_MEASUREMENTS.getTableName(), openMetadataRecord);
                     }
                     catch (Exception error)
                     {
@@ -1591,7 +1703,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                                                                                                              resourceSize,
                                                                                                              encoding);
 
-                    databaseClient.insertRowIntoTable(HarvestSurveysTable.RESOURCE_MEASURES.getTableName(), openMetadataRecord);
+                    databaseClient.insertRowIntoTable(databaseConnection, HarvestSurveysTable.RESOURCE_MEASURES.getTableName(), openMetadataRecord);
                 }
             }
         }
@@ -1658,7 +1770,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SURVEY_REPORT_GUID, surveyReportGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_NAME, measurementName);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_CATEGORY, measurementCategory);
@@ -1667,18 +1779,9 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
             addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_VALUE, measurementValue);
         }
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.MEASUREMENT_DISPLAY_NAME, measurementDisplayName);
-        if (resourceCreationTime != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_CREATION_TIME, resourceCreationTime);
-        }
-        if (resourceModificationTime != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, resourceModificationTime);
-        }
-        if (resourceLastAccessTime != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, resourceLastAccessTime);
-        }
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_CREATION_TIME, resourceCreationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, resourceModificationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, resourceLastAccessTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_SIZE, resourceSize);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ENCODING, encoding);
 
@@ -1713,7 +1816,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_NAME, fileMeasurement.getFileName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.PATHNAME, fileMeasurement.getPathName());
@@ -1728,18 +1831,9 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_SYM_LINK, fileMeasurement.getSymLink());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.IS_HIDDEN, fileMeasurement.getHidden());
 
-        if (fileMeasurement.getCreationTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_CREATION_TIME, fileMeasurement.getCreationTime());
-        }
-        if (fileMeasurement.getLastModifiedTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, fileMeasurement.getLastModifiedTime());
-        }
-        if (fileMeasurement.getLastAccessedTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, fileMeasurement.getLastAccessedTime());
-        }
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_CREATION_TIME, fileMeasurement.getCreationTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_MODIFIED_TIME, fileMeasurement.getLastModifiedTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_ACCESSED_TIME, fileMeasurement.getLastAccessedTime());
 
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_SIZE, fileMeasurement.getFileSize());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RECORD_COUNT, fileMeasurement.getRecordCount());
@@ -1774,7 +1868,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.DIRECTORY_NAME, fileDirectoryMeasurement.getDirectoryName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.FILE_COUNT, fileDirectoryMeasurement.getFileCount());
@@ -1793,18 +1887,9 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.UNCLASSIFIED_FILE_COUNT, fileDirectoryMeasurement.getUnclassifiedFileCount());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.INACCESSIBLE_FILE_COUNT, fileDirectoryMeasurement.getInaccessibleFileCount());
 
-        if (fileDirectoryMeasurement.getLastFileCreationTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_CREATION_TIME, fileDirectoryMeasurement.getLastFileCreationTime());
-        }
-        if (fileDirectoryMeasurement.getLastFileModificationTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME, fileDirectoryMeasurement.getLastFileModificationTime());
-        }
-        if (fileDirectoryMeasurement.getLastFileAccessedTime() != null)
-        {
-            addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME, fileDirectoryMeasurement.getLastFileAccessedTime());
-        }
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_CREATION_TIME, fileDirectoryMeasurement.getLastFileCreationTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_MODIFICATION_TIME, fileDirectoryMeasurement.getLastFileModificationTime());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_FILE_ACCESSED_TIME, fileDirectoryMeasurement.getLastFileAccessedTime());
 
         return openMetadataRecord;
     }
@@ -1837,7 +1922,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.METADATA_COLLECTION_ID, subjectMetadataCollectionId);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_GUID, subjectGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SUBJECT_TYPE, subjectType);
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.CREATION_TIME, creationTime);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ANNOTATION_GUID, annotationGUID);
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.RESOURCE_NAME, relationalDataManagerMeasurement.getResourceName());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SCHEMA_COUNT, relationalDataManagerMeasurement.getSchemaCount());
@@ -1850,7 +1935,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ROWS_DELETED, relationalDataManagerMeasurement.getRowsDeleted());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.SESSION_TIME, relationalDataManagerMeasurement.getSessionTime());
         addValueToRow(openMetadataRecord, HarvestSurveysColumn.ACTIVE_TIME, relationalDataManagerMeasurement.getActiveTime());
-        addValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_STATS_RESET, relationalDataManagerMeasurement.getStatsReset());
+        addDateValueToRow(openMetadataRecord, HarvestSurveysColumn.LAST_STATS_RESET, relationalDataManagerMeasurement.getStatsReset());
 
         return openMetadataRecord;
     }
@@ -1924,17 +2009,40 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
     {
         final String methodName = "processEvent";
 
+        java.sql.Connection databaseConnection = null;
+
         try
         {
             OpenMetadataElement surveyReportElement = openMetadataAccess.getMetadataElementByGUID(event.getElementHeader().getGUID());
 
             if (surveyReportElement != null)
             {
-                processSurveyReport(surveyReportElement);
+                databaseConnection = databaseClient.getDataSource().getConnection();
+
+                processSurveyReport(databaseConnection, surveyReportElement);
+
+                databaseConnection.commit();
             }
         }
         catch (Exception error)
         {
+            if (databaseConnection != null)
+            {
+                try
+                {
+                    databaseConnection.rollback();
+                }
+                catch (Exception  rollbackError)
+                {
+                    auditLog.logException(methodName,
+                                          HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                            rollbackError.getClass().getName(),
+                                                                                                            methodName,
+                                                                                                            rollbackError.getMessage()),
+                                          error);
+                }
+            }
+
             auditLog.logException(methodName,
                                   HarvestSurveysAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                     error.getClass().getName(),

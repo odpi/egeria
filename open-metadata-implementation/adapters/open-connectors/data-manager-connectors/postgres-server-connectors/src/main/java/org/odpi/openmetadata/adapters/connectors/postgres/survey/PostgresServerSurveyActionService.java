@@ -109,6 +109,8 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                     }
                 }
             }
+
+            jdbcConnection.commit();
         }
         catch (ConnectorCheckedException error)
         {

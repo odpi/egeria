@@ -285,10 +285,17 @@ public class RepositoryMapper extends BaseMapper
         {
             if (attributeRows.size() == 1)
             {
+                /*
+                 * Simple, single valued property
+                 */
                 return this.getInstancePropertyValue(attributeName, attributeRows.get(0), new ArrayList<>());
             }
             else
             {
+                /*
+                 * Property is a collection, struct or array.  There should be 1 row for the property itself
+                 * and the rest are for the values in the
+                 */
                 Map<String, JDBCDataValue>       principleRow = null;
                 List<Map<String, JDBCDataValue>> additionalRows = new ArrayList<>();
 
@@ -300,6 +307,9 @@ public class RepositoryMapper extends BaseMapper
                     {
                         if (principleRow == null)
                         {
+                            /*
+                             * Only one principle row.
+                             */
                             principleRow = attributeRow;
                         }
                         else

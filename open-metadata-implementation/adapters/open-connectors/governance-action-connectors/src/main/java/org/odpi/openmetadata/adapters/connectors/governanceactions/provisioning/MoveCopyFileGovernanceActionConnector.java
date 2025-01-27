@@ -878,18 +878,18 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
             }
 
-            newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
-                                                                          null,
-                                                                          true,
-                                                                          null,
-                                                                          null,
-                                                                          assetTemplateGUID,
-                                                                          null,
-                                                                          placeholderProperties,
-                                                                          parentGUID,
-                                                                          OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
-                                                                          null,
-                                                                          true);
+            newFileGUID = metadataStore.getMetadataElementFromTemplate(assetTypeName,
+                                                                       null,
+                                                                       true,
+                                                                       null,
+                                                                       null,
+                                                                       assetTemplateGUID,
+                                                                       null,
+                                                                       placeholderProperties,
+                                                                       parentGUID,
+                                                                       OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
+                                                                       null,
+                                                                       true);
         }
         else // no template
         {

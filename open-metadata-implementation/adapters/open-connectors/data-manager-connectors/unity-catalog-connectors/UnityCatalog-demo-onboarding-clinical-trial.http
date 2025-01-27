@@ -25,6 +25,10 @@ Content-Type: application/json
 # Set up Unity Catalog ...
 
 
+###
+# @name list volumes
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=clinical_trials&schema_name=teddy_bear_drop_foot&max_results=10
+
 
 ###
 # @name delete volume

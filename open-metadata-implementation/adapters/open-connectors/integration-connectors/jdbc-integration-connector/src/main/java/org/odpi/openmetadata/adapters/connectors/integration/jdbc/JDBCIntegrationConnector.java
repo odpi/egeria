@@ -257,6 +257,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
         String methodName = "close";
         try
         {
+            connection.commit();
             if (!connection.isClosed())
             {
                 connection.close();

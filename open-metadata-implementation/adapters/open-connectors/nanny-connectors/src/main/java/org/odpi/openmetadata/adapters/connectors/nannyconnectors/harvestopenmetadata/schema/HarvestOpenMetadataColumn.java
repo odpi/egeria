@@ -14,7 +14,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     SYNC_TIME                    ("sync_time", ColumnType.DATE, "Time that a record is made.", true),
     OPEN_METADATA_TYPE           ("open_metadata_type", ColumnType.STRING, "Open metadata type of this row element.", true),
     ASSET_GUID                   ("asset_guid", ColumnType.STRING, "Unique identifier of the asset", true),
-    RESOURCE_NAME                ("resource_name", ColumnType.STRING, "Technical name from the resource.", true),
+    RESOURCE_NAME                ("resource_name", ColumnType.STRING, "Technical name from the resource.", false),
     RESOURCE_DESCRIPTION         ("resource_description", ColumnType.STRING, "Description extracted from the resource.", false),
     QUALIFIED_NAME               ("qualified_name", ColumnType.STRING, "Unique name for associated element.", true),
     VERSION_IDENTIFIER           ("version_identifier", ColumnType.STRING, "Display version identifier - typically in the form V.x.y", false),
@@ -34,8 +34,8 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     CONFIDENTIALITY_LEVEL        ("confidentiality_level", ColumnType.INT, "Identifier in the confidentiality classification", false),
     CONFIDENCE_LEVEL             ("confidence_level", ColumnType.INT, "Identifier in the confidence classification", false),
     CRITICALITY_LEVEL            ("criticality_level", ColumnType.INT, "Identifier in the criticality classification", false),
-    CREATION_TIME                ("creation_time", ColumnType.DATE, "Creation time for the element.", true),
-    CREATION_BY                  ("creation_by", ColumnType.STRING, "Creation user for the element.", true),
+    CREATION_TIME                ("creation_time", ColumnType.DATE, "Creation time for the element.", false),
+    CREATION_BY                  ("creation_by", ColumnType.STRING, "Creation user for the element.", false),
     LAST_UPDATE_TIME             ("last_update_time", ColumnType.DATE, "Time that the element was last updated.", false),
     LAST_UPDATED_BY              ("last_updated_by", ColumnType.STRING, "User that last updated the element.", false),
     MAINTAINED_BY                ("maintained_by", ColumnType.STRING, "Users that have contributed to the element.", false),
@@ -97,14 +97,14 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     PARENT_DEPARTMENT_GUID       ("parent_department_guid", ColumnType.STRING, "Unique identifier of the parent department", false),
 
 
-    EXTERNAL_IDENTIFIER          ("external_identifier", ColumnType.STRING, "Identifier from a third party system", false),
+    EXTERNAL_IDENTIFIER          ("external_identifier", ColumnType.STRING, "Identifier from a third party system", true),
     EXTERNAL_TYPE_NAME           ("external_type_name", ColumnType.STRING, "Type Identifier from a third party system", false),
     EXTERNAL_SCOPE_GUID          ("external_source_guid", ColumnType.STRING, "Unique identifier of the identifiers external scope element.", false),
     VERSION                      ("version", ColumnType.LONG, "Version of an element", false),
-    LAST_CONFIRMED_SYNC_TIME     ("last_confirmed_sync_time", ColumnType.DATE, "Time that Egeria last contacted the external third party.", true),
-    EGERIA_OWNED                 ("egeria_owned", ColumnType.BOOLEAN, "Which system is the home (owner) of the element?", true),
-    EXTERNAL_USER_ID             ("external_user_id", ColumnType.BOOLEAN, "User Id received from a third party system.", true),
-    OPEN_METADATA_USER_GUID      ("open_metadata_user_guid", ColumnType.BOOLEAN, "Optional matching user profile in Open Metadata", false),
+    LAST_CONFIRMED_SYNC_TIME     ("last_confirmed_sync_time", ColumnType.DATE, "Time that Egeria last contacted the external third party.", false),
+    EGERIA_OWNED                 ("egeria_owned", ColumnType.BOOLEAN, "Which system is the home (owner) of the element?", false),
+    EXTERNAL_USER_ID             ("external_user_id", ColumnType.STRING, "User Id received from a third party system.", false),
+    OPEN_METADATA_USER_GUID      ("open_metadata_user_guid", ColumnType.STRING, "Optional matching user profile in Open Metadata", false),
 
 
     GLOSSARY_GUID                ("glossary_guid", ColumnType.STRING, "Unique identifier of a glossary", true),
@@ -128,7 +128,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     PROVENANCE_TYPE              ("provenance_type", ColumnType.STRING, "Metadata collection provenance type", false),
 
 
-    LEVEL_IDENTIFIER             ("level_identifier", ColumnType.INT, "Identifier used in a governance action classification", true),
+    LEVEL_IDENTIFIER             ("level_identifier", ColumnType.INT, "Identifier used in a governance action classification", false),
     CLASSIFICATION_NAME          ("classification_name", ColumnType.STRING, "Name of classification", false),
 
 
@@ -145,7 +145,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
 
 
     TERM_GUID                    ("term_guid", ColumnType.STRING, "Unique identifier for a term", true),
-    TERM_NAME                    ("term_name", ColumnType.STRING, "Display name for a term", true),
+    TERM_NAME                    ("term_name", ColumnType.STRING, "Display name for a term", false),
     TERM_SUMMARY                 ("term_summary", ColumnType.STRING, "Summary for a term", false),
     LAST_FEEDBACK_TIME           ("last_feedback_time", ColumnType.DATE, "The last time that feedback was added", false),
     NUM_LINKED_ELEMENTS          ("num_linked_elements", ColumnType.LONG, "The number of linked elements", true),
@@ -156,7 +156,7 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     PRIORITY                     ("priority", ColumnType.INT, "Priority for taking action", false),
     DUE_TIME                     ("due_time", ColumnType.DATE, "When should action be complete?", false),
     COMPLETION_TIME              ("completion_time", ColumnType.DATE, "When was action completed?", false),
-    TO_DO_STATUS                 ("to_do_status", ColumnType.STRING, "What is the status of this action", true),
+    TO_DO_STATUS                 ("to_do_status", ColumnType.STRING, "What is the status of this action", false),
     TO_DO_TYPE                   ("to_do_type", ColumnType.STRING, "What is the type of this action", false),
     TO_DO_SOURCE_GUID            ("to_do_source_guid", ColumnType.STRING, "Unique identifier for the source of the ToDo", false),
     TO_DO_SOURCE_TYPE            ("to_do_source_type", ColumnType.STRING, "Open metadata type for the source of the ToDo", false),
@@ -166,8 +166,9 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
 
 
     USER_IDENTITY_GUID           ("user_identity_guid", ColumnType.STRING, "Unique identifier for a user identity", true),
+    LINKED_USER_IDENTITY_GUID    ("linked_user_identity_guid", ColumnType.STRING, "Unique identifier for a user identity", false),
     USER_ID                      ("user_id", ColumnType.STRING, "User account identifier", true),
-    DISTINGUISHED_NAME           ("distinguished_name", ColumnType.STRING, "fully qualified name for a userId", true),
+    DISTINGUISHED_NAME           ("distinguished_name", ColumnType.STRING, "fully qualified name for a userId", false),
 
 
     PROFILE_GUID                 ("profile_guid", ColumnType.STRING, "Unique identifier for an actor profile", true),
@@ -193,11 +194,11 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
 
 
     COMMUNITY_GUID               ("community_guid", ColumnType.STRING, "Unique identifier for a community", true),
-    MISSION                      ("mission", ColumnType.STRING, "Mission for a community", true),
+    MISSION                      ("mission", ColumnType.STRING, "Mission for a community", false),
 
 
     COLLECTION_GUID              ("collection_guid", ColumnType.STRING, "Unique identifier for a collection", true),
-    MEMBER_TYPES                 ("member_types", ColumnType.STRING, "List of types of the members", true),
+    MEMBER_TYPES                 ("member_types", ColumnType.STRING, "List of types of the members", false),
 
 
     PRODUCT_STATUS               ("product_status", ColumnType.STRING, "The status of the digital product.", false),

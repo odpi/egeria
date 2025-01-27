@@ -322,21 +322,21 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
 
-        String schemaGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
-                                                                                                        catalogGUID,
-                                                                                                        false,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        templateGUID,
-                                                                                                        null,
-                                                                                                        placeholderProperties,
-                                                                                                        catalogGUID,
-                                                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                                        propertyHelper.addEnumProperty(null,
-                                                                                                                                       OpenMetadataProperty.USE_TYPE.name,
-                                                                                                                                       ServerAssetUseType.getOpenTypeName(),
-                                                                                                                                       ServerAssetUseType.OWNS.getName()),
-                                                                                                        true);
+        String schemaGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+                                                                                                     catalogGUID,
+                                                                                                     false,
+                                                                                                     null,
+                                                                                                     null,
+                                                                                                     templateGUID,
+                                                                                                     null,
+                                                                                                     placeholderProperties,
+                                                                                                     catalogGUID,
+                                                                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                                     propertyHelper.addEnumProperty(null,
+                                                                                                                                    OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                                    ServerAssetUseType.getOpenTypeName(),
+                                                                                                                                    ServerAssetUseType.OWNS.getName()),
+                                                                                                       true);
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
 
@@ -389,18 +389,18 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
 
-        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
-                                                                                                        schemaGUID,
-                                                                                                        false,
-                                                                                                        null,
-                                                                                                        null,
-                                                                                                        templateGUID,
-                                                                                                        null,
-                                                                                                        placeholderProperties,
-                                                                                                        schemaGUID,
-                                                                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                                                                        null,
-                                                                                                        false);
+        String volumeGUID =  governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
+                                                                                                     schemaGUID,
+                                                                                                     false,
+                                                                                                     null,
+                                                                                                     null,
+                                                                                                     templateGUID,
+                                                                                                     null,
+                                                                                                     placeholderProperties,
+                                                                                                     schemaGUID,
+                                                                                                     OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
+                                                                                                     null,
+                                                                                                     false);
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
 
