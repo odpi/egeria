@@ -87,11 +87,11 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">JDBCResourceConnector</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
 implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></span></div>
-<div class="block">JDBCResourceConnector provides basic implementation of <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link"><code>DataSource</code></a> interface in order to get a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link"><code>Connection</code></a> to
- target database. This is done via a static inner class, since <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#getConnection()" title="class or interface in javax.sql" class="external-link"><code>DataSource.getConnection()</code></a> clashes with
- <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()"><code>ConnectorBase.getConnection()</code></a>.
- <br><br>
- The DataSource can be used directly.  There are also selected methods to issue common SQL statements to the database.</div>
+<div class="block">JDBCResourceConnector provides a resource connector to work with JDBC Databases.  The JDBC interface works using
+ JDBC Connections.  These connections are single threaded.  Therefore, the JDBCResourceConnector is responsible for
+ dispensing connectors via a data source object. This object implements the  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link"><code>DataSource</code></a> interface in order
+ to get a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link"><code>Connection</code></a> to target database. This is done via a static inner class,
+ since <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html#getConnection()" title="class or interface in javax.sql" class="external-link"><code>DataSource.getConnection()</code></a> clashes with <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()"><code>ConnectorBase.getConnection()</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -138,7 +138,8 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDatabaseDefinitions(java.util.List)" class="member-name-link">addDatabaseDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ddlStatements)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDatabaseDefinitions(java.sql.Connection,java.util.List)" class="member-name-link">addDatabaseDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ddlStatements)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue the supplied DDL statements.</div>
 </div>
@@ -163,7 +164,8 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Return the DataSource implementation for this database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLatestRow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getLatestRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLatestRow(java.sql.Connection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getLatestRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampColumnName,
@@ -172,45 +174,52 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRow(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getMatchingRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRow(java.sql.Connection,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getMatchingRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the row that matches the where clause.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRows(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getMatchingRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRows(java.sql.Connection,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getMatchingRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRows(java.lang.String,java.util.Map)" class="member-name-link">getMatchingRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingRows(java.sql.Connection,java.lang.String,java.util.Map)" class="member-name-link">getMatchingRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRows(java.lang.String,java.util.Map)" class="member-name-link">getRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRows(java.sql.Connection,java.lang.String,java.util.Map)" class="member-name-link">getRows</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowIntoTable(java.lang.String,java.util.Map)" class="member-name-link">insertRowIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowIntoTable(java.sql.Connection,java.lang.String,java.util.Map)" class="member-name-link">insertRowIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;columnNameValueMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Prepare an INSERT SQL statement with all the columns for the new row filled out.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowsIntoTable(java.lang.String,java.util.List)" class="member-name-link">insertRowsIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowsIntoTable(java.sql.Connection,java.lang.String,java.util.List)" class="member-name-link">insertRowsIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;&nbsp;rows)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Prepare an INSERT SQL statement with all the columns for each of the new rows filled out.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#issueSQLCommand(java.lang.String)" class="member-name-link">issueSQLCommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#issueSQLCommand(java.sql.Connection,java.lang.String)" class="member-name-link">issueSQLCommand</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Issue a SQL command that expects no results.</div>
 </div>
@@ -317,7 +326,9 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="getDataSource()">
 <h3>getDataSource</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a></span>&nbsp;<span class="element-name">getDataSource</span>()</div>
-<div class="block">Return the DataSource implementation for this database.  This supports creating the connection to the database.</div>
+<div class="block">Return the DataSource implementation for this database.
+ This supports creating the connection to the database.
+ Notice that DataSources are created per thread.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>DataSource</dd>
@@ -325,13 +336,15 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="addDatabaseDefinitions(java.util.List)">
+<section class="detail" id="addDatabaseDefinitions(java.sql.Connection,java.util.List)">
 <h3>addDatabaseDefinitions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addDatabaseDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ddlStatements)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addDatabaseDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;ddlStatements)</span>
                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Issue the supplied DDL statements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>ddlStatements</code> - statements to execute</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem communicating with the database</dd>
@@ -339,13 +352,15 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="issueSQLCommand(java.lang.String)">
+<section class="detail" id="issueSQLCommand(java.sql.Connection,java.lang.String)">
 <h3>issueSQLCommand</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">issueSQLCommand</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">issueSQLCommand</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand)</span>
                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Issue a SQL command that expects no results.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>sqlCommand</code> - command to issue</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong</dd>
@@ -353,9 +368,10 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getLatestRow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="getLatestRow(java.sql.Connection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
 <h3>getLatestRow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</span>&nbsp;<span class="element-name">getLatestRow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</span>&nbsp;<span class="element-name">getLatestRow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampColumnName,
@@ -364,6 +380,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table to query</dd>
 <dd><code>identifierColumnName</code> - name of the column with the identifier in it</dd>
 <dd><code>identifierColumnValue</code> - value of the identifier to match on</dd>
@@ -377,15 +394,17 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getMatchingRow(java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="getMatchingRow(java.sql.Connection,java.lang.String,java.lang.String,java.util.Map)">
 <h3>getMatchingRow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</span>&nbsp;<span class="element-name">getMatchingRow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</span>&nbsp;<span class="element-name">getMatchingRow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</span>
                                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the row that matches the where clause.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table to query</dd>
 <dd><code>whereClause</code> - condition describing how to match the desired columns</dd>
 <dd><code>columnNameTypeMap</code> - map of resulting column names and values to include in the results</dd>
@@ -397,15 +416,17 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getMatchingRows(java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="getMatchingRows(java.sql.Connection,java.lang.String,java.lang.String,java.util.Map)">
 <h3>getMatchingRows</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getMatchingRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getMatchingRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;whereClause,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</span>
                                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table to query</dd>
 <dd><code>whereClause</code> - condition describing how to match the desired columns</dd>
 <dd><code>columnNameTypeMap</code> - map of resulting column names and values to include in the results</dd>
@@ -417,14 +438,16 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getMatchingRows(java.lang.String,java.util.Map)">
+<section class="detail" id="getMatchingRows(java.sql.Connection,java.lang.String,java.util.Map)">
 <h3>getMatchingRows</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getMatchingRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getMatchingRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sqlCommand,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</span>
                                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>sqlCommand</code> - condition describing how to match the desired columns</dd>
 <dd><code>columnNameTypeMap</code> - map of resulting column names and values to include in the results</dd>
 <dt>Returns:</dt>
@@ -435,14 +458,16 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getRows(java.lang.String,java.util.Map)">
+<section class="detail" id="getRows(java.sql.Connection,java.lang.String,java.util.Map)">
 <h3>getRows</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;</span>&nbsp;<span class="element-name">getRows</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</span>
                                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table to query</dd>
 <dd><code>columnNameTypeMap</code> - map of resulting column names and values to include in the results</dd>
 <dt>Returns:</dt>
@@ -453,14 +478,16 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="insertRowIntoTable(java.lang.String,java.util.Map)">
+<section class="detail" id="insertRowIntoTable(java.sql.Connection,java.lang.String,java.util.Map)">
 <h3>insertRowIntoTable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">insertRowIntoTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">insertRowIntoTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;columnNameValueMap)</span>
                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Prepare an INSERT SQL statement with all the columns for the new row filled out.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table where the row is to be added</dd>
 <dd><code>columnNameValueMap</code> - column names, values and types</dd>
 <dt>Throws:</dt>
@@ -469,14 +496,16 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="insertRowsIntoTable(java.lang.String,java.util.List)">
+<section class="detail" id="insertRowsIntoTable(java.sql.Connection,java.lang.String,java.util.List)">
 <h3>insertRowsIntoTable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">insertRowsIntoTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">insertRowsIntoTable</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&gt;&nbsp;rows)</span>
                          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Prepare an INSERT SQL statement with all the columns for each of the new rows filled out.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>jdbcConnection</code> - connection to use</dd>
 <dd><code>tableName</code> - name of the table where the row is to be added</dd>
 <dd><code>rows</code> - list of column names, values and types</dd>
 <dt>Throws:</dt>
