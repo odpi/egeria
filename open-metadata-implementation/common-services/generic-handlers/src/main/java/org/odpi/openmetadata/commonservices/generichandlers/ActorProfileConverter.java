@@ -245,6 +245,22 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
 
                                     roles.add(elementStub);
                                 }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    roles.add(elementStub);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    roles.add(elementStub);
+                                }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);

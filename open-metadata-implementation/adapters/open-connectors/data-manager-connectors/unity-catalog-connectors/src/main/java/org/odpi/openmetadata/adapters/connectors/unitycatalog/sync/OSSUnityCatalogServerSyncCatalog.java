@@ -296,23 +296,23 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
         boolean parentAtEnd1 = true;
         if (templateGUID != null)
         {
-            ucCatalogGUID = openMetadataAccess.createMetadataElementFromTemplate(null,
-                                                                                 null,
-                                                                                 deployedImplementationType.getAssociatedTypeName(),
-                                                                                 ucServerGUID,
-                                                                                 false,
-                                                                                 null,
-                                                                                 null,
-                                                                                 templateGUID,
-                                                                                 this.getElementProperties(qualifiedName, catalogInfo),
-                                                                                 this.getPlaceholderProperties(catalogInfo),
-                                                                                 ucServerGUID,
-                                                                                 parentLinkTypeName,
-                                                                                 propertyHelper.addEnumProperty(null,
-                                                                                                                OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                                                                OperationalStatus.getOpenTypeName(),
-                                                                                                                OperationalStatus.ENABLED.getName()),
-                                                                                 parentAtEnd1);
+            ucCatalogGUID = openMetadataAccess.getMetadataElementFromTemplate(null,
+                                                                              null,
+                                                                              deployedImplementationType.getAssociatedTypeName(),
+                                                                              ucServerGUID,
+                                                                              false,
+                                                                              null,
+                                                                              null,
+                                                                              templateGUID,
+                                                                              this.getElementProperties(qualifiedName, catalogInfo),
+                                                                              this.getPlaceholderProperties(catalogInfo),
+                                                                              ucServerGUID,
+                                                                              parentLinkTypeName,
+                                                                              propertyHelper.addEnumProperty(null,
+                                                                                                             OpenMetadataProperty.OPERATIONAL_STATUS.name,
+                                                                                                             OperationalStatus.getOpenTypeName(),
+                                                                                                             OperationalStatus.ENABLED.getName()),
+                                                                              parentAtEnd1);
         }
         else
         {

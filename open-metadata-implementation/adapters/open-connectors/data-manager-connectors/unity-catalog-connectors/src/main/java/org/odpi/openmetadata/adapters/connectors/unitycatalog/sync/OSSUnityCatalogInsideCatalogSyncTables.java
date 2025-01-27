@@ -288,20 +288,20 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         if (templateGUID != null)
         {
-            ucTableGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                               catalogQualifiedName,
-                                                                               deployedImplementationType.getAssociatedTypeName(),
-                                                                               schemaGUID,
-                                                                               false,
-                                                                               null,
-                                                                               null,
-                                                                               templateGUID,
-                                                                               null,
-                                                                               this.getPlaceholderProperties(tableInfo),
-                                                                               schemaGUID,
-                                                                               parentLinkTypeName,
-                                                                               null,
-                                                                               parentAtEnd1);
+            ucTableGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
+                                                                            catalogQualifiedName,
+                                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                                            schemaGUID,
+                                                                            false,
+                                                                            null,
+                                                                            null,
+                                                                            templateGUID,
+                                                                            null,
+                                                                            this.getPlaceholderProperties(tableInfo),
+                                                                            schemaGUID,
+                                                                            parentLinkTypeName,
+                                                                            null,
+                                                                            parentAtEnd1);
         }
         else
         {

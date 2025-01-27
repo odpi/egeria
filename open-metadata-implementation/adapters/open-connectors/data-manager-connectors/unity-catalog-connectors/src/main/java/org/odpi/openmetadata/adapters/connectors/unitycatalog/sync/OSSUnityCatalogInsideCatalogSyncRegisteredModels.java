@@ -285,20 +285,20 @@ public class OSSUnityCatalogInsideCatalogSyncRegisteredModels extends OSSUnityCa
 
         if (templateGUID != null)
         {
-            ucModelGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                               catalogQualifiedName,
-                                                                               deployedImplementationType.getAssociatedTypeName(),
-                                                                               schemaGUID,
-                                                                               false,
-                                                                               null,
-                                                                               null,
-                                                                               templateGUID,
-                                                                               null,
-                                                                               this.getPlaceholderProperties(modelInfo),
-                                                                               schemaGUID,
-                                                                               parentLinkTypeName,
-                                                                               null,
-                                                                               parentAtEnd1);
+            ucModelGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
+                                                                            catalogQualifiedName,
+                                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                                            schemaGUID,
+                                                                            false,
+                                                                            null,
+                                                                            null,
+                                                                            templateGUID,
+                                                                            null,
+                                                                            this.getPlaceholderProperties(modelInfo),
+                                                                            schemaGUID,
+                                                                            parentLinkTypeName,
+                                                                            null,
+                                                                            parentAtEnd1);
         }
         else
         {

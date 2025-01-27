@@ -26,20 +26,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * JDBCResourceConnector provides basic implementation of {@link DataSource} interface in order to get a {@link Connection} to
- * target database. This is done via a static inner class, since {@link DataSource#getConnection()} clashes with
- * {@link ConnectorBase#getConnection()}.
- * <br><br>
- * The DataSource can be used directly.  There are also selected methods to issue common SQL statements to the database.
+ * JDBCResourceConnector provides a resource connector to work with JDBC Databases.  The JDBC interface works using
+ * JDBC Connections.  These connections are single threaded.  Therefore, the JDBCResourceConnector is responsible for
+ * dispensing connectors via a data source object. This object implements the  {@link DataSource} interface in order
+ * to get a {@link Connection} to target database. This is done via a static inner class,
+ * since {@link DataSource#getConnection()} clashes with {@link ConnectorBase#getConnection()}.
  */
 public class JDBCResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
     private AuditLog                        auditLog           = null;
     private String                          jdbcDatabaseName   = null;
     private String                          jdbcDatabaseURL    = null;
-    private java.sql.Connection             jdbcConnection     = null;
+    private JDBCConnectorAsDataSource       jdbcDataSource     = null;
 
-    private final List<JDBCConnectorAsDataSource> knownDataSources   = new ArrayList<>();
 
     private static final Logger log = LoggerFactory.getLogger(JDBCResourceConnector.class);
 
@@ -157,19 +156,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 }
             }
 
-            try
-            {
-                this.jdbcConnection = getDataSource().getConnection();
-            }
-            catch (SQLException sqlException)
-            {
-                throw new ConnectorCheckedException(JDBCErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectionProperties.getConnectionName(),
-                                                                                                            sqlException.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            sqlException.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName);
-            }
+            jdbcDataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
         }
     }
 
@@ -186,27 +173,27 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
-     * Return the DataSource implementation for this database.  This supports creating the connection to the database.
+     * Return the DataSource implementation for this database.
+     * This supports creating the connection to the database.
+     * Notice that DataSources are created per thread.
      *
      * @return DataSource
      */
-    public synchronized DataSource getDataSource()
+    public DataSource getDataSource()
     {
-        JDBCConnectorAsDataSource dataSource = new JDBCConnectorAsDataSource(jdbcDatabaseName, auditLog);
-
-        this.knownDataSources.add(dataSource);
-
-        return dataSource;
+        return jdbcDataSource;
     }
 
 
     /**
      * Issue the supplied DDL statements.
      *
+     * @param jdbcConnection connection to use
      * @param ddlStatements statements to execute
      * @throws PropertyServerException problem communicating with the database
      */
-    public void addDatabaseDefinitions(List<String>  ddlStatements) throws PropertyServerException
+    public void addDatabaseDefinitions(java.sql.Connection jdbcConnection,
+                                       List<String>        ddlStatements) throws PropertyServerException
     {
         if ((ddlStatements != null) && (!ddlStatements.isEmpty()))
         {
@@ -214,7 +201,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
             {
                 if (ddlStatement != null)
                 {
-                    this.issueSQLCommand(ddlStatement);
+                    this.issueSQLCommand(jdbcConnection, ddlStatement);
                 }
             }
         }
@@ -224,20 +211,17 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Issue a SQL command that expects no results.
      *
+     * @param jdbcConnection connection to use
      * @param sqlCommand command to issue
      * @throws PropertyServerException something went wrong
      */
-    public void issueSQLCommand(String sqlCommand) throws PropertyServerException
+    public void issueSQLCommand(java.sql.Connection jdbcConnection,
+                                String              sqlCommand) throws PropertyServerException
     {
         final String methodName = "issueSQLCommand";
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -262,6 +246,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table to query
      * @param identifierColumnName name of the column with the identifier in it
      * @param identifierColumnValue value of the identifier to match on
@@ -270,7 +255,8 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @return Map of column names to data values that represent the requested row
      * @throws PropertyServerException there was a problem calling the database
      */
-    public Map<String, JDBCDataValue> getLatestRow(String               tableName,
+    public Map<String, JDBCDataValue> getLatestRow(java.sql.Connection  jdbcConnection,
+                                                   String               tableName,
                                                    String               identifierColumnName,
                                                    String               identifierColumnValue,
                                                    String               timestampColumnName,
@@ -279,18 +265,13 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         final String methodName = "getLatestRow";
 
         String sqlCommand = "SELECT * FROM " +
-                                    tableName +
-                                    " WHERE " + identifierColumnName + " = ? AND " +
-                                    timestampColumnName +
-                                    " = (SELECT MAX(" + timestampColumnName + ") FROM " + tableName + " WHERE " + identifierColumnName + " = ?)";
+                tableName +
+                " WHERE " + identifierColumnName + " = ? AND " +
+                timestampColumnName +
+                " = (SELECT MAX(" + timestampColumnName + ") FROM " + tableName + " WHERE " + identifierColumnName + " = ?)";
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -323,13 +304,15 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Retrieve the row that matches the where clause.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table to query
      * @param whereClause condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return row consisting of column names to data values that represent the requested row
      * @throws PropertyServerException there was a problem calling the database
      */
-    public Map<String, JDBCDataValue> getMatchingRow(String               tableName,
+    public Map<String, JDBCDataValue> getMatchingRow(java.sql.Connection  jdbcConnection,
+                                                     String               tableName,
                                                      String               whereClause,
                                                      Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
@@ -339,11 +322,6 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -373,13 +351,15 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table to query
      * @param whereClause condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
      * @throws PropertyServerException there was a problem calling the database
      */
-    public List<Map<String, JDBCDataValue>> getMatchingRows(String               tableName,
+    public List<Map<String, JDBCDataValue>> getMatchingRows(java.sql.Connection  jdbcConnection,
+                                                            String               tableName,
                                                             String               whereClause,
                                                             Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
@@ -389,11 +369,6 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -423,23 +398,20 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
+     * @param jdbcConnection connection to use
      * @param sqlCommand condition describing how to match the desired columns
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
      * @throws PropertyServerException there was a problem calling the database
      */
-    public List<Map<String, JDBCDataValue>> getMatchingRows(String               sqlCommand,
+    public List<Map<String, JDBCDataValue>> getMatchingRows(java.sql.Connection  jdbcConnection,
+                                                            String               sqlCommand,
                                                             Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
         final String methodName = "getMatchingRows";
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -469,25 +441,22 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Retrieve the row with the requested identifier and with the latest timestamp.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table to query
      * @param columnNameTypeMap map of resulting column names and values to include in the results
      * @return list of rows consisting of column names to data values that represent the requested row
      * @throws PropertyServerException there was a problem calling the database
      */
-    public List<Map<String, JDBCDataValue>> getRows(String               tableName,
+    public List<Map<String, JDBCDataValue>> getRows(java.sql.Connection  jdbcConnection,
+                                                    String               tableName,
                                                     Map<String, Integer> columnNameTypeMap) throws PropertyServerException
     {
-        final String methodName = "geRows";
+        final String methodName = "getRows";
 
         String sqlCommand = "SELECT * FROM " + tableName;
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -618,11 +587,13 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Prepare an INSERT SQL statement with all the columns for the new row filled out.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table where the row is to be added
      * @param columnNameValueMap column names, values and types
      * @throws PropertyServerException problem executing the command
      */
-    public void insertRowIntoTable(String                     tableName,
+    public void insertRowIntoTable(java.sql.Connection        jdbcConnection,
+                                   String                     tableName,
                                    Map<String, JDBCDataValue> columnNameValueMap) throws PropertyServerException
     {
         final String methodName = "insertRowIntoTable";
@@ -631,11 +602,6 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         try
         {
-            if (jdbcConnection.isClosed())
-            {
-                jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
-            }
-
             log.debug(sqlCommand);
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
@@ -690,18 +656,20 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
     /**
      * Prepare an INSERT SQL statement with all the columns for each of the new rows filled out.
      *
+     * @param jdbcConnection connection to use
      * @param tableName name of the table where the row is to be added
      * @param rows list of column names, values and types
      * @throws PropertyServerException problem executing the command
      */
-    public void insertRowsIntoTable(String                           tableName,
+    public void insertRowsIntoTable(java.sql.Connection              jdbcConnection,
+                                    String                           tableName,
                                     List<Map<String, JDBCDataValue>> rows) throws PropertyServerException
     {
         if (rows != null)
         {
             for (Map<String, JDBCDataValue> row : rows)
             {
-                insertRowIntoTable(tableName, row);
+                insertRowIntoTable(jdbcConnection, tableName, row);
             }
         }
     }
@@ -802,18 +770,15 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      */
     private synchronized void disconnectKnownDataSources()
     {
-        for (JDBCConnectorAsDataSource dataSource : this.knownDataSources)
+        try
         {
-            try
-            {
-                dataSource.disconnect();
-            }
-            catch (Exception error)
-            {
-                /*
-                 * Ignore error - in shutdown and the caller may have closed the connection already.
-                 */
-            }
+            jdbcDataSource.disconnect();
+        }
+        catch (Exception error)
+        {
+            /*
+             * Ignore error - in shutdown and the caller may have closed the connection already.
+             */
         }
     }
 
@@ -826,7 +791,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         private final String   databaseName;
         private final AuditLog auditLog;
 
-        private final List<Connection> knownConnections = new ArrayList<>();
+        private final Map<Long, Connection> knownConnections = new HashMap<>();
 
 
         /**
@@ -846,37 +811,39 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
         /**
          * Attempts to establish a connection with the data source that this DataSource object represents.
          *
-         * @return a connection to the data source
+         * @return a JDBC connection to the data source
          * @throws SQLException if a database access error occurs
          */
         @Override
-        public Connection getConnection() throws SQLException
+        public synchronized Connection getConnection() throws SQLException
         {
             final String methodName = "dataSource.getConnection";
 
             try
             {
-                Connection jdbcConnection;
+                Connection jdbcConnection = this.knownConnections.get(Thread.currentThread().getId());
 
-                if ((connectionProperties.getUserId() == null) || (connectionProperties.getClearPassword() == null))
+                if ((jdbcConnection == null) || (jdbcConnection.isClosed()))
                 {
-                    jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress());
-                }
-                else
-                {
-                    jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress(),
-                                                                 connectionBean.getUserId(),
-                                                                 connectionBean.getClearPassword());
-                }
+                    if ((connectionProperties.getUserId() == null) || (connectionProperties.getClearPassword() == null))
+                    {
+                        jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress());
+                    }
+                    else
+                    {
+                        jdbcConnection = DriverManager.getConnection(connectionProperties.getEndpoint().getAddress(),
+                                                                     connectionBean.getUserId(),
+                                                                     connectionBean.getClearPassword());
+                    }
 
-                if (jdbcConnection != null)
-                {
-                    this.knownConnections.add(jdbcConnection);
-                }
+                    jdbcConnection.setAutoCommit(false);
 
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName));
+                    this.knownConnections.put(Thread.currentThread().getId(), jdbcConnection);
+
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName, Long.toString(Thread.currentThread().getId()), Thread.currentThread().getName()));
+                    }
                 }
 
                 return jdbcConnection;
@@ -900,10 +867,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         /**
          * Attempts to establish a connection with the data source that this DataSource object represents.
+         * The caller is responsible for managing the connection lifecycle
          *
          * @param username the username for connecting to the database that overrides the configured userId
          * @param password the password for connecting to the database that overrides the configured clearPassword
-         * @return a connection to the data source
+         * @return a JDBC connection to the data source
          * @throws SQLException if a database access error occurs
          */
         @Override
@@ -913,11 +881,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
             try
             {
-                Connection jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(), username, password);
+               Connection jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(), username, password);
 
                 if (auditLog != null)
                 {
-                    auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName));
+                    auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_CONNECTED_TO_DATABASE.getMessageDefinition(databaseName, Long.toString(Thread.currentThread().getId()), Thread.currentThread().getName()));
                 }
 
                 return jdbcConnection;
@@ -1076,14 +1044,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 auditLog.logMessage(methodName, JDBCAuditCode.CONNECTOR_STOPPING.getMessageDefinition(jdbcDatabaseName, numberOfConnections));
             }
 
-            for (Connection connection : this.knownConnections)
+            for (Connection connection : this.knownConnections.values())
             {
                 try
                 {
-                    if (! connection.isClosed())
-                    {
-                        connection.close();
-                    }
+                    connection.close();
                 }
                 catch (Exception error)
                 {

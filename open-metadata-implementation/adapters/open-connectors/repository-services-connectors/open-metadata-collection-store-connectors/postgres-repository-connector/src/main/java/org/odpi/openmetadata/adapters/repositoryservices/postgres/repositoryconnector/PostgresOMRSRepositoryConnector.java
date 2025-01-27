@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers.ControlMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.schema.RepositoryTable;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
@@ -27,6 +28,7 @@ import java.util.Date;
 public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 {
     private final static String supportedSchemaVersion = "V1.0";
+    private JDBCResourceConnector jdbcResourceConnector = null;
 
     /**
      * Default constructor used by the OCF Connector Provider.
@@ -60,6 +62,8 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                 {
                     if (embeddedConnector instanceof JDBCResourceConnector jdbcResourceConnector)
                     {
+                        this.jdbcResourceConnector = jdbcResourceConnector;
+
                         try
                         {
                             if (! jdbcResourceConnector.isActive())
@@ -131,8 +135,6 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         try
         {
-            Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
-
             loadDDL(jdbcResourceConnector, schemaName);
 
             DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector,
@@ -172,8 +174,6 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                                                    this.getClass().getName(),
                                                    methodName);
             }
-
-            jdbcConnection.close();
         }
         catch (RepositoryErrorException error)
         {
@@ -213,10 +213,13 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         try
         {
+            java.sql.Connection jdbcConnection = jdbcResourceConnector.getDataSource().getConnection();
+
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               repositoryName,
                                                                               RepositoryTable.getTables());
-            jdbcResourceConnector.addDatabaseDefinitions(postgreSQLSchemaDDL.getDDLStatements());
+            jdbcResourceConnector.addDatabaseDefinitions(jdbcConnection, postgreSQLSchemaDDL.getDDLStatements());
+            jdbcConnection.commit();
         }
         catch (Exception error)
         {
@@ -288,5 +291,20 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
         }
 
         return defaultAsOfTime;
+    }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    @Override
+    public void disconnect() throws ConnectorCheckedException
+    {
+        if (jdbcResourceConnector != null)
+        {
+            jdbcResourceConnector.disconnect();
+        }
     }
 }

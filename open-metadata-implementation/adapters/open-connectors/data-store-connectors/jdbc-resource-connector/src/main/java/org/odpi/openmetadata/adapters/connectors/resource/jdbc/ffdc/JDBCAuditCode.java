@@ -35,7 +35,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      */
     CONNECTOR_CONNECTED_TO_DATABASE("JDBC-RESOURCE-CONNECTOR-0002",
                                     AuditLogRecordSeverityLevel.INFO,
-                                    "The JDBC resource connector has connected to database {0}",
+                                    "The JDBC resource connector has connected to database {0} for thread {2} ({1})",
                                     "The connector is designed provide a standard interface to a relational database that supports Java Database Connectivity (JDBC).  This message confirms that the connector has successfully connected to the database.  The number of times that this message is emitted by a connector indicates how many database connections it is using.",
                                     "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
 

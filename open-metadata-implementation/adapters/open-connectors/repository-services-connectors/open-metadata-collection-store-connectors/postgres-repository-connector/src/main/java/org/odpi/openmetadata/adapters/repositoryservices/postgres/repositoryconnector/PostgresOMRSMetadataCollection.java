@@ -2476,9 +2476,46 @@ public class PostgresOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                                                     entity,
+                                                                                     entityProxy,
                                                                                      classificationName,
                                                                                      methodName);
+        try
+        {
+            classification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                          entityProxy,
+                                                                          classificationName,
+                                                                          methodName);
+        }
+        catch (ClassificationErrorException missingClassification)
+        {
+            System.out.println("callerClassification: " + classification);
+            System.out.println("callerEntityProxy: " + entityProxy);
+            System.out.println("storedEntity: " + entity);
+
+            /*
+             * Throw the exception
+             */
+            repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                         entityProxy,
+                                                         classificationName,
+                                                         methodName);
+        }
+
+        Classification storedClassification = null;
+        try
+        {
+            storedClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                entity,
+                                                                                classificationName,
+                                                                                methodName);
+        }
+        catch (ClassificationErrorException missingClassification)
+        {
+            System.out.println("callerClassification: " + classification);
+            System.out.println("storedEntity: " + entity);
+        }
+
+        assert(classification.equals(storedClassification));
 
         Classification newClassification = new Classification(classification);
 

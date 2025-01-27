@@ -507,17 +507,17 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
     {
         OpenMetadataAccess openMetadataAccess = integrationConnector.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
 
-        return openMetadataAccess.createMetadataElementFromTemplate(assetTypeName,
-                                                                    null,
-                                                                    true,
-                                                                    null,
-                                                                    null,
-                                                                    fileTemplateGUID,
-                                                                    replacementProperties,
-                                                                    placeholderProperties,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    false);
+        return openMetadataAccess.getMetadataElementFromTemplate(assetTypeName,
+                                                                 null,
+                                                                 true,
+                                                                 null,
+                                                                 null,
+                                                                 fileTemplateGUID,
+                                                                 replacementProperties,
+                                                                 placeholderProperties,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 false);
     }
 }

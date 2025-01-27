@@ -285,20 +285,20 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         if (templateGUID != null)
         {
-            ucFunctionGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                                  catalogQualifiedName,
-                                                                                  deployedImplementationType.getAssociatedTypeName(),
-                                                                                  schemaGUID,
-                                                                                  false,
-                                                                                  null,
-                                                                                  null,
-                                                                                  templateGUID,
-                                                                                  null,
-                                                                                  this.getPlaceholderProperties(functionInfo),
-                                                                                  schemaGUID,
-                                                                                  parentLinkTypeName,
-                                                                                  null,
-                                                                                  parentAtEnd1);
+            ucFunctionGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
+                                                                               catalogQualifiedName,
+                                                                               deployedImplementationType.getAssociatedTypeName(),
+                                                                               schemaGUID,
+                                                                               false,
+                                                                               null,
+                                                                               null,
+                                                                               templateGUID,
+                                                                               null,
+                                                                               this.getPlaceholderProperties(functionInfo),
+                                                                               schemaGUID,
+                                                                               parentLinkTypeName,
+                                                                               null,
+                                                                               parentAtEnd1);
         }
         else
         {

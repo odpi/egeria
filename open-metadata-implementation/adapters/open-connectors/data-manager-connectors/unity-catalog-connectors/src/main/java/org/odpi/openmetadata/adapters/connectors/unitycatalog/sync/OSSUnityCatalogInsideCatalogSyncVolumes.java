@@ -289,20 +289,20 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             ElementProperties replacementProperties = propertyHelper.addStringProperty(null,
                                                                                        OpenMetadataProperty.PATH_NAME.name,
                                                                                        super.getPathNameFromStorageLocation(volumeInfo.getStorage_location()));
-            ucVolumeGUID = openMetadataAccess.createMetadataElementFromTemplate(catalogGUID,
-                                                                                catalogQualifiedName,
-                                                                                deployedImplementationType.getAssociatedTypeName(),
-                                                                                schemaGUID,
-                                                                                false,
-                                                                                null,
-                                                                                null,
-                                                                                templateGUID,
-                                                                                replacementProperties,
-                                                                                this.getPlaceholderProperties(volumeInfo),
-                                                                                schemaGUID,
-                                                                                parentLinkTypeName,
-                                                                                null,
-                                                                                parentAtEnd1);
+            ucVolumeGUID = openMetadataAccess.getMetadataElementFromTemplate(catalogGUID,
+                                                                             catalogQualifiedName,
+                                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                                             schemaGUID,
+                                                                             false,
+                                                                             null,
+                                                                             null,
+                                                                             templateGUID,
+                                                                             replacementProperties,
+                                                                             this.getPlaceholderProperties(volumeInfo),
+                                                                             schemaGUID,
+                                                                             parentLinkTypeName,
+                                                                             null,
+                                                                             parentAtEnd1);
         }
         else
         {

@@ -92,6 +92,8 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             resultSet = preparedStatement.executeQuery();
 
             resultSet.close();
+            jdbcConnection.commit();;
+
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
         }
         catch (ConnectorCheckedException error)

@@ -23,11 +23,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Connector to add audit log records to a database.
@@ -123,15 +119,33 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     {
         final String methodName = "loadDDL";
 
+        java.sql.Connection databaseConnection = null;
+
         try
         {
+            databaseConnection = jdbcResourceConnector.getDataSource().getConnection();
+
             PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
                                                                               "Audit log records for one or more OMAG Servers.",
                                                                               AuditLogTable.getTables());
-            jdbcResourceConnector.addDatabaseDefinitions(postgreSQLSchemaDDL.getDDLStatements());
+
+            jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, postgreSQLSchemaDDL.getDDLStatements());
+            databaseConnection.commit();
         }
         catch (Exception error)
         {
+            if (databaseConnection != null)
+            {
+                try
+                {
+                    databaseConnection.rollback();
+                }
+                catch (Exception  rollbackError)
+                {
+                    // ignore
+                }
+            }
+
             throw new RepositoryErrorException(PostgreSQLAuditLogErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(schemaName,
                                                                                                                      error.getClass().getName(),
                                                                                                                      methodName,
@@ -159,8 +173,12 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
         if (super.isSupportedSeverity(logRecord))
         {
+            java.sql.Connection databaseConnection = null;
+
             try
             {
+                databaseConnection = databaseClient.getDataSource().getConnection();
+
                 String messageParameters = "";
                 String additionalInformation = "";
 
@@ -173,9 +191,10 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     additionalInformation = logRecord.getAdditionalInformation().toString();
                 }
 
-                syncEgeriaComponent(logRecord.getOriginatorComponent());
+                syncEgeriaComponent(databaseConnection, logRecord.getOriginatorComponent());
 
-                syncOMAGServer(logRecord.getOriginatorProperties().get("serverName"),
+                syncOMAGServer(databaseConnection,
+                               logRecord.getOriginatorProperties().get("serverName"),
                                logRecord.getOriginatorProperties().get("serverType"),
                                logRecord.getOriginatorProperties().get("organizationName"),
                                logRecord.getOriginatorProperties().get("metadataCollectionId"));
@@ -184,7 +203,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                 {
                     if (ASSET_ACTIVITY_CREATE.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Create",
@@ -196,7 +216,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_READ.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Read",
@@ -208,7 +229,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_READ_ATTACHMENT.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Read Attachment",
@@ -220,7 +242,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_UPDATE_ATTACHMENT.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Update Attachment",
@@ -232,7 +255,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_UPDATE_FEEDBACK.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Feedback",
@@ -244,7 +268,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_UPDATE.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Update",
@@ -256,7 +281,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_DELETE.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Delete",
@@ -268,7 +294,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_SEARCH.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Search",
@@ -280,7 +307,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (ASSET_ACTIVITY_SEARCH_ATTACHMENT.equals(logRecord.getMessageId()))
                     {
-                        syncAssetActivity(logRecord.getThreadId(),
+                        syncAssetActivity(databaseConnection,
+                                          logRecord.getThreadId(),
                                           logRecord.getOriginatorProperties().get("serverName"),
                                           logRecord.getTimeStamp(),
                                           "Asset Search Attachment",
@@ -292,7 +320,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                     }
                     else if (USER_REQUEST_ACTIVITY.equals(logRecord.getMessageId()))
                     {
-                        syncAPICall(logRecord.getThreadId(),
+                        syncAPICall(databaseConnection,
+                                    logRecord.getThreadId(),
                                     logRecord.getMessageParameters()[3],
                                     logRecord.getMessageParameters()[0],
                                     logRecord.getMessageParameters()[1],
@@ -302,7 +331,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                 }
                 else
                 {
-                    syncAuditEvent(logRecord.getTimeStamp(),
+                    syncAuditEvent(databaseConnection,
+                                   logRecord.getTimeStamp(),
                                    logRecord.getOriginatorProperties().get("serverName"),
                                    logRecord.getActionDescription(),
                                    Integer.toString(logRecord.getSeverityCode()),
@@ -323,7 +353,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
 
                     if (logRecord.getSeverityCode() == OMRSAuditLogRecordSeverity.EXCEPTION.getOrdinal())
                     {
-                        syncEgeriaException(logRecord.getGUID(),
+                        syncEgeriaException(databaseConnection,
+                                            logRecord.getGUID(),
                                             logRecord.getTimeStamp(),
                                             logRecord.getExceptionClassName(),
                                             logRecord.getExceptionMessage(),
@@ -332,6 +363,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                             logRecord.getUserAction());
                     }
                 }
+
+                databaseConnection.commit();
             }
             catch (Exception error)
             {
@@ -346,6 +379,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific API call.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param threadId unique identifier of the running thread
      * @param serverName name of the server
      * @param userName name of the user
@@ -353,7 +387,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param serviceName name of the service
      * @param callTime time of the call
      */
-    private void syncAPICall(long   threadId,
+    private void syncAPICall(java.sql.Connection databaseConnection,
+                             long   threadId,
                              String serverName,
                              String userName,
                              String operationName,
@@ -371,7 +406,8 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                       serviceName,
                                                                                       callTime);
 
-            databaseClient.insertRowIntoTable(AuditLogTable.API_CALLS.getTableName(),
+            databaseClient.insertRowIntoTable(databaseConnection,
+                                              AuditLogTable.API_CALLS.getTableName(),
                                               openMetadataRecord);
         }
         catch (Exception error)
@@ -414,6 +450,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific API call.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param threadId unique identifier of the running thread
      * @param serverName name of the server
      * @param callTime time of the call
@@ -424,15 +461,16 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param serviceName name of the service
      * @param userName name of the user
      */
-    private void syncAssetActivity(long   threadId,
-                                   String serverName,
-                                   Date   callTime,
-                                   String assetOperation,
-                                   String assetGUID,
-                                   String assetType,
-                                   String operationName,
-                                   String serviceName,
-                                   String userName)
+    private void syncAssetActivity(java.sql.Connection databaseConnection,
+                                   long                threadId,
+                                   String              serverName,
+                                   Date                callTime,
+                                   String              assetOperation,
+                                   String              assetGUID,
+                                   String              assetType,
+                                   String              operationName,
+                                   String              serviceName,
+                                   String              userName)
     {
         final String methodName = "syncAssetActivity";
 
@@ -448,7 +486,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                             serviceName,
                                                                                             userName);
 
-            databaseClient.insertRowIntoTable(AuditLogTable.ASSET_ACTIVITY.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, AuditLogTable.ASSET_ACTIVITY.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -502,6 +540,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific component.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param messageTimestamp time record generated
      * @param serverName name of server
      * @param actionDescription name of the method
@@ -521,24 +560,25 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param logRecordId unique identifier of the log record
      * @param threadId thread where the request ran
      */
-    private void syncAuditEvent(Date   messageTimestamp,
-                                String serverName,
-                                String actionDescription,
-                                String severityCode,
-                                String severity,
-                                String messageId,
-                                String messageText,
-                                String messageParameters,
-                                String systemAction,
-                                String userAction,
-                                String exceptionClassName,
-                                String exceptionMessage,
-                                String exceptionStacktrace,
-                                String organization,
-                                String componentName,
-                                String additionalInfo,
-                                String logRecordId,
-                                long   threadId)
+    private void syncAuditEvent(java.sql.Connection databaseConnection,
+                                Date                messageTimestamp,
+                                String              serverName,
+                                String              actionDescription,
+                                String              severityCode,
+                                String              severity,
+                                String              messageId,
+                                String              messageText,
+                                String              messageParameters,
+                                String              systemAction,
+                                String              userAction,
+                                String              exceptionClassName,
+                                String              exceptionMessage,
+                                String              exceptionStacktrace,
+                                String              organization,
+                                String              componentName,
+                                String              additionalInfo,
+                                String              logRecordId,
+                                long                threadId)
     {
         final String methodName = "syncAuditEvent";
 
@@ -563,7 +603,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                          logRecordId,
                                                                                          threadId);
 
-            databaseClient.insertRowIntoTable(AuditLogTable.AUDIT_EVENTS.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, AuditLogTable.AUDIT_EVENTS.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -644,9 +684,11 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific component.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param component description of the component
      */
-    private void syncEgeriaComponent(AuditLogReportingComponent component)
+    private void syncEgeriaComponent(java.sql.Connection        databaseConnection,
+                                     AuditLogReportingComponent component)
     {
         final String methodName = "syncEgeriaComponent";
 
@@ -658,7 +700,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                               component.getComponentDescription(),
                                                                                               component.getComponentWikiURL());
 
-            databaseClient.insertRowIntoTable(AuditLogTable.EGERIA_COMPONENTS.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, AuditLogTable.EGERIA_COMPONENTS.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -699,6 +741,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific exception.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param logRecordId unique identifier of the audit log record
      * @param messageTimestamp timestamp of the audit log record
      * @param exceptionClassName name of the server
@@ -707,13 +750,14 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
      * @param systemAction running organization
      * @param userAction unique identifier of owned metadata collection (optional)
      */
-    private void syncEgeriaException(String logRecordId,
-                                     Date   messageTimestamp,
-                                     String exceptionClassName,
-                                     String exceptionMessage,
-                                     String exceptionStacktrace,
-                                     String systemAction,
-                                     String userAction)
+    private void syncEgeriaException(java.sql.Connection databaseConnection,
+                                     String              logRecordId,
+                                     Date                messageTimestamp,
+                                     String              exceptionClassName,
+                                     String              exceptionMessage,
+                                     String              exceptionStacktrace,
+                                     String              systemAction,
+                                     String              userAction)
     {
         final String methodName = "syncEgeriaException";
 
@@ -727,7 +771,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                               systemAction,
                                                                                               userAction);
 
-            databaseClient.insertRowIntoTable(AuditLogTable.EGERIA_EXCEPTIONS.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, AuditLogTable.EGERIA_EXCEPTIONS.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
@@ -774,15 +818,17 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
     /**
      * Process information about a specific OMAG Server.  They are just inserted into the database.  Duplicates are ignored.
      *
+     * @param databaseConnection connection to the database
      * @param serverName name of the server
      * @param serverType type of the server
      * @param organization running organization
      * @param metadataCollectionId unique identifier of owned metadata collection (optional)
      */
-    private void syncOMAGServer(String serverName,
-                                String serverType,
-                                String organization,
-                                String metadataCollectionId)
+    private void syncOMAGServer(java.sql.Connection databaseConnection,
+                                String              serverName,
+                                String              serverType,
+                                String              organization,
+                                String              metadataCollectionId)
     {
         final String methodName = "syncOMAGServer";
 
@@ -793,7 +839,7 @@ public class PostgreSQLAuditLogDestinationConnector extends OMRSAuditLogStoreCon
                                                                                          organization,
                                                                                          metadataCollectionId);
 
-            databaseClient.insertRowIntoTable(AuditLogTable.OMAG_SERVERS.getTableName(), openMetadataRecord);
+            databaseClient.insertRowIntoTable(databaseConnection, AuditLogTable.OMAG_SERVERS.getTableName(), openMetadataRecord);
         }
         catch (Exception error)
         {
