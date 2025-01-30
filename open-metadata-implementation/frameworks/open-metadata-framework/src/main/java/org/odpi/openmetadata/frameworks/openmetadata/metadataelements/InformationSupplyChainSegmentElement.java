@@ -25,9 +25,10 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
 {
     private ElementHeader                           elementHeader          = null;
     private InformationSupplyChainSegmentProperties properties             = null;
+    private List<InformationSupplyChainLink>        links                  = null; // InformationSupplyChainLinks
     private List<ImplementedByRelationship>         implementedByList      = null;
-    private List<SolutionLinkingWire>               solutionLinkingWires   = null;
-    private List<SolutionComponentPort>             solutionComponentPorts = null;
+    private List<SolutionLinkingWireRelationship>   solutionLinkingWires   = null;
+    private List<RelatedMetadataElementSummary>     solutionComponentPorts = null;
     private String                                  mermaidGraph           = null;
 
 
@@ -49,12 +50,13 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader     = template.getElementHeader();
-            properties        = template.getProperties();
-            implementedByList = template.getImplementedByList();
-            solutionLinkingWires = template.getSolutionLinkingWires();
+            elementHeader          = template.getElementHeader();
+            properties             = template.getProperties();
+            links                  = template.getLinks();
+            implementedByList      = template.getImplementedByList();
+            solutionLinkingWires   = template.getSolutionLinkingWires();
             solutionComponentPorts = template.getSolutionComponentPorts();
-            mermaidGraph      = template.getMermaidGraph();
+            mermaidGraph           = template.getMermaidGraph();
         }
     }
 
@@ -106,6 +108,28 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
 
 
     /**
+     * Return the list of links in the information supply chain.
+     *
+     * @return list
+     */
+    public List<InformationSupplyChainLink> getLinks()
+    {
+        return links;
+    }
+
+
+    /**
+     * Set up the list of links in the information supply chain.
+     *
+     * @param links list
+     */
+    public void setLinks(List<InformationSupplyChainLink> links)
+    {
+        this.links = links;
+    }
+
+
+    /**
      * Return list of linked ImplementedBy relationships = these link typically to solution components by may
      * also link directly to assets implementing the data flows.
      *
@@ -135,7 +159,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
      *
      * @return list
      */
-    public List<SolutionLinkingWire> getSolutionLinkingWires()
+    public List<SolutionLinkingWireRelationship> getSolutionLinkingWires()
     {
         return solutionLinkingWires;
     }
@@ -147,7 +171,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
      *
      * @param solutionLinkingWires list
      */
-    public void setSolutionLinkingWires(List<SolutionLinkingWire> solutionLinkingWires)
+    public void setSolutionLinkingWires(List<SolutionLinkingWireRelationship> solutionLinkingWires)
     {
         this.solutionLinkingWires = solutionLinkingWires;
     }
@@ -159,7 +183,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
      *
      * @return list
      */
-    public List<SolutionComponentPort> getSolutionComponentPorts()
+    public List<RelatedMetadataElementSummary> getSolutionComponentPorts()
     {
         return solutionComponentPorts;
     }
@@ -171,7 +195,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
      *
      * @param solutionComponentPorts list
      */
-    public void setSolutionComponentPorts(List<SolutionComponentPort> solutionComponentPorts)
+    public void setSolutionComponentPorts(List<RelatedMetadataElementSummary> solutionComponentPorts)
     {
         this.solutionComponentPorts = solutionComponentPorts;
     }
@@ -179,7 +203,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
 
     /**
      * Return the mermaid graph of the elements identified by the implementedBy,
-     * SolutionLinkingWire and SolutionComponentPort relationships.
+     * SolutionLinkingWireRelationship and SolutionComponentPort relationships.
      *
      * @return mermaid markdown
      */
@@ -211,6 +235,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
         return "InformationSupplyChainSegmentElement{" +
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
+                ", links=" + links +
                 ", implementedByList=" + implementedByList +
                 ", solutionLinkingWires=" + solutionLinkingWires +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
@@ -232,6 +257,7 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
         InformationSupplyChainSegmentElement that = (InformationSupplyChainSegmentElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties) &&
+                Objects.equals(links, that.links) &&
                 Objects.equals(implementedByList, that.implementedByList) &&
                 Objects.equals(solutionLinkingWires, that.solutionLinkingWires) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph);
@@ -245,6 +271,6 @@ public class InformationSupplyChainSegmentElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, implementedByList, solutionLinkingWires, mermaidGraph);
+        return Objects.hash(super.hashCode(), elementHeader, properties, links, implementedByList, solutionLinkingWires, mermaidGraph);
     }
 }

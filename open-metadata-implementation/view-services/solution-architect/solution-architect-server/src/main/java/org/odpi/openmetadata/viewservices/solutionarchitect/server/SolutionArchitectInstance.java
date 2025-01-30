@@ -33,11 +33,11 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
      * @throws InvalidParameterException problem with server name or platform URL
      */
     public SolutionArchitectInstance(String       serverName,
-                                 AuditLog     auditLog,
-                                 String       localServerUserId,
-                                 int          maxPageSize,
-                                 String       remoteServerName,
-                                 String       remoteServerURL) throws InvalidParameterException
+                                     AuditLog     auditLog,
+                                     String       localServerUserId,
+                                     int          maxPageSize,
+                                     String       remoteServerName,
+                                     String       remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceName(),
@@ -47,7 +47,7 @@ public class SolutionArchitectInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        solutionManager = new SolutionManager(remoteServerName, remoteServerURL, maxPageSize);
+        solutionManager = new SolutionManager(remoteServerName, remoteServerURL, maxPageSize, auditLog);
     }
 
     /**

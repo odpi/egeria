@@ -66,7 +66,8 @@ public class SolutionArchitectResource
                                                                        boolean                 endsWith,
                                                                        @RequestParam (required = false, defaultValue = "false")
                                                                        boolean                 ignoreCase,
-                                                                       @RequestBody FilterRequestBody requestBody)
+                                                                       @RequestBody (required = false)
+                                                                                     FilterRequestBody requestBody)
     {
         return restAPI.findInformationSupplyChains(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -105,7 +106,8 @@ public class SolutionArchitectResource
                                                                        boolean                 endsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                                        boolean                 ignoreCase,
-                                                             @RequestBody FilterRequestBody requestBody)
+                                                             @RequestBody  (required = false)
+                                                                 FilterRequestBody requestBody)
     {
         return restAPI.findSolutionBlueprints(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -144,7 +146,8 @@ public class SolutionArchitectResource
                                                              boolean                 endsWith,
                                                    @RequestParam (required = false, defaultValue = "false")
                                                              boolean                 ignoreCase,
-                                                   @RequestBody FilterRequestBody requestBody)
+                                                   @RequestBody  (required = false)
+                                                       FilterRequestBody requestBody)
     {
         return restAPI.findSolutionRoles(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -183,7 +186,8 @@ public class SolutionArchitectResource
                                                              boolean                 endsWith,
                                                              @RequestParam (required = false, defaultValue = "false")
                                                              boolean                 ignoreCase,
-                                                             @RequestBody FilterRequestBody requestBody)
+                                                             @RequestBody (required = false)
+                                                                 FilterRequestBody requestBody)
     {
         return restAPI.findSolutionComponents(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }

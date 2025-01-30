@@ -24,6 +24,7 @@ public class RelatedMetadataElement extends ElementControlHeader
     private Date                effectiveToTime        = null;
     private ElementProperties   relationshipProperties = null;
     private OpenMetadataElement element                = null;
+    private boolean             elementAtEnd1          = false;
 
 
     /**
@@ -51,6 +52,7 @@ public class RelatedMetadataElement extends ElementControlHeader
             effectiveToTime   = template.getEffectiveToTime();
             relationshipProperties = template.getRelationshipProperties();
             element = template.getElement();
+            elementAtEnd1 = template.getElementAtEnd1();
         }
     }
 
@@ -160,6 +162,27 @@ public class RelatedMetadataElement extends ElementControlHeader
 
 
     /**
+     * Return whether the element is at end 1 of the relationship.
+     *
+     * @return boolean
+     */
+    public boolean getElementAtEnd1()
+    {
+        return elementAtEnd1;
+    }
+
+
+    /**
+     * Set up whether the element is at end 1 of the relationship.
+     *
+     * @param elementAtEnd1 boolean
+     */
+    public void setElementAtEnd1(boolean elementAtEnd1)
+    {
+        this.elementAtEnd1 = elementAtEnd1;
+    }
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -173,8 +196,10 @@ public class RelatedMetadataElement extends ElementControlHeader
                 ", effectiveToTime=" + effectiveToTime +
                 ", relationshipProperties=" + relationshipProperties +
                 ", element=" + element +
+                ", elementAtEnd1=" + elementAtEnd1 +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -202,7 +227,8 @@ public class RelatedMetadataElement extends ElementControlHeader
                        Objects.equals(effectiveFromTime, that.effectiveFromTime) &&
                        Objects.equals(effectiveToTime, that.effectiveToTime) &&
                        Objects.equals(relationshipProperties, that.relationshipProperties) &&
-                       Objects.equals(element, that.element);
+                       Objects.equals(element, that.element) &&
+                       elementAtEnd1 == that.elementAtEnd1;
     }
 
 
@@ -215,6 +241,6 @@ public class RelatedMetadataElement extends ElementControlHeader
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), relationshipGUID, effectiveFromTime,
-                            effectiveToTime, relationshipProperties, element);
+                            effectiveToTime, relationshipProperties, element, elementAtEnd1);
     }
 }

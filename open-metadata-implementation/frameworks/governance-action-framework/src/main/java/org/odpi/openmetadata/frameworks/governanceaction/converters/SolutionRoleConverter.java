@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * SolutionRoleConverter generates a SolutionElement from an "ActorRole" entity and a list of SolutionComponentActor
+ * SolutionRoleConverter generates a SolutionRoleElement from an "ActorRole" entity and a list of SolutionComponentActor
  * relationships.
  */
 public class SolutionRoleConverter<B> extends OpenMetadataConverterBase<B>

@@ -750,6 +750,19 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                     archiveHelper.addSolutionCompositionRelationship(componentGUID, subComponent.getGUID());
                 }
             }
+
+            if (solutionComponent.getLinkedFromSegment() != null)
+            {
+                for (InformationSupplyChainSegment segment : solutionComponent.getLinkedFromSegment())
+                {
+                    archiveHelper.addImplementedByRelationship(segment.getGUID(),
+                                                               solutionComponent.getGUID(),
+                                                               "Information Supply Chain Refinement",
+                                                               "Supporting Supply Chain",
+                                                               null,
+                                                               null);
+                }
+            }
         }
     }
 

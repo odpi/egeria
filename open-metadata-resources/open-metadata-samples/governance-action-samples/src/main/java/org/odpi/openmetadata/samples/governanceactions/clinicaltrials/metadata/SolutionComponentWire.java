@@ -15,8 +15,12 @@ public enum SolutionComponentWire
                              SolutionComponent.HOSPITAL_LANDING_AREA_FOLDER,
                              new InformationSupplyChainSegment[]{InformationSupplyChainSegment.HOSPITAL_TO_LANDING_AREA}),
     LANDING_AREA_TO_ONBOARDING_PIPELINE(SolutionComponent.HOSPITAL_LANDING_AREA_FOLDER,
-                                        SolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE,
+                                        SolutionComponent.LANDING_FOLDER_CATALOGUER,
                                         new InformationSupplyChainSegment[]{InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+    CATALOGUER_TO_ONBOARDING_PIPELINE(SolutionComponent.LANDING_FOLDER_CATALOGUER,
+                                      SolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE,
+                                        new InformationSupplyChainSegment[]{InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),
+
     ONBOARDING_PIPELINE_TO_DATA_LAKE(SolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE,
                                      SolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER,
                                      new InformationSupplyChainSegment[]{InformationSupplyChainSegment.LANDING_AREA_TO_DATA_LAKE}),

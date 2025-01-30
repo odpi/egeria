@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -18,6 +19,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
  */
 abstract class DigitalArchitectureClientBase
 {
+    final protected String serviceName = AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName();
+
     DigitalArchitectureRESTClient restClient;    /* Initialized in constructor */
 
     String   serverName;               /* Initialized in constructor */

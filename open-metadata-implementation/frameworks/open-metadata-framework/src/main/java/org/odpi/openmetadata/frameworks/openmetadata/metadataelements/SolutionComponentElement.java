@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * InformationSupplyChainElement contains the properties and header for an solution component entity and its
+ * SolutionComponentElement contains the properties and header for an solution component entity and its
  * segment retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -23,14 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentElement implements MetadataElement
 {
-    private ElementHeader                  elementHeader = null;
-    private SolutionComponentProperties    properties      = null;
-    private List<SolutionComponentElement> subComponents   = null; // SolutionComposition
-    private List<SolutionLinkingWire>      links           = null; // SolutionLinkingWires to the component or ports
-    private List<SolutionComponentPort>    ports           = null;
-    private List<RelatedElement>           actors          = null;
-    private String                         mermaidTimeline = null;
-    private String                         mermaidGraph    = null;
+    private ElementHeader                       elementHeader   = null;
+    private SolutionComponentProperties         properties      = null;
+    private List<SolutionComponentElement>      subComponents   = null; // SolutionComposition
+    private List<WiredSolutionComponent>        wiredToLinks    = null; // SolutionLinkingWires to the component or ports
+    private List<WiredSolutionComponent>        wiredFromLinks  = null; // SolutionLinkingWires to the component or ports
+    private List<SolutionPortElement>           ports           = null;
+    private List<RelatedMetadataElementSummary> actors          = null;
+    private String                              mermaidTimeline = null;
+    private String                              mermaidGraph    = null;
 
     /**
      * Default constructor
@@ -53,7 +54,8 @@ public class SolutionComponentElement implements MetadataElement
             elementHeader   = template.getElementHeader();
             properties      = template.getProperties();
             subComponents   = template.getSubComponents();
-            links           = template.getLinks();
+            wiredToLinks    = template.getWiredToLinks();
+            wiredFromLinks  = template.getWiredFromLinks();
             ports           = template.getPorts();
             actors          = template.getActors();
             mermaidTimeline = template.getMermaidTimeline();
@@ -131,24 +133,46 @@ public class SolutionComponentElement implements MetadataElement
 
 
     /**
-     * Return the list of links in the solution component.
+     * Return the list of links for callers of the solution component.
      *
      * @return list
      */
-    public List<SolutionLinkingWire> getLinks()
+    public List<WiredSolutionComponent> getWiredToLinks()
     {
-        return links;
+        return wiredToLinks;
     }
 
 
     /**
-     * Set up the list of links in the solution component.
+     * Set up the list of links for callers of the solution component.
      *
-     * @param links list
+     * @param wiredToLinks list
      */
-    public void setLinks(List<SolutionLinkingWire> links)
+    public void setWiredToLinks(List<WiredSolutionComponent> wiredToLinks)
     {
-        this.links = links;
+        this.wiredToLinks = wiredToLinks;
+    }
+
+
+    /**
+     * Return the list of links to called solution components.
+     *
+     * @return list
+     */
+    public List<WiredSolutionComponent> getWiredFromLinks()
+    {
+        return wiredFromLinks;
+    }
+
+
+    /**
+     * Set up the list of links to called solution components.
+     *
+     * @param wiredFromLinks list
+     */
+    public void setWiredFromLinks(List<WiredSolutionComponent> wiredFromLinks)
+    {
+        this.wiredFromLinks = wiredFromLinks;
     }
 
 
@@ -157,7 +181,7 @@ public class SolutionComponentElement implements MetadataElement
      *
      * @return list
      */
-    public List<SolutionComponentPort> getPorts()
+    public List<SolutionPortElement> getPorts()
     {
         return ports;
     }
@@ -168,7 +192,7 @@ public class SolutionComponentElement implements MetadataElement
      *
      * @param ports list
      */
-    public void setPorts(List<SolutionComponentPort> ports)
+    public void setPorts(List<SolutionPortElement> ports)
     {
         this.ports = ports;
     }
@@ -178,7 +202,7 @@ public class SolutionComponentElement implements MetadataElement
      *
      * @return solution component actor
      */
-    public List<RelatedElement> getActors()
+    public List<RelatedMetadataElementSummary> getActors()
     {
         return actors;
     }
@@ -188,7 +212,7 @@ public class SolutionComponentElement implements MetadataElement
      *
      * @param actors solution component actor
      */
-    public void setActors(List<RelatedElement> actors)
+    public void setActors(List<RelatedMetadataElementSummary> actors)
     {
         this.actors = actors;
     }
@@ -248,7 +272,8 @@ public class SolutionComponentElement implements MetadataElement
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 ", subComponents=" + subComponents +
-                ", links=" + links +
+                ", wiredToLinks=" + wiredToLinks +
+                ", wiredFromLinks=" + wiredFromLinks +
                 ", ports=" + ports +
                 ", actors=" + actors +
                 ", mermaidTimeline='" + mermaidTimeline + '\'' +
@@ -272,7 +297,8 @@ public class SolutionComponentElement implements MetadataElement
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties) &&
                 Objects.equals(subComponents, that.subComponents) &&
-                Objects.equals(links, that.links) &&
+                Objects.equals(wiredToLinks, that.wiredToLinks) &&
+                Objects.equals(wiredFromLinks, that.wiredFromLinks) &&
                 Objects.equals(ports, that.ports) &&
                 Objects.equals(actors, that.actors) &&
                 Objects.equals(mermaidTimeline, that.mermaidTimeline) &&
@@ -288,6 +314,6 @@ public class SolutionComponentElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, subComponents, links, ports, actors, mermaidTimeline, mermaidGraph);
+        return Objects.hash(elementHeader, properties, subComponents, wiredToLinks, wiredFromLinks, ports, actors, mermaidTimeline, mermaidGraph);
     }
 }

@@ -156,10 +156,10 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
         {
             if (auditLog != null)
             {
-                auditLog.logException(methodName, OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   error.getMessage()), error);
+                auditLog.logMessage(methodName, OMAGConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 methodName,
+                                                                                                                 error.getMessage()));
             }
             throw new ConnectorCheckedException(OMAGConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                                                  error.getClass().getName(),
