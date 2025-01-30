@@ -285,7 +285,7 @@ dependencies {
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
         api("com.beust:jcommander:1.82")
         api("org.antlr:antlr4:4.13.1")
-        api("org.apache.ivy:ivy:2.5.2")
+        api("org.apache.ivy:ivy:2.5.3")
 
         // XTDB Additions
         api("com.xtdb:xtdb-core:${xtdbVersion}")
