@@ -212,7 +212,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;endsWith,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;ignoreCase,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of information supply chain metadata elements that contain the search string.</div>
 <dl class="notes">
@@ -248,7 +248,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;endsWith,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;ignoreCase,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.</div>
 <dl class="notes">
@@ -284,7 +284,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;endsWith,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;ignoreCase,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.</div>
 <dl class="notes">
@@ -320,7 +320,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;endsWith,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;ignoreCase,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.</div>
 <dl class="notes">

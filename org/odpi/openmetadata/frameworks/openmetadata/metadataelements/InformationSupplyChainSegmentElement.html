@@ -134,42 +134,52 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return list of linked ImplementedBy relationships = these link typically to solution components by may
  also link directly to assets implementing the data flows.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="InformationSupplyChainLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainLink</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinks()" class="member-name-link">getLinks</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the mermaid graph of the elements identified by the implementedBy,
- SolutionLinkingWire and SolutionComponentPort relationships.</div>
+<div class="block">Return the list of links in the information supply chain.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/informationsupplychains/InformationSupplyChainSegmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains">InformationSupplyChainSegmentProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMermaidGraph()" class="member-name-link">getMermaidGraph</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the mermaid graph of the elements identified by the implementedBy,
+ SolutionLinkingWireRelationship and SolutionComponentPort relationships.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/informationsupplychains/InformationSupplyChainSegmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains">InformationSupplyChainSegmentProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the information supply chain segment properties</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentPort.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentPort</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentPorts()" class="member-name-link">getSolutionComponentPorts</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponentPorts()" class="member-name-link">getSolutionComponentPorts</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the SolutionComponentPort relationships attached to the ImplementedBy elements that are SolutionComponents.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWire.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWire</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionLinkingWires()" class="member-name-link">getSolutionLinkingWires</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWireRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWireRelationship</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionLinkingWires()" class="member-name-link">getSolutionLinkingWires</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of solution linking wires that are associated with this segment.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the element header associated with the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setImplementedByList(java.util.List)" class="member-name-link">setImplementedByList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ImplementedByRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ImplementedByRelationship</a>&gt;&nbsp;implementedByList)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setImplementedByList(java.util.List)" class="member-name-link">setImplementedByList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ImplementedByRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ImplementedByRelationship</a>&gt;&nbsp;implementedByList)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up  list of linked ImplementedBy relationships = these link typically to solution components by may
  also link directly to assets implementing the data flows.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLinks(java.util.List)" class="member-name-link">setLinks</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="InformationSupplyChainLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainLink</a>&gt;&nbsp;links)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of links in the information supply chain.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMermaidGraph(java.lang.String)" class="member-name-link">setMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mermaidGraph)</code></div>
@@ -182,12 +192,12 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Set up the information supply chain segment properties</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionComponentPorts(java.util.List)" class="member-name-link">setSolutionComponentPorts</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentPort.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentPort</a>&gt;&nbsp;solutionComponentPorts)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionComponentPorts(java.util.List)" class="member-name-link">setSolutionComponentPorts</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;solutionComponentPorts)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the SolutionComponentPort relationships attached to the ImplementedBy elements that are SolutionComponents.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionLinkingWires(java.util.List)" class="member-name-link">setSolutionLinkingWires</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWire.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWire</a>&gt;&nbsp;solutionLinkingWires)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionLinkingWires(java.util.List)" class="member-name-link">setSolutionLinkingWires</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWireRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWireRelationship</a>&gt;&nbsp;solutionLinkingWires)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of solution linking wires that are associated with this segment.</div>
 </div>
@@ -288,6 +298,28 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
+<section class="detail" id="getLinks()">
+<h3>getLinks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="InformationSupplyChainLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainLink</a>&gt;</span>&nbsp;<span class="element-name">getLinks</span>()</div>
+<div class="block">Return the list of links in the information supply chain.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setLinks(java.util.List)">
+<h3>setLinks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLinks</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="InformationSupplyChainLink.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainLink</a>&gt;&nbsp;links)</span></div>
+<div class="block">Set up the list of links in the information supply chain.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>links</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getImplementedByList()">
 <h3>getImplementedByList</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ImplementedByRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ImplementedByRelationship</a>&gt;</span>&nbsp;<span class="element-name">getImplementedByList</span>()</div>
@@ -314,7 +346,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getSolutionLinkingWires()">
 <h3>getSolutionLinkingWires</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWire.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWire</a>&gt;</span>&nbsp;<span class="element-name">getSolutionLinkingWires</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWireRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWireRelationship</a>&gt;</span>&nbsp;<span class="element-name">getSolutionLinkingWires</span>()</div>
 <div class="block">Return the list of solution linking wires that are associated with this segment.
  These are typically between the elements linked to the segment.</div>
 <dl class="notes">
@@ -326,7 +358,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="setSolutionLinkingWires(java.util.List)">
 <h3>setSolutionLinkingWires</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionLinkingWires</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWire.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWire</a>&gt;&nbsp;solutionLinkingWires)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionLinkingWires</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionLinkingWireRelationship.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionLinkingWireRelationship</a>&gt;&nbsp;solutionLinkingWires)</span></div>
 <div class="block">Set up the list of solution linking wires that are associated with this segment.
  These are typically between the elements linked to the segment.</div>
 <dl class="notes">
@@ -338,7 +370,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getSolutionComponentPorts()">
 <h3>getSolutionComponentPorts</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentPort.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentPort</a>&gt;</span>&nbsp;<span class="element-name">getSolutionComponentPorts</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;</span>&nbsp;<span class="element-name">getSolutionComponentPorts</span>()</div>
 <div class="block">Return the SolutionComponentPort relationships attached to the ImplementedBy elements that are SolutionComponents.
  The aim is to complete the Mermaid graph if the solution components are modelled with ports.</div>
 <dl class="notes">
@@ -350,7 +382,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="setSolutionComponentPorts(java.util.List)">
 <h3>setSolutionComponentPorts</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionComponentPorts</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentPort.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">SolutionComponentPort</a>&gt;&nbsp;solutionComponentPorts)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionComponentPorts</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RelatedMetadataElementSummary.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelatedMetadataElementSummary</a>&gt;&nbsp;solutionComponentPorts)</span></div>
 <div class="block">Set up the SolutionComponentPort relationships attached to the ImplementedBy elements that are SolutionComponents.
  The aim is to complete the Mermaid graph if the solution components are modelled with ports.</div>
 <dl class="notes">
@@ -364,7 +396,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <h3>getMermaidGraph</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMermaidGraph</span>()</div>
 <div class="block">Return the mermaid graph of the elements identified by the implementedBy,
- SolutionLinkingWire and SolutionComponentPort relationships.</div>
+ SolutionLinkingWireRelationship and SolutionComponentPort relationships.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>mermaid markdown</dd>
