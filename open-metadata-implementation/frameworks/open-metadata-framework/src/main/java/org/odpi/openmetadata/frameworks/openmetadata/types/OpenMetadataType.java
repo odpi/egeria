@@ -4134,13 +4134,13 @@ public enum OpenMetadataType
 
 
     /**
-     * Connection between two solution ports that shows how data flows.
+     * Connection between two solution components/ports that shows how data flows.
      */
     SOLUTION_LINKING_WIRE_RELATIONSHIP("892a3d1c-cfb8-431d-bd59-c4d38833bfb0",
                                        "SolutionLinkingWire",
                                        OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                                        "9a207086-ce67-4419-a6c0-bcdd478648c3",
-                                       "Connection between two solution ports that shows how data flows."),
+                                       "Connection between two solution components/ports that shows how data flows."),
 
     /**
      * An external endpoint for a solution component.

@@ -117,6 +117,15 @@ public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
                             "Event {0} could not be published due to {1} exception with message: {2}",
                             "The system is unable to publish the event to the Digital Architecture OMAS's OutTopic.",
                             "Verify the topic configuration and that the event broker is running."),
+
+    /**
+     * OMAS-DIGITAL-ARCHITECTURE-0015 - The Digital Architecture OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}
+     */
+    UNEXPECTED_CONVERTER_EXCEPTION("OMAS-DIGITAL-ARCHITECTURE-0015",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The Digital Architecture OMAS has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}",
+                         "The request returns all of the information that it was able to receive.",
+                         "Review the stack trace to identify where the error occurred and work to resolve the cause."),
     ;
 
     private final String                      logMessageId;

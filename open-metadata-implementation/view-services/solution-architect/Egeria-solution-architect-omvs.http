@@ -19,8 +19,56 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+#==================================================
+# Load Archives
+#==================================================
+
+###
+# @name get the GUID for active-metadata-store
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "active-metadata-store",
+  "namePropertyName" : "name"
+}
+
+> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+
+###
 # =====================================================================================================================
 # Review Solutions
+
+
+###
+# group: Review
+# @name findAllInformationSupplyChains
+# Retrieve the list of information supply chain metadata elements that contain the search string.
+# https://egeria-project.org/concepts/information-supply-chain
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
 
 ###
 # group: Review
@@ -78,7 +126,7 @@ Content-Type: application/json
 
 ###
 
-@solutionComponentGUID=add guid here
+@solutionComponentGUID=fb32bef2-e79f-4893-b500-2e547f24d482
 
 ###
 # group: Review

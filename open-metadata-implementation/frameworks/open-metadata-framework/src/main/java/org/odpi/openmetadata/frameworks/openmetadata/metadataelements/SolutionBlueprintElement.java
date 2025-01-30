@@ -22,9 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionBlueprintElement implements MetadataElement
 {
-    private ElementHeader                  elementHeader      = null;
-    private SolutionBlueprintProperties    properties         = null;
-    private List<SolutionComponentElement> solutionComponents = null;
+    private ElementHeader                    elementHeader      = null;
+    private SolutionBlueprintProperties      properties         = null;
+    private List<SolutionBlueprintComponent> solutionComponents = null;
+    private String                           mermaidGraph       = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class SolutionBlueprintElement implements MetadataElement
             elementHeader      = template.getElementHeader();
             properties         = template.getProperties();
             solutionComponents = template.getSolutionComponents();
+            mermaidGraph       = template.getMermaidGraph();
         }
     }
 
@@ -103,7 +105,7 @@ public class SolutionBlueprintElement implements MetadataElement
      *
      * @return list of element stubs
      */
-    public List<SolutionComponentElement> getSolutionComponents()
+    public List<SolutionBlueprintComponent> getSolutionComponents()
     {
         return solutionComponents;
     }
@@ -114,9 +116,30 @@ public class SolutionBlueprintElement implements MetadataElement
      *
      * @param solutionComponents relationship details
      */
-    public void setSolutionComponents(List<SolutionComponentElement> solutionComponents)
+    public void setSolutionComponents(List<SolutionBlueprintComponent> solutionComponents)
     {
         this.solutionComponents = solutionComponents;
+    }
+
+
+    /**
+     *
+     * @return mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the solution component.
+     *
+     * @param mermaidGraph mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -132,6 +155,7 @@ public class SolutionBlueprintElement implements MetadataElement
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 ", solutionComponents=" + solutionComponents +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
 
@@ -155,7 +179,8 @@ public class SolutionBlueprintElement implements MetadataElement
         SolutionBlueprintElement that = (SolutionBlueprintElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(solutionComponents, that.solutionComponents);
+                       Objects.equals(solutionComponents, that.solutionComponents) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -167,6 +192,6 @@ public class SolutionBlueprintElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, solutionComponents);
+        return Objects.hash(super.hashCode(), elementHeader, properties, solutionComponents, mermaidGraph);
     }
 }

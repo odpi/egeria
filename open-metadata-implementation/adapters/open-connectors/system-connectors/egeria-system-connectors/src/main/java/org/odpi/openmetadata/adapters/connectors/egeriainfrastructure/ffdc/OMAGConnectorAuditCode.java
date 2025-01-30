@@ -25,7 +25,7 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
      * EGERIA-CONNECTOR-0001 - The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION("OMAG-CONNECTORS-0001",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         AuditLogRecordSeverityLevel.ERROR,
                          "The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to connector the the OMAG Infrastructure.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),

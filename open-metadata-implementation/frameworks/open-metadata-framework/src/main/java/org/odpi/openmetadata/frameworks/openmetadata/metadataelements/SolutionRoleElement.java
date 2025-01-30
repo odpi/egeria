@@ -25,6 +25,7 @@ public class SolutionRoleElement implements MetadataElement
     private ElementHeader                       elementHeader      = null;
     private ActorRoleProperties                 properties         = null;
     private List<RelatedMetadataElementSummary> solutionComponents = null;
+    private String                              mermaidGraph    = null;
 
 
     /**
@@ -45,9 +46,10 @@ public class SolutionRoleElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
+            elementHeader      = template.getElementHeader();
             properties         = template.getProperties();
             solutionComponents = template.getSolutionComponents();
+            mermaidGraph       = template.getMermaidGraph();
         }
     }
 
@@ -120,6 +122,28 @@ public class SolutionRoleElement implements MetadataElement
     }
 
 
+
+    /**
+     *
+     * @return mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the solution component.
+     *
+     * @param mermaidGraph mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -132,6 +156,7 @@ public class SolutionRoleElement implements MetadataElement
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 ", solutionComponents=" + solutionComponents +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
     }
 
@@ -156,7 +181,8 @@ public class SolutionRoleElement implements MetadataElement
         SolutionRoleElement that = (SolutionRoleElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(solutionComponents, that.solutionComponents);
+                       Objects.equals(solutionComponents, that.solutionComponents) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -168,6 +194,6 @@ public class SolutionRoleElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, solutionComponents);
+        return Objects.hash(super.hashCode(), elementHeader, properties, solutionComponents, mermaidGraph);
     }
 }

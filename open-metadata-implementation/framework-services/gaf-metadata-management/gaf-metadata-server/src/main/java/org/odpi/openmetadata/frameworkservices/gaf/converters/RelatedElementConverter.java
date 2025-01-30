@@ -78,6 +78,15 @@ public class RelatedElementConverter<B> extends OpenMetadataStoreConverter<B>
                 super.fillOpenMetadataElement(relatedBean, entity);
 
                 bean.setElement(relatedBean);
+
+                if (entity.getGUID().equals(relationship.getEntityOneProxy().getGUID()))
+                {
+                    bean.setElementAtEnd1(true);
+                }
+                else
+                {
+                    bean.setElementAtEnd1(false);
+                }
             }
 
             return returnBean;

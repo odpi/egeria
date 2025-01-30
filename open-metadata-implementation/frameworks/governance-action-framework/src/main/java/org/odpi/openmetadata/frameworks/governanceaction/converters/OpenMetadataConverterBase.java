@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
@@ -27,7 +28,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing an Open Metadata API bean.
  */
-public abstract class OpenMetadataConverterBase<B>
+public class OpenMetadataConverterBase<B>
 {
     protected PropertyHelper propertyHelper;
     protected String         serviceName;
@@ -675,7 +676,6 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
 
-
     /**
      * Extract the properties from the relationship.
      *
@@ -959,7 +959,7 @@ public abstract class OpenMetadataConverterBase<B>
      * @param elementProperties properties from element
      * @return map or null
      */
-    protected Map<String, Object> getRemainingExtendedProperties(ElementProperties  elementProperties)
+    public Map<String, Object> getRemainingExtendedProperties(ElementProperties  elementProperties)
     {
         if (elementProperties != null)
         {
@@ -1086,7 +1086,7 @@ public abstract class OpenMetadataConverterBase<B>
      * @param elementProperties properties from element
      * @return string text or null
      */
-    protected String removeDescription(ElementProperties  elementProperties)
+    public String removeDescription(ElementProperties  elementProperties)
     {
         final String methodName = "removeDescription";
 
@@ -7731,7 +7731,7 @@ public abstract class OpenMetadataConverterBase<B>
      * Extract the candidateGlossaryTermGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
-     * @return map of name-value pairs
+     * @return list of values
      */
     protected List<String> removeCandidateGlossaryTermGUIDs(ElementProperties elementProperties)
     {
@@ -7775,7 +7775,7 @@ public abstract class OpenMetadataConverterBase<B>
      * Extract the candidateGlossaryCategoryGUIDs property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
-     * @return map of name-value pairs
+     * @return list of values
      */
     protected List<String> removeCandidateGlossaryCategoryGUIDs(ElementProperties elementProperties)
     {
@@ -7863,7 +7863,7 @@ public abstract class OpenMetadataConverterBase<B>
      * Extract the dataFieldAliases property from the supplied element properties.
      *
      * @param elementProperties properties from data field entities
-     * @return map of name-value pairs
+     * @return list of name-value pairs
      */
     protected List<String> removeDataFieldAliases(ElementProperties elementProperties)
     {
@@ -7880,5 +7880,210 @@ public abstract class OpenMetadataConverterBase<B>
         return null;
     }
 
+
+    /**
+     * Extract and delete the solutionComponentType property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeSolutionComponentType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeSolutionComponentType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the integrationStyle property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeIntegrationStyle(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeIntegrationStyle";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.INTEGRATION_STYLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the estimatedVolumetrics property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name-value pairs
+     */
+    protected Map<String, String> removeEstimatedVolumetrics(ElementProperties elementProperties)
+    {
+        final String methodName = "removeEstimatedVolumetrics";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the role property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public String removeRole(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeRole";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.ROLE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the designStep property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public String removeDesignStep(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDesignStep";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.DESIGN_STEP.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the transformation property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public String removeTransformation(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTransformation";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.TRANSFORMATION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract the purposes property from the supplied element properties.
+     *
+     * @param elementProperties properties from entities
+     * @return list of name-value pairs
+     */
+    protected List<String> removePurposes(ElementProperties elementProperties)
+    {
+        final String methodName = "removePurposes";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.PURPOSES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract and delete the informationSupplyChainSegmentGUIDs property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public List<String> removeInformationSupplyChainSegmentGUIDs(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeInformationSupplyChainSegmentGUIDs";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract (and remove) the solution direction enum from element properties.
+     *
+     * @param elementProperties properties
+     * @return enum
+     */
+    protected SolutionPortDirection removeSolutionPortDirection(ElementProperties elementProperties)
+    {
+        final String methodName = "removeSolutionPortDirection";
+
+        if (elementProperties != null)
+        {
+            String enumValue = propertyHelper.removeEnumProperty(serviceName,
+                                                                 OpenMetadataProperty.DIRECTION.name,
+                                                                 elementProperties,
+                                                                 methodName);
+
+            for (SolutionPortDirection portDirection : SolutionPortDirection.values())
+            {
+                if (portDirection.getName().equals(enumValue))
+                {
+                    return portDirection;
+                }
+            }
+
+            return SolutionPortDirection.UNKNOWN;
+        }
+
+        return null;
+    }
 }
 

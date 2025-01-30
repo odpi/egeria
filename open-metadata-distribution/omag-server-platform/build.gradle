@@ -381,7 +381,7 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/solutin-architect" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
                         { include 'Egeria*.http' }

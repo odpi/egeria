@@ -27,7 +27,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
 {
     private String       displayName = null;
     private String       description = null;
-    private String       version     = null;
+    private String       scope       = null;
     private List<String> purposes    = null;
 
 
@@ -54,7 +54,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
         {
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
-            this.version     = template.getVersion();
+            this.scope       = template.getScope();
             this.purposes    = template.getPurposes();
         }
     }
@@ -105,24 +105,24 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
 
 
     /**
-     * Return the version identifier for this information supply chain.
+     * Return the scope for this information supply chain.
      *
      * @return String
      */
-    public String getVersion()
+    public String getScope()
     {
-        return version;
+        return scope;
     }
 
 
     /**
-     * Set up the version number for this information supply chain.
+     * Set up the scope for this information supply chain.
      *
-     * @param version String
+     * @param scope String
      */
-    public void setVersion(String version)
+    public void setScope(String scope)
     {
-        this.version = version;
+        this.scope = scope;
     }
 
 
@@ -159,7 +159,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
         return "InformationSupplyChainProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", version='" + version + '\'' +
+                ", scope='" + scope + '\'' +
                 ", purposes='" + purposes + '\'' +
                 "} " + super.toString();
     }
@@ -188,7 +188,7 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
         }
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(version, that.version) &&
+                Objects.equals(scope, that.scope) &&
                 Objects.equals(purposes, that.purposes);
     }
 
@@ -201,6 +201,6 @@ public class InformationSupplyChainProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, version, purposes);
+        return Objects.hash(super.hashCode(), displayName, description, scope, purposes);
     }
 }
