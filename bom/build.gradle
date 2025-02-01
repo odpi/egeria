@@ -84,7 +84,7 @@ ext {
     //      TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.2'
-    postgresVersion = '42.7.4' // already there
+    postgresVersion = '42.7.5' // already there
     nettyVersion = '4.1.115.Final'
     prometheusVersion = '1.14.2'
     quartzVersion = '2.5.0'
