@@ -185,14 +185,6 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
                                                                                                  error.getClass().getName(),
                                                                                                  methodName,
                                                                                                  error.getMessage()));
-
-            throw new ConnectorCheckedException(OMAGConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 error.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
         }
     }
 

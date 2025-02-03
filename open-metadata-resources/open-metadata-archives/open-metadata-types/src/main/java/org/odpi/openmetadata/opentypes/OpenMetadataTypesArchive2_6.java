@@ -662,9 +662,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -687,9 +685,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -712,9 +708,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
-                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -743,52 +737,32 @@ public class OpenMetadataTypesArchive2_6
 
     private EntityDef addGovernanceEngineEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
-                                                 OpenMetadataType.GOVERNANCE_ENGINE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
-                                                 OpenMetadataType.GOVERNANCE_ENGINE.description,
-                                                 OpenMetadataType.GOVERNANCE_ENGINE.descriptionGUID,
-                                                 OpenMetadataType.GOVERNANCE_ENGINE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName));
     }
 
     private EntityDef addGovernanceServiceEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
-                                                 OpenMetadataType.GOVERNANCE_SERVICE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeName),
-                                                 OpenMetadataType.GOVERNANCE_SERVICE.description,
-                                                 OpenMetadataType.GOVERNANCE_SERVICE.descriptionGUID,
-                                                 OpenMetadataType.GOVERNANCE_SERVICE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeName));
     }
 
     private EntityDef addGovernanceActionEngineEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.description,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.descriptionGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName));
     }
 
     private EntityDef addGovernanceActionServiceEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.description,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.descriptionGUID,
-                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.wikiURL);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName));
     }
 
     private RelationshipDef addSupportedGovernanceServiceRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP,
                                                                                 null,
-                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.description,
-                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.descriptionGUID,
-                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.wikiURL,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -828,9 +802,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE.name,
-                                                           OpenMetadataProperty.REQUEST_TYPE.description,
-                                                           OpenMetadataProperty.REQUEST_TYPE.descriptionGUID);
+        property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE);
         properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                     OpenMetadataProperty.REQUEST_PARAMETERS.description,

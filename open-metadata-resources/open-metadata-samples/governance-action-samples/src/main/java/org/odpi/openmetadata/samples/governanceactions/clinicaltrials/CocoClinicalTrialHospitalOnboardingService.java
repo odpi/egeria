@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
@@ -241,6 +242,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                         landingAreaPathName,
                                                                         landingAreaDirectoryTemplateGUID);
 
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.HOSPITAL_LANDING_AREA_FOLDER.getGUID(), landingAreaFolderGUID);
+
                 /*
                  * These templates have the project and hospital information filled out, leaving specifics
                  * for the files to be filled out by the integration connector.
@@ -270,6 +273,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                hospitalDataLakeTemplateName,
                                                                dataQualityCertificationTypeGUID);
 
+
+
                 /*
                  * Create the context event for the data lake folder
                  */
@@ -285,6 +290,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                 clinicalTrialId,
                                                 clinicalTrialName,
                                                 newFileProcessName);
+
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.LANDING_FOLDER_CATALOGUER.getGUID(), integrationConnectorGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -687,6 +694,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
             String processGUID = super.createGovernanceActionProcess(processQualifiedName,
                                                                      "Onboard Landing Area Files for " + clinicalTrialName,
                                                                      null);
+
+            addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID);
 
             RelatedMetadataElement firstProcessStep = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(onboardingProcessGUID,
                                                                                                                          1,

@@ -82,7 +82,7 @@ public class ControlFlowConverter<B> extends AssetManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    controlFlowProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
+                    controlFlowProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
                     controlFlowProperties.setLabel(this.getLabel(instanceProperties));
                     controlFlowProperties.setDescription(this.getDescription(instanceProperties));
                     controlFlowProperties.setGuard(this.getGuard(instanceProperties));

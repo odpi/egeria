@@ -180,4 +180,30 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                                      null,
                                                                                      false);
     }
+
+
+    /**
+     * Set up the ImplementedBy relationship between an implementation component and a solution component.
+     *
+     * @param solutionComponentGUID unique identifier of the solution component
+     * @param implementationGUID unique identifier of the newly set up governance action process
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    protected void addSolutionComponentRelationship(String solutionComponentGUID,
+                                                    String implementationGUID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.DESIGN_STEP.name,
+                                                                        this.getClass().getName());
+
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                              solutionComponentGUID,
+                                                                              implementationGUID,
+                                                                              null,
+                                                                              null,
+                                                                              properties);
+    }
+
 }

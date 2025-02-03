@@ -5,10 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupp
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformationSupplyChainLinkProperties extends RelationshipProperties
 {
+    private String label = null;
     private String description = null;
 
 
@@ -45,13 +44,36 @@ public class InformationSupplyChainLinkProperties extends RelationshipProperties
 
         if (template != null)
         {
+            this.label = template.getLabel();
             this.description = template.getDescription();
         }
     }
 
 
     /**
-     * Return the description for this information supply chain segment.
+     * Return the display label for this relationship.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the display label for this relationship.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+
+
+    /**
+     * Return the description for this relationship.
      *
      * @return string description
      */
@@ -62,7 +84,7 @@ public class InformationSupplyChainLinkProperties extends RelationshipProperties
 
 
     /**
-     * Set up the description for this information supply chain segment.
+     * Set up the description for this relationship.
      *
      * @param description string
      */
@@ -81,6 +103,7 @@ public class InformationSupplyChainLinkProperties extends RelationshipProperties
     public String toString()
     {
         return "InformationSupplyChainLinkProperties{" +
+                "label='" + label + '\'' +
                 "description='" + description + '\'' +
                 "} " + super.toString();
     }
@@ -107,7 +130,8 @@ public class InformationSupplyChainLinkProperties extends RelationshipProperties
         {
             return false;
         }
-        return Objects.equals(description, that.description);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -119,6 +143,6 @@ public class InformationSupplyChainLinkProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), description);
+        return Objects.hash(super.hashCode(), label, description);
     }
 }

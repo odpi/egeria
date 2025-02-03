@@ -4,12 +4,11 @@
 package org.odpi.openmetadata.commonservices.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -34,10 +33,13 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
         String currentNodeName    = informationSupplyChainElement.getElementHeader().getGUID();
         String currentDisplayName = informationSupplyChainElement.getProperties().getDisplayName();
 
+
         appendNewMermaidNode(currentNodeName,
                              currentDisplayName,
                              informationSupplyChainElement.getElementHeader().getType().getTypeName(),
                              VisualStyle.INFORMATION_SUPPLY_CHAIN);
+
+        this.addDescription(informationSupplyChainElement);
 
         if (informationSupplyChainElement.getSegments() != null)
         {
@@ -63,8 +65,20 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                         {
                             if (link != null)
                             {
+                                List<String> labelList = new ArrayList<>();
+
+                                if ((link.getProperties() != null) && (link.getProperties().getLabel() != null))
+                                {
+                                    labelList.add(link.getProperties().getLabel());
+                                    labelList.add("[" + super.addSpacesToTypeName(link.getElementHeader().getType().getTypeName()) + "]");
+                                }
+                                else
+                                {
+                                    labelList.add(super.addSpacesToTypeName(link.getElementHeader().getType().getTypeName()));
+                                }
+
                                 super.appendMermaidLine(link.getEnd1Element().getGUID(),
-                                                        this.getListLabel(Collections.singletonList(super.addSpacesToTypeName(link.getElementHeader().getType().getTypeName()))),
+                                                        this.getListLabel(labelList),
                                                         link.getEnd2Element().getGUID());
                             }
                         }
@@ -87,12 +101,12 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                 appendNewMermaidNode(implementedByRelationship.getEnd1Element().getGUID(),
                                                      implementedByRelationship.getEnd1Element().getUniqueName(),
                                                      implementedByRelationship.getEnd1Element().getType().getTypeName(),
-                                                     VisualStyle.SOLUTION_COMPONENT);
+                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
                                 appendNewMermaidNode(implementedByRelationship.getEnd2Element().getGUID(),
                                                      implementedByRelationship.getEnd2Element().getUniqueName(),
                                                      implementedByRelationship.getEnd2Element().getType().getTypeName(),
-                                                     VisualStyle.SOLUTION_COMPONENT);
+                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
                             }
                         }
                     }
@@ -106,23 +120,137 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
                                 appendNewMermaidNode(relationship.getEnd1Element().getGUID(),
                                                      relationship.getEnd1Element().getUniqueName(),
                                                      relationship.getEnd1Element().getType().getTypeName(),
-                                                     VisualStyle.SOLUTION_COMPONENT);
+                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
                                 appendNewMermaidNode(relationship.getEnd2Element().getGUID(),
                                                      relationship.getEnd2Element().getUniqueName(),
                                                      relationship.getEnd2Element().getType().getTypeName(),
-                                                     VisualStyle.SOLUTION_COMPONENT);
+                                                     VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
-                                if (! solutionLinkingWireGUIDs.contains(relationship.getElementHeader().getGUID()))
+                                if (!solutionLinkingWireGUIDs.contains(relationship.getElementHeader().getGUID()))
                                 {
+                                    List<String> labelList = new ArrayList<>();
+
+                                    if ((relationship.getProperties() != null) && (relationship.getProperties().getLabel() != null))
+                                    {
+                                        labelList.add(relationship.getProperties().getLabel());
+                                        labelList.add("[" + super.addSpacesToTypeName(relationship.getElementHeader().getType().getTypeName()) + "]");
+                                    }
+                                    else
+                                    {
+                                        labelList.add(super.addSpacesToTypeName(relationship.getElementHeader().getType().getTypeName()));
+                                    }
+
                                     super.appendMermaidLine(relationship.getEnd1Element().getGUID(),
-                                                            this.getListLabel(Collections.singletonList(super.addSpacesToTypeName(relationship.getElementHeader().getType().getTypeName()))),
+                                                            this.getListLabel(labelList),
                                                             relationship.getEnd2Element().getGUID());
 
                                     solutionLinkingWireGUIDs.add(relationship.getElementHeader().getGUID());
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        if (informationSupplyChainElement.getImplementation() != null)
+        {
+            for (RelationshipElement lineageRelationship : informationSupplyChainElement.getImplementation())
+            {
+                if (lineageRelationship != null)
+                {
+                    if (lineageRelationship.getEnd1().getUniqueName() != null)
+                    {
+                        appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
+                                             lineageRelationship.getEnd1().getUniqueName(),
+                                             lineageRelationship.getEnd1().getType().getTypeName(),
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                    }
+                    else
+                    {
+                        appendNewMermaidNode(lineageRelationship.getEnd1().getGUID(),
+                                             lineageRelationship.getEnd1().getGUID(),
+                                             lineageRelationship.getEnd1().getType().getTypeName(),
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                    }
+
+                    if (lineageRelationship.getEnd2().getUniqueName() != null)
+                    {
+                        appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
+                                             lineageRelationship.getEnd2().getUniqueName(),
+                                             lineageRelationship.getEnd2().getType().getTypeName(),
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                    }
+                    else
+                    {
+                        appendNewMermaidNode(lineageRelationship.getEnd2().getGUID(),
+                                             lineageRelationship.getEnd2().getGUID(),
+                                             lineageRelationship.getEnd2().getType().getTypeName(),
+                                             VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                    }
+
+                    String label = super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName());
+
+                    if ((lineageRelationship.getRelationshipProperties() != null) && (lineageRelationship.getRelationshipProperties().getExtendedProperties() != null))
+                    {
+                        Object labelObj = lineageRelationship.getRelationshipProperties().getExtendedProperties().get(OpenMetadataProperty.LABEL.name);
+
+                        if (labelObj != null)
+                        {
+                            label = labelObj + " [" + super.addSpacesToTypeName(lineageRelationship.getRelationshipHeader().getType().getTypeName()) + "]";
+                        }
+                    }
+
+                    appendMermaidLine(lineageRelationship.getEnd1().getGUID(),
+                                      label,
+                                      lineageRelationship.getEnd2().getGUID());
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add a text boxes with the description and purposes (if any)
+     *
+     * @param informationSupplyChainElement element with the potential description
+     */
+    private void addDescription(InformationSupplyChainElement informationSupplyChainElement)
+    {
+        if (informationSupplyChainElement.getProperties() != null)
+        {
+            String lastNodeName = informationSupplyChainElement.getElementHeader().getGUID();
+            if (informationSupplyChainElement.getProperties().getDescription() != null)
+            {
+                String descriptionNodeName = UUID.randomUUID().toString();
+
+                appendNewMermaidNode(descriptionNodeName,
+                                     informationSupplyChainElement.getProperties().getDescription(),
+                                     "Description",
+                                     VisualStyle.DESCRIPTION);
+
+                super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
+
+                lastNodeName = descriptionNodeName;
+            }
+
+            if (informationSupplyChainElement.getProperties().getPurposes() != null)
+            {
+                for (String purpose : informationSupplyChainElement.getProperties().getPurposes())
+                {
+                    if (purpose != null)
+                    {
+                        String purposeNodeName = UUID.randomUUID().toString();
+
+                        appendNewMermaidNode(purposeNodeName,
+                                             purpose,
+                                             "Purpose",
+                                             VisualStyle.DESCRIPTION);
+
+                        super.appendInvisibleMermaidLine(lastNodeName, purposeNodeName);
+
+                        lastNodeName = purposeNodeName;
                     }
                 }
             }

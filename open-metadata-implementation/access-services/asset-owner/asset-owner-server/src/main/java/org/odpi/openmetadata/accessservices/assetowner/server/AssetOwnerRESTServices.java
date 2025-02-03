@@ -1091,8 +1091,8 @@ public class AssetOwnerRESTServices
             relationshipElement = new RelationshipElement();
 
             relationshipElement.setRelationshipHeader(elementHeaderConverter.getNewBean(ElementHeader.class, relationship, methodName));
-            relationshipElement.setEnd1GUID(elementHeaderConverter.getNewBean(ElementHeader.class, relationship.getEntityOneProxy(), methodName));
-            relationshipElement.setEnd2GUID(elementHeaderConverter.getNewBean(ElementHeader.class, relationship.getEntityTwoProxy(), methodName));
+            relationshipElement.setEnd1(elementHeaderConverter.getElementStub(ElementHeader.class, relationship.getEntityOneProxy(), methodName));
+            relationshipElement.setEnd2(elementHeaderConverter.getElementStub(ElementHeader.class, relationship.getEntityTwoProxy(), methodName));
 
             if (relationship.getProperties() != null)
             {

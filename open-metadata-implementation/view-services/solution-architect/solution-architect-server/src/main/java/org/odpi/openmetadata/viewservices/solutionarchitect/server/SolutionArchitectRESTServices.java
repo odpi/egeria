@@ -44,6 +44,7 @@ public class SolutionArchitectRESTServices extends TokenController
      * Retrieve the list of information supply chain metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
@@ -57,6 +58,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public InformationSupplyChainsResponse findInformationSupplyChains(String            serverName,
+                                                                       boolean           addImplementation,
                                                                        boolean           startsWith,
                                                                        boolean           endsWith,
                                                                        boolean           ignoreCase,
@@ -85,6 +87,7 @@ public class SolutionArchitectRESTServices extends TokenController
             {
                 response.setElements(handler.findInformationSupplyChains(userId,
                                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                         addImplementation,
                                                                          null,
                                                                          null,
                                                                          SequencingOrder.CREATION_DATE_RECENT,

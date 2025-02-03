@@ -70,6 +70,34 @@ public enum HostDefinition
                                 34),
 
     /**
+     * winch17 - Winchester data centre standard machine 17.
+     */
+    DEPOT_MANAGEMENT_WINCH_HOST("winch17",
+                                "Winchester data centre standard machine 17.",
+                                HostTypeDefinition.BARE_METAL,
+                                FacilityDefinition.WINCHESTER_DC,
+                                "https://winch17.coco.com",
+                                "Ubuntu",
+                                "23.04",
+                                null,
+                                new String[]{"machines"},
+                                500),
+
+    /**
+     * kcdepot - Kansas City data centre standard machine 01.
+     */
+    DEPOT_MANAGEMENT_KC_HOST("kcdepot",
+                                "Kansas City data centre standard machine 01.",
+                                HostTypeDefinition.BARE_METAL,
+                                FacilityDefinition.WINCHESTER_DC,
+                                "https://kc01.coco.com",
+                                "Ubuntu",
+                                "23.04",
+                                null,
+                                new String[]{"machines"},
+                                510),
+
+    /**
      * capital - Austin data centre standard machine capital.
      */
     COCO_PROCUREMENT_AUS_HOST("capital",
@@ -96,6 +124,20 @@ public enum HostDefinition
                              null,
                              new String[]{"machines"},
                              1501),
+
+    /**
+     * ed02 - Edmonton data centre standard machine 17.
+     */
+    DEPOT_MANAGEMENT_ED_HOST("ed02",
+                                "Edmonton data centre standard machine 02.",
+                                HostTypeDefinition.BARE_METAL,
+                                FacilityDefinition.EDMONTON_OFFICE,
+                                "https://ed02.coco.com",
+                                "Ubuntu",
+                                "23.04",
+                                null,
+                                new String[]{"machines"},
+                                520),
 
     /**
      * ams23 - Amsterdam data centre standard machine 23.

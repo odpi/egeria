@@ -93,6 +93,7 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
                     solutionComponentProperties.setDescription(this.removeDescription(elementProperties));
                     solutionComponentProperties.setVersion(this.removeVersionIdentifier(elementProperties));
                     solutionComponentProperties.setSolutionComponentType(this.removeSolutionComponentType(elementProperties));
+                    solutionComponentProperties.setPlannedDeployedImplementationType(this.removeDeployedImplementationType(elementProperties));
                     solutionComponentProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                     solutionComponentProperties.setEffectiveTo(primaryElement.getEffectiveToTime());
 
@@ -132,6 +133,8 @@ public class SolutionComponentConverter<B> extends OpenMetadataConverterBase<B>
 
                                     elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
+                                    solutionLinkingWireProperties.setLabel(this.removeLabel(elementProperties));
+                                    solutionLinkingWireProperties.setDescription(this.removeDescription(elementProperties));
                                     solutionLinkingWireProperties.setInformationSupplyChainSegmentGUIDs(this.removeInformationSupplyChainSegmentGUIDs(elementProperties));
                                     solutionLinkingWireProperties.setEffectiveFrom(primaryElement.getEffectiveFromTime());
                                     solutionLinkingWireProperties.setEffectiveTo(primaryElement.getEffectiveToTime());

@@ -3682,11 +3682,13 @@ public class SimpleCatalogArchiveHelper
      * @param destinationGUID unique identifier of the element at end 2
      * @param relationshipType type name of lineage relationship
      * @param label label of the relationship
+     * @param informationSupplyChainQName qualified name of information supply chain that this relationship belongs to
      */
     public void addLineageRelationship(String sourceGUID,
                                        String destinationGUID,
                                        String relationshipType,
-                                       String label)
+                                       String label,
+                                       String informationSupplyChainQName)
     {
         final String methodName = "addLineageRelationship";
 
@@ -3697,6 +3699,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.LABEL.name, label, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ISC_QUALIFIED_NAME.name, informationSupplyChainQName, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(relationshipType,
                                                                      idToGUIDMap.getGUID(sourceGUID + "_to_" + destinationGUID + "_" + relationshipType + "_" + label + "_relationship"),
@@ -7073,10 +7076,12 @@ public class SimpleCatalogArchiveHelper
      *
      * @param supplyFromGUID guid of first segment
      * @param supplyToGUID guid of follow-on segment
+     * @param label label to use in lineage graphs
      * @param description description of the link
      */
     public void addInformationSupplyChainLinkRelationship(String supplyFromGUID,
                                                           String supplyToGUID,
+                                                          String label,
                                                           String description)
     {
         final String methodName = "addInformationSupplyChainLinkRelationship";
@@ -7085,6 +7090,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(supplyToGUID));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, label, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(supplyFromGUID + "_to_" + supplyToGUID + "_information_supply_chain_link_relationship"),
@@ -7152,26 +7158,28 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a new solution component.
      *
-     * @param solutionBlueprintGUID owning blueprint
+     * @param solutionBlueprintGUIDs owning blueprint
      * @param suppliedTypeName type name to use
      * @param qualifiedName qualified name
      * @param name display name
      * @param description description
      * @param versionIdentifier versionIdentifier
      * @param componentType type of component
+     * @param implementationType planned deployed implementation type
      * @param roleInSolution role this component takes in the solution
      * @param roleInSolutionDescription description of the role in the solution
      * @param additionalProperties are there any additional properties to add
      * @param extendedProperties any additional properties associated with a subtype
      * @return unique identifier of the new profile
      */
-    public  String addSolutionComponent(String              solutionBlueprintGUID,
+    public  String addSolutionComponent(List<String>        solutionBlueprintGUIDs,
                                         String              suppliedTypeName,
                                         String              qualifiedName,
                                         String              name,
                                         String              description,
                                         String              versionIdentifier,
                                         String              componentType,
+                                        String              implementationType,
                                         String              roleInSolution,
                                         String              roleInSolutionDescription,
                                         Map<String, String> additionalProperties,
@@ -7191,6 +7199,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name, componentType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name, implementationType, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -7206,9 +7215,12 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(entity);
 
-        if (solutionBlueprintGUID != null)
+        if (solutionBlueprintGUIDs != null)
         {
-            addSolutionBlueprintCompositionRelationship(solutionBlueprintGUID, entity.getGUID(), roleInSolution, roleInSolutionDescription);
+            for (String solutionBlueprintGUID : solutionBlueprintGUIDs)
+            {
+                addSolutionBlueprintCompositionRelationship(solutionBlueprintGUID, entity.getGUID(), roleInSolution, roleInSolutionDescription);
+            }
         }
 
         return entity.getGUID();
@@ -7251,10 +7263,14 @@ public class SimpleCatalogArchiveHelper
      *
      * @param solutionComponent1GUID guid of component at end 1
      * @param solutionComponent2GUID guid of component at end 2
+     * @param label used in lineage graphs
+     * @param description explains the progression of control between components
      * @param informationSupplyChainSegmentGUIDs optional list of information supply chain segments that his link is part of
      */
     public void addSolutionLinkingWireRelationship(String       solutionComponent1GUID,
                                                    String       solutionComponent2GUID,
+                                                   String       label,
+                                                   String       description,
                                                    List<String> informationSupplyChainSegmentGUIDs)
     {
         final String methodName = "addSolutionLinkingWireRelationship";
@@ -7263,6 +7279,8 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponent2GUID));
 
         InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, null, OpenMetadataProperty.INFORMATION_SUPPLY_CHAIN_SEGMENTS_GUIDS.name, informationSupplyChainSegmentGUIDs, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LABEL.name, label, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(solutionComponent1GUID + "_to_" + solutionComponent2GUID + "_solution_linking_wire_relationship"),

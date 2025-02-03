@@ -26,6 +26,7 @@ public class InformationSupplyChainElement implements MetadataElement
     private ElementHeader                              elementHeader   = null;
     private InformationSupplyChainProperties           properties      = null;
     private List<InformationSupplyChainSegmentElement> segments        = null; // InformationSupplyChainComposition
+    private List<RelationshipElement>                  implementation  = null; // qualified name in relationship
     private String                                     mermaidTimeline = null;
     private String                                     mermaidGraph    = null;
 
@@ -50,6 +51,7 @@ public class InformationSupplyChainElement implements MetadataElement
             elementHeader   = template.getElementHeader();
             properties      = template.getProperties();
             segments        = template.getSegments();
+            implementation  = template.getImplementation();
             mermaidTimeline = template.getMermaidTimeline();
             mermaidGraph    = template.getMermaidGraph();
         }
@@ -125,6 +127,22 @@ public class InformationSupplyChainElement implements MetadataElement
 
 
     /**
+     * Return the relationships between the asset metadata that identifies the lineage relationship as belonging to this information supply chain.
+     *
+     * @return list of relationships
+     */
+    public List<RelationshipElement> getImplementation()
+    {
+        return implementation;
+    }
+
+    public void setImplementation(List<RelationshipElement> implementation)
+    {
+        this.implementation = implementation;
+    }
+
+
+    /**
      * Return the timeline showing the flow of data along the information supply chain.
      *
      * @return mermaid markdown
@@ -179,6 +197,7 @@ public class InformationSupplyChainElement implements MetadataElement
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
                 ", segments=" + segments +
+                ", implementation=" + implementation +
                 ", mermaidTimeline='" + mermaidTimeline + '\'' +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 '}';
@@ -197,7 +216,7 @@ public class InformationSupplyChainElement implements MetadataElement
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         InformationSupplyChainElement that = (InformationSupplyChainElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) && Objects.equals(properties, that.properties) && Objects.equals(segments, that.segments) && Objects.equals(mermaidTimeline, that.mermaidTimeline) && Objects.equals(mermaidGraph, that.mermaidGraph);
+        return Objects.equals(elementHeader, that.elementHeader) && Objects.equals(properties, that.properties) && Objects.equals(segments, that.segments) && Objects.equals(implementation, that.implementation) && Objects.equals(mermaidTimeline, that.mermaidTimeline) && Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
     /**
@@ -208,6 +227,6 @@ public class InformationSupplyChainElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, segments, mermaidTimeline, mermaidGraph);
+        return Objects.hash(elementHeader, properties, segments, implementation, mermaidTimeline, mermaidGraph);
     }
 }

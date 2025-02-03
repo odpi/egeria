@@ -3871,6 +3871,41 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the iscQualifiedName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String getISCQualifiedName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getISCQualifiedName";
+
+        if (instanceProperties != null)
+        {
+            String iscQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
+                                                      instanceProperties,
+                                                      methodName);
+
+            if (iscQualifiedName != null)
+            {
+                return iscQualifiedName;
+            }
+
+            /*
+             * Backwards compatibility
+             */
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the label property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

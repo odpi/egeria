@@ -34,6 +34,7 @@ public interface ManageSolutions
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
      * @param asOfTime repository time to use
      * @param sequencingProperty property to use for sequencing order
@@ -50,6 +51,7 @@ public interface ManageSolutions
      */
     List<InformationSupplyChainElement> findInformationSupplyChains(String              userId,
                                                                     String              searchString,
+                                                                    boolean             addImplementation,
                                                                     List<ElementStatus> limitResultsByStatus,
                                                                     Date                asOfTime,
                                                                     SequencingOrder     sequencingOrder,

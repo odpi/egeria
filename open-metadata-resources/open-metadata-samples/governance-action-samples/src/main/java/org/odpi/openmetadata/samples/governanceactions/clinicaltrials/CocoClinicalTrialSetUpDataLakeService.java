@@ -9,12 +9,12 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
@@ -30,7 +30,7 @@ import java.util.*;
  *     <li>Optionally, linking the new asset created for the volume to the integration connector that maintains the last update date.</li>
  * </ul>
  */
-public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActionService
+public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBaseService
 {
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
@@ -252,6 +252,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                            dataLakeVolumeName,
                                                            dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
                                                            dataLakeVolumePathName);
+
+                addSolutionComponentRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER.getGUID(), volumeAssetGUID);
 
                 monitorVolumeAsset(lastUpdateConnectorGUID, volumeAssetGUID, dataLakeCatalogQualifiedName);
 

@@ -28,7 +28,8 @@ public enum SystemDefinition
              "https://order.coco.com",
              null,
              new String[]{"business-systems", "sustainability"},
-             100),
+             100,
+             null),
 
 
     COCO_PRODUCT_PLANNING("dd424526-24e9-4a10-a575-0700dfb8743a",
@@ -42,7 +43,8 @@ public enum SystemDefinition
                           "https://cocoproducts.coco.com",
                           null,
                           new String[]{"business-systems", "sustainability"},
-                          100),
+                          100,
+                          null),
 
     /**
      * procurement01 - Purchasing system for Coco Pharmaceuticals.
@@ -58,7 +60,8 @@ public enum SystemDefinition
                          "https://ams45.coco.com",
                          new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_AMS_HOST},
                          new String[]{"business-systems", "sustainability"},
-                         0),
+                         0,
+                         null),
 
     /**
      * procurement02 - Local purchasing system for New York Site.
@@ -74,7 +77,8 @@ public enum SystemDefinition
                         "https://ny327-3.coco.com",
                         new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_NY_HOST},
                         new String[]{"business-systems", "sustainability"},
-                        0),
+                        0,
+                        null),
 
     /**
      * procurement03 - Local purchasing system for Winchester Factory Site.
@@ -90,7 +94,8 @@ public enum SystemDefinition
                            "https://winch12.coco.com",
                            new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_WINCH_HOST},
                            new String[]{"business-systems", "sustainability"},
-                           34),
+                           34,
+                           null),
 
     /**
      * procurement04 - Local purchasing system for Austin Factory Site.
@@ -106,7 +111,8 @@ public enum SystemDefinition
                          "https://capital.aus.coco.com",
                          new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_AUS_HOST},
                          new String[]{"business-systems", "sustainability"},
-                         1001),
+                         1001,
+                         null),
 
     /**
      * procurement05 - Local purchasing system for Edmonton Factory Site.
@@ -122,7 +128,8 @@ public enum SystemDefinition
                         "https://ed01.coco.com",
                         new HostDefinition[]{HostDefinition.COCO_PROCUREMENT_ED_HOST},
                         new String[]{"business-systems"},
-                        1501),
+                        1501,
+                        null),
 
     /**
      * coco-inventory - Inventory for raw materials and products produced across all Coco Pharmaceuticals sites.
@@ -138,23 +145,25 @@ public enum SystemDefinition
                    "https://ams23.coco.com",
                    new HostDefinition[]{HostDefinition.COCO_INVENTORY_HOST},
                    new String[]{"business-systems"},
-                   0),
+                   0,
+                   new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY}),
 
     /**
      * aus-inventory - Inventory for raw materials and products produced across all Coco Pharmaceuticals sites (except Austin).
      */
     AUS_INVENTORY("9e29ee1f-01d3-482c-9d1b-8b3f36ce62d2",
                   "aus-inventory",
-                   "Inventory for raw materials and products produced across all Coco Pharmaceuticals sites .",
-                   "ausinventorynpa",
-                   SystemTypeDefinition.HOME_GROWN_APP_SERVER,
-                   "V23.2",
-                   PersonDefinition.STEW_FASTER,
-                   FacilityDefinition.AUSTIN_DC,
-                   "https://ams23.coco.com",
-                   new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
-                   new String[]{"business-systems"},
-                   0),
+                  "Inventory for raw materials and products produced across all Coco Pharmaceuticals sites .",
+                  "ausinventorynpa",
+                  SystemTypeDefinition.HOME_GROWN_APP_SERVER,
+                  "V23.2",
+                  PersonDefinition.STEW_FASTER,
+                  FacilityDefinition.AUSTIN_DC,
+                  "https://ams23.coco.com",
+                  new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
+                  new String[]{"business-systems"},
+                  0,
+                  new SolutionComponent[]{SolutionComponent.GOODS_INVENTORY}),
 
     /**
      * coco-hrim - Human Resources Information Manager (HRIM) provides the central management application for employee management including hiring, skills management, recognition and all reasons for termination of employment.
@@ -170,7 +179,8 @@ public enum SystemDefinition
               "https://ams02.coco.com",
               new HostDefinition[]{HostDefinition.COCO_HRIM_HOST},
               new String[]{"business-systems", "sustainability"},
-              0),
+              0,
+              null),
 
     /**
      * cocopages - Employee directory with business partners.
@@ -186,7 +196,8 @@ public enum SystemDefinition
                "https://ams06.coco.com",
                new HostDefinition[]{HostDefinition.COCO_PAGES_HOST},
                new String[]{"business-systems", "sustainability"},
-               0),
+               0,
+               null),
 
     /**
      * sec-admin - Security administration for all access grants to Coco Pharmaceutical systems.
@@ -202,7 +213,8 @@ public enum SystemDefinition
               "https://ams01.coco.com",
               new HostDefinition[]{HostDefinition.SEC_ADMIN_HOST},
               new String[]{"business-systems", "sustainability"},
-              0),
+              0,
+              null),
 
     /**
      * coco-expenses - Employee expense declaration for Coco Pharmaceuticals.
@@ -218,7 +230,8 @@ public enum SystemDefinition
                       "https://bethere.com/expenses",
                       null,
                       new String[]{"business-systems"},
-                      0),
+                      0,
+                      new SolutionComponent[]{SolutionComponent.EMPLOYEE_EXPENSE_TOOL}),
 
     /**
      * UK payroll - Payroll and UK tax calculations.
@@ -234,7 +247,8 @@ public enum SystemDefinition
                "https://lon02.coco.com",
                new HostDefinition[]{HostDefinition.UK_PAYROLL_HOST},
                new String[]{"business-systems"},
-               0),
+               0,
+               null),
 
     /**
      * Netherlands payroll - Payroll and Dutch tax calculations.
@@ -250,7 +264,8 @@ public enum SystemDefinition
                "https://ams56.coco.com",
                new HostDefinition[]{HostDefinition.NL_PAYROLL_HOST},
                new String[]{"business-systems"},
-               0),
+               0,
+               null),
 
     /**
      * Canadian payroll - Payroll and Canadian tax calculations.
@@ -266,7 +281,8 @@ public enum SystemDefinition
                "https://ed05.coco.com",
                new HostDefinition[]{HostDefinition.CA_PAYROLL_HOST},
                new String[]{"business-systems"},
-               0),
+               0,
+               null),
 
 
     /**
@@ -283,7 +299,8 @@ public enum SystemDefinition
                  "https://fin-magic/ledgers",
                  null,
                  new String[]{"business-systems"},
-                 0),
+                 0,
+                 new SolutionComponent[]{SolutionComponent.ACCOUNTING_LEDGER}),
 
 
     /**
@@ -300,7 +317,8 @@ public enum SystemDefinition
                               "https://mopac.aus.coc.com",
                               new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
                               new String[]{"manufacturing-systems"},
-                              1000),
+                              1000,
+                              null),
 
     /**
      * winch-mfg-control - Manufacturing control system for the Winchester factory.
@@ -316,7 +334,8 @@ public enum SystemDefinition
                                 "https://winch01.coco.com",
                                 new HostDefinition[]{HostDefinition.WINCH_MANUFACTURING_CONTROL_HOST},
                                 new String[]{"manufacturing-systems"},
-                                1000),
+                                1000,
+                                null),
 
     /**
      * ed-mfg-control - Manufacturing control system for the Edmonton factory.
@@ -332,23 +351,25 @@ public enum SystemDefinition
                              "https://ed01.coco.com",
                              new HostDefinition[]{HostDefinition.ED_MANUFACTURING_CONTROL_HOST},
                              new String[]{"manufacturing-systems"},
-                             1000),
+                             1000,
+                             null),
 
     /**
      * ed-mfg-control - Manufacturing control system for the Edmonton factory.
      */
     MANUFACTURING_PLANNING("25e2e56d-2e2f-4f6f-a1ed-019dd76d589a",
                            "manufacturing-planning",
-                             "Global manufacturing planning.",
-                             "globmfgplannpa",
-                             SystemTypeDefinition.COTS_SERVER,
-                             "V7.8",
-                             null,
-                             FacilityDefinition.AMSTERDAM_DC,
-                             "https://mfgplan.coco.com",
-                             new HostDefinition[]{HostDefinition.COCO_MFG_PLANNING_AMS_HOST},
-                             new String[]{"manufacturing-systems"},
-                             1000),
+                           "Global manufacturing planning.",
+                           "globmfgplannpa",
+                           SystemTypeDefinition.COTS_SERVER,
+                           "V7.8",
+                           null,
+                           FacilityDefinition.AMSTERDAM_DC,
+                           "https://mfgplan.coco.com",
+                           new HostDefinition[]{HostDefinition.COCO_MFG_PLANNING_AMS_HOST},
+                           new String[]{"manufacturing-systems"},
+                           1000,
+                           null),
 
     /**
      * coco-haz-mat - Coco Pharmaceuticals Hazardous Materials Inventory.
@@ -364,23 +385,25 @@ public enum SystemDefinition
             "https://ed01.coco.com",
             new HostDefinition[]{HostDefinition.HAZ_MAT_HOST},
             new String[]{"compliance-systems"},
-            1000),
+            1000,
+            new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY}),
 
     /**
      * austin-haz-mat - Austin Hazardous Materials Inventory.
      */
     AUS_HAZ_MAT("047691ac-8628-472d-aca0-82bedc947ef4",
                 "austin-haz-mat",
-            "Austin Manufacturing Hazardous Materials Inventory.",
-            "aushazmatnpa",
-            SystemTypeDefinition.HOME_GROWN_APP_SERVER,
-            "V1.2",
-            PersonDefinition.STEW_FASTER,
-            FacilityDefinition.AUSTIN_DC,
-            "https://mucky.coco.com",
-            new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
-            new String[]{"compliance-systems"},
-            5000),
+                "Austin Manufacturing Hazardous Materials Inventory.",
+                "aushazmatnpa",
+                SystemTypeDefinition.HOME_GROWN_APP_SERVER,
+                "V1.2",
+                PersonDefinition.STEW_FASTER,
+                FacilityDefinition.AUSTIN_DC,
+                "https://mucky.coco.com",
+                new HostDefinition[]{HostDefinition.AUS_MANUFACTURING_CONTROL_HOST},
+                new String[]{"compliance-systems"},
+                5000,
+                new SolutionComponent[]{SolutionComponent.HAZMAT_INVENTORY}),
 
 
     /**
@@ -388,48 +411,95 @@ public enum SystemDefinition
      */
     COCO_SUS("8a578f0d-f7ae-4255-b4a5-236241fa5449",
              "coco-sus",
-                "Coco Pharmaceuticals Sustainability Data Marts.",
-                "cocosusnpa",
-                SystemTypeDefinition.DATABASE_SERVER,
-                "V3.4",
-                PersonDefinition.TOM_TALLY,
-                FacilityDefinition.AMSTERDAM_DC,
-                "https://ams04.coco.com:5432",
-                new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
-                new String[]{"compliance-systems"},
-                5000),
+             "Coco Pharmaceuticals Sustainability Data Marts.",
+             "cocosusnpa",
+             SystemTypeDefinition.DATABASE_SERVER,
+             "V3.4",
+             PersonDefinition.TOM_TALLY,
+             FacilityDefinition.AMSTERDAM_DC,
+             "https://ams04.coco.com:5432",
+             new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
+             new String[]{"compliance-systems"},
+             5000,
+             new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_ODS}),
 
     /**
      * coco-sus-dashboards - Coco Pharmaceuticals Sustainability Dashboards and Reporting.
      */
     COCO_SUS_DASHBOARDS("5a2927f3-eed6-4509-bceb-2c29aa415090",
                         "coco-sus-dashboards",
-             "Coco Pharmaceuticals Sustainability Dashboards and Reporting on SuperSet.",
-             "cocosusssnpa",
-             SystemTypeDefinition.COTS_SERVER,
-             "V1.2",
-             PersonDefinition.TOM_TALLY,
-             FacilityDefinition.AMSTERDAM_DC,
-             "https://ams04.coco.com:8080",
-             new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
-             new String[]{"compliance-systems"},
-             5000),
+                        "Coco Pharmaceuticals Sustainability Dashboards and Reporting on SuperSet.",
+                        "cocosusssnpa",
+                        SystemTypeDefinition.COTS_SERVER,
+                        "V1.2",
+                        PersonDefinition.TOM_TALLY,
+                        FacilityDefinition.AMSTERDAM_DC,
+                        "https://ams04.coco.com:8080",
+                        new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
+                        new String[]{"compliance-systems"},
+                        5000,
+                        new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_DASHBOARDS}),
 
     /**
      * coco-sus-calculators - Coco Pharmaceuticals Sustainability Coco Pharmaceuticals Sustainability Calculators on Airflow..
      */
     COCO_SUS_CALCULATORS("3dbe7e96-c9e5-4336-a29a-9342258e50f8",
                          "coco-sus-calculators",
-             "Coco Pharmaceuticals Sustainability Calculators on Airflow.",
-             "cocosuscalcnpa",
-             SystemTypeDefinition.ETL_ENGINE,
-             "V3.4",
-             PersonDefinition.TOM_TALLY,
-             FacilityDefinition.AMSTERDAM_DC,
-             "https://ams04.coco.com:8070",
-             new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
-             new String[]{"compliance-systems"},
-             5000),
+                         "Coco Pharmaceuticals Sustainability Calculators on Airflow.",
+                         "cocosuscalcnpa",
+                         SystemTypeDefinition.ETL_ENGINE,
+                         "V3.4",
+                         PersonDefinition.TOM_TALLY,
+                         FacilityDefinition.AMSTERDAM_DC,
+                         "https://ams04.coco.com:8070",
+                         new HostDefinition[]{HostDefinition.COCO_SUS_AMS_HOST},
+                         new String[]{"compliance-systems"},
+                         5000,
+                         new SolutionComponent[]{SolutionComponent.SUSTAINABILITY_CALCULATORS}),
+
+    WINCHESTER_DEPOT_MANAGEMENT("c7b1467a-dea2-4288-95e5-8e1bc3ab2ed3",
+                                "WINCHDEPOT01",
+                                "Depot management system in Winchester",
+                                "winchdepotmgt01",
+                                SystemTypeDefinition.COTS_SERVER,
+                                "V27.6",
+                                PersonDefinition.STEW_FASTER,
+                                FacilityDefinition.WINCHESTER_DC,
+                                "https://winch5.coco.com:8070",
+                                new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_WINCH_HOST},
+                                new String[]{"depot-systems"},
+                                560,
+                                null),
+
+    KANSAS_CITY_DEPOT_MANAGEMENT("987df321-d940-4ce5-9ae1-8258736f0445",
+                                 "KCDEPOT01",
+                                 "Depot management system in Kansas City",
+                                 "kansasdepotmgt01",
+                                 SystemTypeDefinition.COTS_SERVER,
+                                 "V27.6",
+                                 PersonDefinition.STEW_FASTER,
+                                 FacilityDefinition.WINCHESTER_DC,
+                                 "https://kansas.coco.com:9070",
+                                 new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_KC_HOST},
+                                 new String[]{"depot-systems"},
+                                 560,
+                                 null),
+
+    EDMONTON_DEPOT_MANAGEMENT("afefd870-5616-4f35-a557-774b88b96bef",
+                              "EDDEPOT01",
+                              "Depot management system in Edmonton",
+                              "eddepotmgt01",
+                              SystemTypeDefinition.COTS_SERVER,
+                              "V27.6",
+                              PersonDefinition.STEW_FASTER,
+                              FacilityDefinition.EDMONTON_OFFICE,
+                              "https://ed02.coco.com:9876",
+                              new HostDefinition[]{HostDefinition.DEPOT_MANAGEMENT_ED_HOST},
+                              new String[]{"depot-systems"},
+                              560,
+                              null),
+
+
     ;
 
     private final String               systemGUID;
@@ -444,6 +514,7 @@ public enum SystemDefinition
     private final HostDefinition[]     deployedOn;
     private final String[]             zones;
     private final long                 loadTime;
+    private final SolutionComponent[]  implementingComponents;
 
 
     /**
@@ -473,7 +544,8 @@ public enum SystemDefinition
                      String                 networkAddress,
                      HostDefinition[]       deployedOn,
                      String[]               zones,
-                     long                   loadTime)
+                     long                   loadTime,
+                     SolutionComponent[]    implementingComponents)
     {
         this.systemGUID = systemGUID;
         this.systemId = systemId;
@@ -487,6 +559,7 @@ public enum SystemDefinition
         this.deployedOn = deployedOn;
         this.zones = zones;
         this.loadTime = loadTime;
+        this.implementingComponents = implementingComponents;
     }
 
 
@@ -617,7 +690,7 @@ public enum SystemDefinition
     /**
      * Return where this system is running.  May be null if running as a cloud service and so the hosts are not known.
      *
-     * @return list of hosts where this system is running
+     * @return array of hosts where this system is running
      */
     public HostDefinition[] getDeployedOn()
     {
@@ -633,6 +706,17 @@ public enum SystemDefinition
     public long getLoadTime()
     {
         return loadTime;
+    }
+
+
+    /**
+     * Return the solution components that should be inked with the ImplementedBy relationship.
+     *
+     * @return array
+     */
+    public SolutionComponent[] getImplementingComponents()
+    {
+        return implementingComponents;
     }
 
 

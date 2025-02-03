@@ -549,6 +549,54 @@ public class OpenMetadataConverterBase<B>
     }
 
 
+    /**
+     *
+     * @param beanClass
+     * @param retrievedRelationships
+     * @param methodName
+     * @return
+     * @throws PropertyServerException
+     */
+    public List<RelationshipElement> getRelationshipElements(Class<B>                       beanClass,
+                                                             List<OpenMetadataRelationship> retrievedRelationships,
+                                                             String                         methodName) throws PropertyServerException
+    {
+        if (retrievedRelationships != null)
+        {
+            List<RelationshipElement> relationshipElements = new ArrayList<>();
+
+            for (OpenMetadataRelationship retrievedRelationship : retrievedRelationships)
+            {
+                if (retrievedRelationship != null)
+                {
+                    RelationshipElement relationshipElement = new RelationshipElement();
+
+                    relationshipElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass,
+                                                                                            retrievedRelationship,
+                                                                                            retrievedRelationship.getRelationshipGUID(),
+                                                                                            null,
+                                                                                            methodName));
+                    RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+                    relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(retrievedRelationship.getRelationshipProperties()));
+                    relationshipProperties.setEffectiveFrom(retrievedRelationship.getEffectiveFromTime());
+                    relationshipProperties.setEffectiveTo(retrievedRelationship.getEffectiveToTime());
+
+                    relationshipElement.setRelationshipProperties(relationshipProperties);
+
+                    relationshipElement.setEnd1(retrievedRelationship.getElementAtEnd1());
+                    relationshipElement.setEnd2(retrievedRelationship.getElementAtEnd2());
+
+                    relationshipElements.add(relationshipElement);
+                }
+            }
+
+            return relationshipElements;
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract the properties from the element.
@@ -7904,6 +7952,27 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the plannedDeployedImplementationType property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removePlannedDeployedImplementationType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePlannedDeployedImplementationType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Extract and delete the integrationStyle property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -8011,6 +8080,29 @@ public class OpenMetadataConverterBase<B>
 
         return null;
     }
+
+
+    /**
+     * Extract and delete the label property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    public String removeLabel(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeLabel";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.LABEL.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract the purposes property from the supplied element properties.

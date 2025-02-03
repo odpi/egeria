@@ -2063,14 +2063,17 @@
         <mxCell id="mCCwA_8i9dwe3IOZuvx3-3" value="Information Supply Chain Segments" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="460" y="1360" width="380" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="dWzLRkLygQbHD1K7MV7c-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mCCwA_8i9dwe3IOZuvx3-4" target="mCCwA_8i9dwe3IOZuvx3-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="mCCwA_8i9dwe3IOZuvx3-4" value="Solution Blueprint and Components" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="460" y="1440" width="380" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mCCwA_8i9dwe3IOZuvx3-5" value="Deployment Lineage (Assets and Schema)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="460" y="1520" width="380" height="60" as="geometry" />
+          <mxGeometry x="460" y="1640" width="380" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mCCwA_8i9dwe3IOZuvx3-6" value="Operation Lineage (Open Lineage)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="460" y="1600" width="380" height="60" as="geometry" />
+          <mxGeometry x="460" y="1740" width="380" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mCCwA_8i9dwe3IOZuvx3-7" value="Operating in a brown field environment - involving archeology, new development, operations, ..." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="900" y="88" width="530" height="30" as="geometry" />

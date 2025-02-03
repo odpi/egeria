@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.lineage;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
 /**
@@ -13,8 +14,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 public class LineageRelationshipEvidence extends ElementHeader
 {
     private RelationshipProperties relationshipProperties = null;
-    private ElementHeader          end1                   = null;
-    private ElementHeader          end2                   = null;
+    private ElementStub            end1                   = null;
+    private ElementStub            end2                   = null;
 
 
 
@@ -46,22 +47,22 @@ public class LineageRelationshipEvidence extends ElementHeader
         this.relationshipProperties = relationshipProperties;
     }
 
-    public ElementHeader getEnd1()
+    public ElementStub getEnd1()
     {
         return end1;
     }
 
-    public void setEnd1(ElementHeader end1)
+    public void setEnd1(ElementStub end1)
     {
         this.end1 = end1;
     }
 
-    public ElementHeader getEnd2()
+    public ElementStub getEnd2()
     {
         return end2;
     }
 
-    public void setEnd2(ElementHeader end2)
+    public void setEnd2(ElementStub end2)
     {
         this.end2 = end2;
     }
