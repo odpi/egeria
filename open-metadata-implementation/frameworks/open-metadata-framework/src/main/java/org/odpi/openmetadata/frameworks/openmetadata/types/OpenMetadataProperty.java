@@ -2214,7 +2214,12 @@ public enum OpenMetadataProperty
     /**
      * The type of solution component - for example, is it a process, of file or database.
      */
-    SOLUTION_COMPONENT_TYPE("solutionComponentType", DataType.STRING.getName(), "The type of solution component - for example, is it a process, of file or database.", "Governance Action Process", "2455eae0-911c-48a5-aa60-eb5e8c90fd22"),
+    SOLUTION_COMPONENT_TYPE("solutionComponentType", DataType.STRING.getName(), "The type of solution component - for example, is it a process, of file or database.", "Automated Process", "2455eae0-911c-48a5-aa60-eb5e8c90fd22"),
+
+    /**
+     * The type of software component that is likely to serve as an implementation for this solution component.
+     */
+    PLANNED_DEPLOYED_IMPLEMENTATION_TYPE("plannedDeployedImplementationType", DataType.STRING.getName(), "The type of software component that is likely to serve as an implementation for this solution component.", "Governance Action Process", "ea0a0226-8a16-4f47-89e5-3aafdf544e8e"),
 
     /**
      * The reasons why some processing is occurring or some data is retained
@@ -2260,6 +2265,22 @@ public enum OpenMetadataProperty
      * Which way is data flowing?
      */
     DIRECTION("direction", SolutionPortDirection.getOpenTypeName(), "Which way is data flowing?", SolutionPortDirection.INPUT.getName(), "0c42037e-0e69-40dc-b8f8-d9ccd4a0d315"),
+
+    /**
+     * Root of the file path name that is due to the resource manager's view of the file system.
+     */
+    ACTUAL_MOUNT_POINT("actualMountPoint", DataType.STRING.getName(), "Root of the file path name that is due to the resource manager's view of the file system.", null, "e5fe3d87-0ff1-4435-aa06-7bf2570102dd"),
+
+    /**
+     * Value to replace the actual mount point with when storing/retrieving metadata about a file within the file system.
+     */
+    CANONICAL_MOUNT_POINT("canonicalMountPoint", DataType.STRING.getName(),"Value to replace the actual mount point with when storing/retrieving metadata about a file within the file system.", null, "fc93bccb-42e3-4611-86dd-191b051c75cc"),
+
+    /**
+     * Unique name for the element.
+     */
+    ISC_QUALIFIED_NAME("iscQualifiedName", DataType.STRING.getName(), "Unique name for the associated Information Supply Chain.", "InformationSupplyChain:Monthly Reporting", "705bec02-411a-4a92-9566-6a67bf5a612b"),
+
 
     ;
 

@@ -573,6 +573,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                        OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS),
 
     /**
+     * A deployable software component.
+     */
+    AIRFLOW_DAG("Airflow DAG",
+                       DeployedImplementationType.PROCESS,
+                       OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName,
+                       null,
+                       "A python component that implements a micro-workflow that runs in Apache Airflow.  DAG stands for Directed Acyclic Graph which describes the structure of its implementation.",
+                       OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS),
+
+    /**
      * A pluggable software component that conforms to the Open Connector Framework (OCF).
      */
     OCF_CONNECTOR("Open Connector Framework (OCF) Connector",

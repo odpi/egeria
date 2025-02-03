@@ -4,10 +4,12 @@ package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainSegmentElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +22,9 @@ import java.util.List;
  */
 public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBase<B>
 {
-    private final List<InformationSupplyChainSegmentElement> segments; // SolutionComposition
+    private final List<InformationSupplyChainSegmentElement> segments; // InformationSupplyChainComposition
+    private final List<OpenMetadataRelationship>             implementation; // Relationships with ISC's qualifiedName in properties
+
     /**
      * Constructor
      *
@@ -31,11 +35,13 @@ public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBas
     public InformationSupplyChainConverter(PropertyHelper                             propertyHelper,
                                            String                                     serviceName,
                                            String                                     serverName,
-                                           List<InformationSupplyChainSegmentElement> segments)
+                                           List<InformationSupplyChainSegmentElement> segments,
+                                           List<OpenMetadataRelationship>             implementation)
     {
         super(propertyHelper, serviceName, serverName);
 
         this.segments = segments;
+        this.implementation = implementation;
     }
 
 
@@ -68,6 +74,7 @@ public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBas
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryElement, methodName));
                 bean.setSegments(segments);
+                bean.setImplementation(super.getRelationshipElements(beanClass, implementation, methodName));
 
                 ElementProperties elementProperties;
 

@@ -6,9 +6,7 @@ package org.odpi.openmetadata.commonservices.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -55,7 +53,7 @@ public class SolutionRoleMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(currentNodeName,
                                          currentDisplayName,
                                          node.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                         VisualStyle.SOLUTION_COMPONENT);
+                                         VisualStyle.DEFAULT_SOLUTION_COMPONENT);
 
 
                     super.appendMermaidLine(solutionRoleElement.getElementHeader().getGUID(),

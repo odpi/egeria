@@ -439,7 +439,7 @@ public class OpenMetadataTypesArchive3_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);

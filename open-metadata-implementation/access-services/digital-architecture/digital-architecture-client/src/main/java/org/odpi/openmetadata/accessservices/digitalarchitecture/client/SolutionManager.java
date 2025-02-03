@@ -8,21 +8,21 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.Digi
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
 import org.odpi.openmetadata.commonservices.mermaid.InformationSupplyChainMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.SolutionBlueprintMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.commonservices.mermaid.SolutionRoleMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -157,6 +157,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param userId               calling user
      * @param searchString         string to find in the properties
+     * @param addImplementation    should details of the implementation of the information supply chain be extracted too?
      * @param limitResultsByStatus control the status of the elements to retrieve - default is everything but Deleted
      * @param asOfTime             repository time to use
      * @param sequencingOrder      order to retrieve results
@@ -172,10 +173,11 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
     @Override
     public List<InformationSupplyChainElement> findInformationSupplyChains(String userId,
                                                                            String searchString,
+                                                                           boolean addImplementation,
                                                                            List<ElementStatus> limitResultsByStatus,
                                                                            Date asOfTime,
                                                                            SequencingOrder sequencingOrder,
-                                                                           String sequencingProperty,
+                                                                           String              sequencingProperty,
                                                                            int startFrom,
                                                                            int pageSize,
                                                                            Date effectiveTime) throws InvalidParameterException,
@@ -202,7 +204,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertInformationSupplyChains(userId, openMetadataElements, asOfTime, effectiveTime, methodName);
+        return convertInformationSupplyChains(userId, openMetadataElements, addImplementation, asOfTime, effectiveTime, methodName);
     }
 
 
@@ -404,6 +406,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param userId calling user
      * @param openMetadataElements elements extracted from the repository
+     * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
@@ -411,6 +414,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      */
     private List<InformationSupplyChainElement> convertInformationSupplyChains(String                    userId,
                                                                                List<OpenMetadataElement> openMetadataElements,
+                                                                               boolean                   addImplementation,
                                                                                Date                      asOfTime,
                                                                                Date                      effectiveTime,
                                                                                String                    methodName)
@@ -423,7 +427,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             {
                 if (openMetadataElement != null)
                 {
-                    informationSupplyChainElements.add(convertInformationSupplyChain(userId, openMetadataElement, asOfTime, effectiveTime, methodName));
+                    informationSupplyChainElements.add(convertInformationSupplyChain(userId, openMetadataElement, addImplementation, asOfTime, effectiveTime, methodName));
                 }
             }
 
@@ -573,6 +577,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param userId calling user
      * @param openMetadataElement element extracted from the repository
+     * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param asOfTime repository time to use
      * @param effectiveTime effectivity dating for elements
      * @param methodName calling method
@@ -580,6 +585,7 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
      */
     private InformationSupplyChainElement convertInformationSupplyChain(String              userId,
                                                                         OpenMetadataElement openMetadataElement,
+                                                                        boolean             addImplementation,
                                                                         Date                asOfTime,
                                                                         Date                effectiveTime,
                                                                         String              methodName)
@@ -628,7 +634,63 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
                                                                                                 invalidParameterHandler.getMaxPagingSize());
             }
 
-            InformationSupplyChainConverter<InformationSupplyChainElement> converter = new InformationSupplyChainConverter<>(propertyHelper, serviceName, serverName, relatedSegments);
+            List<OpenMetadataRelationship> lineageRelationships = null;
+
+            if (addImplementation)
+            {
+                lineageRelationships = new ArrayList<>();
+                startFrom = 0;
+
+                SearchProperties searchProperties = new SearchProperties();
+                List<PropertyCondition> propertyConditions = new ArrayList<>();
+                PropertyCondition       propertyCondition = new PropertyCondition();
+
+                propertyCondition.setProperty(OpenMetadataProperty.ISC_QUALIFIED_NAME.name);
+
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                propertyCondition.setValue(openMetadataElement.getElementProperties().getPropertyValue(OpenMetadataProperty.QUALIFIED_NAME.name));
+
+                propertyConditions.add(propertyCondition);
+
+                searchProperties.setMatchCriteria(MatchCriteria.ANY);
+                searchProperties.setConditions(propertyConditions);
+
+                OpenMetadataRelationshipList relationshipList = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                                                 null,
+                                                                                                                                 searchProperties,
+                                                                                                                                 null,
+                                                                                                                                 asOfTime,
+                                                                                                                                 null,
+                                                                                                                                 SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                                                 forLineage,
+                                                                                                                                 forDuplicateProcessing,
+                                                                                                                                 effectiveTime,
+                                                                                                                                 startFrom,
+                                                                                                                                 invalidParameterHandler.getMaxPagingSize());
+
+                while ((relationshipList != null) && (relationshipList.getElementList() != null))
+                {
+                    lineageRelationships.addAll(relationshipList.getElementList());
+
+                    startFrom = startFrom + invalidParameterHandler.getMaxPagingSize();
+
+                    relationshipList = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                        null,
+                                                                                                        searchProperties,
+                                                                                                        null,
+                                                                                                        asOfTime,
+                                                                                                        null,
+                                                                                                        SequencingOrder.CREATION_DATE_RECENT,
+                                                                                                        forLineage,
+                                                                                                        forDuplicateProcessing,
+                                                                                                        effectiveTime,
+                                                                                                        startFrom,
+                                                                                                        invalidParameterHandler.getMaxPagingSize());
+                }
+            }
+
+
+            InformationSupplyChainConverter<InformationSupplyChainElement> converter = new InformationSupplyChainConverter<>(propertyHelper, serviceName, serverName, relatedSegments, lineageRelationships);
             InformationSupplyChainElement informationSupplyChainElement = converter.getNewBean(InformationSupplyChainElement.class,
                                                                                                 openMetadataElement,
                                                                                                 methodName);
@@ -822,6 +884,8 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
 
                             ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
+                            wireProperties.setLabel(wireConverter.removeLabel(elementProperties));
+                            wireProperties.setDescription(wireConverter.removeDescription(elementProperties));
                             wireProperties.setInformationSupplyChainSegmentGUIDs(wireConverter.removeInformationSupplyChainSegmentGUIDs(elementProperties));
                             wireProperties.setExtendedProperties(wireConverter.getRemainingExtendedProperties(elementProperties));
                             wireProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
@@ -1230,10 +1294,22 @@ public class SolutionManager extends DigitalArchitectureClientBase implements Ma
             }
 
             SolutionComponentConverter<SolutionComponentElement> converter = new SolutionComponentConverter<>(propertyHelper, serviceName, serverName,relatedSubComponentsElements, relatedPortElements);
-            return converter.getNewComplexBean(SolutionComponentElement.class,
-                                               openMetadataElement,
-                                               relatedMetadataElements,
-                                               methodName);
+            SolutionComponentElement solutionComponentElement = converter.getNewComplexBean(SolutionComponentElement.class,
+                                                                                            openMetadataElement,
+                                                                                            relatedMetadataElements,
+                                                                                            methodName);
+
+
+
+            if (solutionComponentElement != null)
+            {
+                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement,
+                                                                                                             null);
+
+                solutionComponentElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+            }
+
+            return solutionComponentElement;
         }
         catch (Exception error)
         {

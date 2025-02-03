@@ -82,7 +82,7 @@ public class DataFlowConverter<B> extends AssetManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    dataFlowProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
+                    dataFlowProperties.setQualifiedName(this.getISCQualifiedName(instanceProperties));
                     dataFlowProperties.setLabel(this.getLabel(instanceProperties));
                     dataFlowProperties.setDescription(this.getDescription(instanceProperties));
                     dataFlowProperties.setFormula(this.getFormula(instanceProperties));

@@ -240,6 +240,7 @@ public class InformationSupplyChainSegmentConverter<B> extends OpenMetadataConve
 
         ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
+        relationshipProperties.setLabel(this.removeLabel(elementProperties));
         relationshipProperties.setDescription(this.removeDescription(elementProperties));
         relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
         relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
@@ -288,6 +289,8 @@ public class InformationSupplyChainSegmentConverter<B> extends OpenMetadataConve
 
         ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
+        relationshipProperties.setLabel(this.removeLabel(elementProperties));
+        relationshipProperties.setDescription(this.removeDescription(elementProperties));
         relationshipProperties.setInformationSupplyChainSegmentGUIDs(this.removeInformationSupplyChainSegmentGUIDs(elementProperties));
         relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
         relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());

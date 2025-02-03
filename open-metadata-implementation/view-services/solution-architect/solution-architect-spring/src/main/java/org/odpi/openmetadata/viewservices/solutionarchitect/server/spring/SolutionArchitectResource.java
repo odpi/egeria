@@ -37,6 +37,7 @@ public class SolutionArchitectResource
      * Retrieve the list of information supply chain metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param addImplementation should details of the implementation of the information supply chain be extracted too?
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
@@ -56,6 +57,8 @@ public class SolutionArchitectResource
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
     public InformationSupplyChainsResponse findInformationSupplyChains(@PathVariable String                  serverName,
+                                                                       @RequestParam (required = false, defaultValue = "true")
+                                                                       boolean                 addImplementation,
                                                                        @RequestParam (required = false, defaultValue = "0")
                                                                        int                     startFrom,
                                                                        @RequestParam (required = false, defaultValue = "0")
@@ -69,7 +72,7 @@ public class SolutionArchitectResource
                                                                        @RequestBody (required = false)
                                                                                      FilterRequestBody requestBody)
     {
-        return restAPI.findInformationSupplyChains(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
+        return restAPI.findInformationSupplyChains(serverName, addImplementation, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
 
 

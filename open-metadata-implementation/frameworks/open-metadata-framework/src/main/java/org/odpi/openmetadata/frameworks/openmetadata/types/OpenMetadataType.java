@@ -4348,7 +4348,7 @@ public enum OpenMetadataType
     public static final String DATA_VALUE_CLASSIFICATION_TYPE_NAME = "DataValue";   /* from Area 3 */
     /* GlossaryTerm */
 
-    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID = "54f9f41a-3871-4650-825d-59a41de01330e";
+    public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_GUID = "54f9f41a-3871-4650-825d-59a41de01330";
     public static final String CONTEXT_DEFINITION_CLASSIFICATION_TYPE_NAME = "ContextDefinition";   /* from Area 3 */
     /* GlossaryTerm */
 

@@ -20,10 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionComponentProperties extends ReferenceableProperties
 {
-    private String displayName           = null;
-    private String description           = null;
-    private String version               = null;
-    private String solutionComponentType = null;
+    private String displayName                       = null;
+    private String description                       = null;
+    private String version                           = null;
+    private String solutionComponentType             = null;
+    private String plannedDeployedImplementationType = null;
 
     /**
      * Default constructor
@@ -49,6 +50,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
             this.description = template.getDescription();
             this.version = template.getVersion();
             this.solutionComponentType = template.getSolutionComponentType();
+            this.plannedDeployedImplementationType = template.getPlannedDeployedImplementationType();
         }
     }
 
@@ -142,6 +144,28 @@ public class SolutionComponentProperties extends ReferenceableProperties
 
 
     /**
+     * Return which type of software component is likely to be deployed to implement this solution component.
+     *
+     * @return string
+     */
+    public String getPlannedDeployedImplementationType()
+    {
+        return plannedDeployedImplementationType;
+    }
+
+
+    /**
+     * Set up which type of software component is likely to be deployed to implement this solution component.
+     *
+     * @param plannedDeployedImplementationType string
+     */
+    public void setPlannedDeployedImplementationType(String plannedDeployedImplementationType)
+    {
+        this.plannedDeployedImplementationType = plannedDeployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -154,6 +178,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
                 ", solutionComponentType='" + solutionComponentType + '\'' +
+                ", plannedDeployedImplementationType='" + plannedDeployedImplementationType + '\'' +
                 "} " + super.toString();
     }
 
@@ -182,6 +207,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(solutionComponentType, that.solutionComponentType) &&
+                Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType) &&
                        Objects.equals(version, that.version);
     }
 
@@ -194,6 +220,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, solutionComponentType, version);
+        return Objects.hash(super.hashCode(), displayName, description, solutionComponentType,
+                            plannedDeployedImplementationType, version);
     }
 }

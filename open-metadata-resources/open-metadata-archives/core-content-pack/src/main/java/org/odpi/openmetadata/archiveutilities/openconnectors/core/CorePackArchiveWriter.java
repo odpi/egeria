@@ -27,10 +27,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
@@ -171,6 +168,37 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              false,
                                              additionalProperties);
         }
+
+
+        /*
+         * Add the valid metadata values used in the solutionComponentType property of the SolutionComponent entity.
+         */
+        String solutionComponentTypeParentSetGUID = this.getParentSet(null,
+                                                                      OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                      OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
+                                                                      null);
+
+        for (SolutionComponentType solutionComponentType : SolutionComponentType.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             solutionComponentTypeParentSetGUID,
+                                             solutionComponentTypeParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             solutionComponentType.getQualifiedName(),
+                                             solutionComponentType.getSolutionComponentType(),
+                                             solutionComponentType.getDescription(),
+                                             solutionComponentType.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             DataType.STRING.getName(),
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             solutionComponentType.getSolutionComponentType(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
 
         /*
          * The resource use properties provide the mapNames for resource use properties.
@@ -897,216 +925,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         archiveHelper.saveGUIDs();
         archiveHelper.saveUsedGUIDs();
-    }
-
-
-
-
-    /**
-     * Create a template for a software server and link it to the associated deployed implementation type.
-     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
-     * to the supplied connector type and an endpoint,
-     *
-     * @param guid                             fixed unique identifier
-     * @param templateName                     name of template in Template classification
-     * @param templateDescription              description of the template in the Template classification
-     * @param templateVersion                  version of the template in the Template classification
-     * @param deployedImplementationType       deployed implementation type for the technology
-     * @param softwareCapabilityType           type of the associated capability
-     * @param softwareCapabilityName           name for the associated capability
-     * @param serverName                       name for the server
-     * @param description                      description for the server
-     * @param userId                           userId for the connection
-     * @param connectorTypeGUID                connector type to link to the connection
-     * @param networkAddress                   network address for the endpoint
-     * @param configurationProperties          additional properties for the connection
-     * @param secretsStorePurpose              purpose for the secrets store
-     * @param secretsStoreConnectorTypeGUID    optional name for the secrets store connector provider to include in the template
-     * @param secretsStoreFileName             location of the secrets store
-     * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
-     * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
-     */
-    protected void createEgeriaSoftwareServerCatalogTemplate(String                               guid,
-                                                             String                               templateName,
-                                                             String                               templateDescription,
-                                                             String                               templateVersion,
-                                                             DeployedImplementationTypeDefinition deployedImplementationType,
-                                                             DeployedImplementationTypeDefinition softwareCapabilityType,
-                                                             String                               softwareCapabilityName,
-                                                             String                               serverName,
-                                                             String                               serverId,
-                                                             String                               description,
-                                                             String                               userId,
-                                                             String                               connectorTypeGUID,
-                                                             String                               networkAddress,
-                                                             Map<String, Object>                  configurationProperties,
-                                                             String                               secretsStorePurpose,
-                                                             String                               secretsStoreConnectorTypeGUID,
-                                                             String                               secretsStoreFileName,
-                                                             List<ReplacementAttributeType>       replacementAttributeTypes,
-                                                             List<PlaceholderPropertyType>        placeholderPropertyTypes)
-    {
-        final String methodName = "createEgeriaSoftwareServerCatalogTemplate";
-
-
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName + "[" + serverId + "]";
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications    = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
-                               serverName);
-
-        if (deployedImplementationType.getAssociatedClassification() != null)
-        {
-            classifications.add(archiveHelper.getServerPurposeClassification(deployedImplementationType.getAssociatedClassification(), null));
-        }
-
-        classifications.add(archiveHelper.getTemplateClassification(templateName,
-                                                                    templateDescription,
-                                                                    templateVersion,
-                                                                    null,
-                                                                    methodName));
-
-        archiveHelper.setGUID(qualifiedName, guid);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  serverName,
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  description,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
-        assert(guid.equals(assetGUID));
-
-        if (softwareCapabilityType != null)
-        {
-            archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                                qualifiedName + ":" + softwareCapabilityName,
-                                                softwareCapabilityName,
-                                                null,
-                                                softwareCapabilityType.getDeployedImplementationType(),
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                (Classification) null,
-                                                assetGUID,
-                                                deployedImplementationType.getAssociatedTypeName(),
-                                                OpenMetadataType.ASSET.typeName);
-
-            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
-                                                                     qualifiedName,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     1);
-        }
-
-        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                        deployedImplementationType.getAssociatedTypeName(),
-                                                        OpenMetadataType.ASSET.typeName,
-                                                        qualifiedName + ":Endpoint",
-                                                        serverName + " endpoint",
-                                                        null,
-                                                        networkAddress,
-                                                        null,
-                                                        null);
-
-        archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
-
-        String connectionGUID;
-
-        if (secretsStoreConnectorTypeGUID == null)
-        {
-            connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                         serverName + " connection",
-                                                         null,
-                                                         userId,
-                                                         null,
-                                                         null,
-                                                         null,
-                                                         configurationProperties,
-                                                         null,
-                                                         connectorTypeGUID,
-                                                         endpointGUID,
-                                                         assetGUID,
-                                                         deployedImplementationType.getAssociatedTypeName(),
-                                                         OpenMetadataType.ASSET.typeName);
-        }
-        else
-        {
-            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
-                                                         qualifiedName + ":Connection",
-                                                         serverName + " connection",
-                                                         null,
-                                                         userId,
-                                                         null,
-                                                         null,
-                                                         null,
-                                                         configurationProperties,
-                                                         null,
-                                                         connectorTypeGUID,
-                                                         endpointGUID,
-                                                         assetGUID,
-                                                         deployedImplementationType.getAssociatedTypeName(),
-                                                         OpenMetadataType.ASSET.typeName);
-
-            Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
-
-            secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), qualifiedName);
-
-            String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                                       deployedImplementationType.getAssociatedTypeName(),
-                                                                       OpenMetadataType.ASSET.typeName,
-                                                                       qualifiedName + ":SecretStoreEndpoint",
-                                                                       serverName + " secret store endpoint",
-                                                                       null,
-                                                                       secretsStoreFileName,
-                                                                       null,
-                                                                       null);
-
-            String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION.typeName,
-                                                                            qualifiedName + ":SecretsStoreConnection",
-                                                                            serverName + " secrets store connection",
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            secretsStoreConfigurationProperties,
-                                                                            null,
-                                                                            secretsStoreConnectorTypeGUID,
-                                                                            secretStoreEndpointGUID,
-                                                                            assetGUID,
-                                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                                            OpenMetadataType.ASSET.typeName);
-
-            archiveHelper.addEmbeddedConnection(connectionGUID,
-                                                0,
-                                                secretsStorePurpose,
-                                                null,
-                                                secretsStoreConnectionGUID);
-        }
-
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
-
-        archiveHelper.addReplacementAttributes(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               OpenMetadataType.ASSET.typeName,
-                                               replacementAttributeTypes);
-
-        archiveHelper.addPlaceholderProperties(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               OpenMetadataType.ASSET.typeName,
-                                               placeholderPropertyTypes);
     }
 
 

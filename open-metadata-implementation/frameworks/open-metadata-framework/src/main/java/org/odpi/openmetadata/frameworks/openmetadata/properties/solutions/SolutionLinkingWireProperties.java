@@ -21,6 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionLinkingWireProperties extends RelationshipProperties
 {
+    private String       label                              = null;
+    private String       description                        = null;
     private List<String> informationSupplyChainSegmentGUIDs = null;
 
 
@@ -44,8 +46,54 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
 
         if (template != null)
         {
+            this.label = template.getLabel();
+            this.description = template.getDescription();
             this.informationSupplyChainSegmentGUIDs = template.getInformationSupplyChainSegmentGUIDs();
         }
+    }
+
+
+    /**
+     * Return the display label for this relationship.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the display label for this relationship.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+
+
+    /**
+     * Return the description for this relationship.
+     *
+     * @return string description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the description for this relationship.
+     *
+     * @param description string
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 
@@ -81,6 +129,8 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
     {
         return "SolutionLinkingWireProperties{" +
                 "informationSupplyChainSegmentGUIDs=" + informationSupplyChainSegmentGUIDs +
+                "label='" + label + '\'' +
+                "description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -106,7 +156,9 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
         {
             return false;
         }
-        return Objects.equals(informationSupplyChainSegmentGUIDs, that.informationSupplyChainSegmentGUIDs);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(informationSupplyChainSegmentGUIDs, that.informationSupplyChainSegmentGUIDs);
     }
 
 
@@ -118,6 +170,6 @@ public class SolutionLinkingWireProperties extends RelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), informationSupplyChainSegmentGUIDs);
+        return Objects.hash(super.hashCode(), label, description, informationSupplyChainSegmentGUIDs);
     }
 }

@@ -23,8 +23,8 @@ public class RelationshipElement
 {
     private ElementHeader          relationshipHeader     = null;
     private RelationshipProperties relationshipProperties = null;
-    private ElementHeader          end1GUID               = null;
-    private ElementHeader          end2GUID               = null;
+    private ElementStub            end1                   = null;
+    private ElementStub            end2                   = null;
 
     /**
      * Default constructor
@@ -46,8 +46,8 @@ public class RelationshipElement
         {
             relationshipHeader = template.getRelationshipHeader();
             relationshipProperties = template.getRelationshipProperties();
-            end1GUID = template.getEnd1GUID();
-            end2GUID = template.getEnd2GUID();
+            end1 = template.getEnd1();
+            end2 = template.getEnd2();
         }
     }
 
@@ -101,20 +101,20 @@ public class RelationshipElement
      *
      * @return element header object
      */
-    public ElementHeader getEnd1GUID()
+    public ElementStub getEnd1()
     {
-        return end1GUID;
+        return end1;
     }
 
 
     /**
      * Set up the element header associated with end 1 of the relationship.
      *
-     * @param end1GUID element header object
+     * @param end1 element header object
      */
-    public void setEnd1GUID(ElementHeader end1GUID)
+    public void setEnd1(ElementStub end1)
     {
-        this.end1GUID = end1GUID;
+        this.end1 = end1;
     }
 
 
@@ -124,20 +124,20 @@ public class RelationshipElement
      *
      * @return element header object
      */
-    public ElementHeader getEnd2GUID()
+    public ElementStub getEnd2()
     {
-        return end2GUID;
+        return end2;
     }
 
 
     /**
      * Set up the element header associated with end 2 of the relationship.
      *
-     * @param end2GUID element header object
+     * @param end2 element header object
      */
-    public void setEnd2GUID(ElementHeader end2GUID)
+    public void setEnd2(ElementStub end2)
     {
-        this.end2GUID = end2GUID;
+        this.end2 = end2;
     }
 
 
@@ -152,8 +152,8 @@ public class RelationshipElement
         return "RelationshipElement{" +
                        "relationshipHeader=" + relationshipHeader +
                        ", relationshipProperties=" + relationshipProperties +
-                       ", end1GUID=" + end1GUID +
-                       ", end2GUID=" + end2GUID +
+                       ", end1GUID=" + end1 +
+                       ", end2GUID=" + end2 +
                        '}';
     }
 
@@ -178,8 +178,8 @@ public class RelationshipElement
         RelationshipElement that = (RelationshipElement) objectToCompare;
         return Objects.equals(getRelationshipHeader(), that.getRelationshipHeader()) &&
                        Objects.equals(getRelationshipProperties(), that.getRelationshipProperties()) &&
-                       Objects.equals(getEnd1GUID(), that.getEnd1GUID()) &&
-                       Objects.equals(getEnd2GUID(), that.getEnd2GUID());
+                       Objects.equals(getEnd1(), that.getEnd1()) &&
+                       Objects.equals(getEnd2(), that.getEnd2());
     }
 
 
@@ -191,6 +191,6 @@ public class RelationshipElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, end1GUID, end2GUID);
+        return Objects.hash(super.hashCode(), relationshipHeader, relationshipProperties, end1, end2);
     }
 }

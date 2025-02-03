@@ -268,7 +268,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     {
                         appendMermaidNode(currentNodeName,
                                           currentDisplayName,
-                                          node.getType().getTypeName());
+                                          node.getElementAtEnd1().getType().getTypeName());
 
                         usedNodeNames.add(currentNodeName);
                     }
@@ -288,7 +288,7 @@ public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
                     {
                         appendMermaidNode(currentNodeName,
                                           currentDisplayName,
-                                          node.getType().getTypeName());
+                                          node.getElementAtEnd2().getType().getTypeName());
 
                         usedNodeNames.add(currentNodeName);
                     }

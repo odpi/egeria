@@ -396,9 +396,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "FileSystem";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -417,9 +415,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "FileManager";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_MANAGER_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -437,9 +433,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.NOTIFICATION_MANAGER.typeName;
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTIFICATION_MANAGER.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -457,9 +451,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "ContentCollectionManager";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTENT_COLLECTION_MANAGER.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
