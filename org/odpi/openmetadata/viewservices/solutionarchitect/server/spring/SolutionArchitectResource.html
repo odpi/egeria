@@ -112,7 +112,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/InformationSupplyChainsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InformationSupplyChainsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInformationSupplyChains(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findInformationSupplyChains(java.lang.String,boolean,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ boolean&nbsp;addImplementation,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
@@ -197,11 +198,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="findInformationSupplyChains(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="findInformationSupplyChains(java.lang.String,boolean,int,int,boolean,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>findInformationSupplyChains</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/information-supply-chains/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/InformationSupplyChainsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">InformationSupplyChainsResponse</a></span>&nbsp;<span class="element-name">findInformationSupplyChains</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestParam(required=false,defaultValue="true")
+ boolean&nbsp;addImplementation,
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
  @RequestParam(required=false,defaultValue="0")
@@ -218,6 +221,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
+<dd><code>addImplementation</code> - should details of the implementation of the information supply chain be extracted too?</dd>
 <dd><code>startsWith</code> - does the value start with the supplied string?</dd>
 <dd><code>endsWith</code> - does the value end with the supplied string?</dd>
 <dd><code>ignoreCase</code> - should the search ignore case?</dd>

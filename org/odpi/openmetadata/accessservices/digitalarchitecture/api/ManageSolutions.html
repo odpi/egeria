@@ -104,8 +104,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/InformationSupplyChainElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findInformationSupplyChains(java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,int,int,java.util.Date)" class="member-name-link">findInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findInformationSupplyChains(java.lang.String,java.lang.String,boolean,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,int,int,java.util.Date)" class="member-name-link">findInformationSupplyChains</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;addImplementation,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -183,10 +184,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="findInformationSupplyChains(java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,int,int,java.util.Date)">
+<section class="detail" id="findInformationSupplyChains(java.lang.String,java.lang.String,boolean,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,int,int,java.util.Date)">
 <h3>findInformationSupplyChains</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/InformationSupplyChainElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainElement</a>&gt;</span>&nbsp;<span class="element-name">findInformationSupplyChains</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ boolean&nbsp;addImplementation,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -203,6 +205,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string to find in the properties</dd>
+<dd><code>addImplementation</code> - should details of the implementation of the information supply chain be extracted too?</dd>
 <dd><code>limitResultsByStatus</code> - control the status of the elements to retrieve - default is everything but Deleted</dd>
 <dd><code>asOfTime</code> - repository time to use</dd>
 <dd><code>sequencingProperty</code> - property to use for sequencing order</dd>

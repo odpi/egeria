@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="CocoClinicalTrialCertifyHospitalService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialCertifyHospitalService</a></code>, <code><a href="CocoClinicalTrialHospitalOnboardingService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialHospitalOnboardingService</a></code>, <code><a href="CocoClinicalTrialNominateHospitalService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialNominateHospitalService</a></code>, <code><a href="CocoClinicalTrialSetUpService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialSetUpService</a></code></dd>
+<dd><code><a href="CocoClinicalTrialCertifyHospitalService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialCertifyHospitalService</a></code>, <code><a href="CocoClinicalTrialHospitalOnboardingService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialHospitalOnboardingService</a></code>, <code><a href="CocoClinicalTrialNominateHospitalService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialNominateHospitalService</a></code>, <code><a href="CocoClinicalTrialSetUpDataLakeService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialSetUpDataLakeService</a></code>, <code><a href="CocoClinicalTrialSetUpService.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialSetUpService</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CocoClinicalTrialBaseService</span>
@@ -156,21 +156,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkCertificationValidForProject(java.lang.String,java.lang.String)" class="member-name-link">checkCertificationValidForProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;certificationTypeGUID)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionComponentRelationship(java.lang.String,java.lang.String)" class="member-name-link">addSolutionComponentRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;implementationGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the ImplementedBy relationship between an implementation component and a solution component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkCertificationValidForProject(java.lang.String,java.lang.String)" class="member-name-link">checkCertificationValidForProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;certificationTypeGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check that the certification type is associated with the requested project.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processQualifiedName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processDescription)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create the governance action process asset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="CocoClinicalTrialBaseService.PersonContactDetails.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService.PersonContactDetails</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContactDetailsForPersonGUID(java.lang.String)" class="member-name-link">getContactDetailsForPersonGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="CocoClinicalTrialBaseService.PersonContactDetails.html" title="class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialBaseService.PersonContactDetails</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContactDetailsForPersonGUID(java.lang.String)" class="member-name-link">getContactDetailsForPersonGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the email for a specific person.</div>
 </div>
 </div>
@@ -279,6 +285,26 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - parameter error</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository error</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - authorization error</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addSolutionComponentRelationship(java.lang.String,java.lang.String)">
+<h3>addSolutionComponentRelationship</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionComponentRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;implementationGUID)</span>
+                                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Set up the ImplementedBy relationship between an implementation component and a solution component.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>solutionComponentGUID</code> - unique identifier of the solution component</dd>
+<dd><code>implementationGUID</code> - unique identifier of the newly set up governance action process</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository error</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security error</dd>
 </dl>
 </section>
 </li>
